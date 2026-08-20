@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#111126" />
+    <meta name="description" content="保留经典魔塔固定数值、钥匙门、宝物、商店与解谜机制的二次元策略 RPG。" />
+    <meta name="robots" content="index,follow" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <title>失落魔法阵：少女魔塔</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div id="app-shell">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">FIXED-NUMBER STRATEGY RPG</p>
+          <h1>失落魔法阵：少女魔塔</h1>
+        </div>
+        <div class="top-actions">
+          <button id="btn-help" class="ghost">玩法</button>
+          <button id="btn-save" class="ghost">存档</button>
+          <button id="btn-load" class="ghost">读档</button>
+          <button id="btn-reset" class="danger ghost">重开</button>
+        </div>
+      </header>
+
+      <main class="game-layout">
+        <aside class="panel stats-panel" aria-label="角色状态">
+          <section class="hero-card">
+            <img data-portrait="hero" alt="主角绫星·璃" />
+            <div>
+              <span class="label">失魔术师</span>
+              <h2>绫星·璃</h2>
+              <p id="magic-title">魔力回收率 0%</p>
+            </div>
+          </section>
+
+          <section class="floor-card">
+            <span id="floor-number">第 1 阵</span>
+            <strong id="floor-title">月白门廊</strong>
+          </section>
+
+          <dl class="stat-grid">
+            <div><dt>生命</dt><dd id="stat-hp">0</dd></div>
+            <div><dt>攻击</dt><dd id="stat-atk">0</dd></div>
+            <div><dt>防御</dt><dd id="stat-def">0</dd></div>
+            <div><dt>金币</dt><dd id="stat-gold">0</dd></div>
+          </dl>
+
+          <section class="card-wallet" aria-label="魔法卡片">
+            <div class="card-token sun"><span>日</span><b id="card-sun">0</b></div>
+            <div class="card-token moon"><span>月</span><b id="card-moon">0</b></div>
+            <div class="card-token star"><span>星</span><b id="card-star">0</b></div>
+          </section>
+
+          <section class="relics">
+            <h3>宝物</h3>
+            <div id="relic-list" class="relic-list"><span class="muted">尚未获得</span></div>
+          </section>
+        </aside>
+
+        <section class="board-column">
+          <div id="game-container" aria-label="魔塔地图画布"></div>
+          <div id="loading-note" class="loading-note">正在接入魔法阵……</div>
+          <div class="mobile-controls" aria-label="移动控制">
+            <span></span><button data-move="up" aria-label="向上">▲</button><span></span>
+            <button data-move="left" aria-label="向左">◀</button><button data-move="down" aria-label="向下">▼</button><button data-move="right" aria-label="向右">▶</button>
+          </div>
+          <p class="control-hint">方向键 / WASD 移动 · 点击相邻格亦可行动 · E 查看图鉴 · T 使用楼层罗盘</p>
+        </section>
+
+        <aside class="panel intel-panel" aria-label="战术情报">
+          <section>
+            <h3>邻格预判</h3>
+            <div id="battle-preview" class="battle-preview muted">靠近敌人后显示固定损伤。</div>
+          </section>
+          <section>
+            <h3>阵内目标</h3>
+            <p id="floor-objective">寻找被封印的魔力核心。</p>
+          </section>
+          <section>
+            <h3>行动记录</h3>
+            <ol id="log-list" class="log-list"></ol>
+          </section>
+          <section class="intel-actions">
+            <button id="btn-codex">敌人图鉴</button>
+            <button id="btn-teleport">楼层罗盘</button>
+          </section>
+        </aside>
+      </main>
+    </div>
+
+    <div id="modal-root" class="modal-root hidden" role="dialog" aria-modal="true">
+      <div class="modal-backdrop"></div>
+      <section class="modal-card">
+        <div class="modal-heading">
+          <div>
+            <span id="modal-kicker" class="eyebrow"></span>
+            <h2 id="modal-title"></h2>
+          </div>
+          <button id="modal-close" class="icon-button" aria-label="关闭">×</button>
+        </div>
+        <div id="modal-body" class="modal-body"></div>
+        <div id="modal-actions" class="modal-actions"></div>
+      </section>
+    </div>
+
+    <noscript>本游戏需要启用 JavaScript。</noscript>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

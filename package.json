@@ -1,0 +1,15 @@
+{
+  "name": "tower-of-the-sorcerer",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "固定数值策略 RPG《失落魔法阵：少女魔塔》",
+  "license": "MIT",
+  "scripts": {
+    "dev": "python3 -m http.server 4173",
+    "build": "node scripts/build.mjs",
+    "test": "node --test",
+    "validate": "node scripts/validate-game.mjs",
+    "check": "npm run test && npm run validate && npm run build"
+  }
+}
