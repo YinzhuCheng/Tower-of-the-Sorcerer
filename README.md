@@ -1,3 +1,81 @@
-# Tower of the Sorcerer
+# 失落魔法阵：少女魔塔
 
-Repository initialization commit. The complete game is developed on a feature branch before the verified fast-forward to `main`.
+一款保留经典魔塔核心规则的浏览器固定数值策略 RPG。主角 **绫星·璃** 被“无声女王”夺去魔力，只能依靠剑术、资源规划与精确计算闯入七重魔法阵。随着七枚魔力核心逐一回收，她会重新觉醒，并在无声王座迎战双阶段最终 Boss。
+
+## 游戏内容
+
+- **固定数值战斗**：没有暴击、闪避或随机浮动；主角先攻，战前可精确计算损伤。
+- **8 个完整楼层**：共 72 场战斗、7 名层级 Boss 与双阶段最终 Boss。
+- **二次元魔法派系**：猫娘、狐巫、鲸鱼娘、女剑士、龙娘、星图魔女、影术少女与无声王庭。
+- **经典魔塔资源**：三色“魔法卡片”与对应结界门、攻防宝石、药水、武器、防具、金币商店与可选支路。
+- **宝物系统**：魔眼图鉴、层间罗盘、招财星币、静谧耳坠、圣辉原液等。
+- **解谜机关**：单开关、双开关联动、A-B-C 顺序符文、消耗三色卡的三相结界。
+- **完整存档**：自动存档、手动存档、读档与重开，数据保存在浏览器 `localStorage`。
+- **桌面与移动端**：方向键 / WASD、相邻格点击、屏幕方向键；布局自适应手机与桌面。
+- **双渲染器容错**：优先使用开源 Phaser 3；CDN 不可用时自动切换到本地 Canvas 2D 渲染器。
+
+## 战斗公式
+
+当 `主角攻击 <= 敌人防御` 时无法破防。普通敌人的固定损伤为：
+
+```text
+攻击回合数 = ceil(敌人生命 / (主角攻击 - 敌人防御))
+敌人单次伤害 = max(敌人攻击 - 主角防御, 0)
+总损伤 = (攻击回合数 - 1) × 敌人单次伤害
+```
+
+特殊规则：
+
+- **先制攻击**：敌人额外反击一次。
+- **二连击**：每次反击造成两段物理伤害。
+- **魔法攻击**：无视防御；“静谧耳坠”可将每段魔法伤害降低 20%。
+- 总损伤必须严格小于当前生命，战斗才允许开始。
+
+## 本地运行
+
+项目没有构建期第三方依赖，Node.js 18+ 即可：
+
+```bash
+npm run dev
+```
+
+打开 `http://localhost:4173`。
+
+生产构建：
+
+```bash
+npm run build
+```
+
+静态产物会写入 `dist/`。
+
+## 测试与可通关性验证
+
+```bash
+npm run check
+```
+
+该命令依次执行：
+
+1. `node --test`：战斗公式、卡片门、宝物、机关、符文、商店、存档与最终 Boss 阶段测试。
+2. `scripts/validate-game.mjs`：自动求解整座魔塔，要求回收七枚核心、击败最终 Boss 且剩余生命大于 0。
+3. 静态生产构建。
+
+地图或数值调整后应始终重新运行该命令。自动求解器不是唯一通关路线，只用于证明当前版本至少存在一条合法通关路径。
+
+## 项目结构
+
+```text
+src/game/data.js             楼层、敌人、物品、剧情与商店数据
+src/game/engine.js           与渲染无关的固定数值规则引擎
+src/game/scene.js            Phaser 渲染器
+src/game/canvas-scene.js     离线 Canvas 2D 回退渲染器
+src/main.js                  UI、弹窗、存档与启动流程
+scripts/validate-game.mjs    自动通关求解与数值回归验证
+scripts/generate_portraits.py 原创 SVG 头像生成器
+test/engine.test.js          规则单元测试
+```
+
+## 美术与许可
+
+项目内角色头像均由 `scripts/generate_portraits.py` 使用 SVG 几何图元生成，不使用第三方动漫 IP 或来源不明素材。代码与项目内原创素材采用 [MIT License](LICENSE)。Phaser 的许可信息见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。

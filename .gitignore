@@ -1,0 +1,9 @@
+# Build output
+dist/
+
+# Local tooling
+.DS_Store
+*.log
+.vscode/
+.idea/
+.vercel/
