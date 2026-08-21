@@ -1,0 +1,26 @@
+{
+  "version": 2,
+  "basePath": "/assets/anime/",
+  "assets": {
+    "cat_scout": { "base64File": "b64/enemies/catScout.b64", "mime": "image/webp" },
+    "cat_mage": { "base64File": "b64/enemies/catMage.b64", "mime": "image/webp" },
+    "fox_acolyte": { "base64File": "b64/enemies/foxAcolyte.b64", "mime": "image/webp" },
+    "fox_archer": { "base64File": "b64/enemies/foxArcher.b64", "mime": "image/webp" },
+    "whale_singer": { "base64File": "b64/enemies/whaleSinger.b64", "mime": "image/webp" },
+    "tide_lancer": { "base64File": "b64/enemies/tideLancer.b64", "mime": "image/webp" },
+    "sword_apprentice": { "base64File": "b64/enemies/swordApprentice.b64", "mime": "image/webp" },
+    "sword_knight": { "base64File": "b64/enemies/swordKnight.b64", "mime": "image/webp" },
+    "dragon_whelp": { "base64File": "b64/enemies/dragonWhelp.b64", "mime": "image/webp" },
+    "flame_caster": { "base64File": "b64/enemies/flameCaster.b64", "mime": "image/webp" },
+    "void_priestess": { "base64File": "b64/enemies/voidPriestess.b64", "mime": "image/webp" },
+    "shadow_boss": { "base64File": "b64/enemies/shadowBoss.b64", "mime": "image/webp", "scale": 1.08 },
+    "mirror_doll": { "base64File": "b64/enemies/mirrorDoll.b64", "mime": "image/webp" },
+    "astral_boss": { "base64File": "b64/enemies/astralBoss.b64", "mime": "image/webp", "scale": 1.08 },
+    "cat_boss": { "base64File": "b64/enemies/catBoss.b64", "mime": "image/webp", "scale": 1.08 },
+    "fox_boss": { "base64File": "b64/enemies/foxBoss.b64", "mime": "image/webp", "scale": 1.10 },
+    "whale_boss": { "base64File": "b64/enemies/whaleBoss.b64", "mime": "image/webp", "scale": 1.10 },
+    "dragon_boss": { "bundle": "b64/enemies/bundle2.json", "key": "dragonBoss", "mime": "image/webp", "scale": 1.12 },
+    "silence_guard": { "base64File": "b64/enemies/silenceGuard.b64", "mime": "image/webp" },
+    "eclipse_mage": { "bundle": "b64/enemies/bundle2.json", "key": "eclipseMage", "mime": "image/webp", "scale": 1.05 }
+  }
+}
