@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "basePath": "/assets/anime/items/",
+  "assets": {
+    "hp": { "file": "potions/health-potion-crimson.webp", "scale": 1.00 },
+    "hpLarge": { "file": "potions/sapphire-potion.webp", "scale": 1.05 },
+    "atk": { "file": "gems/attack-gem-fire.webp", "scale": 0.96 },
+    "def": { "file": "gems/defense-emblem-azure.webp", "scale": 0.96 },
+    "dual": { "file": "gems/vitality-gem-emerald.webp", "scale": 0.96 },
+    "sun": { "file": "cards/sun-card.webp", "scale": 0.92 },
+    "moon": { "file": "cards/moon-card.webp", "scale": 0.92 },
+    "star": { "file": "cards/eclipse-card.webp", "scale": 0.92 },
+    "codex": { "file": "relics/astral-codex.webp", "scale": 0.98 },
+    "compass": { "file": "relics/moon-compass.webp", "scale": 0.98 },
+    "lucky": { "file": "relics/starlight-pendant.webp", "scale": 0.92 },
+    "shield": { "file": "relics/ice-shield.webp", "scale": 0.96 },
+    "ward": { "file": "relics/nature-amulet.webp", "scale": 0.92 },
+    "holy": { "file": "potions/phoenix-elixir.webp", "scale": 1.04 },
+    "amethystPotion": { "file": "potions/amethyst-potion.webp" },
+    "starlightChest": { "file": "treasures/starlight-chest.webp" },
+    "sunfireGem": { "file": "gems/sunfire-gem.webp" },
+    "teleportSigil": { "file": "sigils/teleport-sigil.webp", "scale": 1.08 },
+    "sealSigil": { "file": "sigils/seal-sigil.webp", "scale": 1.05 },
+    "starCard": { "file": "cards/star-card.webp" }
+  }
+}
