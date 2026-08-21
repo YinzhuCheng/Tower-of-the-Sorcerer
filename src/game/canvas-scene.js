@@ -1,6 +1,6 @@
 import { createCanvasTowerScene as createAnimeCanvasTowerScene } from './anime-canvas-scene.js';
 import { getAnimeAsset, preloadAnimeAssets } from './anime-assets.js';
-import { getEnemyAsset, preloadEnemyAssets } from './enemy-assets.js';
+import { getEnemyAsset, getEnemyAssetMeta, preloadEnemyAssets } from './enemy-assets.js';
 import { GRID_SIZE } from './data.js';
 
 await Promise.all([preloadAnimeAssets(), preloadEnemyAssets()]);
@@ -12,53 +12,39 @@ const HERO_DIRECTION_ASSET = Object.freeze({
   right: 'hero-right'
 });
 
-const HD_ENEMY_PORTRAITS = Object.freeze([
-  'cat_scout', 'cat_mage', 'fox_acolyte', 'fox_archer', 'whale_singer',
-  'tide_lancer', 'sword_apprentice', 'sword_knight', 'dragon_whelp', 'flame_caster',
-  'void_priestess', 'shadow_boss', 'mirror_doll', 'astral_boss', 'cat_boss',
-  'fox_boss', 'whale_boss', 'dragon_boss', 'silence_guard', 'eclipse_mage'
-]);
-
-function loadImage(src) {
-  return new Promise((resolve) => {
-    const image = new Image();
-    image.decoding = 'async';
-    image.onload = () => resolve(image);
-    image.onerror = () => resolve(null);
-    image.src = src;
-  });
-}
-
 export function createCanvasTowerScene(bridge, parent = document.getElementById('game-container')) {
   const scene = createAnimeCanvasTowerScene(bridge, parent);
   let direction = 'down';
-  const enemyImages = new Map();
 
   parent.style.position = 'relative';
 
-  // The protagonist is a dedicated transparent directional sprite layered over
-  // the canvas. Covered enemies use independent HD transparent sprites; any
-  // enemy without a new asset falls back to the original shared chibi sheet.
+  // Enemy art is manifest-driven. If an entry is missing or fails to load, the
+  // original chibi sheet remains the fail-safe, so art updates cannot break play.
   const drawSprite = scene.drawSprite.bind(scene);
   scene.drawSprite = (id, cx, cy, size, alpha = 1) => {
     if (id === 'hero') return;
-    const image = enemyImages.get(id);
+    const image = getEnemyAsset(id);
     if (!image) return drawSprite(id, cx, cy, size, alpha);
+
+    const meta = getEnemyAssetMeta(id) ?? {};
+    const scale = Number.isFinite(meta.scale) ? meta.scale : 1;
+    const offsetX = Number.isFinite(meta.offsetX) ? meta.offsetX * size : 0;
+    const offsetY = Number.isFinite(meta.offsetY) ? meta.offsetY * size : 0;
+    const drawSize = size * scale;
 
     scene.ctx.save();
     scene.ctx.globalAlpha = alpha;
     scene.ctx.imageSmoothingEnabled = true;
     scene.ctx.imageSmoothingQuality = 'high';
-    scene.ctx.drawImage(image, cx - size / 2, cy - size / 2, size, size);
+    scene.ctx.drawImage(
+      image,
+      cx - drawSize / 2 + offsetX,
+      cy - drawSize / 2 + offsetY,
+      drawSize,
+      drawSize
+    );
     scene.ctx.restore();
   };
-
-  Promise.all(HD_ENEMY_PORTRAITS.map(async (portrait) => {
-    const src = getEnemyAsset(portrait);
-    if (!src) return;
-    const image = await loadImage(src);
-    if (image) enemyImages.set(portrait, image);
-  })).then(() => scene.refresh());
 
   const hero = document.createElement('img');
   hero.alt = '';
