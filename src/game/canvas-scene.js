@@ -1,8 +1,9 @@
 import { createCanvasTowerScene as createAnimeCanvasTowerScene } from './anime-canvas-scene.js';
 import { getAnimeAsset, preloadAnimeAssets } from './anime-assets.js';
+import { getEnemyAsset, getEnemyAssetMeta, preloadEnemyAssets } from './enemy-assets.js';
 import { GRID_SIZE } from './data.js';
 
-await preloadAnimeAssets();
+await Promise.all([preloadAnimeAssets(), preloadEnemyAssets()]);
 
 const HERO_DIRECTION_ASSET = Object.freeze({
   down: 'hero-down',
@@ -17,12 +18,32 @@ export function createCanvasTowerScene(bridge, parent = document.getElementById(
 
   parent.style.position = 'relative';
 
-  // Enemies continue using the shared chibi sheet. The protagonist is rendered
-  // as a dedicated transparent directional sprite layered over the canvas.
+  // Enemy art is manifest-driven. If an entry is missing or fails to load, the
+  // original chibi sheet remains the fail-safe, so art updates cannot break play.
   const drawSprite = scene.drawSprite.bind(scene);
-  scene.drawSprite = (id, ...args) => {
+  scene.drawSprite = (id, cx, cy, size, alpha = 1) => {
     if (id === 'hero') return;
-    return drawSprite(id, ...args);
+    const image = getEnemyAsset(id);
+    if (!image) return drawSprite(id, cx, cy, size, alpha);
+
+    const meta = getEnemyAssetMeta(id) ?? {};
+    const scale = Number.isFinite(meta.scale) ? meta.scale : 1;
+    const offsetX = Number.isFinite(meta.offsetX) ? meta.offsetX * size : 0;
+    const offsetY = Number.isFinite(meta.offsetY) ? meta.offsetY * size : 0;
+    const drawSize = size * scale;
+
+    scene.ctx.save();
+    scene.ctx.globalAlpha = alpha;
+    scene.ctx.imageSmoothingEnabled = true;
+    scene.ctx.imageSmoothingQuality = 'high';
+    scene.ctx.drawImage(
+      image,
+      cx - drawSize / 2 + offsetX,
+      cy - drawSize / 2 + offsetY,
+      drawSize,
+      drawSize
+    );
+    scene.ctx.restore();
   };
 
   const hero = document.createElement('img');
