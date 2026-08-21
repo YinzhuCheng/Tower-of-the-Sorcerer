@@ -1,5 +1,5 @@
 {
-  "version": 2,
+  "version": 3,
   "basePath": "/assets/anime/",
   "assets": {
     "cat_scout": { "base64File": "b64/enemies/catScout.b64", "mime": "image/webp" },
@@ -19,8 +19,8 @@
     "cat_boss": { "base64File": "b64/enemies/catBoss.b64", "mime": "image/webp", "scale": 1.08 },
     "fox_boss": { "base64File": "b64/enemies/foxBoss.b64", "mime": "image/webp", "scale": 1.10 },
     "whale_boss": { "base64File": "b64/enemies/whaleBoss.b64", "mime": "image/webp", "scale": 1.10 },
-    "dragon_boss": { "bundle": "b64/enemies/bundle2.json", "key": "dragonBoss", "mime": "image/webp", "scale": 1.12 },
+    "dragon_boss": { "base64File": "b64/enemies/dragonBoss.b64", "mime": "image/webp", "scale": 1.12 },
     "silence_guard": { "base64File": "b64/enemies/silenceGuard.b64", "mime": "image/webp" },
-    "eclipse_mage": { "bundle": "b64/enemies/bundle2.json", "key": "eclipseMage", "mime": "image/webp", "scale": 1.05 }
+    "eclipse_mage": { "base64File": "b64/enemies/eclipseMage.b64", "mime": "image/webp", "scale": 1.05 }
   }
 }
