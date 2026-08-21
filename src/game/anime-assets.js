@@ -1,4 +1,13 @@
-const ASSET_NAMES = Object.freeze(['portraits', 'chibi', 'items', 'tiles']);
+const ASSET_NAMES = Object.freeze([
+  'portraits',
+  'chibi',
+  'items',
+  'tiles',
+  'hero-down',
+  'hero-up',
+  'hero-left',
+  'hero-right'
+]);
 const urls = new Map();
 
 export async function preloadAnimeAssets() {
