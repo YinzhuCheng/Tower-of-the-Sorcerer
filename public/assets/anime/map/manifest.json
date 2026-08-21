@@ -1,0 +1,55 @@
+{
+  "version": 2,
+  "theme": "moonlit-star-tower",
+  "basePath": "/assets/anime/map/",
+  "atlases": {
+    "environment": {
+      "base64Chunks": [
+        "atlases/environment-1.b64",
+        "atlases/environment-2.b64",
+        "atlases/environment-3.b64",
+        "atlases/environment-4.b64",
+        "atlases/environment-5.b64"
+      ],
+      "mime": "image/webp",
+      "cols": 5,
+      "rows": 4
+    },
+    "hero": {
+      "base64Chunks": [
+        "atlases/hero-1.b64",
+        "atlases/hero-2.b64",
+        "atlases/hero-3.b64"
+      ],
+      "mime": "image/webp",
+      "cols": 2,
+      "rows": 2
+    }
+  },
+  "assets": {
+    "wall-body": { "atlas": "environment", "index": 0, "role": "wall" },
+    "wall-edge": { "atlas": "environment", "index": 1, "role": "wall" },
+    "wall-outer-corner-alt": { "atlas": "environment", "index": 2, "role": "wall" },
+    "wall-inner-corner-alt": { "atlas": "environment", "index": 3, "role": "wall" },
+    "floor-main": { "atlas": "environment", "index": 4, "role": "floor" },
+    "gate-sun": { "atlas": "environment", "index": 5, "role": "door" },
+    "gate-moon": { "atlas": "environment", "index": 6, "role": "door" },
+    "gate-star": { "atlas": "environment", "index": 7, "role": "door" },
+    "stairs-legacy": { "atlas": "environment", "index": 8, "role": "stairs" },
+    "portal-transfer": { "atlas": "environment", "index": 9, "role": "portal" },
+    "wall-horizontal": { "atlas": "environment", "index": 10, "role": "wall" },
+    "wall-vertical": { "atlas": "environment", "index": 11, "role": "wall" },
+    "wall-outer-corner": { "atlas": "environment", "index": 12, "role": "wall" },
+    "wall-inner-corner": { "atlas": "environment", "index": 13, "role": "wall" },
+    "wall-t-junction": { "atlas": "environment", "index": 14, "role": "wall" },
+    "wall-end-cap": { "atlas": "environment", "index": 15, "role": "wall" },
+    "wall-pillar": { "atlas": "environment", "index": 16, "role": "wall" },
+    "stairs-up": { "atlas": "environment", "index": 17, "role": "stairs" },
+    "stairs-down": { "atlas": "environment", "index": 18, "role": "stairs" },
+    "floor-alt": { "atlas": "environment", "index": 19, "role": "floor" },
+    "hero-down": { "atlas": "hero", "index": 0, "role": "hero" },
+    "hero-up": { "atlas": "hero", "index": 1, "role": "hero" },
+    "hero-left": { "atlas": "hero", "index": 2, "role": "hero" },
+    "hero-right": { "atlas": "hero", "index": 3, "role": "hero" }
+  }
+}
