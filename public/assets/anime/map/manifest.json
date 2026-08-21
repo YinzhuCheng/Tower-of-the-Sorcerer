@@ -6,7 +6,8 @@
     "environment": {
       "base64Chunks": [
         "atlases/environment-1.b64",
-        "atlases/environment-2.b64",
+        "atlases/environment-2a.b64",
+        "atlases/environment-2b.b64",
         "atlases/environment-3.b64",
         "atlases/environment-4.b64",
         "atlases/environment-5.b64"
@@ -18,7 +19,8 @@
     "hero": {
       "base64Chunks": [
         "atlases/hero-1.b64",
-        "atlases/hero-2.b64",
+        "atlases/hero-2a.b64",
+        "atlases/hero-2b.b64",
         "atlases/hero-3a.b64",
         "atlases/hero-3b.b64"
       ],
