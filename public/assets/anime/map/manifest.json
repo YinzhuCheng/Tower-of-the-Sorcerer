@@ -19,7 +19,8 @@
       "base64Chunks": [
         "atlases/hero-1.b64",
         "atlases/hero-2.b64",
-        "atlases/hero-3.b64"
+        "atlases/hero-3a.b64",
+        "atlases/hero-3b.b64"
       ],
       "mime": "image/webp",
       "cols": 2,
