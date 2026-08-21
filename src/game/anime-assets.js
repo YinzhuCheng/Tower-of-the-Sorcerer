@@ -1,12 +1,11 @@
+// Legacy sheet loader. High-resolution hero, enemy and map art now use their
+// own manifest-driven binary WebP loaders; these four sheets remain as safe
+// fallbacks for portraits/items/older event icons.
 const ASSET_NAMES = Object.freeze([
   'portraits',
   'chibi',
   'items',
-  'tiles',
-  'hero-down',
-  'hero-up',
-  'hero-left',
-  'hero-right'
+  'tiles'
 ]);
 const urls = new Map();
 
