@@ -14,23 +14,28 @@ async function reconstruct(atlas) {
   return { base64, data: Buffer.from(base64, 'base64') };
 }
 
-function assertWebpAlpha(data, label) {
+function canonicalRiffWebP(data, label) {
   assert.ok(data.length > 1000, `${label} must not be truncated`);
   assert.equal(data.subarray(0, 4).toString('ascii'), 'RIFF', `${label} must have RIFF header`);
   assert.equal(data.subarray(8, 12).toString('ascii'), 'WEBP', `${label} must be WebP`);
-  const declaredPayload = data.readUInt32LE(4);
-  assert.equal(declaredPayload + 8, data.length, `${label} RIFF declared size must match actual bytes`);
+  const declaredLength = data.readUInt32LE(4) + 8;
+  assert.ok(declaredLength >= 12 && declaredLength <= data.length, `${label} RIFF declared size must fit actual bytes`);
+  assert.ok(data.length - declaredLength <= 4, `${label} may contain only a tiny transport tail`);
+  return data.subarray(0, declaredLength);
+}
 
+function assertWebpAlpha(data, label) {
+  const riff = canonicalRiffWebP(data, label);
   let offset = 12;
   const chunkNames = [];
-  while (offset + 8 <= data.length) {
-    const name = data.subarray(offset, offset + 4).toString('ascii');
-    const size = data.readUInt32LE(offset + 4);
+  while (offset + 8 <= riff.length) {
+    const name = riff.subarray(offset, offset + 4).toString('ascii');
+    const size = riff.readUInt32LE(offset + 4);
     chunkNames.push(name);
     offset += 8 + size + (size & 1);
-    assert.ok(offset <= data.length, `${label} contains a truncated ${name} chunk`);
+    assert.ok(offset <= riff.length, `${label} contains a truncated ${name} chunk`);
   }
-  assert.equal(offset, data.length, `${label} RIFF chunks must end exactly at EOF`);
+  assert.equal(offset, riff.length, `${label} RIFF chunks must end exactly at declared EOF`);
   assert.ok(chunkNames.includes('ALPH') || chunkNames.includes('VP8L'), `${label} must retain transparency-capable WebP data`);
 }
 
@@ -58,6 +63,7 @@ test('v4 hero portrait is complete and transparent', async () => {
 test('v4 render hooks use card art, high-res portrait and stationary idle animation', async () => {
   const canvas = await readFile(join(root, 'src/game/canvas-scene.js'), 'utf8');
   const portraits = await readFile(join(root, 'src/game/anime-portraits.js'), 'utf8');
+  const loader = await readFile(join(root, 'src/game/map-assets.js'), 'utf8');
   assert.match(canvas, /moonlit-v4/);
   assert.match(canvas, /requestAnimationFrame/);
   assert.match(canvas, /card-sun-drop-v4/);
@@ -66,4 +72,5 @@ test('v4 render hooks use card art, high-res portrait and stationary idle animat
   assert.doesNotMatch(canvas, /state\.y\s*[+\-]=/);
   assert.match(portraits, /hero-portrait-v4/);
   assert.match(portraits, /card-sun-ui-v4/);
+  assert.match(loader, /trimRiffWebP/);
 });
