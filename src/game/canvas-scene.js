@@ -1,6 +1,7 @@
 import { createCanvasTowerScene as createBaseCanvasTowerScene } from './anime-canvas-scene.js';
 import { ENEMIES, TILE_SIZE } from './data.js';
 import { parseToken } from './engine.js';
+import { portraitIndex } from './anime-portraits.js';
 import { getMapAsset } from './map-assets.js';
 
 const FEATURED_ENEMY_ASSET = Object.freeze({
@@ -10,10 +11,15 @@ const FEATURED_ENEMY_ASSET = Object.freeze({
   swordApprentice: 'featured-sword-apprentice'
 });
 
-function buildTransparentItemCell(image, index, cols = 6, rows = 4) {
+const DUAL_GATE_IDS = new Set(['tide', 'ember']);
+const SEQUENCE_GATE_IDS = new Set(['mirror', 'tri']);
+
+function buildTransparentCell(image, index, cols, rows) {
   if (!image) return null;
-  const sw = Math.floor(image.naturalWidth / cols);
-  const sh = Math.floor(image.naturalHeight / rows);
+  const imageWidth = image.naturalWidth || image.width;
+  const imageHeight = image.naturalHeight || image.height;
+  const sw = Math.floor(imageWidth / cols);
+  const sh = Math.floor(imageHeight / rows);
   if (!sw || !sh) return null;
 
   const canvas = document.createElement('canvas');
@@ -39,7 +45,7 @@ function buildTransparentItemCell(image, index, cols = 6, rows = 4) {
     const r = pixels[i];
     const g = pixels[i + 1];
     const b = pixels[i + 2];
-    return r <= 48 && g <= 48 && b <= 62;
+    return r <= 52 && g <= 52 && b <= 68;
   };
 
   const enqueue = (p) => {
@@ -71,13 +77,12 @@ function buildTransparentItemCell(image, index, cols = 6, rows = 4) {
     if (visited[p]) pixels[p * 4 + 3] = 0;
   }
 
-  // Soften the one-pixel dark fringe left by old atlas anti-aliasing.
   for (let y = 1; y < sh - 1; y += 1) {
     for (let x = 1; x < sw - 1; x += 1) {
       const p = y * sw + x;
       if (visited[p]) continue;
       const i = p * 4;
-      const dark = pixels[i] < 72 && pixels[i + 1] < 72 && pixels[i + 2] < 88;
+      const dark = pixels[i] < 76 && pixels[i + 1] < 76 && pixels[i + 2] < 92;
       if (!dark) continue;
       const touchesClear = visited[p - 1] || visited[p + 1] || visited[p - sw] || visited[p + sw];
       if (touchesClear) pixels[i + 3] = Math.min(pixels[i + 3], 128);
@@ -86,6 +91,18 @@ function buildTransparentItemCell(image, index, cols = 6, rows = 4) {
 
   ctx.putImageData(frame, 0, 0);
   return canvas;
+}
+
+function drawCell(scene, cell, cx, cy, size, alpha = 1, cropBottom = 0) {
+  if (!cell) return false;
+  const sourceHeight = cell.height * (1 - cropBottom);
+  scene.ctx.save();
+  scene.ctx.globalAlpha = alpha;
+  scene.ctx.imageSmoothingEnabled = true;
+  scene.ctx.imageSmoothingQuality = 'high';
+  scene.ctx.drawImage(cell, 0, 0, cell.width, sourceHeight, cx - size / 2, cy - size / 2, size, size);
+  scene.ctx.restore();
+  return true;
 }
 
 function drawFeaturedEnemy(scene, x, y, enemyId, assetName) {
@@ -128,28 +145,47 @@ function drawFeaturedProp(scene, assetName, x, y, scale, shadowWidth = 0.5) {
 export function createCanvasTowerScene(bridge, parent = document.getElementById('game-container')) {
   const scene = createBaseCanvasTowerScene(bridge, parent);
   const cleanedItemCells = new Map();
+  const cleanedChibiCells = new Map();
+  const cleanedTileCells = new Map();
 
   scene.canvas.dataset.artPipeline = 'transparent-v2';
+  scene.canvas.dataset.assetRevision = '2026-08-22';
 
   const legacyDrawItem = scene.drawItem.bind(scene);
   scene.drawItem = (index, x, y, scale = 0.8) => {
     let cell = cleanedItemCells.get(index);
     if (!cell) {
       const sheet = scene.images.get(scene.itemSheet);
-      cell = buildTransparentItemCell(sheet, index);
+      cell = buildTransparentCell(sheet, index, 6, 4);
       if (cell) cleanedItemCells.set(index, cell);
     }
     if (!cell) return legacyDrawItem(index, x, y, scale);
+    return drawCell(scene, cell, scene.center(x), scene.center(y), TILE_SIZE * scale);
+  };
 
-    const size = TILE_SIZE * scale;
-    const cx = scene.center(x);
-    const cy = scene.center(y);
-    scene.ctx.save();
-    scene.ctx.imageSmoothingEnabled = true;
-    scene.ctx.imageSmoothingQuality = 'high';
-    scene.ctx.drawImage(cell, cx - size / 2, cy - size / 2, size, size);
-    scene.ctx.restore();
-    return true;
+  const legacyDrawLegacySprite = scene.drawLegacySprite.bind(scene);
+  scene.drawLegacySprite = (id, cx, cy, size, alpha = 1) => {
+    const index = portraitIndex(id);
+    let cell = cleanedChibiCells.get(index);
+    if (!cell) {
+      const sheet = scene.images.get(scene.chibiSheet);
+      cell = buildTransparentCell(sheet, index, 4, 3);
+      if (cell) cleanedChibiCells.set(index, cell);
+    }
+    if (!cell) return legacyDrawLegacySprite(id, cx, cy, size, alpha);
+    return drawCell(scene, cell, cx, cy, size, alpha);
+  };
+
+  const legacyDrawTileIcon = scene.drawTileIcon.bind(scene);
+  scene.drawTileIcon = (index, x, y, scale = 0.9, alpha = 1) => {
+    let cell = cleanedTileCells.get(index);
+    if (!cell) {
+      const sheet = scene.images.get(scene.tileSheet);
+      cell = buildTransparentCell(sheet, index, 5, 5);
+      if (cell) cleanedTileCells.set(index, cell);
+    }
+    if (!cell) return legacyDrawTileIcon(index, x, y, scale, alpha);
+    return drawCell(scene, cell, scene.center(x), scene.center(y), TILE_SIZE * scale, alpha, 0.27);
   };
 
   const legacyRenderEnemy = scene.renderEnemy.bind(scene);
@@ -161,22 +197,23 @@ export function createCanvasTowerScene(bridge, parent = document.getElementById(
 
   const legacyRenderToken = scene.renderToken.bind(scene);
   scene.renderToken = (x, y, token) => {
-    if (token === 'shop' && drawFeaturedProp(scene, 'featured-shop', x, y, 1.12, 0.62)) return;
+    if (token === 'shop' && drawFeaturedProp(scene, 'featured-shop', x, y, 1.02, 0.62)) return;
 
     const parsed = parseToken(token);
     if (parsed.type === 'item' && parsed.id === 'codex') {
-      if (drawFeaturedProp(scene, 'featured-codex-shrine', x, y, 0.92, 0.48)) return;
+      if (drawFeaturedProp(scene, 'featured-codex-shrine', x, y, 0.9, 0.48)) return;
     }
     if (parsed.type === 'item' && parsed.id === 'holy') {
-      if (drawFeaturedProp(scene, 'featured-treasure', x, y, 0.9, 0.52)) return;
+      if (drawFeaturedProp(scene, 'featured-treasure', x, y, 0.88, 0.52)) return;
     }
     if (parsed.type === 'switch') {
       if (drawFeaturedProp(scene, 'featured-switch-single', x, y, 0.8, 0.44)) return;
     }
-    if (parsed.type === 'gate') {
-      const asset = parsed.id === 'tri' ? 'featured-rune-sequence' : 'featured-switch-dual';
-      const scale = parsed.id === 'tri' ? 0.88 : 0.86;
-      if (drawFeaturedProp(scene, asset, x, y, scale, 0.5)) return;
+    if (parsed.type === 'gate' && DUAL_GATE_IDS.has(parsed.id)) {
+      if (drawFeaturedProp(scene, 'featured-switch-dual', x, y, 0.86, 0.5)) return;
+    }
+    if (parsed.type === 'gate' && SEQUENCE_GATE_IDS.has(parsed.id)) {
+      if (drawFeaturedProp(scene, 'featured-rune-sequence', x, y, 0.88, 0.5)) return;
     }
 
     return legacyRenderToken(x, y, token);
