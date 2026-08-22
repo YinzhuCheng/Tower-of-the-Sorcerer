@@ -20,11 +20,109 @@ const CARD_DROP_ASSET = Object.freeze({
 const DUAL_GATE_IDS = new Set(['tide', 'ember']);
 const SEQUENCE_GATE_IDS = new Set(['mirror', 'tri']);
 
+const WALL_BITS = Object.freeze({
+  north: 1,
+  east: 2,
+  south: 4,
+  west: 8
+});
+
 function countBits(mask) {
   let n = mask & 15;
   let count = 0;
   while (n) { count += n & 1; n >>= 1; }
   return count;
+}
+
+function colorWithAlpha(value, alpha = 1) {
+  if (typeof value === 'number') {
+    const r = (value >> 16) & 255;
+    const g = (value >> 8) & 255;
+    const b = value & 255;
+    return `rgba(${r},${g},${b},${alpha})`;
+  }
+
+  if (typeof value === 'string') {
+    const hex = value.trim().match(/^#([0-9a-f]{6})$/i);
+    if (hex) {
+      const n = Number.parseInt(hex[1], 16);
+      return `rgba(${(n >> 16) & 255},${(n >> 8) & 255},${n & 255},${alpha})`;
+    }
+    const shortHex = value.trim().match(/^#([0-9a-f]{3})$/i);
+    if (shortHex) {
+      const [r, g, b] = shortHex[1].split('').map((digit) => Number.parseInt(`${digit}${digit}`, 16));
+      return `rgba(${r},${g},${b},${alpha})`;
+    }
+    return value;
+  }
+
+  return `rgba(150,125,220,${alpha})`;
+}
+
+function wallExposures(mask) {
+  return {
+    north: (mask & WALL_BITS.north) === 0,
+    east: (mask & WALL_BITS.east) === 0,
+    south: (mask & WALL_BITS.south) === 0,
+    west: (mask & WALL_BITS.west) === 0
+  };
+}
+
+function drawStructuralEdge(scene, side, px, py, floor) {
+  const ctx = scene.ctx;
+  const rim = 7;
+  const outer = colorWithAlpha(floor.theme.wall, 0.68);
+  const glow = colorWithAlpha(floor.theme.glow, 0.82);
+  const inner = 'rgba(7,5,22,.46)';
+
+  ctx.save();
+
+  // A broad shadow is thrown into the walkable side. This creates physical
+  // separation between floor and wall before any decorative art is applied.
+  ctx.strokeStyle = 'rgba(2,1,12,.58)';
+  ctx.lineWidth = 8;
+  ctx.lineCap = 'square';
+  ctx.shadowColor = 'rgba(0,0,0,.58)';
+  ctx.shadowBlur = 7;
+  ctx.shadowOffsetX = side === 'west' ? -3 : side === 'east' ? 3 : 0;
+  ctx.shadowOffsetY = side === 'north' ? -3 : side === 'south' ? 3 : 0;
+  ctx.beginPath();
+  if (side === 'north') { ctx.moveTo(px, py + 0.5); ctx.lineTo(px + TILE_SIZE, py + 0.5); }
+  if (side === 'east') { ctx.moveTo(px + TILE_SIZE - 0.5, py); ctx.lineTo(px + TILE_SIZE - 0.5, py + TILE_SIZE); }
+  if (side === 'south') { ctx.moveTo(px, py + TILE_SIZE - 0.5); ctx.lineTo(px + TILE_SIZE, py + TILE_SIZE - 0.5); }
+  if (side === 'west') { ctx.moveTo(px + 0.5, py); ctx.lineTo(px + 0.5, py + TILE_SIZE); }
+  ctx.stroke();
+
+  ctx.shadowColor = 'transparent';
+  ctx.shadowBlur = 0;
+  ctx.shadowOffsetX = 0;
+  ctx.shadowOffsetY = 0;
+
+  // The bevel band is inside the blocked cell, so adjacent wall cells remain
+  // seamless while the corridor-facing contour reads as a thick raised wall.
+  ctx.fillStyle = outer;
+  if (side === 'north') ctx.fillRect(px, py, TILE_SIZE, rim);
+  if (side === 'east') ctx.fillRect(px + TILE_SIZE - rim, py, rim, TILE_SIZE);
+  if (side === 'south') ctx.fillRect(px, py + TILE_SIZE - rim, TILE_SIZE, rim);
+  if (side === 'west') ctx.fillRect(px, py, rim, TILE_SIZE);
+
+  ctx.fillStyle = inner;
+  if (side === 'north') ctx.fillRect(px, py + rim - 2, TILE_SIZE, 2);
+  if (side === 'east') ctx.fillRect(px + TILE_SIZE - rim, py, 2, TILE_SIZE);
+  if (side === 'south') ctx.fillRect(px, py + TILE_SIZE - rim, TILE_SIZE, 2);
+  if (side === 'west') ctx.fillRect(px + rim - 2, py, 2, TILE_SIZE);
+
+  ctx.strokeStyle = glow;
+  ctx.lineWidth = 1.4;
+  ctx.shadowColor = colorWithAlpha(floor.theme.glow, 0.42);
+  ctx.shadowBlur = 5;
+  ctx.beginPath();
+  if (side === 'north') { ctx.moveTo(px + 1, py + 1); ctx.lineTo(px + TILE_SIZE - 1, py + 1); }
+  if (side === 'east') { ctx.moveTo(px + TILE_SIZE - 1, py + 1); ctx.lineTo(px + TILE_SIZE - 1, py + TILE_SIZE - 1); }
+  if (side === 'south') { ctx.moveTo(px + 1, py + TILE_SIZE - 1); ctx.lineTo(px + TILE_SIZE - 1, py + TILE_SIZE - 1); }
+  if (side === 'west') { ctx.moveTo(px + 1, py + 1); ctx.lineTo(px + 1, py + TILE_SIZE - 1); }
+  ctx.stroke();
+  ctx.restore();
 }
 
 function buildTransparentCell(image, index, cols, rows) {
@@ -125,16 +223,21 @@ function drawFeaturedProp(scene, assetName, x, y, scale, shadowWidth = 0.5, alph
 
 function wallAssetForMask(mask) {
   const count = countBits(mask);
-  if (mask === 10) return { asset: 'wall-body-v4', rotation: 0, scale: 1.24, alpha: 0.9 };
-  if (mask === 5) return { asset: 'wall-body-v4', rotation: Math.PI / 2, scale: 1.24, alpha: 0.9 };
-  if (count === 1) return { asset: 'wall-pillar-v4', rotation: 0, scale: 1.06, alpha: 0.92 };
+
+  // Long runs and fully surrounded wall cells are structure, not decoration.
+  // Their visible wall shape is provided by the continuous masonry + bevel pass.
+  if (mask === 10 || mask === 5 || count === 4) return null;
+
+  if (count === 1 || count === 3 || count === 0) {
+    return { asset: 'wall-pillar-v4', rotation: 0, scale: 0.76, alpha: 0.56 };
+  }
+
   if (count === 2) {
     const rotations = { 3: Math.PI, 6: -Math.PI / 2, 12: 0, 9: Math.PI / 2 };
-    return { asset: 'wall-outer-corner-v4', rotation: rotations[mask] ?? 0, scale: 1.12, alpha: 0.93 };
+    return { asset: 'wall-outer-corner-v4', rotation: rotations[mask] ?? 0, scale: 0.82, alpha: 0.58 };
   }
-  if (count === 3) return { asset: 'wall-inner-corner-v4', rotation: 0, scale: 1.08, alpha: 0.88 };
-  if (count === 4) return { asset: 'wall-body-v4', rotation: 0, scale: 1.02, alpha: 0.48 };
-  return { asset: 'wall-pillar-v4', rotation: 0, scale: 1.02, alpha: 0.9 };
+
+  return null;
 }
 
 export function createCanvasTowerScene(bridge, parent = document.getElementById('game-container')) {
@@ -145,6 +248,7 @@ export function createCanvasTowerScene(bridge, parent = document.getElementById(
 
   scene.canvas.dataset.artPipeline = 'moonlit-v4';
   scene.canvas.dataset.assetRevision = '2026-08-22-v4';
+  scene.canvas.dataset.wallPipeline = 'continuous-structure-v5';
 
   const legacyDrawItem = scene.drawItem.bind(scene);
   scene.drawItem = (index, x, y, scale = 0.8) => {
@@ -180,14 +284,50 @@ export function createCanvasTowerScene(bridge, parent = document.getElementById(
     return drawCell(scene, cell, scene.center(x), scene.center(y), TILE_SIZE * scale, alpha, 0.27);
   };
 
+  // Structural wall pass: every blocked cell contributes to one seamless dark
+  // masonry mass. No per-tile frame or decorative image is needed to make it
+  // read as a wall.
+  scene.drawWallBase = (x, y, floor) => {
+    const px = x * TILE_SIZE;
+    const py = y * TILE_SIZE;
+    const ctx = scene.ctx;
+    ctx.fillStyle = '#211b3c';
+    ctx.fillRect(px - 0.5, py - 0.5, TILE_SIZE + 1, TILE_SIZE + 1);
+    ctx.fillStyle = colorWithAlpha(floor.theme.wall, 0.18);
+    ctx.fillRect(px - 0.5, py - 0.5, TILE_SIZE + 1, TILE_SIZE + 1);
+  };
+
+  // Only corridor-facing edges receive wall thickness, highlight and shadow.
+  // Adjacent wall cells never draw a seam between themselves.
+  scene.drawWallBoundary = (state, x, y, floor) => {
+    const mask = scene.wallMask(state, x, y);
+    const exposed = wallExposures(mask);
+    const px = x * TILE_SIZE;
+    const py = y * TILE_SIZE;
+    if (exposed.north) drawStructuralEdge(scene, 'north', px, py, floor);
+    if (exposed.east) drawStructuralEdge(scene, 'east', px, py, floor);
+    if (exposed.south) drawStructuralEdge(scene, 'south', px, py, floor);
+    if (exposed.west) drawStructuralEdge(scene, 'west', px, py, floor);
+  };
+
   const legacyWallOrnament = scene.drawWallOrnament.bind(scene);
   scene.drawWallOrnament = (state, x, y) => {
     const mask = scene.wallMask(state, x, y);
     const visual = wallAssetForMask(mask);
+    if (!visual) return;
+
     const image = getMapAsset(visual.asset);
     if (!image) return legacyWallOrnament(state, x, y);
-    if ((mask === 10 || mask === 5) && ((x + y) & 1)) return;
-    scene.drawMapImage(image, scene.center(x), scene.center(y), TILE_SIZE * visual.scale, TILE_SIZE * visual.scale, visual.rotation, visual.alpha);
+
+    scene.drawMapImage(
+      image,
+      scene.center(x),
+      scene.center(y),
+      TILE_SIZE * visual.scale,
+      TILE_SIZE * visual.scale,
+      visual.rotation,
+      visual.alpha
+    );
   };
 
   const legacyRenderEnemy = scene.renderEnemy.bind(scene);
