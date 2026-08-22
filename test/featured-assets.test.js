@@ -28,7 +28,7 @@ test('featured v2 atlas reconstructs the verified transparent WebP', async () =>
   const atlas = manifest.atlases.featuredV2;
   assert.equal(atlas.cols, 5);
   assert.equal(atlas.rows, 2);
-  assert.equal(atlas.base64Chunks.length, 8);
+  assert.equal(atlas.base64Chunks.length, 10);
 
   const chunks = await Promise.all(
     atlas.base64Chunks.map(async (relativePath) => (await readFile(join(atlasRoot, relativePath), 'utf8')).trim())
@@ -40,6 +40,8 @@ test('featured v2 atlas reconstructs the verified transparent WebP', async () =>
   assert.equal(data.length, 72134);
   assert.equal(data.subarray(0, 4).toString('ascii'), 'RIFF');
   assert.equal(data.subarray(8, 12).toString('ascii'), 'WEBP');
+  assert.ok(data.includes(Buffer.from('VP8X')), 'extended WebP header must exist');
+  assert.ok(data.includes(Buffer.from('ALPH')), 'featured atlas must retain an alpha channel');
   assert.equal(
     createHash('sha256').update(data).digest('hex'),
     '3e3a3e6ea341ec420e3a67707c85612218c90f19c324db52949684262c245ae6'
@@ -51,11 +53,13 @@ test('featured v2 atlas reconstructs the verified transparent WebP', async () =>
   });
 });
 
-test('canvas entrypoint enables transparent legacy item cleanup and featured overrides', async () => {
+test('canvas entrypoint enables transparent legacy cleanup and featured overrides', async () => {
   const source = await readFile(join(root, 'src/game/canvas-scene.js'), 'utf8');
-  assert.match(source, /buildTransparentItemCell/);
+  assert.match(source, /buildTransparentCell/);
   assert.match(source, /FEATURED_ENEMY_ASSET/);
   assert.match(source, /featured-codex-shrine/);
   assert.match(source, /featured-switch-dual/);
+  assert.match(source, /featured-rune-sequence/);
+  assert.match(source, /drawLegacySprite/);
   assert.match(source, /transparent-v2/);
 });
