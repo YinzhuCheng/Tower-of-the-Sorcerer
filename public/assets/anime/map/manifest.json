@@ -1,5 +1,5 @@
 {
-  "version": 2,
+  "version": 3,
   "theme": "moonlit-star-tower",
   "basePath": "/assets/anime/map/",
   "atlases": {
@@ -27,6 +27,23 @@
       "mime": "image/webp",
       "cols": 2,
       "rows": 2
+    },
+    "featuredV2": {
+      "base64Chunks": [
+        "atlases/featured-v2-01.b64",
+        "atlases/featured-v2-02.b64",
+        "atlases/featured-v2-03.b64",
+        "atlases/featured-v2-04.b64",
+        "atlases/featured-v2-05a1.b64",
+        "atlases/featured-v2-05a2.b64",
+        "atlases/featured-v2-05b.b64",
+        "atlases/featured-v2-06.b64",
+        "atlases/featured-v2-07a.b64",
+        "atlases/featured-v2-08.b64"
+      ],
+      "mime": "image/webp",
+      "cols": 5,
+      "rows": 2
     }
   },
   "assets": {
@@ -53,6 +70,16 @@
     "hero-down": { "atlas": "hero", "index": 0, "role": "hero" },
     "hero-up": { "atlas": "hero", "index": 1, "role": "hero" },
     "hero-left": { "atlas": "hero", "index": 2, "role": "hero" },
-    "hero-right": { "atlas": "hero", "index": 3, "role": "hero" }
+    "hero-right": { "atlas": "hero", "index": 3, "role": "hero" },
+    "featured-cat-scout": { "atlas": "featuredV2", "index": 0, "role": "enemy" },
+    "featured-cat-mage": { "atlas": "featuredV2", "index": 1, "role": "enemy" },
+    "featured-sword-apprentice": { "atlas": "featuredV2", "index": 2, "role": "enemy" },
+    "featured-cat-boss": { "atlas": "featuredV2", "index": 3, "role": "boss" },
+    "featured-shop": { "atlas": "featuredV2", "index": 4, "role": "prop" },
+    "featured-codex-shrine": { "atlas": "featuredV2", "index": 5, "role": "prop" },
+    "featured-treasure": { "atlas": "featuredV2", "index": 6, "role": "prop" },
+    "featured-switch-single": { "atlas": "featuredV2", "index": 7, "role": "puzzle" },
+    "featured-switch-dual": { "atlas": "featuredV2", "index": 8, "role": "puzzle" },
+    "featured-rune-sequence": { "atlas": "featuredV2", "index": 9, "role": "puzzle" }
   }
 }
