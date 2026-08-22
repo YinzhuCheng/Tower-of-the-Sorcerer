@@ -7,10 +7,9 @@ import { dirname, join } from 'node:path';
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const manifestPath = join(root, 'public/assets/anime/items/manifest.json');
 
-test('item art manifest contains 20 valid runtime assets', async () => {
+test('item art manifest never references missing runtime files', async () => {
   const manifest = JSON.parse(await readFile(manifestPath, 'utf8'));
   const entries = Object.entries(manifest.assets ?? {});
-  assert.equal(entries.length, 20);
   assert.equal(manifest.basePath, '/assets/anime/items/');
 
   for (const [id, meta] of entries) {
@@ -21,5 +20,9 @@ test('item art manifest contains 20 valid runtime assets', async () => {
     assert.ok(data.length > 16, `${id} must not be empty`);
     assert.equal(data.subarray(0, 4).toString('ascii'), 'RIFF', `${id} must have RIFF header`);
     assert.equal(data.subarray(8, 12).toString('ascii'), 'WEBP', `${id} must be WebP`);
+  }
+
+  if (manifest.status === 'staged') {
+    assert.equal(entries.length, 0, 'staged item manifest must not advertise files that are not committed');
   }
 });

@@ -34,18 +34,45 @@ function loadImage(url) {
   });
 }
 
-async function decodeAtlas(meta) {
-  let url = null;
-  if (meta.file) {
-    url = resolvePath(meta.file);
-  } else if (meta.base64File) {
-    const payload = await fetchText(resolvePath(meta.base64File));
-    url = `data:${meta.mime ?? 'image/webp'};base64,${payload}`;
-  } else if (Array.isArray(meta.base64Chunks) && meta.base64Chunks.length) {
-    const parts = await Promise.all(meta.base64Chunks.map((path) => fetchText(resolvePath(path))));
-    url = `data:${meta.mime ?? 'image/webp'};base64,${parts.join('')}`;
+function decodeBase64Bytes(payload) {
+  const binary = atob(payload.replace(/\s+/g, ''));
+  const bytes = new Uint8Array(binary.length);
+  for (let i = 0; i < binary.length; i += 1) bytes[i] = binary.charCodeAt(i);
+  return bytes;
+}
+
+function trimRiffWebP(bytes) {
+  if (bytes.length < 12) return bytes;
+  const isRiff = String.fromCharCode(...bytes.subarray(0, 4)) === 'RIFF';
+  const isWebp = String.fromCharCode(...bytes.subarray(8, 12)) === 'WEBP';
+  if (!isRiff || !isWebp) return bytes;
+  const view = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
+  const declaredLength = view.getUint32(4, true) + 8;
+  if (declaredLength >= 12 && declaredLength <= bytes.length) return bytes.slice(0, declaredLength);
+  return bytes;
+}
+
+async function loadBase64Image(payload, mime = 'image/webp') {
+  const bytes = trimRiffWebP(decodeBase64Bytes(payload));
+  const blobUrl = URL.createObjectURL(new Blob([bytes], { type: mime }));
+  try {
+    return await loadImage(blobUrl);
+  } finally {
+    URL.revokeObjectURL(blobUrl);
   }
-  return url ? loadImage(url) : null;
+}
+
+async function decodeAtlas(meta) {
+  if (meta.file) return loadImage(resolvePath(meta.file));
+  if (meta.base64File) {
+    const payload = await fetchText(resolvePath(meta.base64File));
+    return loadBase64Image(payload, meta.mime ?? 'image/webp');
+  }
+  if (Array.isArray(meta.base64Chunks) && meta.base64Chunks.length) {
+    const parts = await Promise.all(meta.base64Chunks.map((path) => fetchText(resolvePath(path))));
+    return loadBase64Image(parts.join(''), meta.mime ?? 'image/webp');
+  }
+  return null;
 }
 
 function cropAtlasCell(image, cols, rows, index) {

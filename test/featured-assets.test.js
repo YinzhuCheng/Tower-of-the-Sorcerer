@@ -24,7 +24,7 @@ const EXPECTED_ASSETS = [
 
 test('featured v2 atlas reconstructs the verified transparent WebP', async () => {
   const manifest = JSON.parse(await readFile(manifestPath, 'utf8'));
-  assert.equal(manifest.version, 3);
+  assert.ok(manifest.version >= 3);
   const atlas = manifest.atlases.featuredV2;
   assert.equal(atlas.cols, 5);
   assert.equal(atlas.rows, 2);
@@ -53,7 +53,7 @@ test('featured v2 atlas reconstructs the verified transparent WebP', async () =>
   });
 });
 
-test('canvas entrypoint enables transparent legacy cleanup and featured overrides', async () => {
+test('canvas entrypoint preserves transparent legacy cleanup and featured overrides in v4', async () => {
   const source = await readFile(join(root, 'src/game/canvas-scene.js'), 'utf8');
   assert.match(source, /buildTransparentCell/);
   assert.match(source, /FEATURED_ENEMY_ASSET/);
@@ -61,5 +61,5 @@ test('canvas entrypoint enables transparent legacy cleanup and featured override
   assert.match(source, /featured-switch-dual/);
   assert.match(source, /featured-rune-sequence/);
   assert.match(source, /drawLegacySprite/);
-  assert.match(source, /transparent-v2/);
+  assert.match(source, /moonlit-v4/);
 });

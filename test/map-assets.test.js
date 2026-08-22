@@ -14,17 +14,25 @@ async function decodeChunks(paths) {
   return Buffer.from(parts.join(''), 'base64');
 }
 
-test('moonlit star map manifest packs 20 environment assets and four hero directions', async () => {
+const CORE_ENVIRONMENT = [
+  'wall-body','wall-edge','wall-outer-corner-alt','wall-inner-corner-alt','floor-main',
+  'gate-sun','gate-moon','gate-star','stairs-legacy','portal-transfer',
+  'wall-horizontal','wall-vertical','wall-outer-corner','wall-inner-corner','wall-t-junction',
+  'wall-end-cap','wall-pillar','stairs-up','stairs-down','floor-alt'
+];
+const HERO_DIRECTIONS = ['hero-down', 'hero-up', 'hero-left', 'hero-right'];
+
+test('moonlit star map manifest preserves the core environment and hero assets while allowing extensions', async () => {
   const manifest = JSON.parse(await readFile(manifestPath, 'utf8'));
-  const entries = Object.entries(manifest.assets);
-  assert.equal(entries.length, 24);
-  assert.equal(entries.filter(([, meta]) => meta.role !== 'hero').length, 20);
-  assert.deepEqual(['hero-down', 'hero-up', 'hero-left', 'hero-right'].map((name) => Boolean(manifest.assets[name])), [true, true, true, true]);
+  assert.ok(Object.keys(manifest.assets).length >= 24, 'manifest may grow but must retain the original core assets');
+  for (const name of [...CORE_ENVIRONMENT, ...HERO_DIRECTIONS]) {
+    assert.ok(manifest.assets[name], `missing core map asset: ${name}`);
+  }
 
   for (const [atlasName, atlas] of Object.entries(manifest.atlases)) {
-    assert.ok(atlas.base64Chunks.length >= 2, `${atlasName} should be split into safe small chunks`);
+    assert.ok(Array.isArray(atlas.base64Chunks) && atlas.base64Chunks.length >= 2, `${atlasName} should be split into safe chunks`);
     const buffer = await decodeChunks(atlas.base64Chunks);
-    assert.equal(buffer.subarray(0, 4).toString('ascii'), 'RIFF');
-    assert.equal(buffer.subarray(8, 12).toString('ascii'), 'WEBP');
+    assert.equal(buffer.subarray(0, 4).toString('ascii'), 'RIFF', `${atlasName} must decode as RIFF`);
+    assert.equal(buffer.subarray(8, 12).toString('ascii'), 'WEBP', `${atlasName} must decode as WEBP`);
   }
 });

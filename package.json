@@ -7,9 +7,9 @@
   "license": "MIT",
   "scripts": {
     "dev": "python3 -m http.server 4173",
-    "build": "node --test test/featured-assets.test.js && node scripts/build.mjs",
+    "build": "node --test && node scripts/build.mjs",
     "test": "node --test",
     "validate": "node scripts/validate-game.mjs",
-    "check": "npm run test && npm run validate && npm run build"
+    "check": "npm run validate && npm run build"
   }
 }

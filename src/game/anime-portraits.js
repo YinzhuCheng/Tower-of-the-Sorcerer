@@ -1,6 +1,7 @@
 import { getAnimeAsset, preloadAnimeAssets } from './anime-assets.js';
+import { getMapAsset, preloadMapAssets } from './map-assets.js';
 
-await preloadAnimeAssets();
+await Promise.all([preloadAnimeAssets(), preloadMapAssets()]);
 
 const ARCHETYPES = {
   hero: 0, merchant: 1, cat_guard: 2, fox_shrine: 3,
@@ -23,18 +24,23 @@ const PORTRAITS = {
 };
 
 const urlCache = new Map();
+const cardUiAssets = Object.freeze({ sun: 'card-sun-ui-v4', moon: 'card-moon-ui-v4', star: 'card-star-ui-v4' });
 
-function archetype(id) {
-  return PORTRAITS[id]?.[1] ?? 'hero';
-}
+function archetype(id) { return PORTRAITS[id]?.[1] ?? 'hero'; }
 
-export function portraitIndex(id) {
-  return ARCHETYPES[archetype(id)] ?? 0;
+export function portraitIndex(id) { return ARCHETYPES[archetype(id)] ?? 0; }
+
+function canvasUrl(canvas) {
+  try { return canvas?.toDataURL?.('image/webp', 0.94) ?? null; } catch { return null; }
 }
 
 export function portraitUrl(id) {
   const key = archetype(id);
   if (urlCache.has(key)) return urlCache.get(key);
+  if (key === 'hero') {
+    const hero = canvasUrl(getMapAsset('hero-portrait-v4'));
+    if (hero) { urlCache.set(key, hero); return hero; }
+  }
   const index = ARCHETYPES[key] ?? 0;
   const col = index % 4;
   const row = Math.floor(index / 4);
@@ -45,17 +51,29 @@ export function portraitUrl(id) {
   return url;
 }
 
-export function portraitStyle() {
-  return 'object-fit:cover;object-position:center top;';
-}
+export function portraitStyle() { return 'object-fit:cover;object-position:center top;'; }
 
 export function hydratePortraits(root = document) {
   root.querySelectorAll('[data-portrait]').forEach((image) => {
     const id = image.dataset.portrait;
     if (id) image.src = portraitUrl(id);
   });
+
+  for (const [key, assetName] of Object.entries(cardUiAssets)) {
+    const token = root.querySelector(`.card-token.${key}`);
+    const asset = getMapAsset(assetName);
+    if (!token || !asset || token.querySelector('.card-ui-art')) continue;
+    const src = canvasUrl(asset);
+    if (!src) continue;
+    const art = document.createElement('img');
+    art.className = 'card-ui-art';
+    art.alt = `${key} card`;
+    art.src = src;
+    Object.assign(art.style, { width: '28px', height: '34px', objectFit: 'contain', flex: '0 0 auto', filter: 'drop-shadow(0 2px 5px rgba(0,0,0,.35))' });
+    const oldLabel = token.querySelector('span');
+    if (oldLabel) oldLabel.style.display = 'none';
+    token.prepend(art);
+  }
 }
 
-export function portraitName(id) {
-  return PORTRAITS[id]?.[0] ?? id;
-}
+export function portraitName(id) { return PORTRAITS[id]?.[0] ?? id; }
