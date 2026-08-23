@@ -1,5 +1,6 @@
 import { GRID_SIZE, ITEMS, TILE_SIZE } from './data.js';
 import { parseToken } from './engine.js';
+import { portraitIndex } from './anime-portraits.js';
 import { getMapAsset } from './map-assets.js';
 
 const THEME_KEY = 'lost-magic-tower:theme:v8';
@@ -49,6 +50,24 @@ function installDialogueObserver() {
   update();
 }
 
+function installV81Styles() {
+  if (document.querySelector('style[data-visual-theme-v81]')) return;
+  const style = document.createElement('style');
+  style.dataset.visualThemeV81 = '1';
+  style.textContent = `
+    #game-container{
+      background:
+        radial-gradient(circle at 9% 14%,rgba(210,235,255,.72) 0 1px,transparent 1.4px) 0 0/109px 109px,
+        radial-gradient(circle at 72% 21%,rgba(112,188,255,.66) 0 1px,transparent 1.5px) 0 0/151px 151px,
+        radial-gradient(circle at 31% 76%,rgba(255,255,255,.5) 0 1px,transparent 1.35px) 0 0/83px 83px,
+        radial-gradient(ellipse at 24% 18%,rgba(42,111,169,.32),transparent 38%),
+        radial-gradient(ellipse at 83% 72%,rgba(65,78,157,.2),transparent 34%),
+        linear-gradient(145deg,#0b2941 0%,#081d31 48%,#071522 100%)!important;
+    }
+  `;
+  document.head.append(style);
+}
+
 function setTheme(themeId) {
   const theme = THEMES.find((entry) => entry.id === themeId) ?? THEMES[0];
   document.body.dataset.theme = theme.id;
@@ -76,6 +95,7 @@ function bindThemeButton() {
 export function installV8VisualLayer() {
   if (document.body.dataset.visualThemeV8 === '1') return;
   document.body.dataset.visualThemeV8 = '1';
+  installV81Styles();
   bindThemeButton();
   installDialogueObserver();
 }
@@ -100,51 +120,70 @@ function filteredAsset(scene, name, filter) {
   return canvas;
 }
 
-function drawFloorV8(scene) {
+function drawFloorV81(scene) {
   const ctx = scene.ctx;
   const size = GRID_SIZE * TILE_SIZE;
   const base = ctx.createLinearGradient(0, 0, size, size);
-  base.addColorStop(0, '#173548');
-  base.addColorStop(0.48, '#102b3e');
-  base.addColorStop(1, '#081723');
+  base.addColorStop(0, '#79b9d0');
+  base.addColorStop(0.48, '#67a9c3');
+  base.addColorStop(1, '#4f8da9');
   ctx.fillStyle = base;
   ctx.fillRect(0, 0, size, size);
 
-  const floor = filteredAsset(scene, 'floor-main-v4', 'grayscale(.35) saturate(1.35) hue-rotate(150deg) brightness(1.22) contrast(.95)')
-    ?? filteredAsset(scene, 'floor-main', 'grayscale(.35) saturate(1.3) hue-rotate(150deg) brightness(1.18)');
-  if (floor) {
-    const pattern = ctx.createPattern(floor, 'repeat');
-    if (pattern) {
-      ctx.save();
-      ctx.globalAlpha = 0.8;
-      ctx.fillStyle = pattern;
-      ctx.fillRect(0, 0, size, size);
-      ctx.restore();
+  // V8.1 deliberately avoids reusing any decorative/altar asset as a floor.
+  // A restrained stone-slab texture keeps the corridor light and readable.
+  ctx.save();
+  for (let y = 0; y < GRID_SIZE; y += 1) {
+    for (let x = 0; x < GRID_SIZE; x += 1) {
+      const px = x * TILE_SIZE;
+      const py = y * TILE_SIZE;
+      ctx.fillStyle = (x + y) % 2 === 0 ? 'rgba(225,246,252,.035)' : 'rgba(18,72,98,.028)';
+      ctx.fillRect(px, py, TILE_SIZE, TILE_SIZE);
+
+      ctx.strokeStyle = 'rgba(219,242,250,.12)';
+      ctx.lineWidth = 0.7;
+      ctx.strokeRect(px + 0.5, py + 0.5, TILE_SIZE - 1, TILE_SIZE - 1);
+
+      const seed = (x * 17 + y * 31) % 11;
+      ctx.strokeStyle = 'rgba(27,89,115,.10)';
+      ctx.lineWidth = 0.8;
+      ctx.beginPath();
+      if (seed % 2 === 0) {
+        ctx.moveTo(px + TILE_SIZE * 0.18, py + TILE_SIZE * (0.32 + (seed % 3) * 0.12));
+        ctx.lineTo(px + TILE_SIZE * 0.46, py + TILE_SIZE * (0.38 + (seed % 2) * 0.09));
+        ctx.lineTo(px + TILE_SIZE * 0.67, py + TILE_SIZE * (0.29 + (seed % 4) * 0.07));
+      } else {
+        ctx.moveTo(px + TILE_SIZE * 0.62, py + TILE_SIZE * 0.18);
+        ctx.lineTo(px + TILE_SIZE * 0.57, py + TILE_SIZE * 0.42);
+        ctx.lineTo(px + TILE_SIZE * 0.73, py + TILE_SIZE * 0.61);
+      }
+      ctx.stroke();
     }
   }
+  ctx.restore();
 
-  const light = ctx.createRadialGradient(size * 0.48, size * 0.45, 10, size * 0.48, size * 0.48, size * 0.7);
-  light.addColorStop(0, 'rgba(111,205,240,.18)');
-  light.addColorStop(0.55, 'rgba(65,145,193,.08)');
-  light.addColorStop(1, 'rgba(2,9,18,.28)');
+  const light = ctx.createRadialGradient(size * 0.48, size * 0.43, 12, size * 0.48, size * 0.48, size * 0.72);
+  light.addColorStop(0, 'rgba(226,249,255,.18)');
+  light.addColorStop(0.58, 'rgba(146,213,235,.06)');
+  light.addColorStop(1, 'rgba(19,60,82,.18)');
   ctx.fillStyle = light;
   ctx.fillRect(0, 0, size, size);
 }
 
-function drawWallBaseV8(scene, x, y) {
+function drawWallBaseV81(scene, x, y) {
   const ctx = scene.ctx;
   const px = x * TILE_SIZE;
   const py = y * TILE_SIZE;
-  ctx.fillStyle = '#242a31';
+  ctx.fillStyle = '#272c32';
   ctx.fillRect(px - 0.5, py - 0.5, TILE_SIZE + 1, TILE_SIZE + 1);
 
-  const wall = filteredAsset(scene, 'wall-surface-v6', 'grayscale(.88) saturate(.32) brightness(.68) contrast(1.16)');
+  const wall = filteredAsset(scene, 'wall-surface-v6', 'grayscale(.92) saturate(.18) brightness(.64) contrast(1.18)');
   if (!wall) return;
-  scene.wallV8Pattern ??= ctx.createPattern(wall, 'repeat');
-  if (!scene.wallV8Pattern) return;
+  scene.wallV81Pattern ??= ctx.createPattern(wall, 'repeat');
+  if (!scene.wallV81Pattern) return;
   ctx.save();
-  ctx.globalAlpha = 0.92;
-  ctx.fillStyle = scene.wallV8Pattern;
+  ctx.globalAlpha = 0.9;
+  ctx.fillStyle = scene.wallV81Pattern;
   ctx.fillRect(px - 0.5, py - 0.5, TILE_SIZE + 1, TILE_SIZE + 1);
   ctx.restore();
 }
@@ -163,10 +202,17 @@ function perimeterExposures(x, y) {
   return { north: y === 0, east: x === max, south: y === max, west: x === 0 };
 }
 
-function drawWallEdgeV8(scene, side, px, py, perimeter = false) {
-  const image = filteredAsset(scene, 'wall-edge-horizontal-v6', 'grayscale(.82) saturate(.35) brightness(.76) contrast(1.18)');
+function drawBand(ctx, side, px, py, thickness, color) {
+  ctx.fillStyle = color;
+  if (side === 'north') ctx.fillRect(px, py, TILE_SIZE, thickness);
+  if (side === 'east') ctx.fillRect(px + TILE_SIZE - thickness, py, thickness, TILE_SIZE);
+  if (side === 'south') ctx.fillRect(px, py + TILE_SIZE - thickness, TILE_SIZE, thickness);
+  if (side === 'west') ctx.fillRect(px, py, thickness, TILE_SIZE);
+}
+
+function drawWallEdgeV81(scene, side, px, py, perimeter = false) {
   const ctx = scene.ctx;
-  const edgeInset = perimeter ? TILE_SIZE * 0.13 : TILE_SIZE * 0.09;
+  const edgeInset = perimeter ? TILE_SIZE * 0.11 : TILE_SIZE * 0.085;
   let cx = px + TILE_SIZE / 2;
   let cy = py + TILE_SIZE / 2;
   let rotation = 0;
@@ -175,44 +221,118 @@ function drawWallEdgeV8(scene, side, px, py, perimeter = false) {
   if (side === 'east') { cx = px + TILE_SIZE - edgeInset; rotation = Math.PI / 2; }
   if (side === 'west') { cx = px + edgeInset; rotation = -Math.PI / 2; }
 
-  ctx.save();
-  ctx.strokeStyle = 'rgba(1,6,10,.78)';
-  ctx.lineWidth = 5;
-  ctx.shadowColor = 'rgba(0,0,0,.5)';
-  ctx.shadowBlur = 5;
-  ctx.beginPath();
-  if (side === 'north' || side === 'south') { ctx.moveTo(px + 2, cy); ctx.lineTo(px + TILE_SIZE - 2, cy); }
-  else { ctx.moveTo(cx, py + 2); ctx.lineTo(cx, py + TILE_SIZE - 2); }
-  ctx.stroke();
-  ctx.restore();
+  if (perimeter) {
+    // The tower exterior gets its own navy-blue architectural trim.
+    drawBand(ctx, side, px, py, TILE_SIZE * 0.16, 'rgba(8,39,68,.96)');
+    const blueEdge = filteredAsset(scene, 'wall-edge-horizontal-v6', 'grayscale(.45) sepia(.12) saturate(2.15) hue-rotate(157deg) brightness(.72) contrast(1.22)');
+    if (blueEdge) scene.drawMapImage(blueEdge, cx, cy, TILE_SIZE * 1.03, TILE_SIZE * 0.29, rotation, 0.88);
 
-  if (image) scene.drawMapImage(image, cx, cy, TILE_SIZE * 1.04, TILE_SIZE * 0.3, rotation, 0.82);
+    ctx.save();
+    ctx.strokeStyle = 'rgba(89,157,207,.58)';
+    ctx.lineWidth = 1.2;
+    ctx.shadowColor = 'rgba(49,124,185,.35)';
+    ctx.shadowBlur = 4;
+    ctx.beginPath();
+    if (side === 'north' || side === 'south') { ctx.moveTo(px + 3, cy); ctx.lineTo(px + TILE_SIZE - 3, cy); }
+    else { ctx.moveTo(cx, py + 3); ctx.lineTo(cx, py + TILE_SIZE - 3); }
+    ctx.stroke();
+    ctx.restore();
+    return;
+  }
+
+  const image = filteredAsset(scene, 'wall-edge-horizontal-v6', 'grayscale(.88) saturate(.22) brightness(.69) contrast(1.16)');
+  if (image) scene.drawMapImage(image, cx, cy, TILE_SIZE * 1.03, TILE_SIZE * 0.27, rotation, 0.72);
 }
 
 function cornerPlacement(x, y) {
   const max = GRID_SIZE - 1;
-  if (x === 0 && y === 0) return { rotation: 0, dx: 0.08, dy: 0.08 };
-  if (x === max && y === 0) return { rotation: Math.PI / 2, dx: -0.08, dy: 0.08 };
-  if (x === max && y === max) return { rotation: Math.PI, dx: -0.08, dy: -0.08 };
-  if (x === 0 && y === max) return { rotation: -Math.PI / 2, dx: 0.08, dy: -0.08 };
-  return null;
+  if (x === 0 && y === 0) return true;
+  if (x === max && y === 0) return true;
+  if (x === max && y === max) return true;
+  if (x === 0 && y === max) return true;
+  return false;
 }
 
-function drawCornerV8(scene, x, y) {
-  const placement = cornerPlacement(x, y);
-  if (!placement) return false;
-  const image = filteredAsset(scene, 'wall-outer-corner-v6', 'grayscale(.78) saturate(.42) brightness(.78) contrast(1.08)');
-  if (!image) return false;
-  scene.drawMapImage(
-    image,
-    scene.center(x) + placement.dx * TILE_SIZE,
-    scene.center(y) + placement.dy * TILE_SIZE,
-    TILE_SIZE * 1.08,
-    TILE_SIZE * 1.08,
-    placement.rotation,
-    0.92
-  );
+function drawCornerV81(scene, x, y) {
+  if (!cornerPlacement(x, y)) return false;
+  const ctx = scene.ctx;
+  const cx = scene.center(x);
+  const cy = scene.center(y);
+  const size = TILE_SIZE * 0.7;
+
+  // Symmetric cap: no source-art orientation can be wrong at a map corner.
+  ctx.save();
+  ctx.translate(cx, cy);
+  ctx.fillStyle = 'rgba(7,34,60,.98)';
+  ctx.strokeStyle = 'rgba(90,157,207,.78)';
+  ctx.lineWidth = 1.5;
+  ctx.shadowColor = 'rgba(35,112,174,.35)';
+  ctx.shadowBlur = 5;
+  roundRectPath(ctx, -size / 2, -size / 2, size, size, 7);
+  ctx.fill();
+  ctx.stroke();
+
+  ctx.rotate(Math.PI / 4);
+  ctx.strokeStyle = 'rgba(170,214,240,.52)';
+  ctx.lineWidth = 1;
+  ctx.strokeRect(-size * 0.22, -size * 0.22, size * 0.44, size * 0.44);
+  ctx.fillStyle = 'rgba(91,178,231,.78)';
+  ctx.beginPath();
+  ctx.arc(0, 0, 3.1, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.restore();
   return true;
+}
+
+function buildSafeLegacyCell(scene, id) {
+  scene.visualThemeV81LegacyCells ??= new Map();
+  if (scene.visualThemeV81LegacyCells.has(id)) return scene.visualThemeV81LegacyCells.get(id);
+  const sheet = scene.images?.get(scene.chibiSheet);
+  if (!sheet) return null;
+  const index = portraitIndex(id);
+  const cols = 4;
+  const rows = 3;
+  const sw = Math.floor(sheet.naturalWidth / cols);
+  const sh = Math.floor(sheet.naturalHeight / rows);
+  if (!sw || !sh) return null;
+
+  const canvas = document.createElement('canvas');
+  canvas.width = sw;
+  canvas.height = sh;
+  const ctx = canvas.getContext('2d', { willReadFrequently: true });
+  ctx.drawImage(sheet, (index % cols) * sw, Math.floor(index / cols) * sh, sw, sh, 0, 0, sw, sh);
+  const frame = ctx.getImageData(0, 0, sw, sh);
+  const pixels = frame.data;
+  const count = sw * sh;
+  const visited = new Uint8Array(count);
+  const queue = new Int32Array(count);
+  let head = 0;
+  let tail = 0;
+  const isBackdrop = (p) => {
+    const i = p * 4;
+    if (pixels[i + 3] <= 6) return true;
+    return pixels[i] <= 22 && pixels[i + 1] <= 22 && pixels[i + 2] <= 30;
+  };
+  const enqueue = (p) => {
+    if (p < 0 || p >= count || visited[p] || !isBackdrop(p)) return;
+    visited[p] = 1;
+    queue[tail++] = p;
+  };
+  for (let xx = 0; xx < sw; xx += 1) { enqueue(xx); enqueue((sh - 1) * sw + xx); }
+  for (let yy = 0; yy < sh; yy += 1) { enqueue(yy * sw); enqueue(yy * sw + sw - 1); }
+  while (head < tail) {
+    const p = queue[head++];
+    const xx = p % sw;
+    const yy = Math.floor(p / sw);
+    if (xx > 0) enqueue(p - 1);
+    if (xx + 1 < sw) enqueue(p + 1);
+    if (yy > 0) enqueue(p - sw);
+    if (yy + 1 < sh) enqueue(p + sw);
+  }
+  for (let p = 0; p < count; p += 1) if (visited[p]) pixels[p * 4 + 3] = 0;
+  ctx.putImageData(frame, 0, 0);
+  scene.visualThemeV81LegacyCells.set(id, canvas);
+  return canvas;
 }
 
 function drawCardDropV8(scene, x, y, kind) {
@@ -264,20 +384,35 @@ export function applySceneThemeV8(scene) {
   if (!scene?.ctx || scene.visualThemeV8Applied) return scene;
   scene.visualThemeV8Applied = true;
   const previousRenderToken = scene.renderToken.bind(scene);
+  const previousLegacySprite = scene.drawLegacySprite.bind(scene);
 
-  scene.drawFloorLayer = () => drawFloorV8(scene);
-  scene.drawWallBase = (x, y) => drawWallBaseV8(scene, x, y);
+  scene.drawFloorLayer = () => drawFloorV81(scene);
+  scene.drawWallBase = (x, y) => drawWallBaseV81(scene, x, y);
   scene.drawWallBoundary = (state, x, y) => {
     const exposed = wallExposures(scene, state, x, y);
     const perimeter = perimeterExposures(x, y);
     const px = x * TILE_SIZE;
     const py = y * TILE_SIZE;
-    if (exposed.north || perimeter.north) drawWallEdgeV8(scene, 'north', px, py, perimeter.north);
-    if (exposed.east || perimeter.east) drawWallEdgeV8(scene, 'east', px, py, perimeter.east);
-    if (exposed.south || perimeter.south) drawWallEdgeV8(scene, 'south', px, py, perimeter.south);
-    if (exposed.west || perimeter.west) drawWallEdgeV8(scene, 'west', px, py, perimeter.west);
+    if (exposed.north || perimeter.north) drawWallEdgeV81(scene, 'north', px, py, perimeter.north);
+    if (exposed.east || perimeter.east) drawWallEdgeV81(scene, 'east', px, py, perimeter.east);
+    if (exposed.south || perimeter.south) drawWallEdgeV81(scene, 'south', px, py, perimeter.south);
+    if (exposed.west || perimeter.west) drawWallEdgeV81(scene, 'west', px, py, perimeter.west);
   };
-  scene.drawWallOrnament = (state, x, y) => { drawCornerV8(scene, x, y); };
+  scene.drawWallOrnament = (state, x, y) => { drawCornerV81(scene, x, y); };
+
+  // The older black-background cleanup was intentionally permissive and could
+  // erase dark skirts/boots. V8.1 only removes near-black pixels connected to
+  // the sprite-sheet border, preserving the complete character silhouette.
+  scene.drawLegacySprite = (id, cx, cy, size, alpha = 1) => {
+    const cell = buildSafeLegacyCell(scene, id);
+    if (!cell) return previousLegacySprite(id, cx, cy, size, alpha);
+    scene.ctx.save();
+    scene.ctx.globalAlpha = alpha;
+    scene.ctx.drawImage(cell, cx - size / 2, cy - size / 2, size, size);
+    scene.ctx.restore();
+    return true;
+  };
+
   scene.renderToken = (x, y, token) => {
     const parsed = parseToken(token);
     if (parsed.type === 'item') {
@@ -287,8 +422,11 @@ export function applySceneThemeV8(scene) {
     previousRenderToken(x, y, token);
   };
 
-  scene.canvas.dataset.visualTheme = 'v8-graywall-bluefloor';
+  scene.canvas.dataset.visualTheme = 'v8.1-graywall-lightbluefloor';
   scene.canvas.dataset.cardPipeline = 'programmatic-card-v8';
+  scene.canvas.dataset.outerWallTrim = 'navy-perimeter-v8.1';
+  scene.canvas.dataset.cornerPipeline = 'symmetric-caps-v8.1';
+  scene.canvas.dataset.legacySpriteCleanup = 'strict-border-only-v8.1';
   scene.canvas.dataset.uiThemes = THEMES.map((theme) => theme.id).join(',');
   return scene;
 }
