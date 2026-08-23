@@ -1,9 +1,10 @@
 (() => {
   const nativeFetch = window.fetch.bind(window);
   const target = '/assets/anime/map/atlases/v8/generated-v8-01.b64';
-  const revision = 'v83';
+  const revision = 'v83b';
   const chunks = [
-    'generated-v8-01.b64',
+    'generated-v8-01a.b64',
+    'generated-v8-01b.b64',
     'generated-v8-02a.b64',
     'generated-v8-02b.b64',
     'generated-v8-03.b64',
