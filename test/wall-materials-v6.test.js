@@ -48,19 +48,39 @@ test('V6 wall material atlas reconstructs the verified transparent WebP', async 
   });
 });
 
-test('V6 material layer preserves V5 geometry and uses all six generated wall roles', async () => {
+test('V7 wall cleanup preserves V5 geometry and narrows the wall visual grammar', async () => {
   const entry = await readFile(join(root, 'src/game/canvas-scene.js'), 'utf8');
   const material = await readFile(join(root, 'src/game/wall-material-v6.js'), 'utf8');
+
   assert.match(entry, /continuous-structure-v5/);
   assert.match(entry, /applyWallMaterialV6/);
-  assert.match(material, /material-overlay-v6/);
+
+  // Ordinary maze walls use a continuous surface plus one single-cell edge
+  // image. Vertical edges are rotations of that same image rather than a
+  // second visual language.
   assert.match(material, /wall-surface-v6/);
   assert.match(material, /wall-edge-horizontal-v6/);
-  assert.match(material, /wall-edge-vertical-v6/);
-  assert.match(material, /wall-outer-corner-v6/);
-  assert.match(material, /wall-inner-corner-v6/);
-  assert.match(material, /wall-end-pillar-v6/);
+  assert.match(material, /rotation = Math\.PI \/ 2/);
+  assert.match(material, /rotation = -Math\.PI \/ 2/);
   assert.match(material, /createPattern\(surface, 'repeat'\)/);
+
+  // Large corner architecture is limited to the four map corners. Internal
+  // V6 inner-corner art is deliberately not used by the V7 renderer.
+  assert.match(material, /GRID_SIZE - 1/);
+  assert.match(material, /wall-outer-corner-v6/);
+  assert.doesNotMatch(material, /getMapAsset\('wall-inner-corner-v6'\)/);
+  assert.doesNotMatch(material, /getMapAsset\('wall-edge-vertical-v6'\)/);
+
+  // Pillars now communicate magic barriers, which are explicit translucent
+  // blocking fields for all three card types.
+  assert.match(material, /wall-end-pillar-v6/);
+  assert.match(material, /programmatic-anchor-field-v7/);
+  assert.match(material, /sun: \{ rgb:/);
+  assert.match(material, /moon: \{ rgb:/);
+  assert.match(material, /star: \{ rgb:/);
+  assert.match(material, /fillRect\(-half, -thickness \/ 2, length, thickness\)/);
+
+  // V7 remains presentation-only and must not mutate logical coordinates.
   assert.doesNotMatch(material, /state\.x\s*[+\-]=/);
   assert.doesNotMatch(material, /state\.y\s*[+\-]=/);
 });
