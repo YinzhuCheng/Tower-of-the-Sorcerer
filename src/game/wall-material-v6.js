@@ -1,4 +1,5 @@
-import { TILE_SIZE } from './data.js';
+import { GRID_SIZE, ITEMS, TILE_SIZE } from './data.js';
+import { parseToken } from './engine.js';
 import { getMapAsset } from './map-assets.js';
 
 const WALL_BITS = Object.freeze({
@@ -8,15 +9,17 @@ const WALL_BITS = Object.freeze({
   west: 8
 });
 
-function countBits(mask) {
-  let value = mask & 15;
-  let count = 0;
-  while (value) {
-    count += value & 1;
-    value >>= 1;
-  }
-  return count;
-}
+const CARD_DROP_ASSET = Object.freeze({
+  sun: 'card-sun-drop-v4',
+  moon: 'card-moon-drop-v4',
+  star: 'card-star-drop-v4'
+});
+
+const BARRIER_STYLE = Object.freeze({
+  sun: { rgb: '244,205,101', symbol: '☀' },
+  moon: { rgb: '112,200,255', symbol: '☾' },
+  star: { rgb: '239,130,191', symbol: '✦' }
+});
 
 function wallExposures(mask) {
   return {
@@ -27,33 +30,10 @@ function wallExposures(mask) {
   };
 }
 
-function wallNodeVisual(mask) {
-  const count = countBits(mask);
-
-  // Long runs remain continuous structure; generated art only decorates nodes.
-  if (mask === 10 || mask === 5 || count === 4) return null;
-
-  if (count === 0 || count === 1) {
-    return { asset: 'wall-end-pillar-v6', rotation: 0, scale: 0.9, alpha: 0.82 };
-  }
-
-  if (count === 2) {
-    const rotations = { 3: Math.PI, 6: -Math.PI / 2, 12: 0, 9: Math.PI / 2 };
-    return { asset: 'wall-outer-corner-v6', rotation: rotations[mask] ?? 0, scale: 1.03, alpha: 0.78 };
-  }
-
-  if (count === 3) {
-    const rotations = { 14: 0, 11: Math.PI, 7: Math.PI / 2, 13: -Math.PI / 2 };
-    return { asset: 'wall-inner-corner-v6', rotation: rotations[mask] ?? 0, scale: 0.98, alpha: 0.67 };
-  }
-
-  return null;
-}
-
 function drawMaterialEdge(scene, side, px, py) {
-  const horizontal = side === 'north' || side === 'south';
-  const asset = horizontal ? 'wall-edge-horizontal-v6' : 'wall-edge-vertical-v6';
-  const image = getMapAsset(asset);
+  // V7 intentionally uses one single-cell edge asset. Vertical runs are just
+  // the same art rotated 90 degrees, which keeps scale and texture consistent.
+  const image = getMapAsset('wall-edge-horizontal-v6');
   if (!image) return;
 
   const inset = TILE_SIZE * 0.09;
@@ -70,17 +50,14 @@ function drawMaterialEdge(scene, side, px, py) {
   }
   if (side === 'east') {
     cx = px + TILE_SIZE - inset;
-    width = TILE_SIZE * 0.34;
-    height = TILE_SIZE * 1.04;
+    rotation = Math.PI / 2;
   }
   if (side === 'west') {
     cx = px + inset;
-    width = TILE_SIZE * 0.34;
-    height = TILE_SIZE * 1.04;
-    rotation = Math.PI;
+    rotation = -Math.PI / 2;
   }
 
-  scene.drawMapImage(image, cx, cy, width, height, rotation, 0.36);
+  scene.drawMapImage(image, cx, cy, width, height, rotation, 0.5);
 }
 
 function drawWallSurface(scene, x, y) {
@@ -101,13 +78,112 @@ function drawWallSurface(scene, x, y) {
   ctx.restore();
 }
 
+function cornerTransform(x, y) {
+  const max = GRID_SIZE - 1;
+  if (x === 0 && y === 0) return { flipX: false, flipY: false };
+  if (x === max && y === 0) return { flipX: true, flipY: false };
+  if (x === 0 && y === max) return { flipX: false, flipY: true };
+  if (x === max && y === max) return { flipX: true, flipY: true };
+  return null;
+}
+
+function drawOuterCorner(scene, x, y) {
+  const transform = cornerTransform(x, y);
+  if (!transform) return false;
+  const image = getMapAsset('wall-outer-corner-v6');
+  if (!image) return false;
+
+  const ctx = scene.ctx;
+  ctx.save();
+  ctx.globalAlpha = 0.86;
+  ctx.translate(scene.center(x), scene.center(y));
+  ctx.scale(transform.flipX ? -1 : 1, transform.flipY ? -1 : 1);
+  const size = TILE_SIZE * 1.12;
+  ctx.drawImage(image, -size / 2, -size / 2, size, size);
+  ctx.restore();
+  return true;
+}
+
+function barrierOrientation(scene, state, x, y) {
+  const leftRight = scene.isWall(state, x - 1, y) || scene.isWall(state, x + 1, y);
+  const upDown = scene.isWall(state, x, y - 1) || scene.isWall(state, x, y + 1);
+  if (leftRight && !upDown) return 'horizontal';
+  if (upDown && !leftRight) return 'vertical';
+  return leftRight ? 'horizontal' : 'vertical';
+}
+
+function drawBarrierPillar(scene, cx, cy, size) {
+  const pillar = getMapAsset('wall-end-pillar-v6') ?? getMapAsset('wall-pillar-v4');
+  if (!pillar) return false;
+  return scene.drawMapImage(pillar, cx, cy, size, size, 0, 0.86);
+}
+
+function drawMagicBarrier(scene, state, x, y, kind) {
+  const style = BARRIER_STYLE[kind];
+  if (!style) return false;
+
+  const ctx = scene.ctx;
+  const cx = scene.center(x);
+  const cy = scene.center(y);
+  const orientation = barrierOrientation(scene, state, x, y);
+  const horizontal = orientation === 'horizontal';
+  const length = TILE_SIZE * 0.92;
+  const thickness = TILE_SIZE * 0.58;
+  const pillarSize = TILE_SIZE * 0.34;
+  const half = length / 2;
+  const t = (scene.idleClock || performance.now()) / 850;
+  const pulse = 0.5 + Math.sin(t + x * 0.7 + y * 0.9) * 0.5;
+
+  ctx.save();
+  ctx.translate(cx, cy);
+  if (!horizontal) ctx.rotate(Math.PI / 2);
+
+  const gradient = ctx.createLinearGradient(-half, 0, half, 0);
+  gradient.addColorStop(0, `rgba(${style.rgb},0.08)`);
+  gradient.addColorStop(0.18, `rgba(${style.rgb},0.2)`);
+  gradient.addColorStop(0.5, `rgba(${style.rgb},${0.2 + pulse * 0.06})`);
+  gradient.addColorStop(0.82, `rgba(${style.rgb},0.2)`);
+  gradient.addColorStop(1, `rgba(${style.rgb},0.08)`);
+  ctx.fillStyle = gradient;
+  ctx.shadowColor = `rgba(${style.rgb},0.7)`;
+  ctx.shadowBlur = 12;
+  ctx.fillRect(-half, -thickness / 2, length, thickness);
+
+  ctx.shadowBlur = 4;
+  ctx.strokeStyle = `rgba(${style.rgb},${0.55 + pulse * 0.18})`;
+  ctx.lineWidth = 1.2;
+  for (const offset of [-0.24, 0, 0.24]) {
+    ctx.beginPath();
+    const yy = thickness * offset;
+    ctx.moveTo(-half + pillarSize * 0.42, yy);
+    ctx.quadraticCurveTo(0, yy + Math.sin(t * 1.7 + offset * 8) * 3, half - pillarSize * 0.42, yy);
+    ctx.stroke();
+  }
+
+  ctx.fillStyle = `rgba(${style.rgb},${0.58 + pulse * 0.18})`;
+  ctx.font = `700 ${Math.round(TILE_SIZE * 0.28)}px "Noto Serif SC", serif`;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(style.symbol, 0, 0);
+  ctx.restore();
+
+  if (horizontal) {
+    drawBarrierPillar(scene, cx - half, cy, pillarSize);
+    drawBarrierPillar(scene, cx + half, cy, pillarSize);
+  } else {
+    drawBarrierPillar(scene, cx, cy - half, pillarSize);
+    drawBarrierPillar(scene, cx, cy + half, pillarSize);
+  }
+  return true;
+}
+
 export function applyWallMaterialV6(scene) {
   if (!scene || scene.wallMaterialV6Applied) return scene;
   scene.wallMaterialV6Applied = true;
 
   const structuralBase = scene.drawWallBase.bind(scene);
   const structuralBoundary = scene.drawWallBoundary.bind(scene);
-  const structuralOrnament = scene.drawWallOrnament.bind(scene);
+  const structuralRenderToken = scene.renderToken.bind(scene);
 
   scene.drawWallBase = (x, y, floor) => {
     structuralBase(x, y, floor);
@@ -126,24 +202,38 @@ export function applyWallMaterialV6(scene) {
     if (exposed.west) drawMaterialEdge(scene, 'west', px, py);
   };
 
+  // V7 removes all maze-interior corner/pillar decoration. The large corner
+  // architecture is reserved exclusively for the tower's four outer corners.
   scene.drawWallOrnament = (state, x, y) => {
-    const mask = scene.wallMask(state, x, y);
-    const visual = wallNodeVisual(mask);
-    if (!visual) return;
-    const image = getMapAsset(visual.asset);
-    if (!image) return structuralOrnament(state, x, y);
-    scene.drawMapImage(
-      image,
-      scene.center(x),
-      scene.center(y),
-      TILE_SIZE * visual.scale,
-      TILE_SIZE * visual.scale,
-      visual.rotation,
-      visual.alpha
-    );
+    if (!cornerTransform(x, y)) return;
+    drawOuterCorner(scene, x, y);
   };
 
-  scene.canvas.dataset.wallPipeline = `${scene.canvas.dataset.wallPipeline ?? 'continuous-structure-v5'} material-overlay-v6`.trim();
-  scene.canvas.dataset.wallMaterial = 'wall-materials-v6';
+  scene.renderToken = (x, y, token) => {
+    const parsed = parseToken(token);
+    if (parsed.type === 'door' && BARRIER_STYLE[parsed.id]) {
+      if (drawMagicBarrier(scene, scene.bridge.getState(), x, y, parsed.id)) return;
+    }
+
+    if (parsed.type === 'item') {
+      const item = ITEMS[parsed.id];
+      if (item?.kind === 'card') {
+        const assetName = CARD_DROP_ASSET[item.card];
+        const image = assetName ? getMapAsset(assetName) : null;
+        if (image) {
+          scene.drawSoftShadow(scene.center(x), scene.center(y) + TILE_SIZE * 0.28, TILE_SIZE * 0.42, 0.2);
+          scene.drawMapImage(image, scene.center(x), scene.center(y), TILE_SIZE * 0.76, TILE_SIZE * 0.76);
+          return;
+        }
+        console.error(`[V7] 卡牌掉落素材未加载: card=${item.card}, asset=${assetName ?? 'unknown'}`);
+      }
+    }
+
+    structuralRenderToken(x, y, token);
+  };
+
+  scene.canvas.dataset.wallPipeline = 'continuous-structure-v5 single-cell-edges-v7 outer-corners-only-v7';
+  scene.canvas.dataset.wallMaterial = 'wall-materials-v7-cleanup';
+  scene.canvas.dataset.barrierPipeline = 'programmatic-anchor-field-v7';
   return scene;
 }
