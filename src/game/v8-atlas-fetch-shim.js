@@ -2,9 +2,15 @@
   const nativeFetch = window.fetch.bind(window);
   const target = '/assets/anime/map/atlases/v8/generated-v8-01.b64';
   const revision = 'v83';
-  const chunks = [1, 2, 3, 4, 5, 6].map((index) =>
-    `/assets/anime/map/atlases/v8/generated-v8-${String(index).padStart(2, '0')}.b64?rev=${revision}`
-  );
+  const chunks = [
+    'generated-v8-01.b64',
+    'generated-v8-02a.b64',
+    'generated-v8-02b.b64',
+    'generated-v8-03.b64',
+    'generated-v8-04.b64',
+    'generated-v8-05.b64',
+    'generated-v8-06.b64'
+  ].map((name) => `/assets/anime/map/atlases/v8/${name}?rev=${revision}`);
 
   window.fetch = async (input, init) => {
     const url = typeof input === 'string' ? input : input?.url;
