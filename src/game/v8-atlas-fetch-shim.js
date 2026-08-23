@@ -1,8 +1,9 @@
 (() => {
   const nativeFetch = window.fetch.bind(window);
   const target = '/assets/anime/map/atlases/v8/generated-v8-01.b64';
+  const revision = 'v83';
   const chunks = [1, 2, 3, 4, 5, 6].map((index) =>
-    `/assets/anime/map/atlases/v8/generated-v8-${String(index).padStart(2, '0')}.b64`
+    `/assets/anime/map/atlases/v8/generated-v8-${String(index).padStart(2, '0')}.b64?rev=${revision}`
   );
 
   window.fetch = async (input, init) => {
@@ -10,14 +11,14 @@
     if (!url || !url.endsWith(target)) return nativeFetch(input, init);
 
     const parts = await Promise.all(chunks.map(async (chunkUrl) => {
-      const response = await nativeFetch(chunkUrl, { ...init, cache: 'force-cache' });
+      const response = await nativeFetch(chunkUrl, { ...init, cache: 'reload' });
       if (!response.ok) throw new Error(`V8 图集分块加载失败：${chunkUrl} (HTTP ${response.status})`);
       return (await response.text()).trim();
     }));
 
     return new Response(parts.join(''), {
       status: 200,
-      headers: { 'Content-Type': 'text/plain; charset=utf-8', 'Cache-Control': 'public, max-age=31536000, immutable' }
+      headers: { 'Content-Type': 'text/plain; charset=utf-8', 'Cache-Control': 'no-store' }
     });
   };
 })();
