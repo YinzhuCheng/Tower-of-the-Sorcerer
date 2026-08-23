@@ -34,7 +34,8 @@ test('V8.3 reconstructs the generated atlas exactly and uses frameless stat drop
   const patch = await readFile(join(root, 'src/game/visual-patch-v83.js'), 'utf8');
   const shim = await readFile(join(root, 'src/game/v8-atlas-fetch-shim.js'), 'utf8');
   const chunkNames = [
-    'generated-v8-01.b64',
+    'generated-v8-01a.b64',
+    'generated-v8-01b.b64',
     'generated-v8-02a.b64',
     'generated-v8-02b.b64',
     'generated-v8-03.b64',
@@ -56,8 +57,9 @@ test('V8.3 reconstructs the generated atlas exactly and uses frameless stat drop
     '857a56998c8d6c625f1a343bf9bac29084b899be04f19cc2d77a3678d246e4ec'
   );
 
-  assert.match(shim, /generated-v8-02a\.b64/);
-  assert.match(shim, /generated-v8-02b\.b64/);
+  for (const name of ['generated-v8-01a.b64', 'generated-v8-01b.b64', 'generated-v8-02a.b64', 'generated-v8-02b.b64']) {
+    assert.match(shim, new RegExp(name.replace('.', '\\.')));
+  }
   assert.match(shim, /cache: 'reload'/);
   assert.match(shim, /rev=\$\{revision\}/);
 
