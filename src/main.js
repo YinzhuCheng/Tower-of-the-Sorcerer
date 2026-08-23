@@ -15,6 +15,7 @@ import {
 import { createMagicTowerScene } from './game/scene.js';
 import { createCanvasTowerScene } from './game/canvas-scene.js';
 import { hydratePortraits, portraitUrl } from './game/portraits.js';
+import { applySceneThemeV8, installV8VisualLayer } from './game/visual-theme-v8.js';
 
 const MANUAL_SAVE_KEY = 'lost-magic-tower:manual:v1';
 const AUTO_SAVE_KEY = 'lost-magic-tower:auto:v1';
@@ -461,6 +462,7 @@ function bindControls() {
 }
 
 async function boot() {
+  installV8VisualLayer();
   hydratePortraits();
   bindControls();
   updateHud();
@@ -471,6 +473,10 @@ async function boot() {
     onResult: handleSceneResult,
     onReady: (readyScene) => {
       scene = readyScene;
+      if (readyScene?.ctx) {
+        applySceneThemeV8(readyScene);
+        readyScene.refresh?.();
+      }
       elements.loading.classList.add('hidden');
       const dialogueId = initialDialogue(state);
       if (dialogueId) showDialogue(dialogueId);
