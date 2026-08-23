@@ -24,7 +24,13 @@ const PORTRAITS = {
 };
 
 const urlCache = new Map();
-const cardUiAssets = Object.freeze({ sun: 'card-sun-ui-v4', moon: 'card-moon-ui-v4', star: 'card-star-ui-v4' });
+const cardUiAssets = Object.freeze({
+  // The drop cards are deliberately first: they are the most legible generated
+  // assets at small HUD scale. Dedicated UI art remains the secondary fallback.
+  sun: ['card-sun-drop-v4', 'card-sun-ui-v4'],
+  moon: ['card-moon-drop-v4', 'card-moon-ui-v4'],
+  star: ['card-star-drop-v4', 'card-star-ui-v4']
+});
 
 function archetype(id) { return PORTRAITS[id]?.[1] ?? 'hero'; }
 
@@ -32,6 +38,14 @@ export function portraitIndex(id) { return ARCHETYPES[archetype(id)] ?? 0; }
 
 function canvasUrl(canvas) {
   try { return canvas?.toDataURL?.('image/webp', 0.94) ?? null; } catch { return null; }
+}
+
+function firstMapAsset(names) {
+  for (const name of names) {
+    const asset = getMapAsset(name);
+    if (asset) return { asset, name };
+  }
+  return { asset: null, name: null };
 }
 
 export function portraitUrl(id) {
@@ -59,19 +73,38 @@ export function hydratePortraits(root = document) {
     if (id) image.src = portraitUrl(id);
   });
 
-  for (const [key, assetName] of Object.entries(cardUiAssets)) {
+  for (const [key, assetNames] of Object.entries(cardUiAssets)) {
     const token = root.querySelector(`.card-token.${key}`);
-    const asset = getMapAsset(assetName);
-    if (!token || !asset || token.querySelector('.card-ui-art')) continue;
+    if (!token || token.querySelector('.card-ui-art')) continue;
+
+    const { asset, name } = firstMapAsset(assetNames);
+    if (!asset) {
+      token.dataset.cardArt = 'fallback-label';
+      continue;
+    }
+
     const src = canvasUrl(asset);
-    if (!src) continue;
+    if (!src) {
+      token.dataset.cardArt = 'fallback-label';
+      continue;
+    }
+
     const art = document.createElement('img');
     art.className = 'card-ui-art';
     art.alt = `${key} card`;
     art.src = src;
-    Object.assign(art.style, { width: '28px', height: '34px', objectFit: 'contain', flex: '0 0 auto', filter: 'drop-shadow(0 2px 5px rgba(0,0,0,.35))' });
+    art.dataset.asset = name;
+    Object.assign(art.style, {
+      width: '30px',
+      height: '38px',
+      objectFit: 'contain',
+      flex: '0 0 auto',
+      filter: 'drop-shadow(0 2px 5px rgba(0,0,0,.35))'
+    });
+
     const oldLabel = token.querySelector('span');
     if (oldLabel) oldLabel.style.display = 'none';
+    token.dataset.cardArt = name;
     token.prepend(art);
   }
 }
