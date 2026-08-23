@@ -36,7 +36,8 @@ test('V8.2 uses generated floor, exterior and UI assets with keyed transparency 
   const atlas = chunks.map((chunk) => chunk.trim()).join('');
 
   assert.ok(atlas.length > 40000, 'generated V8 atlas chunks must reconstruct the complete asset atlas');
-  assert.match(shim, /generated-v8-06\.b64/);
+  assert.match(shim, /\[1, 2, 3, 4, 5, 6\]\.map/);
+  assert.match(shim, /padStart\(2, '0'\)/);
   assert.match(shim, /parts\.join\(''\)/);
   assert.match(source, /GENERATED_ATLAS_URL/);
   assert.match(source, /generated-v8-01\.b64/);
