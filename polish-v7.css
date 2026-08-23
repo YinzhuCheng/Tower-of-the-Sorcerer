@@ -1,0 +1,44 @@
+/* V7 visual cleanup: story text, card wallet, and small UI resilience. */
+
+/* Story dialogue contains a speaker <strong>; the shop dialogue does not. Hide
+   only the blurry narrative portrait and let the copy use the full modal width. */
+.modal-body .dialogue-grid:has(.dialogue-copy > strong){
+  grid-template-columns:minmax(0,1fr);
+  align-items:start;
+}
+.modal-body .dialogue-grid:has(.dialogue-copy > strong)>img{
+  display:none;
+}
+.modal-body .dialogue-grid:has(.dialogue-copy > strong) .dialogue-copy{
+  max-width:760px;
+}
+.modal-body .dialogue-grid:has(.dialogue-copy > strong) .dialogue-copy>strong{
+  display:block;
+  margin-bottom:8px;
+}
+.modal-body .dialogue-grid:has(.dialogue-copy > strong) .dialogue-copy>p{
+  margin:0;
+  line-height:2;
+}
+
+.card-token{
+  min-height:48px;
+  overflow:visible;
+}
+.card-token .card-ui-art{
+  display:block;
+  width:30px!important;
+  height:38px!important;
+  object-fit:contain;
+  flex:0 0 auto;
+  filter:drop-shadow(0 2px 5px rgba(0,0,0,.35)) drop-shadow(0 0 8px rgba(176,132,255,.18));
+}
+.card-token[data-card-art="fallback-label"] span{
+  display:grid!important;
+}
+
+@media(max-width:520px){
+  .modal-body .dialogue-grid:has(.dialogue-copy > strong){
+    grid-template-columns:1fr;
+  }
+}
