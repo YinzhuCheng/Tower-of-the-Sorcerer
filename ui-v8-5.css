@@ -1,4 +1,4 @@
-/* V8.7 — four-row icon stat list + card emblems fully contained inside their frames. */
+/* V8.8 — four-row icon stat list + left-aligned, fully contained card emblems. */
 
 .stats-panel{padding-left:15px!important;padding-right:15px!important}
 
@@ -63,8 +63,8 @@
   letter-spacing:-.025em!important;
 }
 
-/* Three barrier-card counters remain in one row, but each emblem is now centered
-   inside the card body with enough internal clearance for its glow and border. */
+/* Barrier-card counters stay in one row. Their emblem and count deliberately hug
+   the left side of each card and remain clipped inside the card frame. */
 .card-wallet-v85{
   grid-template-columns:repeat(3,minmax(0,1fr))!important;
   gap:7px!important;
@@ -72,26 +72,25 @@
 }
 .card-wallet-v85 .card-token{
   position:relative!important;
-  display:grid!important;
-  grid-template-columns:1fr!important;
-  grid-template-rows:28px auto!important;
-  place-items:center!important;
-  align-content:center!important;
-  gap:4px!important;
+  display:block!important;
   min-width:0!important;
   min-height:68px!important;
-  padding:7px 5px 6px!important;
+  padding:7px 6px 6px!important;
   overflow:hidden!important;
   isolation:isolate;
 }
 .card-wallet-v85 .card-emblem{
-  position:relative!important;
+  position:absolute!important;
+  left:7px!important;
+  top:7px!important;
+  right:auto!important;
+  bottom:auto!important;
   inset:auto!important;
   transform:none!important;
   display:grid!important;
   place-items:center!important;
-  width:25px!important;
-  height:25px!important;
+  width:24px!important;
+  height:24px!important;
   margin:0!important;
   box-sizing:border-box!important;
   color:inherit!important;
@@ -100,13 +99,13 @@
   overflow:hidden!important;
   border-width:1px!important;
   box-shadow:
-    0 0 7px color-mix(in srgb,currentColor 20%,transparent),
+    0 0 6px color-mix(in srgb,currentColor 18%,transparent),
     inset 0 0 6px rgba(255,255,255,.035)!important;
 }
 .card-wallet-v85 .card-icon-svg{
   display:block!important;
-  width:15px!important;
-  height:15px!important;
+  width:14px!important;
+  height:14px!important;
   color:inherit!important;
   overflow:hidden!important;
   filter:drop-shadow(0 0 2px currentColor);
@@ -115,9 +114,12 @@
 .card-wallet-v85 .moon-icon{color:#7ed3ff!important}
 .card-wallet-v85 .star-icon{color:#e07cc3!important}
 .card-wallet-v85 .card-token b{
+  position:absolute!important;
+  left:8px!important;
+  bottom:7px!important;
   min-width:1ch;
   margin:0!important;
-  text-align:center!important;
+  text-align:left!important;
   font-size:.84rem!important;
   line-height:1!important;
   font-variant-numeric:tabular-nums;
@@ -129,6 +131,7 @@
   .stat-row-v85 .hp-entry dd{font-size:.74rem!important}
   .card-wallet-v85{gap:5px!important;padding:7px!important}
   .card-wallet-v85 .card-token{min-height:64px!important;padding:6px 4px!important}
-  .card-wallet-v85 .card-emblem{width:24px!important;height:24px!important}
-  .card-wallet-v85 .card-icon-svg{width:14px!important;height:14px!important}
+  .card-wallet-v85 .card-emblem{left:6px!important;top:6px!important;width:23px!important;height:23px!important}
+  .card-wallet-v85 .card-icon-svg{width:13px!important;height:13px!important}
+  .card-wallet-v85 .card-token b{left:7px!important;bottom:6px!important}
 }
