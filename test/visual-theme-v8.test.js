@@ -14,6 +14,7 @@ test('V8 installs four UI themes and keeps the compact HUD structure', async () 
   assert.match(html, /id="btn-theme"/);
   assert.match(html, /data-theme="night"/);
   assert.doesNotMatch(html, /visual-cleanup-v7\.js/);
+  assert.match(html, /v8-atlas-fetch-shim\.js/);
   assert.match(main, /installV8VisualLayer/);
   assert.match(main, /applySceneThemeV8/);
 
@@ -27,9 +28,16 @@ test('V8 installs four UI themes and keeps the compact HUD structure', async () 
 
 test('V8.2 uses generated floor, exterior and UI assets with keyed transparency cleanup', async () => {
   const source = await readFile(join(root, 'src/game/visual-theme-v8.js'), 'utf8');
-  const atlas = await readFile(join(root, 'public/assets/anime/map/atlases/v8/generated-v8-01.b64'), 'utf8');
+  const shim = await readFile(join(root, 'src/game/v8-atlas-fetch-shim.js'), 'utf8');
+  const chunkPaths = [1, 2, 3, 4, 5, 6].map((index) =>
+    join(root, 'public/assets/anime/map/atlases/v8', `generated-v8-${String(index).padStart(2, '0')}.b64`)
+  );
+  const chunks = await Promise.all(chunkPaths.map((path) => readFile(path, 'utf8')));
+  const atlas = chunks.map((chunk) => chunk.trim()).join('');
 
-  assert.ok(atlas.length > 30000, 'generated V8 atlas must be present');
+  assert.ok(atlas.length > 40000, 'generated V8 atlas chunks must reconstruct the complete asset atlas');
+  assert.match(shim, /generated-v8-06\.b64/);
+  assert.match(shim, /parts\.join\(''\)/);
   assert.match(source, /GENERATED_ATLAS_URL/);
   assert.match(source, /generated-v8-01\.b64/);
   assert.match(source, /floor-main-v8/);
