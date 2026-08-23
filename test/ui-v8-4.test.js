@@ -6,7 +6,7 @@ import { fileURLToPath } from 'node:url';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 
-test('V8.7 HUD stacks four icon stats and contains card emblems inside their frames', async () => {
+test('V8.8 HUD stacks four icon stats and keeps card emblems left and contained', async () => {
   const [html, styles, ui4, ui5, build] = await Promise.all([
     readFile(join(root, 'index.html'), 'utf8'),
     readFile(join(root, 'styles.css'), 'utf8'),
@@ -16,7 +16,7 @@ test('V8.7 HUD stacks four icon stats and contains card emblems inside their fra
   ]);
 
   assert.match(styles, /ui-v8-4\.css\?v=4/);
-  assert.match(html, /ui-v8-5\.css\?v=3/);
+  assert.match(html, /ui-v8-5\.css\?v=4/);
   assert.match(html, /stat-row-v85/);
   assert.match(ui5, /grid-template-columns:1fr!important/);
   assert.match(ui5, /grid-template-columns:24px minmax\(0,1fr\)!important/);
@@ -38,16 +38,15 @@ test('V8.7 HUD stacks four icon stats and contains card emblems inside their fra
   assert.doesNotMatch(html, /<small>(日曜|月华|星穹)<\/small>/);
   assert.match(ui5, /\.card-wallet-v85 \.card-icon-svg/);
   assert.match(ui5, /overflow:hidden!important/);
-  assert.match(ui5, /grid-template-rows:28px auto!important/);
-  assert.match(ui5, /width:25px!important/);
-  assert.match(ui5, /height:25px!important/);
+  assert.match(ui5, /position:absolute!important/);
+  assert.match(ui5, /left:7px!important/);
+  assert.match(ui5, /width:24px!important/);
+  assert.match(ui5, /height:24px!important/);
 
-  // These root-level stylesheets must be copied into dist; otherwise Vercel serves 404s and the HUD falls back to old styles.
   assert.match(build, /ui-v8-4\.css/);
   assert.match(build, /dist\/ui-v8-4\.css/);
   assert.match(build, /ui-v8-5\.css/);
   assert.match(build, /dist\/ui-v8-5\.css/);
 
-  // V8.4 stays as the visual foundation; V8.7 only overrides the compact stat list and card glyph containment.
   assert.match(ui4, /\.card-wallet\.framed-wallet/);
 });
