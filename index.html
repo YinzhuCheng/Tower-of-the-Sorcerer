@@ -43,17 +43,37 @@
             <strong id="floor-title">月白门廊</strong>
           </section>
 
-          <dl class="stat-grid" aria-label="核心数值">
-            <div><dt>生命</dt><dd id="stat-hp">0</dd></div>
-            <div><dt>攻击</dt><dd id="stat-atk">0</dd></div>
-            <div><dt>防御</dt><dd id="stat-def">0</dd></div>
-            <div><dt>金币</dt><dd id="stat-gold">0</dd></div>
+          <dl class="stat-grid stat-grid-icons" aria-label="核心数值">
+            <div class="stat-entry hp-entry">
+              <dt aria-label="生命" title="生命">
+                <svg class="stat-icon hp" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-8-4.8-9.6-9.2C.7 8.1 2.8 4.6 6.5 4.5c2.4-.1 4.1 1.3 5.5 3.2 1.4-1.9 3.1-3.3 5.5-3.2 3.7.1 5.8 3.6 4.1 7.3C20 16.2 12 21 12 21Z"/></svg>
+              </dt>
+              <dd id="stat-hp">0</dd>
+            </div>
+            <div class="stat-entry atk-entry">
+              <dt aria-label="攻击" title="攻击">
+                <svg class="stat-icon atk" viewBox="0 0 24 24" aria-hidden="true"><path d="m14.7 3.1 6.2 0-0.1 6.2-3-3-7.6 7.6 1.9 1.9-2 2-5.9-5.9 2-2 1.9 1.9 7.6-7.6-1-1.1ZM3 15.2l5.8 5.8H3v-5.8Z"/></svg>
+              </dt>
+              <dd id="stat-atk">0</dd>
+            </div>
+            <div class="stat-entry def-entry">
+              <dt aria-label="防御" title="防御">
+                <svg class="stat-icon def" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5 20 5v6.2c0 5.1-3.2 8.8-8 10.5-4.8-1.7-8-5.4-8-10.5V5l8-2.5Zm0 3L7 7v4.2c0 3.4 1.9 5.9 5 7.3 3.1-1.4 5-3.9 5-7.3V7l-5-1.5Z"/></svg>
+              </dt>
+              <dd id="stat-def">0</dd>
+            </div>
+            <div class="stat-entry gold-entry">
+              <dt aria-label="金币" title="金币">
+                <svg class="stat-icon gold" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5c5.5 0 9.5 2.5 9.5 5.7v7.6c0 3.2-4 5.7-9.5 5.7S2.5 19 2.5 15.8V8.2c0-3.2 4-5.7 9.5-5.7Zm0 3c-4 0-6.5 1.5-6.5 2.7S8 11 12 11s6.5-1.5 6.5-2.8S16 5.5 12 5.5Zm-6.5 7v3.3c0 1.2 2.5 2.7 6.5 2.7s6.5-1.5 6.5-2.7v-3.3c-1.7 1-4 1.5-6.5 1.5s-4.8-.5-6.5-1.5Z"/></svg>
+              </dt>
+              <dd id="stat-gold">0</dd>
+            </div>
           </dl>
 
-          <section class="card-wallet" aria-label="结界钥匙">
-            <div class="card-token sun"><span class="card-emblem">☀</span><small>日曜</small><b id="card-sun">0</b></div>
-            <div class="card-token moon"><span class="card-emblem">☾</span><small>月华</small><b id="card-moon">0</b></div>
-            <div class="card-token star"><span class="card-emblem">✦</span><small>星穹</small><b id="card-star">0</b></div>
+          <section class="card-wallet framed-wallet" aria-label="结界钥匙">
+            <div class="card-token sun" title="日曜卡"><span class="card-emblem" aria-hidden="true">☀</span><b id="card-sun">0</b></div>
+            <div class="card-token moon" title="月辉卡"><span class="card-emblem" aria-hidden="true">☾</span><b id="card-moon">0</b></div>
+            <div class="card-token star" title="星蚀卡"><span class="card-emblem" aria-hidden="true">✦</span><b id="card-star">0</b></div>
           </section>
 
           <section class="relics">
