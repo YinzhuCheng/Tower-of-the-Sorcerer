@@ -73,17 +73,7 @@ function cropAtlasCell(image, index) {
   const ctx = canvas.getContext('2d');
   ctx.imageSmoothingEnabled = true;
   ctx.imageSmoothingQuality = 'high';
-  ctx.drawImage(
-    image,
-    (index % GENERATED_COLS) * sw,
-    Math.floor(index / GENERATED_COLS) * sh,
-    sw,
-    sh,
-    0,
-    0,
-    sw,
-    sh
-  );
+  ctx.drawImage(image, (index % GENERATED_COLS) * sw, Math.floor(index / GENERATED_COLS) * sh, sw, sh, 0, 0, sw, sh);
   return canvas;
 }
 
@@ -155,14 +145,12 @@ function installDialogueObserver() {
   const body = document.getElementById('modal-body');
   const kicker = document.getElementById('modal-kicker');
   if (!root || !body || !kicker) return;
-
   const update = () => {
     const grid = body.querySelector('.dialogue-grid');
     if (!grid) return;
     const isShop = kicker.textContent.includes('商店') || kicker.textContent.includes('珂珂');
     grid.classList.toggle('story-dialogue', !isShop);
   };
-
   const observer = new MutationObserver(update);
   observer.observe(root, { subtree: true, childList: true, characterData: true, attributes: true, attributeFilter: ['class'] });
   update();
@@ -173,16 +161,7 @@ function installV82Styles() {
   const style = document.createElement('style');
   style.dataset.visualThemeV82 = '1';
   style.textContent = `
-    #game-container{
-      position:relative!important;
-      background:
-        radial-gradient(circle at 9% 14%,rgba(220,240,255,.75) 0 1px,transparent 1.4px) 0 0/109px 109px,
-        radial-gradient(circle at 72% 21%,rgba(122,196,255,.68) 0 1px,transparent 1.5px) 0 0/151px 151px,
-        radial-gradient(circle at 31% 76%,rgba(255,255,255,.52) 0 1px,transparent 1.35px) 0 0/83px 83px,
-        radial-gradient(ellipse at 24% 18%,rgba(46,119,176,.34),transparent 38%),
-        radial-gradient(ellipse at 83% 72%,rgba(61,91,170,.22),transparent 34%),
-        linear-gradient(145deg,#0c2e49 0%,#09233a 48%,#071827 100%)!important;
-    }
+    #game-container{position:relative!important;background:radial-gradient(circle at 9% 14%,rgba(220,240,255,.75) 0 1px,transparent 1.4px) 0 0/109px 109px,radial-gradient(circle at 72% 21%,rgba(122,196,255,.68) 0 1px,transparent 1.5px) 0 0/151px 151px,radial-gradient(circle at 31% 76%,rgba(255,255,255,.52) 0 1px,transparent 1.35px) 0 0/83px 83px,radial-gradient(ellipse at 24% 18%,rgba(46,119,176,.34),transparent 38%),radial-gradient(ellipse at 83% 72%,rgba(61,91,170,.22),transparent 34%),linear-gradient(145deg,#0c2e49 0%,#09233a 48%,#071827 100%)!important}
     #game-container canvas{position:relative;z-index:1}
     .ui-frame-v82{position:absolute;pointer-events:none;z-index:4;background-repeat:no-repeat;background-position:center;background-size:contain;opacity:.52}
     .ui-frame-v82.corner{width:42px;height:42px}
@@ -227,7 +206,6 @@ function decorateUiPanels() {
   const cornerUrl = canvasUrl(generatedAsset('ui-corner-v8'));
   const dividerUrl = canvasUrl(generatedAsset('ui-divider-v8'));
   if (!cornerUrl || !dividerUrl) return;
-
   for (const target of document.querySelectorAll('.stats-panel,.intel-panel,#game-container,.modal-card')) {
     target.querySelectorAll(':scope > .ui-frame-v82').forEach((node) => node.remove());
     for (const position of ['tl', 'tr', 'bl', 'br']) {
@@ -253,6 +231,7 @@ export function installV8VisualLayer() {
   installV82Styles();
   bindThemeButton();
   installDialogueObserver();
+  preloadV8GeneratedAssets().then(decorateUiPanels);
 }
 
 function filteredAsset(scene, name, filter) {
@@ -290,7 +269,6 @@ function drawFloorV82(scene) {
   const mapSize = GRID_SIZE * TILE_SIZE;
   const main = generatedAsset('floor-main-v8');
   const alt = generatedAsset('floor-alt-v8');
-
   ctx.fillStyle = '#86bed2';
   ctx.fillRect(0, 0, mapSize, mapSize);
   ctx.save();
@@ -307,7 +285,6 @@ function drawFloorV82(scene) {
     }
   }
   ctx.restore();
-
   const light = ctx.createRadialGradient(mapSize * 0.5, mapSize * 0.44, 10, mapSize * 0.5, mapSize * 0.48, mapSize * 0.72);
   light.addColorStop(0, 'rgba(239,252,255,.13)');
   light.addColorStop(0.6, 'rgba(166,220,238,.035)');
@@ -334,12 +311,7 @@ function drawWallBaseV82(scene, x, y) {
 }
 
 function wallExposures(scene, state, x, y) {
-  return {
-    north: !scene.isWall(state, x, y - 1),
-    east: !scene.isWall(state, x + 1, y),
-    south: !scene.isWall(state, x, y + 1),
-    west: !scene.isWall(state, x - 1, y)
-  };
+  return { north: !scene.isWall(state, x, y - 1), east: !scene.isWall(state, x + 1, y), south: !scene.isWall(state, x, y + 1), west: !scene.isWall(state, x - 1, y) };
 }
 
 function perimeterExposures(x, y) {
@@ -373,7 +345,6 @@ function drawOuterWallTrim(scene, side, px, py) {
   if (side === 'south') { cy = py + TILE_SIZE - inset; rotation = Math.PI; }
   if (side === 'east') { cx = px + TILE_SIZE - inset; rotation = Math.PI / 2; }
   if (side === 'west') { cx = px + inset; rotation = -Math.PI / 2; }
-
   const ctx = scene.ctx;
   ctx.save();
   ctx.strokeStyle = 'rgba(33,91,139,.72)';
@@ -383,7 +354,6 @@ function drawOuterWallTrim(scene, side, px, py) {
   else { ctx.moveTo(cx, py + 1); ctx.lineTo(cx, py + TILE_SIZE - 1); }
   ctx.stroke();
   ctx.restore();
-
   if (image) scene.drawMapImage(image, cx, cy, TILE_SIZE * 1.08, TILE_SIZE * 0.22, rotation, 0.96);
 }
 
@@ -399,7 +369,6 @@ function drawCornerPillarV82(scene, x, y) {
   const cy = scene.center(y);
   const image = generatedAsset('outer-pillar-v8');
   const radius = TILE_SIZE * 0.34;
-
   ctx.save();
   ctx.beginPath();
   ctx.arc(cx, cy, radius, 0, Math.PI * 2);
@@ -414,7 +383,6 @@ function drawCornerPillarV82(scene, x, y) {
     ctx.fillRect(cx - radius, cy - radius, radius * 2, radius * 2);
   }
   ctx.restore();
-
   ctx.save();
   ctx.strokeStyle = 'rgba(198,226,244,.82)';
   ctx.lineWidth = 1.4;
@@ -439,7 +407,6 @@ function keyedTransparentCell(image, index, cols, rows) {
   const sw = Math.floor(imageWidth / cols);
   const sh = Math.floor(imageHeight / rows);
   if (!sw || !sh) return null;
-
   const canvas = document.createElement('canvas');
   canvas.width = sw;
   canvas.height = sh;
@@ -447,45 +414,23 @@ function keyedTransparentCell(image, index, cols, rows) {
   ctx.drawImage(image, (index % cols) * sw, Math.floor(index / cols) * sh, sw, sh, 0, 0, sw, sh);
   const frame = ctx.getImageData(0, 0, sw, sh);
   const pixels = frame.data;
-
-  const samples = [
-    0,
-    sw - 1,
-    (sh - 1) * sw,
-    sh * sw - 1,
-    Math.min(sw - 1, 2),
-    Math.max(0, sw - 3),
-    Math.max(0, (sh - 3) * sw),
-    Math.min(sh * sw - 1, (sh - 1) * sw + 2)
-  ];
-  let br = 0;
-  let bg = 0;
-  let bb = 0;
-  let bn = 0;
+  const samples = [0, sw - 1, (sh - 1) * sw, sh * sw - 1, Math.min(sw - 1, 2), Math.max(0, sw - 3), Math.max(0, (sh - 3) * sw), Math.min(sh * sw - 1, (sh - 1) * sw + 2)];
+  let br = 0, bg = 0, bb = 0, bn = 0;
   for (const p of samples) {
     const i = p * 4;
     if (pixels[i + 3] <= 6) continue;
-    br += pixels[i];
-    bg += pixels[i + 1];
-    bb += pixels[i + 2];
-    bn += 1;
+    br += pixels[i]; bg += pixels[i + 1]; bb += pixels[i + 2]; bn += 1;
   }
   if (!bn) return canvas;
-  br /= bn;
-  bg /= bn;
-  bb /= bn;
-
+  br /= bn; bg /= bn; bb /= bn;
   const count = sw * sh;
   const visited = new Uint8Array(count);
   const queue = new Int32Array(count);
-  let head = 0;
-  let tail = 0;
+  let head = 0, tail = 0;
   const closeToBackdrop = (p, tolerance = 52) => {
     const i = p * 4;
     if (pixels[i + 3] <= 7) return true;
-    const dr = pixels[i] - br;
-    const dg = pixels[i + 1] - bg;
-    const db = pixels[i + 2] - bb;
+    const dr = pixels[i] - br, dg = pixels[i + 1] - bg, db = pixels[i + 2] - bb;
     return dr * dr + dg * dg + db * db <= tolerance * tolerance;
   };
   const enqueue = (p) => {
@@ -493,7 +438,6 @@ function keyedTransparentCell(image, index, cols, rows) {
     visited[p] = 1;
     queue[tail++] = p;
   };
-
   for (let x = 0; x < sw; x += 1) { enqueue(x); enqueue((sh - 1) * sw + x); }
   for (let y = 0; y < sh; y += 1) { enqueue(y * sw); enqueue(y * sw + sw - 1); }
   while (head < tail) {
@@ -506,12 +450,10 @@ function keyedTransparentCell(image, index, cols, rows) {
     if (y + 1 < sh) enqueue(p + sw);
   }
   for (let p = 0; p < count; p += 1) if (visited[p]) pixels[p * 4 + 3] = 0;
-
   for (let y = 1; y < sh - 1; y += 1) {
     for (let x = 1; x < sw - 1; x += 1) {
       const p = y * sw + x;
-      if (visited[p]) continue;
-      if (!(visited[p - 1] || visited[p + 1] || visited[p - sw] || visited[p + sw])) continue;
+      if (visited[p] || !(visited[p - 1] || visited[p + 1] || visited[p - sw] || visited[p + sw])) continue;
       if (closeToBackdrop(p, 72)) pixels[p * 4 + 3] = Math.min(pixels[p * 4 + 3], 72);
     }
   }
@@ -534,7 +476,6 @@ function installCleanSpritePipeline(scene) {
   scene.visualThemeV82Cells ??= new Map();
   const oldLegacy = scene.drawLegacySprite.bind(scene);
   const oldItem = scene.drawItem.bind(scene);
-
   scene.drawLegacySprite = (id, cx, cy, size, alpha = 1) => {
     const key = `chibi:${id}`;
     let cell = scene.visualThemeV82Cells.get(key);
@@ -544,7 +485,6 @@ function installCleanSpritePipeline(scene) {
     }
     return cell ? drawCleanCell(scene, cell, cx, cy, size, alpha) : oldLegacy(id, cx, cy, size, alpha);
   };
-
   scene.drawItem = (index, x, y, scale = 0.8) => {
     const key = `item:${index}`;
     let cell = scene.visualThemeV82Cells.get(key);
@@ -553,9 +493,7 @@ function installCleanSpritePipeline(scene) {
       if (cell) scene.visualThemeV82Cells.set(key, cell);
     }
     const size = TILE_SIZE * scale;
-    return cell
-      ? drawCleanCell(scene, cell, scene.center(x), scene.center(y), size)
-      : oldItem(index, x, y, scale);
+    return cell ? drawCleanCell(scene, cell, scene.center(x), scene.center(y), size) : oldItem(index, x, y, scale);
   };
 }
 
@@ -563,13 +501,10 @@ function drawCardDropV82(scene, x, y, kind) {
   const style = CARD_STYLE[kind];
   if (!style) return false;
   const ctx = scene.ctx;
-  const cx = scene.center(x);
-  const cy = scene.center(y);
-  const width = TILE_SIZE * 0.46;
-  const height = TILE_SIZE * 0.63;
+  const cx = scene.center(x), cy = scene.center(y);
+  const width = TILE_SIZE * 0.46, height = TILE_SIZE * 0.63;
   const t = (scene.idleClock || performance.now()) / 700;
   const bob = Math.sin(t + x * 0.7 + y * 0.9) * 1.2;
-
   scene.drawSoftShadow(cx, cy + TILE_SIZE * 0.25, TILE_SIZE * 0.38, 0.2);
   ctx.save();
   ctx.translate(cx, cy + bob);
@@ -598,16 +533,20 @@ function drawCardDropV82(scene, x, y, kind) {
 export function applySceneThemeV8(scene) {
   if (!scene?.ctx || scene.visualThemeV8Applied) return scene;
   scene.visualThemeV8Applied = true;
+  if (!generatedAssets.size) {
+    preloadV8GeneratedAssets().then(() => {
+      decorateUiPanels();
+      scene.refresh?.();
+    });
+  }
   const previousRenderToken = scene.renderToken.bind(scene);
-
   installCleanSpritePipeline(scene);
   scene.drawFloorLayer = () => drawFloorV82(scene);
   scene.drawWallBase = (x, y) => drawWallBaseV82(scene, x, y);
   scene.drawWallBoundary = (state, x, y) => {
     const exposed = wallExposures(scene, state, x, y);
     const perimeter = perimeterExposures(x, y);
-    const px = x * TILE_SIZE;
-    const py = y * TILE_SIZE;
+    const px = x * TILE_SIZE, py = y * TILE_SIZE;
     for (const side of ['north', 'east', 'south', 'west']) {
       if (perimeter[side]) drawOuterWallTrim(scene, side, px, py);
       else if (exposed[side]) drawInnerWallEdge(scene, side, px, py);
@@ -622,7 +561,6 @@ export function applySceneThemeV8(scene) {
     }
     previousRenderToken(x, y, token);
   };
-
   decorateUiPanels();
   scene.canvas.dataset.visualTheme = 'v8.2-generated-floor-outer-trim';
   scene.canvas.dataset.cardPipeline = 'programmatic-card-v8';
