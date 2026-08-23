@@ -25,20 +25,29 @@ test('V8 installs four UI themes and removes the old V7 sidecar entrypoint', asy
   assert.match(css, /\.card-token\+\.card-token\{border-left/);
 });
 
-test('V8 scene layer uses gray walls, blue corridors and explicit card rendering', async () => {
+test('V8.1 scene layer uses gray walls, light-blue slab corridors and navy exterior trim', async () => {
   const source = await readFile(join(root, 'src/game/visual-theme-v8.js'), 'utf8');
 
-  assert.match(source, /#242a31/);
-  assert.match(source, /#173548/);
+  assert.match(source, /#272c32/);
+  assert.match(source, /#79b9d0/);
+  assert.match(source, /#67a9c3/);
+  assert.match(source, /#4f8da9/);
   assert.match(source, /wall-surface-v6/);
   assert.match(source, /wall-edge-horizontal-v6/);
-  assert.match(source, /grayscale\(\.88\)/);
+  assert.match(source, /navy-perimeter-v8\.1/);
+  assert.match(source, /rgba\(8,39,68,\.96\)/);
+  assert.match(source, /symmetric-caps-v8\.1/);
+  assert.doesNotMatch(source, /getMapAsset\('wall-outer-corner-v6'\)/);
+  assert.doesNotMatch(source, /floor-main-v4/);
+  assert.doesNotMatch(source, /floor-main'/);
+
+  assert.match(source, /strict-border-only-v8\.1/);
+  assert.match(source, /pixels\[i\] <= 22/);
   assert.match(source, /programmatic-card-v8/);
   assert.match(source, /sun: \{ rgb:/);
   assert.match(source, /moon: \{ rgb:/);
   assert.match(source, /star: \{ rgb:/);
   assert.match(source, /fillText\(style\.symbol/);
-  assert.match(source, /cornerPlacement/);
   assert.doesNotMatch(source, /state\.x\s*[+\-]=/);
   assert.doesNotMatch(source, /state\.y\s*[+\-]=/);
 });
