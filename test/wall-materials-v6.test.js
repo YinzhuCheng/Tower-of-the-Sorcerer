@@ -48,19 +48,44 @@ test('V6 wall material atlas reconstructs the verified transparent WebP', async 
   });
 });
 
-test('V6 material layer preserves V5 geometry and uses all six generated wall roles', async () => {
+test('V7 keeps V5 wall geometry while simplifying material placement', async () => {
   const entry = await readFile(join(root, 'src/game/canvas-scene.js'), 'utf8');
   const material = await readFile(join(root, 'src/game/wall-material-v6.js'), 'utf8');
+
   assert.match(entry, /continuous-structure-v5/);
   assert.match(entry, /applyWallMaterialV6/);
   assert.match(material, /material-overlay-v6/);
+  assert.match(material, /clean-perimeter-v7/);
   assert.match(material, /wall-surface-v6/);
-  assert.match(material, /wall-edge-horizontal-v6/);
-  assert.match(material, /wall-edge-vertical-v6/);
+  assert.match(material, /getMapAsset\('wall-edge-horizontal-v6'\)/);
+  assert.match(material, /rotation = Math\.PI \/ 2/);
+  assert.match(material, /towerCornerRotation/);
   assert.match(material, /wall-outer-corner-v6/);
-  assert.match(material, /wall-inner-corner-v6/);
-  assert.match(material, /wall-end-pillar-v6/);
-  assert.match(material, /createPattern\(surface, 'repeat'\)/);
+  assert.doesNotMatch(material, /wallNodeVisual/);
   assert.doesNotMatch(material, /state\.x\s*[+\-]=/);
   assert.doesNotMatch(material, /state\.y\s*[+\-]=/);
+});
+
+test('V7 card and barrier visuals are explicit and never look like empty blocked floor', async () => {
+  const material = await readFile(join(root, 'src/game/wall-material-v6.js'), 'utf8');
+  const portraits = await readFile(join(root, 'src/game/anime-portraits.js'), 'utf8');
+  const css = await readFile(join(root, 'polish-v7.css'), 'utf8');
+
+  assert.match(material, /anchored-barrier-v7/);
+  assert.match(material, /drawBarrierGate/);
+  assert.match(material, /wall-end-pillar-v6/);
+  assert.match(material, /fillRect\(-membraneW \/ 2, -membraneH \/ 2, membraneW, membraneH\)/);
+  assert.match(material, /token\.startsWith\('door:'\)/);
+  assert.match(material, /drawCardDrop/);
+  assert.match(material, /card-sun-drop-v4/);
+  assert.match(material, /card-moon-drop-v4/);
+  assert.match(material, /card-star-drop-v4/);
+
+  assert.match(portraits, /sun: \['card-sun-drop-v4', 'card-sun-ui-v4'\]/);
+  assert.match(portraits, /moon: \['card-moon-drop-v4', 'card-moon-ui-v4'\]/);
+  assert.match(portraits, /star: \['card-star-drop-v4', 'card-star-ui-v4'\]/);
+
+  assert.match(css, /dialogue-grid:has\(\.dialogue-copy > strong\)>img/);
+  assert.match(css, /display:none/);
+  assert.match(css, /card-ui-art/);
 });
