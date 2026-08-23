@@ -63,13 +63,29 @@ test('V7 wall cleanup preserves V5 geometry and narrows the wall visual grammar'
   assert.match(material, /rotation = Math\.PI \/ 2/);
   assert.match(material, /rotation = -Math\.PI \/ 2/);
   assert.match(material, /createPattern\(surface, 'repeat'\)/);
+  assert.doesNotMatch(material, /getMapAsset\('wall-edge-vertical-v6'\)/);
 
-  // Large corner architecture is limited to the four map corners. Internal
-  // V6 inner-corner art is deliberately not used by the V7 renderer.
-  assert.match(material, /GRID_SIZE - 1/);
+  // The complete outer ring receives an unclipped brick face. Perimeter edges
+  // are positioned by half their thickness rather than the small inner inset.
+  assert.match(material, /function perimeterExposures/);
+  assert.match(material, /north: y === 0/);
+  assert.match(material, /east: x === max/);
+  assert.match(material, /south: y === max/);
+  assert.match(material, /west: x === 0/);
+  assert.match(material, /py \+ thickness \/ 2/);
+  assert.match(material, /px \+ thickness \/ 2/);
+  assert.match(material, /perimeter-bricks-v7/);
+
+  // Large corner architecture is limited to the four map corners and rotates
+  // through four directions instead of mirror-flipping perspective artwork.
+  assert.match(material, /function cornerPlacement/);
+  assert.match(material, /rotation: Math\.PI \/ 2/);
+  assert.match(material, /rotation: Math\.PI,/);
+  assert.match(material, /rotation: -Math\.PI \/ 2/);
+  assert.match(material, /ctx\.rotate\(placement\.rotation\)/);
+  assert.doesNotMatch(material, /ctx\.scale\(transform\.flipX/);
   assert.match(material, /wall-outer-corner-v6/);
   assert.doesNotMatch(material, /getMapAsset\('wall-inner-corner-v6'\)/);
-  assert.doesNotMatch(material, /getMapAsset\('wall-edge-vertical-v6'\)/);
 
   // Pillars now communicate magic barriers, which are explicit translucent
   // blocking fields for all three card types.
