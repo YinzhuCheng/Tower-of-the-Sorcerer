@@ -7,15 +7,16 @@ import { fileURLToPath } from 'node:url';
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 
 test('V8.5 HUD keeps all four stats on one icon-first row and renders explicit card SVGs', async () => {
-  const [html, styles, ui4, ui5] = await Promise.all([
+  const [html, styles, ui4, ui5, build] = await Promise.all([
     readFile(join(root, 'index.html'), 'utf8'),
     readFile(join(root, 'styles.css'), 'utf8'),
     readFile(join(root, 'ui-v8-4.css'), 'utf8'),
-    readFile(join(root, 'ui-v8-5.css'), 'utf8')
+    readFile(join(root, 'ui-v8-5.css'), 'utf8'),
+    readFile(join(root, 'scripts/build.mjs'), 'utf8')
   ]);
 
-  assert.match(styles, /ui-v8-4\.css/);
-  assert.match(html, /ui-v8-5\.css\?v=1/);
+  assert.match(styles, /ui-v8-4\.css\?v=4/);
+  assert.match(html, /ui-v8-5\.css\?v=2/);
   assert.match(html, /stat-row-v85/);
   assert.match(ui5, /grid-template-columns:minmax\(0,1\.75fr\) repeat\(3,minmax\(0,\.72fr\)\)/);
   assert.match(ui5, /white-space:nowrap!important/);
@@ -35,6 +36,12 @@ test('V8.5 HUD keeps all four stats on one icon-first row and renders explicit c
   assert.match(html, /card-icon-svg star-icon/);
   assert.doesNotMatch(html, /<small>(日曜|月华|星穹)<\/small>/);
   assert.match(ui5, /\.card-wallet-v85 \.card-icon-svg/);
+
+  // These root-level stylesheets must be copied into dist; otherwise Vercel serves 404s and the HUD falls back to the older two-row layout.
+  assert.match(build, /ui-v8-4\.css/);
+  assert.match(build, /dist\/ui-v8-4\.css/);
+  assert.match(build, /ui-v8-5\.css/);
+  assert.match(build, /dist\/ui-v8-5\.css/);
 
   // V8.4 stays as the visual foundation; V8.5 only overrides the compact strip and card glyph rendering.
   assert.match(ui4, /\.card-wallet\.framed-wallet/);
