@@ -4,14 +4,14 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self'; font-src 'self' data:; object-src 'none'; base-uri 'self'" />
-    <meta name="theme-color" content="#09081b" />
+    <meta name="theme-color" content="#07101c" />
     <meta name="description" content="保留经典魔塔固定数值、钥匙门、宝物、商店与解谜机制的日系二次元策略 RPG。" />
     <meta name="robots" content="index,follow" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <title>失落魔法阵：少女魔塔</title>
     <link rel="stylesheet" href="/styles.css" />
   </head>
-  <body>
+  <body data-theme="night">
     <div id="app-shell">
       <header class="topbar">
         <div>
@@ -19,6 +19,7 @@
           <h1>失落魔法阵：少女魔塔</h1>
         </div>
         <div class="top-actions">
+          <button id="btn-theme" class="ghost">主题·暗夜</button>
           <button id="btn-help" class="ghost">玩法</button>
           <button id="btn-save" class="ghost">存档</button>
           <button id="btn-load" class="ghost">读档</button>
@@ -42,28 +43,28 @@
             <strong id="floor-title">月白门廊</strong>
           </section>
 
-          <dl class="stat-grid">
+          <dl class="stat-grid" aria-label="核心数值">
             <div><dt>生命</dt><dd id="stat-hp">0</dd></div>
             <div><dt>攻击</dt><dd id="stat-atk">0</dd></div>
             <div><dt>防御</dt><dd id="stat-def">0</dd></div>
             <div><dt>金币</dt><dd id="stat-gold">0</dd></div>
           </dl>
 
-          <section class="card-wallet" aria-label="魔法卡片">
-            <div class="card-token sun"><span>日</span><b id="card-sun">0</b></div>
-            <div class="card-token moon"><span>月</span><b id="card-moon">0</b></div>
-            <div class="card-token star"><span>星</span><b id="card-star">0</b></div>
+          <section class="card-wallet" aria-label="结界钥匙">
+            <div class="card-token sun"><span class="card-emblem">☀</span><small>日曜</small><b id="card-sun">0</b></div>
+            <div class="card-token moon"><span class="card-emblem">☾</span><small>月华</small><b id="card-moon">0</b></div>
+            <div class="card-token star"><span class="card-emblem">✦</span><small>星穹</small><b id="card-star">0</b></div>
           </section>
 
           <section class="relics">
-            <h3>宝物</h3>
+            <h3>宝物 / 遗物</h3>
             <div id="relic-list" class="relic-list"><span class="muted">尚未获得</span></div>
           </section>
         </aside>
 
         <section class="board-column">
           <div id="game-container" aria-label="魔塔地图画布"></div>
-          <div id="loading-note" class="loading-note">正在加载二次元魔法素材……</div>
+          <div id="loading-note" class="loading-note">正在加载魔法塔素材……</div>
           <div class="mobile-controls" aria-label="移动控制">
             <span></span><button data-move="up" aria-label="向上">▲</button><span></span>
             <button data-move="left" aria-label="向左">◀</button><button data-move="down" aria-label="向下">▼</button><button data-move="right" aria-label="向右">▶</button>
@@ -109,6 +110,5 @@
 
     <noscript>本游戏需要启用 JavaScript。</noscript>
     <script type="module" src="/src/main.js"></script>
-    <script type="module" src="/src/game/visual-cleanup-v7.js"></script>
   </body>
 </html>
