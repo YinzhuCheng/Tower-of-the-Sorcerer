@@ -1,10 +1,17 @@
 import { TILE_SIZE } from './data.js';
 import { parseToken } from './engine.js';
+import { getMapAsset } from './map-assets.js';
 
 const GEM_STYLE = Object.freeze({
   atk: { core: '#ff577b', edge: '#ffd5df', glow: '255,74,115' },
   def: { core: '#63baf2', edge: '#dff5ff', glow: '80,174,235' },
   dual: { core: '#b07cff', edge: '#f0ddff', glow: '177,111,245' }
+});
+
+const BARRIER_STYLE = Object.freeze({
+  sun: { rgb: '243,194,76', edge: '#fff0a0' },
+  moon: { rgb: '92,183,239', edge: '#dff6ff' },
+  star: { rgb: '218,105,195', edge: '#ffe1f5' }
 });
 
 function installStyle() {
@@ -154,15 +161,133 @@ function drawFramelessStatDrop(scene, x, y, id) {
   return false;
 }
 
+function drawBarrierGlyph(ctx, kind, size) {
+  ctx.save();
+  ctx.lineCap = 'round';
+  ctx.lineJoin = 'round';
+  if (kind === 'sun') {
+    ctx.beginPath();
+    ctx.arc(0, 0, size * 0.22, 0, Math.PI * 2);
+    ctx.stroke();
+    for (let i = 0; i < 8; i += 1) {
+      const a = (Math.PI * 2 * i) / 8;
+      ctx.beginPath();
+      ctx.moveTo(Math.cos(a) * size * 0.34, Math.sin(a) * size * 0.34);
+      ctx.lineTo(Math.cos(a) * size * 0.49, Math.sin(a) * size * 0.49);
+      ctx.stroke();
+    }
+  } else if (kind === 'moon') {
+    ctx.beginPath();
+    ctx.arc(-size * 0.06, 0, size * 0.34, Math.PI * 0.28, Math.PI * 1.72);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.arc(size * 0.1, 0, size * 0.28, Math.PI * 0.42, Math.PI * 1.58, true);
+    ctx.stroke();
+  } else {
+    const outer = size * 0.47;
+    const inner = size * 0.2;
+    ctx.beginPath();
+    for (let i = 0; i < 10; i += 1) {
+      const r = i % 2 === 0 ? outer : inner;
+      const a = -Math.PI / 2 + (Math.PI * i) / 5;
+      const px = Math.cos(a) * r;
+      const py = Math.sin(a) * r;
+      if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+    }
+    ctx.closePath();
+    ctx.stroke();
+  }
+  ctx.restore();
+}
+
+function drawBarrierWithoutPillars(scene, x, y, kind) {
+  const style = BARRIER_STYLE[kind];
+  if (!style) return false;
+  const ctx = scene.ctx;
+  const cx = scene.center(x);
+  const cy = scene.center(y);
+  const w = TILE_SIZE * 0.62;
+  const h = TILE_SIZE * 0.82;
+  const t = (scene.idleClock || performance.now()) / 900;
+
+  ctx.save();
+  ctx.translate(cx, cy);
+  ctx.shadowColor = `rgba(${style.rgb},.48)`;
+  ctx.shadowBlur = 8;
+  const film = ctx.createLinearGradient(-w / 2, 0, w / 2, 0);
+  film.addColorStop(0, `rgba(${style.rgb},.05)`);
+  film.addColorStop(0.5, `rgba(${style.rgb},.24)`);
+  film.addColorStop(1, `rgba(${style.rgb},.05)`);
+  ctx.fillStyle = film;
+  ctx.fillRect(-w / 2, -h / 2, w, h);
+
+  ctx.shadowBlur = 4;
+  ctx.strokeStyle = style.edge;
+  ctx.globalAlpha = 0.78;
+  ctx.lineWidth = 1.15;
+  ctx.strokeRect(-w / 2, -h / 2, w, h);
+
+  ctx.globalAlpha = 0.34;
+  ctx.lineWidth = 0.9;
+  for (let i = -1; i <= 1; i += 1) {
+    const yLine = i * h * 0.22 + Math.sin(t + i) * 1.2;
+    ctx.beginPath();
+    ctx.moveTo(-w * 0.42, yLine);
+    ctx.bezierCurveTo(-w * 0.12, yLine - 2.2, w * 0.12, yLine + 2.2, w * 0.42, yLine);
+    ctx.stroke();
+  }
+
+  ctx.globalAlpha = 0.72;
+  ctx.lineWidth = 1.25;
+  drawBarrierGlyph(ctx, kind, TILE_SIZE * 0.28);
+  ctx.restore();
+  return true;
+}
+
+function drawStairAsset(scene, x, y, direction) {
+  const primary = direction === 'up' ? 'stairs-up-v4' : 'stairs-down-v4';
+  const fallback = direction === 'up' ? 'stairs-up' : 'stairs-down';
+  const image = getMapAsset(primary) ?? getMapAsset(fallback);
+  if (!image) return false;
+
+  const ctx = scene.ctx;
+  const cx = scene.center(x);
+  const cy = scene.center(y);
+  const glow = direction === 'up' ? 'rgba(245,215,115,.18)' : 'rgba(100,190,245,.18)';
+  const edge = direction === 'up' ? 'rgba(255,236,164,.58)' : 'rgba(178,231,255,.58)';
+
+  scene.drawSoftShadow(cx, cy + TILE_SIZE * 0.22, TILE_SIZE * 0.44, 0.14);
+  ctx.save();
+  const aura = ctx.createRadialGradient(cx, cy, 2, cx, cy, TILE_SIZE * 0.42);
+  aura.addColorStop(0, glow);
+  aura.addColorStop(1, 'rgba(0,0,0,0)');
+  ctx.fillStyle = aura;
+  ctx.fillRect(cx - TILE_SIZE * 0.48, cy - TILE_SIZE * 0.48, TILE_SIZE * 0.96, TILE_SIZE * 0.96);
+  ctx.strokeStyle = edge;
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.arc(cx, cy, TILE_SIZE * 0.31, 0, Math.PI * 2);
+  ctx.stroke();
+  ctx.restore();
+
+  return scene.drawMapImage(image, cx, cy, TILE_SIZE * 0.9, TILE_SIZE * 0.9, 0, 1);
+}
+
 export function applyV83RenderFixes(scene) {
   if (!scene?.ctx || scene.visualPatchV83Applied) return scene;
   scene.visualPatchV83Applied = true;
   const previousRenderToken = scene.renderToken.bind(scene);
   scene.renderToken = (x, y, token) => {
+    if (token === 'U' && drawStairAsset(scene, x, y, 'up')) return;
+    if (token === 'D' && drawStairAsset(scene, x, y, 'down')) return;
+
     const parsed = parseToken(token);
+    if (parsed.type === 'door' && drawBarrierWithoutPillars(scene, x, y, parsed.id)) return;
     if (parsed.type === 'item' && drawFramelessStatDrop(scene, x, y, parsed.id)) return;
     previousRenderToken(x, y, token);
   };
   scene.canvas.dataset.statItemPipeline = 'frameless-programmatic-v8.3';
+  scene.canvas.dataset.barrierPipeline = 'pillarless-energy-v8.8';
+  scene.canvas.dataset.stairPipeline = 'v4-stair-art-v8.8';
   return scene;
 }
