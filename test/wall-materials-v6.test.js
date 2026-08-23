@@ -24,7 +24,7 @@ test('V6 wall material atlas reconstructs the verified transparent WebP', async 
   const atlas = manifest.atlases.wallMaterialsV6;
   assert.equal(atlas.cols, 3);
   assert.equal(atlas.rows, 2);
-  assert.equal(atlas.base64Chunks.length, 12);
+  assert.equal(atlas.base64Chunks.length, 14);
 
   const chunks = await Promise.all(
     atlas.base64Chunks.map(async (relativePath) => (await readFile(join(mapRoot, relativePath), 'utf8')).trim())
