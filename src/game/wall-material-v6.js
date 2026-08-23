@@ -30,34 +30,48 @@ function wallExposures(mask) {
   };
 }
 
-function drawMaterialEdge(scene, side, px, py) {
-  // V7 intentionally uses one single-cell edge asset. Vertical runs are just
-  // the same art rotated 90 degrees, which keeps scale and texture consistent.
+function perimeterExposures(x, y) {
+  const max = GRID_SIZE - 1;
+  return {
+    north: y === 0,
+    east: x === max,
+    south: y === max,
+    west: x === 0
+  };
+}
+
+function drawMaterialEdge(scene, side, px, py, perimeter = false) {
+  // V7 intentionally uses one single-cell edge asset. Vertical runs are the
+  // same art rotated 90 degrees, so all wall faces share one brick language.
   const image = getMapAsset('wall-edge-horizontal-v6');
   if (!image) return;
 
+  const thickness = TILE_SIZE * 0.34;
   const inset = TILE_SIZE * 0.09;
   let cx = px + TILE_SIZE / 2;
   let cy = py + TILE_SIZE / 2;
-  let width = TILE_SIZE * 1.04;
-  let height = TILE_SIZE * 0.34;
+  const width = TILE_SIZE * (perimeter ? 1 : 1.04);
+  const height = thickness;
   let rotation = 0;
 
-  if (side === 'north') cy = py + inset;
+  // Perimeter faces stay completely inside the canvas. The old V7 placement
+  // centered them too close to the edge, clipping roughly half of the brick
+  // strip and making the tower's outer wall look undecorated.
+  if (side === 'north') cy = perimeter ? py + thickness / 2 : py + inset;
   if (side === 'south') {
-    cy = py + TILE_SIZE - inset;
+    cy = perimeter ? py + TILE_SIZE - thickness / 2 : py + TILE_SIZE - inset;
     rotation = Math.PI;
   }
   if (side === 'east') {
-    cx = px + TILE_SIZE - inset;
+    cx = perimeter ? px + TILE_SIZE - thickness / 2 : px + TILE_SIZE - inset;
     rotation = Math.PI / 2;
   }
   if (side === 'west') {
-    cx = px + inset;
+    cx = perimeter ? px + thickness / 2 : px + inset;
     rotation = -Math.PI / 2;
   }
 
-  scene.drawMapImage(image, cx, cy, width, height, rotation, 0.5);
+  scene.drawMapImage(image, cx, cy, width, height, rotation, perimeter ? 0.74 : 0.54);
 }
 
 function drawWallSurface(scene, x, y) {
@@ -78,27 +92,35 @@ function drawWallSurface(scene, x, y) {
   ctx.restore();
 }
 
-function cornerTransform(x, y) {
+function cornerPlacement(x, y) {
   const max = GRID_SIZE - 1;
-  if (x === 0 && y === 0) return { flipX: false, flipY: false };
-  if (x === max && y === 0) return { flipX: true, flipY: false };
-  if (x === 0 && y === max) return { flipX: false, flipY: true };
-  if (x === max && y === max) return { flipX: true, flipY: true };
+  const inward = 0.055;
+
+  // The source corner is authored as the top-left tower corner. Rotating the
+  // same perspective-aware artwork preserves its lighting better than mirror
+  // flips, which made the other three corners look inside-out.
+  if (x === 0 && y === 0) return { rotation: 0, offsetX: inward, offsetY: inward };
+  if (x === max && y === 0) return { rotation: Math.PI / 2, offsetX: -inward, offsetY: inward };
+  if (x === max && y === max) return { rotation: Math.PI, offsetX: -inward, offsetY: -inward };
+  if (x === 0 && y === max) return { rotation: -Math.PI / 2, offsetX: inward, offsetY: -inward };
   return null;
 }
 
 function drawOuterCorner(scene, x, y) {
-  const transform = cornerTransform(x, y);
-  if (!transform) return false;
+  const placement = cornerPlacement(x, y);
+  if (!placement) return false;
   const image = getMapAsset('wall-outer-corner-v6');
   if (!image) return false;
 
   const ctx = scene.ctx;
   ctx.save();
-  ctx.globalAlpha = 0.86;
-  ctx.translate(scene.center(x), scene.center(y));
-  ctx.scale(transform.flipX ? -1 : 1, transform.flipY ? -1 : 1);
-  const size = TILE_SIZE * 1.12;
+  ctx.globalAlpha = 0.92;
+  ctx.translate(
+    scene.center(x) + placement.offsetX * TILE_SIZE,
+    scene.center(y) + placement.offsetY * TILE_SIZE
+  );
+  ctx.rotate(placement.rotation);
+  const size = TILE_SIZE * 1.08;
   ctx.drawImage(image, -size / 2, -size / 2, size, size);
   ctx.restore();
   return true;
@@ -194,20 +216,29 @@ export function applyWallMaterialV6(scene) {
     structuralBoundary(state, x, y, floor);
     const mask = scene.wallMask(state, x, y);
     const exposed = wallExposures(mask);
+    const perimeter = perimeterExposures(x, y);
     const px = x * TILE_SIZE;
     const py = y * TILE_SIZE;
-    if (exposed.north) drawMaterialEdge(scene, 'north', px, py);
-    if (exposed.east) drawMaterialEdge(scene, 'east', px, py);
-    if (exposed.south) drawMaterialEdge(scene, 'south', px, py);
-    if (exposed.west) drawMaterialEdge(scene, 'west', px, py);
+
+    if (perimeter.north) drawMaterialEdge(scene, 'north', px, py, true);
+    else if (exposed.north) drawMaterialEdge(scene, 'north', px, py);
+
+    if (perimeter.east) drawMaterialEdge(scene, 'east', px, py, true);
+    else if (exposed.east) drawMaterialEdge(scene, 'east', px, py);
+
+    if (perimeter.south) drawMaterialEdge(scene, 'south', px, py, true);
+    else if (exposed.south) drawMaterialEdge(scene, 'south', px, py);
+
+    if (perimeter.west) drawMaterialEdge(scene, 'west', px, py, true);
+    else if (exposed.west) drawMaterialEdge(scene, 'west', px, py);
+
+    // Corner architecture sits over its two perimeter brick strips. This keeps
+    // the four corners legible without reintroducing ornaments inside the maze.
+    if (cornerPlacement(x, y)) drawOuterCorner(scene, x, y);
   };
 
-  // V7 removes all maze-interior corner/pillar decoration. The large corner
-  // architecture is reserved exclusively for the tower's four outer corners.
-  scene.drawWallOrnament = (state, x, y) => {
-    if (!cornerTransform(x, y)) return;
-    drawOuterCorner(scene, x, y);
-  };
+  // Interior wall nodes intentionally have no corner/pillar ornament in V7.
+  scene.drawWallOrnament = () => {};
 
   scene.renderToken = (x, y, token) => {
     const parsed = parseToken(token);
@@ -232,7 +263,7 @@ export function applyWallMaterialV6(scene) {
     structuralRenderToken(x, y, token);
   };
 
-  scene.canvas.dataset.wallPipeline = 'continuous-structure-v5 single-cell-edges-v7 outer-corners-only-v7';
+  scene.canvas.dataset.wallPipeline = 'continuous-structure-v5 single-cell-edges-v7 perimeter-bricks-v7 rotated-outer-corners-v7';
   scene.canvas.dataset.wallMaterial = 'wall-materials-v7-cleanup';
   scene.canvas.dataset.barrierPipeline = 'programmatic-anchor-field-v7';
   return scene;
