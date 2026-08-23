@@ -1,6 +1,7 @@
 {
   "version": 3,
   "revision": "environment-ui-v4",
+  "wallRevision": "wall-materials-v6",
   "theme": "moonlit-star-tower",
   "basePath": "/assets/anime/map/",
   "atlases": {
@@ -23,6 +24,25 @@
     "heroPortraitV4": {
       "base64Chunks": ["atlases/v4/portrait-01.b64","atlases/v4/portrait-02.b64","atlases/v4/portrait-03.b64"],
       "mime": "image/webp", "cols": 1, "rows": 1
+    },
+    "wallMaterialsV6": {
+      "base64Chunks": [
+        "atlases/v6/wall-materials-v6-01.b64",
+        "atlases/v6/wall-materials-v6-02.b64",
+        "atlases/v6/wall-materials-v6-03.b64",
+        "atlases/v6/wall-materials-v6-04a.b64",
+        "atlases/v6/wall-materials-v6-04b.b64",
+        "atlases/v6/wall-materials-v6-05.b64",
+        "atlases/v6/wall-materials-v6-06a.b64",
+        "atlases/v6/wall-materials-v6-06b.b64",
+        "atlases/v6/wall-materials-v6-07a.b64",
+        "atlases/v6/wall-materials-v6-07b.b64",
+        "atlases/v6/wall-materials-v6-08a.b64",
+        "atlases/v6/wall-materials-v6-08b.b64",
+        "atlases/v6/wall-materials-v6-09a.b64",
+        "atlases/v6/wall-materials-v6-09b.b64"
+      ],
+      "mime": "image/webp", "cols": 3, "rows": 2
     }
   },
   "assets": {
@@ -78,6 +98,12 @@
     "card-sun-ui-v4": {"atlas":"v4Combined","index":15,"role":"card-ui"},
     "card-moon-ui-v4": {"atlas":"v4Combined","index":16,"role":"card-ui"},
     "card-star-ui-v4": {"atlas":"v4Combined","index":17,"role":"card-ui"},
-    "hero-portrait-v4": {"atlas":"heroPortraitV4","index":0,"role":"portrait"}
+    "hero-portrait-v4": {"atlas":"heroPortraitV4","index":0,"role":"portrait"},
+    "wall-surface-v6": {"atlas":"wallMaterialsV6","index":0,"role":"wall-surface"},
+    "wall-edge-horizontal-v6": {"atlas":"wallMaterialsV6","index":1,"role":"wall-edge"},
+    "wall-edge-vertical-v6": {"atlas":"wallMaterialsV6","index":2,"role":"wall-edge"},
+    "wall-outer-corner-v6": {"atlas":"wallMaterialsV6","index":3,"role":"wall-corner"},
+    "wall-inner-corner-v6": {"atlas":"wallMaterialsV6","index":4,"role":"wall-corner"},
+    "wall-end-pillar-v6": {"atlas":"wallMaterialsV6","index":5,"role":"wall-node"}
   }
 }

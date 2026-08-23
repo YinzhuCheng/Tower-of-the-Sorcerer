@@ -3,6 +3,7 @@ import { ENEMIES, ITEMS, TILE_SIZE } from './data.js';
 import { parseToken } from './engine.js';
 import { portraitIndex } from './anime-portraits.js';
 import { getMapAsset } from './map-assets.js';
+import { applyWallMaterialV6 } from './wall-material-v6.js';
 
 const FEATURED_ENEMY_ASSET = Object.freeze({
   catScout: 'featured-cat-scout',
@@ -400,5 +401,6 @@ export function createCanvasTowerScene(bridge, parent = document.getElementById(
     legacyDestroy();
   };
 
+  applyWallMaterialV6(scene);
   return scene;
 }
