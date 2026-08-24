@@ -82,6 +82,11 @@ export function createBoundedTowerAdapter() {
   const base = createTowerAdapter();
   return {
     ...base,
+    // Victory is an absorbing state in engine.js. Do not run the automatic
+    // item/switch closure after the final boss has set victory=true.
+    normalize: (state) => base.isGoal(state)
+      ? { state: base.cloneState(state), steps: [] }
+      : base.normalize(state),
     objectiveUpperBound: (state) => optimisticTerminalHpUpperBound(base, state)
   };
 }
