@@ -1,7 +1,11 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { runGreedyShopStrategy } from '../src/solver/greedy-strategy.js';
-import { findBestGreedyIncumbent } from '../src/solver/tower-incumbent.js';
+import {
+  GREEDY_INCUMBENT_WITNESS_TYPE,
+  findBestGreedyIncumbent,
+  verifyGreedyIncumbentWitness
+} from '../src/solver/tower-incumbent.js';
 
 const CASES = [
   { name: 'def-atk-hp', cycle: ['def', 'atk', 'hp'], hp: 12536, maxHp: 36910, atk: 209, def: 215 },
@@ -45,4 +49,23 @@ test('incumbent portfolio selects the strongest authoritative strategy dynamical
   assert.equal(portfolio.feasibleCount, 8);
   assert.equal(portfolio.best.id, 'def-atk-hp');
   assert.equal(portfolio.best.result.final.hp, 12_536);
+  assert.equal(portfolio.best.witness.type, GREEDY_INCUMBENT_WITNESS_TYPE);
+  assert.deepEqual(portfolio.best.witness.shopCycle, ['def', 'atk', 'hp']);
+});
+
+test('greedy incumbent witness is re-executed by the authoritative engine', () => {
+  const portfolio = findBestGreedyIncumbent();
+  const verification = verifyGreedyIncumbentWitness(portfolio.best.witness);
+  assert.equal(verification.ok, true);
+  assert.equal(verification.value, 12_536);
+  assert.equal(verification.objectiveType, 'terminal_hp');
+  assert.equal(verification.summary.cores, 7);
+  assert.equal(verification.summary.purchases, 30);
+
+  const invalid = verifyGreedyIncumbentWitness({
+    type: GREEDY_INCUMBENT_WITNESS_TYPE,
+    strategyId: 'all-hp',
+    shopCycle: ['hp']
+  });
+  assert.equal(invalid.ok, false);
 });
