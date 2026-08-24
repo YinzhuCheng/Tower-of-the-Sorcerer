@@ -24,7 +24,7 @@ const PORTRAITS = {
 };
 
 const urlCache = new Map();
-const cardUiAssets = Object.freeze({ sun: 'card-sun-ui-v4', moon: 'card-moon-ui-v4', star: 'card-star-ui-v4' });
+const cardUiAssets = Object.freeze({ sun: 'card-sun-v10', moon: 'card-moon-v10', star: 'card-star-v10' });
 
 function archetype(id) { return PORTRAITS[id]?.[1] ?? 'hero'; }
 
@@ -69,8 +69,14 @@ export function hydratePortraits(root = document) {
     art.className = 'card-ui-art';
     art.alt = `${key} card`;
     art.src = src;
-    Object.assign(art.style, { width: '28px', height: '34px', objectFit: 'contain', flex: '0 0 auto', filter: 'drop-shadow(0 2px 5px rgba(0,0,0,.35))' });
-    const oldLabel = token.querySelector('span');
+    Object.assign(art.style, {
+      width: '34px',
+      height: '42px',
+      objectFit: 'contain',
+      flex: '0 0 auto',
+      filter: 'drop-shadow(0 2px 6px rgba(0,0,0,.4))'
+    });
+    const oldLabel = token.querySelector('.card-emblem');
     if (oldLabel) oldLabel.style.display = 'none';
     token.prepend(art);
   }
