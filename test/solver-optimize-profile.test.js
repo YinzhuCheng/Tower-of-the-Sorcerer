@@ -12,9 +12,8 @@ test('Tower optimizer uses a verified incumbent and safe HP upper bound', { time
   const adapter = createBoundedTowerAdapter();
   const initial = adapter.createInitialState();
   const initialUpperBound = adapter.objectiveUpperBound(initial);
-  // Regression guard for the compact-state implementation: it must preserve
-  // the exact same deliberately-loose bound as the original map scan.
-  assert.equal(initialUpperBound, 90_080);
+  assert.ok(initialUpperBound >= incumbent.final.hp, 'an admissible upper bound must cover a verified solution');
+  assert.ok(initialUpperBound < 90_080, 'mandatory final-form damage should tighten the old zero-damage bound');
 
   const report = solve({
     adapter,
