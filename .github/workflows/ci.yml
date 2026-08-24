@@ -13,3 +13,14 @@ jobs:
         with:
           node-version: 22
       - run: npm run check
+      - name: Generate tuner profile on solver branch
+        if: always() && (github.head_ref == 'solver-phase1-pareto' || github.ref == 'refs/heads/solver-phase1-pareto')
+        run: node scripts/tune-shop-hp.mjs --json > shop-hp-tuner-report.json
+      - name: Upload tuner profile
+        if: always() && (github.head_ref == 'solver-phase1-pareto' || github.ref == 'refs/heads/solver-phase1-pareto')
+        uses: actions/upload-artifact@v4
+        with:
+          name: shop-hp-tuner-report
+          path: shop-hp-tuner-report.json
+          if-no-files-found: error
+          retention-days: 7
