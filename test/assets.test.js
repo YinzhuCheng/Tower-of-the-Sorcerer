@@ -19,10 +19,11 @@ function assertWebP(base64, label) {
   assert.equal(data.subarray(8, 12).toString('ascii'), 'WEBP', `${label} must be WebP`);
 }
 
-test('enemy art manifest resolves all 20 HD enemy entries', async () => {
+test('enemy art manifest resolves all 21 HD enemy entries including Mote V10', async () => {
   const manifest = JSON.parse(await readFile(manifestPath, 'utf8'));
   const entries = Object.entries(manifest.assets ?? {});
-  assert.equal(entries.length, 20);
+  assert.equal(entries.length, 21);
+  assert.ok(manifest.assets.mote, 'Mote must use a standalone transparent enemy asset');
 
   const bundleCache = new Map();
   for (const [portrait, meta] of entries) {

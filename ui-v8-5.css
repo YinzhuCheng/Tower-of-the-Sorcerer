@@ -1,0 +1,133 @@
+/* V10.3 — clearer stat iconography + generated card art without duplicate emblems. */
+
+.stats-panel{padding-left:15px!important;padding-right:15px!important}
+
+.stat-row-v85{
+  display:grid!important;
+  grid-template-columns:1fr!important;
+  gap:0!important;
+  align-items:stretch!important;
+  padding:6px 0 8px!important;
+  margin:0!important;
+  border-bottom:1px solid var(--line-soft)!important;
+}
+.stat-row-v85>.stat-entry,
+.stat-row-v85>.stat-entry:nth-child(n+3){
+  min-width:0!important;
+  min-height:31px!important;
+  padding:6px 4px!important;
+  display:grid!important;
+  grid-template-columns:24px minmax(0,1fr)!important;
+  align-items:center!important;
+  justify-content:stretch!important;
+  gap:7px!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+}
+.stat-row-v85>.stat-entry+.stat-entry{
+  border-left:0!important;
+  border-top:1px solid rgba(131,181,222,.09)!important;
+}
+.stat-row-v85 .stat-glyph{
+  width:20px!important;
+  height:20px!important;
+  margin:0!important;
+  display:grid!important;
+  place-items:center!important;
+  line-height:0!important;
+}
+.stat-row-v85 .stat-icon{
+  display:block!important;
+  width:15px!important;
+  height:15px!important;
+  opacity:1!important;
+  filter:drop-shadow(0 0 4px rgba(100,180,240,.2));
+}
+/* The old ATK SVG was too thin at HUD scale. Replace it visually with a broad,
+   highlighted sword silhouette while keeping the existing accessible label. */
+.stat-row-v85 .atk-entry .stat-icon{display:none!important}
+.stat-row-v85 .atk-entry .stat-glyph::before{
+  content:"";
+  display:block;
+  width:18px;
+  height:18px;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg transform='rotate(45 12 12)'%3E%3Cpath fill='%23ffe0b8' d='M10.4 1.8h3.2l.7 11.7-2.3 2.4-2.3-2.4.7-11.7Z'/%3E%3Cpath fill='%23fff5e4' d='M11.25 3h1.5l.35 9.8-1.1 1.2-1.1-1.2.35-9.8Z'/%3E%3Cpath fill='%23f2a15f' d='M6.4 12.7h11.2v2.8H6.4z'/%3E%3Cpath fill='%23d9793b' d='M10.5 15h3v5.1h-3z'/%3E%3Ccircle cx='12' cy='21' r='1.8' fill='%23ffd3a0'/%3E%3C/g%3E%3C/svg%3E");
+  background-position:center;
+  background-repeat:no-repeat;
+  background-size:contain;
+  filter:drop-shadow(0 0 4px rgba(243,180,125,.4));
+}
+.stat-row-v85 dd{
+  min-width:0!important;
+  margin:0!important;
+  color:var(--text)!important;
+  font-size:.82rem!important;
+  font-weight:850!important;
+  line-height:1!important;
+  letter-spacing:-.015em!important;
+  white-space:nowrap!important;
+  overflow:visible!important;
+  text-align:right!important;
+  font-variant-numeric:tabular-nums;
+}
+.stat-row-v85 .hp-entry dd{
+  font-size:.78rem!important;
+  letter-spacing:-.025em!important;
+}
+
+.card-wallet-v85{
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  gap:7px!important;
+  padding:8px!important;
+}
+.card-wallet-v85 .card-token{
+  position:relative!important;
+  display:block!important;
+  min-width:0!important;
+  min-height:72px!important;
+  padding:6px!important;
+  overflow:hidden!important;
+  isolation:isolate;
+}
+/* Generated cards already contain the sun/moon/star identity. Never layer the
+   legacy circular emblem on top of the actual card artwork. */
+.card-wallet-v85 .card-emblem{display:none!important}
+.card-wallet-v85 .card-ui-art{
+  position:absolute!important;
+  left:50%!important;
+  top:3px!important;
+  width:40px!important;
+  height:49px!important;
+  max-width:calc(100% - 8px)!important;
+  object-fit:contain!important;
+  object-position:center top!important;
+  transform:translateX(-50%)!important;
+  margin:0!important;
+  pointer-events:none!important;
+  filter:drop-shadow(0 2px 5px rgba(0,0,0,.36))!important;
+}
+.card-wallet-v85 .card-token b{
+  position:absolute!important;
+  left:8px!important;
+  bottom:5px!important;
+  z-index:2!important;
+  min-width:1ch;
+  margin:0!important;
+  text-align:left!important;
+  font-size:.84rem!important;
+  line-height:1!important;
+  text-shadow:0 1px 3px rgba(0,0,0,.75);
+  font-variant-numeric:tabular-nums;
+}
+
+@media (max-width:1100px){
+  .stat-row-v85>.stat-entry{min-height:29px!important;padding:5px 3px!important}
+  .stat-row-v85 dd{font-size:.78rem!important}
+  .stat-row-v85 .hp-entry dd{font-size:.74rem!important}
+  .stat-row-v85 .atk-entry .stat-glyph::before{width:17px;height:17px}
+  .card-wallet-v85{gap:5px!important;padding:7px!important}
+  .card-wallet-v85 .card-token{min-height:68px!important;padding:5px!important}
+  .card-wallet-v85 .card-ui-art{left:50%!important;top:3px!important;width:37px!important;height:45px!important}
+  .card-wallet-v85 .card-token b{left:7px!important;bottom:5px!important}
+}
