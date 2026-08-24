@@ -29,7 +29,7 @@ test('V8 installs four UI themes and keeps the compact HUD structure', async () 
   assert.match(css, /\.card-token\+\.card-token\{border-left/);
 });
 
-test('V8.3 reconstructs the generated atlas exactly and uses frameless stat drops', async () => {
+test('V8 generated UI atlas remains exact while V10 supplies gameplay pickups and cards', async () => {
   const source = await readFile(join(root, 'src/game/visual-theme-v8.js'), 'utf8');
   const patch = await readFile(join(root, 'src/game/visual-patch-v83.js'), 'utf8');
   const shim = await readFile(join(root, 'src/game/v8-atlas-fetch-shim.js'), 'utf8');
@@ -73,15 +73,19 @@ test('V8.3 reconstructs the generated atlas exactly and uses frameless stat drop
   assert.match(source, /drawOuterWallTrim/);
   assert.match(source, /decorateUiPanels/);
 
-  assert.match(patch, /frameless-programmatic-v8\.3/);
-  assert.match(patch, /id === 'atk'/);
-  assert.match(patch, /id === 'def'/);
-  assert.match(patch, /id === 'dual'/);
-  assert.match(patch, /id === 'hp'/);
-  assert.match(patch, /id === 'hpLarge'/);
-  assert.match(patch, /function drawGem/);
-  assert.match(patch, /function drawPotion/);
-  assert.doesNotMatch(patch, /drawItem\(/);
+  assert.match(patch, /generated-items-v10/);
+  assert.match(patch, /generated-cards-v10/);
+  assert.match(patch, /gem-atk-v10/);
+  assert.match(patch, /gem-def-v10/);
+  assert.match(patch, /potion-red-v10/);
+  assert.match(patch, /potion-blue-v10/);
+  assert.match(patch, /card-sun-v10/);
+  assert.match(patch, /card-moon-v10/);
+  assert.match(patch, /card-star-v10/);
+  assert.match(patch, /drawGeneratedStatDrop/);
+  assert.match(patch, /drawGeneratedCard/);
+  assert.doesNotMatch(patch, /function drawGem/);
+  assert.doesNotMatch(patch, /function drawPotion/);
 
   assert.match(source, /programmatic-card-v8/);
   assert.doesNotMatch(source, /state\.x\s*[+\-]=/);
