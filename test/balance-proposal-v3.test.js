@@ -7,7 +7,7 @@ import {
 
 function passingReport() {
   return {
-    model: 'adaptive-numeric-ray-v0.2-holy-aware',
+    model: 'adaptive-numeric-ray-v0.3-complete-holy-coverage',
     candidateId: 'numeric-combo-test',
     leverKeys: ['shop:hp', 'enemy:a:def', 'enemy:b:magicPower'],
     acceptedHardConstraints: true,
@@ -19,6 +19,7 @@ function passingReport() {
     holyPolicyAnalysis: {
       stableWithinSeedPortfolio: true,
       allOptimizedLocalOptimal: true,
+      coverageComplete: true,
       selectedHolyPolicy: 'immediate',
       optimizedPolicies: 4,
       attemptedPolicies: 4,
@@ -43,7 +44,7 @@ function passingReport() {
   };
 }
 
-test('generic review proposal accepts Holy-aware proof-backed numeric edits but still blocks production writes', () => {
+test('generic review proposal accepts complete Holy-aware proof-backed numeric edits but still blocks production writes', () => {
   const report = passingReport();
   const gate = evaluateGenericBalanceReviewGate(report);
   assert.equal(gate.passed, true);
@@ -69,4 +70,16 @@ test('generic review proposal blocks purchase-only evidence after Holy enters th
   const proposal = createGenericBalanceReviewProposal({ report });
   assert.equal(proposal.status, 'blocked');
   assert.ok(proposal.gate.failures.includes('holyPolicyBestResponse'));
+});
+
+test('generic review proposal blocks incomplete Holy seed coverage even when the seeded policy is locally stable', () => {
+  const report = passingReport();
+  report.holyPolicyAnalysis.coverageComplete = false;
+  report.holyPolicyAnalysis.optimizedPolicies = 1;
+  report.holyPolicyAnalysis.attemptedPolicies = 4;
+  report.holyPolicyAnalysis.uncoveredPolicies = ['after-core-6', 'after-core-7', 'before-final'];
+  const proposal = createGenericBalanceReviewProposal({ report });
+  assert.equal(proposal.status, 'blocked');
+  assert.ok(proposal.gate.failures.includes('holyPolicyBestResponse'));
+  assert.deepEqual(proposal.edits, []);
 });
