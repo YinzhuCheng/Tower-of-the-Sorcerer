@@ -76,8 +76,6 @@ function optimisticAdditionalPurchases(state, optimisticFutureGold) {
   let gold = Math.max(0, optimisticFutureGold);
   let purchases = 0;
   let shopPurchases = state.shopPurchases;
-  // The current game cannot approach this limit; it is only a guard against
-  // malformed future content making a proof helper loop forever.
   while (purchases < 10_000) {
     const cost = getShopCost({ shopPurchases });
     if (gold < cost) break;
@@ -96,11 +94,6 @@ function bitMask(values, predicate) {
   return mask;
 }
 
-/**
- * Exact compact encoding of the same K dimensions used by tower-adapter.js.
- * This is not a hash: every event-state code and every mechanism bit remains
- * present, so frontier equality does not depend on probabilistic collision.
- */
 function compactFrontierKey(baseAdapter, state) {
   const compact = Array.isArray(state.eventStates) ? state : baseAdapter.compactState(state);
   const relicKeys = Object.keys(compact.relics).sort();
@@ -127,15 +120,6 @@ function compactFrontierKey(baseAdapter, state) {
   ].join(';');
 }
 
-/**
- * Lower bound on the raw damage that the mandatory final form must still deal.
- *
- * The bound intentionally gives the hero impossible advantages: effectively
- * infinite DEF, every remaining ATK gain, optional Ward, and any chosen future
- * shop ATK purchases. The final boss is magic, so DEF cannot erase its damage;
- * only raising ATK can shorten the number of counterattacks. Any real route
- * therefore loses at least this much HP to the final form.
- */
 function finalBossDamageLowerBound(atk, wardAvailable) {
   const battle = calculateBattle(
     { hp: Number.MAX_SAFE_INTEGER, atk, def: Number.MAX_SAFE_INTEGER },
@@ -145,25 +129,6 @@ function finalBossDamageLowerBound(atk, wardAvailable) {
   return Number.isFinite(battle.totalDamage) ? battle.totalDamage : Number.POSITIVE_INFINITY;
 }
 
-/**
- * Safe optimistic terminal-HP bound.
- *
- * Deliberately assumes an impossible best case:
- * - every non-final remaining enemy deals zero damage;
- * - every remaining HP/ATK item and boss reward is collected;
- * - every remaining enemy can be farmed for gold;
- * - Lucky, when still obtainable, is acquired before every remaining enemy;
- * - every affordable future shop purchase can be allocated optimally between
- *   HP (+900) and ATK (+5); DEF is granted for free by the relaxation;
- * - when Holy is still obtainable, every future HP gain happens before Holy
- *   and is therefore doubled;
- * - Ward, when still obtainable, is active for the mandatory final form.
- *
- * Unlike the earlier zero-damage bound, this version subtracts the unavoidable
- * final-form magic damage and explicitly optimizes the HP-vs-ATK shop tradeoff.
- * All other assumptions remain optimistic, so the result can only overestimate
- * achievable terminal HP and is safe for branch-and-bound pruning.
- */
 export function optimisticTerminalHpUpperBound(baseAdapter, state) {
   const remainder = scanCompactRemainder(baseAdapter, state);
   const compact = remainder.compact;
@@ -193,18 +158,32 @@ export function optimisticTerminalHpUpperBound(baseAdapter, state) {
 
 export function createBoundedTowerAdapter() {
   const base = createTowerAdapter();
+  const upperBoundCache = new WeakMap();
+  const upperBound = (state) => {
+    if (state && typeof state === 'object' && upperBoundCache.has(state)) {
+      return upperBoundCache.get(state);
+    }
+    const value = optimisticTerminalHpUpperBound(base, state);
+    if (state && typeof state === 'object') upperBoundCache.set(state, value);
+    return value;
+  };
+  const boundFirstPriority = (state) => {
+    const bound = upperBound(state);
+    if (!Number.isFinite(bound)) return Number.NEGATIVE_INFINITY;
+    // Bounds are integral HP. A sub-unit progress term only breaks ties and can
+    // never place a lower-upper-bound label ahead of a higher one.
+    const progressTie = (state.cores * FLOORS.length + state.floor) / (FLOORS.length * FLOORS.length + 1);
+    return bound + progressTie * 1e-3;
+  };
+
   return {
     ...base,
-    // Frontier identity is exact but compact; structuralKey remains the
-    // verbose audit representation used by certificate hashes and replay.
     frontierKey: (state) => compactFrontierKey(base, state),
-    // Victory is an absorbing state in engine.js. Do not run the automatic
-    // item/switch closure after the final boss has set victory=true.
     normalize: (state) => base.isGoal(state)
       ? { state: base.cloneState(state), steps: [] }
       : base.normalize(state),
-    // This upper bound reads only the numeric event vector. It never clones or
-    // scans the eight materialized maps during search.
-    objectiveUpperBound: (state) => optimisticTerminalHpUpperBound(base, state)
+    objectiveUpperBound: upperBound,
+    priority: boundFirstPriority,
+    rulesVersion: () => `${base.rulesVersion()}+boss-stair-lock-v1`
   };
 }
