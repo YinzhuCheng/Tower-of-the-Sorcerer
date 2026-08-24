@@ -2,7 +2,7 @@ import { solve } from '../src/solver/search.js';
 import { replayTowerCertificate } from '../src/solver/replay.js';
 import { createTowerAdapter } from '../src/solver/tower-adapter.js';
 import { createBoundedTowerAdapter } from '../src/solver/tower-bounds.js';
-import { findBestGreedyIncumbent } from '../src/solver/tower-incumbent.js';
+import { findBestGreedyIncumbent, findBestKnownIncumbent } from '../src/solver/tower-incumbent.js';
 
 function parseArgs(argv) {
   const config = {
@@ -43,7 +43,6 @@ function summarizePortfolio(portfolio) {
       id: entry.id,
       cycle: entry.cycle,
       holyPolicy: entry.holyPolicy,
-      holyAcquisition: entry.result.holyAcquisition,
       solvable: entry.result.solvable,
       hp: entry.result.solvable ? entry.result.final.hp : null,
       failure: entry.result.failure
@@ -51,17 +50,34 @@ function summarizePortfolio(portfolio) {
   };
 }
 
+function summarizeBestKnown(best) {
+  if (!best) return null;
+  return {
+    id: best.id,
+    source: best.source,
+    hp: best.result.final.hp,
+    cycle: best.cycle,
+    holyPolicy: best.holyPolicy,
+    explicitShopPlan: Boolean(best.shopPlan),
+    shopPlan: best.shopPlan ?? null,
+    witnessType: best.witness.type,
+    purchaseCounts: best.result.purchaseCounts
+  };
+}
+
 const config = parseArgs(process.argv.slice(2));
 if (config.help) {
-  console.log(`Usage: node scripts/analyze-game.mjs [options]\n\nOptions:\n  --mode=existence|optimize\n  --max-expanded=N\n  --max-generated=N\n  --no-incumbent       Disable authoritative greedy-portfolio witness in optimize mode\n  --json\n`);
+  console.log(`Usage: node scripts/analyze-game.mjs [options]\n\nOptions:\n  --mode=existence|optimize\n  --max-expanded=N\n  --max-generated=N\n  --no-incumbent       Disable authoritative best-known witness in optimize mode\n  --json\n`);
   process.exit(0);
 }
 
 const optimizing = config.mode === 'optimize';
 const adapter = optimizing ? createBoundedTowerAdapter() : createTowerAdapter();
 const portfolio = optimizing && config.seedIncumbent ? findBestGreedyIncumbent() : null;
-const incumbentWitness = portfolio?.best?.witness ?? null;
-const incumbentValue = portfolio?.best?.result.final.hp ?? null;
+const known = portfolio ? findBestKnownIncumbent({ portfolio }) : null;
+const incumbent = known?.best ?? null;
+const incumbentWitness = incumbent?.witness ?? null;
+const incumbentValue = incumbent?.result.final.hp ?? null;
 const initialUpperBound = optimizing && adapter.objectiveUpperBound
   ? adapter.objectiveUpperBound(adapter.createInitialState())
   : null;
@@ -78,6 +94,7 @@ if (report.certificate) {
 }
 report.optimizationSeed = optimizing ? {
   portfolio: summarizePortfolio(portfolio),
+  bestKnown: summarizeBestKnown(incumbent),
   verification: report.incumbentVerification,
   initialUpperBound,
   initialGap: incumbentValue == null || initialUpperBound == null
@@ -89,9 +106,9 @@ if (config.json) {
   console.log(JSON.stringify(report, null, 2));
 } else {
   console.log(`Solver ${report.solverVersion} (${report.mode}) | state=${report.stateEncoding}`);
-  if (report.optimizationSeed?.portfolio?.best) {
-    const best = report.optimizationSeed.portfolio.best;
-    console.log(`incumbent witness: ${best.hp} HP via ${best.id} [Holy=${best.holyPolicy}] (${best.witnessType}) | verified=${report.incumbentVerification?.ok === true} | initial upper: ${initialUpperBound} | gap: ${report.optimizationSeed.initialGap}`);
+  if (report.optimizationSeed?.bestKnown) {
+    const best = report.optimizationSeed.bestKnown;
+    console.log(`incumbent witness: ${best.hp} HP via ${best.id} [source=${best.source}, Holy=${best.holyPolicy}] (${best.witnessType}) | verified=${report.incumbentVerification?.ok === true} | initial upper: ${initialUpperBound} | gap: ${report.optimizationSeed.initialGap}`);
   } else if (optimizing) {
     console.log(`incumbent witness: disabled/unavailable | initial upper: ${initialUpperBound}`);
   }
