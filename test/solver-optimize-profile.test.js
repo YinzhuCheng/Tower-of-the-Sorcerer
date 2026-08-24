@@ -2,7 +2,22 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { runGreedyShopStrategy } from '../src/solver/greedy-strategy.js';
 import { solve } from '../src/solver/search.js';
-import { createBoundedTowerAdapter } from '../src/solver/tower-bounds.js';
+import { canonicalizeCompassTravel, createBoundedTowerAdapter } from '../src/solver/tower-bounds.js';
+
+test('compass travel canonicalization removes only redundant travel directions', () => {
+  const actions = [
+    { kind: 'teleport', targetFloor: 1, id: 'down' },
+    { kind: 'teleport', targetFloor: 5, id: 'up' },
+    { kind: 'tile', token: 'D', id: 'stairs-down' },
+    { kind: 'tile', token: 'U', id: 'stairs-up' },
+    { kind: 'tile', token: 'enemy:test', id: 'enemy' }
+  ];
+  const withoutCompass = canonicalizeCompassTravel({ floor: 4, relics: { compass: false } }, actions);
+  assert.equal(withoutCompass.length, actions.length);
+
+  const withCompass = canonicalizeCompassTravel({ floor: 4, relics: { compass: true } }, actions);
+  assert.deepEqual(withCompass.map((action) => action.id), ['down', 'stairs-up', 'enemy']);
+});
 
 test('Tower optimizer uses a verified incumbent and safe HP upper bound', { timeout: 60_000 }, () => {
   const incumbent = runGreedyShopStrategy({ shopCycle: ['def', 'atk', 'hp'] });
