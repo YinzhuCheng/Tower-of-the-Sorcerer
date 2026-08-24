@@ -8,6 +8,7 @@ on:
       - 'src/tuner/**'
       - 'scripts/tune-shop-hp.mjs'
       - 'scripts/rank-numeric-levers.mjs'
+      - 'scripts/synthesize-numeric-candidates.mjs'
       - 'test/shop-hp-tuner-*.test.js'
       - 'test/numeric-*.test.js'
       - '.github/workflows/tuner-profile.yml'
@@ -16,6 +17,7 @@ on:
       - 'src/tuner/**'
       - 'scripts/tune-shop-hp.mjs'
       - 'scripts/rank-numeric-levers.mjs'
+      - 'scripts/synthesize-numeric-candidates.mjs'
       - 'test/shop-hp-tuner-*.test.js'
       - 'test/numeric-*.test.js'
       - '.github/workflows/tuner-profile.yml'
@@ -35,6 +37,10 @@ jobs:
         run: node scripts/rank-numeric-levers.mjs --top-k=16 --relative-step=0.10 --json > numeric-lever-report.json
       - name: Print concise lever summary
         run: node scripts/rank-numeric-levers.mjs --top-k=10 --relative-step=0.10
+      - name: Synthesize and evaluate budgeted multi-parameter candidates
+        run: node scripts/synthesize-numeric-candidates.mjs --top-k=16 --relative-step=0.10 --max-candidates=6 --edit-budget=0.30 --max-parameters=3 --evaluate --json > numeric-candidate-report.json
+      - name: Print concise candidate summary
+        run: node scripts/synthesize-numeric-candidates.mjs --top-k=16 --relative-step=0.10 --max-candidates=6 --edit-budget=0.30 --max-parameters=3 --evaluate
       - name: Upload shop HP report
         uses: actions/upload-artifact@v4
         with:
@@ -47,5 +53,12 @@ jobs:
         with:
           name: numeric-lever-report
           path: numeric-lever-report.json
+          if-no-files-found: error
+          retention-days: 7
+      - name: Upload numeric candidate report
+        uses: actions/upload-artifact@v4
+        with:
+          name: numeric-candidate-report
+          path: numeric-candidate-report.json
           if-no-files-found: error
           retention-days: 7
