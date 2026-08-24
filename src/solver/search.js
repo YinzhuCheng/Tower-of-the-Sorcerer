@@ -10,6 +10,10 @@ function defaultPriority(state, adapter) {
   return adapter.priority ? adapter.priority(state) : defaultObjective(state, adapter);
 }
 
+function defaultFrontierKey(state, adapter) {
+  return adapter.frontierKey ? adapter.frontierKey(state) : adapter.structuralKey(state);
+}
+
 function normalizeWith(adapter, state) {
   if (!adapter.normalize) return { state, steps: [] };
   const result = adapter.normalize(state);
@@ -136,7 +140,7 @@ export function solve({
   }
 
   const initialResources = adapter.resources(initialNormalized.state);
-  const initialKey = adapter.structuralKey(initialNormalized.state);
+  const initialKey = defaultFrontierKey(initialNormalized.state, adapter);
   const initialLabel = {
     id: nextId++,
     state: initialNormalized.state,
@@ -217,7 +221,7 @@ export function solve({
       }
 
       const resources = adapter.resources(nextState);
-      const key = adapter.structuralKey(nextState);
+      const key = defaultFrontierKey(nextState, adapter);
       const edgeSteps = [...(applied.steps ?? []), ...normalized.steps];
       const nextLabel = {
         id: nextId++,
