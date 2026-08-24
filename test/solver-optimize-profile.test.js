@@ -12,7 +12,9 @@ test('Tower optimizer uses a verified incumbent and safe HP upper bound', { time
   const adapter = createBoundedTowerAdapter();
   const initial = adapter.createInitialState();
   const initialUpperBound = adapter.objectiveUpperBound(initial);
-  assert.ok(initialUpperBound >= incumbent.final.hp);
+  // Regression guard for the compact-state implementation: it must preserve
+  // the exact same deliberately-loose bound as the original map scan.
+  assert.equal(initialUpperBound, 90_080);
 
   const report = solve({
     adapter,
@@ -45,6 +47,7 @@ test('Tower optimizer uses a verified incumbent and safe HP upper bound', { time
   assert.ok(report.objective.best >= 12_536);
   assert.ok(report.generatedStates >= report.expandedStates);
   assert.ok(report.prunedDominated > 0);
+  assert.ok(report.prunedBound > 0, 'verified incumbent should activate safe branch-and-bound pruning');
   assert.ok(report.profile.generatedByAction.shop > 0);
   if (report.stoppedReason !== null) {
     assert.equal(report.exact, false, 'a resource-bounded profile must not claim a global optimum');
