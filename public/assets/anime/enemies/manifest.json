@@ -1,7 +1,8 @@
 {
-  "version": 3,
+  "version": 4,
   "basePath": "/assets/anime/",
   "assets": {
+    "mote": { "base64File": "b64/enemies/mote-v10.b64", "mime": "image/webp", "scale": 1.0 },
     "cat_scout": { "base64File": "b64/enemies/catScout.b64", "mime": "image/webp" },
     "cat_mage": { "base64File": "b64/enemies/catMage.b64", "mime": "image/webp" },
     "fox_acolyte": { "base64File": "b64/enemies/foxAcolyte.b64", "mime": "image/webp" },
