@@ -7,10 +7,12 @@ import {
   getFloorState,
   getTile,
   parseToken,
+  teleportToFloor,
   tryMove
 } from '../game/engine.js';
 
 const DIR_LIST = Object.entries(DIRECTIONS).map(([name, vector]) => ({ name, ...vector }));
+export const HOLY_POLICIES = ['immediate', 'after-core-6', 'after-core-7', 'before-final'];
 
 function tileIsTransit(token, { allowRunes = false } = {}) {
   if (token === '.' || token === 'shop') return true;
@@ -62,7 +64,6 @@ function pathToExactTransit(state, targetX, targetY, options = {}) {
   const startKey = `${state.x},${state.y}`;
   const previous = new Map([[startKey, null]]);
   const previousDir = new Map();
-
   while (head < queue.length) {
     const current = queue[head++];
     for (const dir of DIR_LIST) {
@@ -178,9 +179,6 @@ function solveSequenceIfPossible(state) {
         if (floorState.map[y][x] === `rune:${runeId}`) rune = { x, y };
       }
     }
-    // Match validate-game.mjs: an unavailable next rune simply means the
-    // deterministic runner should keep clearing other reachable progress and
-    // retry the sequence on a later iteration. It is not a route failure.
     if (!rune) return deferred();
     const path = pathToAdjacent(state, rune.x, rune.y, { allowRunes: false });
     if (!path) return deferred();
@@ -192,8 +190,17 @@ function solveSequenceIfPossible(state) {
   return { ok: true, changed: floorState.sequenceProgress !== originalProgress, deferred: false };
 }
 
-function chooseAction(state, actions) {
-  const items = actions.filter((action) => action.parsed.type === 'item');
+function localHolyAllowed(state, holyPolicy) {
+  if (holyPolicy === 'immediate') return true;
+  if (holyPolicy === 'after-core-6') return state.cores >= 6;
+  if (holyPolicy === 'after-core-7') return state.cores >= 7;
+  return false;
+}
+
+function chooseAction(state, actions, holyPolicy) {
+  const items = actions.filter((action) =>
+    action.parsed.type === 'item' && (action.parsed.id !== 'holy' || localHolyAllowed(state, holyPolicy))
+  );
   if (items.length) {
     const priority = ['atk', 'def', 'dual', 'weapon', 'shield', 'hpLarge', 'hp', 'codex', 'compass', 'lucky', 'ward', 'holy', 'sun', 'moon', 'star'];
     items.sort((a, b) => priority.indexOf(a.parsed.id) - priority.indexOf(b.parsed.id));
@@ -233,18 +240,69 @@ function chooseAction(state, actions) {
   return actions.find((action) => action.token === 'U') ?? null;
 }
 
+function holyTriggerReached(state, holyPolicy, actions = []) {
+  if (state.relics.holy || holyPolicy === 'immediate') return false;
+  if (holyPolicy === 'after-core-6') return state.cores >= 6;
+  if (holyPolicy === 'after-core-7') return state.cores >= 7;
+  if (holyPolicy === 'before-final') {
+    return actions.some((action) =>
+      action.parsed?.type === 'enemy' && ['finalQueen', 'voidCore'].includes(action.parsed.id)
+    );
+  }
+  return false;
+}
+
+function collectDeferredHoly(state) {
+  if (state.relics.holy) return { ok: true, collected: false };
+  if (!state.relics.compass) return { ok: false, reason: 'Deferred Holy policy requires the floor compass.' };
+  if (!state.visitedFloors.includes(5)) return { ok: false, reason: 'Holy floor has not been visited yet.' };
+
+  const returnFloor = state.floor;
+  if (state.floor !== 5) {
+    const travel = teleportToFloor(state, 5);
+    if (!travel.ok) return { ok: false, reason: travel.reason };
+  }
+
+  const holy = reachableActions(state).find((action) =>
+    action.parsed.type === 'item' && action.parsed.id === 'holy'
+  );
+  if (!holy) {
+    if (returnFloor !== 5) teleportToFloor(state, returnFloor);
+    return { ok: false, reason: 'Deferred Holy is no longer reachable from the floor anchor.' };
+  }
+
+  const applied = actOn(state, holy);
+  if (!applied.ok) return applied;
+  const acquisition = {
+    floor: 6,
+    cores: state.cores,
+    purchases: state.shopPurchases,
+    stats: { ...state.stats }
+  };
+
+  if (returnFloor !== 5) {
+    const travelBack = teleportToFloor(state, returnFloor);
+    if (!travelBack.ok) return { ok: false, reason: travelBack.reason };
+  }
+
+  return { ok: true, collected: true, acquisition };
+}
+
 export function runGreedyShopStrategy({
   shopCycle = ['atk', 'def', 'hp'],
+  holyPolicy = 'immediate',
   maxIterations = 5_000
 } = {}) {
   if (!Array.isArray(shopCycle) || shopCycle.length === 0) throw new Error('shopCycle must not be empty.');
   for (const optionId of shopCycle) {
     if (!['atk', 'def', 'hp'].includes(optionId)) throw new Error(`Unknown shop option in cycle: ${optionId}`);
   }
+  if (!HOLY_POLICIES.includes(holyPolicy)) throw new Error(`Unknown Holy policy: ${holyPolicy}`);
 
   const state = createInitialState();
   const purchaseCounts = { atk: 0, def: 0, hp: 0 };
   const purchaseLog = [];
+  let holyAcquisition = null;
   let iterations = 0;
   let failure = null;
 
@@ -257,6 +315,15 @@ export function runGreedyShopStrategy({
       break;
     }
 
+    if (holyPolicy !== 'before-final' && holyTriggerReached(state, holyPolicy)) {
+      const holy = collectDeferredHoly(state);
+      if (!holy.ok) {
+        failure = holy.reason;
+        break;
+      }
+      if (holy.collected) holyAcquisition = holy.acquisition;
+    }
+
     const sequence = solveSequenceIfPossible(state);
     if (!sequence.ok) {
       failure = sequence.reason;
@@ -264,7 +331,17 @@ export function runGreedyShopStrategy({
     }
 
     const actions = reachableActions(state);
-    const action = chooseAction(state, actions);
+    if (holyPolicy === 'before-final' && holyTriggerReached(state, holyPolicy, actions)) {
+      const holy = collectDeferredHoly(state);
+      if (!holy.ok) {
+        failure = holy.reason;
+        break;
+      }
+      if (holy.collected) holyAcquisition = holy.acquisition;
+      continue;
+    }
+
+    const action = chooseAction(state, actions, holyPolicy);
     if (!action) {
       const retry = buyAvailableUpgrades(state, shopCycle, purchaseCounts, purchaseLog);
       if (!retry.ok) {
@@ -281,6 +358,14 @@ export function runGreedyShopStrategy({
       failure = applied.reason;
       break;
     }
+    if (action.parsed?.type === 'item' && action.parsed.id === 'holy' && !holyAcquisition) {
+      holyAcquisition = {
+        floor: state.floor + 1,
+        cores: state.cores,
+        purchases: state.shopPurchases,
+        stats: { ...state.stats }
+      };
+    }
   }
 
   if (!state.victory && !failure && iterations >= maxIterations) failure = 'Iteration limit reached.';
@@ -289,6 +374,8 @@ export function runGreedyShopStrategy({
     solvable: state.victory,
     failure,
     shopCycle: [...shopCycle],
+    holyPolicy,
+    holyAcquisition,
     iterations,
     purchases: state.shopPurchases,
     purchaseCounts,
