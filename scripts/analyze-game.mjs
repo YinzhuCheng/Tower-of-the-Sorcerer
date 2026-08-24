@@ -1,11 +1,20 @@
 import { solve } from '../src/solver/search.js';
 import { replayTowerCertificate } from '../src/solver/replay.js';
 import { createTowerAdapter } from '../src/solver/tower-adapter.js';
+import { createBoundedTowerAdapter } from '../src/solver/tower-bounds.js';
+import { findBestGreedyIncumbent } from '../src/solver/tower-incumbent.js';
 
 function parseArgs(argv) {
-  const config = { mode: 'existence', maxExpanded: 100_000, maxGenerated: 1_000_000, json: false };
+  const config = {
+    mode: 'existence',
+    maxExpanded: 100_000,
+    maxGenerated: 1_000_000,
+    seedIncumbent: true,
+    json: false
+  };
   for (const arg of argv) {
     if (arg === '--json') config.json = true;
+    else if (arg === '--no-incumbent') config.seedIncumbent = false;
     else if (arg.startsWith('--mode=')) config.mode = arg.slice('--mode='.length);
     else if (arg.startsWith('--max-expanded=')) config.maxExpanded = Number(arg.slice('--max-expanded='.length));
     else if (arg.startsWith('--max-generated=')) config.maxGenerated = Number(arg.slice('--max-generated='.length));
@@ -15,31 +24,81 @@ function parseArgs(argv) {
   return config;
 }
 
+function summarizePortfolio(portfolio) {
+  if (!portfolio) return null;
+  return {
+    attemptedCount: portfolio.attemptedCount,
+    feasibleCount: portfolio.feasibleCount,
+    best: portfolio.best ? {
+      id: portfolio.best.id,
+      cycle: portfolio.best.cycle,
+      hp: portfolio.best.result.final.hp,
+      final: portfolio.best.result.final,
+      purchaseCounts: portfolio.best.result.purchaseCounts
+    } : null,
+    candidates: portfolio.results.map((entry) => ({
+      id: entry.id,
+      cycle: entry.cycle,
+      solvable: entry.result.solvable,
+      hp: entry.result.solvable ? entry.result.final.hp : null,
+      failure: entry.result.failure
+    }))
+  };
+}
+
 const config = parseArgs(process.argv.slice(2));
 if (config.help) {
-  console.log(`Usage: node scripts/analyze-game.mjs [options]\n\nOptions:\n  --mode=existence|optimize\n  --max-expanded=N\n  --max-generated=N\n  --json\n`);
+  console.log(`Usage: node scripts/analyze-game.mjs [options]\n\nOptions:\n  --mode=existence|optimize\n  --max-expanded=N\n  --max-generated=N\n  --no-incumbent       Disable authoritative greedy-portfolio seeding in optimize mode\n  --json\n`);
   process.exit(0);
 }
 
-const adapter = createTowerAdapter();
-const report = solve({ adapter, ...config });
+const optimizing = config.mode === 'optimize';
+const adapter = optimizing ? createBoundedTowerAdapter() : createTowerAdapter();
+const portfolio = optimizing && config.seedIncumbent ? findBestGreedyIncumbent() : null;
+const incumbentLowerBound = portfolio?.best?.result.final.hp ?? null;
+const initialUpperBound = optimizing && adapter.objectiveUpperBound
+  ? adapter.objectiveUpperBound(adapter.createInitialState())
+  : null;
+
+const report = solve({
+  adapter,
+  mode: config.mode,
+  maxExpanded: config.maxExpanded,
+  maxGenerated: config.maxGenerated,
+  incumbentLowerBound
+});
 if (report.certificate) {
   report.certificate.authoritativeReplay = replayTowerCertificate(report.certificate, { adapter });
 }
+report.optimizationSeed = optimizing ? {
+  portfolio: summarizePortfolio(portfolio),
+  initialUpperBound,
+  initialGap: incumbentLowerBound == null || initialUpperBound == null
+    ? null
+    : initialUpperBound - incumbentLowerBound
+} : null;
 
 if (config.json) {
   console.log(JSON.stringify(report, null, 2));
 } else {
   console.log(`Solver ${report.solverVersion} (${report.mode}) | state=${report.stateEncoding}`);
+  if (report.optimizationSeed?.portfolio?.best) {
+    const best = report.optimizationSeed.portfolio.best;
+    console.log(`incumbent: ${best.hp} HP via ${best.id} | initial upper: ${initialUpperBound} | gap: ${report.optimizationSeed.initialGap}`);
+  } else if (optimizing) {
+    console.log(`incumbent: disabled/unavailable | initial upper: ${initialUpperBound}`);
+  }
   console.log(`solvable: ${report.solvable} | exact: ${report.exact} | stopped: ${report.stoppedReason ?? 'exhausted'}`);
   console.log(`expanded: ${report.expandedStates} | generated: ${report.generatedStates} | dominated: ${report.prunedDominated} | bound: ${report.prunedBound}`);
   console.log(`structural states: ${report.structuralStates} | active labels: ${report.activeLabels} | peak frontier: ${report.frontierPeak}`);
   console.log(`depth: ${report.profile.maxDepth} | goal depth: ${report.profile.goalDepth ?? '-'} | queue peak: ${report.profile.queuePeak}`);
   console.log(`branching mean/max: ${report.profile.branching.mean.toFixed(2)}/${report.profile.branching.max} | normalized steps: ${report.profile.normalizationSteps}`);
-  console.log(`structural key chars mean/max: ${report.profile.structuralKeyChars.mean.toFixed(1)}/${report.profile.structuralKeyChars.max}`);
+  console.log(`frontier key chars mean/max: ${report.profile.structuralKeyChars.mean.toFixed(1)}/${report.profile.structuralKeyChars.max}`);
   console.log(`actions: ${JSON.stringify(report.profile.generatedByAction)}`);
   console.log(`stages: ${JSON.stringify(report.profile.expandedByStage)}`);
-  if (report.objective.best != null) console.log(`${report.objective.type}: ${report.objective.best}`);
+  if (report.objective.best != null) {
+    console.log(`${report.objective.type}: best-known=${report.objective.best} | search=${report.objective.searchBest ?? '-'} | seed=${report.objective.seededLowerBound ?? '-'}`);
+  }
   if (report.certificate) console.log(`certificate: ${report.certificate.certificateHash} | replay: ${report.certificate.authoritativeReplay.ok ? 'PASS' : 'FAIL'}`);
 }
 
