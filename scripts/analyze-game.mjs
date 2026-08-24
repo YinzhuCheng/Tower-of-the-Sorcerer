@@ -32,6 +32,7 @@ function summarizePortfolio(portfolio) {
     best: portfolio.best ? {
       id: portfolio.best.id,
       cycle: portfolio.best.cycle,
+      witnessType: portfolio.best.witness.type,
       hp: portfolio.best.result.final.hp,
       final: portfolio.best.result.final,
       purchaseCounts: portfolio.best.result.purchaseCounts
@@ -48,14 +49,15 @@ function summarizePortfolio(portfolio) {
 
 const config = parseArgs(process.argv.slice(2));
 if (config.help) {
-  console.log(`Usage: node scripts/analyze-game.mjs [options]\n\nOptions:\n  --mode=existence|optimize\n  --max-expanded=N\n  --max-generated=N\n  --no-incumbent       Disable authoritative greedy-portfolio seeding in optimize mode\n  --json\n`);
+  console.log(`Usage: node scripts/analyze-game.mjs [options]\n\nOptions:\n  --mode=existence|optimize\n  --max-expanded=N\n  --max-generated=N\n  --no-incumbent       Disable authoritative greedy-portfolio witness in optimize mode\n  --json\n`);
   process.exit(0);
 }
 
 const optimizing = config.mode === 'optimize';
 const adapter = optimizing ? createBoundedTowerAdapter() : createTowerAdapter();
 const portfolio = optimizing && config.seedIncumbent ? findBestGreedyIncumbent() : null;
-const incumbentLowerBound = portfolio?.best?.result.final.hp ?? null;
+const incumbentWitness = portfolio?.best?.witness ?? null;
+const incumbentValue = portfolio?.best?.result.final.hp ?? null;
 const initialUpperBound = optimizing && adapter.objectiveUpperBound
   ? adapter.objectiveUpperBound(adapter.createInitialState())
   : null;
@@ -65,17 +67,18 @@ const report = solve({
   mode: config.mode,
   maxExpanded: config.maxExpanded,
   maxGenerated: config.maxGenerated,
-  incumbentLowerBound
+  incumbentWitness
 });
 if (report.certificate) {
   report.certificate.authoritativeReplay = replayTowerCertificate(report.certificate, { adapter });
 }
 report.optimizationSeed = optimizing ? {
   portfolio: summarizePortfolio(portfolio),
+  verification: report.incumbentVerification,
   initialUpperBound,
-  initialGap: incumbentLowerBound == null || initialUpperBound == null
+  initialGap: incumbentValue == null || initialUpperBound == null
     ? null
-    : initialUpperBound - incumbentLowerBound
+    : initialUpperBound - incumbentValue
 } : null;
 
 if (config.json) {
@@ -84,9 +87,9 @@ if (config.json) {
   console.log(`Solver ${report.solverVersion} (${report.mode}) | state=${report.stateEncoding}`);
   if (report.optimizationSeed?.portfolio?.best) {
     const best = report.optimizationSeed.portfolio.best;
-    console.log(`incumbent: ${best.hp} HP via ${best.id} | initial upper: ${initialUpperBound} | gap: ${report.optimizationSeed.initialGap}`);
+    console.log(`incumbent witness: ${best.hp} HP via ${best.id} (${best.witnessType}) | verified=${report.incumbentVerification?.ok === true} | initial upper: ${initialUpperBound} | gap: ${report.optimizationSeed.initialGap}`);
   } else if (optimizing) {
-    console.log(`incumbent: disabled/unavailable | initial upper: ${initialUpperBound}`);
+    console.log(`incumbent witness: disabled/unavailable | initial upper: ${initialUpperBound}`);
   }
   console.log(`solvable: ${report.solvable} | exact: ${report.exact} | stopped: ${report.stoppedReason ?? 'exhausted'}`);
   console.log(`expanded: ${report.expandedStates} | generated: ${report.generatedStates} | dominated: ${report.prunedDominated} | bound: ${report.prunedBound}`);
@@ -97,7 +100,7 @@ if (config.json) {
   console.log(`actions: ${JSON.stringify(report.profile.generatedByAction)}`);
   console.log(`stages: ${JSON.stringify(report.profile.expandedByStage)}`);
   if (report.objective.best != null) {
-    console.log(`${report.objective.type}: best-known=${report.objective.best} | search=${report.objective.searchBest ?? '-'} | seed=${report.objective.seededLowerBound ?? '-'}`);
+    console.log(`${report.objective.type}: best-known=${report.objective.best} | search=${report.objective.searchBest ?? '-'} | verified-seed=${report.objective.seededLowerBound ?? '-'} | requested=${report.objective.requestedLowerBound ?? '-'}`);
   }
   if (report.certificate) console.log(`certificate: ${report.certificate.certificateHash} | replay: ${report.certificate.authoritativeReplay.ok ? 'PASS' : 'FAIL'}`);
 }
