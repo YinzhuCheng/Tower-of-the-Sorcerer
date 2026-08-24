@@ -27,6 +27,15 @@ function labelIsBetterGoal(candidate, current, adapter) {
   return aMin > bMin;
 }
 
+function structuralKeyHash(key) {
+  if (typeof key !== 'string') return hashValue(key);
+  try {
+    return hashValue(JSON.parse(key));
+  } catch {
+    return hashValue(key);
+  }
+}
+
 function buildCertificate(goalLabel, initialSteps, adapter, metadata) {
   if (!goalLabel) return null;
   const edgeGroups = [];
@@ -51,7 +60,7 @@ function buildCertificate(goalLabel, initialSteps, adapter, metadata) {
     },
     steps,
     final: adapter.summarizeState ? adapter.summarizeState(goalLabel.state) : null,
-    finalStructuralKeyHash: hashValue(adapter.structuralKey(goalLabel.state)),
+    finalStructuralKeyHash: structuralKeyHash(adapter.structuralKey(goalLabel.state)),
     authoritativeReplay: null
   };
   return { ...payload, certificateHash: hashValue(payload) };
