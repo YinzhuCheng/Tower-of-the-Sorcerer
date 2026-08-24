@@ -76,11 +76,18 @@ export function solve({
   mode = 'existence',
   maxExpanded = 100_000,
   maxGenerated = 1_000_000,
-  solverVersion = 'macro-pareto-v0.2'
+  incumbentLowerBound = null,
+  solverVersion = 'macro-pareto-v0.3'
 } = {}) {
   if (!adapter) throw new Error('solve() requires an adapter.');
   if (!['existence', 'optimize'].includes(mode)) throw new Error(`Unknown solver mode: ${mode}`);
+  if (incumbentLowerBound != null && !Number.isFinite(incumbentLowerBound)) {
+    throw new Error('incumbentLowerBound must be a finite number or null.');
+  }
 
+  const seededLowerBound = incumbentLowerBound == null
+    ? Number.NEGATIVE_INFINITY
+    : incumbentLowerBound;
   const initialRaw = initialState ?? adapter.createInitialState();
   const initialStateHash = hashValue(adapter.summarizeState ? adapter.summarizeState(initialRaw) : initialRaw);
   const initialNormalized = normalizeWith(adapter, adapter.cloneState(initialRaw));
@@ -106,6 +113,20 @@ export function solve({
   let keyCharsMax = 0;
   const expandedByStage = {};
   const generatedByAction = {};
+
+  function currentObjectiveLowerBound() {
+    const searchBest = bestGoal
+      ? defaultObjective(bestGoal.state, adapter)
+      : Number.NEGATIVE_INFINITY;
+    return Math.max(seededLowerBound, searchBest);
+  }
+
+  function boundPrunes(state) {
+    if (mode !== 'optimize' || !adapter.objectiveUpperBound || adapter.isGoal(state)) return false;
+    const upperBound = adapter.objectiveUpperBound(state);
+    if (!Number.isFinite(upperBound)) return false;
+    return upperBound <= currentObjectiveLowerBound();
+  }
 
   function recordAcceptedKey(key) {
     if (typeof key !== 'string') return;
@@ -162,6 +183,13 @@ export function solve({
       continue;
     }
 
+    // Re-check queued labels because the incumbent may have improved after the
+    // label entered the queue. This is the branch-and-bound half of the search.
+    if (boundPrunes(label.state)) {
+      prunedBound += 1;
+      continue;
+    }
+
     const actions = adapter.enumerateActions(label.state);
     branchSamples += 1;
     branchTotal += actions.length;
@@ -180,6 +208,10 @@ export function solve({
       normalizedSteps += normalized.steps.length;
       const nextState = normalized.state;
       if (adapter.provenDeadEnd?.(nextState)) {
+        prunedBound += 1;
+        continue;
+      }
+      if (boundPrunes(nextState)) {
         prunedBound += 1;
         continue;
       }
@@ -215,8 +247,18 @@ export function solve({
 
   const exhausted = queue.size === 0 && stoppedReason === null;
   const solvable = Boolean(bestGoal);
+  const searchBest = bestGoal ? defaultObjective(bestGoal.state, adapter) : null;
+  const bestKnown = Math.max(
+    searchBest ?? Number.NEGATIVE_INFINITY,
+    seededLowerBound
+  );
   const existenceExact = solvable || exhausted;
-  const objectiveExact = mode === 'optimize' && exhausted;
+  // If pruning relied on an externally supplied incumbent, do not claim an
+  // exact optimum until the exact search independently reaches a witness at
+  // least as strong as that incumbent.
+  const seededWitnessRecovered = seededLowerBound === Number.NEGATIVE_INFINITY
+    || (searchBest != null && searchBest >= seededLowerBound);
+  const objectiveExact = mode === 'optimize' && exhausted && seededWitnessRecovered;
   const certificate = buildCertificate(bestGoal, initialNormalized.steps, adapter, {
     solverVersion,
     mode,
@@ -233,12 +275,11 @@ export function solve({
     existenceExact,
     objectiveExact,
     stoppedReason,
-    objective: solvable ? {
+    objective: {
       type: adapter.objectiveType ?? 'custom',
-      best: defaultObjective(bestGoal.state, adapter)
-    } : {
-      type: adapter.objectiveType ?? 'custom',
-      best: null
+      best: Number.isFinite(bestKnown) ? bestKnown : null,
+      searchBest,
+      seededLowerBound: Number.isFinite(seededLowerBound) ? seededLowerBound : null
     },
     expandedStates,
     generatedStates,
