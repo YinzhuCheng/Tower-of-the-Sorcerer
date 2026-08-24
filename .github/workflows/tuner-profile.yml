@@ -1,0 +1,30 @@
+name: Tuner Profile
+
+on:
+  push:
+    branches:
+      - solver-phase1-pareto
+    paths:
+      - 'src/tuner/**'
+      - 'scripts/tune-shop-hp.mjs'
+      - 'test/shop-hp-tuner-*.test.js'
+      - '.github/workflows/tuner-profile.yml'
+  workflow_dispatch:
+
+jobs:
+  shop-hp-profile:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Generate shop HP tuner report
+        run: node scripts/tune-shop-hp.mjs --json > shop-hp-tuner-report.json
+      - name: Upload tuner report
+        uses: actions/upload-artifact@v4
+        with:
+          name: shop-hp-tuner-report
+          path: shop-hp-tuner-report.json
+          if-no-files-found: error
+          retention-days: 7
