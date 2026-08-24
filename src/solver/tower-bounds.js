@@ -167,14 +167,6 @@ export function createBoundedTowerAdapter() {
     if (state && typeof state === 'object') upperBoundCache.set(state, value);
     return value;
   };
-  const boundFirstPriority = (state) => {
-    const bound = upperBound(state);
-    if (!Number.isFinite(bound)) return Number.NEGATIVE_INFINITY;
-    // Bounds are integral HP. A sub-unit progress term only breaks ties and can
-    // never place a lower-upper-bound label ahead of a higher one.
-    const progressTie = (state.cores * FLOORS.length + state.floor) / (FLOORS.length * FLOORS.length + 1);
-    return bound + progressTie * 1e-3;
-  };
 
   return {
     ...base,
@@ -183,7 +175,6 @@ export function createBoundedTowerAdapter() {
       ? { state: base.cloneState(state), steps: [] }
       : base.normalize(state),
     objectiveUpperBound: upperBound,
-    priority: boundFirstPriority,
     rulesVersion: () => `${base.rulesVersion()}+boss-stair-lock-v1`
   };
 }
