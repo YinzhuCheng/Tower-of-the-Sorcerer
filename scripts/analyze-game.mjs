@@ -1,6 +1,6 @@
 import { solve } from '../src/solver/search.js';
 import { replayTowerCertificate } from '../src/solver/replay.js';
-import { createTowerSearchAdapter } from '../src/solver/tower-search-adapter.js';
+import { createTowerAdapter } from '../src/solver/tower-adapter.js';
 
 function parseArgs(argv) {
   const config = { mode: 'existence', maxExpanded: 100_000, maxGenerated: 1_000_000, json: false };
@@ -21,7 +21,7 @@ if (config.help) {
   process.exit(0);
 }
 
-const adapter = createTowerSearchAdapter();
+const adapter = createTowerAdapter();
 const report = solve({ adapter, ...config });
 if (report.certificate) {
   report.certificate.authoritativeReplay = replayTowerCertificate(report.certificate, { adapter });
