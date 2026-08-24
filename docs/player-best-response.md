@@ -6,36 +6,25 @@ Status: 2026-08-25, `solver-phase1-pareto`.
 
 ## 1. Why a frozen player is not a valid balance oracle
 
-If the game changes while the player route is held fixed, the tuner will overfit the frozen route. A player can respond to new numbers by changing:
+If the game changes while the player route is held fixed, the tuner will overfit the frozen route. A player can respond to new numbers by changing shop purchases, Holy timing, optional fights, card spending, pickup timing, or backtracking.
 
-- shop purchases;
-- Holy acquisition timing;
-- optional enemy order / skips;
-- card-door spending;
-- pickup timing;
-- cross-floor recovery / backtracking.
-
-Therefore every balance candidate must eventually be evaluated against a **best-response model**, not only against the route that generated the sensitivity signal.
-
-The model is intentionally expanded one strategy axis at a time so each addition has an explicit witness representation, replay path, confidence statement, and computational budget.
+Every balance candidate must therefore be evaluated against an explicit **best-response model**. The model is expanded one strategy axis at a time so each axis has a replayable witness, confidence statement, and computational budget.
 
 ## 2. Layer 1 — purchase-plan 1-opt
 
-The first player-response axis is the ordered shop purchase sequence.
+`optimizePurchasePlanLocally()` enumerates all one-purchase replacements around the current explicit shop plan, authoritative-replays every candidate, accepts the strongest improving neighbor, and repeats.
 
-`optimizePurchasePlanLocally()` repeatedly enumerates every single purchase replacement (`ATK`, `DEF`, `HP`) around the current explicit plan, replays each candidate through the authoritative engine, accepts the strongest improving neighbor, and repeats until no one-purchase improvement remains or the configured pass budget is reached.
+`localOptimal=true` means only:
 
-A result with `localOptimal=true` means:
+> no single shop-purchase replacement improves this plan under the same game values and Holy policy.
 
-> no single shop-purchase replacement around that explicit plan improves terminal HP under the same game values and Holy policy.
-
-It does **not** mean global optimality over all purchase sequences or all player actions.
+It is not a global purchase optimum and not a global player optimum.
 
 The promoted 26,041 HP route is a verified purchase 1-opt local optimum under `Holy=immediate`.
 
 ## 3. Layer 2 — Holy timing × purchase 1-opt
 
-`HOLY_POLICIES` is a small discrete strategy axis:
+Modeled Holy policies:
 
 ```text
 immediate
@@ -44,153 +33,154 @@ after-core-7
 before-final
 ```
 
-A correct Holy comparison cannot replay one fixed purchase plan under four timings and choose the best. A purchase plan that is feasible for one Holy timing may die under another timing even though a different purchase sequence would survive and outperform it.
-
-The Holy-aware best response therefore solves:
+The response objective is:
 
 ```text
 max over Holy policy
-    local-1opt over purchase plan under that policy
+    purchase local-1opt under that policy
 ```
 
-This is implemented by `src/analyzer/holy-policy-best-response.js`.
+A fixed purchase plan cannot be reused as the comparison itself: a plan that dies with delayed Holy does not prove that another purchase sequence could not survive.
+
+Implementation: `src/analyzer/holy-policy-best-response.js`.
 
 ### 3.1 Feasible seed portfolio
 
-Purchase local search needs a feasible starting route. For each Holy policy we first try a cheap deterministic seed portfolio:
+For every Holy policy, first try authoritative deterministic seeds:
 
-1. the nearest known plan for this Holy policy from a previous adaptive-ray sample, when available;
-2. the promoted explicit purchase plan with the Holy policy swapped;
-3. all canonical deterministic shop-cycle strategies already associated with that Holy policy.
+1. nearest known plan for that policy from a nearby adaptive-ray sample;
+2. promoted explicit purchase plan with the policy swapped;
+3. canonical deterministic shop cycles associated with that policy.
 
-All seeds are authoritative engine replays. The strongest feasible seed enters purchase 1-opt.
+The best feasible seed enters purchase 1-opt.
 
-This is deliberately a **seed search**, not an infeasibility proof.
+### 3.2 Purchase-prefix rescue beam
 
-If no seed survives, the policy is reported as:
+If the deterministic seed portfolio has no survivor, `src/analyzer/purchase-prefix-rescue.js` runs a bounded beam search over **early explicit shop-purchase prefixes**.
+
+The rescue search:
+
+- keeps the Holy policy fixed;
+- retains a fallback shop cycle;
+- expands `ATK / DEF / HP` only when the failed route actually reached the next purchase slot;
+- ranks failed routes by strategic progress before residual HP (`cores`, Holy acquisition, battles, floor, purchases, etc.);
+- stops on the first beam depth that yields a feasible route, or at configured depth/evaluation bounds.
+
+The rescue exists only to create a feasible local-search seed. It is **not** an infeasibility proof and does not replace purchase 1-opt.
+
+A rescue failure remains:
 
 ```text
 status = uncovered
 ```
 
-It must **not** be described as "proven impossible". An unmodeled purchase sequence or action order could still make that policy feasible.
+not “policy impossible”.
 
-### 3.2 Policy stability claim
+### 3.3 Coverage semantics
 
-For policies with a feasible seed, each purchase search must reach `localOptimal=true` before the Holy response is considered stable within the current model.
+Two different stability concepts are reported:
 
-`stableWithinSeedPortfolio=true` means:
+- `stableWithinSeedPortfolio`: every Holy policy that received a feasible seed reached purchase 1-opt, and the selected response is best among those optimized policies.
+- `stableWithCompleteCoverage`: all modeled Holy policies received feasible seeds **and** all reached purchase 1-opt.
 
-- at least one Holy policy produced a feasible optimized response;
-- every Holy policy that received a feasible seed reached purchase 1-opt;
-- the selected response has the highest terminal HP among those optimized responses.
+The first is useful diagnostic evidence. The second is now required for `ready_for_review`.
 
-It does not erase the `uncoveredPolicies` list. Seed coverage is reported separately.
+A 1/4 policy coverage result is therefore allowed to guide search, but it cannot pass the review gate.
 
-### 3.3 Why policy plans are carried across ray samples
+### 3.4 Warm starts across ray samples
 
-A balance ray changes continuously while the player response can jump at thresholds. Re-starting every Holy policy from the same baseline plan at every ray strength would waste computation and increase local-basin instability.
+Each adaptive sample stores the best explicit purchase plan found for each optimized Holy policy. The next ray sample uses plans from the nearest known ray strength as preferred seeds, while retaining promoted/cycle fallbacks and rescue search.
 
-Each adaptive sample therefore stores the best explicit plan found for every optimized Holy policy. The next ray sample uses the nearest previously observed sample as the preferred seed set, while still retaining the promoted plan and canonical cycle portfolio as fallbacks.
-
-This is continuation / warm-starting, not evidence reuse: every route is replayed again under the new numeric overlay.
+This is computational continuation only. Every route is replayed under the new overlay.
 
 ## 4. Holy-aware adaptive numeric ray
 
-`src/tuner/adaptive-numeric-ray-v2.js` extends the numeric adaptive loop.
+`adaptive-numeric-ray-v2.js` performs the Holy-aware player search at each numeric ray strength.
 
-At each ray strength:
+`adaptive-numeric-ray-v3.js` adds the stricter evidence rule: complete Holy seed coverage is required before the adaptive report can satisfy the Holy hard check.
+
+At one sampled ray strength:
 
 ```text
-materialize explicit numeric edits
-  -> apply synchronous balance overlay
-  -> for each Holy policy:
-       find feasible seed
-       run purchase 1-opt
-  -> select highest-terminal-HP Holy response
-  -> measure pressure on that adapted route
-  -> restore canonical game data
+materialize numeric edits
+  -> apply synchronous overlay
+  -> for each Holy policy
+       deterministic seed portfolio
+       -> bounded purchase-prefix rescue if needed
+       -> purchase 1-opt if feasible
+  -> choose highest-terminal-HP policy response
+  -> measure adapted pressure
+  -> restore canonical data
 ```
 
-The outer ray search then moves harder or softer using the adapted pressure, not the protected-route pressure.
+The outer ray search moves harder/softer using the **adapted** pressure.
 
-The response curve is not assumed smooth. The report records monotonicity violations if a stronger ray unexpectedly increases the best-response HP margin, for example because the selected Holy policy or purchase basin changes.
+Player-response curves are not assumed smooth. Policy changes or purchase thresholds can create discontinuities, so monotonicity violations are reported explicitly.
 
-## 5. Final proof and robustness layers
+## 5. Final proof and robustness
 
-After the adaptive ray selects its best observed target-band sample, the tuner separately runs:
+After selecting a target-band sample, the tuner separately runs:
 
-1. authoritative replay of the selected Holy policy + explicit purchase plan;
+1. authoritative replay of selected Holy policy + explicit purchase plan;
 2. independent exact-existence Solver search;
-3. all one-purchase counterfactuals around the final selected plan.
+3. all one-purchase counterfactuals around the selected final plan.
 
-The Holy-policy search itself is not used to prove exact existence.
-
-The final hard checks now include:
+Current adaptive hard checks include:
 
 - ray bracket found;
 - pressure convergence;
 - adapted route survives;
 - final purchase plan is one-purchase stable;
-- Holy policy response is stable within the feasible seed portfolio;
-- exact existence is proven;
-- pressure lies inside the target band;
-- purchase-error recovery and catastrophic-rate gates pass.
+- **complete Holy policy seed coverage + local-1opt stability**;
+- exact existence;
+- pressure target;
+- recovery and catastrophic-error gates.
 
-`balance-proposal-v3.js` now requires Holy best-response evidence. A legacy purchase-only adaptive report can no longer receive the same `ready_for_review` status after the player model has been upgraded.
+`balance-proposal-v3.js` independently re-checks complete Holy coverage. A stale purchase-only or 25%-coverage report is blocked even if its numeric pressure looks attractive.
 
-Production writes remain disabled even if all these checks pass.
+Production writes remain disabled.
 
 ## 6. Computational budget
 
-Holy timing has only four discrete values, so exhaustive policy enumeration is appropriate. The expensive part is purchase local search inside each policy.
+Holy has only four discrete values, so exhaustive policy enumeration is reasonable. Rescue beam + purchase local search is expensive, so it lives only in `Adaptive Balance Profile`.
 
-To keep ordinary development fast:
+Normal CI tests:
 
-- pure ranking / gate semantics are unit-tested in normal CI;
-- full `4 x purchase-1opt x ray-samples` optimization runs only in `Adaptive Balance Profile`;
-- artifacts preserve full evidence; concise logs expose headline diagnostics;
-- algorithms and confidence semantics live in repository source/docs, never only in CI artifacts.
+- response ranking semantics;
+- complete-coverage gate semantics;
+- rescue ranking/boundary behavior;
+- other pure safety invariants.
+
+Heavy engine replay stays out of ordinary unit CI.
 
 ## 7. Next player-response axes
 
-The next axes should **not** be introduced as one giant Cartesian product. Each needs a local move generator and continuation strategy so the best-response search remains layered.
-
-Recommended order:
+Do not add future axes as one Cartesian product. Each should get a local move generator and warm-start strategy.
 
 ### 7.1 Optional enemy order / skip decisions
 
-Represent a local route policy as an explicit set/order of optional combat events. Introduce small mutations such as:
-
-- skip one optional enemy;
-- insert one reachable optional enemy;
-- swap the order of two independent optional fights.
-
-Use stable semantic event IDs before this enters the promotion gate.
+Use stable semantic event IDs and local moves such as skip/insert one optional fight or swap independent fights.
 
 ### 7.2 Card-door spending
 
-Card decisions are discrete resources with strong future coupling. Model one-card reassignment / door-choice counterfactuals rather than globally permuting all doors.
-
-Hard requirement: replay must distinguish a genuinely optional door from a progression-critical door.
+Model one-card reassignment / door-choice changes rather than permuting every door globally. Progress-critical versus optional doors must be distinguished by replay/topology evidence.
 
 ### 7.3 Pickup timing
 
-First add semantic pickup logs. Only then optimize delayed/early pickup decisions. The current numeric lever screen intentionally refuses to invent item leverage without this instrumentation.
+Add semantic pickup logging first. Only then optimize early/delayed pickups or use item pickups for measured leverage ranking.
 
 ### 7.4 Cross-floor recovery
 
-Compass travel creates a large action space. Reuse canonical travel and event-level state representation; optimize visits to productive events rather than raw movement paths.
+Optimize productive semantic events rather than raw compass movement paths. Reuse canonical travel and event-level state representation.
 
 ## 8. Confidence vocabulary
 
-Use these terms consistently:
+- **authoritative replay** — executed by `engine.js`.
+- **purchase 1-opt** — no one-purchase replacement improves current plan.
+- **Holy stable within seed portfolio** — best among seeded policies after local search.
+- **complete Holy coverage** — all modeled Holy policies obtained feasible seeds.
+- **uncovered Holy policy** — deterministic + bounded rescue found no seed; not an infeasibility proof.
+- **exact existence** — Solver proved at least one victory route.
+- **global optimum** — only after mathematical optimization closure; never inferred from local best response.
 
-- **authoritative replay** — the route was actually executed by `engine.js`;
-- **purchase 1-opt** — no one-purchase replacement improves the current plan;
-- **Holy stable within seed portfolio** — highest result across independently optimized seeded Holy policies;
-- **uncovered Holy policy** — no deterministic feasible seed was found; not an infeasibility proof;
-- **exact existence** — the Solver proved that at least one victory route exists;
-- **global optimum** — only when the optimization search is mathematically closed; local player best response is never sufficient for this label.
-
-These distinctions are part of the safety boundary of automatic level generation, not documentation niceties.
+These distinctions are part of the safety boundary of automatic generation, not merely terminology.
