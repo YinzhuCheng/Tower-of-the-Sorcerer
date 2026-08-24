@@ -39,9 +39,9 @@ function assertWebpAlpha(data, label) {
   assert.ok(chunkNames.includes('ALPH') || chunkNames.includes('VP8L'), `${label} must retain transparency-capable WebP data`);
 }
 
-test('v4 combined art atlas is complete and transparent', async () => {
+test('v4 combined art atlas stays complete and transparent underneath V10 extensions', async () => {
   const manifest = JSON.parse(await readFile(manifestPath, 'utf8'));
-  assert.equal(manifest.revision, 'environment-ui-v4');
+  assert.ok(manifest.atlases.v4Combined, 'V4 combined atlas must remain available as the visual foundation/fallback');
   const { base64, data } = await reconstruct(manifest.atlases.v4Combined);
   assert.ok(base64.length > 50000, 'combined atlas base64 payload must be complete');
   assertWebpAlpha(data, 'v4 combined atlas');
@@ -60,7 +60,7 @@ test('v4 hero portrait is complete and transparent', async () => {
   assert.equal(manifest.assets['hero-portrait-v4']?.atlas, 'heroPortraitV4');
 });
 
-test('v4 render hooks use card art, high-res portrait and stationary idle animation', async () => {
+test('render hooks retain V4 fallbacks while HUD cards use V10 generated art', async () => {
   const canvas = await readFile(join(root, 'src/game/canvas-scene.js'), 'utf8');
   const portraits = await readFile(join(root, 'src/game/anime-portraits.js'), 'utf8');
   const loader = await readFile(join(root, 'src/game/map-assets.js'), 'utf8');
@@ -71,6 +71,8 @@ test('v4 render hooks use card art, high-res portrait and stationary idle animat
   assert.doesNotMatch(canvas, /state\.x\s*[+\-]=/);
   assert.doesNotMatch(canvas, /state\.y\s*[+\-]=/);
   assert.match(portraits, /hero-portrait-v4/);
-  assert.match(portraits, /card-sun-ui-v4/);
+  assert.match(portraits, /card-sun-v10/);
+  assert.match(portraits, /card-moon-v10/);
+  assert.match(portraits, /card-star-v10/);
   assert.match(loader, /trimRiffWebP/);
 });
