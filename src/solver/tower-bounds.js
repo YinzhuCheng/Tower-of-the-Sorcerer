@@ -2,6 +2,8 @@ import { ENEMIES, FLOORS, ITEMS, getShopCost } from '../game/data.js';
 import { calculateBattle, createInitialState, parseToken } from '../game/engine.js';
 import { createTowerAdapter } from './tower-adapter.js';
 import { createTowerStateCodec } from './tower-codec.js';
+import { verifyGreedyIncumbentWitness } from './tower-incumbent.js';
+import { stableStringify } from './state.js';
 
 const BOUND_CODEC = createTowerStateCodec({
   baseState: createInitialState(),
@@ -176,6 +178,18 @@ export function canonicalizeCompassTravel(state, actions) {
   });
 }
 
+function verifyTowerIncumbent(baseAdapter, witness, { initialState = null } = {}) {
+  const canonicalInitial = baseAdapter.createInitialState();
+  const candidateInitial = initialState ?? canonicalInitial;
+  if (stableStringify(candidateInitial) !== stableStringify(canonicalInitial)) {
+    return {
+      ok: false,
+      reason: 'Greedy Tower incumbent witnesses are only valid from the canonical initial state.'
+    };
+  }
+  return verifyGreedyIncumbentWitness(witness);
+}
+
 export function createBoundedTowerAdapter() {
   const base = createTowerAdapter();
   const upperBoundCache = new WeakMap();
@@ -196,6 +210,7 @@ export function createBoundedTowerAdapter() {
       : base.normalize(state),
     enumerateActions: (state) => canonicalizeCompassTravel(state, base.enumerateActions(state)),
     objectiveUpperBound: upperBound,
+    verifyIncumbent: (witness, context) => verifyTowerIncumbent(base, witness, context),
     rulesVersion: () => `${base.rulesVersion()}+boss-stair-lock-v1+canonical-travel-v1`
   };
 }
