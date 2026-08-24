@@ -31,9 +31,15 @@ function numericEditsValid(edits) {
 }
 
 function holyBestResponseSatisfied(report) {
+  const holy = report?.holyPolicyAnalysis;
+  const coverageComplete = holy?.coverageComplete === true
+    || (Number.isFinite(holy?.attemptedPolicies)
+      && holy.attemptedPolicies > 0
+      && holy.optimizedPolicies === holy.attemptedPolicies);
   return report?.hardChecks?.holyPolicyBestResponse === true
-    && report?.holyPolicyAnalysis?.stableWithinSeedPortfolio === true
-    && report?.holyPolicyAnalysis?.allOptimizedLocalOptimal === true;
+    && coverageComplete
+    && holy?.stableWithinSeedPortfolio === true
+    && holy?.allOptimizedLocalOptimal === true;
 }
 
 export const BALANCE_REVIEW_RULES_V3 = Object.freeze({
@@ -48,8 +54,9 @@ export const BALANCE_REVIEW_RULES_V3 = Object.freeze({
  * V2 was intentionally tied to shop HP + voidCore magicPower. V3 accepts an
  * arbitrary explicit numeric edit set while preserving proof and robustness
  * requirements. Once the Holy timing axis entered the player model, V3 also
- * requires evidence that the selected route is the modeled best response across
- * all Holy policies that received feasible seeds.
+ * requires complete feasible-seed coverage plus local-1opt stability across all
+ * modeled Holy policies. An uncovered policy is an evidence gap, not a proof of
+ * infeasibility, so it blocks review readiness.
  */
 export function evaluateGenericBalanceReviewGate(report, rules = BALANCE_REVIEW_RULES_V3) {
   const margin = reportMargin(report);
