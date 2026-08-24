@@ -76,8 +76,10 @@ export function hydratePortraits(root = document) {
       flex: '0 0 auto',
       filter: 'drop-shadow(0 2px 6px rgba(0,0,0,.4))'
     });
-    const oldLabel = token.querySelector('.card-emblem');
-    if (oldLabel) oldLabel.style.display = 'none';
+    // V10 card artwork already carries the sun/moon/star identity. Remove the
+    // legacy emblem node instead of merely hiding it, so !important styles or
+    // cached layout rules can never stack the circular symbol on top again.
+    token.querySelector('.card-emblem')?.remove();
     token.prepend(art);
   }
 }

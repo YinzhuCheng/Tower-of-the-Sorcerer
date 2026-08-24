@@ -32,12 +32,19 @@ test('V10 HUD stacks four icon stats and fits generated card art inside frames',
   }
   assert.doesNotMatch(html, /<dt>\s*(生命|攻击|防御|金币)\s*<\/dt>/);
 
+  // V10.3: ATK uses a purpose-drawn broad sword at HUD scale instead of the
+  // thin legacy path, and generated cards never show duplicate circle emblems.
+  assert.match(ui5, /\.atk-entry \.stat-icon\{display:none!important\}/);
+  assert.match(ui5, /\.atk-entry \.stat-glyph::before/);
+  assert.match(ui5, /data:image\/svg\+xml/);
+  assert.match(ui5, /\.card-wallet-v85 \.card-emblem\{display:none!important\}/);
   assert.match(ui5, /\.card-wallet-v85 \.card-ui-art/);
+  assert.match(ui5, /transform:translateX\(-50%\)!important/);
   assert.match(ui5, /overflow:hidden!important/);
   assert.match(portraits, /card-sun-v10/);
   assert.match(portraits, /card-moon-v10/);
   assert.match(portraits, /card-star-v10/);
-  assert.match(portraits, /oldLabel\.style\.display = 'none'/);
+  assert.match(portraits, /querySelector\('\.card-emblem'\)\?\.remove\(\)/);
 
   assert.match(build, /ui-v8-4\.css/);
   assert.match(build, /dist\/ui-v8-4\.css/);
