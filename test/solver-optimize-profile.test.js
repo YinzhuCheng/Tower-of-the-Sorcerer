@@ -36,11 +36,11 @@ test('Tower incumbent witness cannot be reused for a different initial state', (
   );
 });
 
-test('Tower optimizer uses an engine-verified incumbent witness and safe HP upper bound', { timeout: 60_000 }, () => {
+test('Tower optimizer uses the strongest engine-verified portfolio witness and safe HP upper bound', { timeout: 60_000 }, () => {
   const portfolio = findBestGreedyIncumbent();
   const incumbent = portfolio.best;
   assert.ok(incumbent, 'incumbent portfolio must contain a feasible strategy');
-  assert.equal(incumbent.result.final.hp, 12_536);
+  assert.ok(incumbent.result.final.hp >= 12_536, 'Holy timing scan must not regress the previous incumbent');
 
   const adapter = createBoundedTowerAdapter();
   const initial = adapter.createInitialState();
@@ -58,6 +58,9 @@ test('Tower optimizer uses an engine-verified incumbent witness and safe HP uppe
 
   const summary = {
     incumbent: incumbent.result.final.hp,
+    incumbentId: incumbent.id,
+    holyPolicy: incumbent.holyPolicy,
+    holyAcquisition: incumbent.result.holyAcquisition,
     initialUpperBound,
     verification: report.incumbentVerification,
     solvable: report.solvable,
@@ -78,9 +81,9 @@ test('Tower optimizer uses an engine-verified incumbent witness and safe HP uppe
   assert.equal(report.mode, 'optimize');
   assert.equal(report.solvable, true, 'verified witness proves feasibility even before search re-discovers a goal');
   assert.equal(report.incumbentVerification.ok, true);
-  assert.equal(report.incumbentVerification.value, 12_536);
-  assert.equal(report.objective.seededLowerBound, 12_536);
-  assert.ok(report.objective.best >= 12_536);
+  assert.equal(report.incumbentVerification.value, incumbent.result.final.hp);
+  assert.equal(report.objective.seededLowerBound, incumbent.result.final.hp);
+  assert.ok(report.objective.best >= incumbent.result.final.hp);
   assert.ok(report.generatedStates >= report.expandedStates);
   assert.ok(report.prunedDominated > 0);
   assert.ok(report.prunedBound > 0, 'verified incumbent should activate safe branch-and-bound pruning');
