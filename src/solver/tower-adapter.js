@@ -3,8 +3,8 @@ import {
   DIRECTIONS,
   buyShopUpgrade,
   calculateBattle,
-  cloneState,
-  createInitialState,
+  cloneState as cloneEngineState,
+  createInitialState as createEngineInitialState,
   getFloorState,
   getTile,
   parseToken,
@@ -13,9 +13,14 @@ import {
 } from '../game/engine.js';
 import { automaticItemRank, isSafeAutomaticItem } from './normalization-policy.js';
 import { hashValue, stableStringify } from './state.js';
+import { createTowerStateCodec } from './tower-codec.js';
 
 const DIR_LIST = Object.entries(DIRECTIONS).map(([name, vector]) => ({ name, ...vector }));
 const RESOURCE_FIELDS = ['hp', 'maxHp', 'atk', 'def', 'gold', 'sun', 'moon', 'star'];
+const BASE_ENGINE_STATE = createEngineInitialState();
+const CODEC = createTowerStateCodec({ baseState: BASE_ENGINE_STATE, floors: FLOORS, enemies: ENEMIES });
+const RELIC_KEYS = Object.keys(BASE_ENGINE_STATE.relics).sort();
+
 function transitToken(token) {
   return token === '.' || token === 'S' || token === 'shop';
 }
@@ -90,32 +95,14 @@ function pathToExactTransit(state, targetX, targetY) {
   return null;
 }
 
-function zeroCostComponentSignature(state) {
-  const { width, height } = dimensions(state);
-  const queue = [{ x: state.x, y: state.y }];
-  let head = 0;
-  const seen = new Set([`${state.x},${state.y}`]);
-  while (head < queue.length) {
-    const current = queue[head++];
-    for (const dir of DIR_LIST) {
-      const x = current.x + dir.dx;
-      const y = current.y + dir.dy;
-      if (x < 0 || y < 0 || x >= width || y >= height) continue;
-      const key = `${x},${y}`;
-      if (seen.has(key) || !transitToken(getTile(state, x, y))) continue;
-      seen.add(key);
-      queue.push({ x, y });
-    }
-  }
-  return [...seen].sort().join(';');
-}
-
 function executePath(state, path) {
   for (const name of path) {
     const dir = DIRECTIONS[name];
     if (!dir) return { ok: false, reason: `Unknown direction ${name}` };
     const result = tryMove(state, dir.dx, dir.dy);
-    if (result.blocked || result.floorChanged) return { ok: false, reason: result.reason ?? 'Transit path changed floor.' };
+    if (result.blocked || result.floorChanged) {
+      return { ok: false, reason: result.reason ?? 'Transit path changed floor.' };
+    }
   }
   return { ok: true };
 }
@@ -147,21 +134,29 @@ function summarizeState(state) {
   };
 }
 
+function bitMask(keys, predicate) {
+  let mask = 0;
+  for (let index = 0; index < keys.length; index += 1) {
+    if (predicate(keys[index])) mask += 2 ** index;
+  }
+  return mask;
+}
+
 function structuralKeyObject(state) {
+  const compact = CODEC.isCompact(state) ? state : CODEC.compact(state);
   return {
-    floor: state.floor,
-    component: zeroCostComponentSignature(state),
-    floorStates: state.floorStates.map((floorState) => ({
-      map: floorState.map,
-      switches: [...floorState.switches].sort(),
-      sequenceProgress: floorState.sequenceProgress,
-      bossDefeated: floorState.bossDefeated
+    floor: compact.floor,
+    component: compact.componentAnchor,
+    events: CODEC.changedEventSignature(compact),
+    floorMeta: compact.floorMeta.map((meta) => ({
+      switches: meta.switches,
+      sequenceProgress: meta.sequenceProgress,
+      bossDefeated: meta.bossDefeated
     })),
-    relics: state.relics,
-    cores: state.cores,
-    shopPurchases: state.shopPurchases,
-    visitedFloors: [...state.visitedFloors].sort((a, b) => a - b),
-    victory: state.victory
+    relicMask: bitMask(RELIC_KEYS, (key) => compact.relics[key]),
+    shopPurchases: compact.shopPurchases,
+    visitedMask: bitMask(FLOORS.map((_, index) => index), (index) => compact.visitedFloors.includes(index)),
+    victory: compact.victory
   };
 }
 
@@ -169,10 +164,12 @@ function structuralKey(state) {
   return stableStringify(structuralKeyObject(state));
 }
 
+function structuralHash(state) {
+  return hashValue(structuralKeyObject(state));
+}
+
 function eventIdForTile(state, x, y, token) {
-  const parsed = parseToken(token);
-  const id = parsed.id ?? token;
-  return `f${state.floor + 1}:${parsed.type}:${id}:${x},${y}`;
+  return CODEC.eventIdAt(state.floor, x, y, token);
 }
 
 function compactEngineResult(result) {
@@ -211,22 +208,38 @@ function makeStep({ stateBefore, stateAfter, action, result = null, automatic = 
         : { token: action.token },
     resourcesBefore: stateResources(stateBefore),
     resourcesAfter: stateResources(stateAfter),
-    structuralBefore: hashValue(structuralKeyObject(stateBefore)),
-    structuralAfter: hashValue(structuralKeyObject(stateAfter)),
+    structuralBefore: structuralHash(stateBefore),
+    structuralAfter: structuralHash(stateAfter),
     engine: result ? compactEngineResult(result) : null
   };
 }
 
-function enumerateTileActions(state) {
+function sequenceGatePresent(state, sequence) {
+  return getFloorState(state).map.some((row) => row.includes(`gate:${sequence.gate}`));
+}
+
+function findTokenOnCurrentFloor(state, token) {
+  const map = getFloorState(state).map;
+  for (let y = 0; y < map.length; y += 1) {
+    for (let x = 0; x < map[y].length; x += 1) {
+      if (map[y][x] === token) return { x, y };
+    }
+  }
+  return null;
+}
+
+function enumerateTileActionsEngine(state) {
   const actions = [];
   const map = getFloorState(state).map;
+  const floorSequence = FLOORS[state.floor].puzzles?.sequence;
   for (let y = 0; y < map.length; y += 1) {
     for (let x = 0; x < map[y].length; x += 1) {
       const token = map[y][x];
       if (token === '#' || transitToken(token)) continue;
+      const parsed = parseToken(token);
+      if (parsed.type === 'rune' && floorSequence) continue;
       const path = pathToAdjacent(state, x, y);
       if (!path) continue;
-      const parsed = parseToken(token);
 
       if (parsed.type === 'door' && state.cards[parsed.id] <= 0) continue;
       if (parsed.type === 'gate') {
@@ -253,7 +266,44 @@ function enumerateTileActions(state) {
   return actions;
 }
 
-function enumerateShopActions(state) {
+function buildSequenceActionEngine(state) {
+  const sequence = FLOORS[state.floor].puzzles?.sequence;
+  if (!sequence || !sequenceGatePresent(state, sequence)) return null;
+  const working = cloneEngineState(state);
+  const startProgress = getFloorState(working).sequenceProgress;
+  const segments = [];
+
+  for (let index = startProgress; index < sequence.order.length; index += 1) {
+    const runeId = sequence.order[index];
+    const rune = findTokenOnCurrentFloor(working, `rune:${runeId}`);
+    if (!rune) return null;
+    const path = pathToAdjacent(working, rune.x, rune.y);
+    if (!path) return null;
+    const transit = executePath(working, path);
+    if (!transit.ok) return null;
+    const result = tryMove(working, rune.x - working.x, rune.y - working.y);
+    if (result.blocked) return null;
+    segments.push({
+      kind: 'tile',
+      eventId: eventIdForTile(working, rune.x, rune.y, `rune:${runeId}`),
+      x: rune.x,
+      y: rune.y,
+      token: `rune:${runeId}`,
+      path
+    });
+  }
+
+  if (getFloorState(working).sequenceProgress < sequence.order.length) return null;
+  if (sequenceGatePresent(working, sequence)) return null;
+  const floorNumber = FLOORS[state.floor].number;
+  return {
+    kind: 'sequence',
+    eventId: `f${floorNumber}:sequence:${sequence.gate}:p${startProgress}`,
+    segments
+  };
+}
+
+function enumerateShopActionsEngine(state) {
   if (state.stats.gold < getShopCost(state)) return [];
   const map = getFloorState(state).map;
   for (let y = 0; y < map.length; y += 1) {
@@ -263,7 +313,7 @@ function enumerateShopActions(state) {
       if (!path) continue;
       return SHOP_OPTIONS.map((option) => ({
         kind: 'shop',
-        eventId: `f${state.floor + 1}:shop:${x},${y}:p${state.shopPurchases}:${option.id}`,
+        eventId: `f${FLOORS[state.floor].number}:shop:p${state.shopPurchases}:${option.id}`,
         x,
         y,
         path,
@@ -274,7 +324,7 @@ function enumerateShopActions(state) {
   return [];
 }
 
-function enumerateTeleportActions(state) {
+function enumerateTeleportActionsEngine(state) {
   if (!state.relics.compass) return [];
   return [...state.visitedFloors]
     .filter((floor) => floor !== state.floor)
@@ -286,37 +336,63 @@ function enumerateTeleportActions(state) {
     }));
 }
 
-function applyTileAction(state, action, automatic = false) {
-  const before = cloneState(state);
+function applyTileActionEngine(state, action, automatic = false) {
+  const before = cloneEngineState(state);
   const transit = executePath(state, action.path);
   if (!transit.ok) return { ok: false, reason: transit.reason, state };
   const dx = action.x - state.x;
   const dy = action.y - state.y;
-  if (Math.abs(dx) + Math.abs(dy) !== 1) return { ok: false, reason: 'Action target is no longer adjacent.', state };
+  if (Math.abs(dx) + Math.abs(dy) !== 1) {
+    return { ok: false, reason: 'Action target is no longer adjacent.', state };
+  }
   const result = tryMove(state, dx, dy);
   if (result.blocked) return { ok: false, reason: result.reason, state };
-  return { ok: true, state, steps: [makeStep({ stateBefore: before, stateAfter: state, action, result, automatic })] };
+  return {
+    ok: true,
+    state,
+    steps: [makeStep({ stateBefore: before, stateAfter: state, action, result, automatic })]
+  };
 }
 
-function applyShopAction(state, action) {
-  const before = cloneState(state);
+function applySequenceActionEngine(state, action) {
+  const steps = [];
+  for (const segment of action.segments) {
+    const applied = applyTileActionEngine(state, segment, false);
+    if (!applied.ok) return applied;
+    steps.push(...applied.steps);
+  }
+  return { ok: true, state, steps };
+}
+
+function applyShopActionEngine(state, action) {
+  const before = cloneEngineState(state);
   const transit = executePath(state, action.path);
   if (!transit.ok) return { ok: false, reason: transit.reason, state };
-  if (state.x !== action.x || state.y !== action.y) return { ok: false, reason: 'Shop path did not end on shop.', state };
+  if (state.x !== action.x || state.y !== action.y) {
+    return { ok: false, reason: 'Shop path did not end on shop.', state };
+  }
   const result = buyShopUpgrade(state, action.optionId);
   if (!result.ok) return { ok: false, reason: result.reason, state };
-  return { ok: true, state, steps: [makeStep({ stateBefore: before, stateAfter: state, action, result: null })] };
+  return {
+    ok: true,
+    state,
+    steps: [makeStep({ stateBefore: before, stateAfter: state, action, result: null })]
+  };
 }
 
-function applyTeleportAction(state, action) {
-  const before = cloneState(state);
+function applyTeleportActionEngine(state, action) {
+  const before = cloneEngineState(state);
   const result = teleportToFloor(state, action.targetFloor);
   if (!result.ok) return { ok: false, reason: result.reason, state };
-  return { ok: true, state, steps: [makeStep({ stateBefore: before, stateAfter: state, action, result: null })] };
+  return {
+    ok: true,
+    state,
+    steps: [makeStep({ stateBefore: before, stateAfter: state, action, result: null })]
+  };
 }
 
-function safeAutomaticActions(state) {
-  const tileActions = enumerateTileActions(state);
+function safeAutomaticActionsEngine(state) {
+  const tileActions = enumerateTileActionsEngine(state);
   const switches = tileActions.filter((action) => action.parsed.type === 'switch');
   if (switches.length) return switches.sort((a, b) => a.eventId.localeCompare(b.eventId));
 
@@ -330,23 +406,24 @@ function safeAutomaticActions(state) {
 }
 
 function normalize(state) {
+  const engineState = CODEC.materialize(state);
   const steps = [];
   let guard = 0;
   while (guard++ < 512) {
-    const actions = safeAutomaticActions(state);
+    const actions = safeAutomaticActionsEngine(engineState);
     if (!actions.length) break;
-    const applied = applyTileAction(state, actions[0], true);
+    const applied = applyTileActionEngine(engineState, actions[0], true);
     if (!applied.ok) throw new Error(`Automatic closure failed: ${applied.reason}`);
     steps.push(...applied.steps);
   }
   if (guard >= 512) throw new Error('Automatic closure exceeded safety limit.');
-  return { state, steps };
+  return { state: CODEC.compact(engineState), steps };
 }
 
 function actionPriority(action) {
+  if (action.kind === 'sequence') return 750;
   if (action.kind === 'shop') return 600;
   if (action.kind === 'teleport') return 50;
-  if (action.parsed?.type === 'rune') return 700;
   if (action.parsed?.type === 'door' || action.parsed?.type === 'gate') return 500;
   if (action.parsed?.type === 'enemy') return 400;
   if (action.token === 'U') return 300;
@@ -355,19 +432,27 @@ function actionPriority(action) {
 }
 
 function enumerateActions(state) {
+  const engineState = CODEC.materialize(state);
+  const sequenceAction = buildSequenceActionEngine(engineState);
   const actions = [
-    ...enumerateTileActions(state),
-    ...enumerateShopActions(state),
-    ...enumerateTeleportActions(state)
+    ...enumerateTileActionsEngine(engineState),
+    ...(sequenceAction ? [sequenceAction] : []),
+    ...enumerateShopActionsEngine(engineState),
+    ...enumerateTeleportActionsEngine(engineState)
   ];
   return actions.sort((a, b) => actionPriority(b) - actionPriority(a) || a.eventId.localeCompare(b.eventId));
 }
 
 function applyAction(state, action) {
-  if (action.kind === 'tile') return applyTileAction(state, action, false);
-  if (action.kind === 'shop') return applyShopAction(state, action);
-  if (action.kind === 'teleport') return applyTeleportAction(state, action);
-  return { ok: false, reason: `Unknown macro action kind: ${action.kind}`, state };
+  const engineState = CODEC.materialize(state);
+  let applied;
+  if (action.kind === 'tile') applied = applyTileActionEngine(engineState, action, false);
+  else if (action.kind === 'sequence') applied = applySequenceActionEngine(engineState, action);
+  else if (action.kind === 'shop') applied = applyShopActionEngine(engineState, action);
+  else if (action.kind === 'teleport') applied = applyTeleportActionEngine(engineState, action);
+  else return { ok: false, reason: `Unknown macro action kind: ${action.kind}`, state };
+  if (!applied.ok) return { ...applied, state };
+  return { ok: true, state: CODEC.compact(applied.state), steps: applied.steps };
 }
 
 function priority(state) {
@@ -379,18 +464,29 @@ function priority(state) {
     + Math.min(state.stats.hp, 9999);
 }
 
+function actionClass(action) {
+  if (action.kind !== 'tile') return action.kind;
+  if (action.parsed?.type === 'enemy') return ENEMIES[action.parsed.id]?.boss ? 'boss' : 'enemy';
+  return action.parsed?.type ?? action.token ?? 'tile';
+}
+
 export function createTowerAdapter() {
   return {
     objectiveType: 'terminal_hp',
     resourceFields: RESOURCE_FIELDS,
-    createInitialState,
-    cloneState,
+    stateEncoding: CODEC.stateEncoding,
+    createInitialState: () => CODEC.compact(createEngineInitialState()),
+    cloneState: CODEC.cloneCompact,
+    compactState: CODEC.compact,
+    materializeState: CODEC.materialize,
     resources: stateResources,
     structuralKey,
     summarizeState,
     normalize,
     enumerateActions,
     applyAction,
+    actionClass,
+    stageKey: (state) => `f${state.floor + 1}/c${state.cores}`,
     isGoal: (state) => state.victory === true,
     objectiveValue: (state) => state.stats.hp,
     priority,
@@ -400,7 +496,9 @@ export function createTowerAdapter() {
       enemies: ENEMIES,
       items: ITEMS,
       shop: SHOP_OPTIONS,
+      eventCatalog: CODEC.eventCatalogSummary(),
       shopCostProbe: Array.from({ length: 64 }, (_, shopPurchases) => getShopCost({ shopPurchases }))
-    })
+    }),
+    eventCatalog: () => CODEC.eventCatalogSummary()
   };
 }

@@ -36,6 +36,10 @@ function structuralKeyHash(key) {
   }
 }
 
+function incrementCounter(counter, key, amount = 1) {
+  counter[key] = (counter[key] ?? 0) + amount;
+}
+
 function buildCertificate(goalLabel, initialSteps, adapter, metadata) {
   if (!goalLabel) return null;
   const edgeGroups = [];
@@ -72,7 +76,7 @@ export function solve({
   mode = 'existence',
   maxExpanded = 100_000,
   maxGenerated = 1_000_000,
-  solverVersion = 'macro-pareto-v0.1'
+  solverVersion = 'macro-pareto-v0.2'
 } = {}) {
   if (!adapter) throw new Error('solve() requires an adapter.');
   if (!['existence', 'optimize'].includes(mode)) throw new Error(`Unknown solver mode: ${mode}`);
@@ -86,23 +90,47 @@ export function solve({
   let expandedStates = 0;
   let generatedStates = 0;
   let prunedDominated = 0;
+  let prunedBound = 0;
   let stalePops = 0;
   let bestGoal = null;
   let stoppedReason = null;
 
+  let queuePeak = 0;
+  let maxDepth = 0;
+  let normalizedSteps = initialNormalized.steps.length;
+  let branchSamples = 0;
+  let branchTotal = 0;
+  let branchMax = 0;
+  let keySamples = 0;
+  let keyCharsTotal = 0;
+  let keyCharsMax = 0;
+  const expandedByStage = {};
+  const generatedByAction = {};
+
+  function recordAcceptedKey(key) {
+    if (typeof key !== 'string') return;
+    keySamples += 1;
+    keyCharsTotal += key.length;
+    keyCharsMax = Math.max(keyCharsMax, key.length);
+  }
+
   const initialResources = adapter.resources(initialNormalized.state);
+  const initialKey = adapter.structuralKey(initialNormalized.state);
   const initialLabel = {
     id: nextId++,
     state: initialNormalized.state,
     resources: initialResources,
-    key: adapter.structuralKey(initialNormalized.state),
+    key: initialKey,
     parent: null,
     edgeSteps: [],
     minHp: initialResources.hp ?? null,
+    depth: 0,
     active: true
   };
   frontier.insert(initialLabel.key, initialLabel);
+  recordAcceptedKey(initialKey);
   queue.push(initialLabel, defaultPriority(initialLabel.state, adapter));
+  queuePeak = Math.max(queuePeak, queue.size);
 
   while (queue.size > 0) {
     if (expandedStates >= maxExpanded) {
@@ -121,6 +149,10 @@ export function solve({
     }
 
     expandedStates += 1;
+    maxDepth = Math.max(maxDepth, label.depth ?? 0);
+    const stage = adapter.stageKey ? adapter.stageKey(label.state) : 'all';
+    incrementCounter(expandedByStage, stage);
+
     if (adapter.isGoal(label.state)) {
       if (labelIsBetterGoal(label, bestGoal, adapter)) bestGoal = label;
       if (mode === 'existence') {
@@ -131,14 +163,27 @@ export function solve({
     }
 
     const actions = adapter.enumerateActions(label.state);
+    branchSamples += 1;
+    branchTotal += actions.length;
+    branchMax = Math.max(branchMax, actions.length);
+
     for (const action of actions) {
       if (generatedStates >= maxGenerated) break;
       generatedStates += 1;
+      const actionClass = adapter.actionClass ? adapter.actionClass(action) : (action.kind ?? 'unknown');
+      incrementCounter(generatedByAction, actionClass);
+
       const applied = adapter.applyAction(adapter.cloneState(label.state), action);
       if (!applied?.ok) continue;
 
       const normalized = normalizeWith(adapter, applied.state);
+      normalizedSteps += normalized.steps.length;
       const nextState = normalized.state;
+      if (adapter.provenDeadEnd?.(nextState)) {
+        prunedBound += 1;
+        continue;
+      }
+
       const resources = adapter.resources(nextState);
       const key = adapter.structuralKey(nextState);
       const edgeSteps = [...(applied.steps ?? []), ...normalized.steps];
@@ -152,6 +197,7 @@ export function solve({
         minHp: label.minHp == null || resources.hp == null
           ? label.minHp
           : Math.min(label.minHp, resources.hp),
+        depth: (label.depth ?? 0) + 1,
         active: true
       };
 
@@ -161,7 +207,9 @@ export function solve({
         continue;
       }
       prunedDominated += insertion.removed.length;
+      recordAcceptedKey(key);
       queue.push(nextLabel, defaultPriority(nextState, adapter));
+      queuePeak = Math.max(queuePeak, queue.size);
     }
   }
 
@@ -179,6 +227,7 @@ export function solve({
     schemaVersion: 1,
     solverVersion,
     mode,
+    stateEncoding: adapter.stateEncoding ?? 'adapter-defined',
     solvable: solvable ? true : (exhausted ? false : null),
     exact: mode === 'existence' ? existenceExact : objectiveExact,
     existenceExact,
@@ -194,11 +243,29 @@ export function solve({
     expandedStates,
     generatedStates,
     prunedDominated,
-    prunedBound: 0,
+    prunedBound,
     stalePops,
     structuralStates: frontier.structuralStates,
     activeLabels: frontier.activeCount(),
     frontierPeak: frontier.peakWidth,
-    certificate
+    certificate,
+    profile: {
+      maxDepth,
+      goalDepth: bestGoal?.depth ?? null,
+      queuePeak,
+      normalizationSteps: normalizedSteps,
+      branching: {
+        samples: branchSamples,
+        mean: branchSamples ? branchTotal / branchSamples : 0,
+        max: branchMax
+      },
+      structuralKeyChars: {
+        samples: keySamples,
+        mean: keySamples ? keyCharsTotal / keySamples : 0,
+        max: keyCharsMax
+      },
+      expandedByStage,
+      generatedByAction
+    }
   };
 }

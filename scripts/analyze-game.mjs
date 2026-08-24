@@ -30,10 +30,15 @@ if (report.certificate) {
 if (config.json) {
   console.log(JSON.stringify(report, null, 2));
 } else {
-  console.log(`Solver ${report.solverVersion} (${report.mode})`);
+  console.log(`Solver ${report.solverVersion} (${report.mode}) | state=${report.stateEncoding}`);
   console.log(`solvable: ${report.solvable} | exact: ${report.exact} | stopped: ${report.stoppedReason ?? 'exhausted'}`);
-  console.log(`expanded: ${report.expandedStates} | generated: ${report.generatedStates} | dominated: ${report.prunedDominated}`);
+  console.log(`expanded: ${report.expandedStates} | generated: ${report.generatedStates} | dominated: ${report.prunedDominated} | bound: ${report.prunedBound}`);
   console.log(`structural states: ${report.structuralStates} | active labels: ${report.activeLabels} | peak frontier: ${report.frontierPeak}`);
+  console.log(`depth: ${report.profile.maxDepth} | goal depth: ${report.profile.goalDepth ?? '-'} | queue peak: ${report.profile.queuePeak}`);
+  console.log(`branching mean/max: ${report.profile.branching.mean.toFixed(2)}/${report.profile.branching.max} | normalized steps: ${report.profile.normalizationSteps}`);
+  console.log(`structural key chars mean/max: ${report.profile.structuralKeyChars.mean.toFixed(1)}/${report.profile.structuralKeyChars.max}`);
+  console.log(`actions: ${JSON.stringify(report.profile.generatedByAction)}`);
+  console.log(`stages: ${JSON.stringify(report.profile.expandedByStage)}`);
   if (report.objective.best != null) console.log(`${report.objective.type}: ${report.objective.best}`);
   if (report.certificate) console.log(`certificate: ${report.certificate.certificateHash} | replay: ${report.certificate.authoritativeReplay.ok ? 'PASS' : 'FAIL'}`);
 }
