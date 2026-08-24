@@ -6,21 +6,23 @@ import { fileURLToPath } from 'node:url';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 
-test('V8.8 uses repository V4 stair art and pillarless barrier rendering', async () => {
+test('V10 uses generated rune stair tiles and generated barrier art', async () => {
   const patch = await readFile(join(root, 'src/game/visual-patch-v83.js'), 'utf8');
   const manifest = await readFile(join(root, 'public/assets/anime/map/manifest.json'), 'utf8');
 
-  assert.match(manifest, /"stairs-up-v4"/);
-  assert.match(manifest, /"stairs-down-v4"/);
-  assert.match(patch, /getMapAsset/);
-  assert.match(patch, /stairs-up-v4/);
-  assert.match(patch, /stairs-down-v4/);
-  assert.match(patch, /drawStairAsset/);
-  assert.match(patch, /v4-stair-art-v8\.8/);
+  for (const asset of [
+    'rune-stairs-up-v10', 'rune-stairs-down-v10', 'rune-floor-barrier-v10',
+    'barrier-sun-v10', 'barrier-moon-v10', 'barrier-star-v10'
+  ]) assert.match(manifest, new RegExp(`"${asset}"`));
 
-  assert.match(patch, /drawBarrierWithoutPillars/);
+  assert.match(patch, /drawGeneratedStair/);
+  assert.match(patch, /rune-stairs-up-v10/);
+  assert.match(patch, /rune-stairs-down-v10/);
+  assert.match(patch, /drawGeneratedBarrier/);
+  assert.match(patch, /rune-floor-barrier-v10/);
+  assert.match(patch, /generated-barrier-rune-v10/);
+  assert.match(patch, /generated-rune-stairs-v10/);
   assert.match(patch, /parsed\.type === 'door'/);
-  assert.match(patch, /pillarless-energy-v8\.8/);
   assert.doesNotMatch(patch, /wall-end-pillar-v6/);
-  assert.doesNotMatch(patch, /wall-pillar-v4/);
+  assert.doesNotMatch(patch, /drawBarrierWithoutPillars/);
 });
