@@ -296,6 +296,12 @@ export function tryMove(state, dx, dy) {
       result.reason = '这里没有更高层。';
       return result;
     }
+    const floor = FLOORS[state.floor];
+    if (floor.boss && !getFloorState(state).bossDefeated) {
+      result.blocked = true;
+      result.reason = '本层阵眼尚未解除，必须先击败守护者。';
+      return result;
+    }
     result.dialogue = enterFloor(state, state.floor + 1, 'up');
     result.floorChanged = true;
     result.moved = true;
