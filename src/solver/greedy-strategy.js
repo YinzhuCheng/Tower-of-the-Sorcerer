@@ -148,6 +148,8 @@ function buyAvailableUpgrades(state, shopCycle, purchaseCounts, purchaseLog) {
       floor: state.floor + 1,
       optionId,
       cost: result.cost,
+      goldSlack: before.gold - result.cost,
+      normalizedGoldSlack: (before.gold - result.cost) / Math.max(1, result.cost),
       before,
       after: { ...state.stats }
     });
@@ -288,6 +290,45 @@ function collectDeferredHoly(state) {
   return { ok: true, collected: true, acquisition };
 }
 
+function battleCheckpoint(state, action) {
+  if (action.parsed?.type !== 'enemy') return null;
+  const enemy = ENEMIES[action.parsed.id];
+  if (!enemy) return null;
+  const statsBefore = { ...state.stats };
+  const battle = calculateBattle(statsBefore, enemy, state.relics);
+  return {
+    floor: state.floor + 1,
+    enemyId: action.parsed.id,
+    enemyName: enemy.name,
+    boss: Boolean(enemy.boss),
+    finalBoss: Boolean(enemy.finalBoss),
+    special: enemy.special ?? null,
+    statsBefore,
+    battle: {
+      winnable: battle.winnable,
+      heroDamage: battle.heroDamage,
+      enemyDamage: battle.enemyDamage,
+      rounds: battle.rounds,
+      counterAttacks: battle.counterAttacks,
+      totalDamage: battle.totalDamage,
+      remainingHp: battle.remainingHp
+    },
+    hpMargin: statsBefore.hp - battle.totalDamage - 1,
+    normalizedHpMargin: (statsBefore.hp - battle.totalDamage - 1) / Math.max(1, statsBefore.hp),
+    atkMargin: statsBefore.atk - enemy.def - 1,
+    defMargin: enemy.special === 'magic' ? null : statsBefore.def - enemy.atk
+  };
+}
+
+function finishBattleCheckpoint(checkpoint, state) {
+  if (!checkpoint) return null;
+  return {
+    ...checkpoint,
+    statsAfter: { ...state.stats },
+    goldGain: state.stats.gold - checkpoint.statsBefore.gold
+  };
+}
+
 export function runGreedyShopStrategy({
   shopCycle = ['atk', 'def', 'hp'],
   holyPolicy = 'immediate',
@@ -302,6 +343,7 @@ export function runGreedyShopStrategy({
   const state = createInitialState();
   const purchaseCounts = { atk: 0, def: 0, hp: 0 };
   const purchaseLog = [];
+  const battleLog = [];
   let holyAcquisition = null;
   let iterations = 0;
   let failure = null;
@@ -353,11 +395,15 @@ export function runGreedyShopStrategy({
       break;
     }
 
+    const checkpoint = battleCheckpoint(state, action);
     const applied = actOn(state, action);
     if (!applied.ok) {
       failure = applied.reason;
       break;
     }
+    const completedBattle = finishBattleCheckpoint(checkpoint, state);
+    if (completedBattle) battleLog.push(completedBattle);
+
     if (action.parsed?.type === 'item' && action.parsed.id === 'holy' && !holyAcquisition) {
       holyAcquisition = {
         floor: state.floor + 1,
@@ -370,6 +416,7 @@ export function runGreedyShopStrategy({
 
   if (!state.victory && !failure && iterations >= maxIterations) failure = 'Iteration limit reached.';
 
+  const hpMargins = battleLog.map((entry) => entry.normalizedHpMargin).filter(Number.isFinite);
   return {
     solvable: state.victory,
     failure,
@@ -380,6 +427,8 @@ export function runGreedyShopStrategy({
     purchases: state.shopPurchases,
     purchaseCounts,
     purchaseLog,
+    battleLog,
+    minNormalizedHpMargin: hpMargins.length ? Math.min(...hpMargins) : null,
     cores: state.cores,
     floor: state.floor + 1,
     final: { ...state.stats },
