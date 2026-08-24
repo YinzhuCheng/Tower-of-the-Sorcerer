@@ -24,6 +24,27 @@ export const DEFAULT_INCUMBENT_STRATEGIES = BASE_SHOP_STRATEGIES.flatMap((strate
   }))
 );
 
+// Promoted only after authoritative local search reached a 1-opt fixed point.
+// Keeping the explicit sequence makes the incumbent reproducible and avoids
+// paying the 24-pass discovery cost in every CI / tuning iteration.
+export const PROMOTED_PURCHASE_PLANS = Object.freeze([
+  Object.freeze({
+    id: 'purchase-1opt-v1',
+    cycle: Object.freeze(['def', 'atk', 'hp']),
+    holyPolicy: 'immediate',
+    expectedHp: 26_041,
+    shopPlan: Object.freeze([
+      'def', 'def', 'def', 'def',
+      'hp', 'hp', 'hp', 'hp', 'hp',
+      'hp', 'hp', 'hp', 'hp', 'hp',
+      'hp', 'hp', 'hp', 'hp', 'hp',
+      'atk',
+      'hp', 'hp', 'hp', 'hp', 'hp',
+      'hp', 'hp', 'hp', 'hp', 'hp'
+    ])
+  })
+]);
+
 function validateShopOptions(options, label) {
   if (options == null) return;
   if (!Array.isArray(options)) throw new Error(`${label} must be an array or null.`);
@@ -107,10 +128,40 @@ export function verifyGreedyIncumbentWitness(witness) {
   };
 }
 
+function runPromotedPlan(plan) {
+  const cycle = [...plan.cycle];
+  const shopPlan = [...plan.shopPlan];
+  const holyPolicy = plan.holyPolicy ?? 'immediate';
+  const witness = makeGreedyIncumbentWitness({
+    id: plan.id,
+    cycle,
+    holyPolicy,
+    shopPlan
+  });
+  const result = runGreedyShopStrategy({ cycle, shopPlan, shopCycle: cycle, holyPolicy });
+  if (!result.solvable) {
+    throw new Error(`Promoted incumbent ${plan.id} is no longer solvable: ${result.failure ?? 'unknown failure'}`);
+  }
+  if (Number.isFinite(plan.expectedHp) && result.final.hp !== plan.expectedHp) {
+    throw new Error(`Promoted incumbent ${plan.id} drifted: expected ${plan.expectedHp}, got ${result.final.hp}.`);
+  }
+  return {
+    id: plan.id,
+    baseId: plan.id,
+    source: 'promoted-plan',
+    cycle,
+    shopPlan,
+    holyPolicy,
+    witness,
+    result
+  };
+}
+
 export function findBestGreedyIncumbent({ strategies = DEFAULT_INCUMBENT_STRATEGIES } = {}) {
   const results = strategies.map((strategy) => ({
     id: strategy.id,
     baseId: strategy.baseId ?? strategy.id,
+    source: 'policy-portfolio',
     cycle: [...strategy.cycle],
     holyPolicy: strategy.holyPolicy ?? 'immediate',
     witness: makeGreedyIncumbentWitness(strategy),
@@ -128,5 +179,24 @@ export function findBestGreedyIncumbent({ strategies = DEFAULT_INCUMBENT_STRATEG
     feasibleCount: feasible.length,
     attemptedCount: results.length,
     results
+  };
+}
+
+export function findBestKnownIncumbent({
+  portfolio = null,
+  promotedPlans = PROMOTED_PURCHASE_PLANS
+} = {}) {
+  const policyPortfolio = portfolio ?? findBestGreedyIncumbent();
+  const promoted = promotedPlans.map(runPromotedPlan);
+  const candidates = [
+    ...(policyPortfolio.best ? [policyPortfolio.best] : []),
+    ...promoted
+  ].sort((a, b) => b.result.final.hp - a.result.final.hp || a.id.localeCompare(b.id));
+
+  return {
+    best: candidates[0] ?? null,
+    portfolio: policyPortfolio,
+    promoted,
+    candidates
   };
 }
