@@ -1,6 +1,6 @@
 {
   "version": 4,
-  "revision": "generated-gameplay-v10",
+  "revision": "generated-gameplay-v10.1",
   "wallRevision": "wall-materials-v6",
   "theme": "moonlit-star-tower",
   "basePath": "/assets/anime/map/",
@@ -47,7 +47,7 @@
     "gameplayV10": {
       "base64Chunks": [
         "atlases/v10/gameplay-v10-ultra-01.b64",
-        "atlases/v10/gameplay-v10-ultra-02.b64"
+        "atlases/v10/gameplay-v10-ultra-02-fixed.b64"
       ],
       "mime": "image/webp", "cols": 4, "rows": 4
     }
