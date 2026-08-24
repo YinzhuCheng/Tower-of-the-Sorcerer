@@ -1,35 +1,55 @@
-import { ENEMIES, ITEMS, getShopCost } from '../game/data.js';
-import { parseToken } from '../game/engine.js';
+import { ENEMIES, FLOORS, ITEMS, getShopCost } from '../game/data.js';
+import { createInitialState, parseToken } from '../game/engine.js';
 import { createTowerAdapter } from './tower-adapter.js';
+import { createTowerStateCodec } from './tower-codec.js';
 
-function scanOptimisticRemainder(engineState) {
+const BOUND_CODEC = createTowerStateCodec({
+  baseState: createInitialState(),
+  floors: FLOORS,
+  enemies: ENEMIES
+});
+
+const TOKEN_CONTRIBUTIONS = Array.from({ length: BOUND_CODEC.tokenVocabularySize }, (_, code) => {
+  const token = BOUND_CODEC.tokenForCode(code);
+  const parsed = parseToken(token);
+  if (parsed.type === 'item') {
+    const item = ITEMS[parsed.id];
+    return {
+      hpGain: Math.max(0, item?.hp ?? 0),
+      gold: 0,
+      lucky: item?.relicKey === 'lucky',
+      holy: item?.relicKey === 'holy'
+    };
+  }
+  if (parsed.type === 'enemy') {
+    const enemy = ENEMIES[parsed.id];
+    return {
+      hpGain: Math.max(0, enemy?.reward?.hp ?? 0),
+      gold: Math.max(0, enemy?.gold ?? 0),
+      lucky: false,
+      holy: false
+    };
+  }
+  return { hpGain: 0, gold: 0, lucky: false, holy: false };
+});
+
+function scanCompactRemainder(baseAdapter, state) {
+  const compact = Array.isArray(state.eventStates) ? state : baseAdapter.compactState(state);
   let flatHpGain = 0;
   let baseEnemyGold = 0;
   let luckyStillAvailable = false;
   let holyStillAvailable = false;
 
-  for (const floorState of engineState.floorStates) {
-    for (const row of floorState.map) {
-      for (const token of row) {
-        const parsed = parseToken(token);
-        if (parsed.type === 'item') {
-          const item = ITEMS[parsed.id];
-          if (!item) continue;
-          if (item.hp > 0) flatHpGain += item.hp;
-          if (item.relicKey === 'lucky') luckyStillAvailable = true;
-          if (item.relicKey === 'holy') holyStillAvailable = true;
-          continue;
-        }
-        if (parsed.type !== 'enemy') continue;
-        const enemy = ENEMIES[parsed.id];
-        if (!enemy) continue;
-        baseEnemyGold += Math.max(0, enemy.gold ?? 0);
-        if (enemy.reward?.hp > 0) flatHpGain += enemy.reward.hp;
-      }
-    }
+  for (const code of compact.eventStates) {
+    const contribution = TOKEN_CONTRIBUTIONS[code];
+    if (!contribution) throw new Error(`Missing optimistic contribution for event token code ${code}.`);
+    flatHpGain += contribution.hpGain;
+    baseEnemyGold += contribution.gold;
+    luckyStillAvailable ||= contribution.lucky;
+    holyStillAvailable ||= contribution.holy;
   }
 
-  return { flatHpGain, baseEnemyGold, luckyStillAvailable, holyStillAvailable };
+  return { compact, flatHpGain, baseEnemyGold, luckyStillAvailable, holyStillAvailable };
 }
 
 function optimisticAdditionalPurchases(state, optimisticFutureGold) {
@@ -102,18 +122,18 @@ function compactFrontierKey(baseAdapter, state) {
  * These relaxations can only overestimate achievable terminal HP, making the
  * result safe for branch-and-bound pruning.
  */
-export function optimisticTerminalHpUpperBound(baseAdapter, compactState) {
-  const engineState = baseAdapter.materializeState(compactState);
-  if (engineState.victory) return engineState.stats.hp;
+export function optimisticTerminalHpUpperBound(baseAdapter, state) {
+  const remainder = scanCompactRemainder(baseAdapter, state);
+  const compact = remainder.compact;
+  if (compact.victory) return compact.stats.hp;
 
-  const remainder = scanOptimisticRemainder(engineState);
-  const luckyMultiplier = engineState.relics.lucky || remainder.luckyStillAvailable ? 2 : 1;
-  const optimisticGold = engineState.stats.gold + remainder.baseEnemyGold * luckyMultiplier;
-  const additionalPurchases = optimisticAdditionalPurchases(engineState, optimisticGold);
+  const luckyMultiplier = compact.relics.lucky || remainder.luckyStillAvailable ? 2 : 1;
+  const optimisticGold = compact.stats.gold + remainder.baseEnemyGold * luckyMultiplier;
+  const additionalPurchases = optimisticAdditionalPurchases(compact, optimisticGold);
   const shopHpGain = additionalPurchases * 900;
 
-  let upper = engineState.stats.hp + remainder.flatHpGain + shopHpGain;
-  if (!engineState.relics.holy && remainder.holyStillAvailable) upper *= 2;
+  let upper = compact.stats.hp + remainder.flatHpGain + shopHpGain;
+  if (!compact.relics.holy && remainder.holyStillAvailable) upper *= 2;
   return upper;
 }
 
@@ -129,6 +149,8 @@ export function createBoundedTowerAdapter() {
     normalize: (state) => base.isGoal(state)
       ? { state: base.cloneState(state), steps: [] }
       : base.normalize(state),
+    // This upper bound reads only the numeric event vector. It never clones or
+    // scans the eight materialized maps during search.
     objectiveUpperBound: (state) => optimisticTerminalHpUpperBound(base, state)
   };
 }
