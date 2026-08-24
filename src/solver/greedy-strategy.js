@@ -13,6 +13,7 @@ import {
 
 const DIR_LIST = Object.entries(DIRECTIONS).map(([name, vector]) => ({ name, ...vector }));
 export const HOLY_POLICIES = ['immediate', 'after-core-6', 'after-core-7', 'before-final'];
+const SHOP_OPTION_IDS = ['atk', 'def', 'hp'];
 
 function tileIsTransit(token, { allowRunes = false } = {}) {
   if (token === '.' || token === 'shop') return true;
@@ -130,7 +131,7 @@ function reachableShop(state) {
   return null;
 }
 
-function buyAvailableUpgrades(state, shopCycle, purchaseCounts, purchaseLog) {
+function buyAvailableUpgrades(state, shopCycle, shopPlan, purchaseCounts, purchaseLog) {
   const shop = reachableShop(state);
   if (!shop) return { ok: true, count: 0 };
   const transit = executePath(state, shop.path);
@@ -138,7 +139,8 @@ function buyAvailableUpgrades(state, shopCycle, purchaseCounts, purchaseLog) {
 
   let count = 0;
   while (state.stats.gold >= getShopCost(state) && count < 128) {
-    const optionId = shopCycle[state.shopPurchases % shopCycle.length];
+    const optionId = shopPlan?.[state.shopPurchases]
+      ?? shopCycle[state.shopPurchases % shopCycle.length];
     const before = { ...state.stats };
     const result = buyShopUpgrade(state, optionId);
     if (!result.ok) return { ok: false, reason: result.reason };
@@ -331,12 +333,19 @@ function finishBattleCheckpoint(checkpoint, state) {
 
 export function runGreedyShopStrategy({
   shopCycle = ['atk', 'def', 'hp'],
+  shopPlan = null,
   holyPolicy = 'immediate',
   maxIterations = 5_000
 } = {}) {
   if (!Array.isArray(shopCycle) || shopCycle.length === 0) throw new Error('shopCycle must not be empty.');
   for (const optionId of shopCycle) {
-    if (!['atk', 'def', 'hp'].includes(optionId)) throw new Error(`Unknown shop option in cycle: ${optionId}`);
+    if (!SHOP_OPTION_IDS.includes(optionId)) throw new Error(`Unknown shop option in cycle: ${optionId}`);
+  }
+  if (shopPlan != null) {
+    if (!Array.isArray(shopPlan)) throw new Error('shopPlan must be an array or null.');
+    for (const optionId of shopPlan) {
+      if (!SHOP_OPTION_IDS.includes(optionId)) throw new Error(`Unknown shop option in plan: ${optionId}`);
+    }
   }
   if (!HOLY_POLICIES.includes(holyPolicy)) throw new Error(`Unknown Holy policy: ${holyPolicy}`);
 
@@ -351,7 +360,7 @@ export function runGreedyShopStrategy({
   while (!state.victory && iterations < maxIterations) {
     iterations += 1;
 
-    const bought = buyAvailableUpgrades(state, shopCycle, purchaseCounts, purchaseLog);
+    const bought = buyAvailableUpgrades(state, shopCycle, shopPlan, purchaseCounts, purchaseLog);
     if (!bought.ok) {
       failure = bought.reason;
       break;
@@ -385,7 +394,7 @@ export function runGreedyShopStrategy({
 
     const action = chooseAction(state, actions, holyPolicy);
     if (!action) {
-      const retry = buyAvailableUpgrades(state, shopCycle, purchaseCounts, purchaseLog);
+      const retry = buyAvailableUpgrades(state, shopCycle, shopPlan, purchaseCounts, purchaseLog);
       if (!retry.ok) {
         failure = retry.reason;
         break;
@@ -421,6 +430,7 @@ export function runGreedyShopStrategy({
     solvable: state.victory,
     failure,
     shopCycle: [...shopCycle],
+    shopPlan: shopPlan ? [...shopPlan] : null,
     holyPolicy,
     holyAcquisition,
     iterations,
