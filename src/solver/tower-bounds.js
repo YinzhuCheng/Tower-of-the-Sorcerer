@@ -156,6 +156,26 @@ export function optimisticTerminalHpUpperBound(baseAdapter, state) {
   return upper;
 }
 
+/**
+ * Canonicalize free inter-floor travel once the compass exists.
+ *
+ * After the boss-stair lock, every visited upper floor proves that the lower
+ * floor's boss was defeated and that at least one D→U route was permanently
+ * opened. Doors/enemies never re-close. Therefore any upward teleport can be
+ * replaced by repeated U traversal at zero resource cost, while any D traversal
+ * can be replaced by a direct downward teleport. Keeping only downward
+ * teleports removes travel cycles without making legal actions depend on path
+ * history, so Pareto labels remain history-free.
+ */
+export function canonicalizeCompassTravel(state, actions) {
+  if (!state.relics?.compass) return actions;
+  return actions.filter((action) => {
+    if (action.kind === 'teleport') return action.targetFloor < state.floor;
+    if (action.kind === 'tile' && action.token === 'D') return false;
+    return true;
+  });
+}
+
 export function createBoundedTowerAdapter() {
   const base = createTowerAdapter();
   const upperBoundCache = new WeakMap();
@@ -174,7 +194,8 @@ export function createBoundedTowerAdapter() {
     normalize: (state) => base.isGoal(state)
       ? { state: base.cloneState(state), steps: [] }
       : base.normalize(state),
+    enumerateActions: (state) => canonicalizeCompassTravel(state, base.enumerateActions(state)),
     objectiveUpperBound: upperBound,
-    rulesVersion: () => `${base.rulesVersion()}+boss-stair-lock-v1`
+    rulesVersion: () => `${base.rulesVersion()}+boss-stair-lock-v1+canonical-travel-v1`
   };
 }
