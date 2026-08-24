@@ -164,6 +164,12 @@ function solveSequenceIfPossible(state) {
   }
 
   const originalProgress = floorState.sequenceProgress;
+  const deferred = () => ({
+    ok: true,
+    changed: floorState.sequenceProgress !== originalProgress,
+    deferred: true
+  });
+
   for (let index = originalProgress; index < sequence.order.length; index += 1) {
     const runeId = sequence.order[index];
     let rune = null;
@@ -172,15 +178,18 @@ function solveSequenceIfPossible(state) {
         if (floorState.map[y][x] === `rune:${runeId}`) rune = { x, y };
       }
     }
-    if (!rune) return { ok: false, reason: `Missing rune ${runeId}.` };
+    // Match validate-game.mjs: an unavailable next rune simply means the
+    // deterministic runner should keep clearing other reachable progress and
+    // retry the sequence on a later iteration. It is not a route failure.
+    if (!rune) return deferred();
     const path = pathToAdjacent(state, rune.x, rune.y, { allowRunes: false });
-    if (!path) return { ok: false, reason: `Rune ${runeId} is unreachable.` };
+    if (!path) return deferred();
     const transit = executePath(state, path);
-    if (!transit.ok) return transit;
+    if (!transit.ok) return deferred();
     const result = tryMove(state, rune.x - state.x, rune.y - state.y);
-    if (result.blocked) return { ok: false, reason: result.reason };
+    if (result.blocked) return deferred();
   }
-  return { ok: true, changed: floorState.sequenceProgress !== originalProgress };
+  return { ok: true, changed: floorState.sequenceProgress !== originalProgress, deferred: false };
 }
 
 function chooseAction(state, actions) {
