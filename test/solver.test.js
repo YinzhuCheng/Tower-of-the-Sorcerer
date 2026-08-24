@@ -128,3 +128,59 @@ test('bounded optimization reports unknown exactness instead of claiming optimal
   assert.equal(report.solvable, null);
   assert.equal(report.stoppedReason, 'maxExpanded');
 });
+
+test('verified incumbent witness can close an optimality proof without rediscovery', () => {
+  const adapter = mockAdapter();
+  adapter.objectiveUpperBound = () => 70;
+  adapter.verifyIncumbent = (witness) => witness?.type === 'mock-feasible'
+    ? { ok: true, value: 70, objectiveType: 'terminal_hp', witnessType: witness.type, summary: { route: 'known' } }
+    : { ok: false, reason: 'bad witness' };
+
+  const report = solve({
+    adapter,
+    mode: 'optimize',
+    incumbentWitness: { type: 'mock-feasible' },
+    maxExpanded: 100
+  });
+
+  assert.equal(report.solvable, true);
+  assert.equal(report.exact, true);
+  assert.equal(report.objectiveExact, true);
+  assert.equal(report.objective.best, 70);
+  assert.equal(report.objective.searchBest, null);
+  assert.equal(report.objective.seededLowerBound, 70);
+  assert.equal(report.incumbentVerification.ok, true);
+  assert.equal(report.prunedBound, 1);
+  assert.equal(report.certificate, null, 'external witness is not disguised as a search certificate');
+});
+
+test('unverified numeric lower bound is reported but never trusted for pruning', () => {
+  const adapter = mockAdapter();
+  adapter.objectiveUpperBound = () => 100;
+  const report = solve({
+    adapter,
+    mode: 'optimize',
+    incumbentLowerBound: 999_999,
+    maxExpanded: 100
+  });
+
+  assert.equal(report.exact, true);
+  assert.equal(report.objective.best, 70);
+  assert.equal(report.objective.seededLowerBound, null);
+  assert.equal(report.objective.requestedLowerBound, 999_999);
+  assert.equal(report.certificate.objective.value, 70);
+});
+
+test('invalid or unverifiable incumbent witnesses are rejected before search', () => {
+  assert.throws(
+    () => solve({ adapter: mockAdapter(), mode: 'optimize', incumbentWitness: { type: 'unknown' } }),
+    /verifyIncumbent/
+  );
+
+  const adapter = mockAdapter();
+  adapter.verifyIncumbent = () => ({ ok: false, reason: 'replay failed' });
+  assert.throws(
+    () => solve({ adapter, mode: 'optimize', incumbentWitness: { type: 'bad' } }),
+    /verification failed: replay failed/
+  );
+});
