@@ -1,8 +1,8 @@
-import { runGreedyShopStrategy } from './greedy-strategy.js';
+import { HOLY_POLICIES, runGreedyShopStrategy } from './greedy-strategy.js';
 
-export const GREEDY_INCUMBENT_WITNESS_TYPE = 'greedy-shop-cycle-v1';
+export const GREEDY_INCUMBENT_WITNESS_TYPE = 'greedy-route-policy-v2';
 
-export const DEFAULT_INCUMBENT_STRATEGIES = [
+const BASE_SHOP_STRATEGIES = [
   { id: 'def-atk-hp', cycle: ['def', 'atk', 'hp'] },
   { id: 'def-hp-atk', cycle: ['def', 'hp', 'atk'] },
   { id: 'atk-def-hp', cycle: ['atk', 'def', 'hp'] },
@@ -14,14 +14,27 @@ export const DEFAULT_INCUMBENT_STRATEGIES = [
   { id: 'all-hp', cycle: ['hp'] }
 ];
 
-export function makeGreedyIncumbentWitness({ id = null, cycle } = {}) {
+export const DEFAULT_INCUMBENT_STRATEGIES = BASE_SHOP_STRATEGIES.flatMap((strategy) =>
+  HOLY_POLICIES.map((holyPolicy) => ({
+    id: holyPolicy === 'immediate' ? strategy.id : `${strategy.id}@${holyPolicy}`,
+    baseId: strategy.id,
+    cycle: [...strategy.cycle],
+    holyPolicy
+  }))
+);
+
+export function makeGreedyIncumbentWitness({ id = null, cycle, holyPolicy = 'immediate' } = {}) {
   if (!Array.isArray(cycle) || cycle.length === 0) {
     throw new Error('Greedy incumbent witness requires a non-empty shop cycle.');
+  }
+  if (!HOLY_POLICIES.includes(holyPolicy)) {
+    throw new Error(`Greedy incumbent witness has unknown Holy policy: ${holyPolicy}`);
   }
   return {
     type: GREEDY_INCUMBENT_WITNESS_TYPE,
     strategyId: id,
-    shopCycle: [...cycle]
+    shopCycle: [...cycle],
+    holyPolicy
   };
 }
 
@@ -32,10 +45,16 @@ export function verifyGreedyIncumbentWitness(witness) {
   if (!Array.isArray(witness.shopCycle) || witness.shopCycle.length === 0) {
     return { ok: false, reason: 'Greedy incumbent witness has no shop cycle.' };
   }
+  if (!HOLY_POLICIES.includes(witness.holyPolicy)) {
+    return { ok: false, reason: 'Greedy incumbent witness has an unknown Holy policy.' };
+  }
 
   let result;
   try {
-    result = runGreedyShopStrategy({ shopCycle: witness.shopCycle });
+    result = runGreedyShopStrategy({
+      shopCycle: witness.shopCycle,
+      holyPolicy: witness.holyPolicy
+    });
   } catch (error) {
     return { ok: false, reason: error instanceof Error ? error.message : String(error) };
   }
@@ -51,6 +70,8 @@ export function verifyGreedyIncumbentWitness(witness) {
     strategyId: witness.strategyId ?? null,
     summary: {
       final: { ...result.final },
+      holyPolicy: result.holyPolicy,
+      holyAcquisition: result.holyAcquisition,
       cores: result.cores,
       purchases: result.purchases,
       purchaseCounts: { ...result.purchaseCounts },
@@ -63,9 +84,14 @@ export function verifyGreedyIncumbentWitness(witness) {
 export function findBestGreedyIncumbent({ strategies = DEFAULT_INCUMBENT_STRATEGIES } = {}) {
   const results = strategies.map((strategy) => ({
     id: strategy.id,
+    baseId: strategy.baseId ?? strategy.id,
     cycle: [...strategy.cycle],
+    holyPolicy: strategy.holyPolicy ?? 'immediate',
     witness: makeGreedyIncumbentWitness(strategy),
-    result: runGreedyShopStrategy({ shopCycle: strategy.cycle })
+    result: runGreedyShopStrategy({
+      shopCycle: strategy.cycle,
+      holyPolicy: strategy.holyPolicy ?? 'immediate'
+    })
   }));
   const feasible = results
     .filter((entry) => entry.result.solvable)
