@@ -7,14 +7,26 @@ import {
 
 function passingReport() {
   return {
-    model: 'adaptive-numeric-ray-v0.1',
+    model: 'adaptive-numeric-ray-v0.2-holy-aware',
     candidateId: 'numeric-combo-test',
     leverKeys: ['shop:hp', 'enemy:a:def', 'enemy:b:magicPower'],
     acceptedHardConstraints: true,
     converged: true,
-    hardChecks: { adaptedRouteSolvable: true },
+    hardChecks: {
+      adaptedRouteSolvable: true,
+      holyPolicyBestResponse: true
+    },
+    holyPolicyAnalysis: {
+      stableWithinSeedPortfolio: true,
+      allOptimizedLocalOptimal: true,
+      selectedHolyPolicy: 'immediate',
+      optimizedPolicies: 4,
+      attemptedPolicies: 4,
+      uncoveredPolicies: []
+    },
     best: {
       margin: 0.16,
+      holyPolicy: 'immediate',
       edits: [
         { target: 'shop', id: 'hp', field: 'effect.hp', value: 400 },
         { target: 'shop', id: 'hp', field: 'effect.maxHp', value: 400 },
@@ -31,7 +43,7 @@ function passingReport() {
   };
 }
 
-test('generic review proposal accepts proof-backed arbitrary numeric edits but still blocks production writes', () => {
+test('generic review proposal accepts Holy-aware proof-backed numeric edits but still blocks production writes', () => {
   const report = passingReport();
   const gate = evaluateGenericBalanceReviewGate(report);
   assert.equal(gate.passed, true);
@@ -48,4 +60,13 @@ test('generic review proposal blocks missing explicit edits', () => {
   assert.equal(proposal.status, 'blocked');
   assert.ok(proposal.gate.failures.includes('numericEdits'));
   assert.deepEqual(proposal.edits, []);
+});
+
+test('generic review proposal blocks purchase-only evidence after Holy enters the player model', () => {
+  const report = passingReport();
+  report.hardChecks.holyPolicyBestResponse = false;
+  report.holyPolicyAnalysis.stableWithinSeedPortfolio = false;
+  const proposal = createGenericBalanceReviewProposal({ report });
+  assert.equal(proposal.status, 'blocked');
+  assert.ok(proposal.gate.failures.includes('holyPolicyBestResponse'));
 });
