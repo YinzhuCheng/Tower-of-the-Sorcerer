@@ -1,22 +1,22 @@
-import { TILE_SIZE } from './data.js';
+import { ITEMS, TILE_SIZE } from './data.js';
 import { parseToken } from './engine.js';
 import { portraitIndex } from './anime-portraits.js';
 import { getMapAsset } from './map-assets.js';
 
-const GEM_STYLE = Object.freeze({
-  atk: { core: '#ff577b', edge: '#ffd5df', glow: '255,74,115' },
-  def: { core: '#63baf2', edge: '#dff5ff', glow: '80,174,235' },
-  dual: { core: '#b07cff', edge: '#f0ddff', glow: '177,111,245' }
-});
-
-const BARRIER_STYLE = Object.freeze({
-  sun: { rgb: '243,194,76', edge: '#fff0a0' },
-  moon: { rgb: '92,183,239', edge: '#dff6ff' },
-  star: { rgb: '218,105,195', edge: '#ffe1f5' }
-});
-
 const CONSERVATIVE_KEY_TOLERANCE = 24;
 const INTRINSIC_ALPHA_RATIO = 0.008;
+
+const CARD_ASSET = Object.freeze({
+  sun: 'card-sun-v10',
+  moon: 'card-moon-v10',
+  star: 'card-star-v10'
+});
+
+const BARRIER_ASSET = Object.freeze({
+  sun: 'barrier-sun-v10',
+  moon: 'barrier-moon-v10',
+  star: 'barrier-star-v10'
+});
 
 function installStyle() {
   if (document.querySelector('style[data-visual-patch-v83]')) return;
@@ -40,241 +40,84 @@ export function installV83UiFixes() {
   installStyle();
 }
 
-function drawGem(scene, x, y, kind) {
-  const style = GEM_STYLE[kind];
-  if (!style) return false;
-  const ctx = scene.ctx;
+function drawGeneratedAsset(scene, assetName, x, y, scale = 0.72, options = {}) {
+  const image = getMapAsset(assetName);
+  if (!image) return false;
+  const cx = scene.center(x) + (options.offsetX ?? 0) * TILE_SIZE;
+  const cy = scene.center(y) + (options.offsetY ?? 0) * TILE_SIZE;
+  const alpha = options.alpha ?? 1;
+  const shadowWidth = options.shadowWidth ?? Math.min(scale * 0.56, 0.42);
+  const shadowAlpha = options.shadowAlpha ?? 0.16;
+  if (shadowWidth > 0) scene.drawSoftShadow(cx, cy + TILE_SIZE * 0.23, TILE_SIZE * shadowWidth, shadowAlpha);
+  return scene.drawMapImage(image, cx, cy, TILE_SIZE * scale, TILE_SIZE * scale, options.rotation ?? 0, alpha);
+}
+
+function drawDualGem(scene, x, y) {
+  const red = getMapAsset('gem-atk-v10');
+  const blue = getMapAsset('gem-def-v10');
+  if (!red || !blue) return false;
   const cx = scene.center(x);
   const cy = scene.center(y);
-  const w = TILE_SIZE * 0.37;
-  const h = TILE_SIZE * 0.46;
-  const t = (scene.idleClock || performance.now()) / 760;
-  const bob = Math.sin(t + x * 0.8 + y * 0.55) * 1.05;
-
-  scene.drawSoftShadow(cx, cy + TILE_SIZE * 0.22, TILE_SIZE * 0.34, 0.15);
-  ctx.save();
-  ctx.translate(cx, cy + bob);
-  ctx.shadowColor = `rgba(${style.glow},.54)`;
-  ctx.shadowBlur = 10;
-
-  const grad = ctx.createLinearGradient(-w / 2, -h / 2, w / 2, h / 2);
-  if (kind === 'dual') {
-    grad.addColorStop(0, '#ff6f91');
-    grad.addColorStop(0.49, '#ff6f91');
-    grad.addColorStop(0.51, '#6bc7f5');
-    grad.addColorStop(1, '#6bc7f5');
-  } else {
-    grad.addColorStop(0, style.edge);
-    grad.addColorStop(0.36, style.core);
-    grad.addColorStop(1, '#223b62');
-  }
-
-  ctx.beginPath();
-  ctx.moveTo(0, -h / 2);
-  ctx.lineTo(w * 0.45, -h * 0.16);
-  ctx.lineTo(w * 0.34, h * 0.34);
-  ctx.lineTo(0, h / 2);
-  ctx.lineTo(-w * 0.34, h * 0.34);
-  ctx.lineTo(-w * 0.45, -h * 0.16);
-  ctx.closePath();
-  ctx.fillStyle = grad;
-  ctx.fill();
-  ctx.strokeStyle = style.edge;
-  ctx.lineWidth = 1.25;
-  ctx.stroke();
-
-  ctx.shadowBlur = 0;
-  ctx.globalAlpha = 0.62;
-  ctx.strokeStyle = '#ffffff';
-  ctx.lineWidth = 0.75;
-  ctx.beginPath();
-  ctx.moveTo(0, -h * 0.4);
-  ctx.lineTo(0, h * 0.38);
-  ctx.moveTo(-w * 0.36, -h * 0.13);
-  ctx.lineTo(w * 0.36, -h * 0.13);
-  ctx.moveTo(-w * 0.28, h * 0.27);
-  ctx.lineTo(w * 0.28, h * 0.27);
-  ctx.stroke();
-  ctx.restore();
+  scene.drawSoftShadow(cx, cy + TILE_SIZE * 0.23, TILE_SIZE * 0.42, 0.17);
+  scene.drawMapImage(red, cx - TILE_SIZE * 0.095, cy + TILE_SIZE * 0.015, TILE_SIZE * 0.53, TILE_SIZE * 0.53, -0.08, 0.96);
+  scene.drawMapImage(blue, cx + TILE_SIZE * 0.095, cy - TILE_SIZE * 0.015, TILE_SIZE * 0.53, TILE_SIZE * 0.53, 0.08, 0.96);
   return true;
 }
 
-function drawPotion(scene, x, y, large = false) {
-  const ctx = scene.ctx;
-  const cx = scene.center(x);
-  const cy = scene.center(y);
-  const scale = large ? 1.08 : 0.92;
-  const w = TILE_SIZE * 0.34 * scale;
-  const h = TILE_SIZE * 0.49 * scale;
-  const t = (scene.idleClock || performance.now()) / 820;
-  const bob = Math.sin(t + x * 0.43 + y * 0.71) * 0.9;
-
-  scene.drawSoftShadow(cx, cy + TILE_SIZE * 0.22, TILE_SIZE * 0.32 * scale, 0.14);
-  ctx.save();
-  ctx.translate(cx, cy + bob);
-  ctx.shadowColor = 'rgba(255,95,157,.5)';
-  ctx.shadowBlur = 9;
-
-  const glass = ctx.createLinearGradient(-w / 2, 0, w / 2, 0);
-  glass.addColorStop(0, 'rgba(214,242,255,.48)');
-  glass.addColorStop(0.45, 'rgba(248,253,255,.18)');
-  glass.addColorStop(1, 'rgba(135,202,235,.38)');
-
-  ctx.beginPath();
-  ctx.moveTo(-w * 0.18, -h * 0.46);
-  ctx.lineTo(w * 0.18, -h * 0.46);
-  ctx.lineTo(w * 0.18, -h * 0.3);
-  ctx.bezierCurveTo(w * 0.42, -h * 0.2, w * 0.48, h * 0.05, w * 0.42, h * 0.28);
-  ctx.bezierCurveTo(w * 0.36, h * 0.47, -w * 0.36, h * 0.47, -w * 0.42, h * 0.28);
-  ctx.bezierCurveTo(-w * 0.48, h * 0.05, -w * 0.42, -h * 0.2, -w * 0.18, -h * 0.3);
-  ctx.closePath();
-  ctx.fillStyle = glass;
-  ctx.fill();
-  ctx.strokeStyle = 'rgba(224,247,255,.9)';
-  ctx.lineWidth = 1.2;
-  ctx.stroke();
-
-  ctx.shadowBlur = 5;
-  const liquid = ctx.createLinearGradient(0, -h * 0.05, 0, h * 0.38);
-  liquid.addColorStop(0, large ? '#ff8fc5' : '#ff77ad');
-  liquid.addColorStop(1, large ? '#b62d77' : '#9e285f');
-  ctx.beginPath();
-  ctx.ellipse(0, h * 0.18, w * 0.34, h * 0.21, 0, 0, Math.PI * 2);
-  ctx.fillStyle = liquid;
-  ctx.fill();
-
-  ctx.shadowBlur = 0;
-  ctx.fillStyle = '#d7b980';
-  ctx.fillRect(-w * 0.2, -h * 0.53, w * 0.4, h * 0.1);
-  ctx.strokeStyle = '#fff1cb';
-  ctx.lineWidth = 0.7;
-  ctx.strokeRect(-w * 0.2, -h * 0.53, w * 0.4, h * 0.1);
-
-  ctx.fillStyle = 'rgba(255,255,255,.72)';
-  ctx.beginPath();
-  ctx.ellipse(-w * 0.17, -h * 0.03, w * 0.055, h * 0.13, -0.25, 0, Math.PI * 2);
-  ctx.fill();
-  ctx.restore();
-  return true;
-}
-
-function drawFramelessStatDrop(scene, x, y, id) {
-  if (id === 'atk' || id === 'def' || id === 'dual') return drawGem(scene, x, y, id);
-  if (id === 'hp') return drawPotion(scene, x, y, false);
-  if (id === 'hpLarge') return drawPotion(scene, x, y, true);
+function drawGeneratedStatDrop(scene, x, y, id) {
+  if (id === 'atk') return drawGeneratedAsset(scene, 'gem-atk-v10', x, y, 0.62, { shadowWidth: 0.36 });
+  if (id === 'def') return drawGeneratedAsset(scene, 'gem-def-v10', x, y, 0.62, { shadowWidth: 0.36 });
+  if (id === 'dual') return drawDualGem(scene, x, y);
+  if (id === 'hp') return drawGeneratedAsset(scene, 'potion-red-v10', x, y, 0.61, { shadowWidth: 0.34 });
+  if (id === 'hpLarge') return drawGeneratedAsset(scene, 'potion-blue-v10', x, y, 0.69, { shadowWidth: 0.38 });
   return false;
 }
 
-function drawBarrierGlyph(ctx, kind, size) {
-  ctx.save();
-  ctx.lineCap = 'round';
-  ctx.lineJoin = 'round';
-  if (kind === 'sun') {
-    ctx.beginPath();
-    ctx.arc(0, 0, size * 0.22, 0, Math.PI * 2);
-    ctx.stroke();
-    for (let i = 0; i < 8; i += 1) {
-      const a = (Math.PI * 2 * i) / 8;
-      ctx.beginPath();
-      ctx.moveTo(Math.cos(a) * size * 0.34, Math.sin(a) * size * 0.34);
-      ctx.lineTo(Math.cos(a) * size * 0.49, Math.sin(a) * size * 0.49);
-      ctx.stroke();
-    }
-  } else if (kind === 'moon') {
-    ctx.beginPath();
-    ctx.arc(-size * 0.06, 0, size * 0.34, Math.PI * 0.28, Math.PI * 1.72);
-    ctx.stroke();
-    ctx.beginPath();
-    ctx.arc(size * 0.1, 0, size * 0.28, Math.PI * 0.42, Math.PI * 1.58, true);
-    ctx.stroke();
-  } else {
-    const outer = size * 0.47;
-    const inner = size * 0.2;
-    ctx.beginPath();
-    for (let i = 0; i < 10; i += 1) {
-      const r = i % 2 === 0 ? outer : inner;
-      const a = -Math.PI / 2 + (Math.PI * i) / 5;
-      const px = Math.cos(a) * r;
-      const py = Math.sin(a) * r;
-      if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
-    }
-    ctx.closePath();
-    ctx.stroke();
-  }
-  ctx.restore();
+function drawGeneratedCard(scene, x, y, kind) {
+  const asset = CARD_ASSET[kind];
+  if (!asset) return false;
+  const t = (scene.idleClock || performance.now()) / 800;
+  const bob = Math.sin(t + x * 0.53 + y * 0.71) * 0.018;
+  return drawGeneratedAsset(scene, asset, x, y, 0.72, {
+    offsetY: -0.02 + bob,
+    rotation: -0.035,
+    shadowWidth: 0.38,
+    shadowAlpha: 0.2
+  });
 }
 
-function drawBarrierWithoutPillars(scene, x, y, kind) {
-  const style = BARRIER_STYLE[kind];
-  if (!style) return false;
-  const ctx = scene.ctx;
+function drawGeneratedBarrier(scene, x, y, kind) {
+  const barrier = BARRIER_ASSET[kind];
+  const runeFloor = getMapAsset('rune-floor-barrier-v10');
+  const barrierImage = barrier ? getMapAsset(barrier) : null;
+  if (!runeFloor || !barrierImage) return false;
+
   const cx = scene.center(x);
   const cy = scene.center(y);
-  const w = TILE_SIZE * 0.62;
-  const h = TILE_SIZE * 0.82;
-  const t = (scene.idleClock || performance.now()) / 900;
+  scene.ctx.save();
+  scene.ctx.globalAlpha = 0.96;
+  scene.ctx.drawImage(runeFloor, cx - TILE_SIZE / 2, cy - TILE_SIZE / 2, TILE_SIZE, TILE_SIZE);
+  scene.ctx.restore();
 
-  ctx.save();
-  ctx.translate(cx, cy);
-  ctx.shadowColor = `rgba(${style.rgb},.48)`;
-  ctx.shadowBlur = 8;
-  const film = ctx.createLinearGradient(-w / 2, 0, w / 2, 0);
-  film.addColorStop(0, `rgba(${style.rgb},.05)`);
-  film.addColorStop(0.5, `rgba(${style.rgb},.24)`);
-  film.addColorStop(1, `rgba(${style.rgb},.05)`);
-  ctx.fillStyle = film;
-  ctx.fillRect(-w / 2, -h / 2, w, h);
-
-  ctx.shadowBlur = 4;
-  ctx.strokeStyle = style.edge;
-  ctx.globalAlpha = 0.78;
-  ctx.lineWidth = 1.15;
-  ctx.strokeRect(-w / 2, -h / 2, w, h);
-
-  ctx.globalAlpha = 0.34;
-  ctx.lineWidth = 0.9;
-  for (let i = -1; i <= 1; i += 1) {
-    const yLine = i * h * 0.22 + Math.sin(t + i) * 1.2;
-    ctx.beginPath();
-    ctx.moveTo(-w * 0.42, yLine);
-    ctx.bezierCurveTo(-w * 0.12, yLine - 2.2, w * 0.12, yLine + 2.2, w * 0.42, yLine);
-    ctx.stroke();
-  }
-
-  ctx.globalAlpha = 0.72;
-  ctx.lineWidth = 1.25;
-  drawBarrierGlyph(ctx, kind, TILE_SIZE * 0.28);
-  ctx.restore();
+  scene.drawSoftShadow(cx, cy + TILE_SIZE * 0.2, TILE_SIZE * 0.56, 0.15);
+  const t = (scene.idleClock || performance.now()) / 950;
+  const pulse = 0.86 + Math.sin(t + x + y * 0.7) * 0.018;
+  scene.drawMapImage(barrierImage, cx, cy - TILE_SIZE * 0.035, TILE_SIZE * pulse, TILE_SIZE * pulse, 0, 0.93);
   return true;
 }
 
-function drawStairAsset(scene, x, y, direction) {
-  const primary = direction === 'up' ? 'stairs-up-v4' : 'stairs-down-v4';
-  const fallback = direction === 'up' ? 'stairs-up' : 'stairs-down';
-  const image = getMapAsset(primary) ?? getMapAsset(fallback);
+function drawGeneratedStair(scene, x, y, direction) {
+  const asset = direction === 'up' ? 'rune-stairs-up-v10' : 'rune-stairs-down-v10';
+  const image = getMapAsset(asset);
   if (!image) return false;
-
-  const ctx = scene.ctx;
   const cx = scene.center(x);
   const cy = scene.center(y);
-  const glow = direction === 'up' ? 'rgba(245,215,115,.18)' : 'rgba(100,190,245,.18)';
-  const edge = direction === 'up' ? 'rgba(255,236,164,.58)' : 'rgba(178,231,255,.58)';
-
-  scene.drawSoftShadow(cx, cy + TILE_SIZE * 0.22, TILE_SIZE * 0.44, 0.14);
-  ctx.save();
-  const aura = ctx.createRadialGradient(cx, cy, 2, cx, cy, TILE_SIZE * 0.42);
-  aura.addColorStop(0, glow);
-  aura.addColorStop(1, 'rgba(0,0,0,0)');
-  ctx.fillStyle = aura;
-  ctx.fillRect(cx - TILE_SIZE * 0.48, cy - TILE_SIZE * 0.48, TILE_SIZE * 0.96, TILE_SIZE * 0.96);
-  ctx.strokeStyle = edge;
-  ctx.lineWidth = 1;
-  ctx.beginPath();
-  ctx.arc(cx, cy, TILE_SIZE * 0.31, 0, Math.PI * 2);
-  ctx.stroke();
-  ctx.restore();
-
-  return scene.drawMapImage(image, cx, cy, TILE_SIZE * 0.9, TILE_SIZE * 0.9, 0, 1);
+  scene.drawSoftShadow(cx, cy + TILE_SIZE * 0.24, TILE_SIZE * 0.5, 0.12);
+  scene.ctx.save();
+  scene.ctx.globalAlpha = 0.99;
+  scene.ctx.drawImage(image, cx - TILE_SIZE / 2, cy - TILE_SIZE / 2, TILE_SIZE, TILE_SIZE);
+  scene.ctx.restore();
+  return true;
 }
 
 function median(values) {
@@ -305,8 +148,8 @@ function buildConservativeLegacyCell(scene, id) {
   let transparentCount = 0;
   for (let p = 0; p < count; p += 1) if (pixels[p * 4 + 3] < 245) transparentCount += 1;
 
-  // Already-transparent source art must never be keyed again. Re-keying alpha art
-  // was the main cause of broken torsos, missing dark clothing and detached limbs.
+  // Preserve native alpha exactly; generated enemy art (including Mote V10) is
+  // now loaded through the enemy manifest and should never pass through keying.
   if (transparentCount / count >= INTRINSIC_ALPHA_RATIO) return canvas;
 
   const rs = [];
@@ -369,8 +212,6 @@ function buildConservativeLegacyCell(scene, id) {
     if (y + 1 < sh) enqueue(p + sw);
   }
 
-  // Only delete pixels that are both backdrop-colored and connected to the cell edge.
-  // Do not feather or erode neighbouring dark pixels; those often belong to clothes/body.
   for (let p = 0; p < count; p += 1) if (visited[p]) pixels[p * 4 + 3] = 0;
   ctx.putImageData(frame, 0, 0);
   return canvas;
@@ -405,17 +246,22 @@ export function applyV83RenderFixes(scene) {
   installConservativeLegacySprites(scene);
   const previousRenderToken = scene.renderToken.bind(scene);
   scene.renderToken = (x, y, token) => {
-    if (token === 'U' && drawStairAsset(scene, x, y, 'up')) return;
-    if (token === 'D' && drawStairAsset(scene, x, y, 'down')) return;
+    if (token === 'U' && drawGeneratedStair(scene, x, y, 'up')) return;
+    if (token === 'D' && drawGeneratedStair(scene, x, y, 'down')) return;
 
     const parsed = parseToken(token);
-    if (parsed.type === 'door' && drawBarrierWithoutPillars(scene, x, y, parsed.id)) return;
-    if (parsed.type === 'item' && drawFramelessStatDrop(scene, x, y, parsed.id)) return;
+    if (parsed.type === 'door' && drawGeneratedBarrier(scene, x, y, parsed.id)) return;
+    if (parsed.type === 'item') {
+      const item = ITEMS[parsed.id];
+      if (item?.kind === 'card' && drawGeneratedCard(scene, x, y, item.card)) return;
+      if (drawGeneratedStatDrop(scene, x, y, parsed.id)) return;
+    }
     previousRenderToken(x, y, token);
   };
-  scene.canvas.dataset.statItemPipeline = 'frameless-programmatic-v8.3';
-  scene.canvas.dataset.barrierPipeline = 'pillarless-energy-v8.8';
-  scene.canvas.dataset.stairPipeline = 'v4-stair-art-v8.8';
-  scene.canvas.dataset.spriteCleanup = 'conservative-edge-key-v8.9';
+  scene.canvas.dataset.statItemPipeline = 'generated-items-v10';
+  scene.canvas.dataset.cardPipeline = 'generated-cards-v10';
+  scene.canvas.dataset.barrierPipeline = 'generated-barrier-rune-v10';
+  scene.canvas.dataset.stairPipeline = 'generated-rune-stairs-v10';
+  scene.canvas.dataset.spriteCleanup = 'native-alpha-first-v10';
   return scene;
 }
