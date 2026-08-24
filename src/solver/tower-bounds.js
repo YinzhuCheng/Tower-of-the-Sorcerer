@@ -61,7 +61,7 @@ function bitMask(values, predicate) {
  * This is not a hash: every event-state code and every mechanism bit remains
  * present, so frontier equality does not depend on probabilistic collision.
  */
-function compactStructuralKey(baseAdapter, state) {
+function compactFrontierKey(baseAdapter, state) {
   const compact = Array.isArray(state.eventStates) ? state : baseAdapter.compactState(state);
   const relicKeys = Object.keys(compact.relics).sort();
   const relicMask = bitMask(relicKeys, (key) => compact.relics[key]);
@@ -121,9 +121,9 @@ export function createBoundedTowerAdapter() {
   const base = createTowerAdapter();
   return {
     ...base,
-    // The optimizing frontier uses an exact compact K encoding. Certificates
-    // from the base adapter keep the more verbose structural representation.
-    structuralKey: (state) => compactStructuralKey(base, state),
+    // Frontier identity is exact but compact; structuralKey remains the
+    // verbose audit representation used by certificate hashes and replay.
+    frontierKey: (state) => compactFrontierKey(base, state),
     // Victory is an absorbing state in engine.js. Do not run the automatic
     // item/switch closure after the final boss has set victory=true.
     normalize: (state) => base.isGoal(state)
