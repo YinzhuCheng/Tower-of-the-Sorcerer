@@ -2,6 +2,7 @@ import { screenNumericLevers } from '../src/tuner/numeric-sensitivity-screen.js'
 import { synthesizeBudgetedNumericCandidates } from '../src/tuner/numeric-candidate-synthesis.js';
 import { searchCandidatePressureRays } from '../src/tuner/numeric-ray-search.js';
 import { adaptNumericRayCandidate } from '../src/tuner/adaptive-numeric-ray.js';
+import { createGenericBalanceReviewProposal } from '../src/tuner/balance-proposal-v3.js';
 
 function numberFlag(name, fallback) {
   const prefix = `--${name}=`;
@@ -54,10 +55,11 @@ const adaptive = adaptNumericRayCandidate({
   maxExpanded: 5_000,
   maxGenerated: 50_000
 });
+const proposal = createGenericBalanceReviewProposal({ report: adaptive });
 
 const report = {
-  schemaVersion: 1,
-  model: 'adaptive-numeric-ray-cli-v0.1',
+  schemaVersion: 2,
+  model: 'adaptive-numeric-ray-cli-v0.2',
   publishable: false,
   seedProtectedRay: {
     candidateId: seedRay.candidateId,
@@ -65,7 +67,8 @@ const report = {
     best: seedRay.best,
     exactEvaluation: seedRay.exactEvaluation
   },
-  adaptive
+  adaptive,
+  proposal
 };
 
 if (json) {
@@ -76,5 +79,7 @@ if (json) {
   console.log(`adaptiveStep=${adaptive.best?.relativeStep} margin=${adaptive.best?.margin} hp=${adaptive.best?.finalHp} converged=${adaptive.converged} hard=${adaptive.acceptedHardConstraints}`);
   console.log(`bracket=${adaptive.bracket ? `${adaptive.bracket.lowStep}-${adaptive.bracket.highStep}` : 'none'} monotonicViolations=${adaptive.monotonicViolations?.length ?? 0}`);
   console.log(`proof=${adaptive.solver?.solvable}/${adaptive.solver?.exact} localImprovements=${adaptive.counterfactuals?.improvedMutationCount} recovery=${adaptive.counterfactuals?.recoveryRate} catastrophic=${adaptive.counterfactuals?.catastrophicRate}`);
+  console.log(`proposal=${proposal.status} productionWrite=${proposal.productionWriteAllowed} failures=${proposal.gate.failures.join(',') || 'none'}`);
+  console.log(`edits=${proposal.edits.map((edit) => `${edit.target}:${edit.id}:${edit.field}=${edit.value}`).join(',') || 'none'}`);
   console.log(`levers=${adaptive.leverKeys.join(',')}`);
 }
