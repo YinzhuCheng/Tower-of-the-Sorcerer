@@ -1,6 +1,6 @@
 {
-  "version": 3,
-  "revision": "environment-ui-v4",
+  "version": 4,
+  "revision": "generated-gameplay-v10",
   "wallRevision": "wall-materials-v6",
   "theme": "moonlit-star-tower",
   "basePath": "/assets/anime/map/",
@@ -43,6 +43,13 @@
         "atlases/v6/wall-materials-v6-09b.b64"
       ],
       "mime": "image/webp", "cols": 3, "rows": 2
+    },
+    "gameplayV10": {
+      "base64Chunks": [
+        "atlases/v10/gameplay-v10-ultra-01.b64",
+        "atlases/v10/gameplay-v10-ultra-02.b64"
+      ],
+      "mime": "image/webp", "cols": 4, "rows": 4
     }
   },
   "assets": {
@@ -104,6 +111,19 @@
     "wall-edge-vertical-v6": {"atlas":"wallMaterialsV6","index":2,"role":"wall-edge"},
     "wall-outer-corner-v6": {"atlas":"wallMaterialsV6","index":3,"role":"wall-corner"},
     "wall-inner-corner-v6": {"atlas":"wallMaterialsV6","index":4,"role":"wall-corner"},
-    "wall-end-pillar-v6": {"atlas":"wallMaterialsV6","index":5,"role":"wall-node"}
+    "wall-end-pillar-v6": {"atlas":"wallMaterialsV6","index":5,"role":"wall-node"},
+    "gem-atk-v10": {"atlas":"gameplayV10","index":0,"role":"gem"},
+    "gem-def-v10": {"atlas":"gameplayV10","index":1,"role":"gem"},
+    "potion-red-v10": {"atlas":"gameplayV10","index":2,"role":"potion"},
+    "potion-blue-v10": {"atlas":"gameplayV10","index":3,"role":"potion"},
+    "card-sun-v10": {"atlas":"gameplayV10","index":4,"role":"card-drop"},
+    "card-moon-v10": {"atlas":"gameplayV10","index":5,"role":"card-drop"},
+    "card-star-v10": {"atlas":"gameplayV10","index":6,"role":"card-drop"},
+    "barrier-sun-v10": {"atlas":"gameplayV10","index":7,"role":"barrier"},
+    "barrier-moon-v10": {"atlas":"gameplayV10","index":8,"role":"barrier"},
+    "barrier-star-v10": {"atlas":"gameplayV10","index":9,"role":"barrier"},
+    "rune-floor-barrier-v10": {"atlas":"gameplayV10","index":10,"role":"floor-special"},
+    "rune-stairs-up-v10": {"atlas":"gameplayV10","index":11,"role":"stairs"},
+    "rune-stairs-down-v10": {"atlas":"gameplayV10","index":12,"role":"stairs"}
   }
 }
