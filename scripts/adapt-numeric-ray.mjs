@@ -1,7 +1,7 @@
 import { screenNumericLevers } from '../src/tuner/numeric-sensitivity-screen.js';
 import { synthesizeBudgetedNumericCandidates } from '../src/tuner/numeric-candidate-synthesis.js';
 import { searchCandidatePressureRays } from '../src/tuner/numeric-ray-search.js';
-import { adaptNumericRayCandidate } from '../src/tuner/adaptive-numeric-ray.js';
+import { adaptNumericRayCandidateHolyAware } from '../src/tuner/adaptive-numeric-ray-v2.js';
 import { createGenericBalanceReviewProposal } from '../src/tuner/balance-proposal-v3.js';
 
 function numberFlag(name, fallback) {
@@ -44,7 +44,7 @@ if (!seedRay) throw new Error('No protected numeric ray is available for adaptiv
 const candidate = candidateById.get(seedRay.candidateId);
 if (!candidate) throw new Error(`Missing synthesized candidate for ${seedRay.candidateId}.`);
 
-const adaptive = adaptNumericRayCandidate({
+const adaptive = adaptNumericRayCandidateHolyAware({
   screenReport: screen,
   candidate,
   targetMargin,
@@ -58,8 +58,8 @@ const adaptive = adaptNumericRayCandidate({
 const proposal = createGenericBalanceReviewProposal({ report: adaptive });
 
 const report = {
-  schemaVersion: 2,
-  model: 'adaptive-numeric-ray-cli-v0.2',
+  schemaVersion: 3,
+  model: 'adaptive-numeric-ray-cli-v0.3-holy-aware',
   publishable: false,
   seedProtectedRay: {
     candidateId: seedRay.candidateId,
@@ -74,12 +74,17 @@ const report = {
 if (json) {
   process.stdout.write(`${JSON.stringify(report, null, 2)}\n`);
 } else {
-  console.log('Adaptive numeric ray');
+  const holy = adaptive.holyPolicyAnalysis ?? {};
+  console.log('Adaptive numeric ray (Holy-aware)');
   console.log(`seed=${seedRay.candidateId} protectedStep=${seedRay.best?.relativeStep} protectedMargin=${seedRay.best?.margin}`);
-  console.log(`adaptiveStep=${adaptive.best?.relativeStep} margin=${adaptive.best?.margin} hp=${adaptive.best?.finalHp} converged=${adaptive.converged} hard=${adaptive.acceptedHardConstraints}`);
+  console.log(`adaptiveStep=${adaptive.best?.relativeStep} margin=${adaptive.best?.margin} hp=${adaptive.best?.finalHp} holy=${adaptive.best?.holyPolicy} converged=${adaptive.converged} hard=${adaptive.acceptedHardConstraints}`);
+  console.log(`holyStable=${holy.stableWithinSeedPortfolio} coverage=${holy.optimizedPolicies}/${holy.attemptedPolicies} uncovered=${(holy.uncoveredPolicies ?? []).join(',') || 'none'}`);
   console.log(`bracket=${adaptive.bracket ? `${adaptive.bracket.lowStep}-${adaptive.bracket.highStep}` : 'none'} monotonicViolations=${adaptive.monotonicViolations?.length ?? 0}`);
   console.log(`proof=${adaptive.solver?.solvable}/${adaptive.solver?.exact} localImprovements=${adaptive.counterfactuals?.improvedMutationCount} recovery=${adaptive.counterfactuals?.recoveryRate} catastrophic=${adaptive.counterfactuals?.catastrophicRate}`);
   console.log(`proposal=${proposal.status} productionWrite=${proposal.productionWriteAllowed} failures=${proposal.gate.failures.join(',') || 'none'}`);
   console.log(`edits=${proposal.edits.map((edit) => `${edit.target}:${edit.id}:${edit.field}=${edit.value}`).join(',') || 'none'}`);
   console.log(`levers=${adaptive.leverKeys.join(',')}`);
+  for (const alternative of holy.alternatives ?? []) {
+    console.log(`HOLY ${alternative.holyPolicy} status=${alternative.status} hp=${alternative.bestTerminalHp} regret=${alternative.normalizedRegret} local=${alternative.localOptimal}`);
+  }
 }
