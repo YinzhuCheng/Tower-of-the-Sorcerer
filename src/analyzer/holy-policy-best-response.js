@@ -1,4 +1,5 @@
 import { optimizePurchasePlanLocally } from './purchase-local-search.js';
+import { rescuePurchasePrefixForHolyPolicy } from './purchase-prefix-rescue.js';
 import { HOLY_POLICIES, runGreedyShopStrategy } from '../solver/greedy-strategy.js';
 import {
   DEFAULT_INCUMBENT_STRATEGIES,
@@ -55,6 +56,19 @@ function seedPortfolioForPolicy({ holyPolicy, preferredPlan = null } = {}) {
   });
 }
 
+function rescueCyclesForPolicy(holyPolicy) {
+  const seen = new Set();
+  const cycles = [];
+  for (const strategy of DEFAULT_INCUMBENT_STRATEGIES) {
+    if ((strategy.holyPolicy ?? 'immediate') !== holyPolicy) continue;
+    const key = JSON.stringify(strategy.cycle);
+    if (seen.has(key)) continue;
+    seen.add(key);
+    cycles.push([...strategy.cycle]);
+  }
+  return cycles;
+}
+
 function runSeed(seed) {
   const result = runGreedyShopStrategy({
     shopCycle: seed.cycle,
@@ -73,7 +87,25 @@ function seedAttemptSummary(entry) {
     explicitShopPlan: Boolean(entry.shopPlan),
     solvable: entry.result.solvable,
     terminalHp: entry.result.solvable ? entry.result.final.hp : null,
+    floor: entry.result.floor ?? null,
+    cores: entry.result.cores ?? null,
+    purchases: entry.result.purchases ?? null,
     failure: entry.result.solvable ? null : entry.result.failure ?? null
+  };
+}
+
+function rescueSummary(rescue) {
+  if (!rescue) return null;
+  return {
+    model: rescue.model,
+    found: rescue.found,
+    depth: rescue.depth,
+    evaluations: rescue.evaluations,
+    beamWidth: rescue.beamWidth,
+    maxDepth: rescue.maxDepth,
+    stoppedReason: rescue.stoppedReason,
+    bestProgress: rescue.bestProgress ? seedAttemptSummary(rescue.bestProgress) : null,
+    failureReasons: rescue.failureReasons.map((entry) => ({ ...entry }))
   };
 }
 
@@ -98,6 +130,9 @@ export function summarizeHolyPolicyResponses(responses) {
     status: entry.status,
     seedCount: entry.seedCount,
     feasibleSeedCount: entry.feasibleSeedCount,
+    rescueAttempted: Boolean(entry.rescue),
+    rescueFound: entry.rescue?.found ?? null,
+    rescueEvaluations: entry.rescue?.evaluations ?? 0,
     localOptimal: entry.localOptimal ?? null,
     bestTerminalHp: entry.bestTerminalHp ?? null,
     normalizedRegret: Number.isFinite(bestHp) && Number.isFinite(entry.bestTerminalHp)
@@ -109,6 +144,7 @@ export function summarizeHolyPolicyResponses(responses) {
   const allOptimizedLocalOptimal = optimized.length > 0
     && optimized.every((entry) => entry.localOptimal === true);
   const uncovered = ranked.filter((entry) => entry.status !== 'optimized');
+  const coverageComplete = ranked.length > 0 && optimized.length === ranked.length;
 
   return {
     best,
@@ -117,8 +153,10 @@ export function summarizeHolyPolicyResponses(responses) {
     optimizedPolicies: optimized.length,
     uncoveredPolicies: uncovered.map((entry) => entry.holyPolicy),
     seedCoverageRatio: ranked.length > 0 ? optimized.length / ranked.length : 0,
+    coverageComplete,
     allOptimizedLocalOptimal,
-    stableWithinSeedPortfolio: Boolean(best) && allOptimizedLocalOptimal
+    stableWithinSeedPortfolio: Boolean(best) && allOptimizedLocalOptimal,
+    stableWithCompleteCoverage: Boolean(best) && coverageComplete && allOptimizedLocalOptimal
   };
 }
 
@@ -126,14 +164,19 @@ export function summarizeHolyPolicyResponses(responses) {
  * Player best response over the currently modeled discrete Holy timing axis.
  *
  * Each Holy policy gets an independent feasible-seed portfolio followed by its
- * own authoritative purchase 1-opt. A policy for which no seed survives is
- * reported as `uncovered`, not as proven impossible.
+ * own authoritative purchase 1-opt. If the portfolio has no feasible seed, a
+ * bounded beam search over early purchase prefixes tries to rescue one. Failure
+ * of that bounded rescue remains `uncovered`; it is not an infeasibility proof.
  */
 export function optimizePurchasePlanAcrossHolyPolicies({
   preferredPlans = {},
   holyPolicies = HOLY_POLICIES,
   maxPasses = 12,
-  highRegretRelative = 0.20
+  highRegretRelative = 0.20,
+  rescueEnabled = true,
+  rescueMaxDepth = 8,
+  rescueBeamWidth = 24,
+  rescueMaxEvaluations = 2_000
 } = {}) {
   if (!Array.isArray(holyPolicies) || holyPolicies.length === 0) {
     throw new Error('Holy-policy best response requires at least one policy.');
@@ -151,7 +194,27 @@ export function optimizePurchasePlanAcrossHolyPolicies({
     const feasible = attempts
       .filter((entry) => entry.result.solvable)
       .sort((a, b) => b.result.final.hp - a.result.final.hp || a.id.localeCompare(b.id));
-    const seed = feasible[0] ?? null;
+    let seed = feasible[0] ?? null;
+    let rescue = null;
+
+    if (!seed && rescueEnabled) {
+      rescue = rescuePurchasePrefixForHolyPolicy({
+        holyPolicy,
+        cycles: rescueCyclesForPolicy(holyPolicy),
+        maxDepth: rescueMaxDepth,
+        beamWidth: rescueBeamWidth,
+        maxEvaluations: rescueMaxEvaluations
+      });
+      if (rescue.found && rescue.bestSeed?.result?.solvable) {
+        seed = {
+          id: `${rescue.bestSeed.id}@rescue`,
+          cycle: [...rescue.bestSeed.cycle],
+          shopPlan: [...rescue.bestSeed.shopPlan],
+          holyPolicy,
+          result: rescue.bestSeed.result
+        };
+      }
+    }
 
     if (!seed) {
       return {
@@ -160,6 +223,7 @@ export function optimizePurchasePlanAcrossHolyPolicies({
         seedCount: attempts.length,
         feasibleSeedCount: 0,
         seedAttempts: attempts.map(seedAttemptSummary),
+        rescue: rescueSummary(rescue),
         localOptimal: null,
         bestTerminalHp: null,
         bestPlan: null,
@@ -183,8 +247,9 @@ export function optimizePurchasePlanAcrossHolyPolicies({
       holyPolicy,
       status: 'optimized',
       seedCount: attempts.length,
-      feasibleSeedCount: feasible.length,
+      feasibleSeedCount: feasible.length + (rescue?.found ? 1 : 0),
       seedAttempts: attempts.map(seedAttemptSummary),
+      rescue: rescueSummary(rescue),
       selectedSeed: seedAttemptSummary(seed),
       localOptimal: localSearch.localOptimal,
       bestTerminalHp: localSearch.bestTerminalHp,
@@ -209,8 +274,8 @@ export function optimizePurchasePlanAcrossHolyPolicies({
 
   const summary = summarizeHolyPolicyResponses(responses);
   return {
-    schemaVersion: 1,
-    model: 'holy-policy-purchase-best-response-v0.1',
+    schemaVersion: 2,
+    model: 'holy-policy-purchase-best-response-v0.2-rescue',
     policies: [...holyPolicies],
     responses: rankHolyPolicyResponses(responses),
     ...summary
