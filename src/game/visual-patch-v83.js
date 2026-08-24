@@ -1,5 +1,6 @@
 import { TILE_SIZE } from './data.js';
 import { parseToken } from './engine.js';
+import { portraitIndex } from './anime-portraits.js';
 import { getMapAsset } from './map-assets.js';
 
 const GEM_STYLE = Object.freeze({
@@ -13,6 +14,9 @@ const BARRIER_STYLE = Object.freeze({
   moon: { rgb: '92,183,239', edge: '#dff6ff' },
   star: { rgb: '218,105,195', edge: '#ffe1f5' }
 });
+
+const CONSERVATIVE_KEY_TOLERANCE = 24;
+const INTRINSIC_ALPHA_RATIO = 0.008;
 
 function installStyle() {
   if (document.querySelector('style[data-visual-patch-v83]')) return;
@@ -273,9 +277,132 @@ function drawStairAsset(scene, x, y, direction) {
   return scene.drawMapImage(image, cx, cy, TILE_SIZE * 0.9, TILE_SIZE * 0.9, 0, 1);
 }
 
+function median(values) {
+  if (!values.length) return 0;
+  const sorted = [...values].sort((a, b) => a - b);
+  return sorted[Math.floor(sorted.length / 2)];
+}
+
+function buildConservativeLegacyCell(scene, id) {
+  const image = scene.images?.get(scene.chibiSheet);
+  if (!image) return null;
+  const imageWidth = image.naturalWidth || image.width;
+  const imageHeight = image.naturalHeight || image.height;
+  const sw = Math.floor(imageWidth / 4);
+  const sh = Math.floor(imageHeight / 3);
+  if (!sw || !sh) return null;
+
+  const index = portraitIndex(id);
+  const canvas = document.createElement('canvas');
+  canvas.width = sw;
+  canvas.height = sh;
+  const ctx = canvas.getContext('2d', { willReadFrequently: true });
+  ctx.drawImage(image, (index % 4) * sw, Math.floor(index / 4) * sh, sw, sh, 0, 0, sw, sh);
+
+  const frame = ctx.getImageData(0, 0, sw, sh);
+  const pixels = frame.data;
+  const count = sw * sh;
+  let transparentCount = 0;
+  for (let p = 0; p < count; p += 1) if (pixels[p * 4 + 3] < 245) transparentCount += 1;
+
+  // Already-transparent source art must never be keyed again. Re-keying alpha art
+  // was the main cause of broken torsos, missing dark clothing and detached limbs.
+  if (transparentCount / count >= INTRINSIC_ALPHA_RATIO) return canvas;
+
+  const rs = [];
+  const gs = [];
+  const bs = [];
+  const sample = (x, y) => {
+    const i = (y * sw + x) * 4;
+    if (pixels[i + 3] <= 6) return;
+    rs.push(pixels[i]);
+    gs.push(pixels[i + 1]);
+    bs.push(pixels[i + 2]);
+  };
+  const edgeInset = Math.max(1, Math.min(3, Math.floor(Math.min(sw, sh) * 0.03)));
+  for (let offset = 0; offset <= edgeInset; offset += 1) {
+    sample(offset, offset);
+    sample(sw - 1 - offset, offset);
+    sample(offset, sh - 1 - offset);
+    sample(sw - 1 - offset, sh - 1 - offset);
+  }
+  if (!rs.length) return canvas;
+
+  const br = median(rs);
+  const bg = median(gs);
+  const bb = median(bs);
+  const toleranceSq = CONSERVATIVE_KEY_TOLERANCE * CONSERVATIVE_KEY_TOLERANCE;
+  const visited = new Uint8Array(count);
+  const queue = new Int32Array(count);
+  let head = 0;
+  let tail = 0;
+
+  const isBackdrop = (p) => {
+    const i = p * 4;
+    if (pixels[i + 3] <= 6) return true;
+    const dr = pixels[i] - br;
+    const dg = pixels[i + 1] - bg;
+    const db = pixels[i + 2] - bb;
+    return dr * dr + dg * dg + db * db <= toleranceSq;
+  };
+  const enqueue = (p) => {
+    if (p < 0 || p >= count || visited[p] || !isBackdrop(p)) return;
+    visited[p] = 1;
+    queue[tail++] = p;
+  };
+
+  for (let x = 0; x < sw; x += 1) {
+    enqueue(x);
+    enqueue((sh - 1) * sw + x);
+  }
+  for (let y = 0; y < sh; y += 1) {
+    enqueue(y * sw);
+    enqueue(y * sw + sw - 1);
+  }
+  while (head < tail) {
+    const p = queue[head++];
+    const x = p % sw;
+    const y = Math.floor(p / sw);
+    if (x > 0) enqueue(p - 1);
+    if (x + 1 < sw) enqueue(p + 1);
+    if (y > 0) enqueue(p - sw);
+    if (y + 1 < sh) enqueue(p + sw);
+  }
+
+  // Only delete pixels that are both backdrop-colored and connected to the cell edge.
+  // Do not feather or erode neighbouring dark pixels; those often belong to clothes/body.
+  for (let p = 0; p < count; p += 1) if (visited[p]) pixels[p * 4 + 3] = 0;
+  ctx.putImageData(frame, 0, 0);
+  return canvas;
+}
+
+function installConservativeLegacySprites(scene) {
+  const previousDrawLegacySprite = scene.drawLegacySprite.bind(scene);
+  const cache = new Map();
+  scene.drawLegacySprite = (id, cx, cy, size, alpha = 1) => {
+    const key = portraitIndex(id);
+    let cell = cache.get(key);
+    if (!cell) {
+      cell = buildConservativeLegacyCell(scene, id);
+      if (cell) cache.set(key, cell);
+    }
+    if (!cell) return previousDrawLegacySprite(id, cx, cy, size, alpha);
+
+    const ctx = scene.ctx;
+    ctx.save();
+    ctx.globalAlpha = alpha;
+    ctx.imageSmoothingEnabled = true;
+    ctx.imageSmoothingQuality = 'high';
+    ctx.drawImage(cell, cx - size / 2, cy - size / 2, size, size);
+    ctx.restore();
+    return true;
+  };
+}
+
 export function applyV83RenderFixes(scene) {
   if (!scene?.ctx || scene.visualPatchV83Applied) return scene;
   scene.visualPatchV83Applied = true;
+  installConservativeLegacySprites(scene);
   const previousRenderToken = scene.renderToken.bind(scene);
   scene.renderToken = (x, y, token) => {
     if (token === 'U' && drawStairAsset(scene, x, y, 'up')) return;
@@ -289,5 +416,6 @@ export function applyV83RenderFixes(scene) {
   scene.canvas.dataset.statItemPipeline = 'frameless-programmatic-v8.3';
   scene.canvas.dataset.barrierPipeline = 'pillarless-energy-v8.8';
   scene.canvas.dataset.stairPipeline = 'v4-stair-art-v8.8';
+  scene.canvas.dataset.spriteCleanup = 'conservative-edge-key-v8.9';
   return scene;
 }
