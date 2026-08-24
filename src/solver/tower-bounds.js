@@ -156,6 +156,17 @@ export function optimisticTerminalHpUpperBound(baseAdapter, state) {
   return upper;
 }
 
+/**
+ * Canonicalize free inter-floor travel once the compass exists.
+ *
+ * After the boss-stair lock, every visited upper floor proves that the lower
+ * floor's boss was defeated and that at least one D→U route was permanently
+ * opened. Doors/enemies never re-close. Therefore any upward teleport can be
+ * replaced by repeated U traversal at zero resource cost, while any D traversal
+ * can be replaced by a direct downward teleport. Keeping only downward
+ * teleports removes travel cycles without making legal actions depend on path
+ * history, so Pareto labels remain history-free.
+ */
 export function canonicalizeCompassTravel(state, actions) {
   if (!state.relics?.compass) return actions;
   return actions.filter((action) => {
@@ -163,32 +174,6 @@ export function canonicalizeCompassTravel(state, actions) {
     if (action.kind === 'tile' && action.token === 'D') return false;
     return true;
   });
-}
-
-/**
- * Once Lucky is owned, ordinary zero-damage enemies have a fixed gold payout
- * and no HP cost. Their mutual order is therefore commutative. They are not
- * forced: all non-commuting actions stay available. We only canonicalize the
- * order inside the simultaneously available zero-damage enemy set.
- */
-export function isSafeZeroDamageEnemyAction(state, action) {
-  if (!state.relics?.lucky) return false;
-  if (action.kind !== 'tile' || action.parsed?.type !== 'enemy') return false;
-  const enemy = ENEMIES[action.parsed.id];
-  if (!enemy || enemy.boss || enemy.finalBoss || enemy.phaseNext || enemy.reward) return false;
-  const battle = calculateBattle(state.stats, enemy, state.relics);
-  return battle.winnable && battle.totalDamage === 0;
-}
-
-export function canonicalizeZeroDamageEnemyOrder(state, actions) {
-  const commuting = actions
-    .filter((action) => isSafeZeroDamageEnemyAction(state, action))
-    .sort((a, b) => a.eventId.localeCompare(b.eventId));
-  if (commuting.length <= 1) return actions;
-
-  const keep = commuting[0];
-  const commutingIds = new Set(commuting.slice(1).map((action) => action.eventId));
-  return actions.filter((action) => action === keep || !commutingIds.has(action.eventId));
 }
 
 export function createBoundedTowerAdapter() {
@@ -209,11 +194,8 @@ export function createBoundedTowerAdapter() {
     normalize: (state) => base.isGoal(state)
       ? { state: base.cloneState(state), steps: [] }
       : base.normalize(state),
-    enumerateActions: (state) => canonicalizeZeroDamageEnemyOrder(
-      state,
-      canonicalizeCompassTravel(state, base.enumerateActions(state))
-    ),
+    enumerateActions: (state) => canonicalizeCompassTravel(state, base.enumerateActions(state)),
     objectiveUpperBound: upperBound,
-    rulesVersion: () => `${base.rulesVersion()}+boss-stair-lock-v1+canonical-travel-v1+zero-damage-order-v1`
+    rulesVersion: () => `${base.rulesVersion()}+boss-stair-lock-v1+canonical-travel-v1`
   };
 }
