@@ -1,8 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { runGreedyShopStrategy } from '../src/solver/greedy-strategy.js';
 import { solve } from '../src/solver/search.js';
 import { canonicalizeCompassTravel, createBoundedTowerAdapter } from '../src/solver/tower-bounds.js';
+import { findBestGreedyIncumbent } from '../src/solver/tower-incumbent.js';
 
 test('compass travel canonicalization removes only redundant travel directions', () => {
   const actions = [
@@ -19,28 +19,30 @@ test('compass travel canonicalization removes only redundant travel directions',
   assert.deepEqual(withCompass.map((action) => action.id), ['down', 'stairs-up', 'enemy']);
 });
 
-test('Tower optimizer uses a verified incumbent and safe HP upper bound', { timeout: 60_000 }, () => {
-  const incumbent = runGreedyShopStrategy({ shopCycle: ['def', 'atk', 'hp'] });
-  assert.equal(incumbent.solvable, true, incumbent.failure ?? 'incumbent must be feasible');
-  assert.equal(incumbent.final.hp, 12_536);
+test('Tower optimizer uses an engine-verified incumbent witness and safe HP upper bound', { timeout: 60_000 }, () => {
+  const portfolio = findBestGreedyIncumbent();
+  const incumbent = portfolio.best;
+  assert.ok(incumbent, 'incumbent portfolio must contain a feasible strategy');
+  assert.equal(incumbent.result.final.hp, 12_536);
 
   const adapter = createBoundedTowerAdapter();
   const initial = adapter.createInitialState();
   const initialUpperBound = adapter.objectiveUpperBound(initial);
-  assert.ok(initialUpperBound >= incumbent.final.hp, 'an admissible upper bound must cover a verified solution');
+  assert.ok(initialUpperBound >= incumbent.result.final.hp, 'an admissible upper bound must cover a verified solution');
   assert.ok(initialUpperBound < 90_080, 'mandatory final-form damage should tighten the old zero-damage bound');
 
   const report = solve({
     adapter,
     mode: 'optimize',
-    incumbentLowerBound: incumbent.final.hp,
+    incumbentWitness: incumbent.witness,
     maxExpanded: 2_000,
     maxGenerated: 40_000
   });
 
   const summary = {
-    incumbent: incumbent.final.hp,
+    incumbent: incumbent.result.final.hp,
     initialUpperBound,
+    verification: report.incumbentVerification,
     solvable: report.solvable,
     exact: report.exact,
     stoppedReason: report.stoppedReason,
@@ -57,6 +59,9 @@ test('Tower optimizer uses a verified incumbent and safe HP upper bound', { time
   console.log(`TOWER_OPTIMIZE_PROFILE ${JSON.stringify(summary)}`);
 
   assert.equal(report.mode, 'optimize');
+  assert.equal(report.solvable, true, 'verified witness proves feasibility even before search re-discovers a goal');
+  assert.equal(report.incumbentVerification.ok, true);
+  assert.equal(report.incumbentVerification.value, 12_536);
   assert.equal(report.objective.seededLowerBound, 12_536);
   assert.ok(report.objective.best >= 12_536);
   assert.ok(report.generatedStates >= report.expandedStates);
