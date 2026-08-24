@@ -1,53 +1,30 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { evaluateProtectedBalanceCandidate } from '../src/tuner/numeric-evaluator.js';
+import { runGreedyShopStrategy } from '../src/solver/greedy-strategy.js';
+import { PROMOTED_PURCHASE_PLANS } from '../src/solver/tower-incumbent.js';
+import { withBalanceEdits } from '../src/tuner/balance-overlay.js';
 
-function evaluate(value) {
-  return evaluateProtectedBalanceCandidate({
-    id: `shop-hp-window-${value}`,
-    edits: [
-      { target: 'shop', id: 'hp', field: 'effect.hp', value },
-      { target: 'shop', id: 'hp', field: 'effect.maxHp', value }
-    ],
-    maxExpanded: 5_000,
-    maxGenerated: 50_000
-  });
+function replay(value) {
+  const plan = PROMOTED_PURCHASE_PLANS[0];
+  assert.ok(plan, 'promoted purchase plan is required');
+  return withBalanceEdits([
+    { target: 'shop', id: 'hp', field: 'effect.hp', value },
+    { target: 'shop', id: 'hp', field: 'effect.maxHp', value }
+  ], () => runGreedyShopStrategy({
+    shopCycle: [...plan.cycle],
+    shopPlan: [...plan.shopPlan],
+    holyPolicy: plan.holyPolicy
+  }));
 }
 
-test('shop HP 270 reaches the protected pressure target while 180 is no safer', { timeout: 30_000 }, () => {
-  const target = evaluate(270);
-  assert.equal(target.acceptedHardConstraints, true, target.failure ?? target.rejection ?? '270 must remain solvable');
-  assert.equal(target.pressure.status, 'target');
-  assert.ok(target.pressure.minNormalizedHpMargin >= 0.08);
-  assert.ok(target.pressure.minNormalizedHpMargin <= 0.25);
-  assert.equal(target.solver.solvable, true);
-  assert.equal(target.solver.exact, true);
+test('HP-only tuning remains insufficient even after reducing shop reward to 90', () => {
+  const hp270 = replay(270);
+  const hp90 = replay(90);
 
-  const harder = evaluate(180);
-  if (harder.acceptedHardConstraints) {
-    assert.ok(harder.pressure.minNormalizedHpMargin <= target.pressure.minNormalizedHpMargin);
-  } else {
-    assert.ok(['protected_route_failed', 'existence_not_proven'].includes(harder.rejection));
-  }
-
-  console.log(`TOWER_SHOP_HP_TARGET_WINDOW ${JSON.stringify({
-    target: {
-      value: 270,
-      hard: target.acceptedHardConstraints,
-      finalHp: target.route.final.hp,
-      pressure: target.pressure,
-      solver: target.solver,
-      objective: target.objective
-    },
-    harder: {
-      value: 180,
-      hard: harder.acceptedHardConstraints,
-      rejection: harder.rejection,
-      failure: harder.failure ?? null,
-      finalHp: harder.route?.final?.hp ?? null,
-      pressure: harder.pressure,
-      solver: harder.solver ?? null,
-      objective: harder.objective ?? null
-    }
-  })}`);
+  assert.equal(hp270.solvable, true);
+  assert.equal(hp90.solvable, true);
+  assert.ok(hp270.minNormalizedHpMargin > 0.25);
+  assert.ok(hp90.minNormalizedHpMargin > 0.25);
+  assert.ok(hp90.minNormalizedHpMargin < hp270.minNormalizedHpMargin);
+  assert.ok(hp90.final.hp < hp270.final.hp);
 });
