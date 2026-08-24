@@ -1,5 +1,5 @@
 import { ENEMIES, FLOORS, ITEMS, getShopCost } from '../game/data.js';
-import { createInitialState, parseToken } from '../game/engine.js';
+import { calculateBattle, createInitialState, parseToken } from '../game/engine.js';
 import { createTowerAdapter } from './tower-adapter.js';
 import { createTowerStateCodec } from './tower-codec.js';
 
@@ -9,6 +9,10 @@ const BOUND_CODEC = createTowerStateCodec({
   enemies: ENEMIES
 });
 
+const FINAL_BOSS_ENTRY = Object.entries(ENEMIES).find(([, enemy]) => enemy.finalBoss);
+if (!FINAL_BOSS_ENTRY) throw new Error('Tower bounds require a finalBoss enemy.');
+const [, FINAL_BOSS] = FINAL_BOSS_ENTRY;
+
 const TOKEN_CONTRIBUTIONS = Array.from({ length: BOUND_CODEC.tokenVocabularySize }, (_, code) => {
   const token = BOUND_CODEC.tokenForCode(code);
   const parsed = parseToken(token);
@@ -16,40 +20,56 @@ const TOKEN_CONTRIBUTIONS = Array.from({ length: BOUND_CODEC.tokenVocabularySize
     const item = ITEMS[parsed.id];
     return {
       hpGain: Math.max(0, item?.hp ?? 0),
+      atkGain: Math.max(0, item?.atk ?? 0),
       gold: 0,
       lucky: item?.relicKey === 'lucky',
-      holy: item?.relicKey === 'holy'
+      holy: item?.relicKey === 'holy',
+      ward: item?.relicKey === 'ward'
     };
   }
   if (parsed.type === 'enemy') {
     const enemy = ENEMIES[parsed.id];
     return {
       hpGain: Math.max(0, enemy?.reward?.hp ?? 0),
+      atkGain: Math.max(0, enemy?.reward?.atk ?? 0),
       gold: Math.max(0, enemy?.gold ?? 0),
       lucky: false,
-      holy: false
+      holy: false,
+      ward: false
     };
   }
-  return { hpGain: 0, gold: 0, lucky: false, holy: false };
+  return { hpGain: 0, atkGain: 0, gold: 0, lucky: false, holy: false, ward: false };
 });
 
 function scanCompactRemainder(baseAdapter, state) {
   const compact = Array.isArray(state.eventStates) ? state : baseAdapter.compactState(state);
   let flatHpGain = 0;
+  let flatAtkGain = 0;
   let baseEnemyGold = 0;
   let luckyStillAvailable = false;
   let holyStillAvailable = false;
+  let wardStillAvailable = false;
 
   for (const code of compact.eventStates) {
     const contribution = TOKEN_CONTRIBUTIONS[code];
     if (!contribution) throw new Error(`Missing optimistic contribution for event token code ${code}.`);
     flatHpGain += contribution.hpGain;
+    flatAtkGain += contribution.atkGain;
     baseEnemyGold += contribution.gold;
     luckyStillAvailable ||= contribution.lucky;
     holyStillAvailable ||= contribution.holy;
+    wardStillAvailable ||= contribution.ward;
   }
 
-  return { compact, flatHpGain, baseEnemyGold, luckyStillAvailable, holyStillAvailable };
+  return {
+    compact,
+    flatHpGain,
+    flatAtkGain,
+    baseEnemyGold,
+    luckyStillAvailable,
+    holyStillAvailable,
+    wardStillAvailable
+  };
 }
 
 function optimisticAdditionalPurchases(state, optimisticFutureGold) {
@@ -108,19 +128,41 @@ function compactFrontierKey(baseAdapter, state) {
 }
 
 /**
+ * Lower bound on the raw damage that the mandatory final form must still deal.
+ *
+ * The bound intentionally gives the hero impossible advantages: effectively
+ * infinite DEF, every remaining ATK gain, optional Ward, and any chosen future
+ * shop ATK purchases. The final boss is magic, so DEF cannot erase its damage;
+ * only raising ATK can shorten the number of counterattacks. Any real route
+ * therefore loses at least this much HP to the final form.
+ */
+function finalBossDamageLowerBound(atk, wardAvailable) {
+  const battle = calculateBattle(
+    { hp: Number.MAX_SAFE_INTEGER, atk, def: Number.MAX_SAFE_INTEGER },
+    FINAL_BOSS,
+    { ward: wardAvailable }
+  );
+  return Number.isFinite(battle.totalDamage) ? battle.totalDamage : Number.POSITIVE_INFINITY;
+}
+
+/**
  * Safe optimistic terminal-HP bound.
  *
  * Deliberately assumes an impossible best case:
- * - every remaining enemy deals zero damage;
- * - every remaining HP item / boss HP reward is collected;
+ * - every non-final remaining enemy deals zero damage;
+ * - every remaining HP/ATK item and boss reward is collected;
  * - every remaining enemy can be farmed for gold;
  * - Lucky, when still obtainable, is acquired before every remaining enemy;
- * - all affordable future shop purchases are HP purchases;
+ * - every affordable future shop purchase can be allocated optimally between
+ *   HP (+900) and ATK (+5); DEF is granted for free by the relaxation;
  * - when Holy is still obtainable, every future HP gain happens before Holy
- *   and is therefore doubled.
+ *   and is therefore doubled;
+ * - Ward, when still obtainable, is active for the mandatory final form.
  *
- * These relaxations can only overestimate achievable terminal HP, making the
- * result safe for branch-and-bound pruning.
+ * Unlike the earlier zero-damage bound, this version subtracts the unavoidable
+ * final-form magic damage and explicitly optimizes the HP-vs-ATK shop tradeoff.
+ * All other assumptions remain optimistic, so the result can only overestimate
+ * achievable terminal HP and is safe for branch-and-bound pruning.
  */
 export function optimisticTerminalHpUpperBound(baseAdapter, state) {
   const remainder = scanCompactRemainder(baseAdapter, state);
@@ -130,10 +172,22 @@ export function optimisticTerminalHpUpperBound(baseAdapter, state) {
   const luckyMultiplier = compact.relics.lucky || remainder.luckyStillAvailable ? 2 : 1;
   const optimisticGold = compact.stats.gold + remainder.baseEnemyGold * luckyMultiplier;
   const additionalPurchases = optimisticAdditionalPurchases(compact, optimisticGold);
-  const shopHpGain = additionalPurchases * 900;
+  const holyMultiplier = !compact.relics.holy && remainder.holyStillAvailable ? 2 : 1;
+  const wardAvailable = compact.relics.ward || remainder.wardStillAvailable;
+  const optimisticBaseAtk = compact.stats.atk + remainder.flatAtkGain;
+  const optimisticBaseHp = compact.stats.hp + remainder.flatHpGain;
 
-  let upper = compact.stats.hp + remainder.flatHpGain + shopHpGain;
-  if (!compact.relics.holy && remainder.holyStillAvailable) upper *= 2;
+  let upper = Number.NEGATIVE_INFINITY;
+  for (let atkPurchases = 0; atkPurchases <= additionalPurchases; atkPurchases += 1) {
+    const hpPurchases = additionalPurchases - atkPurchases;
+    const atk = optimisticBaseAtk + atkPurchases * 5;
+    const finalDamage = finalBossDamageLowerBound(atk, wardAvailable);
+    if (!Number.isFinite(finalDamage)) continue;
+
+    const hpBeforeFinal = (optimisticBaseHp + hpPurchases * 900) * holyMultiplier;
+    upper = Math.max(upper, hpBeforeFinal - finalDamage);
+  }
+
   return upper;
 }
 
