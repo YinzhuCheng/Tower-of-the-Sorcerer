@@ -9,6 +9,7 @@ on:
       - 'scripts/tune-shop-hp.mjs'
       - 'scripts/rank-numeric-levers.mjs'
       - 'scripts/synthesize-numeric-candidates.mjs'
+      - 'scripts/search-numeric-rays.mjs'
       - 'test/shop-hp-tuner-*.test.js'
       - 'test/numeric-*.test.js'
       - '.github/workflows/tuner-profile.yml'
@@ -18,6 +19,7 @@ on:
       - 'scripts/tune-shop-hp.mjs'
       - 'scripts/rank-numeric-levers.mjs'
       - 'scripts/synthesize-numeric-candidates.mjs'
+      - 'scripts/search-numeric-rays.mjs'
       - 'test/shop-hp-tuner-*.test.js'
       - 'test/numeric-*.test.js'
       - '.github/workflows/tuner-profile.yml'
@@ -41,24 +43,18 @@ jobs:
         run: node scripts/synthesize-numeric-candidates.mjs --top-k=16 --relative-step=0.10 --max-candidates=6 --edit-budget=0.30 --max-parameters=3 --evaluate --json > numeric-candidate-report.json
       - name: Print concise candidate summary
         run: node scripts/synthesize-numeric-candidates.mjs --top-k=16 --relative-step=0.10 --max-candidates=6 --edit-budget=0.30 --max-parameters=3 --evaluate
-      - name: Upload shop HP report
+      - name: Search multi-parameter rays toward pressure target
+        run: node scripts/search-numeric-rays.mjs --top-k=16 --max-candidates=4 --target-margin=0.165 --seed-budget=0.30 --max-parameters=3 --refine-iterations=4 --json > numeric-ray-report.json
+      - name: Print concise ray summary
+        run: node scripts/search-numeric-rays.mjs --top-k=16 --max-candidates=4 --target-margin=0.165 --seed-budget=0.30 --max-parameters=3 --refine-iterations=4
+      - name: Upload tuner reports
         uses: actions/upload-artifact@v4
         with:
-          name: shop-hp-tuner-report
-          path: shop-hp-tuner-report.json
-          if-no-files-found: error
-          retention-days: 7
-      - name: Upload numeric lever report
-        uses: actions/upload-artifact@v4
-        with:
-          name: numeric-lever-report
-          path: numeric-lever-report.json
-          if-no-files-found: error
-          retention-days: 7
-      - name: Upload numeric candidate report
-        uses: actions/upload-artifact@v4
-        with:
-          name: numeric-candidate-report
-          path: numeric-candidate-report.json
+          name: numeric-tuner-reports
+          path: |
+            shop-hp-tuner-report.json
+            numeric-lever-report.json
+            numeric-candidate-report.json
+            numeric-ray-report.json
           if-no-files-found: error
           retention-days: 7
