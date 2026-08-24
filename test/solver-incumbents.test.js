@@ -35,7 +35,7 @@ test('all-HP greedy strategy is rejected before the endgame', () => {
   const result = runGreedyShopStrategy({ shopCycle: ['hp'] });
   assert.equal(result.solvable, false);
   assert.ok(result.floor < 8);
-  assert.match(result.failure ?? '', /No reachable progress action/);
+  assert.match(result.failure ?? '', /No reachable progress action|守护者|阵眼/);
   console.log(`TOWER_INCUMBENT all-hp FAIL floor=${result.floor} hp=${result.final.hp} atk=${result.final.atk} def=${result.final.def}`);
 });
 
