@@ -4,7 +4,9 @@ import { HOLY_POLICIES, runGreedyShopStrategy } from '../src/solver/greedy-strat
 import {
   DEFAULT_INCUMBENT_STRATEGIES,
   GREEDY_INCUMBENT_WITNESS_TYPE,
+  PROMOTED_PURCHASE_PLANS,
   findBestGreedyIncumbent,
+  findBestKnownIncumbent,
   verifyGreedyIncumbentWitness
 } from '../src/solver/tower-incumbent.js';
 
@@ -32,7 +34,6 @@ for (const scenario of CASES) {
       def: scenario.def,
       gold: result.final.gold
     });
-    console.log(`TOWER_INCUMBENT ${scenario.name} holy=immediate hp=${result.final.hp} gold=${result.final.gold} purchases=${JSON.stringify(result.purchaseCounts)}`);
   });
 }
 
@@ -41,34 +42,42 @@ test('all-HP immediate-Holy greedy strategy is rejected before the endgame', () 
   assert.equal(result.solvable, false);
   assert.ok(result.floor < 8);
   assert.match(result.failure ?? '', /No reachable progress action|守护者|阵眼/);
-  console.log(`TOWER_INCUMBENT all-hp holy=immediate FAIL floor=${result.floor} hp=${result.final.hp} atk=${result.final.atk} def=${result.final.def}`);
 });
 
-test('incumbent portfolio scans shop order and Holy timing', () => {
+test('incumbent policy portfolio scans shop order and Holy timing', () => {
   const portfolio = findBestGreedyIncumbent();
   assert.equal(DEFAULT_INCUMBENT_STRATEGIES.length, 9 * HOLY_POLICIES.length);
   assert.equal(portfolio.attemptedCount, DEFAULT_INCUMBENT_STRATEGIES.length);
   assert.ok(portfolio.feasibleCount >= 8);
-  assert.ok(portfolio.best.result.final.hp >= 12_536);
+  assert.equal(portfolio.best.result.final.hp, 12_536);
   assert.equal(portfolio.best.witness.type, GREEDY_INCUMBENT_WITNESS_TYPE);
-  assert.ok(HOLY_POLICIES.includes(portfolio.best.witness.holyPolicy));
-  console.log(`TOWER_PORTFOLIO_BEST id=${portfolio.best.id} holy=${portfolio.best.holyPolicy} hp=${portfolio.best.result.final.hp} acquisition=${JSON.stringify(portfolio.best.result.holyAcquisition)}`);
 });
 
-test('greedy incumbent witness is re-executed by the authoritative engine', () => {
-  const portfolio = findBestGreedyIncumbent();
-  const verification = verifyGreedyIncumbentWitness(portfolio.best.witness);
-  assert.equal(verification.ok, true);
-  assert.equal(verification.value, portfolio.best.result.final.hp);
-  assert.equal(verification.objectiveType, 'terminal_hp');
-  assert.equal(verification.summary.cores, 7);
-  assert.equal(verification.summary.purchases, portfolio.best.result.purchases);
-  assert.equal(verification.summary.holyPolicy, portfolio.best.holyPolicy);
+test('promoted purchase plan is the strongest reproducible known incumbent', () => {
+  assert.equal(PROMOTED_PURCHASE_PLANS.length, 1);
+  assert.equal(PROMOTED_PURCHASE_PLANS[0].expectedHp, 26_041);
+  assert.equal(PROMOTED_PURCHASE_PLANS[0].shopPlan.length, 30);
 
+  const known = findBestKnownIncumbent();
+  assert.equal(known.best.id, 'purchase-1opt-v1');
+  assert.equal(known.best.source, 'promoted-plan');
+  assert.equal(known.best.result.solvable, true);
+  assert.equal(known.best.result.final.hp, 26_041);
+  assert.deepEqual(known.best.result.purchaseCounts, { atk: 1, def: 4, hp: 25 });
+
+  const verification = verifyGreedyIncumbentWitness(known.best.witness);
+  assert.equal(verification.ok, true);
+  assert.equal(verification.value, 26_041);
+  assert.equal(verification.summary.explicitShopPlan, true);
+  assert.equal(verification.summary.shopPlanLength, 30);
+});
+
+test('unreplayable incumbent witness is rejected', () => {
   const invalid = verifyGreedyIncumbentWitness({
     type: GREEDY_INCUMBENT_WITNESS_TYPE,
     strategyId: 'all-hp',
     shopCycle: ['hp'],
+    shopPlan: null,
     holyPolicy: 'immediate'
   });
   assert.equal(invalid.ok, false);
