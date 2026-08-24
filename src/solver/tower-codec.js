@@ -226,6 +226,13 @@ export function createTowerStateCodec({ baseState, floors, enemies }) {
     };
   }
 
+  function tokenForCode(code) {
+    if (!Number.isInteger(code) || code < 0 || code >= codeToToken.length) {
+      throw new Error(`Tower codec token code out of range: ${code}`);
+    }
+    return codeToToken[code];
+  }
+
   return {
     schemaVersion: 1,
     stateEncoding: 'event-vector-v1',
@@ -238,6 +245,8 @@ export function createTowerStateCodec({ baseState, floors, enemies }) {
     changedEventSignature,
     eventIdAt,
     eventCatalogSummary,
+    tokenForCode,
+    tokenVocabularySize: codeToToken.length,
     baseStart
   };
 }
