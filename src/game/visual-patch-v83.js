@@ -65,11 +65,11 @@ function drawDualGem(scene, x, y) {
 }
 
 function drawGeneratedStatDrop(scene, x, y, id) {
-  if (id === 'atk') return drawGeneratedAsset(scene, 'gem-atk-v10', x, y, 0.62, { shadowWidth: 0.36 });
-  if (id === 'def') return drawGeneratedAsset(scene, 'gem-def-v10', x, y, 0.62, { shadowWidth: 0.36 });
+  if (id === 'atk') return drawGeneratedAsset(scene, 'gem-atk-v10', x, y, 0.60, { shadowWidth: 0.34 });
+  if (id === 'def') return drawGeneratedAsset(scene, 'gem-def-v10', x, y, 0.60, { shadowWidth: 0.34 });
   if (id === 'dual') return drawDualGem(scene, x, y);
-  if (id === 'hp') return drawGeneratedAsset(scene, 'potion-red-v10', x, y, 0.61, { shadowWidth: 0.34 });
-  if (id === 'hpLarge') return drawGeneratedAsset(scene, 'potion-blue-v10', x, y, 0.69, { shadowWidth: 0.38 });
+  if (id === 'hp') return drawGeneratedAsset(scene, 'potion-red-v10', x, y, 0.58, { shadowWidth: 0.31 });
+  if (id === 'hpLarge') return drawGeneratedAsset(scene, 'potion-blue-v10', x, y, 0.65, { shadowWidth: 0.35 });
   return false;
 }
 
@@ -78,11 +78,11 @@ function drawGeneratedCard(scene, x, y, kind) {
   if (!asset) return false;
   const t = (scene.idleClock || performance.now()) / 800;
   const bob = Math.sin(t + x * 0.53 + y * 0.71) * 0.018;
-  return drawGeneratedAsset(scene, asset, x, y, 0.72, {
+  return drawGeneratedAsset(scene, asset, x, y, 0.68, {
     offsetY: -0.02 + bob,
     rotation: -0.035,
-    shadowWidth: 0.38,
-    shadowAlpha: 0.2
+    shadowWidth: 0.35,
+    shadowAlpha: 0.18
   });
 }
 
@@ -95,14 +95,14 @@ function drawGeneratedBarrier(scene, x, y, kind) {
   const cx = scene.center(x);
   const cy = scene.center(y);
   scene.ctx.save();
-  scene.ctx.globalAlpha = 0.96;
+  scene.ctx.globalAlpha = 0.98;
   scene.ctx.drawImage(runeFloor, cx - TILE_SIZE / 2, cy - TILE_SIZE / 2, TILE_SIZE, TILE_SIZE);
   scene.ctx.restore();
 
-  scene.drawSoftShadow(cx, cy + TILE_SIZE * 0.2, TILE_SIZE * 0.56, 0.15);
+  scene.drawSoftShadow(cx, cy + TILE_SIZE * 0.2, TILE_SIZE * 0.48, 0.12);
   const t = (scene.idleClock || performance.now()) / 950;
-  const pulse = 0.86 + Math.sin(t + x + y * 0.7) * 0.018;
-  scene.drawMapImage(barrierImage, cx, cy - TILE_SIZE * 0.035, TILE_SIZE * pulse, TILE_SIZE * pulse, 0, 0.93);
+  const pulse = 0.82 + Math.sin(t + x + y * 0.7) * 0.012;
+  scene.drawMapImage(barrierImage, cx, cy - TILE_SIZE * 0.035, TILE_SIZE * pulse, TILE_SIZE * pulse, 0, 0.80);
   return true;
 }
 
