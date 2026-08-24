@@ -7,6 +7,7 @@ on:
     paths:
       - 'src/tuner/adaptive-*.js'
       - 'src/tuner/numeric-*.js'
+      - 'src/tuner/balance-proposal-v3.js'
       - 'scripts/adapt-final-pressure.mjs'
       - 'scripts/adapt-numeric-ray.mjs'
       - 'scripts/search-adaptive-balance.mjs'
@@ -16,6 +17,7 @@ on:
     paths:
       - 'src/tuner/adaptive-*.js'
       - 'src/tuner/numeric-*.js'
+      - 'src/tuner/balance-proposal-v3.js'
       - 'scripts/adapt-final-pressure.mjs'
       - 'scripts/adapt-numeric-ray.mjs'
       - 'scripts/search-adaptive-balance.mjs'
@@ -94,6 +96,7 @@ jobs:
           import json
           r=json.load(open('adaptive-numeric-ray-report.json'))
           a=r['adaptive']
+          p=r.get('proposal') or {}
           b=a.get('best') or {}
           print(f"ADAPT_RAY candidate={a.get('candidateId')} step={b.get('relativeStep')} margin={b.get('margin')} hp={b.get('finalHp')} converged={a.get('converged')} hard={a.get('acceptedHardConstraints')} rejection={a.get('rejection')}")
           print(f"LEVERS {','.join(a.get('leverKeys') or [])}")
@@ -103,6 +106,8 @@ jobs:
           cf=a.get('counterfactuals') or {}
           print(f"PROOF solvable={solver.get('solvable')} exact={solver.get('exact')} expanded={solver.get('expandedStates')} generated={solver.get('generatedStates')}")
           print(f"ROBUST recovery={cf.get('recoveryRate')} catastrophic={cf.get('catastrophicRate')} regret={cf.get('highRegretRate')} improvements={cf.get('improvedMutationCount')}")
+          print(f"PROPOSAL status={p.get('status')} productionWrite={p.get('productionWriteAllowed')} failures={','.join((p.get('gate') or {}).get('failures') or []) or 'none'}")
+          print('EDITS ' + ','.join(f"{e['target']}:{e['id']}:{e['field']}={e['value']}" for e in p.get('edits') or []))
           for s in a.get('samples') or []:
               print(f"SAMPLE step={s.get('relativeStep')} margin={s.get('margin')} hp={s.get('finalHp')} solvable={s.get('solvable')} local={((s.get('localSearch') or {}).get('localOptimal'))}")
           PY
