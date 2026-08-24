@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { solve } from '../src/solver/search.js';
 import { canonicalizeCompassTravel, createBoundedTowerAdapter } from '../src/solver/tower-bounds.js';
-import { findBestGreedyIncumbent } from '../src/solver/tower-incumbent.js';
+import { findBestKnownIncumbent } from '../src/solver/tower-incumbent.js';
 
 test('compass travel canonicalization removes only redundant travel directions', () => {
   const actions = [
@@ -20,7 +20,7 @@ test('compass travel canonicalization removes only redundant travel directions',
 });
 
 test('Tower incumbent witness cannot be reused for a different initial state', () => {
-  const portfolio = findBestGreedyIncumbent();
+  const known = findBestKnownIncumbent();
   const adapter = createBoundedTowerAdapter();
   const mutatedInitial = adapter.createInitialState();
   mutatedInitial.stats.hp += 1;
@@ -29,18 +29,19 @@ test('Tower incumbent witness cannot be reused for a different initial state', (
       adapter,
       initialState: mutatedInitial,
       mode: 'optimize',
-      incumbentWitness: portfolio.best.witness,
+      incumbentWitness: known.best.witness,
       maxExpanded: 1
     }),
     /canonical initial state/
   );
 });
 
-test('Tower optimizer uses the strongest engine-verified portfolio witness and safe HP upper bound', { timeout: 60_000 }, () => {
-  const portfolio = findBestGreedyIncumbent();
-  const incumbent = portfolio.best;
-  assert.ok(incumbent, 'incumbent portfolio must contain a feasible strategy');
-  assert.ok(incumbent.result.final.hp >= 12_536, 'Holy timing scan must not regress the previous incumbent');
+test('Tower optimizer uses the strongest engine-verified best-known witness and safe HP upper bound', { timeout: 60_000 }, () => {
+  const known = findBestKnownIncumbent();
+  const incumbent = known.best;
+  assert.ok(incumbent, 'best-known incumbent must be feasible');
+  assert.equal(incumbent.id, 'purchase-1opt-v1');
+  assert.equal(incumbent.result.final.hp, 26_041);
 
   const adapter = createBoundedTowerAdapter();
   const initial = adapter.createInitialState();
@@ -59,8 +60,8 @@ test('Tower optimizer uses the strongest engine-verified portfolio witness and s
   const summary = {
     incumbent: incumbent.result.final.hp,
     incumbentId: incumbent.id,
+    incumbentSource: incumbent.source,
     holyPolicy: incumbent.holyPolicy,
-    holyAcquisition: incumbent.result.holyAcquisition,
     initialUpperBound,
     verification: report.incumbentVerification,
     solvable: report.solvable,
@@ -79,14 +80,14 @@ test('Tower optimizer uses the strongest engine-verified portfolio witness and s
   console.log(`TOWER_OPTIMIZE_PROFILE ${JSON.stringify(summary)}`);
 
   assert.equal(report.mode, 'optimize');
-  assert.equal(report.solvable, true, 'verified witness proves feasibility even before search re-discovers a goal');
+  assert.equal(report.solvable, true);
   assert.equal(report.incumbentVerification.ok, true);
-  assert.equal(report.incumbentVerification.value, incumbent.result.final.hp);
-  assert.equal(report.objective.seededLowerBound, incumbent.result.final.hp);
-  assert.ok(report.objective.best >= incumbent.result.final.hp);
+  assert.equal(report.incumbentVerification.value, 26_041);
+  assert.equal(report.objective.seededLowerBound, 26_041);
+  assert.ok(report.objective.best >= 26_041);
   assert.ok(report.generatedStates >= report.expandedStates);
   assert.ok(report.prunedDominated > 0);
-  assert.ok(report.prunedBound > 0, 'verified incumbent should activate safe branch-and-bound pruning');
+  assert.ok(report.prunedBound > 0, 'stronger verified incumbent should activate safe branch-and-bound pruning');
   assert.ok(report.profile.generatedByAction.shop > 0);
   if (report.stoppedReason !== null) {
     assert.equal(report.exact, false, 'a resource-bounded profile must not claim a global optimum');
