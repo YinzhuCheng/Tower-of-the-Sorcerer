@@ -9,6 +9,6 @@ test('adaptive ray classifies easy and hard samples', () => {
 });
 
 test('adaptive ray midpoint stays inside an ordered bracket', () => {
-  assert.equal(nextAdaptiveRayStep(0.4, 0.8), 0.6);
+  assert.ok(Math.abs(nextAdaptiveRayStep(0.4, 0.8) - 0.6) < 1e-12);
   assert.throws(() => nextAdaptiveRayStep(0.8, 0.4));
 });
