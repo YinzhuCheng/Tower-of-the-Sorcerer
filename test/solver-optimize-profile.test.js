@@ -19,6 +19,23 @@ test('compass travel canonicalization removes only redundant travel directions',
   assert.deepEqual(withCompass.map((action) => action.id), ['down', 'stairs-up', 'enemy']);
 });
 
+test('Tower incumbent witness cannot be reused for a different initial state', () => {
+  const portfolio = findBestGreedyIncumbent();
+  const adapter = createBoundedTowerAdapter();
+  const mutatedInitial = adapter.createInitialState();
+  mutatedInitial.stats.hp += 1;
+  assert.throws(
+    () => solve({
+      adapter,
+      initialState: mutatedInitial,
+      mode: 'optimize',
+      incumbentWitness: portfolio.best.witness,
+      maxExpanded: 1
+    }),
+    /canonical initial state/
+  );
+});
+
 test('Tower optimizer uses an engine-verified incumbent witness and safe HP upper bound', { timeout: 60_000 }, () => {
   const portfolio = findBestGreedyIncumbent();
   const incumbent = portfolio.best;
