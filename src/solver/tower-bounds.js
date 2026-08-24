@@ -156,9 +156,6 @@ export function optimisticTerminalHpUpperBound(baseAdapter, state) {
   return upper;
 }
 
-/**
- * Canonicalize free inter-floor travel once the compass exists.
- */
 export function canonicalizeCompassTravel(state, actions) {
   if (!state.relics?.compass) return actions;
   return actions.filter((action) => {
@@ -169,11 +166,10 @@ export function canonicalizeCompassTravel(state, actions) {
 }
 
 /**
- * After Lucky is owned, defeating an ordinary zero-damage enemy immediately is
- * monotone and order-safe. The kill costs no HP, its gold multiplier can no
- * longer change, and receiving that gold earlier can only expand the set of
- * affordable actions. Bosses, phase transitions and reward-bearing enemies stay
- * explicit because they alter structural/progression semantics.
+ * Once Lucky is owned, ordinary zero-damage enemies have a fixed gold payout
+ * and no HP cost. Their mutual order is therefore commutative. They are not
+ * forced: all non-commuting actions stay available. We only canonicalize the
+ * order inside the simultaneously available zero-damage enemy set.
  */
 export function isSafeZeroDamageEnemyAction(state, action) {
   if (!state.relics?.lucky) return false;
@@ -184,35 +180,15 @@ export function isSafeZeroDamageEnemyAction(state, action) {
   return battle.winnable && battle.totalDamage === 0;
 }
 
-function markAutomatic(steps) {
-  return (steps ?? []).map((step) => ({ ...step, automatic: true }));
-}
+export function canonicalizeZeroDamageEnemyOrder(state, actions) {
+  const commuting = actions
+    .filter((action) => isSafeZeroDamageEnemyAction(state, action))
+    .sort((a, b) => a.eventId.localeCompare(b.eventId));
+  if (commuting.length <= 1) return actions;
 
-function normalizeWithZeroDamagePor(baseAdapter, state) {
-  if (baseAdapter.isGoal(state)) return { state: baseAdapter.cloneState(state), steps: [] };
-
-  let normalized = baseAdapter.normalize(state);
-  let current = normalized.state;
-  const steps = [...(normalized.steps ?? [])];
-  let guard = 0;
-
-  while (!baseAdapter.isGoal(current) && guard++ < 512) {
-    const freeEnemies = baseAdapter.enumerateActions(current)
-      .filter((action) => isSafeZeroDamageEnemyAction(current, action))
-      .sort((a, b) => a.eventId.localeCompare(b.eventId));
-    if (!freeEnemies.length) break;
-
-    const applied = baseAdapter.applyAction(baseAdapter.cloneState(current), freeEnemies[0]);
-    if (!applied?.ok) throw new Error(`Zero-damage POR closure failed: ${applied?.reason ?? 'unknown error'}`);
-    steps.push(...markAutomatic(applied.steps));
-
-    normalized = baseAdapter.normalize(applied.state);
-    steps.push(...(normalized.steps ?? []));
-    current = normalized.state;
-  }
-
-  if (guard >= 512) throw new Error('Zero-damage POR closure exceeded safety limit.');
-  return { state: current, steps };
+  const keep = commuting[0];
+  const commutingIds = new Set(commuting.slice(1).map((action) => action.eventId));
+  return actions.filter((action) => action === keep || !commutingIds.has(action.eventId));
 }
 
 export function createBoundedTowerAdapter() {
@@ -230,9 +206,14 @@ export function createBoundedTowerAdapter() {
   return {
     ...base,
     frontierKey: (state) => compactFrontierKey(base, state),
-    normalize: (state) => normalizeWithZeroDamagePor(base, state),
-    enumerateActions: (state) => canonicalizeCompassTravel(state, base.enumerateActions(state)),
+    normalize: (state) => base.isGoal(state)
+      ? { state: base.cloneState(state), steps: [] }
+      : base.normalize(state),
+    enumerateActions: (state) => canonicalizeZeroDamageEnemyOrder(
+      state,
+      canonicalizeCompassTravel(state, base.enumerateActions(state))
+    ),
     objectiveUpperBound: upperBound,
-    rulesVersion: () => `${base.rulesVersion()}+boss-stair-lock-v1+canonical-travel-v1+zero-damage-por-v1`
+    rulesVersion: () => `${base.rulesVersion()}+boss-stair-lock-v1+canonical-travel-v1+zero-damage-order-v1`
   };
 }
