@@ -176,9 +176,59 @@ export function canonicalizeCompassTravel(state, actions) {
   });
 }
 
+function isProductiveNonTravelAction(action) {
+  if (action.kind === 'teleport') return false;
+  if (action.kind === 'tile' && (action.token === 'U' || action.token === 'D')) return false;
+  return true;
+}
+
+/**
+ * A downward teleport is redundant when teleporting there and then walking the
+ * canonical U chain back to the source floor exposes no strategic event at all.
+ *
+ * Automatic closure counts as productive: if a remote floor would collect a
+ * monotone item/switch, the teleport is retained. Every D-anchor component on
+ * the return path is inspected, including the source floor, so down→up
+ * repositioning remains available whenever it exposes a real macro event.
+ */
+export function downwardTeleportIsProductive(baseAdapter, state, teleportAction) {
+  if (teleportAction.kind !== 'teleport' || teleportAction.targetFloor >= state.floor) return true;
+
+  const teleported = baseAdapter.applyAction(baseAdapter.cloneState(state), teleportAction);
+  if (!teleported?.ok) return false;
+  let normalized = baseAdapter.normalize(teleported.state);
+  if ((normalized.steps?.length ?? 0) > 0) return true;
+  let cursor = normalized.state;
+
+  for (let hop = 0; hop <= FLOORS.length; hop += 1) {
+    const actions = baseAdapter.enumerateActions(cursor);
+    if (actions.some(isProductiveNonTravelAction)) return true;
+
+    if (cursor.floor >= state.floor) return false;
+    const up = actions.find((action) => action.kind === 'tile' && action.token === 'U');
+    if (!up) return false;
+
+    const moved = baseAdapter.applyAction(baseAdapter.cloneState(cursor), up);
+    if (!moved?.ok) return false;
+    normalized = baseAdapter.normalize(moved.state);
+    if ((normalized.steps?.length ?? 0) > 0) return true;
+    cursor = normalized.state;
+  }
+
+  throw new Error('Productive teleport probe exceeded floor safety limit.');
+}
+
+export function pruneEmptyCompassTargets(baseAdapter, state, actions) {
+  if (!state.relics?.compass) return actions;
+  return actions.filter((action) =>
+    action.kind !== 'teleport' || downwardTeleportIsProductive(baseAdapter, state, action)
+  );
+}
+
 export function createBoundedTowerAdapter() {
   const base = createTowerAdapter();
   const upperBoundCache = new WeakMap();
+  const actionCache = new WeakMap();
   const upperBound = (state) => {
     if (state && typeof state === 'object' && upperBoundCache.has(state)) {
       return upperBoundCache.get(state);
@@ -187,6 +237,13 @@ export function createBoundedTowerAdapter() {
     if (state && typeof state === 'object') upperBoundCache.set(state, value);
     return value;
   };
+  const boundedActions = (state) => {
+    if (state && typeof state === 'object' && actionCache.has(state)) return actionCache.get(state);
+    const canonical = canonicalizeCompassTravel(state, base.enumerateActions(state));
+    const productive = pruneEmptyCompassTargets(base, state, canonical);
+    if (state && typeof state === 'object') actionCache.set(state, productive);
+    return productive;
+  };
 
   return {
     ...base,
@@ -194,8 +251,8 @@ export function createBoundedTowerAdapter() {
     normalize: (state) => base.isGoal(state)
       ? { state: base.cloneState(state), steps: [] }
       : base.normalize(state),
-    enumerateActions: (state) => canonicalizeCompassTravel(state, base.enumerateActions(state)),
+    enumerateActions: boundedActions,
     objectiveUpperBound: upperBound,
-    rulesVersion: () => `${base.rulesVersion()}+boss-stair-lock-v1+canonical-travel-v1`
+    rulesVersion: () => `${base.rulesVersion()}+boss-stair-lock-v1+canonical-travel-v1+productive-travel-v1`
   };
 }
