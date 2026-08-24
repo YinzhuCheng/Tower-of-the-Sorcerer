@@ -1,0 +1,39 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { runGreedyShopStrategy } from '../src/solver/greedy-strategy.js';
+
+const CASES = [
+  { name: 'def-atk-hp', cycle: ['def', 'atk', 'hp'], hp: 12536, maxHp: 36910, atk: 209, def: 215 },
+  { name: 'def-hp-atk', cycle: ['def', 'hp', 'atk'], hp: 12508, maxHp: 36910, atk: 209, def: 215 },
+  { name: 'atk-def-hp', cycle: ['atk', 'def', 'hp'], hp: 10520, maxHp: 36910, atk: 209, def: 215 },
+  { name: 'atk-hp-def', cycle: ['atk', 'hp', 'def'], hp: 10220, maxHp: 36910, atk: 209, def: 215 },
+  { name: 'hp-def-atk', cycle: ['hp', 'def', 'atk'], hp: 8247, maxHp: 37810, atk: 209, def: 215 },
+  { name: 'hp-atk-def', cycle: ['hp', 'atk', 'def'], hp: 7975, maxHp: 37810, atk: 209, def: 215 },
+  { name: 'all-atk', cycle: ['atk'], hp: 3763, maxHp: 27010, atk: 309, def: 165 },
+  { name: 'all-def', cycle: ['def'], hp: 3665, maxHp: 27010, atk: 159, def: 315 }
+];
+
+for (const scenario of CASES) {
+  test(`authoritative engine confirms ${scenario.name} incumbent`, () => {
+    const result = runGreedyShopStrategy({ shopCycle: scenario.cycle });
+    assert.equal(result.solvable, true, result.failure ?? scenario.name);
+    assert.equal(result.purchases, 30);
+    assert.equal(result.cores, 7);
+    assert.deepEqual(result.final, {
+      hp: scenario.hp,
+      maxHp: scenario.maxHp,
+      atk: scenario.atk,
+      def: scenario.def,
+      gold: result.final.gold
+    });
+    console.log(`TOWER_INCUMBENT ${scenario.name} hp=${result.final.hp} gold=${result.final.gold} purchases=${JSON.stringify(result.purchaseCounts)}`);
+  });
+}
+
+test('all-HP greedy strategy is rejected before the endgame', () => {
+  const result = runGreedyShopStrategy({ shopCycle: ['hp'] });
+  assert.equal(result.solvable, false);
+  assert.ok(result.floor < 8);
+  assert.match(result.failure ?? '', /No reachable progress action/);
+  console.log(`TOWER_INCUMBENT all-hp FAIL floor=${result.floor} hp=${result.final.hp} atk=${result.final.atk} def=${result.final.def}`);
+});
