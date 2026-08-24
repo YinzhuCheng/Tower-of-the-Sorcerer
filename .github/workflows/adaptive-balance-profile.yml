@@ -1,0 +1,60 @@
+name: Adaptive Balance Profile
+
+on:
+  push:
+    branches:
+      - solver-phase1-pareto
+    paths:
+      - 'src/tuner/adaptive-*.js'
+      - 'scripts/adapt-final-pressure.mjs'
+      - 'scripts/search-adaptive-balance.mjs'
+      - '.github/workflows/adaptive-balance-profile.yml'
+  workflow_dispatch:
+    inputs:
+      hp_reward:
+        description: 'Shop HP reward to adapt'
+        required: false
+        default: '90'
+
+jobs:
+  adaptive-profile:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Run adaptive fixed-point tuner
+        env:
+          HP_REWARD: ${{ inputs.hp_reward || '90' }}
+        run: |
+          node scripts/adapt-final-pressure.mjs \
+            --hp-reward="$HP_REWARD" \
+            --target-margin=0.165 \
+            --max-outer=6 \
+            --max-local-passes=12 \
+            --max-expanded=5000 \
+            --max-generated=50000 \
+            --json > adaptive-final-pressure-report.json
+      - name: Print compact adaptive summary
+        run: |
+          python3 - <<'PY'
+          import json
+          r=json.load(open('adaptive-final-pressure-report.json'))
+          print(f"ADAPT hp={r['hpReward']} magic={r.get('magicPower')} converged={r.get('converged')} hard={r.get('acceptedHardConstraints')} rejection={r.get('rejection')}")
+          for i in r.get('iterations', []):
+              print(f"ITER {i['outer']} magic={i['magicPower']}->{i['nextMagicPower']} hp={i['terminalHp']} void={i['voidCoreMargin']:.6f} min={i['minNormalizedHpMargin']:.6f} passes={i['localImprovementPasses']} local={i['localOptimal']} counts={i['purchaseCounts']}")
+          route=r.get('route') or {}
+          cf=r.get('counterfactuals') or {}
+          solver=r.get('solver') or {}
+          print(f"FINAL hp={route.get('final',{}).get('hp')} margin={route.get('minNormalizedHpMargin')} counts={route.get('purchaseCounts')}")
+          print(f"PROOF solvable={solver.get('solvable')} exact={solver.get('exact')} expanded={solver.get('expandedStates')} generated={solver.get('generatedStates')}")
+          print(f"ROBUST recovery={cf.get('recoveryRate')} catastrophic={cf.get('catastrophicRate')} regret={cf.get('highRegretRate')} improvements={cf.get('improvedMutationCount')}")
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: adaptive-final-pressure-report
+          path: adaptive-final-pressure-report.json
+          if-no-files-found: error
+          retention-days: 7
