@@ -12,6 +12,15 @@ on:
       - 'scripts/search-adaptive-balance.mjs'
       - 'scripts/search-numeric-rays.mjs'
       - '.github/workflows/adaptive-balance-profile.yml'
+  pull_request:
+    paths:
+      - 'src/tuner/adaptive-*.js'
+      - 'src/tuner/numeric-*.js'
+      - 'scripts/adapt-final-pressure.mjs'
+      - 'scripts/adapt-numeric-ray.mjs'
+      - 'scripts/search-adaptive-balance.mjs'
+      - 'scripts/search-numeric-rays.mjs'
+      - '.github/workflows/adaptive-balance-profile.yml'
   workflow_dispatch:
     inputs:
       hp_reward:
