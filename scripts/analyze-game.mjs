@@ -32,6 +32,8 @@ function summarizePortfolio(portfolio) {
     best: portfolio.best ? {
       id: portfolio.best.id,
       cycle: portfolio.best.cycle,
+      holyPolicy: portfolio.best.holyPolicy,
+      holyAcquisition: portfolio.best.result.holyAcquisition,
       witnessType: portfolio.best.witness.type,
       hp: portfolio.best.result.final.hp,
       final: portfolio.best.result.final,
@@ -40,6 +42,8 @@ function summarizePortfolio(portfolio) {
     candidates: portfolio.results.map((entry) => ({
       id: entry.id,
       cycle: entry.cycle,
+      holyPolicy: entry.holyPolicy,
+      holyAcquisition: entry.result.holyAcquisition,
       solvable: entry.result.solvable,
       hp: entry.result.solvable ? entry.result.final.hp : null,
       failure: entry.result.failure
@@ -87,7 +91,7 @@ if (config.json) {
   console.log(`Solver ${report.solverVersion} (${report.mode}) | state=${report.stateEncoding}`);
   if (report.optimizationSeed?.portfolio?.best) {
     const best = report.optimizationSeed.portfolio.best;
-    console.log(`incumbent witness: ${best.hp} HP via ${best.id} (${best.witnessType}) | verified=${report.incumbentVerification?.ok === true} | initial upper: ${initialUpperBound} | gap: ${report.optimizationSeed.initialGap}`);
+    console.log(`incumbent witness: ${best.hp} HP via ${best.id} [Holy=${best.holyPolicy}] (${best.witnessType}) | verified=${report.incumbentVerification?.ok === true} | initial upper: ${initialUpperBound} | gap: ${report.optimizationSeed.initialGap}`);
   } else if (optimizing) {
     console.log(`incumbent witness: disabled/unavailable | initial upper: ${initialUpperBound}`);
   }
