@@ -158,14 +158,6 @@ export function optimisticTerminalHpUpperBound(baseAdapter, state) {
 
 /**
  * Canonicalize free inter-floor travel once the compass exists.
- *
- * After the boss-stair lock, every visited upper floor proves that the lower
- * floor's boss was defeated and that at least one D→U route was permanently
- * opened. Doors/enemies never re-close. Therefore any upward teleport can be
- * replaced by repeated U traversal at zero resource cost, while any D traversal
- * can be replaced by a direct downward teleport. Keeping only downward
- * teleports removes travel cycles without making legal actions depend on path
- * history, so Pareto labels remain history-free.
  */
 export function canonicalizeCompassTravel(state, actions) {
   if (!state.relics?.compass) return actions;
@@ -176,59 +168,56 @@ export function canonicalizeCompassTravel(state, actions) {
   });
 }
 
-function isProductiveNonTravelAction(action) {
-  if (action.kind === 'teleport') return false;
-  if (action.kind === 'tile' && (action.token === 'U' || action.token === 'D')) return false;
-  return true;
+/**
+ * After Lucky is owned, defeating an ordinary zero-damage enemy immediately is
+ * monotone and order-safe. The kill costs no HP, its gold multiplier can no
+ * longer change, and receiving that gold earlier can only expand the set of
+ * affordable actions. Bosses, phase transitions and reward-bearing enemies stay
+ * explicit because they alter structural/progression semantics.
+ */
+export function isSafeZeroDamageEnemyAction(state, action) {
+  if (!state.relics?.lucky) return false;
+  if (action.kind !== 'tile' || action.parsed?.type !== 'enemy') return false;
+  const enemy = ENEMIES[action.parsed.id];
+  if (!enemy || enemy.boss || enemy.finalBoss || enemy.phaseNext || enemy.reward) return false;
+  const battle = calculateBattle(state.stats, enemy, state.relics);
+  return battle.winnable && battle.totalDamage === 0;
 }
 
-/**
- * A downward teleport is redundant when teleporting there and then walking the
- * canonical U chain back to the source floor exposes no strategic event at all.
- *
- * Automatic closure counts as productive: if a remote floor would collect a
- * monotone item/switch, the teleport is retained. Every D-anchor component on
- * the return path is inspected, including the source floor, so down→up
- * repositioning remains available whenever it exposes a real macro event.
- */
-export function downwardTeleportIsProductive(baseAdapter, state, teleportAction) {
-  if (teleportAction.kind !== 'teleport' || teleportAction.targetFloor >= state.floor) return true;
+function markAutomatic(steps) {
+  return (steps ?? []).map((step) => ({ ...step, automatic: true }));
+}
 
-  const teleported = baseAdapter.applyAction(baseAdapter.cloneState(state), teleportAction);
-  if (!teleported?.ok) return false;
-  let normalized = baseAdapter.normalize(teleported.state);
-  if ((normalized.steps?.length ?? 0) > 0) return true;
-  let cursor = normalized.state;
+function normalizeWithZeroDamagePor(baseAdapter, state) {
+  if (baseAdapter.isGoal(state)) return { state: baseAdapter.cloneState(state), steps: [] };
 
-  for (let hop = 0; hop <= FLOORS.length; hop += 1) {
-    const actions = baseAdapter.enumerateActions(cursor);
-    if (actions.some(isProductiveNonTravelAction)) return true;
+  let normalized = baseAdapter.normalize(state);
+  let current = normalized.state;
+  const steps = [...(normalized.steps ?? [])];
+  let guard = 0;
 
-    if (cursor.floor >= state.floor) return false;
-    const up = actions.find((action) => action.kind === 'tile' && action.token === 'U');
-    if (!up) return false;
+  while (!baseAdapter.isGoal(current) && guard++ < 512) {
+    const freeEnemies = baseAdapter.enumerateActions(current)
+      .filter((action) => isSafeZeroDamageEnemyAction(current, action))
+      .sort((a, b) => a.eventId.localeCompare(b.eventId));
+    if (!freeEnemies.length) break;
 
-    const moved = baseAdapter.applyAction(baseAdapter.cloneState(cursor), up);
-    if (!moved?.ok) return false;
-    normalized = baseAdapter.normalize(moved.state);
-    if ((normalized.steps?.length ?? 0) > 0) return true;
-    cursor = normalized.state;
+    const applied = baseAdapter.applyAction(baseAdapter.cloneState(current), freeEnemies[0]);
+    if (!applied?.ok) throw new Error(`Zero-damage POR closure failed: ${applied?.reason ?? 'unknown error'}`);
+    steps.push(...markAutomatic(applied.steps));
+
+    normalized = baseAdapter.normalize(applied.state);
+    steps.push(...(normalized.steps ?? []));
+    current = normalized.state;
   }
 
-  throw new Error('Productive teleport probe exceeded floor safety limit.');
-}
-
-export function pruneEmptyCompassTargets(baseAdapter, state, actions) {
-  if (!state.relics?.compass) return actions;
-  return actions.filter((action) =>
-    action.kind !== 'teleport' || downwardTeleportIsProductive(baseAdapter, state, action)
-  );
+  if (guard >= 512) throw new Error('Zero-damage POR closure exceeded safety limit.');
+  return { state: current, steps };
 }
 
 export function createBoundedTowerAdapter() {
   const base = createTowerAdapter();
   const upperBoundCache = new WeakMap();
-  const actionCache = new WeakMap();
   const upperBound = (state) => {
     if (state && typeof state === 'object' && upperBoundCache.has(state)) {
       return upperBoundCache.get(state);
@@ -237,22 +226,13 @@ export function createBoundedTowerAdapter() {
     if (state && typeof state === 'object') upperBoundCache.set(state, value);
     return value;
   };
-  const boundedActions = (state) => {
-    if (state && typeof state === 'object' && actionCache.has(state)) return actionCache.get(state);
-    const canonical = canonicalizeCompassTravel(state, base.enumerateActions(state));
-    const productive = pruneEmptyCompassTargets(base, state, canonical);
-    if (state && typeof state === 'object') actionCache.set(state, productive);
-    return productive;
-  };
 
   return {
     ...base,
     frontierKey: (state) => compactFrontierKey(base, state),
-    normalize: (state) => base.isGoal(state)
-      ? { state: base.cloneState(state), steps: [] }
-      : base.normalize(state),
-    enumerateActions: boundedActions,
+    normalize: (state) => normalizeWithZeroDamagePor(base, state),
+    enumerateActions: (state) => canonicalizeCompassTravel(state, base.enumerateActions(state)),
     objectiveUpperBound: upperBound,
-    rulesVersion: () => `${base.rulesVersion()}+boss-stair-lock-v1+canonical-travel-v1+productive-travel-v1`
+    rulesVersion: () => `${base.rulesVersion()}+boss-stair-lock-v1+canonical-travel-v1+zero-damage-por-v1`
   };
 }
