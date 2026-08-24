@@ -30,17 +30,26 @@ function numericEditsValid(edits) {
   );
 }
 
+function holyBestResponseSatisfied(report) {
+  return report?.hardChecks?.holyPolicyBestResponse === true
+    && report?.holyPolicyAnalysis?.stableWithinSeedPortfolio === true
+    && report?.holyPolicyAnalysis?.allOptimizedLocalOptimal === true;
+}
+
 export const BALANCE_REVIEW_RULES_V3 = Object.freeze({
   ...BALANCE_REVIEW_RULES_V2,
-  requireExplicitNumericEdits: true
+  requireExplicitNumericEdits: true,
+  requireHolyPolicyBestResponse: true
 });
 
 /**
  * Generic review gate for adaptive numeric candidates.
  *
  * V2 was intentionally tied to shop HP + voidCore magicPower. V3 accepts an
- * arbitrary explicit numeric edit set while preserving the same proof and
- * robustness requirements. It still does not authorize production writes.
+ * arbitrary explicit numeric edit set while preserving proof and robustness
+ * requirements. Once the Holy timing axis entered the player model, V3 also
+ * requires evidence that the selected route is the modeled best response across
+ * all Holy policies that received feasible seeds.
  */
 export function evaluateGenericBalanceReviewGate(report, rules = BALANCE_REVIEW_RULES_V3) {
   const margin = reportMargin(report);
@@ -51,6 +60,9 @@ export function evaluateGenericBalanceReviewGate(report, rules = BALANCE_REVIEW_
     converged: rules.requireConvergence ? report?.converged === true : true,
     playerOneOptimal: rules.requirePlayerOneOptimal
       ? report?.counterfactuals?.improvedMutationCount === 0
+      : true,
+    holyPolicyBestResponse: rules.requireHolyPolicyBestResponse
+      ? holyBestResponseSatisfied(report)
       : true,
     adaptedRouteSolvable: adaptedRouteSolvable(report),
     exactExistence: rules.requireExactExistence
@@ -96,6 +108,8 @@ export function createGenericBalanceReviewProposal({
       leverKeys: report.leverKeys ?? null,
       converged: report.converged === true,
       playerOneOptimal: report.counterfactuals?.improvedMutationCount === 0,
+      holyPolicyBestResponse: holyBestResponseSatisfied(report),
+      holyPolicyAnalysis: report.holyPolicyAnalysis ?? null,
       margin: gate.margin,
       best: report.best ?? null,
       solver: report.solver ?? null,
