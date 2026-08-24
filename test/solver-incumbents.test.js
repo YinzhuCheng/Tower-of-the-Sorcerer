@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { runGreedyShopStrategy } from '../src/solver/greedy-strategy.js';
+import { findBestGreedyIncumbent } from '../src/solver/tower-incumbent.js';
 
 const CASES = [
   { name: 'def-atk-hp', cycle: ['def', 'atk', 'hp'], hp: 12536, maxHp: 36910, atk: 209, def: 215 },
@@ -36,4 +37,12 @@ test('all-HP greedy strategy is rejected before the endgame', () => {
   assert.ok(result.floor < 8);
   assert.match(result.failure ?? '', /No reachable progress action/);
   console.log(`TOWER_INCUMBENT all-hp FAIL floor=${result.floor} hp=${result.final.hp} atk=${result.final.atk} def=${result.final.def}`);
+});
+
+test('incumbent portfolio selects the strongest authoritative strategy dynamically', () => {
+  const portfolio = findBestGreedyIncumbent();
+  assert.equal(portfolio.attemptedCount, 9);
+  assert.equal(portfolio.feasibleCount, 8);
+  assert.equal(portfolio.best.id, 'def-atk-hp');
+  assert.equal(portfolio.best.result.final.hp, 12_536);
 });
