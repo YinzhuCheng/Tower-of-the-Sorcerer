@@ -24,7 +24,37 @@ function minPressure(route) {
     .sort((a, b) => a.normalizedHpMargin - b.normalizedHpMargin)[0] ?? null;
 }
 
-function editsForStep(parameters, relativeStep) {
+function editSignature(edits) {
+  return edits
+    .map((edit) => `${edit.target}:${edit.id}:${edit.field}=${edit.value}`)
+    .sort()
+    .join('|');
+}
+
+export function resolveCandidateRayParameters({ screenReport, candidate } = {}) {
+  if (!screenReport?.probes) throw new Error('Ray parameter resolution requires the source numeric lever screen.');
+  if (!candidate?.leverKeys?.length) throw new Error('Ray parameter resolution requires a synthesized candidate.');
+  const probeByKey = new Map(screenReport.probes.map((probe) => [probe.parameter.key, probe]));
+  return candidate.leverKeys.map((key) => {
+    const probe = probeByKey.get(key);
+    if (!probe) throw new Error(`Candidate lever is missing from screen report: ${key}`);
+    return probe.parameter;
+  });
+}
+
+/**
+ * Materializes one scalar position along a multi-parameter "harder" ray.
+ * All field semantics stay delegated to the canonical numeric mutation catalogue.
+ */
+export function materializeCandidateRayEdits({
+  screenReport,
+  candidate,
+  relativeStep
+} = {}) {
+  if (!Number.isFinite(relativeStep) || relativeStep <= 0 || relativeStep >= 1) {
+    throw new Error('relativeStep must be inside (0, 1).');
+  }
+  const parameters = resolveCandidateRayParameters({ screenReport, candidate });
   const edits = [];
   const mutations = [];
   for (const parameter of parameters) {
@@ -36,18 +66,18 @@ function editsForStep(parameters, relativeStep) {
     mutations.push(mutation);
     edits.push(...mutation.edits);
   }
-  return { edits, mutations };
+  return {
+    relativeStep,
+    parameters,
+    edits,
+    mutations,
+    signature: editSignature(edits)
+  };
 }
 
-function editSignature(edits) {
-  return edits
-    .map((edit) => `${edit.target}:${edit.id}:${edit.field}=${edit.value}`)
-    .sort()
-    .join('|');
-}
-
-function evaluateStep({ plan, parameters, relativeStep, targetMargin }) {
-  const { edits, mutations } = editsForStep(parameters, relativeStep);
+function evaluateStep({ plan, screenReport, candidate, relativeStep, targetMargin }) {
+  const materialized = materializeCandidateRayEdits({ screenReport, candidate, relativeStep });
+  const { edits, mutations, signature } = materialized;
   if (edits.length === 0) {
     return {
       relativeStep,
@@ -67,7 +97,7 @@ function evaluateStep({ plan, parameters, relativeStep, targetMargin }) {
       relativeStep,
       edits,
       mutations,
-      signature: editSignature(edits),
+      signature,
       solvable: false,
       failure: route.failure ?? 'route_failed',
       margin: null,
@@ -80,7 +110,7 @@ function evaluateStep({ plan, parameters, relativeStep, targetMargin }) {
     relativeStep,
     edits,
     mutations,
-    signature: editSignature(edits),
+    signature,
     solvable: true,
     failure: null,
     margin,
@@ -129,22 +159,16 @@ export function searchProtectedPressureRay({
   maxExpanded = 5_000,
   maxGenerated = 50_000
 } = {}) {
-  if (!screenReport?.probes) throw new Error('Ray search requires the source numeric lever screen.');
-  if (!candidate?.leverKeys?.length) throw new Error('Ray search requires a synthesized candidate.');
   if (!Number.isFinite(targetMargin) || targetMargin <= 0 || targetMargin >= 1) {
     throw new Error('targetMargin must be inside (0, 1).');
   }
+  resolveCandidateRayParameters({ screenReport, candidate });
 
-  const probeByKey = new Map(screenReport.probes.map((probe) => [probe.parameter.key, probe]));
-  const parameters = candidate.leverKeys.map((key) => {
-    const probe = probeByKey.get(key);
-    if (!probe) throw new Error(`Candidate lever is missing from screen report: ${key}`);
-    return probe.parameter;
-  });
   const plan = protectedPlan();
   const evaluations = coarseSteps.map((relativeStep) => evaluateStep({
     plan,
-    parameters,
+    screenReport,
+    candidate,
     relativeStep,
     targetMargin
   }));
@@ -162,7 +186,7 @@ export function searchProtectedPressureRay({
       (best.relativeStep + right) / 2
     ].filter((step) => step > 0 && step < 1);
     for (const relativeStep of mids) {
-      evaluations.push(evaluateStep({ plan, parameters, relativeStep, targetMargin }));
+      evaluations.push(evaluateStep({ plan, screenReport, candidate, relativeStep, targetMargin }));
     }
   }
 
