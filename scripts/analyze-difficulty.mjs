@@ -1,7 +1,8 @@
-import { analyzeDifficulty } from '../src/analyzer/difficulty.js';
+import { analyzeDifficultyV2 } from '../src/analyzer/difficulty-v2.js';
+import { analyzeSinglePurchaseCounterfactuals } from '../src/analyzer/purchase-counterfactuals.js';
 import { solve } from '../src/solver/search.js';
 import { createBoundedTowerAdapter } from '../src/solver/tower-bounds.js';
-import { findBestGreedyIncumbent } from '../src/solver/tower-incumbent.js';
+import { findBestGreedyIncumbent, findBestKnownIncumbent } from '../src/solver/tower-incumbent.js';
 
 function parseArgs(argv) {
   const config = {
@@ -32,38 +33,46 @@ if (config.help) {
 }
 
 const portfolio = findBestGreedyIncumbent();
+const known = findBestKnownIncumbent({ portfolio });
+const representativeEntry = known.best;
+const counterfactuals = analyzeSinglePurchaseCounterfactuals({ bestEntry: representativeEntry });
 let solverReport = null;
 if (config.withSolver) {
   const adapter = createBoundedTowerAdapter();
   solverReport = solve({
     adapter,
     mode: 'optimize',
-    incumbentWitness: portfolio.best.witness,
+    incumbentWitness: representativeEntry.witness,
     maxExpanded: config.maxExpanded,
     maxGenerated: config.maxGenerated
   });
 }
 
-const report = analyzeDifficulty({ portfolio, solverReport });
+const report = analyzeDifficultyV2({
+  portfolio,
+  representativeEntry,
+  counterfactuals,
+  solverReport
+});
 
 if (config.json) {
   console.log(JSON.stringify(report, null, 2));
 } else {
   const { P, R, W, T, F, V, K, C } = report.dimensions;
   console.log(`Difficulty ${report.model} | provisional=${report.provisional}`);
-  console.log(`representative: ${report.representative.strategyId} | HP=${report.representative.terminalHp} | Holy=${report.representative.holyPolicy}`);
+  console.log(`representative: ${report.representative.strategyId} [${report.representative.source}] | HP=${report.representative.terminalHp} | Holy=${report.representative.holyPolicy}`);
   console.log(`P pressure: min=${pct(P.minNormalizedHpMargin)} p10=${pct(P.p10NormalizedHpMargin)} status=${P.status}`);
   if (P.tightestBattle) {
     console.log(`  tightest battle: F${P.tightestBattle.floor} ${P.tightestBattle.enemyId} | damage=${P.tightestBattle.totalDamage}/${P.tightestBattle.hpBefore}`);
   }
-  console.log(`R regret proxy: high=${pct(R.highRegretStrategyRate)} catastrophic=${pct(R.catastrophicStrategyRate)} best-second=${R.bestVsSecondGap ?? '-'}`);
-  console.log(`W width proxy: epsilon-good=${W.epsilonGoodStrategyCount ?? '-'} N_eff=${Number.isFinite(W.effectiveStrategyCount) ? W.effectiveStrategyCount.toFixed(2) : '-'}`);
-  console.log(`T trap proxy: catastrophic=${pct(T.catastrophicStrategyRate)} high-regret=${pct(T.highRegretStrategyRate)}`);
-  console.log(`F forgiveness proxy: recovery=${pct(F.policyRecoveryRate)} min-retention=${pct(F.minTerminalHpRetention)}`);
-  console.log(`V variety proxy: near-opt=${V.nearOptimalStrategyCount ?? '-'} N_eff=${Number.isFinite(V.effectiveStrategyCount) ? V.effectiveStrategyCount.toFixed(2) : '-'} min-distance=${Number.isFinite(V.minNearOptimalRouteDistance) ? V.minNearOptimalRouteDistance.toFixed(3) : '-'}`);
+  console.log(`R single-purchase regret: high=${pct(R.highRegretStrategyRate)} median=${pct(R.medianNormalizedRegret)} p90=${pct(R.p90NormalizedRegret)} 1-opt=${R.locallyOneOptimal}`);
+  console.log(`W portfolio width proxy: N_eff=${Number.isFinite(W.effectiveStrategyCount) ? W.effectiveStrategyCount.toFixed(2) : '-'} coverage=${pct(W.bestKnownCoverageRatio)} sufficient=${W.coverageSufficientForNearOptimalClaims}`);
+  console.log(`T single-purchase trap: catastrophic=${pct(T.catastrophicStrategyRate)} high-regret=${pct(T.highRegretStrategyRate)}`);
+  console.log(`F single-purchase forgiveness: recovery=${pct(F.policyRecoveryRate)} min-retention=${pct(F.minTerminalHpRetention)}`);
+  console.log(`V portfolio proxy: near-opt=${V.nearOptimalStrategyCount ?? '-'} min-distance=${Number.isFinite(V.minNearOptimalRouteDistance) ? V.minNearOptimalRouteDistance.toFixed(3) : '-'} coverage=${pct(V.bestKnownCoverageRatio)}`);
   console.log(`K knowledge: ${K.measured ? 'measured' : 'not measured'}`);
   console.log(`C complexity: ${C.measured ? `expanded=${C.expandedStates} generated=${C.generatedStates} queue=${C.queuePeak}` : 'not measured (use --with-solver)'}`);
-  console.log(`provisional loss: ${report.provisionalLoss.total.toFixed(3)} ${JSON.stringify(report.provisionalLoss.terms)}`);
+  console.log(`provisional loss: ${report.provisionalLoss.total.toFixed(3)} ${JSON.stringify(report.provisionalLoss.terms)} excluded=${JSON.stringify(report.provisionalLoss.excluded)}`);
   console.log(`diagnostics: ${report.diagnostics.length ? '' : 'none'}`);
   for (const diagnostic of report.diagnostics) {
     console.log(`  [${diagnostic.dimension}] ${diagnostic.code}: ${diagnostic.message}`);
