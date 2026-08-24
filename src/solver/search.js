@@ -81,7 +81,8 @@ export function solve({
   maxExpanded = 100_000,
   maxGenerated = 1_000_000,
   incumbentLowerBound = null,
-  solverVersion = 'macro-pareto-v0.3'
+  incumbentWitness = null,
+  solverVersion = 'macro-pareto-v0.4'
 } = {}) {
   if (!adapter) throw new Error('solve() requires an adapter.');
   if (!['existence', 'optimize'].includes(mode)) throw new Error(`Unknown solver mode: ${mode}`);
@@ -89,10 +90,38 @@ export function solve({
     throw new Error('incumbentLowerBound must be a finite number or null.');
   }
 
-  const seededLowerBound = incumbentLowerBound == null
+  const requestedLowerBound = incumbentLowerBound == null
     ? Number.NEGATIVE_INFINITY
     : incumbentLowerBound;
   const initialRaw = initialState ?? adapter.createInitialState();
+
+  // A naked numeric lower bound is intentionally NOT trusted for pruning. A
+  // branch-and-bound lower bound must be backed by a feasible witness that the
+  // domain adapter replays/validates against its authoritative rules. This
+  // prevents callers from accidentally pruning the true optimum with a typo or
+  // stale external score.
+  let incumbentVerification = null;
+  if (incumbentWitness != null) {
+    if (typeof adapter.verifyIncumbent !== 'function') {
+      throw new Error('incumbentWitness requires adapter.verifyIncumbent().');
+    }
+    const verification = adapter.verifyIncumbent(incumbentWitness, {
+      initialState: adapter.cloneState(initialRaw)
+    });
+    if (!verification?.ok) {
+      throw new Error(`incumbentWitness verification failed: ${verification?.reason ?? 'unknown reason'}`);
+    }
+    if (!Number.isFinite(verification.value)) {
+      throw new Error('incumbentWitness verification must return a finite value.');
+    }
+    if (verification.objectiveType && verification.objectiveType !== (adapter.objectiveType ?? 'custom')) {
+      throw new Error(`incumbentWitness objective mismatch: ${verification.objectiveType}`);
+    }
+    incumbentVerification = verification;
+  }
+
+  const verifiedWitnessValue = incumbentVerification?.value ?? Number.NEGATIVE_INFINITY;
+  const trustedSeededLowerBound = verifiedWitnessValue;
   const initialStateHash = hashValue(adapter.summarizeState ? adapter.summarizeState(initialRaw) : initialRaw);
   const initialNormalized = normalizeWith(adapter, adapter.cloneState(initialRaw));
   const frontier = new FrontierIndex({ fields: adapter.resourceFields ?? null });
@@ -122,7 +151,7 @@ export function solve({
     const searchBest = bestGoal
       ? defaultObjective(bestGoal.state, adapter)
       : Number.NEGATIVE_INFINITY;
-    return Math.max(seededLowerBound, searchBest);
+    return Math.max(trustedSeededLowerBound, searchBest);
   }
 
   function boundPrunes(state) {
@@ -187,8 +216,8 @@ export function solve({
       continue;
     }
 
-    // Re-check queued labels because the incumbent may have improved after the
-    // label entered the queue. This is the branch-and-bound half of the search.
+    // Re-check queued labels because a verified incumbent or a newly discovered
+    // goal may have raised the trusted lower bound after this label was queued.
     if (boundPrunes(label.state)) {
       prunedBound += 1;
       continue;
@@ -250,19 +279,18 @@ export function solve({
   }
 
   const exhausted = queue.size === 0 && stoppedReason === null;
-  const solvable = Boolean(bestGoal);
   const searchBest = bestGoal ? defaultObjective(bestGoal.state, adapter) : null;
   const bestKnown = Math.max(
     searchBest ?? Number.NEGATIVE_INFINITY,
-    seededLowerBound
+    verifiedWitnessValue
   );
-  const existenceExact = solvable || exhausted;
-  // If pruning relied on an externally supplied incumbent, do not claim an
-  // exact optimum until the exact search independently reaches a witness at
-  // least as strong as that incumbent.
-  const seededWitnessRecovered = seededLowerBound === Number.NEGATIVE_INFINITY
-    || (searchBest != null && searchBest >= seededLowerBound);
-  const objectiveExact = mode === 'optimize' && exhausted && seededWitnessRecovered;
+  const hasFeasibleWitness = Boolean(bestGoal) || Boolean(incumbentVerification?.ok);
+  const existenceExact = hasFeasibleWitness || exhausted;
+  // Every optimization prune is now justified only by a verified feasible
+  // witness or a goal found by this search. Therefore queue exhaustion is a
+  // complete optimality proof even if the search never re-discovers the seeded
+  // route itself.
+  const objectiveExact = mode === 'optimize' && exhausted;
   const certificate = buildCertificate(bestGoal, initialNormalized.steps, adapter, {
     solverVersion,
     mode,
@@ -274,16 +302,18 @@ export function solve({
     solverVersion,
     mode,
     stateEncoding: adapter.stateEncoding ?? 'adapter-defined',
-    solvable: solvable ? true : (exhausted ? false : null),
+    solvable: hasFeasibleWitness ? true : (exhausted ? false : null),
     exact: mode === 'existence' ? existenceExact : objectiveExact,
     existenceExact,
     objectiveExact,
     stoppedReason,
+    incumbentVerification,
     objective: {
       type: adapter.objectiveType ?? 'custom',
       best: Number.isFinite(bestKnown) ? bestKnown : null,
       searchBest,
-      seededLowerBound: Number.isFinite(seededLowerBound) ? seededLowerBound : null
+      seededLowerBound: Number.isFinite(verifiedWitnessValue) ? verifiedWitnessValue : null,
+      requestedLowerBound: Number.isFinite(requestedLowerBound) ? requestedLowerBound : null
     },
     expandedStates,
     generatedStates,
