@@ -6,18 +6,21 @@ on:
       - solver-phase1-pareto
     paths:
       - 'src/tuner/adaptive-*.js'
+      - 'src/tuner/numeric-*.js'
       - 'scripts/adapt-final-pressure.mjs'
+      - 'scripts/adapt-numeric-ray.mjs'
       - 'scripts/search-adaptive-balance.mjs'
+      - 'scripts/search-numeric-rays.mjs'
       - '.github/workflows/adaptive-balance-profile.yml'
   workflow_dispatch:
     inputs:
       hp_reward:
-        description: 'Shop HP reward to adapt'
+        description: 'Legacy final-pressure shop HP reward'
         required: false
         default: '90'
 
 jobs:
-  adaptive-profile:
+  adaptive-final-profile:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -25,7 +28,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - name: Run adaptive fixed-point tuner
+      - name: Run legacy adaptive final-pressure tuner
         env:
           HP_REWARD: ${{ inputs.hp_reward || '90' }}
         run: |
@@ -37,14 +40,12 @@ jobs:
             --max-expanded=5000 \
             --max-generated=50000 \
             --json > adaptive-final-pressure-report.json
-      - name: Print compact adaptive summary
+      - name: Print compact legacy summary
         run: |
           python3 - <<'PY'
           import json
           r=json.load(open('adaptive-final-pressure-report.json'))
-          print(f"ADAPT hp={r['hpReward']} magic={r.get('magicPower')} converged={r.get('converged')} hard={r.get('acceptedHardConstraints')} rejection={r.get('rejection')}")
-          for i in r.get('iterations', []):
-              print(f"ITER {i['outer']} magic={i['magicPower']}->{i['nextMagicPower']} hp={i['terminalHp']} void={i['voidCoreMargin']:.6f} min={i['minNormalizedHpMargin']:.6f} passes={i['localImprovementPasses']} local={i['localOptimal']} counts={i['purchaseCounts']}")
+          print(f"ADAPT_FINAL hp={r['hpReward']} magic={r.get('magicPower')} converged={r.get('converged')} hard={r.get('acceptedHardConstraints')} rejection={r.get('rejection')}")
           route=r.get('route') or {}
           cf=r.get('counterfactuals') or {}
           solver=r.get('solver') or {}
@@ -56,5 +57,49 @@ jobs:
         with:
           name: adaptive-final-pressure-report
           path: adaptive-final-pressure-report.json
+          if-no-files-found: error
+          retention-days: 7
+
+  adaptive-numeric-ray-profile:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Run general adaptive numeric ray
+        run: |
+          node scripts/adapt-numeric-ray.mjs \
+            --top-k=16 \
+            --max-candidates=4 \
+            --target-margin=0.165 \
+            --margin-tolerance=0.02 \
+            --step-tolerance=0.01 \
+            --max-adaptive-iterations=6 \
+            --max-local-passes=12 \
+            --json > adaptive-numeric-ray-report.json
+      - name: Print compact adaptive ray summary
+        run: |
+          python3 - <<'PY'
+          import json
+          r=json.load(open('adaptive-numeric-ray-report.json'))
+          a=r['adaptive']
+          b=a.get('best') or {}
+          print(f"ADAPT_RAY candidate={a.get('candidateId')} step={b.get('relativeStep')} margin={b.get('margin')} hp={b.get('finalHp')} converged={a.get('converged')} hard={a.get('acceptedHardConstraints')} rejection={a.get('rejection')}")
+          print(f"LEVERS {','.join(a.get('leverKeys') or [])}")
+          bracket=a.get('bracket') or {}
+          print(f"BRACKET low={bracket.get('lowStep')}:{bracket.get('lowMargin')} high={bracket.get('highStep')}:{bracket.get('highMargin')} width={bracket.get('width')} violations={len(a.get('monotonicViolations') or [])}")
+          solver=a.get('solver') or {}
+          cf=a.get('counterfactuals') or {}
+          print(f"PROOF solvable={solver.get('solvable')} exact={solver.get('exact')} expanded={solver.get('expandedStates')} generated={solver.get('generatedStates')}")
+          print(f"ROBUST recovery={cf.get('recoveryRate')} catastrophic={cf.get('catastrophicRate')} regret={cf.get('highRegretRate')} improvements={cf.get('improvedMutationCount')}")
+          for s in a.get('samples') or []:
+              print(f"SAMPLE step={s.get('relativeStep')} margin={s.get('margin')} hp={s.get('finalHp')} solvable={s.get('solvable')} local={((s.get('localSearch') or {}).get('localOptimal'))}")
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: adaptive-numeric-ray-report
+          path: adaptive-numeric-ray-report.json
           if-no-files-found: error
           retention-days: 7
