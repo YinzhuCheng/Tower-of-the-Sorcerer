@@ -48,6 +48,45 @@ function optimisticAdditionalPurchases(state, optimisticFutureGold) {
   return purchases;
 }
 
+function bitMask(values, predicate) {
+  let mask = 0;
+  for (let index = 0; index < values.length; index += 1) {
+    if (predicate(values[index])) mask += 2 ** index;
+  }
+  return mask;
+}
+
+/**
+ * Exact compact encoding of the same K dimensions used by tower-adapter.js.
+ * This is not a hash: every event-state code and every mechanism bit remains
+ * present, so frontier equality does not depend on probabilistic collision.
+ */
+function compactStructuralKey(baseAdapter, state) {
+  const compact = Array.isArray(state.eventStates) ? state : baseAdapter.compactState(state);
+  const relicKeys = Object.keys(compact.relics).sort();
+  const relicMask = bitMask(relicKeys, (key) => compact.relics[key]);
+  const visitedMask = bitMask(
+    compact.floorMeta.map((_, index) => index),
+    (index) => compact.visitedFloors.includes(index)
+  );
+  const events = compact.eventStates.map((code) => Number(code).toString(36)).join('.');
+  const floorMeta = compact.floorMeta.map((meta) => {
+    const switches = [...meta.switches].sort().join(',');
+    return `${switches}/${meta.sequenceProgress}/${meta.bossDefeated ? 1 : 0}`;
+  }).join('|');
+
+  return [
+    compact.floor.toString(36),
+    compact.componentAnchor.toString(36),
+    events,
+    floorMeta,
+    relicMask.toString(36),
+    compact.shopPurchases.toString(36),
+    visitedMask.toString(36),
+    compact.victory ? '1' : '0'
+  ].join(';');
+}
+
 /**
  * Safe optimistic terminal-HP bound.
  *
@@ -82,6 +121,9 @@ export function createBoundedTowerAdapter() {
   const base = createTowerAdapter();
   return {
     ...base,
+    // The optimizing frontier uses an exact compact K encoding. Certificates
+    // from the base adapter keep the more verbose structural representation.
+    structuralKey: (state) => compactStructuralKey(base, state),
     // Victory is an absorbing state in engine.js. Do not run the automatic
     // item/switch closure after the final boss has set victory=true.
     normalize: (state) => base.isGoal(state)
