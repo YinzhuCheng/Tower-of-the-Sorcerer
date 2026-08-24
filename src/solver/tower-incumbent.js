@@ -1,6 +1,7 @@
 import { HOLY_POLICIES, runGreedyShopStrategy } from './greedy-strategy.js';
 
-export const GREEDY_INCUMBENT_WITNESS_TYPE = 'greedy-route-policy-v2';
+export const GREEDY_INCUMBENT_WITNESS_TYPE = 'greedy-route-policy-v3';
+const SHOP_OPTIONS = ['atk', 'def', 'hp'];
 
 const BASE_SHOP_STRATEGIES = [
   { id: 'def-atk-hp', cycle: ['def', 'atk', 'hp'] },
@@ -23,10 +24,25 @@ export const DEFAULT_INCUMBENT_STRATEGIES = BASE_SHOP_STRATEGIES.flatMap((strate
   }))
 );
 
-export function makeGreedyIncumbentWitness({ id = null, cycle, holyPolicy = 'immediate' } = {}) {
+function validateShopOptions(options, label) {
+  if (options == null) return;
+  if (!Array.isArray(options)) throw new Error(`${label} must be an array or null.`);
+  for (const optionId of options) {
+    if (!SHOP_OPTIONS.includes(optionId)) throw new Error(`${label} contains unknown shop option: ${optionId}`);
+  }
+}
+
+export function makeGreedyIncumbentWitness({
+  id = null,
+  cycle,
+  holyPolicy = 'immediate',
+  shopPlan = null
+} = {}) {
   if (!Array.isArray(cycle) || cycle.length === 0) {
     throw new Error('Greedy incumbent witness requires a non-empty shop cycle.');
   }
+  validateShopOptions(cycle, 'shopCycle');
+  validateShopOptions(shopPlan, 'shopPlan');
   if (!HOLY_POLICIES.includes(holyPolicy)) {
     throw new Error(`Greedy incumbent witness has unknown Holy policy: ${holyPolicy}`);
   }
@@ -34,6 +50,7 @@ export function makeGreedyIncumbentWitness({ id = null, cycle, holyPolicy = 'imm
     type: GREEDY_INCUMBENT_WITNESS_TYPE,
     strategyId: id,
     shopCycle: [...cycle],
+    shopPlan: shopPlan ? [...shopPlan] : null,
     holyPolicy
   };
 }
@@ -45,6 +62,12 @@ export function verifyGreedyIncumbentWitness(witness) {
   if (!Array.isArray(witness.shopCycle) || witness.shopCycle.length === 0) {
     return { ok: false, reason: 'Greedy incumbent witness has no shop cycle.' };
   }
+  try {
+    validateShopOptions(witness.shopCycle, 'shopCycle');
+    validateShopOptions(witness.shopPlan, 'shopPlan');
+  } catch (error) {
+    return { ok: false, reason: error instanceof Error ? error.message : String(error) };
+  }
   if (!HOLY_POLICIES.includes(witness.holyPolicy)) {
     return { ok: false, reason: 'Greedy incumbent witness has an unknown Holy policy.' };
   }
@@ -53,6 +76,7 @@ export function verifyGreedyIncumbentWitness(witness) {
   try {
     result = runGreedyShopStrategy({
       shopCycle: witness.shopCycle,
+      shopPlan: witness.shopPlan,
       holyPolicy: witness.holyPolicy
     });
   } catch (error) {
@@ -72,6 +96,8 @@ export function verifyGreedyIncumbentWitness(witness) {
       final: { ...result.final },
       holyPolicy: result.holyPolicy,
       holyAcquisition: result.holyAcquisition,
+      explicitShopPlan: Boolean(witness.shopPlan),
+      shopPlanLength: witness.shopPlan?.length ?? 0,
       cores: result.cores,
       purchases: result.purchases,
       purchaseCounts: { ...result.purchaseCounts },
