@@ -38,6 +38,6 @@ test('reference witness purchase sequence must match the fixed candidate policy'
 test('reference witness may end before cycle fallback but cannot disagree with any used purchase', () => {
   const policy = { shopPlan: ['atk'], shopCycle: ['def', 'hp'] };
   assert.equal(referenceWitnessMatchesPurchasePolicy(witness(['atk']), policy), true);
-  assert.equal(referenceWitnessMatchesPurchasePolicy(witness(['atk', 'def', 'hp']), policy), true);
-  assert.equal(referenceWitnessMatchesPurchasePolicy(witness(['atk', 'hp']), policy), false);
+  assert.equal(referenceWitnessMatchesPurchasePolicy(witness(['atk', 'hp', 'def']), policy), true);
+  assert.equal(referenceWitnessMatchesPurchasePolicy(witness(['atk', 'def']), policy), false);
 });
