@@ -32,23 +32,24 @@ function verifiedStageResult(solver, replay) {
 }
 
 /**
- * Prove the shared no-Holy prefix in stages and then branch into delayed Holy
- * policy continuations.
+ * Witness-oriented staged proof for delayed Holy policies.
  *
- * Proof chain in v0.4:
+ * v0.5 chain:
  *
  *   F6/core5 boundary
- *     -> preBoss (astralBoss is a legal combat action)
- *     -> core6 (boss defeated, still no Holy)
+ *     -> corridorOpen (exact zero-event path to a boss-adjacent tile)
+ *     -> preBoss (boss is now a legal/winnable authoritative combat action)
+ *     -> core6 (boss defeated before Holy)
  *     -> policy-specific continuation
  *
- * Separating preBoss from core6 prevents resource preparation/shop search from
- * being conflated with the short boss transition itself. Every bridge is rebuilt
- * only from an authoritative replayed certificate state.
+ * `corridorOpen` separates local F6 topology/event clearing from later resource
+ * preparation. It is an exact property of one replayed state, not a relaxation.
  *
- * Boundary discovery and continuation scheduling remain separate. The scheduler
- * may reorder a bounded attempt set but may not delete frontier states or
- * strengthen an exact-infeasibility claim.
+ * IMPORTANT proof boundary: each boundary seed continues from only the first
+ * corridor witness found by existence search. Therefore failure after that
+ * witness does NOT cover every possible corridor-open state for the seed. v0.5
+ * may prove feasibility via one fully replayed chain, but it intentionally does
+ * not claim global exact infeasibility from failed staged attempts.
  */
 export function proveDelayedHolyPoliciesStaged({
   policies = DELAYED_POLICIES,
@@ -56,15 +57,14 @@ export function proveDelayedHolyPoliciesStaged({
   boundaryMaxGenerated = 250_000,
   boundaryDiscoveryGoals = 512,
   maxBoundarySeeds = 64,
-  preBossMaxExpanded = 8_000,
-  preBossMaxGenerated = 80_000,
+  corridorMaxExpanded = 1_500,
+  corridorMaxGenerated = 15_000,
+  preBossMaxExpanded = 2_500,
+  preBossMaxGenerated = 25_000,
   bossMaxExpanded = 128,
   bossMaxGenerated = 2_000,
   policyMaxExpanded = 15_000,
   policyMaxGenerated = 150_000,
-  // Backward-compatible aliases for callers from v0.3. If present they become
-  // the preBoss preparation budget, because that is the work formerly embedded
-  // in the direct core6 search.
   core6MaxExpanded = null,
   core6MaxGenerated = null
 } = {}) {
@@ -77,8 +77,16 @@ export function proveDelayedHolyPoliciesStaged({
     throw new Error('boundaryDiscoveryGoals must be a positive integer.');
   }
 
-  if (Number.isFinite(core6MaxExpanded)) preBossMaxExpanded = core6MaxExpanded;
-  if (Number.isFinite(core6MaxGenerated)) preBossMaxGenerated = core6MaxGenerated;
+  if (Number.isFinite(core6MaxExpanded)) {
+    const total = Math.max(2, Math.floor(core6MaxExpanded));
+    corridorMaxExpanded = Math.max(1, Math.floor(total * 0.375));
+    preBossMaxExpanded = Math.max(1, total - corridorMaxExpanded);
+  }
+  if (Number.isFinite(core6MaxGenerated)) {
+    const total = Math.max(2, Math.floor(core6MaxGenerated));
+    corridorMaxGenerated = Math.max(1, Math.floor(total * 0.375));
+    preBossMaxGenerated = Math.max(1, total - corridorMaxGenerated);
+  }
   const effectiveBoundaryDiscoveryGoals = Math.max(boundaryDiscoveryGoals, maxBoundarySeeds);
 
   const boundary = collectPreHolyF6BoundaryFrontier({
@@ -86,6 +94,7 @@ export function proveDelayedHolyPoliciesStaged({
     maxGenerated: boundaryMaxGenerated,
     maxGoals: effectiveBoundaryDiscoveryGoals
   });
+  const corridorAdapter = createPreHolyStageAdapter({ stage: 'corridorOpen' });
   const preBossAdapter = createPreHolyStageAdapter({ stage: 'preBoss' });
   const core6Adapter = createPreHolyStageAdapter({ stage: 'core6' });
   const verifiedSeeds = boundary.seeds.filter((seed) => seed.verified && seed.state);
@@ -95,6 +104,7 @@ export function proveDelayedHolyPoliciesStaged({
   });
   const scheduledSeeds = seedSchedule.scheduled;
   const attempts = [];
+  let corridorBridge = null;
   let preBossBridge = null;
   let core6Bridge = null;
   let winningSeed = null;
@@ -103,18 +113,36 @@ export function proveDelayedHolyPoliciesStaged({
     const seed = scheduledSeeds[seedIndex];
     const scheduling = seedSchedule.diagnostics[seedIndex] ?? null;
 
-    const preBossSolver = solve({
-      adapter: preBossAdapter,
+    const corridorSolver = solve({
+      adapter: corridorAdapter,
       initialState: seed.state,
       mode: 'existence',
-      maxExpanded: preBossMaxExpanded,
-      maxGenerated: preBossMaxGenerated
+      maxExpanded: corridorMaxExpanded,
+      maxGenerated: corridorMaxGenerated
     });
-    const preBossReplay = replayContinuation(preBossSolver.certificate, {
-      adapter: preBossAdapter,
+    const corridorReplay = replayContinuation(corridorSolver.certificate, {
+      adapter: corridorAdapter,
       initialState: seed.state
     });
-    const preBossVerified = verifiedStageResult(preBossSolver, preBossReplay);
+    const corridorVerified = verifiedStageResult(corridorSolver, corridorReplay);
+
+    let preBossSolver = null;
+    let preBossReplay = null;
+    let preBossVerified = false;
+    if (corridorVerified) {
+      preBossSolver = solve({
+        adapter: preBossAdapter,
+        initialState: corridorReplay.state,
+        mode: 'existence',
+        maxExpanded: preBossMaxExpanded,
+        maxGenerated: preBossMaxGenerated
+      });
+      preBossReplay = replayContinuation(preBossSolver.certificate, {
+        adapter: preBossAdapter,
+        initialState: corridorReplay.state
+      });
+      preBossVerified = Boolean(verifiedStageResult(preBossSolver, preBossReplay));
+    }
 
     let bossSolver = null;
     let bossReplay = null;
@@ -139,15 +167,24 @@ export function proveDelayedHolyPoliciesStaged({
       boundaryResources: { ...seed.resources },
       boundaryShopPurchases: seed.state.shopPurchases ?? 0,
       scheduling,
-      preBoss: {
+      corridor: {
+        solver: compactSolver(corridorSolver),
+        replay: corridorReplay ? {
+          ok: corridorReplay.ok,
+          failures: corridorReplay.failures,
+          final: corridorReplay.final
+        } : null,
+        verified: Boolean(corridorVerified)
+      },
+      preBoss: preBossSolver ? {
         solver: compactSolver(preBossSolver),
         replay: preBossReplay ? {
           ok: preBossReplay.ok,
           failures: preBossReplay.failures,
           final: preBossReplay.final
         } : null,
-        verified: Boolean(preBossVerified)
-      },
+        verified: preBossVerified
+      } : null,
       core6: bossSolver ? {
         solver: compactSolver(bossSolver),
         replay: bossReplay ? {
@@ -161,6 +198,7 @@ export function proveDelayedHolyPoliciesStaged({
     });
 
     if (bossVerified) {
+      corridorBridge = corridorReplay.state;
       preBossBridge = preBossReplay.state;
       core6Bridge = bossReplay.state;
       winningSeed = seed;
@@ -168,35 +206,24 @@ export function proveDelayedHolyPoliciesStaged({
     }
   }
 
-  const attemptedAllVerifiedSeeds = scheduledSeeds.length === verifiedSeeds.length;
-  const allAttemptsExactUnsat = attempts.length === verifiedSeeds.length
-    && attempts.every((attempt) => {
-      const pre = attempt.preBoss?.solver;
-      if (pre?.solvable === false && pre.exact === true) return true;
-      const boss = attempt.core6?.solver;
-      return pre?.solvable === true
-        && pre.exact === true
-        && boss?.solvable === false
-        && boss.exact === true;
-    });
-  const core6ExactInfeasible = !core6Bridge
-    && boundary.coverageExact
-    && boundary.allCertificatesVerified
-    && attemptedAllVerifiedSeeds
-    && allAttemptsExactUnsat;
-
+  const reachedCorridor = attempts.some((attempt) => attempt.corridor?.verified);
   const reachedPreBoss = attempts.some((attempt) => attempt.preBoss?.verified);
+  const core6ExactInfeasible = false;
+
+  const corridorInterpretation = reachedCorridor
+    ? 'boss_corridor_opened_through_verified_boundary_chain'
+    : 'boss_corridor_reachability_unknown_after_staged_search';
   const preBossInterpretation = reachedPreBoss
-    ? 'preboss_reached_through_verified_boundary_chain'
-    : core6ExactInfeasible
-      ? 'preboss_or_core6_unreachable_from_complete_boundary_frontier_exact'
-      : 'preboss_reachability_unknown_after_staged_search';
+    ? 'preboss_reached_through_verified_corridor_chain'
+    : reachedCorridor
+      ? 'corridor_opened_but_preboss_resource_readiness_unknown'
+      : 'preboss_unknown_because_corridor_bridge_not_found';
   const core6Interpretation = core6Bridge
     ? 'core6_reached_through_verified_preboss_chain'
-    : core6ExactInfeasible
-      ? 'core6_unreachable_from_complete_boundary_frontier_exact'
-      : reachedPreBoss
-        ? 'preboss_reached_but_core6_bridge_not_verified'
+    : reachedPreBoss
+      ? 'preboss_reached_but_core6_bridge_not_verified'
+      : reachedCorridor
+        ? 'corridor_opened_but_core6_resource_preparation_unknown'
         : 'core6_reachability_unknown_after_staged_search';
 
   const policyResults = [];
@@ -212,10 +239,6 @@ export function proveDelayedHolyPoliciesStaged({
       });
       const replay = replayContinuation(solver.certificate, { adapter, initialState: core6Bridge });
       const feasible = solver.solvable === true && replay?.ok === true;
-
-      // Exact failure from one core6 bridge is not global policy infeasibility:
-      // another nondominated core6 bridge may still satisfy the policy. A single
-      // verified success, however, is globally sufficient as an existence proof.
       policyResults.push({
         holyPolicy,
         feasible,
@@ -241,12 +264,10 @@ export function proveDelayedHolyPoliciesStaged({
       policyResults.push({
         holyPolicy,
         feasible: false,
-        exact: core6ExactInfeasible,
+        exact: false,
         continuationExact: null,
-        policyInfeasibleExact: core6ExactInfeasible,
-        interpretation: core6ExactInfeasible
-          ? 'policy_infeasible_because_core6_prefix_is_exactly_unreachable'
-          : 'policy_unknown_because_core6_bridge_not_found',
+        policyInfeasibleExact: false,
+        interpretation: 'policy_unknown_because_core6_bridge_not_found',
         solver: null,
         replay: null
       });
@@ -254,14 +275,21 @@ export function proveDelayedHolyPoliciesStaged({
   }
 
   return {
-    schemaVersion: 4,
-    model: 'staged-holy-policy-proof-v0.4-preboss-bridge',
+    schemaVersion: 5,
+    model: 'staged-holy-policy-proof-v0.5-corridor-preboss-bridge',
     canonicalBalance: true,
+    proofCapability: {
+      provesExistence: true,
+      provesGlobalInfeasibility: false,
+      reason: 'only_the_first_corridor_witness_per_boundary_seed_is_continued'
+    },
     budgets: {
       boundaryMaxExpanded,
       boundaryMaxGenerated,
       boundaryDiscoveryGoals: effectiveBoundaryDiscoveryGoals,
       maxBoundarySeeds,
+      corridorMaxExpanded,
+      corridorMaxGenerated,
       preBossMaxExpanded,
       preBossMaxGenerated,
       bossMaxExpanded,
@@ -285,6 +313,12 @@ export function proveDelayedHolyPoliciesStaged({
       scheduledCount: seedSchedule.scheduledCount,
       diagnostics: seedSchedule.diagnostics
     },
+    corridor: {
+      reached: reachedCorridor,
+      interpretation: corridorInterpretation,
+      winningBoundaryCertificateHash: winningSeed?.certificate?.certificateHash ?? null,
+      bridgeResources: corridorBridge ? corridorAdapter.resources(corridorBridge) : null
+    },
     preBoss: {
       reached: reachedPreBoss,
       interpretation: preBossInterpretation,
@@ -297,7 +331,6 @@ export function proveDelayedHolyPoliciesStaged({
       interpretation: core6Interpretation,
       verifiedSeedCount: verifiedSeeds.length,
       scheduledSeedCount: scheduledSeeds.length,
-      attemptedAllVerifiedSeeds,
       winningBoundaryCertificateHash: winningSeed?.certificate?.certificateHash ?? null,
       bridgeResources: core6Bridge ? core6Adapter.resources(core6Bridge) : null,
       attempts
