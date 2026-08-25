@@ -1,0 +1,112 @@
+name: V3 Tight-Filtered Multi-Bridge
+
+on:
+  push:
+    branches: [solver-phase1-pareto]
+    paths:
+      - 'src/solver/fixed-purchase-bridge-tight-bound.js'
+      - 'src/solver/discrete-harvest-bound-preview.js'
+      - 'src/solver/relaxed-pure-hp-access-bound.js'
+      - 'src/solver/fixed-purchase-bound-diagnostics.js'
+      - 'src/analyzer/event-order-core-transition-tight-filter.js'
+      - 'src/analyzer/event-order-core-transition-multibridge.js'
+      - 'src/tuner/review-candidate-v3-rebuild.js'
+      - 'src/tuner/review-candidates.js'
+      - 'scripts/analyze-v3-event-order-tight-filtered-multibridge.mjs'
+      - 'test/fixed-purchase-bridge-tight-bound.test.js'
+      - 'test/event-order-core-transition-tight-filter.test.js'
+      - 'docs/v3-tight-filtered-multibridge.md'
+      - '.github/workflows/v3-tight-filtered-multibridge.yml'
+  pull_request:
+    paths:
+      - 'src/solver/fixed-purchase-bridge-tight-bound.js'
+      - 'src/solver/discrete-harvest-bound-preview.js'
+      - 'src/solver/relaxed-pure-hp-access-bound.js'
+      - 'src/solver/fixed-purchase-bound-diagnostics.js'
+      - 'src/analyzer/event-order-core-transition-tight-filter.js'
+      - 'src/analyzer/event-order-core-transition-multibridge.js'
+      - 'src/tuner/review-candidate-v3-rebuild.js'
+      - 'src/tuner/review-candidates.js'
+      - 'scripts/analyze-v3-event-order-tight-filtered-multibridge.mjs'
+      - 'test/fixed-purchase-bridge-tight-bound.test.js'
+      - 'test/event-order-core-transition-tight-filter.test.js'
+      - 'docs/v3-tight-filtered-multibridge.md'
+      - '.github/workflows/v3-tight-filtered-multibridge.yml'
+  workflow_dispatch:
+    inputs:
+      max_prefix_seeds:
+        required: false
+        default: '6'
+        description: 'c6 prefix families to continue'
+      bridge_max_goals_per_prefix:
+        required: false
+        default: '32'
+        description: 'c7 active goal cap per prefix'
+      max_suffix_bridges:
+        required: false
+        default: '6'
+        description: 'residual c7 bridges to suffix-search after tight filtering'
+      suffix_max_expanded_per_bridge:
+        required: false
+        default: '3000'
+        description: 'expansions per residual suffix'
+
+concurrency:
+  group: v3-tight-filtered-multibridge-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  tight-filtered-multibridge:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - name: Run V3 c7 tight-filtered multi-bridge analysis
+        env:
+          MAX_PREFIX_SEEDS: ${{ inputs.max_prefix_seeds || '6' }}
+          BRIDGE_MAX_GOALS: ${{ inputs.bridge_max_goals_per_prefix || '32' }}
+          MAX_SUFFIX_BRIDGES: ${{ inputs.max_suffix_bridges || '6' }}
+          SUFFIX_MAX_EXPANDED: ${{ inputs.suffix_max_expanded_per_bridge || '3000' }}
+        run: |
+          node scripts/analyze-v3-event-order-tight-filtered-multibridge.mjs \
+            --from-cores=6 --to-cores=7 \
+            --from-boundary-max-expanded=8000 \
+            --from-boundary-max-generated=100000 \
+            --from-boundary-max-goals=64 \
+            --max-prefix-seeds="$MAX_PREFIX_SEEDS" \
+            --bridge-max-expanded-per-prefix=6000 \
+            --bridge-max-generated-per-prefix=90000 \
+            --bridge-max-goals-per-prefix="$BRIDGE_MAX_GOALS" \
+            --max-suffix-bridges="$MAX_SUFFIX_BRIDGES" \
+            --suffix-max-expanded-per-bridge="$SUFFIX_MAX_EXPANDED" \
+            --suffix-max-generated-per-bridge=50000 \
+            --suffix-priority-slack-bucket=500 \
+            --json > v3-tight-filtered-multibridge.json
+      - name: Print proof-filter evidence
+        if: always()
+        run: |
+          python3 - <<'PY'
+          import json, os
+          path='v3-tight-filtered-multibridge.json'
+          if not os.path.exists(path) or os.path.getsize(path)==0:
+              print('V3 tight-filtered multi-bridge report was not produced.')
+              raise SystemExit(0)
+          x=json.load(open(path)); r=x.get('analysis') or {}; bp=r.get('bridgeProof') or {}; ps=r.get('prefixSchedule') or {}; e=r.get('exploit') or {}
+          print(f"V3_TIGHT_MULTI status={r.get('status')} exploit={r.get('exploitFound')} exactNo={r.get('exactNoExploit')} reference={(x.get('rebuild') or {}).get('terminalHp')} semantic={(x.get('rebuild') or {}).get('semanticFingerprint')}")
+          print(f"PREFIX relevant={ps.get('verifiedRelevantPrefixCount')} scheduled={ps.get('scheduledPrefixCount')} all={ps.get('attemptedAllVerified')} boundaryExact={(r.get('fromBoundary') or {}).get('coverageExact')} boundaryStop={(r.get('fromBoundary') or {}).get('stoppedReason')}")
+          print(f"BRIDGE_PROOF closed={bp.get('boundClosedCount')} residual={bp.get('residualCount')} summary={bp.get('summary')}")
+          for a in (r.get('suffix') or {}).get('attempts') or []:
+              s=a.get('solver') or {}; t=s.get('telemetry') or {}; res=a.get('resources') or {}
+              print(f"SUFFIX prefix={a.get('prefixCertificateHash')} bridge={a.get('bridgeId')} p={a.get('shopPurchases')} hp={res.get('hp')} gold={res.get('gold')} cards={res.get('sun')}/{res.get('moon')}/{res.get('star')} old={a.get('oldUpperBound')} tight={a.get('tightUpperBound')} slack={a.get('tightThresholdSlack')} expanded={s.get('expandedStates')} generated={s.get('generatedStates')} bound={s.get('prunedBound')} exact={s.get('exact')} stop={s.get('stoppedReason')} travel={t.get('travelGeneratedRatio')} late={t.get('lateFloorExpandedRatio')} exploit={a.get('exploit')}")
+          print(f"EVIDENCE {r.get('evidence')}")
+          print(f"EXPLOIT hp={e.get('terminalHp')} delta={e.get('deltaHp')} gain={e.get('relativeGain')} replay={(e.get('witnessReplay') or {}).get('ok')} witness={(e.get('witness') or {}).get('witnessHash')} semantic={(e.get('witness') or {}).get('semanticFingerprint')}")
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: v3-tight-filtered-multibridge
+          path: v3-tight-filtered-multibridge.json
+          if-no-files-found: warn
+          retention-days: 14
