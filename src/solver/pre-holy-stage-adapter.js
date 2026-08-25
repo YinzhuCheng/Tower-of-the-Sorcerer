@@ -1,4 +1,4 @@
-import { createTowerAdapter } from './tower-adapter.js';
+import { createBoundedTowerAdapter } from './tower-bounds.js';
 
 function actionIsHoly(action) {
   return action?.kind === 'tile'
@@ -26,12 +26,24 @@ export function filterPreHolyActions(actions) {
  *
  * Both goals terminate before the delayed Holy policies diverge, removing F7/F8
  * and later Holy timing choices from the diagnostic state space.
+ *
+ * The default base is the bounded Tower adapter rather than the raw adapter.
+ * Existence mode does not use its objective bound, but it does reuse two already
+ * proven-safe representation/search reductions:
+ *
+ * - compact frontier keys;
+ * - canonical compass travel (downward teleport only; no D after compass).
+ *
+ * Canonical travel is history-free and resource-equivalent after the boss-stair
+ * lock, so this changes exploration multiplicity/order without changing whether
+ * a pre-Holy stage is reachable. This matters here because the raw stage search
+ * previously spent most generated actions on free inter-floor travel cycles.
  */
 export function createPreHolyStageAdapter({
   stage = 'core6',
   bossId = 'astralBoss',
   targetCores = 6,
-  baseAdapter = createTowerAdapter()
+  baseAdapter = createBoundedTowerAdapter()
 } = {}) {
   if (!['preBoss', 'core6'].includes(stage)) {
     throw new Error(`Unknown pre-Holy stage: ${stage}`);
@@ -55,8 +67,8 @@ export function createPreHolyStageAdapter({
       return baseActions(state).some((action) => actionIsEnemy(action, bossId));
     },
     priority(state) {
-      // Keep the canonical progress-first ordering, with a small additional
-      // preference for F6/c5 states. This changes exploration order only.
+      // Ordering only: first keep canonical progress, then strongly prefer the
+      // shared F6/c5 frontier. No state is removed by this score.
       const base = baseAdapter.priority ? baseAdapter.priority(state) : 0;
       const nearTarget = (state.cores ?? 0) === targetCores - 1 && (state.floor ?? 0) >= 5;
       return base + (nearTarget ? 5e9 : 0);
