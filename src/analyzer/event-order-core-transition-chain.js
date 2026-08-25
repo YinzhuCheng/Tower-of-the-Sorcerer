@@ -2,6 +2,7 @@ import { analyzeThresholdCoreTransition } from './event-order-core-transition-pr
 import { buildEventOrderStepWitness } from './event-order-witness.js';
 import { createCoreBoundaryAdapter } from '../solver/core-boundary-adapter.js';
 import { createFixedPurchasePolicyTowerAdapter } from '../solver/fixed-purchase-policy-adapter.js';
+import { createLateGameThresholdPriorityAdapter } from '../solver/late-game-threshold-priority-adapter.js';
 import { createLateGameZeroDamageHarvestAdapter } from '../solver/late-game-zero-damage-harvest-adapter.js';
 import { createObjectiveThresholdAdapter } from '../solver/objective-threshold-adapter.js';
 import {
@@ -13,7 +14,58 @@ import { solve } from '../solver/search.js';
 import { withBalanceEdits } from '../tuner/balance-overlay.js';
 import { cloneReviewCandidate, REVIEW_CANDIDATES } from '../tuner/review-candidates.js';
 
-function compactSolver(report) {
+const SUFFIX_PRIORITY_MODES = new Set(['baseline', 'late-game-threshold']);
+
+function ratio(numerator, denominator) {
+  return denominator > 0 ? numerator / denominator : 0;
+}
+
+export function summarizeSuffixSearchTelemetry(report, {
+  lateFloorFrom = 7
+} = {}) {
+  if (!report) return null;
+  const generatedByAction = report.profile?.generatedByAction ?? {};
+  const expandedByStage = report.profile?.expandedByStage ?? {};
+  const teleportGenerated = Number(generatedByAction.teleport ?? 0);
+  const stairUpGenerated = Number(generatedByAction.U ?? 0);
+  const stairDownGenerated = Number(generatedByAction.D ?? 0);
+  const stairGenerated = stairUpGenerated + stairDownGenerated;
+  const travelGenerated = teleportGenerated + stairGenerated;
+  const generatedStates = Number(report.generatedStates ?? 0);
+  const expandedStates = Number(report.expandedStates ?? 0);
+
+  let lateFloorExpanded = 0;
+  let earlierFloorExpanded = 0;
+  let unclassifiedExpanded = 0;
+  for (const [stage, countRaw] of Object.entries(expandedByStage)) {
+    const count = Number(countRaw ?? 0);
+    const match = /^f(\d+)\//.exec(stage);
+    if (!match) {
+      unclassifiedExpanded += count;
+      continue;
+    }
+    if (Number(match[1]) >= lateFloorFrom) lateFloorExpanded += count;
+    else earlierFloorExpanded += count;
+  }
+
+  return {
+    lateFloorFrom,
+    teleportGenerated,
+    stairGenerated,
+    travelGenerated,
+    travelGeneratedRatio: ratio(travelGenerated, generatedStates),
+    nonTravelGenerated: Math.max(0, generatedStates - travelGenerated),
+    lateFloorExpanded,
+    lateFloorExpandedRatio: ratio(lateFloorExpanded, expandedStates),
+    earlierFloorExpanded,
+    earlierFloorExpandedRatio: ratio(earlierFloorExpanded, expandedStates),
+    unclassifiedExpanded,
+    queuePeak: report.profile?.queuePeak ?? null,
+    prunedBound: report.prunedBound ?? null
+  };
+}
+
+function compactSolver(report, telemetryOptions = {}) {
   if (!report) return null;
   return {
     solvable: report.solvable,
@@ -28,9 +80,29 @@ function compactSolver(report) {
     activeLabels: report.activeLabels,
     frontierPeak: report.frontierPeak,
     profile: report.profile,
+    telemetry: summarizeSuffixSearchTelemetry(report, telemetryOptions),
     certificateHash: report.certificate?.certificateHash ?? null,
     certificateSteps: report.certificate?.steps?.length ?? 0
   };
+}
+
+function suffixPriorityAdapter({
+  baseAdapter,
+  mode,
+  threshold,
+  minCores,
+  slackBucket
+}) {
+  if (!SUFFIX_PRIORITY_MODES.has(mode)) {
+    throw new Error(`Unknown suffix priority mode: ${mode}`);
+  }
+  if (mode === 'baseline') return baseAdapter;
+  return createLateGameThresholdPriorityAdapter({
+    baseAdapter,
+    threshold,
+    minCores,
+    slackBucket
+  });
 }
 
 export function classifyThresholdCoreChain({
@@ -56,6 +128,11 @@ export function classifyThresholdCoreChain({
  * found, the same three certificates are additionally stripped into a numeric-
  * agnostic step skeleton and replayed once more from the canonical engine start.
  * The skeleton is a future player warm start, not a proof certificate.
+ *
+ * `suffixPriorityMode` changes queue expansion order only. `baseline` preserves
+ * the historical fixed-purchase priority. `late-game-threshold` adds the c7
+ * threshold-slack / terminal-progress ordering from the dedicated adapter. It
+ * does not remove actions, alter dominance, or introduce a proof prune.
  */
 export function analyzeThresholdCoreTransitionChain({
   candidate = REVIEW_CANDIDATES.distributedPressureV1,
@@ -70,8 +147,13 @@ export function analyzeThresholdCoreTransitionChain({
   transitionMaxGenerated = 70_000,
   suffixMaxExpanded = 8_000,
   suffixMaxGenerated = 100_000,
-  lateGameZeroDamageClosure = true
+  lateGameZeroDamageClosure = true,
+  suffixPriorityMode = 'baseline',
+  suffixPrioritySlackBucket = 25
 } = {}) {
+  if (!SUFFIX_PRIORITY_MODES.has(suffixPriorityMode)) {
+    throw new Error(`Unknown suffix priority mode: ${suffixPriorityMode}`);
+  }
   const snapshot = cloneReviewCandidate(candidate);
   const transitionReport = analyzeThresholdCoreTransition({
     candidate: snapshot,
@@ -88,11 +170,12 @@ export function analyzeThresholdCoreTransitionChain({
 
   if (!transitionReport.transitionFound || !transitionReport.transition) {
     return {
-      schemaVersion: 4,
-      model: 'event-order-core-transition-chain-v0.4-reference-aware',
+      schemaVersion: 5,
+      model: 'event-order-core-transition-chain-v0.5-suffix-priority',
       candidateId: snapshot.id,
       fromCores,
       toCores,
+      suffixPriorityMode,
       status: classifyThresholdCoreChain({ transitionReport }),
       productionWriteAllowed: false,
       exploitFound: false,
@@ -134,11 +217,12 @@ export function analyzeThresholdCoreTransitionChain({
     });
     if (!prefixReplay.ok || !prefixReplay.state) {
       return {
-        schemaVersion: 4,
-        model: 'event-order-core-transition-chain-v0.4-reference-aware',
+        schemaVersion: 5,
+        model: 'event-order-core-transition-chain-v0.5-suffix-priority',
         candidateId: snapshot.id,
         fromCores,
         toCores,
+        suffixPriorityMode,
         status: 'bridge-replay-failed',
         productionWriteAllowed: false,
         exploitFound: false,
@@ -156,11 +240,12 @@ export function analyzeThresholdCoreTransitionChain({
     });
     if (!transitionReplay.ok || !transitionReplay.state) {
       return {
-        schemaVersion: 4,
-        model: 'event-order-core-transition-chain-v0.4-reference-aware',
+        schemaVersion: 5,
+        model: 'event-order-core-transition-chain-v0.5-suffix-priority',
         candidateId: snapshot.id,
         fromCores,
         toCores,
+        suffixPriorityMode,
         status: 'bridge-replay-failed',
         productionWriteAllowed: false,
         exploitFound: false,
@@ -173,16 +258,23 @@ export function analyzeThresholdCoreTransitionChain({
     }
 
     const bridgeUpperBound = fixedAdapter.objectiveUpperBound(transitionReplay.state);
-    const suffixBaseAdapter = lateGameZeroDamageClosure
+    const harvestedSuffixBaseAdapter = lateGameZeroDamageClosure
       ? createLateGameZeroDamageHarvestAdapter({
           baseAdapter: fixedAdapter,
           minCores: toCores,
           requireLucky: true
         })
       : fixedAdapter;
+    const orderedSuffixBaseAdapter = suffixPriorityAdapter({
+      baseAdapter: harvestedSuffixBaseAdapter,
+      mode: suffixPriorityMode,
+      threshold: referenceHp,
+      minCores: toCores,
+      slackBucket: suffixPrioritySlackBucket
+    });
     const suffixThresholdAdapter = createObjectiveThresholdAdapter({
       threshold: referenceHp,
-      baseAdapter: suffixBaseAdapter
+      baseAdapter: orderedSuffixBaseAdapter
     });
     const suffixSolver = solve({
       adapter: suffixThresholdAdapter,
@@ -190,7 +282,7 @@ export function analyzeThresholdCoreTransitionChain({
       mode: 'existence',
       maxExpanded: suffixMaxExpanded,
       maxGenerated: suffixMaxGenerated,
-      solverVersion: `fixed-purchase-core${toCores}-threshold-suffix-v0.4-reference-aware`
+      solverVersion: `fixed-purchase-core${toCores}-threshold-suffix-v0.5-${suffixPriorityMode}`
     });
     const suffixCertificate = suffixSolver.certificate;
     const suffixReplay = suffixCertificate
@@ -243,11 +335,12 @@ export function analyzeThresholdCoreTransitionChain({
     } : null;
 
     return {
-      schemaVersion: 4,
-      model: 'event-order-core-transition-chain-v0.4-reference-aware',
+      schemaVersion: 5,
+      model: 'event-order-core-transition-chain-v0.5-suffix-priority',
       candidateId: snapshot.id,
       fromCores,
       toCores,
+      suffixPriorityMode,
       status,
       productionWriteAllowed: false,
       exploitFound: Boolean(exploit),
@@ -264,7 +357,11 @@ export function analyzeThresholdCoreTransitionChain({
       },
       suffix: {
         lateGameZeroDamageClosure,
-        solver: compactSolver(suffixSolver),
+        priorityMode: suffixPriorityMode,
+        prioritySlackBucket: suffixPriorityMode === 'late-game-threshold'
+          ? suffixPrioritySlackBucket
+          : null,
+        solver: compactSolver(suffixSolver, { lateFloorFrom: toCores }),
         replay: suffixReplay ? {
           ok: suffixReplay.ok,
           failures: suffixReplay.failures,
