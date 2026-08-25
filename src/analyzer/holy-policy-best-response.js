@@ -1,5 +1,9 @@
 import { optimizePurchasePlanLocally } from './purchase-local-search.js';
 import { rescuePurchasePrefixForHolyPolicy } from './purchase-prefix-rescue.js';
+import {
+  provePreHolyCore6StaticCut,
+  staticCutAppliesToHolyPolicy
+} from './pre-holy-static-cut.js';
 import { HOLY_POLICIES, runGreedyShopStrategy } from '../solver/greedy-strategy.js';
 import {
   DEFAULT_INCUMBENT_STRATEGIES,
@@ -109,12 +113,37 @@ function rescueSummary(rescue) {
   };
 }
 
+function compactStaticCutProof(proof) {
+  if (!proof?.proven) return null;
+  return {
+    type: proof.type,
+    model: proof.model,
+    certificateHash: proof.certificateHash,
+    interpretation: proof.interpretation,
+    floorNumber: proof.floorNumber,
+    floorTitle: proof.floorTitle,
+    bossId: proof.bossId,
+    policyCondition: proof.policyCondition,
+    retainedBlockers: [...(proof.relaxation?.retainedBlockers ?? [])],
+    minimalityWitnesses: {
+      allowHolyReachable: proof.minimalityWitnesses?.allowHoly?.reachable ?? null,
+      unlockUpperStairReachable: proof.minimalityWitnesses?.unlockUpperStair?.reachable ?? null
+    }
+  };
+}
+
+function statusRank(status) {
+  if (status === 'optimized') return 0;
+  if (status === 'infeasible-proven') return 1;
+  return 2;
+}
+
 export function rankHolyPolicyResponses(responses) {
   return [...responses].sort((a, b) => {
-    const feasibleA = a.status === 'optimized' && Number.isFinite(a.bestTerminalHp);
-    const feasibleB = b.status === 'optimized' && Number.isFinite(b.bestTerminalHp);
-    if (feasibleA !== feasibleB) return feasibleA ? -1 : 1;
-    if (feasibleA && b.bestTerminalHp !== a.bestTerminalHp) {
+    const rankA = statusRank(a.status);
+    const rankB = statusRank(b.status);
+    if (rankA !== rankB) return rankA - rankB;
+    if (a.status === 'optimized' && b.status === 'optimized' && b.bestTerminalHp !== a.bestTerminalHp) {
       return b.bestTerminalHp - a.bestTerminalHp;
     }
     return String(a.holyPolicy).localeCompare(String(b.holyPolicy));
@@ -135,24 +164,33 @@ export function summarizeHolyPolicyResponses(responses) {
     rescueEvaluations: entry.rescue?.evaluations ?? 0,
     localOptimal: entry.localOptimal ?? null,
     bestTerminalHp: entry.bestTerminalHp ?? null,
-    normalizedRegret: Number.isFinite(bestHp) && Number.isFinite(entry.bestTerminalHp)
+    normalizedRegret: entry.status === 'optimized'
+      && Number.isFinite(bestHp)
+      && Number.isFinite(entry.bestTerminalHp)
       ? Math.max(0, (bestHp - entry.bestTerminalHp) / Math.max(1, bestHp))
       : null,
+    infeasibilityProof: entry.infeasibilityProof ? { ...entry.infeasibilityProof } : null,
     selected: Boolean(best && entry.holyPolicy === best.holyPolicy)
   }));
   const optimized = ranked.filter((entry) => entry.status === 'optimized');
+  const provenInfeasible = ranked.filter((entry) => entry.status === 'infeasible-proven');
+  const covered = ranked.filter((entry) => entry.status === 'optimized' || entry.status === 'infeasible-proven');
+  const uncovered = ranked.filter((entry) => entry.status !== 'optimized' && entry.status !== 'infeasible-proven');
   const allOptimizedLocalOptimal = optimized.length > 0
     && optimized.every((entry) => entry.localOptimal === true);
-  const uncovered = ranked.filter((entry) => entry.status !== 'optimized');
-  const coverageComplete = ranked.length > 0 && optimized.length === ranked.length;
+  const coverageComplete = ranked.length > 0 && covered.length === ranked.length;
 
   return {
     best,
     alternatives,
     attemptedPolicies: ranked.length,
     optimizedPolicies: optimized.length,
+    provenInfeasiblePolicies: provenInfeasible.length,
+    provenInfeasiblePolicyIds: provenInfeasible.map((entry) => entry.holyPolicy),
+    coveredPolicies: covered.length,
     uncoveredPolicies: uncovered.map((entry) => entry.holyPolicy),
     seedCoverageRatio: ranked.length > 0 ? optimized.length / ranked.length : 0,
+    policyCoverageRatio: ranked.length > 0 ? covered.length / ranked.length : 0,
     coverageComplete,
     allOptimizedLocalOptimal,
     stableWithinSeedPortfolio: Boolean(best) && allOptimizedLocalOptimal,
@@ -163,10 +201,14 @@ export function summarizeHolyPolicyResponses(responses) {
 /**
  * Player best response over the currently modeled discrete Holy timing axis.
  *
- * Each Holy policy gets an independent feasible-seed portfolio followed by its
- * own authoritative purchase 1-opt. If the portfolio has no feasible seed, a
- * bounded beam search over early purchase prefixes tries to rescue one. Failure
- * of that bounded rescue remains `uncovered`; it is not an infeasibility proof.
+ * Feasible policies use independent seed portfolios plus authoritative purchase
+ * 1-opt. Before spending heuristic/rescue budget on a policy, sound policy-level
+ * certificates may mark it `infeasible-proven`. Such a policy counts as covered
+ * but never as optimized and never contributes a fake terminal HP.
+ *
+ * Current STATIC_CUT proof is topology/rule based and remains valid under numeric
+ * balance overlays because it deliberately relaxes all numeric/resource
+ * constraints away. Bounded seed/rescue failure remains `uncovered`.
  */
 export function optimizePurchasePlanAcrossHolyPolicies({
   preferredPlans = {},
@@ -176,7 +218,8 @@ export function optimizePurchasePlanAcrossHolyPolicies({
   rescueEnabled = true,
   rescueMaxDepth = 8,
   rescueBeamWidth = 24,
-  rescueMaxEvaluations = 2_000
+  rescueMaxEvaluations = 2_000,
+  staticCutEnabled = true
 } = {}) {
   if (!Array.isArray(holyPolicies) || holyPolicies.length === 0) {
     throw new Error('Holy-policy best response requires at least one policy.');
@@ -185,7 +228,25 @@ export function optimizePurchasePlanAcrossHolyPolicies({
     if (!HOLY_POLICIES.includes(policy)) throw new Error(`Unknown Holy policy: ${policy}`);
   }
 
+  const staticCutCertificate = staticCutEnabled ? provePreHolyCore6StaticCut() : null;
   const responses = holyPolicies.map((holyPolicy) => {
+    if (staticCutCertificate && staticCutAppliesToHolyPolicy(holyPolicy, staticCutCertificate)) {
+      return {
+        holyPolicy,
+        status: 'infeasible-proven',
+        seedCount: 0,
+        feasibleSeedCount: 0,
+        seedAttempts: [],
+        rescue: null,
+        localOptimal: null,
+        bestTerminalHp: null,
+        bestPlan: null,
+        bestResult: null,
+        localSearch: null,
+        infeasibilityProof: compactStaticCutProof(staticCutCertificate)
+      };
+    }
+
     const seeds = seedPortfolioForPolicy({
       holyPolicy,
       preferredPlan: preferredPlans?.[holyPolicy] ?? null
@@ -228,7 +289,8 @@ export function optimizePurchasePlanAcrossHolyPolicies({
         bestTerminalHp: null,
         bestPlan: null,
         bestResult: null,
-        localSearch: null
+        localSearch: null,
+        infeasibilityProof: null
       };
     }
 
@@ -268,16 +330,18 @@ export function optimizePurchasePlanAcrossHolyPolicies({
         seedTerminalHp: localSearch.seedTerminalHp,
         bestTerminalHp: localSearch.bestTerminalHp,
         totalImprovement: localSearch.totalImprovement
-      }
+      },
+      infeasibilityProof: null
     };
   });
 
   const summary = summarizeHolyPolicyResponses(responses);
   return {
-    schemaVersion: 2,
-    model: 'holy-policy-purchase-best-response-v0.2-rescue',
+    schemaVersion: 3,
+    model: 'holy-policy-purchase-best-response-v0.3-proof-coverage',
     policies: [...holyPolicies],
     responses: rankHolyPolicyResponses(responses),
+    staticCutCertificate: staticCutCertificate?.proven ? compactStaticCutProof(staticCutCertificate) : null,
     ...summary
   };
 }
