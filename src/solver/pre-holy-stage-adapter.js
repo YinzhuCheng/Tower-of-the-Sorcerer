@@ -69,6 +69,26 @@ export function filterPreHolyActions(actions) {
 }
 
 /**
+ * Existence-hunt subgraph for `corridorOpen` only.
+ *
+ * The goal is a structural change on the current F6 floor. Leaving F6 cannot by
+ * itself open that corridor; it only changes resources elsewhere. Selected
+ * replay-verified boundary seeds already have enough immediate resources to test
+ * a local corridor witness, so the diagnostic first searches only local events.
+ *
+ * Success is a fully legal authoritative certificate. Failure is NEVER used as
+ * global infeasibility because this filter intentionally removes teleport/U/D
+ * alternatives. v0.5 staged proof encodes that reduced proof capability.
+ */
+export function filterCorridorLocalActions(actions) {
+  return [...actions].filter((action) => {
+    if (action?.kind === 'teleport') return false;
+    if (action?.kind === 'tile' && (action.token === 'U' || action.token === 'D')) return false;
+    return true;
+  });
+}
+
+/**
  * Search-order heuristic for the shared core5 preparation stage.
  *
  * Generic Tower priority rewards `floor * 1e10`. That is useful for ordinary
@@ -123,10 +143,15 @@ export function createPreHolyStageAdapter({
     return baseAdapter.enumerateActions(state);
   }
 
+  function stageActions(state) {
+    const noHoly = filterPreHolyActions(baseActions(state));
+    return stage === 'corridorOpen' ? filterCorridorLocalActions(noHoly) : noHoly;
+  }
+
   return {
     ...baseAdapter,
     enumerateActions(state) {
-      return filterPreHolyActions(baseActions(state));
+      return stageActions(state);
     },
     isGoal(state) {
       if (state.relics?.holy) return false;
@@ -147,12 +172,6 @@ export function createPreHolyStageAdapter({
         return preHolyContinuationPriority(state, { targetCores, basePriority: base });
       }
       if (stage === 'corridorOpen') {
-        // Corridor proof should first consume/resolve the local F6 blockers. The
-        // normal Tower floor preference is useful here because a successful
-        // witness is expected to exist without first solving the later boss
-        // resource-preparation problem. This remains ordering-only; a miss is
-        // not interpreted as global infeasibility unless the full frontier is
-        // actually exhausted.
         return base + (state.floor === targetFloor ? 5e10 : 0);
       }
       const nearTarget = (state.cores ?? 0) === targetCores - 1 && (state.floor ?? 0) >= targetFloor;
@@ -163,11 +182,15 @@ export function createPreHolyStageAdapter({
       return `${base}/preHoly:${stage}`;
     },
     rulesVersion() {
-      return `${baseAdapter.rulesVersion?.() ?? 'tower'}+pre-holy-stage:${stage}`;
+      const localSuffix = stage === 'corridorOpen' ? '+local-corridor-witness-v1' : '';
+      return `${baseAdapter.rulesVersion?.() ?? 'tower'}+pre-holy-stage:${stage}${localSuffix}`;
     },
     diagnosticStage: stage,
     diagnosticBossId: bossId,
     diagnosticTargetCores: targetCores,
-    diagnosticTargetFloor: targetFloor
+    diagnosticTargetFloor: targetFloor,
+    proofRestriction: stage === 'corridorOpen'
+      ? 'local_floor_existence_witness_only'
+      : null
   };
 }
