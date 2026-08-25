@@ -1,0 +1,63 @@
+name: Event Witness Ray Profile
+
+on:
+  push:
+    branches:
+      - solver-phase1-pareto
+    paths:
+      - 'src/tuner/event-order-witness-ray.js'
+      - 'src/tuner/numeric-ray-search.js'
+      - 'src/tuner/numeric-candidate-synthesis.js'
+      - 'src/tuner/numeric-sensitivity-screen.js'
+      - 'src/analyzer/event-order-joint-best-response.js'
+      - 'src/analyzer/event-order-purchase-local-search.js'
+      - 'src/analyzer/event-order-core-transition-chain.js'
+      - 'src/analyzer/event-order-witness.js'
+      - 'src/solver/replay.js'
+      - 'scripts/analyze-event-order-witness-ray.mjs'
+      - 'test/event-order-witness-ray.test.js'
+      - '.github/workflows/event-witness-ray-profile.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: event-witness-ray-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  event-witness-ray:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - name: Retune numeric ray against joint event-order player witness
+        run: |
+          node scripts/analyze-event-order-witness-ray.mjs \
+            --reference-step=0.6453125 \
+            --target-margin=0.165 \
+            --margin-tolerance=0.02 \
+            --step-tolerance=0.005 \
+            --refine-iterations=6 \
+            --max-purchase-passes=12 \
+            --json > event-order-witness-ray.json
+      - name: Print compact witness-ray summary
+        run: |
+          python3 - <<'PY'
+          import json
+          r=json.load(open('event-order-witness-ray.json')); seed=r.get('seed') or {}; ray=r.get('ray') or {}; b=ray.get('best') or {}; br=ray.get('bracket') or {}
+          print(f"WITNESS_SEED hp={seed.get('jointBestHp')} margin={seed.get('jointMinMargin')} local={seed.get('jointLocalOptimal')} witness={seed.get('jointWitnessHash')} steps={seed.get('steps')} shop={seed.get('shopSteps')}")
+          print(f"WITNESS_RAY candidate={ray.get('candidateId')} converged={ray.get('converged')} bestStep={b.get('relativeStep')} hp={b.get('finalHp')} margin={b.get('margin')} witness={b.get('witnessHash')} local={(b.get('localSearch') or {}).get('localOptimal')}")
+          print(f"BRACKET low={br.get('lowStep')}:{br.get('lowMargin')} high={br.get('highStep')}:{br.get('highMargin')} width={br.get('width')} violations={len(ray.get('monotonicViolations') or [])}")
+          if b.get('edits'):
+              print('BEST_EDITS ' + ','.join(f"{e['target']}:{e['id']}:{e['field']}={e['value']}" for e in b['edits']))
+          for s in ray.get('samples') or []:
+              ls=s.get('localSearch') or {}
+              print(f"SAMPLE step={s.get('relativeStep')} hp={s.get('finalHp')} margin={s.get('margin')} status={s.get('pressureStatus')} solvable={s.get('solvable')} local={ls.get('localOptimal')} passes={ls.get('improvementPasses')} witness={s.get('witnessHash')}")
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: event-order-witness-ray
+          path: event-order-witness-ray.json
+          if-no-files-found: error
+          retention-days: 7
