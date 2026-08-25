@@ -1,6 +1,7 @@
 import { analyzeThresholdCoreTransition } from './event-order-core-transition-proof.js';
 import { createCoreBoundaryAdapter } from '../solver/core-boundary-adapter.js';
 import { createFixedPurchasePolicyTowerAdapter } from '../solver/fixed-purchase-policy-adapter.js';
+import { createLateGameZeroDamageHarvestAdapter } from '../solver/late-game-zero-damage-harvest-adapter.js';
 import { createObjectiveThresholdAdapter } from '../solver/objective-threshold-adapter.js';
 import { replayTowerCertificateToState, replayTowerCertificate } from '../solver/replay.js';
 import { solve } from '../solver/search.js';
@@ -55,6 +56,12 @@ export function classifyThresholdCoreChain({
  *
  * We intentionally do not flatten certificates from different initial states.
  * Every continuation verifies the previous bridge state hash before executing.
+ *
+ * Only the terminal suffix adds the late-game zero-damage harvest closure. The
+ * prefix and c6->c7 certificates are replayed under the exact adapter stack that
+ * produced them. After c7, Lucky is already owned on the measured bridge; any
+ * reachable non-boss enemy that currently deals zero authoritative damage is a
+ * monotone positive event and can be canonicalized without changing feasibility.
  */
 export function analyzeThresholdCoreTransitionChain({
   candidate = REVIEW_CANDIDATES.distributedPressureV1,
@@ -67,7 +74,8 @@ export function analyzeThresholdCoreTransitionChain({
   transitionMaxExpanded = 5_000,
   transitionMaxGenerated = 70_000,
   suffixMaxExpanded = 8_000,
-  suffixMaxGenerated = 100_000
+  suffixMaxGenerated = 100_000,
+  lateGameZeroDamageClosure = true
 } = {}) {
   const snapshot = cloneReviewCandidate(candidate);
   const transitionReport = analyzeThresholdCoreTransition({
@@ -84,8 +92,8 @@ export function analyzeThresholdCoreTransitionChain({
 
   if (!transitionReport.transitionFound || !transitionReport.transition) {
     return {
-      schemaVersion: 1,
-      model: 'event-order-core-transition-chain-v0.1',
+      schemaVersion: 2,
+      model: 'event-order-core-transition-chain-v0.2-late-harvest',
       candidateId: snapshot.id,
       fromCores,
       toCores,
@@ -109,17 +117,20 @@ export function analyzeThresholdCoreTransitionChain({
       shopPlan: policy.shopPlan,
       shopCycle: policy.shopCycle
     });
-    const thresholdAdapter = createObjectiveThresholdAdapter({
+
+    // Replay the prefix/transition certificates under their original threshold
+    // semantics. Do not let suffix-only normalization alter their bridge states.
+    const transitionThresholdAdapter = createObjectiveThresholdAdapter({
       threshold: referenceHp,
       baseAdapter: fixedAdapter
     });
     const fromBoundaryAdapter = createCoreBoundaryAdapter({
       targetCores: fromCores,
-      baseAdapter: thresholdAdapter
+      baseAdapter: transitionThresholdAdapter
     });
     const toBoundaryAdapter = createCoreBoundaryAdapter({
       targetCores: toCores,
-      baseAdapter: thresholdAdapter
+      baseAdapter: transitionThresholdAdapter
     });
 
     const prefixCertificate = transitionReport.transition.prefixCertificate;
@@ -129,8 +140,8 @@ export function analyzeThresholdCoreTransitionChain({
     });
     if (!prefixReplay.ok || !prefixReplay.state) {
       return {
-        schemaVersion: 1,
-        model: 'event-order-core-transition-chain-v0.1',
+        schemaVersion: 2,
+        model: 'event-order-core-transition-chain-v0.2-late-harvest',
         candidateId: snapshot.id,
         fromCores,
         toCores,
@@ -151,8 +162,8 @@ export function analyzeThresholdCoreTransitionChain({
     });
     if (!transitionReplay.ok || !transitionReplay.state) {
       return {
-        schemaVersion: 1,
-        model: 'event-order-core-transition-chain-v0.1',
+        schemaVersion: 2,
+        model: 'event-order-core-transition-chain-v0.2-late-harvest',
         candidateId: snapshot.id,
         fromCores,
         toCores,
@@ -168,17 +179,28 @@ export function analyzeThresholdCoreTransitionChain({
     }
 
     const bridgeUpperBound = fixedAdapter.objectiveUpperBound(transitionReplay.state);
+    const suffixBaseAdapter = lateGameZeroDamageClosure
+      ? createLateGameZeroDamageHarvestAdapter({
+          baseAdapter: fixedAdapter,
+          minCores: toCores,
+          requireLucky: true
+        })
+      : fixedAdapter;
+    const suffixThresholdAdapter = createObjectiveThresholdAdapter({
+      threshold: referenceHp,
+      baseAdapter: suffixBaseAdapter
+    });
     const suffixSolver = solve({
-      adapter: thresholdAdapter,
+      adapter: suffixThresholdAdapter,
       initialState: transitionReplay.state,
       mode: 'existence',
       maxExpanded: suffixMaxExpanded,
       maxGenerated: suffixMaxGenerated,
-      solverVersion: `fixed-purchase-core${toCores}-threshold-suffix-v0.1`
+      solverVersion: `fixed-purchase-core${toCores}-threshold-suffix-v0.2-late-harvest`
     });
     const suffixReplay = suffixSolver.certificate
       ? replayTowerCertificate(suffixSolver.certificate, {
-          adapter: thresholdAdapter,
+          adapter: suffixThresholdAdapter,
           initialState: transitionReplay.state
         })
       : null;
@@ -203,8 +225,8 @@ export function analyzeThresholdCoreTransitionChain({
     } : null;
 
     return {
-      schemaVersion: 1,
-      model: 'event-order-core-transition-chain-v0.1',
+      schemaVersion: 2,
+      model: 'event-order-core-transition-chain-v0.2-late-harvest',
       candidateId: snapshot.id,
       fromCores,
       toCores,
@@ -223,6 +245,7 @@ export function analyzeThresholdCoreTransitionChain({
         optimisticTerminalHpUpperBound: bridgeUpperBound
       },
       suffix: {
+        lateGameZeroDamageClosure,
         solver: compactSolver(suffixSolver),
         replay: suffixReplay ? {
           ok: suffixReplay.ok,
