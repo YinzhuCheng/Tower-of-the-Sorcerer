@@ -13,16 +13,20 @@ on:
       - 'src/analyzer/event-order-witness-counterfactuals.js'
       - 'src/analyzer/event-order-purchase-recovery.js'
       - 'src/analyzer/event-order-witness-threshold-proof.js'
+      - 'src/analyzer/event-order-core-transition-proof.js'
       - 'src/analyzer/event-order-joint-best-response.js'
       - 'src/analyzer/event-order-purchase-local-search.js'
       - 'src/analyzer/pre-holy-static-cut.js'
       - 'src/solver/replay.js'
       - 'src/solver/tower-bounds.js'
       - 'scripts/validate-review-candidate-v2.mjs'
+      - 'scripts/analyze-v2-event-order-core-transition.mjs'
       - 'test/review-candidate-v2.test.js'
       - 'test/event-order-purchase-recovery.test.js'
+      - 'test/event-order-core-transition-proof.test.js'
       - 'docs/review-candidate-v2.md'
       - 'docs/recovery-aware-counterfactuals.md'
+      - 'docs/v2-core-transition-proof.md'
       - '.github/workflows/review-candidate-v2-profile.yml'
   workflow_dispatch:
 
@@ -83,5 +87,44 @@ jobs:
         with:
           name: review-candidate-v2
           path: review-candidate-v2.json
+          if-no-files-found: error
+          retention-days: 7
+
+  threshold-core6-to-core7:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - name: Analyze V2 threshold-relevant core6 to core7 transition
+        run: |
+          node scripts/analyze-v2-event-order-core-transition.mjs \
+            --from-cores=6 \
+            --to-cores=7 \
+            --max-purchase-passes=12 \
+            --boundary-max-expanded=8000 \
+            --boundary-max-generated=100000 \
+            --boundary-max-goals=64 \
+            --max-transition-seeds=8 \
+            --transition-max-expanded=5000 \
+            --transition-max-generated=70000 \
+            --json > v2-core6-to-core7-threshold.json
+      - name: Print compact V2 transition summary
+        run: |
+          python3 - <<'PY'
+          import json
+          r=json.load(open('v2-core6-to-core7-threshold.json')); b=r.get('rebuild') or {}; t=r.get('transition') or {}; bd=t.get('boundary') or {}; sch=t.get('schedule') or {}
+          print(f"V2_TRANSITION reference={b.get('terminalHp')} margin={b.get('minNormalizedHpMargin')} witness={b.get('witnessHash')} transition=c{t.get('fromCores')}->c{t.get('toCores')} status={t.get('status')} found={t.get('transitionFound')} exactNo={t.get('exactNoTransition')}")
+          print(f"BOUNDARY relevant={bd.get('verifiedRelevantGoals')}/{bd.get('discoveredGoals')} exact={bd.get('coverageExact')} expanded={bd.get('expandedStates')} generated={bd.get('generatedStates')} stop={bd.get('stoppedReason')}")
+          print(f"SCHEDULE scheduled={sch.get('scheduledSeedCount')}/{sch.get('verifiedRelevantSeedCount')} attemptedAll={sch.get('attemptedAllVerified')}")
+          for a in t.get('attempts') or []:
+              s=a.get('solver') or {}; rp=a.get('replay') or {}
+              print(f"ATTEMPT seed={a.get('prefixCertificateHash')} ub={a.get('prefixUpperBound')} hp={(a.get('prefixResources') or {}).get('hp')} gold={(a.get('prefixResources') or {}).get('gold')} p={a.get('prefixShopPurchases')} found={a.get('transitionFound')} exactNo={a.get('exactNoTransition')} expanded={s.get('expandedStates')} generated={s.get('generatedStates')} bound={s.get('prunedBound')} stop={s.get('stoppedReason')} replay={rp.get('ok')} nextUb={rp.get('nextStateUpperBound')}")
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: v2-core6-to-core7-threshold
+          path: v2-core6-to-core7-threshold.json
           if-no-files-found: error
           retention-days: 7
