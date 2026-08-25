@@ -17,6 +17,34 @@ export function filterPreHolyActions(actions) {
 }
 
 /**
+ * Search-order heuristic for the shared core5 preparation stage.
+ *
+ * Generic Tower priority rewards `floor * 1e10`. That is useful for ordinary
+ * upward progress but pathological after reaching the F6/core5 boundary: legal
+ * delayed-Holy preparation may require travelling down to a previously visited
+ * shop or resource, and the floor reward starves those states under a bounded
+ * existence search.
+ *
+ * During preBoss/core6 while cores==targetCores-1 we therefore remove floor from
+ * the ordering signal. Resource improvements still raise priority, but a free
+ * downward travel with unchanged resources competes on equal terms with staying
+ * on F6. This function changes queue order only; it is never a proof bound.
+ */
+export function preHolyContinuationPriority(state, {
+  targetCores = 6,
+  basePriority = 0
+} = {}) {
+  if ((state?.cores ?? 0) !== targetCores - 1) return basePriority;
+  const stats = state.stats ?? {};
+  return (state.cores ?? 0) * 1e12
+    + 5e11
+    + (stats.atk ?? 0) * 1e6
+    + (stats.def ?? 0) * 1e5
+    + Math.min(stats.hp ?? 0, 50_000) * 1e3
+    + Math.min(stats.gold ?? 0, 100_000) * 1e2;
+}
+
+/**
  * Stage-scoped adapter for the shared delayed-Holy prefix.
  *
  * `f6Entry` is the first F6/core5 boundary before Holy. It intentionally stops
@@ -58,6 +86,9 @@ export function createPreHolyStageAdapter({
     },
     priority(state) {
       const base = baseAdapter.priority ? baseAdapter.priority(state) : 0;
+      if (stage === 'preBoss' || stage === 'core6') {
+        return preHolyContinuationPriority(state, { targetCores, basePriority: base });
+      }
       const nearTarget = (state.cores ?? 0) === targetCores - 1 && (state.floor ?? 0) >= targetFloor;
       return base + (nearTarget ? 5e9 : 0);
     },
