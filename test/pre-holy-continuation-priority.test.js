@@ -2,18 +2,26 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
   preHolyContinuationPriority,
-  relaxedBossBarrierDistance
+  relaxedBossDamageNeed
 } from '../src/solver/pre-holy-stage-adapter.js';
 
 function state({ floor, cores = 5, hp = 1000, atk = 104, def = 100, gold = 2800 } = {}) {
   return { floor, cores, stats: { hp, maxHp: 9500, atk, def, gold } };
 }
 
-function engineState(map, { x = 1, y = 1 } = {}) {
+function engineState(map, {
+  x = 1,
+  y = 1,
+  hp = 5000,
+  atk = 170,
+  def = 170
+} = {}) {
   return {
     floor: 0,
     x,
     y,
+    stats: { hp, maxHp: hp, atk, def, gold: 0 },
+    relics: { ward: false },
     floorStates: [{ map }]
   };
 }
@@ -45,47 +53,62 @@ test('states outside the core5 preparation stage retain base priority', () => {
   assert.equal(value, basePriority);
 });
 
-test('relaxed boss barrier distance counts unresolved enemy/door blockers but not the boss', () => {
-  const map = [
+test('relaxed damage-to-boss includes fixed damage from corridor enemies and boss', () => {
+  const direct = [
+    ['#', '#', '#', '#'],
+    ['#', '.', 'enemy:astralBoss', '#'],
+    ['#', '#', '#', '#']
+  ];
+  const withMote = [
     ['#', '#', '#', '#', '#'],
-    ['#', '.', 'enemy:guard', 'enemy:astralBoss', '#'],
+    ['#', '.', 'enemy:mote', 'enemy:astralBoss', '#'],
     ['#', '#', '#', '#', '#']
   ];
-  assert.equal(relaxedBossBarrierDistance(engineState(map)), 1);
+  const bossOnly = relaxedBossDamageNeed(engineState(direct));
+  const corridor = relaxedBossDamageNeed(engineState(withMote));
+  assert.ok(Number.isFinite(bossOnly));
+  assert.ok(Number.isFinite(corridor));
+  assert.ok(corridor >= bossOnly);
 });
 
-test('relaxed boss barrier distance prefers a free detour over blocker crossings', () => {
+test('relaxed damage-to-boss prefers a zero-damage detour around a damaging enemy', () => {
   const map = [
     ['#', '#', '#', '#', '#'],
-    ['#', '.', 'door:moon', 'enemy:astralBoss', '#'],
+    ['#', '.', 'enemy:catMage', 'enemy:astralBoss', '#'],
     ['#', '.', '.', '.', '#'],
     ['#', '#', '#', '#', '#']
   ];
-  assert.equal(relaxedBossBarrierDistance(engineState(map)), 0);
+  const need = relaxedBossDamageNeed(engineState(map));
+  const bossOnly = relaxedBossDamageNeed(engineState([
+    ['#', '#', '#', '#'],
+    ['#', '.', 'enemy:astralBoss', '#'],
+    ['#', '#', '#', '#']
+  ]));
+  assert.equal(need, bossOnly);
 });
 
-test('Holy remains impassable in the no-Holy relaxed topology', () => {
+test('Holy remains impassable in the no-Holy relaxed damage graph', () => {
   const map = [
     ['#', '#', '#', '#', '#'],
     ['#', '.', 'item:holy', 'enemy:astralBoss', '#'],
     ['#', '#', '#', '#', '#']
   ];
-  assert.equal(relaxedBossBarrierDistance(engineState(map)), Number.POSITIVE_INFINITY);
+  assert.equal(relaxedBossDamageNeed(engineState(map)), Number.POSITIVE_INFINITY);
 });
 
-test('F6 topology progress can outrank an otherwise identical farther state', () => {
-  const base = state({ floor: 5 });
-  const farther = preHolyContinuationPriority(base, {
+test('a relaxed boss-ready F6 state outranks an otherwise identical deficit state', () => {
+  const base = state({ floor: 5, hp: 2000 });
+  const deficit = preHolyContinuationPriority(base, {
     targetCores: 6,
     targetFloor: 5,
-    bossBarrierDistance: 4,
+    relaxedDamageNeed: 2300,
     sequenceProgress: 0
   });
-  const nearer = preHolyContinuationPriority(base, {
+  const ready = preHolyContinuationPriority(base, {
     targetCores: 6,
     targetFloor: 5,
-    bossBarrierDistance: 2,
-    sequenceProgress: 1
+    relaxedDamageNeed: 1800,
+    sequenceProgress: 0
   });
-  assert.ok(nearer > farther);
+  assert.ok(ready > deficit);
 });
