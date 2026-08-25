@@ -1,0 +1,41 @@
+name: V3 Progressive Tight C7 Frontier
+on:
+  push:
+    branches: [solver-phase1-pareto]
+    paths: ['src/analyzer/event-order-core-progressive-tight-frontier.js','src/solver/fixed-purchase-bridge-tight-bound.js','scripts/analyze-v3-progressive-tight-c7-frontier.mjs','test/event-order-core-progressive-tight-frontier.test.js','docs/v3-progressive-tight-c7-frontier.md','.github/workflows/v3-progressive-tight-c7-frontier.yml']
+  pull_request:
+    paths: ['src/analyzer/event-order-core-progressive-tight-frontier.js','src/solver/fixed-purchase-bridge-tight-bound.js','scripts/analyze-v3-progressive-tight-c7-frontier.mjs','test/event-order-core-progressive-tight-frontier.test.js','docs/v3-progressive-tight-c7-frontier.md','.github/workflows/v3-progressive-tight-c7-frontier.yml']
+  workflow_dispatch:
+concurrency:
+  group: v3-progressive-tight-c7-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  progressive-frontier:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - name: Grow representative c7 frontiers by residual quota
+        run: node scripts/analyze-v3-progressive-tight-c7-frontier.mjs --from-cores=6 --to-cores=7 --from-boundary-max-expanded=8000 --from-boundary-max-generated=100000 --from-boundary-max-goals=64 --max-prefix-seeds=3 --bridge-max-expanded-per-round=12000 --bridge-max-generated-per-round=180000 --initial-goal-cap=32 --max-goal-cap=256 --target-residual-goals=32 --json > v3-progressive-tight-c7-frontier.json
+      - name: Print progressive frontier rounds
+        if: always()
+        run: |
+          python3 - <<'PY'
+          import json,os
+          p='v3-progressive-tight-c7-frontier.json'
+          if not os.path.exists(p) or os.path.getsize(p)==0: print('report missing'); raise SystemExit(0)
+          x=json.load(open(p)); r=x.get('analysis') or {}
+          print(f"V3_PROGRESSIVE status={r.get('status')} reference={(x.get('rebuild') or {}).get('terminalHp')} interpretation={r.get('interpretation')}")
+          for a in r.get('attempts') or []:
+              print(f"PREFIX cert={a.get('prefixCertificateHash')} finalCap={a.get('finalGoalCap')} exact={a.get('finalFrontierExact')} stop={a.get('finalFrontierStop')} summary={a.get('finalSummary')}")
+              for q in a.get('rounds') or []: print(f"  ROUND cap={q.get('goalCap')} frontier={q.get('frontier')} summary={q.get('summary')} replayFailures={q.get('replayFailures')}")
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: v3-progressive-tight-c7-frontier
+          path: v3-progressive-tight-c7-frontier.json
+          if-no-files-found: warn
+          retention-days: 14
