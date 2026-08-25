@@ -3,6 +3,7 @@ import { replayTowerStepSkeleton, replayTowerStepSkeletonToState } from '../solv
 import { mutateEventOrderWitnessShopChoice } from './event-order-purchase-local-search.js';
 
 const SHOP_OPTIONS = Object.freeze(['atk', 'def', 'hp']);
+const FAILURE_CORE_EXAMPLE_LIMIT = 12;
 
 function shopSteps(witness) {
   return witness.steps
@@ -63,6 +64,49 @@ function betterTerminal(adapter, left, right) {
   return a > b;
 }
 
+function replayFailureReason(replay) {
+  return replay?.failures?.[0]?.reason ?? 'step_replay_failed';
+}
+
+function compactFailureAttempt({ label, optionId, step, replay }) {
+  const failure = replay?.failures?.[0] ?? null;
+  return {
+    optionId: optionId ?? null,
+    eventId: failure?.eventId ?? step?.eventId ?? null,
+    reason: failure?.reason ?? 'step_replay_failed',
+    resourcesBefore: { ...(label?.resources ?? {}) },
+    purchasePlanBefore: [...(label?.purchasePlan ?? [])],
+    replayFinal: replay?.final ?? null
+  };
+}
+
+function buildFailureCore({
+  stepIndex,
+  purchaseIndex,
+  baselineStep,
+  options,
+  failedAttempts
+}) {
+  const failureReasons = {};
+  for (const attempt of failedAttempts) {
+    const reason = attempt.reason ?? 'step_replay_failed';
+    failureReasons[reason] = (failureReasons[reason] ?? 0) + 1;
+  }
+  return {
+    kind: 'first-all-branches-dead-step',
+    stepIndex,
+    purchaseIndex: purchaseIndex >= 0 ? purchaseIndex : null,
+    purchaseNumber: purchaseIndex >= 0 ? purchaseIndex + 1 : null,
+    stepKind: baselineStep?.kind ?? null,
+    eventId: baselineStep?.eventId ?? null,
+    action: baselineStep?.action ? { ...baselineStep.action } : null,
+    attemptedOptions: baselineStep?.kind === 'shop' ? [...options] : [],
+    attemptedBranches: failedAttempts.length,
+    failureReasons,
+    examples: failedAttempts.slice(0, FAILURE_CORE_EXAMPLE_LIMIT)
+  };
+}
+
 /**
  * Exact dynamic program for one forced purchase error under one fixed event
  * order.
@@ -83,6 +127,12 @@ function betterTerminal(adapter, left, right) {
  * the fixed event order has been considered. `recoverable=false` therefore means
  * exact unrecoverability for this event skeleton only; it is not a global
  * event-order impossibility proof.
+ *
+ * When every active label dies at one skeleton step, `failureCore` records that
+ * first universally failing semantic event, the replay failure-reason histogram,
+ * and representative resources immediately before the failure. The core is a
+ * localization diagnostic for future tuner sensitivity analysis; it is not an
+ * infeasibility proof outside this fixed event skeleton.
  *
  * `stepExecutor` and `fullReplayExecutor` are injectable only to test the generic
  * DP kernel on synthetic transition systems. Production callers use the defaults,
@@ -130,6 +180,7 @@ export function solveFixedEventOrderPurchaseRecovery({
   let peakActiveLabels = 1;
   let peakStructuralStates = 1;
   let stoppedReason = null;
+  let failureCore = null;
 
   for (let stepIndex = 0; stepIndex < witness.steps.length; stepIndex += 1) {
     const baselineStep = witness.steps[stepIndex];
@@ -143,6 +194,7 @@ export function solveFixedEventOrderPurchaseRecovery({
     }
 
     const byStructure = new Map();
+    const failedAttempts = [];
     for (const label of labels) {
       for (const optionId of options) {
         const step = isShop ? replaceShopOption(baselineStep, optionId) : baselineStep;
@@ -154,7 +206,10 @@ export function solveFixedEventOrderPurchaseRecovery({
           adapter
         });
         generatedTransitions += 1;
-        if (!replay?.ok || !replay.state) continue;
+        if (!replay?.ok || !replay.state) {
+          failedAttempts.push(compactFailureAttempt({ label, optionId, step, replay }));
+          continue;
+        }
         const nextState = replay.state;
         const resources = adapter.resources(nextState);
         const key = adapter.structuralKey(nextState);
@@ -182,6 +237,13 @@ export function solveFixedEventOrderPurchaseRecovery({
     peakStructuralStates = Math.max(peakStructuralStates, byStructure.size);
     if (labels.length === 0) {
       stoppedReason = 'all_branches_dead';
+      failureCore = buildFailureCore({
+        stepIndex,
+        purchaseIndex,
+        baselineStep,
+        options,
+        failedAttempts
+      });
       break;
     }
     if (labels.length > maxActiveLabels) {
@@ -214,8 +276,8 @@ export function solveFixedEventOrderPurchaseRecovery({
   }
 
   return {
-    schemaVersion: 1,
-    model: 'fixed-event-order-purchase-recovery-v0.1',
+    schemaVersion: 2,
+    model: 'fixed-event-order-purchase-recovery-v0.2-failure-core',
     confidence: exact
       ? 'exact-within-fixed-event-order-and-later-purchase-choice-space'
       : 'bounded-fixed-event-order-recovery-search',
@@ -231,6 +293,7 @@ export function solveFixedEventOrderPurchaseRecovery({
     prunedDominated,
     peakActiveLabels,
     peakStructuralStates,
+    failureCore,
     terminalHp: recoverable ? authoritativeReplay.objective : null,
     minNormalizedHpMargin: recoverable ? authoritativeReplay.minNormalizedHpMargin : null,
     recoveryPurchasePlan: recoverable ? [...best.purchasePlan] : null,
@@ -280,7 +343,8 @@ export function analyzeEventOrderWitnessPurchaseRecovery({
         recoveryWitnessHash: mutation.witnessHash,
         generatedTransitions: 0,
         prunedDominated: 0,
-        peakActiveLabels: 1
+        peakActiveLabels: 1,
+        failureCore: null
       });
       continue;
     }
@@ -307,7 +371,8 @@ export function analyzeEventOrderWitnessPurchaseRecovery({
       generatedTransitions: recovery.generatedTransitions,
       prunedDominated: recovery.prunedDominated,
       peakActiveLabels: recovery.peakActiveLabels,
-      stoppedReason: recovery.stoppedReason
+      stoppedReason: recovery.stoppedReason,
+      failureCore: recovery.failureCore
     });
   }
 
@@ -316,8 +381,8 @@ export function analyzeEventOrderWitnessPurchaseRecovery({
   const unrecoverableExact = results.filter((entry) => entry.exact && !entry.recoverable);
   const unknown = results.filter((entry) => !entry.exact);
   return {
-    schemaVersion: 1,
-    model: 'event-order-single-purchase-recovery-v0.1',
+    schemaVersion: 2,
+    model: 'event-order-single-purchase-recovery-v0.2-failure-core',
     confidence: unknown.length === 0
       ? 'exact-within-fixed-event-order-for-all-single-purchase-errors'
       : 'mixed-exact-and-bounded-fixed-event-order-recovery',
