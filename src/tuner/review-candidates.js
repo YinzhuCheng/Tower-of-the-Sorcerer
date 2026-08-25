@@ -22,12 +22,16 @@ const REVIEW_CANDIDATE_V2_EDITS = Object.freeze([
   Object.freeze({ target: 'enemy', id: 'flameCaster', field: 'def', value: 70 })
 ]);
 
+// This sequence is extracted from the replay-verified 0.8375 event-order witness.
+// It is part of the V2 sub-problem definition and must remain byte-for-byte
+// consistent with the rebuilt witness before any fixed-purchase proof can run.
 const REVIEW_CANDIDATE_V2_SHOP_PLAN = Object.freeze([
   'atk', 'atk', 'atk',
   'def', 'def',
   'atk', 'atk',
   'def',
-  'atk', 'atk', 'atk', 'atk',
+  'atk', 'atk', 'atk',
+  'def',
   'atk', 'atk', 'atk', 'atk',
   'def',
   'hp', 'hp',
