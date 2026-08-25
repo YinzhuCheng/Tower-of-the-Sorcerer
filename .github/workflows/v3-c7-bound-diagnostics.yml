@@ -1,0 +1,81 @@
+name: V3 C7 Bound Diagnostics
+
+on:
+  push:
+    branches:
+      - solver-phase1-pareto
+    paths:
+      - 'src/solver/fixed-purchase-bound-diagnostics.js'
+      - 'src/solver/tower-bounds.js'
+      - 'src/solver/fixed-purchase-policy-adapter.js'
+      - 'src/analyzer/event-order-core-bridge-bound-diagnostics.js'
+      - 'src/tuner/review-candidate-v3-rebuild.js'
+      - 'src/tuner/review-candidates.js'
+      - 'scripts/analyze-v3-c7-fixed-purchase-bound.mjs'
+      - 'test/fixed-purchase-bound-diagnostics.test.js'
+      - 'docs/v3-c7-bound-diagnostics.md'
+      - 'docs/v3-bridge-frontier-growth-result-2026-08-26.md'
+      - '.github/workflows/v3-c7-bound-diagnostics.yml'
+  pull_request:
+    paths:
+      - 'src/solver/fixed-purchase-bound-diagnostics.js'
+      - 'src/solver/tower-bounds.js'
+      - 'src/solver/fixed-purchase-policy-adapter.js'
+      - 'src/analyzer/event-order-core-bridge-bound-diagnostics.js'
+      - 'src/tuner/review-candidate-v3-rebuild.js'
+      - 'src/tuner/review-candidates.js'
+      - 'scripts/analyze-v3-c7-fixed-purchase-bound.mjs'
+      - 'test/fixed-purchase-bound-diagnostics.test.js'
+      - 'docs/v3-c7-bound-diagnostics.md'
+      - 'docs/v3-bridge-frontier-growth-result-2026-08-26.md'
+      - '.github/workflows/v3-c7-bound-diagnostics.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: v3-c7-bound-diagnostics-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  explain-bound:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - name: Explain representative V3 c7 upper bounds
+        run: |
+          node scripts/analyze-v3-c7-fixed-purchase-bound.mjs \
+            --from-cores=6 \
+            --to-cores=7 \
+            --from-boundary-max-expanded=8000 \
+            --from-boundary-max-generated=100000 \
+            --from-boundary-max-goals=64 \
+            --bridge-max-expanded=6000 \
+            --bridge-max-generated=90000 \
+            --bridge-max-goals=32 \
+            --json > v3-c7-bound-diagnostics.json
+      - name: Print bound decomposition
+        if: always()
+        run: |
+          python3 - <<'PY'
+          import json, os
+          path='v3-c7-bound-diagnostics.json'
+          if not os.path.exists(path) or os.path.getsize(path) == 0:
+              print('V3 c7 bound diagnostic report was not produced.')
+              raise SystemExit(0)
+          x=json.load(open(path)); r=x.get('analysis') or {}
+          print(f"V3_BOUND status={r.get('status')} reference={(x.get('rebuild') or {}).get('terminalHp')} semantic={(x.get('rebuild') or {}).get('semanticFingerprint')} bridgeCount={r.get('bridgeCount')}")
+          for e in r.get('representatives') or []:
+              d=e.get('explanation') or {}; relax=d.get('relaxation') or {}; best=d.get('best') or {}; res=e.get('resources') or {}
+              print(f"BRIDGE role={e.get('role')} p={e.get('shopPurchases')} hp={res.get('hp')} gold={res.get('gold')} cards={res.get('sun')}/{res.get('moon')}/{res.get('star')} ub={e.get('upperBound')} slack={e.get('thresholdSlack')} match={d.get('exactMatch')}")
+              print(f"  RELAX freeHp={relax.get('flatHpGain')} freeAtk={relax.get('flatAtkGain')} freeDef={relax.get('flatDefGain')} freeItemGold={relax.get('freeItemGold')} enemyGold={relax.get('remainingEnemyGold')} enemies={relax.get('remainingEnemyCount')} items={relax.get('remainingItemCount')} addPurchases={relax.get('additionalPurchases')} baseHp={relax.get('optimisticBaseHp')} baseAtk={relax.get('optimisticBaseAtk')} baseDef={relax.get('optimisticBaseDef')}")
+              print(f"  BEST buys={best.get('purchaseCount')} opts={best.get('purchaseOptions')} cost={best.get('purchaseCost')} freeGold={best.get('freeGoldBeforeKills')} requiredEnemyGold={best.get('requiredEnemyGold')} harvestDamage={best.get('fractionalHarvestDamage')} atk={best.get('atkBeforeFinal')} finalDamage={best.get('finalBossDamageLowerBound')} hpBeforeFinal={best.get('hpBeforeFinal')} upper={best.get('upperBound')}")
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: v3-c7-bound-diagnostics
+          path: v3-c7-bound-diagnostics.json
+          if-no-files-found: warn
+          retention-days: 14
