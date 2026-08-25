@@ -1,4 +1,7 @@
-import { createBoundedTowerAdapter } from './tower-bounds.js';
+import {
+  createBoundedTowerAdapter,
+  optimisticFixedPurchaseTerminalHpUpperBound
+} from './tower-bounds.js';
 import { GREEDY_INCUMBENT_WITNESS_TYPE } from './tower-incumbent.js';
 import { hashValue } from './state.js';
 
@@ -79,6 +82,12 @@ export function fixedPurchaseEventOrderPriority(state) {
  * incumbent witness can seed branch-and-bound only if its explicit policy is
  * byte-for-byte compatible with this restriction; an otherwise legal witness
  * from another purchase policy is rejected before it can influence pruning.
+ *
+ * Its objective upper bound is also specialized to the same fixed policy. The
+ * generic Tower bound may optimistically reassign every future shop purchase to
+ * ATK/HP; this adapter removes only that impossible reassignment while retaining
+ * all other optimistic relaxations (free remaining resources, best Holy timing,
+ * zero non-final combat damage). Thus it is tighter without becoming heuristic.
  */
 export function createFixedPurchasePolicyTowerAdapter({
   shopPlan = [],
@@ -96,6 +105,21 @@ export function createFixedPurchasePolicyTowerAdapter({
     shopCycle: [...shopCycle]
   };
   const policyHash = hashValue(policy);
+  const fixedBoundCache = new WeakMap();
+  const fixedUpperBound = typeof baseAdapter.objectiveUpperBound === 'function'
+    ? (state) => {
+        if (state && typeof state === 'object' && fixedBoundCache.has(state)) {
+          return fixedBoundCache.get(state);
+        }
+        const value = optimisticFixedPurchaseTerminalHpUpperBound(
+          baseAdapter,
+          state,
+          (purchaseIndex) => fixedPurchaseOptionAt(purchaseIndex, policy)
+        );
+        if (state && typeof state === 'object') fixedBoundCache.set(state, value);
+        return value;
+      }
+    : undefined;
 
   return {
     ...baseAdapter,
@@ -106,6 +130,7 @@ export function createFixedPurchasePolicyTowerAdapter({
       );
     },
     priority: fixedPurchaseEventOrderPriority,
+    ...(fixedUpperBound ? { objectiveUpperBound: fixedUpperBound } : {}),
     verifyIncumbent(witness, context) {
       if (!greedyWitnessMatchesFixedPurchasePolicy(witness, policy)) {
         return {
@@ -119,7 +144,7 @@ export function createFixedPurchasePolicyTowerAdapter({
       return baseAdapter.verifyIncumbent(witness, context);
     },
     rulesVersion() {
-      return `${baseAdapter.rulesVersion?.() ?? 'tower'}+fixed-purchase-policy:${policyHash}+event-order-priority-v1`;
+      return `${baseAdapter.rulesVersion?.() ?? 'tower'}+fixed-purchase-policy:${policyHash}+event-order-priority-v1+fixed-policy-bound-v1`;
     },
     fixedPurchasePolicy: Object.freeze({
       shopPlan: Object.freeze([...shopPlan]),
