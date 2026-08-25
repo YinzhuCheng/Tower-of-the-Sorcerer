@@ -58,9 +58,53 @@ function certificateHash(certificate) {
 
 function bridgeSort(left, right) {
   return right.upperBound - left.upperBound
-    || (right.resources.hp ?? 0) - (left.resources.hp ?? 0)
-    || (right.resources.gold ?? 0) - (left.resources.gold ?? 0)
-    || left.id.localeCompare(right.id);
+    || (right.resources?.hp ?? 0) - (left.resources?.hp ?? 0)
+    || (right.resources?.gold ?? 0) - (left.resources?.gold ?? 0)
+    || String(left.id).localeCompare(String(right.id));
+}
+
+function bridgePrefixKey(bridge) {
+  return bridge.prefixCertificateHash
+    ?? certificateHash(bridge.prefixCertificate)
+    ?? String(bridge.id ?? '').split(':')[0];
+}
+
+/**
+ * Existence-hunt scheduler that spends one suffix slot per c6 prefix family
+ * before returning to a second c7 bridge from any family.
+ *
+ * Scheduling never participates in exact-no-exploit reasoning. Unscheduled
+ * active bridges remain explicit proof obligations in the classifier.
+ */
+export function schedulePrefixRoundRobinBridges(bridges, {
+  maxBridges = bridges?.length ?? 0
+} = {}) {
+  if (!Number.isInteger(maxBridges) || maxBridges < 0) throw new Error('maxBridges must be a non-negative integer.');
+  const sorted = [...(bridges ?? [])].sort(bridgeSort);
+  const groups = new Map();
+  for (const bridge of sorted) {
+    const key = bridgePrefixKey(bridge);
+    if (!groups.has(key)) groups.set(key, []);
+    groups.get(key).push(bridge);
+  }
+  const orderedGroups = [...groups.entries()]
+    .map(([prefixKey, entries]) => ({ prefixKey, entries: entries.sort(bridgeSort) }))
+    .sort((left, right) => bridgeSort(left.entries[0], right.entries[0])
+      || left.prefixKey.localeCompare(right.prefixKey));
+
+  const selected = [];
+  for (let round = 0; selected.length < maxBridges; round += 1) {
+    let added = 0;
+    for (const group of orderedGroups) {
+      const bridge = group.entries[round];
+      if (!bridge) continue;
+      selected.push(bridge);
+      added += 1;
+      if (selected.length >= maxBridges) break;
+    }
+    if (added === 0) break;
+  }
+  return selected;
 }
 
 /**
@@ -133,9 +177,9 @@ export function analyzeThresholdCoreMultiBridgeChain({
   bridgeMaxExpandedPerPrefix = 3_000,
   bridgeMaxGeneratedPerPrefix = 45_000,
   bridgeMaxGoalsPerPrefix = 12,
-  maxSuffixBridges = 4,
-  suffixMaxExpandedPerBridge = 4_000,
-  suffixMaxGeneratedPerBridge = 60_000,
+  maxSuffixBridges = 6,
+  suffixMaxExpandedPerBridge = 3_000,
+  suffixMaxGeneratedPerBridge = 50_000,
   suffixPrioritySlackBucket = 500,
   lateGameZeroDamageClosure = true
 } = {}) {
@@ -173,8 +217,8 @@ export function analyzeThresholdCoreMultiBridgeChain({
     const referenceHp = reference.ok ? reference.terminalHp : null;
     if (!reference.ok || !Number.isFinite(referenceHp)) {
       return {
-        schemaVersion: 1,
-        model: 'event-order-core-multibridge-chain-v0.1',
+        schemaVersion: 2,
+        model: 'event-order-core-multibridge-chain-v0.2-prefix-round-robin',
         candidateId: snapshot.id,
         status: 'candidate-snapshot-drift',
         productionWriteAllowed: false,
@@ -207,7 +251,7 @@ export function analyzeThresholdCoreMultiBridgeChain({
       maxExpanded: fromBoundaryMaxExpanded,
       maxGenerated: fromBoundaryMaxGenerated,
       maxGoals: fromBoundaryMaxGoals,
-      solverVersion: `fixed-purchase-core${fromCores}-multibridge-prefix-v0.1`
+      solverVersion: `fixed-purchase-core${fromCores}-multibridge-prefix-v0.2`
     });
     const verifiedPrefixes = fromFrontier.goals.map((goal) => {
       const replay = replayTowerCertificateToState(goal.certificate, { adapter: fromBoundaryAdapter });
@@ -223,7 +267,7 @@ export function analyzeThresholdCoreMultiBridgeChain({
       };
     }).filter(Boolean).sort((a, b) => b.upperBound - a.upperBound
       || (b.resources.hp ?? 0) - (a.resources.hp ?? 0)
-      || certificateHash(a.goal.certificate).localeCompare(certificateHash(b.goal.certificate)));
+      || String(certificateHash(a.goal.certificate)).localeCompare(String(certificateHash(b.goal.certificate))));
     const scheduledPrefixes = verifiedPrefixes.slice(0, maxPrefixSeeds);
 
     const bridgeIndex = new FrontierIndex({ fields: fixedAdapter.resourceFields ?? null });
@@ -233,13 +277,14 @@ export function analyzeThresholdCoreMultiBridgeChain({
     let crossPrefixDominatedBridges = 0;
 
     for (const prefix of scheduledPrefixes) {
+      const prefixCertificateHash = certificateHash(prefix.goal.certificate);
       const bridgeFrontier = collectGoalFrontier({
         adapter: toBoundaryAdapter,
         initialState: prefix.state,
         maxExpanded: bridgeMaxExpandedPerPrefix,
         maxGenerated: bridgeMaxGeneratedPerPrefix,
         maxGoals: bridgeMaxGoalsPerPrefix,
-        solverVersion: `fixed-purchase-core${fromCores}-to-core${toCores}-bridge-frontier-v0.1`
+        solverVersion: `fixed-purchase-core${fromCores}-to-core${toCores}-bridge-frontier-v0.2`
       });
       let replayable = 0;
       let thresholdRelevant = 0;
@@ -258,7 +303,8 @@ export function analyzeThresholdCoreMultiBridgeChain({
         thresholdRelevant += 1;
         const structuralKey = fixedAdapter.structuralKey(replay.state);
         const label = {
-          id: `${certificateHash(prefix.goal.certificate)}:${certificateHash(goal.certificate)}`,
+          id: `${prefixCertificateHash}:${certificateHash(goal.certificate)}`,
+          prefixCertificateHash,
           active: true,
           key: structuralKey,
           state: replay.state,
@@ -282,7 +328,7 @@ export function analyzeThresholdCoreMultiBridgeChain({
         }
       }
       prefixAttempts.push({
-        prefixCertificateHash: certificateHash(prefix.goal.certificate),
+        prefixCertificateHash,
         prefixResources: prefix.resources,
         prefixShopPurchases: prefix.state.shopPurchases,
         prefixUpperBound: prefix.upperBound,
@@ -295,7 +341,9 @@ export function analyzeThresholdCoreMultiBridgeChain({
     }
 
     const activeBridges = bridgeLabels.filter((bridge) => bridge.active).sort(bridgeSort);
-    const scheduledBridges = activeBridges.slice(0, maxSuffixBridges);
+    const scheduledBridges = schedulePrefixRoundRobinBridges(activeBridges, {
+      maxBridges: Math.min(maxSuffixBridges, activeBridges.length)
+    });
     const harvestedSuffixBaseAdapter = lateGameZeroDamageClosure
       ? createLateGameZeroDamageHarvestAdapter({
           baseAdapter: fixedAdapter,
@@ -323,7 +371,7 @@ export function analyzeThresholdCoreMultiBridgeChain({
         mode: 'existence',
         maxExpanded: suffixMaxExpandedPerBridge,
         maxGenerated: suffixMaxGeneratedPerBridge,
-        solverVersion: `fixed-purchase-core${toCores}-multibridge-threshold-suffix-v0.1-b${suffixPrioritySlackBucket}`
+        solverVersion: `fixed-purchase-core${toCores}-multibridge-threshold-suffix-v0.2-b${suffixPrioritySlackBucket}`
       });
       const suffixCertificate = solver.certificate;
       const replay = suffixCertificate
@@ -337,9 +385,9 @@ export function analyzeThresholdCoreMultiBridgeChain({
         && Number.isFinite(replay.objective)
         && replay.objective > referenceHp;
       const exactNoExploit = solver.solvable === false && solver.exact === true;
-      const attempt = {
+      suffixAttempts.push({
         bridgeId: bridge.id,
-        prefixCertificateHash: certificateHash(bridge.prefixCertificate),
+        prefixCertificateHash: bridge.prefixCertificateHash,
         transitionCertificateHash: certificateHash(bridge.transitionCertificate),
         resources: bridge.resources,
         shopPurchases: bridge.shopPurchases,
@@ -354,8 +402,7 @@ export function analyzeThresholdCoreMultiBridgeChain({
         } : null,
         exploit: suffixExploit,
         exactNoExploit
-      };
-      suffixAttempts.push(attempt);
+      });
       if (!suffixExploit) continue;
 
       const witness = buildEventOrderStepWitness({
@@ -375,7 +422,7 @@ export function analyzeThresholdCoreMultiBridgeChain({
         deltaHp: replay.objective - referenceHp,
         relativeGain: (replay.objective - referenceHp) / Math.max(1, referenceHp),
         chain: {
-          prefixCertificateHash: certificateHash(bridge.prefixCertificate),
+          prefixCertificateHash: bridge.prefixCertificateHash,
           transitionCertificateHash: certificateHash(bridge.transitionCertificate),
           suffixCertificateHash: certificateHash(suffixCertificate)
         },
@@ -403,8 +450,8 @@ export function analyzeThresholdCoreMultiBridgeChain({
     });
 
     return {
-      schemaVersion: 1,
-      model: 'event-order-core-multibridge-chain-v0.1',
+      schemaVersion: 2,
+      model: 'event-order-core-multibridge-chain-v0.2-prefix-round-robin',
       candidateId: snapshot.id,
       fromCores,
       toCores,
@@ -438,9 +485,12 @@ export function analyzeThresholdCoreMultiBridgeChain({
         crossPrefixDominated: crossPrefixDominatedBridges,
         activeParetoCount: activeBridges.length,
         scheduledSuffixCount: scheduledBridges.length,
+        scheduleMode: 'prefix-round-robin',
+        scheduledBridgeIds: scheduledBridges.map((bridge) => bridge.id),
+        scheduledPrefixFamilies: [...new Set(scheduledBridges.map((bridge) => bridge.prefixCertificateHash))],
         activePareto: activeBridges.map((bridge) => ({
           id: bridge.id,
-          prefixCertificateHash: certificateHash(bridge.prefixCertificate),
+          prefixCertificateHash: bridge.prefixCertificateHash,
           transitionCertificateHash: certificateHash(bridge.transitionCertificate),
           resources: bridge.resources,
           shopPurchases: bridge.shopPurchases,
@@ -459,11 +509,11 @@ export function analyzeThresholdCoreMultiBridgeChain({
       exploit,
       interpretation: exploit
         ? (exploit.witnessReplay.ok && exploit.witnessReplay.objective === exploit.terminalHp
-            ? 'multibridge_search_found_and_authoritatively_replayed_a_threshold_exploit'
+            ? 'prefix-diverse_multibridge_search_found_and_authoritatively_replayed_a_threshold_exploit'
             : 'multibridge_suffix_found_an_exploit_but_combined_step_witness_replay_needs_attention')
         : evidence.exactNoExploit
           ? 'complete_multibridge_decomposition_exactly_eliminates_all_threshold_exploits'
-          : 'multiple_replay_verified_c7_bridges_were_explored_but_global_threshold_coverage_remains_incomplete'
+          : 'prefix-diverse_replay_verified_c7_bridges_were_explored_but_global_threshold_coverage_remains_incomplete'
     };
   });
 }

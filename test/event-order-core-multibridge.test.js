@@ -1,6 +1,9 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { classifyMultiBridgeChainEvidence } from '../src/analyzer/event-order-core-transition-multibridge.js';
+import {
+  classifyMultiBridgeChainEvidence,
+  schedulePrefixRoundRobinBridges
+} from '../src/analyzer/event-order-core-transition-multibridge.js';
 import { ParetoFrontier } from '../src/solver/frontier.js';
 
 test('multi-bridge exact no-exploit requires complete prefix, bridge and suffix obligations', () => {
@@ -75,6 +78,20 @@ test('a replayed exploit dominates any incomplete proof obligations', () => {
   });
   assert.equal(result.status, 'exploit-found');
   assert.equal(result.exactNoExploit, false);
+});
+
+test('prefix round-robin schedules one bridge per family before a second from any family', () => {
+  const bridges = [
+    { id: 'a1', prefixCertificateHash: 'A', upperBound: 5000, resources: { hp: 100, gold: 50 } },
+    { id: 'a2', prefixCertificateHash: 'A', upperBound: 4990, resources: { hp: 100, gold: 40 } },
+    { id: 'b1', prefixCertificateHash: 'B', upperBound: 4980, resources: { hp: 100, gold: 30 } },
+    { id: 'b2', prefixCertificateHash: 'B', upperBound: 4970, resources: { hp: 100, gold: 20 } },
+    { id: 'c1', prefixCertificateHash: 'C', upperBound: 4960, resources: { hp: 100, gold: 10 } },
+    { id: 'c2', prefixCertificateHash: 'C', upperBound: 4950, resources: { hp: 100, gold: 0 } }
+  ];
+  const scheduled = schedulePrefixRoundRobinBridges(bridges, { maxBridges: 4 });
+  assert.deepEqual(scheduled.map((bridge) => bridge.id), ['a1', 'b1', 'c1', 'a2']);
+  assert.equal(new Set(scheduled.slice(0, 3).map((bridge) => bridge.prefixCertificateHash)).size, 3);
 });
 
 test('Pareto rejection marks retained provenance labels inactive', () => {

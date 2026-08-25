@@ -28,15 +28,15 @@ const analysis = analyzeThresholdCoreMultiBridgeChain({
   bridgeMaxExpandedPerPrefix: integerFlag('bridge-max-expanded-per-prefix', 2_500),
   bridgeMaxGeneratedPerPrefix: integerFlag('bridge-max-generated-per-prefix', 35_000),
   bridgeMaxGoalsPerPrefix: integerFlag('bridge-max-goals-per-prefix', 8),
-  maxSuffixBridges: integerFlag('max-suffix-bridges', 4),
-  suffixMaxExpandedPerBridge: integerFlag('suffix-max-expanded-per-bridge', 4_000),
-  suffixMaxGeneratedPerBridge: integerFlag('suffix-max-generated-per-bridge', 60_000),
+  maxSuffixBridges: integerFlag('max-suffix-bridges', 6),
+  suffixMaxExpandedPerBridge: integerFlag('suffix-max-expanded-per-bridge', 3_000),
+  suffixMaxGeneratedPerBridge: integerFlag('suffix-max-generated-per-bridge', 50_000),
   suffixPrioritySlackBucket: integerFlag('suffix-priority-slack-bucket', 500)
 });
 
 const report = {
-  schemaVersion: 1,
-  model: 'distributed-pressure-v3-multibridge-profile-v0.1',
+  schemaVersion: 2,
+  model: 'distributed-pressure-v3-multibridge-profile-v0.2-prefix-round-robin',
   rebuild: {
     terminalHp: rebuilt.terminalHp,
     minNormalizedHpMargin: rebuilt.minNormalizedHpMargin,
@@ -54,10 +54,10 @@ if (json) {
   console.log(`V3 multibridge status=${analysis.status} exploit=${analysis.exploitFound} exactNo=${analysis.exactNoExploit}`);
   console.log(`reference=${rebuilt.terminalHp} semantic=${rebuilt.semanticFingerprint}`);
   console.log(`prefix relevant=${analysis.prefixSchedule?.verifiedRelevantPrefixCount} scheduled=${analysis.prefixSchedule?.scheduledPrefixCount} boundaryExact=${analysis.fromBoundary?.coverageExact}`);
-  console.log(`bridges discovered=${analysis.bridges?.discoveredReplayable} activePareto=${analysis.bridges?.activeParetoCount} scheduledSuffix=${analysis.bridges?.scheduledSuffixCount}`);
+  console.log(`bridges discovered=${analysis.bridges?.discoveredReplayable} activePareto=${analysis.bridges?.activeParetoCount} scheduledSuffix=${analysis.bridges?.scheduledSuffixCount} families=${analysis.bridges?.scheduledPrefixFamilies?.length}`);
   for (const attempt of analysis.suffix?.attempts ?? []) {
     const s = attempt.solver ?? {};
-    console.log(`suffix bridge=${attempt.bridgeId} ub=${attempt.upperBound} hp=${attempt.resources?.hp} gold=${attempt.resources?.gold} p=${attempt.shopPurchases} expanded=${s.expandedStates} generated=${s.generatedStates} exact=${s.exact} stop=${s.stoppedReason} exploit=${attempt.exploit}`);
+    console.log(`suffix prefix=${attempt.prefixCertificateHash} bridge=${attempt.bridgeId} ub=${attempt.upperBound} hp=${attempt.resources?.hp} gold=${attempt.resources?.gold} p=${attempt.shopPurchases} expanded=${s.expandedStates} generated=${s.generatedStates} exact=${s.exact} stop=${s.stoppedReason} exploit=${attempt.exploit}`);
   }
   console.log(`exploitHp=${analysis.exploit?.terminalHp ?? null} delta=${analysis.exploit?.deltaHp ?? null} replay=${analysis.exploit?.witnessReplay?.ok ?? null} semantic=${analysis.exploit?.witness?.semanticFingerprint ?? null}`);
 }
