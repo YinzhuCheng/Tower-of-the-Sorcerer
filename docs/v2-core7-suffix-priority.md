@@ -95,3 +95,26 @@ After this ordering experiment stabilizes:
 2. tighten the threshold corridor with additional admissible suffix bounds if 5049 remains materially loose;
 3. instrument early-purchase recovery failure cores for the six V2 catastrophic mutations;
 4. feed both event-order exploits and recovery failures into the future CEGIS witness bank.
+
+
+## First equal-budget result (commit `0faf4b6`)
+
+The first baseline vs 25-HP-corridor run completed successfully on GitHub Actions:
+
+```text
+metric                    baseline       threshold-b25
+expanded                     8000               8000
+generated                   34986              57694
+structuralStates            15585              22269
+prunedBound                  2097                  0
+queuePeak                    7585              14277
+travelGenerated             24288              40401
+travelRatio                69.42%             70.03%
+F7+F8 expanded                592               2765
+F7+F8 ratio                  7.40%             34.56%
+exploit found               false              false
+```
+
+Interpretation: the new ordering materially improves late-floor coverage (about 4.67x by expansion share), so the direction is useful, but the 25 HP corridor is too fine-grained. It starves low-slack states that would otherwise reach admissible-bound pruning, grows the queue, and does not reduce travel branching. The result is **not** evidence that V2 is safe and is **not** a reason to increase whole-game budgets blindly.
+
+The next experiment therefore sweeps slack buckets `25 / 100 / 250 / 500` against the same baseline and same 8k suffix budget. The selection criterion is Pareto, not one scalar: prefer materially higher F7/F8 coverage without the 25-HP profile's queue/generation explosion, while retaining sound existing bound pruning.

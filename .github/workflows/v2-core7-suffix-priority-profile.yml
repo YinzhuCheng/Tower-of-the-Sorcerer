@@ -1,4 +1,4 @@
-name: V2 Core7 Suffix Priority A-B
+name: V2 Core7 Suffix Priority Sweep
 
 on:
   push:
@@ -24,28 +24,39 @@ on:
   workflow_dispatch:
     inputs:
       suffix_max_expanded:
-        description: 'Per-mode c7 terminal suffix expansion budget'
+        description: 'Per-profile c7 terminal suffix expansion budget'
         required: false
         default: '8000'
       suffix_max_generated:
-        description: 'Per-mode c7 terminal suffix generated-action budget'
+        description: 'Per-profile c7 terminal suffix generated-action budget'
         required: false
         default: '100000'
-      slack_bucket:
-        description: 'Late-game threshold priority upper-bound slack bucket'
-        required: false
-        default: '25'
 
 concurrency:
   group: v2-core7-suffix-priority-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  suffix-priority-ab:
+  suffix-priority-sweep:
     strategy:
       fail-fast: false
       matrix:
-        priority_mode: [baseline, late-game-threshold]
+        include:
+          - profile_name: baseline
+            priority_mode: baseline
+            slack_bucket: '25'
+          - profile_name: threshold-b25
+            priority_mode: late-game-threshold
+            slack_bucket: '25'
+          - profile_name: threshold-b100
+            priority_mode: late-game-threshold
+            slack_bucket: '100'
+          - profile_name: threshold-b250
+            priority_mode: late-game-threshold
+            slack_bucket: '250'
+          - profile_name: threshold-b500
+            priority_mode: late-game-threshold
+            slack_bucket: '500'
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -54,10 +65,11 @@ jobs:
         with: { node-version: 22 }
       - name: Run V2 c7 terminal suffix profile
         env:
+          PROFILE_NAME: ${{ matrix.profile_name }}
           PRIORITY_MODE: ${{ matrix.priority_mode }}
           SUFFIX_MAX_EXPANDED: ${{ inputs.suffix_max_expanded || '8000' }}
           SUFFIX_MAX_GENERATED: ${{ inputs.suffix_max_generated || '100000' }}
-          SLACK_BUCKET: ${{ inputs.slack_bucket || '25' }}
+          SLACK_BUCKET: ${{ matrix.slack_bucket }}
         run: |
           node scripts/analyze-v2-event-order-core-transition-chain.mjs \
             --from-cores=6 \
@@ -72,16 +84,20 @@ jobs:
             --suffix-max-generated="$SUFFIX_MAX_GENERATED" \
             --suffix-priority="$PRIORITY_MODE" \
             --suffix-priority-slack-bucket="$SLACK_BUCKET" \
-            --json > "v2-core7-suffix-${PRIORITY_MODE}.json"
+            --json > "v2-core7-suffix-${PROFILE_NAME}.json"
       - name: Print comparable suffix telemetry
         env:
+          PROFILE_NAME: ${{ matrix.profile_name }}
           PRIORITY_MODE: ${{ matrix.priority_mode }}
+          SLACK_BUCKET: ${{ matrix.slack_bucket }}
         run: |
           python3 - <<'PY'
           import json, os
+          profile=os.environ['PROFILE_NAME']
           mode=os.environ['PRIORITY_MODE']
-          x=json.load(open(f'v2-core7-suffix-{mode}.json')); r=x.get('chain') or {}; s=(r.get('suffix') or {}).get('solver') or {}; t=s.get('telemetry') or {}; e=r.get('exploit') or {}
-          print(f"V2_CORE7 mode={mode} status={r.get('status')} exploit={r.get('exploitFound')} exactNo={r.get('exactNoExploit')}")
+          bucket=os.environ['SLACK_BUCKET']
+          x=json.load(open(f'v2-core7-suffix-{profile}.json')); r=x.get('chain') or {}; s=(r.get('suffix') or {}).get('solver') or {}; t=s.get('telemetry') or {}; e=r.get('exploit') or {}
+          print(f"V2_CORE7 profile={profile} mode={mode} bucket={bucket} status={r.get('status')} exploit={r.get('exploitFound')} exactNo={r.get('exactNoExploit')}")
           print(f"SEARCH expanded={s.get('expandedStates')} generated={s.get('generatedStates')} structural={s.get('structuralStates')} bound={s.get('prunedBound')} queuePeak={(s.get('profile') or {}).get('queuePeak')} stop={s.get('stoppedReason')}")
           print(f"TRAVEL generated={t.get('travelGenerated')} ratio={t.get('travelGeneratedRatio')} teleport={t.get('teleportGenerated')} stairs={t.get('stairGenerated')}")
           print(f"LATE_FLOORS from={t.get('lateFloorFrom')} expanded={t.get('lateFloorExpanded')} ratio={t.get('lateFloorExpandedRatio')} earlier={t.get('earlierFloorExpanded')} earlierRatio={t.get('earlierFloorExpandedRatio')}")
@@ -89,6 +105,6 @@ jobs:
           PY
       - uses: actions/upload-artifact@v4
         with:
-          name: v2-core7-suffix-${{ matrix.priority_mode }}
-          path: v2-core7-suffix-${{ matrix.priority_mode }}.json
+          name: v2-core7-suffix-${{ matrix.profile_name }}
+          path: v2-core7-suffix-${{ matrix.profile_name }}.json
           retention-days: 14
