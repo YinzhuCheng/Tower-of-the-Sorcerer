@@ -171,9 +171,64 @@ A boundary frontier has two independent questions:
 
 A budget-limited frontier can be useful as a seed source, but it must not be called complete. Automatic promotion cannot interpret an incomplete frontier as exhaustive Holy-policy coverage.
 
+### Full-profile result: the boundary is reachable and extremely wide
+
+The first F6/core5 frontier profile used the same `25,000 expanded / 250,000 generated` cap and produced:
+
+```text
+hasBoundaryStates = true
+coverageExact     = false
+stoppedReason     = maxExpanded
+expanded          = 25,000
+generated         = 145,091
+goalStructural    = 8,210
+activeGoalLabels  = 8,210
+verifiedSeeds     = 8,210 / 8,210
+```
+
+Every emitted boundary certificate passed authoritative replay. This changes the diagnosis materially:
+
+- reaching F6/core5 without Holy is **proven feasible**;
+- the previous `preBoss/core6` timeout was not evidence that the shared prefix was inaccessible;
+- the real difficulty is the very large continuation-relevant F6 entry set;
+- a single greedy F6 representative would be especially unsafe because thousands of structurally distinct/resource-incomparable entries already exist before frontier completion.
+
+Representative verified seeds include trade-offs such as:
+
+```text
+HP 1054 / ATK 104 / DEF 96  / gold 2375 / cards 4-5-2
+HP 1004 / ATK 104 / DEF 96  / gold 2527 / cards 4-5-2
+HP 1374 / ATK 104 / DEF 100 / gold 2463 / cards 4-5-2
+```
+
+The frontier was still growing at the 25k cap, so **8,210 is a lower bound on active boundary width**, not a complete count.
+
+### Discovery mode versus exhaustive mode
+
+Because existence proof needs only one verified continuation chain, waiting for a complete F6 frontier before trying `astralBoss` is wasteful. `goal-frontier` therefore has two explicit modes under one exactness vocabulary:
+
+- exhaustive mode: no `maxGoals`; attempts to enumerate the complete Pareto boundary;
+- discovery mode: stop once `maxGoals` active boundary labels exist.
+
+Discovery stop is reported as:
+
+```text
+stoppedReason = maxGoals
+coverageExact = false
+```
+
+The emitted certificates remain valid replayable seeds; only completeness is unknown. This separation is fundamental:
+
+```text
+one verified seed chain -> sufficient for existence
+complete boundary + exact failure of every continuation -> required for exact infeasibility
+```
+
+The staged delayed-Holy proof currently uses discovery mode (small verified seed set) for fast existence hunting, while the standalone boundary profile remains available for frontier-width/completeness research.
+
 ### Replayable bridges
 
-The Solver replay layer now supports certificate replay from an explicit `initialState` and verifies `certificate.initialStateHash` before any transition. A separate bridge helper exposes the exact compact terminal state only after authoritative replay succeeds.
+The Solver replay layer supports certificate replay from an explicit `initialState` and verifies `certificate.initialStateHash` before any transition. A separate bridge helper exposes the exact compact terminal state only after authoritative replay succeeds.
 
 This enables the intended chain:
 
@@ -188,15 +243,41 @@ prefix certificate
 
 No continuation may reconstruct its starting state from `certificate.final` or another lossy summary.
 
-## Next step after the boundary collector
+## Staged continuation semantics
 
-1. profile how quickly the F6/core5 frontier appears and how wide it is;
-2. replay every emitted active boundary certificate before treating it as a continuation seed;
-3. launch an `astralBoss`/core6 continuation from boundary entries, prioritizing but not assuming any one resource trade-off;
-4. only after obtaining a verified core6 bridge split into `after-core-6`, `after-core-7`, and `before-final` continuations;
-5. if the boundary itself remains expensive, improve ordering/representation before adding any stronger prune.
+The current staged proof does:
 
-A likely later optimization is to rank boundary seeds for scheduling, but ranking must never delete nondominated seeds unless a separate proof establishes continuation dominance.
+```text
+F6/core5 verified boundary seed
+  -> no-Holy core6 continuation
+  -> verified core6 bridge
+  -> after-core-6 / after-core-7 / before-final continuation
+```
+
+Existence and infeasibility have deliberately asymmetric requirements:
+
+- one replay-verified successful chain proves policy feasibility;
+- exact failure from one core6 bridge does **not** prove global policy infeasibility, because another nondominated core6 bridge may succeed;
+- global core6 infeasibility requires complete F6 boundary coverage and exact failure from every verified boundary continuation;
+- until those conditions hold, failure remains `unknown`.
+
+This avoids turning seed scheduling or an incomplete frontier into an accidental proof assumption.
+
+## Next optimization if discovery seeds do not reach core6 quickly
+
+The next safe lever is **seed scheduling**, not seed deletion.
+
+The F6 frontier is now known to contain thousands of valid states. Generic Tower priority is unlikely to order those states optimally for `astralBoss`. A continuation scheduler may therefore rank verified seeds by a documented boss-affordability/proximity score, for example:
+
+- current `ATK - astralBoss.DEF` threshold;
+- current/projected boss damage;
+- gold available for shop conversion;
+- DEF threshold effects;
+- HP survival margin after an optimistic legal purchase relaxation.
+
+Such a score may change which verified seeds are attempted first. It must **not** delete nondominated seeds or participate in an exact-infeasibility claim.
+
+If a scheduling heuristic fails to find a bridge, the correct status remains unknown.
 
 ## Evidence vocabulary
 
@@ -205,7 +286,8 @@ A likely later optimization is to rank boundary seeds for scheduling, but rankin
 - `stage reached`: exact existence found a stage certificate.
 - `boundary found`: at least one replayable boundary seed exists; frontier may still be incomplete.
 - `boundary coverage exact`: prefix search exhausted and the boundary Pareto set is complete under the adapter.
+- `boundary discovery complete`: requested seed count reached; **not** frontier-complete.
 - `policy feasible`: policy-constrained Solver found a victory certificate and authoritative replay succeeded.
-- `policy infeasible exact`: queue exhausted under the constrained rules with no goal.
+- `policy infeasible exact`: exhaustive prerequisites were satisfied and all relevant continuations failed exactly.
 
 These distinctions are part of the automatic-promotion safety boundary.
