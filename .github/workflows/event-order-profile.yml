@@ -6,19 +6,23 @@ on:
       - solver-phase1-pareto
     paths:
       - 'src/solver/fixed-purchase-policy-adapter.js'
+      - 'src/solver/tower-bounds.js'
       - 'src/analyzer/event-order-best-response.js'
       - 'src/tuner/review-candidates.js'
       - 'scripts/analyze-event-order-response.mjs'
       - 'test/fixed-purchase-policy-adapter.test.js'
+      - 'test/tower-bounds-overlay.test.js'
       - 'docs/event-order-best-response.md'
       - '.github/workflows/event-order-profile.yml'
   pull_request:
     paths:
       - 'src/solver/fixed-purchase-policy-adapter.js'
+      - 'src/solver/tower-bounds.js'
       - 'src/analyzer/event-order-best-response.js'
       - 'src/tuner/review-candidates.js'
       - 'scripts/analyze-event-order-response.mjs'
       - 'test/fixed-purchase-policy-adapter.test.js'
+      - 'test/tower-bounds-overlay.test.js'
       - 'docs/event-order-best-response.md'
       - '.github/workflows/event-order-profile.yml'
   workflow_dispatch:
@@ -64,7 +68,7 @@ jobs:
           e=r.get('exploit') or {}
           p=s.get('profile') or {}
           print(f"EVENT_ORDER status={r.get('status')} exact={r.get('coverageExact')} exploit={r.get('exploitFound')} referenceHp={(r.get('reference') or {}).get('terminalHp')} searchBest={o.get('searchBest')} best={o.get('best')} stop={s.get('stoppedReason')}")
-          print(f"SEARCH expanded={s.get('expandedStates')} generated={s.get('generatedStates')} structural={s.get('structuralStates')} active={s.get('activeLabels')} frontierPeak={s.get('frontierPeak')}")
+          print(f"SEARCH expanded={s.get('expandedStates')} generated={s.get('generatedStates')} structural={s.get('structuralStates')} active={s.get('activeLabels')} frontierPeak={s.get('frontierPeak')} dominated={s.get('prunedDominated')} bound={s.get('prunedBound')}")
           print(f"EXPLOIT deltaHp={e.get('deltaHp')} gain={e.get('relativeGain')} replay={e.get('replayOk')} cert={e.get('certificateHash')}")
           print('ACTIONS ' + ','.join(f"{k}:{v}" for k,v in sorted((p.get('generatedByAction') or {}).items(), key=lambda x:-x[1])))
           print('STAGES ' + ','.join(f"{k}:{v}" for k,v in sorted((p.get('expandedByStage') or {}).items(), key=lambda x:-x[1])[:16]))
