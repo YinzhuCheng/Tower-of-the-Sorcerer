@@ -1,21 +1,12 @@
-import { runGreedyShopStrategy } from '../solver/greedy-strategy.js';
 import { createCoreBoundaryAdapter } from '../solver/core-boundary-adapter.js';
 import { createFixedPurchasePolicyTowerAdapter } from '../solver/fixed-purchase-policy-adapter.js';
 import { collectGoalFrontier } from '../solver/goal-frontier.js';
 import { createObjectiveThresholdAdapter } from '../solver/objective-threshold-adapter.js';
-import { replayTowerCertificate, replayTowerCertificateToState } from '../solver/replay.js';
+import { replayTowerCertificateToState } from '../solver/replay.js';
 import { solve } from '../solver/search.js';
 import { withBalanceEdits } from '../tuner/balance-overlay.js';
+import { resolveReviewCandidateReference } from '../tuner/review-candidate-reference.js';
 import { cloneReviewCandidate, REVIEW_CANDIDATES } from '../tuner/review-candidates.js';
-
-function referenceRoute(candidate) {
-  const policy = candidate.purchasePolicy;
-  return runGreedyShopStrategy({
-    shopCycle: [...policy.shopCycle],
-    shopPlan: [...policy.shopPlan],
-    holyPolicy: policy.referenceHolyPolicy ?? 'immediate'
-  });
-}
 
 function compactSolver(report) {
   return {
@@ -37,6 +28,41 @@ function compactSolver(report) {
 }
 
 /**
+ * Pure evidence classifier used by the core-transition proof and unit tests.
+ *
+ * A bounded scheduler may choose any prefix seeds first for existence hunting,
+ * but `exactNoTransition` is allowed only when the complete from-core boundary is
+ * known, every threshold-relevant verified seed was actually attempted, and each
+ * of those continuation searches ended in an exact no-transition result.
+ */
+export function classifyThresholdCoreTransitionEvidence({
+  transitionFound = false,
+  boundaryCoverageExact = false,
+  verifiedRelevantSeedCount = 0,
+  scheduledSeedCount = 0,
+  attempts = []
+} = {}) {
+  const attemptedAllVerified = scheduledSeedCount === verifiedRelevantSeedCount
+    && attempts.length === verifiedRelevantSeedCount;
+  const allAttemptsExactNoTransition = attemptedAllVerified
+    && attempts.every((attempt) => attempt.exactNoTransition === true);
+  const exactNoTransition = !transitionFound
+    && boundaryCoverageExact
+    && attemptedAllVerified
+    && allAttemptsExactNoTransition;
+  return {
+    attemptedAllVerified,
+    allAttemptsExactNoTransition,
+    exactNoTransition,
+    status: transitionFound
+      ? 'threshold-relevant-transition-found'
+      : exactNoTransition
+        ? 'no-threshold-relevant-transition-exact'
+        : 'coverage-incomplete'
+  };
+}
+
+/**
  * Decompose a terminal exploit proof at a mandatory core transition.
  *
  * Under the current game rules every victory must collect the next layer core.
@@ -45,12 +71,12 @@ function compactSolver(report) {
  * still above the reference. We can ask that smaller exact existence question
  * before exploring any later-floor cleanup/permutation space.
  *
- * Composition:
+ * Reference trust is unified across review-candidate generations:
  *
- *   fixed purchase policy
- *     -> objective threshold dead-end (upper <= reference)
- *     -> from-core boundary discovery
- *     -> exact/bounded to-core existence from replayed bridge
+ * - a greedy-reference candidate is rebuilt/replayed by the deterministic runner;
+ * - an event-order-reference candidate must supply its rebuilt step witness, whose
+ *   hash, purchase policy, terminal HP and margin are revalidated by
+ *   `resolveReviewCandidateReference()` under the candidate overlay.
  *
  * A transition certificate proves only that a threshold-relevant next-core bridge
  * exists. Exact failure from one bridge eliminates that bridge. Global no-exploit
@@ -59,6 +85,7 @@ function compactSolver(report) {
  */
 export function analyzeThresholdCoreTransition({
   candidate = REVIEW_CANDIDATES.distributedPressureV1,
+  referenceWitness = null,
   fromCores = 6,
   toCores = fromCores + 1,
   boundaryMaxExpanded = 8_000,
@@ -74,32 +101,38 @@ export function analyzeThresholdCoreTransition({
   if (!Number.isInteger(boundaryMaxGoals) || boundaryMaxGoals < 1) throw new Error('boundaryMaxGoals must be positive.');
   if (!Number.isInteger(maxTransitionSeeds) || maxTransitionSeeds < 1) throw new Error('maxTransitionSeeds must be positive.');
 
-  return withBalanceEdits(snapshot.edits, (normalizedEdits) => {
-    const reference = referenceRoute(snapshot);
-    const referenceHp = reference.solvable ? reference.final.hp : null;
-    const expectedHp = snapshot.expectedEvidence?.terminalHp ?? null;
-    if (!reference.solvable || (Number.isFinite(expectedHp) && referenceHp !== expectedHp)) {
+  return withBalanceEdits(snapshot.edits, () => {
+    const policy = snapshot.purchasePolicy;
+    const fixedAdapter = createFixedPurchasePolicyTowerAdapter({
+      shopPlan: policy.shopPlan,
+      shopCycle: policy.shopCycle
+    });
+    const reference = resolveReviewCandidateReference({
+      candidate: snapshot,
+      adapter: fixedAdapter,
+      referenceWitness
+    });
+    const referenceHp = reference.ok ? reference.terminalHp : null;
+    if (!reference.ok || !Number.isFinite(referenceHp)) {
       return {
-        schemaVersion: 1,
-        model: 'event-order-core-transition-threshold-v0.1',
+        schemaVersion: 2,
+        model: 'event-order-core-transition-threshold-v0.2-reference-aware',
         candidateId: snapshot.id,
         status: 'candidate-snapshot-drift',
         coverageExact: false,
         transitionFound: false,
         exactNoTransition: false,
         reference: {
-          terminalHp: referenceHp,
-          expectedTerminalHp: expectedHp,
-          failure: reference.failure
-        }
+          mode: reference.mode ?? snapshot.expectedEvidence?.referenceMode ?? null,
+          terminalHp: reference.terminalHp ?? null,
+          expectedTerminalHp: snapshot.expectedEvidence?.terminalHp ?? null,
+          referenceWitnessHash: reference.referenceWitnessHash ?? null,
+          failures: reference.failures ?? ['reference_resolution_failed']
+        },
+        interpretation: 'reference_witness_or_candidate_snapshot_failed_before_threshold_boundary_search'
       };
     }
 
-    const policy = snapshot.purchasePolicy;
-    const fixedAdapter = createFixedPurchasePolicyTowerAdapter({
-      shopPlan: policy.shopPlan,
-      shopCycle: policy.shopCycle
-    });
     const thresholdAdapter = createObjectiveThresholdAdapter({
       threshold: referenceHp,
       baseAdapter: fixedAdapter
@@ -113,7 +146,7 @@ export function analyzeThresholdCoreTransition({
       maxExpanded: boundaryMaxExpanded,
       maxGenerated: boundaryMaxGenerated,
       maxGoals: boundaryMaxGoals,
-      solverVersion: `fixed-purchase-core${fromCores}-threshold-boundary-v0.1`
+      solverVersion: `fixed-purchase-core${fromCores}-threshold-boundary-v0.2`
     });
 
     const verifiedSeeds = frontier.goals.map((goal) => {
@@ -131,6 +164,8 @@ export function analyzeThresholdCoreTransition({
         || (b.goal.resources?.hp ?? 0) - (a.goal.resources?.hp ?? 0)
         || a.goal.certificate.certificateHash.localeCompare(b.goal.certificate.certificateHash));
 
+    // Scheduling is existence-hunt ordering only. Unscheduled relevant seeds remain
+    // part of the exactness obligation below.
     const scheduled = verifiedSeeds.slice(0, maxTransitionSeeds);
     const toBoundaryAdapter = createCoreBoundaryAdapter({
       targetCores: toCores,
@@ -146,7 +181,7 @@ export function analyzeThresholdCoreTransition({
         mode: 'existence',
         maxExpanded: transitionMaxExpanded,
         maxGenerated: transitionMaxGenerated,
-        solverVersion: `fixed-purchase-core${fromCores}-to-core${toCores}-threshold-v0.1`
+        solverVersion: `fixed-purchase-core${fromCores}-to-core${toCores}-threshold-v0.2`
       });
       const replay = solver.certificate
         ? replayTowerCertificateToState(solver.certificate, {
@@ -194,33 +229,32 @@ export function analyzeThresholdCoreTransition({
       }
     }
 
-    const attemptedAllVerified = scheduled.length === verifiedSeeds.length;
-    const allAttemptsExactNoTransition = attempts.length === verifiedSeeds.length
-      && attempts.every((attempt) => attempt.exactNoTransition);
-    const exactNoTransition = !winningTransition
-      && frontier.coverageExact
-      && attemptedAllVerified
-      && allAttemptsExactNoTransition;
-    const status = winningTransition
-      ? 'threshold-relevant-transition-found'
-      : exactNoTransition
-        ? 'no-threshold-relevant-transition-exact'
-        : 'coverage-incomplete';
+    const evidence = classifyThresholdCoreTransitionEvidence({
+      transitionFound: Boolean(winningTransition),
+      boundaryCoverageExact: frontier.coverageExact,
+      verifiedRelevantSeedCount: verifiedSeeds.length,
+      scheduledSeedCount: scheduled.length,
+      attempts
+    });
 
     return {
-      schemaVersion: 1,
-      model: 'event-order-core-transition-threshold-v0.1',
+      schemaVersion: 2,
+      model: 'event-order-core-transition-threshold-v0.2-reference-aware',
       candidateId: snapshot.id,
       fromCores,
       toCores,
-      status,
+      status: evidence.status,
       productionWriteAllowed: false,
       transitionFound: Boolean(winningTransition),
-      exactNoTransition,
-      coverageExact: exactNoTransition,
+      exactNoTransition: evidence.exactNoTransition,
+      coverageExact: evidence.exactNoTransition,
       reference: {
+        mode: reference.mode,
         terminalHp: referenceHp,
-        minNormalizedHpMargin: reference.minNormalizedHpMargin
+        minNormalizedHpMargin: reference.minNormalizedHpMargin,
+        referenceWitnessHash: reference.referenceWitnessHash ?? null,
+        purchaseCount: reference.purchaseCount ?? null,
+        failures: reference.failures ?? []
       },
       threshold: {
         objective: 'terminal_hp',
@@ -241,6 +275,7 @@ export function analyzeThresholdCoreTransition({
       schedule: {
         verifiedRelevantSeedCount: verifiedSeeds.length,
         scheduledSeedCount: scheduled.length,
+        attemptedAllVerified: evidence.attemptedAllVerified,
         seeds: scheduled.map((seed) => ({
           certificateHash: seed.goal.certificate?.certificateHash ?? null,
           resources: { ...seed.goal.resources },
@@ -253,7 +288,7 @@ export function analyzeThresholdCoreTransition({
       transition: winningTransition,
       interpretation: winningTransition
         ? 'replay_verified_threshold_relevant_next_core_bridge_found'
-        : exactNoTransition
+        : evidence.exactNoTransition
           ? 'complete_from_core_boundary_and_exact_transition_failures_prove_no_threshold_relevant_next_core_bridge'
           : 'no_threshold_relevant_next_core_bridge_found_within_current_boundary_or_transition_budget'
     };
