@@ -46,6 +46,12 @@ export function classifyThresholdCoreChain({
  * Continue a replay-verified threshold-relevant core transition directly to the
  * terminal objective-threshold goal.
  *
+ * `referenceWitness` is required for candidates whose review threshold is an
+ * event-order step witness rather than the legacy greedy route. The witness is
+ * forwarded unchanged into the transition proof, where it is independently
+ * checked against the candidate's semantic identity, purchase policy, HP/margin
+ * and authoritative replay before any threshold pruning is trusted.
+ *
  * Proof evidence remains a three-certificate chain. When a suffix exploit is
  * found, the same three certificates are additionally stripped into a numeric-
  * agnostic step skeleton and replayed once more from the canonical engine start.
@@ -53,6 +59,7 @@ export function classifyThresholdCoreChain({
  */
 export function analyzeThresholdCoreTransitionChain({
   candidate = REVIEW_CANDIDATES.distributedPressureV1,
+  referenceWitness = null,
   fromCores = 6,
   toCores = fromCores + 1,
   boundaryMaxExpanded = 8_000,
@@ -68,6 +75,7 @@ export function analyzeThresholdCoreTransitionChain({
   const snapshot = cloneReviewCandidate(candidate);
   const transitionReport = analyzeThresholdCoreTransition({
     candidate: snapshot,
+    referenceWitness,
     fromCores,
     toCores,
     boundaryMaxExpanded,
@@ -80,8 +88,8 @@ export function analyzeThresholdCoreTransitionChain({
 
   if (!transitionReport.transitionFound || !transitionReport.transition) {
     return {
-      schemaVersion: 3,
-      model: 'event-order-core-transition-chain-v0.3-step-witness',
+      schemaVersion: 4,
+      model: 'event-order-core-transition-chain-v0.4-reference-aware',
       candidateId: snapshot.id,
       fromCores,
       toCores,
@@ -126,8 +134,8 @@ export function analyzeThresholdCoreTransitionChain({
     });
     if (!prefixReplay.ok || !prefixReplay.state) {
       return {
-        schemaVersion: 3,
-        model: 'event-order-core-transition-chain-v0.3-step-witness',
+        schemaVersion: 4,
+        model: 'event-order-core-transition-chain-v0.4-reference-aware',
         candidateId: snapshot.id,
         fromCores,
         toCores,
@@ -148,8 +156,8 @@ export function analyzeThresholdCoreTransitionChain({
     });
     if (!transitionReplay.ok || !transitionReplay.state) {
       return {
-        schemaVersion: 3,
-        model: 'event-order-core-transition-chain-v0.3-step-witness',
+        schemaVersion: 4,
+        model: 'event-order-core-transition-chain-v0.4-reference-aware',
         candidateId: snapshot.id,
         fromCores,
         toCores,
@@ -182,7 +190,7 @@ export function analyzeThresholdCoreTransitionChain({
       mode: 'existence',
       maxExpanded: suffixMaxExpanded,
       maxGenerated: suffixMaxGenerated,
-      solverVersion: `fixed-purchase-core${toCores}-threshold-suffix-v0.3-step-witness`
+      solverVersion: `fixed-purchase-core${toCores}-threshold-suffix-v0.4-reference-aware`
     });
     const suffixCertificate = suffixSolver.certificate;
     const suffixReplay = suffixCertificate
@@ -235,8 +243,8 @@ export function analyzeThresholdCoreTransitionChain({
     } : null;
 
     return {
-      schemaVersion: 3,
-      model: 'event-order-core-transition-chain-v0.3-step-witness',
+      schemaVersion: 4,
+      model: 'event-order-core-transition-chain-v0.4-reference-aware',
       candidateId: snapshot.id,
       fromCores,
       toCores,
