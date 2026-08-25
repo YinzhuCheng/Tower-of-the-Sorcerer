@@ -12,6 +12,7 @@ function numberArg(name, fallback) {
 const report = proveDelayedHolyPoliciesStaged({
   boundaryMaxExpanded: numberArg('boundary-max-expanded', 25_000),
   boundaryMaxGenerated: numberArg('boundary-max-generated', 250_000),
+  boundaryDiscoveryGoals: numberArg('boundary-discovery-goals', 512),
   maxBoundarySeeds: numberArg('max-boundary-seeds', 12),
   core6MaxExpanded: numberArg('core6-max-expanded', 4_000),
   core6MaxGenerated: numberArg('core6-max-generated', 40_000),
