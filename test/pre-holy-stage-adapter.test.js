@@ -23,6 +23,14 @@ test('pre-Holy action filter removes Holy but preserves other actions', () => {
   assert.deepEqual(filterPreHolyActions([holy, mote, boss]), [mote, boss]);
 });
 
+test('F6 entry boundary requires floor 6, five cores and no Holy', () => {
+  const adapter = createPreHolyStageAdapter({ stage: 'f6Entry', baseAdapter: fakeBase([]) });
+  assert.equal(adapter.isGoal({ cores: 5, floor: 5, relics: { holy: false } }), true);
+  assert.equal(adapter.isGoal({ cores: 4, floor: 5, relics: { holy: false } }), false);
+  assert.equal(adapter.isGoal({ cores: 5, floor: 4, relics: { holy: false } }), false);
+  assert.equal(adapter.isGoal({ cores: 5, floor: 5, relics: { holy: true } }), false);
+});
+
 test('preBoss stage requires a currently legal astralBoss action without Holy', () => {
   const adapter = createPreHolyStageAdapter({ stage: 'preBoss', baseAdapter: fakeBase([boss]) });
   assert.equal(adapter.isGoal({ cores: 5, floor: 5, relics: { holy: false } }), true);
