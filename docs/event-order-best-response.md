@@ -124,6 +124,77 @@ purchase 1-opt
 
 If fixed-purchase event order already finds a large exploit, there is no value in paying for a larger joint search before understanding and repairing that exploit.
 
+## Threshold proof decomposition
+
+The whole-game objective-threshold question is:
+
+```text
+exists victory with terminal HP > 7083 ?
+```
+
+`createObjectiveThresholdAdapter()` converts the admissible terminal-HP upper bound into a proof-level dead-end rule: any state with `upperBound <= 7083` can be discarded for this question without installing an invalid bridge-local incumbent.
+
+A 50,000-expanded whole-game threshold profile did not find an exploit and did not exhaust the queue. It spent almost all useful budget at `cores=6`:
+
+```text
+expanded = 50,000
+generated = 241,855
+pruned by dominance = 111,729
+pruned by admissible bound = 2,415
+```
+
+The largest stage counts were all `c6/objective>7083`, so raising the whole-game budget again would mostly repeat the same combinatorial work.
+
+### Mandatory-core decomposition
+
+Every victory must cross the mandatory core sequence. Therefore a state at `c6` can contribute to a `>7083` exploit only if it can reach a `c7` state whose admissible terminal-HP upper bound is still above 7083.
+
+Repository implementation:
+
+- `src/analyzer/event-order-core-transition-proof.js`
+- `src/analyzer/event-order-core-transition-chain.js`
+- `scripts/analyze-event-order-core-transition.mjs`
+- `scripts/analyze-event-order-core-transition-chain.mjs`
+
+The chain is:
+
+```text
+canonical start
+  -> threshold-relevant c6 boundary certificate
+  -> replay-verified c6 -> c7 transition certificate
+  -> threshold terminal suffix certificate
+  -> canonical step-skeleton replay
+```
+
+The final step skeleton is a player warm-start witness, not a substitute proof certificate.
+
+### Exactness boundary
+
+The transition scheduler may choose which replay-verified `c6` seeds to attempt first, but it does not delete seeds from proof reasoning.
+
+`exactNoTransition=true` is allowed only when all of the following hold:
+
+1. the `c6` boundary collector exhausted its threshold-relevant frontier;
+2. every replay-verified relevant seed was attempted;
+3. every attempted `c6 -> c7` existence search ended exact-infeasible.
+
+If a `c7` bridge is found, that is positive existence evidence immediately. If the transition or suffix budget is exhausted, the result remains `coverage-incomplete`.
+
+A previous staged suffix profile found 32 replay-verified `c6` boundary states quickly (`367 expanded / 2,016 generated`), each with optimistic terminal upper bound around `8702`, but four bounded suffix attempts did not finish. A direct `c7` boundary search found no seed in 6,000 expansions. This is why the next profile targets the `c6 -> c7` transition directly rather than increasing the global search budget.
+
+Current profile plan:
+
+```text
+threshold-relevant c6 discovery goals = 64
+scheduled transition seeds            = 8
+transition max expanded per seed      = 5,000
+transition max generated per seed     = 70,000
+suffix max expanded                    = 8,000
+suffix max generated                   = 100,000
+```
+
+A replay-verified bridge is immediately continued into the terminal suffix. Failure under these finite budgets remains `coverage-incomplete`.
+
 ## Production boundary
 
 Even a completed fixed-purchase event-order optimum is not enough to enable production writes. The next review condition should require either:
