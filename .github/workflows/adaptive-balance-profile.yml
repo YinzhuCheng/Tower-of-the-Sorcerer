@@ -9,11 +9,13 @@ on:
       - 'src/tuner/numeric-*.js'
       - 'src/tuner/balance-proposal-v3.js'
       - 'src/analyzer/holy-policy-best-response.js'
+      - 'src/analyzer/pre-holy-static-cut.js'
       - 'src/analyzer/purchase-prefix-rescue.js'
       - 'scripts/adapt-final-pressure.mjs'
       - 'scripts/adapt-numeric-ray.mjs'
       - 'scripts/search-adaptive-balance.mjs'
       - 'scripts/search-numeric-rays.mjs'
+      - 'test/pre-holy-static-cut.test.js'
       - '.github/workflows/adaptive-balance-profile.yml'
   pull_request:
     paths:
@@ -21,11 +23,13 @@ on:
       - 'src/tuner/numeric-*.js'
       - 'src/tuner/balance-proposal-v3.js'
       - 'src/analyzer/holy-policy-best-response.js'
+      - 'src/analyzer/pre-holy-static-cut.js'
       - 'src/analyzer/purchase-prefix-rescue.js'
       - 'scripts/adapt-final-pressure.mjs'
       - 'scripts/adapt-numeric-ray.mjs'
       - 'scripts/search-adaptive-balance.mjs'
       - 'scripts/search-numeric-rays.mjs'
+      - 'test/pre-holy-static-cut.test.js'
       - '.github/workflows/adaptive-balance-profile.yml'
   workflow_dispatch:
     inputs:
@@ -105,9 +109,10 @@ jobs:
           holy=a.get('holyPolicyAnalysis') or {}
           print(f"ADAPT_RAY candidate={a.get('candidateId')} step={b.get('relativeStep')} margin={b.get('margin')} hp={b.get('finalHp')} holy={b.get('holyPolicy')} converged={a.get('converged')} hard={a.get('acceptedHardConstraints')} rejection={a.get('rejection')}")
           print(f"LEVERS {','.join(a.get('leverKeys') or [])}")
-          print(f"HOLY_COVERAGE optimized={holy.get('optimizedPolicies')}/{holy.get('attemptedPolicies')} complete={holy.get('coverageComplete')} stable={holy.get('stableWithCompleteCoverage')} uncovered={','.join(holy.get('uncoveredPolicies') or []) or 'none'}")
+          print(f"HOLY_COVERAGE optimized={holy.get('optimizedPolicies')}/{holy.get('attemptedPolicies')} provenInfeasible={holy.get('provenInfeasiblePolicies')} complete={holy.get('coverageComplete')} stable={holy.get('stableWithCompleteCoverage')} uncovered={','.join(holy.get('uncoveredPolicies') or []) or 'none'}")
           for alt in holy.get('alternatives') or []:
-              print(f"HOLY policy={alt.get('holyPolicy')} status={alt.get('status')} hp={alt.get('bestTerminalHp')} regret={alt.get('normalizedRegret')} local={alt.get('localOptimal')} rescue={alt.get('rescueFound')} rescueEvals={alt.get('rescueEvaluations')}")
+              proof=(alt.get('infeasibilityProof') or {}).get('type')
+              print(f"HOLY policy={alt.get('holyPolicy')} status={alt.get('status')} hp={alt.get('bestTerminalHp')} regret={alt.get('normalizedRegret')} local={alt.get('localOptimal')} proof={proof} rescue={alt.get('rescueFound')} rescueEvals={alt.get('rescueEvaluations')}")
           bracket=a.get('bracket') or {}
           print(f"BRACKET low={bracket.get('lowStep')}:{bracket.get('lowMargin')} high={bracket.get('highStep')}:{bracket.get('highMargin')} width={bracket.get('width')} violations={len(a.get('monotonicViolations') or [])}")
           solver=a.get('solver') or {}
@@ -119,7 +124,7 @@ jobs:
           for s in a.get('samples') or []:
               sh=s.get('holyPolicyAnalysis') or {}
               local=(s.get('localSearch') or {}).get('localOptimal')
-              print(f"SAMPLE step={s.get('relativeStep')} margin={s.get('margin')} hp={s.get('finalHp')} holy={s.get('holyPolicy')} coverage={sh.get('optimizedPolicies')}/{sh.get('attemptedPolicies']} solvable={s.get('solvable')} local={local}")
+              print(f"SAMPLE step={s.get('relativeStep')} margin={s.get('margin')} hp={s.get('finalHp')} holy={s.get('holyPolicy')} coverage={sh.get('coveredPolicies')}/{sh.get('attemptedPolicies')} solvable={s.get('solvable')} local={local}")
           PY
       - uses: actions/upload-artifact@v4
         with:
