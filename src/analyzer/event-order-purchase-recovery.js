@@ -46,6 +46,10 @@ function defaultStepExecutor({ state, step, adapter }) {
   });
 }
 
+function defaultFullReplayExecutor({ witness, adapter, initialState }) {
+  return replayTowerStepSkeleton(witness.steps, { adapter, initialState });
+}
+
 function gatherFrontier(frontiers) {
   const labels = [];
   for (const frontier of frontiers.values()) labels.push(...frontier.activeLabels());
@@ -79,6 +83,11 @@ function betterTerminal(adapter, left, right) {
  * the fixed event order has been considered. `recoverable=false` therefore means
  * exact unrecoverability for this event skeleton only; it is not a global
  * event-order impossibility proof.
+ *
+ * `stepExecutor` and `fullReplayExecutor` are injectable only to test the generic
+ * DP kernel on synthetic transition systems. Production callers use the defaults,
+ * so both incremental transitions and the final recovered witness are executed by
+ * canonical Tower replay.
  */
 export function solveFixedEventOrderPurchaseRecovery({
   witness,
@@ -87,6 +96,7 @@ export function solveFixedEventOrderPurchaseRecovery({
   forcedOptionId,
   initialState = null,
   stepExecutor = defaultStepExecutor,
+  fullReplayExecutor = defaultFullReplayExecutor,
   maxActiveLabels = 50_000
 } = {}) {
   if (!witness?.steps?.length) throw new Error('Purchase recovery requires an event-order witness.');
@@ -95,6 +105,9 @@ export function solveFixedEventOrderPurchaseRecovery({
     throw new Error('forcedPurchaseIndex must be a non-negative integer.');
   }
   if (!SHOP_OPTIONS.includes(forcedOptionId)) throw new Error(`Unknown forced shop option: ${forcedOptionId}`);
+  if (typeof stepExecutor !== 'function' || typeof fullReplayExecutor !== 'function') {
+    throw new Error('Purchase recovery executors must be functions.');
+  }
   if (!Number.isInteger(maxActiveLabels) || maxActiveLabels < 1) {
     throw new Error('maxActiveLabels must be a positive integer.');
   }
@@ -190,9 +203,13 @@ export function solveFixedEventOrderPurchaseRecovery({
   let authoritativeReplay = null;
   if (recoverable) {
     recoveryWitness = buildWitnessWithPurchasePlan(witness, best.purchasePlan);
-    authoritativeReplay = replayTowerStepSkeleton(recoveryWitness.steps, { adapter });
-    if (!authoritativeReplay.ok || authoritativeReplay.objective !== adapter.objectiveValue(best.state)) {
-      throw new Error(`Recovery witness replay mismatch: ${authoritativeReplay.failures?.[0]?.reason ?? 'objective mismatch'}`);
+    authoritativeReplay = fullReplayExecutor({
+      witness: recoveryWitness,
+      adapter,
+      initialState
+    });
+    if (!authoritativeReplay?.ok || authoritativeReplay.objective !== adapter.objectiveValue(best.state)) {
+      throw new Error(`Recovery witness replay mismatch: ${authoritativeReplay?.failures?.[0]?.reason ?? 'objective mismatch'}`);
     }
   }
 
@@ -222,7 +239,7 @@ export function solveFixedEventOrderPurchaseRecovery({
       ok: authoritativeReplay.ok,
       objective: authoritativeReplay.objective,
       minNormalizedHpMargin: authoritativeReplay.minNormalizedHpMargin,
-      failures: authoritativeReplay.failures
+      failures: authoritativeReplay.failures ?? []
     } : null,
     interpretation: recoverable
       ? 'forced_purchase_error_is_recoverable_by_later_purchase_choices_under_the_same_event_order'
