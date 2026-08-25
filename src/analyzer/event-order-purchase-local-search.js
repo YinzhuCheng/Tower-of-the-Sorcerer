@@ -1,5 +1,6 @@
 import { replayTowerStepSkeleton } from '../solver/replay.js';
 import { hashValue } from '../solver/state.js';
+import { eventOrderWitnessSemanticFingerprint } from './event-order-witness.js';
 
 const SHOP_OPTIONS = Object.freeze(['atk', 'def', 'hp']);
 
@@ -35,7 +36,9 @@ export function mutateEventOrderWitnessShopChoice(witness, stepIndex, optionId) 
   step.eventId = shopEventIdWithOption(step.eventId, optionId);
   const payload = { ...result };
   delete payload.witnessHash;
+  delete payload.semanticFingerprint;
   result.witnessHash = hashValue(payload);
+  result.semanticFingerprint = eventOrderWitnessSemanticFingerprint(result);
   return result;
 }
 
@@ -164,7 +167,9 @@ export function optimizeEventOrderWitnessPurchases({
   bestWitness.expectedTerminalHp = bestReplay.objective;
   const payload = { ...bestWitness };
   delete payload.witnessHash;
+  delete payload.semanticFingerprint;
   bestWitness.witnessHash = hashValue(payload);
+  bestWitness.semanticFingerprint = eventOrderWitnessSemanticFingerprint(bestWitness);
 
   return {
     schemaVersion: 1,
