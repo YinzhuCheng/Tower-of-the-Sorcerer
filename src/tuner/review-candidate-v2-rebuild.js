@@ -6,6 +6,7 @@ import {
   findNumericRayCandidateByLeverKeys,
   searchEventOrderWitnessPressureRay
 } from './event-order-witness-ray.js';
+import { eventOrderWitnessPurchasePlan } from './review-candidate-reference.js';
 import { REVIEW_CANDIDATES } from './review-candidates.js';
 
 function sameStep(left, right, epsilon = 1e-12) {
@@ -21,6 +22,10 @@ function sameStep(left, right, epsilon = 1e-12) {
  * A large direct jump can make the old 241-step route illegal even though a
  * continuation of locally adapted witnesses remains legal. Therefore that
  * continuation schedule is part of the reproducible player-response algorithm.
+ *
+ * The actual shop sequence used by the rebuilt witness is returned as first-class
+ * evidence. Candidate validation must compare this sequence with the persisted
+ * fixed-purchase policy before using the witness as a proof threshold.
  */
 export function rebuildDistributedPressureV2Reference({
   maxPurchasePasses = 12,
@@ -75,9 +80,14 @@ export function rebuildDistributedPressureV2Reference({
     throw new Error(`V2 candidate drift: rebuilt best ray step ${sample.relativeStep} != stored ${sourceRayStep}.`);
   }
 
+  const purchasePlan = eventOrderWitnessPurchasePlan(sample.bestWitness);
+  if (purchasePlan.some((optionId) => typeof optionId !== 'string')) {
+    throw new Error('V2 rebuilt witness contains an invalid shop action.');
+  }
+
   return {
-    schemaVersion: 2,
-    model: 'distributed-pressure-v2-reference-rebuild-v0.2-continuation',
+    schemaVersion: 3,
+    model: 'distributed-pressure-v2-reference-rebuild-v0.3-purchase-plan-evidence',
     continuationStartStep,
     sourceRayStep,
     sourceDirectionId: direction.id,
@@ -87,6 +97,8 @@ export function rebuildDistributedPressureV2Reference({
     terminalHp: sample.finalHp,
     minNormalizedHpMargin: sample.margin,
     witnessHash: sample.bestWitness.witnessHash,
+    purchasePlan,
+    purchaseCount: purchasePlan.length,
     localOptimal: sample.localSearch.localOptimal,
     edits: sample.edits,
     witness: sample.bestWitness,
