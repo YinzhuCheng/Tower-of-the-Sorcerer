@@ -1,13 +1,34 @@
 import { adaptNumericRayCandidateHolyAware } from './adaptive-numeric-ray-v2.js';
 
-function strengthenHolyEvidence(report) {
-  const holy = report?.holyPolicyAnalysis ?? null;
-  const coverageComplete = Boolean(
-    holy
-    && Number.isFinite(holy.attemptedPolicies)
-    && holy.attemptedPolicies > 0
-    && holy.optimizedPolicies === holy.attemptedPolicies
+function policyCoverageFromAlternatives(holy) {
+  const attempted = Number.isFinite(holy?.attemptedPolicies) ? holy.attemptedPolicies : 0;
+  const alternatives = Array.isArray(holy?.alternatives) ? holy.alternatives : [];
+  const optimizedPolicies = alternatives.filter((entry) => entry.status === 'optimized').length;
+  const proven = alternatives.filter((entry) => entry.status === 'infeasible-proven');
+  const uncovered = alternatives.filter((entry) =>
+    entry.status !== 'optimized' && entry.status !== 'infeasible-proven'
   );
+  const alternativesComplete = attempted > 0
+    && alternatives.length === attempted
+    && optimizedPolicies + proven.length === attempted;
+  return {
+    attemptedPolicies: attempted,
+    optimizedPolicies: Number.isFinite(holy?.optimizedPolicies)
+      ? holy.optimizedPolicies
+      : optimizedPolicies,
+    provenInfeasiblePolicies: proven.length,
+    provenInfeasiblePolicyIds: proven.map((entry) => entry.holyPolicy),
+    coveredPolicies: optimizedPolicies + proven.length,
+    uncoveredPolicies: uncovered.map((entry) => entry.holyPolicy),
+    policyCoverageRatio: attempted > 0 ? (optimizedPolicies + proven.length) / attempted : 0,
+    coverageComplete: alternativesComplete
+  };
+}
+
+export function strengthenHolyEvidence(report) {
+  const holy = report?.holyPolicyAnalysis ?? null;
+  const coverage = holy ? policyCoverageFromAlternatives(holy) : null;
+  const coverageComplete = Boolean(coverage?.coverageComplete);
   const stableWithCompleteCoverage = Boolean(
     coverageComplete
     && holy?.allOptimizedLocalOptimal === true
@@ -15,6 +36,7 @@ function strengthenHolyEvidence(report) {
   );
   const holyPolicyAnalysis = holy ? {
     ...holy,
+    ...coverage,
     coverageComplete,
     stableWithCompleteCoverage
   } : null;
@@ -33,6 +55,7 @@ function strengthenHolyEvidence(report) {
       ...report.best,
       holyPolicyAnalysis: report.best.holyPolicyAnalysis ? {
         ...report.best.holyPolicyAnalysis,
+        ...coverage,
         coverageComplete,
         stableWithCompleteCoverage
       } : null
@@ -44,13 +67,12 @@ function strengthenHolyEvidence(report) {
 }
 
 /**
- * V3 keeps V2's Holy-aware player search but tightens the review evidence:
- * every modeled Holy policy must obtain a feasible seed and reach purchase
- * local-1opt. Uncovered policies remain visible evidence gaps instead of being
- * silently treated as impossible.
+ * V3 keeps V2's Holy-aware player search but tightens review evidence: every
+ * modeled Holy policy must be covered either by an authoritative feasible
+ * best-response that reached purchase local-1opt OR by a sound policy-level
+ * infeasibility certificate. Bounded/heuristic misses remain uncovered and still
+ * block review.
  */
 export function adaptNumericRayCandidateCompleteHolyCoverage(options = {}) {
   return strengthenHolyEvidence(adaptNumericRayCandidateHolyAware(options));
 }
-
-export { strengthenHolyEvidence };
