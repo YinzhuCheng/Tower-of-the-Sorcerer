@@ -39,20 +39,42 @@ const REVIEW_CANDIDATE_V2_SHOP_PLAN = Object.freeze([
   'hp', 'hp', 'hp', 'hp', 'hp', 'hp', 'hp', 'hp', 'hp'
 ]);
 
+// V3 is the first coupled failure-core forgiveness + late-pressure candidate.
+// These values came from repository-run monotone repair/compensation searches;
+// they remain a dry-run snapshot and are not canonical game writes.
+const REVIEW_CANDIDATE_V3_EDITS = Object.freeze([
+  Object.freeze({ target: 'enemy', id: 'whaleSinger', field: 'magicPower', value: 62 }),
+  Object.freeze({ target: 'shop', id: 'hp', field: 'effect.hp', value: 150 }),
+  Object.freeze({ target: 'shop', id: 'hp', field: 'effect.maxHp', value: 150 }),
+  Object.freeze({ target: 'enemy', id: 'flameCaster', field: 'def', value: 44 }),
+  Object.freeze({ target: 'enemy', id: 'dragonBoss', field: 'atk', value: 111 }),
+  Object.freeze({ target: 'enemy', id: 'cometArcher', field: 'atk', value: 200 })
+]);
+
+const REVIEW_CANDIDATE_V3_SHOP_PLAN = Object.freeze([
+  'def', 'def', 'def',
+  'atk', 'atk', 'atk', 'atk',
+  'def',
+  'atk', 'atk', 'atk',
+  'def',
+  'atk', 'atk', 'atk', 'atk', 'atk',
+  'hp', 'hp',
+  'atk',
+  'hp', 'hp', 'hp', 'hp', 'hp', 'hp', 'hp', 'hp', 'hp'
+]);
+
 /**
  * Repository-resident dry-run balance candidates.
  *
- * V1 references a deterministic greedy-event-order route. V2 references a
- * numeric-agnostic event-order step witness that must be rebuilt through the
- * same continuation/warm-start ray that discovered it and then authoritatively
- * replayed under the V2 overlay before its HP may be trusted as a threshold.
+ * V1 references a deterministic greedy-event-order route. V2 and V3 reference
+ * numeric-agnostic event-order step witnesses that must be rebuilt and
+ * authoritatively replayed under their current overlays before their HP may be
+ * trusted as proof thresholds.
  *
- * Event-order reference identity is semantic-first for V2. The semantic
- * fingerprint hashes the ordered macro events and strategic action choices while
- * excluding source certificate hashes and zero-cost movement paths. The raw
- * witness hash is retained as historical provenance only and may legitimately
- * change when the same semantic route is reconstructed through different proof
- * certificates.
+ * Event-order reference identity is semantic-first for V2/V3. The semantic
+ * fingerprint hashes ordered macro events and strategic action choices while
+ * excluding source certificate hashes and zero-cost movement paths. Raw witness
+ * hashes remain provenance diagnostics.
  *
  * These are evidence/configuration, NOT production balance writes. Canonical
  * `src/game/data.js` remains unchanged and production writes stay disabled.
@@ -95,13 +117,39 @@ export const REVIEW_CANDIDATES = Object.freeze({
       referenceMode: 'event-order-step-witness',
       terminalHp: 4_578,
       minNormalizedHpMargin: 0.14945652173913043,
-      // Historical exact-skeleton provenance from the original V2 discovery.
       referenceWitnessHash: '8623f0ba330d21b3',
-      // Stable macro-event identity rebuilt on 2026-08-25. This is now the hard
-      // witness identity check; raw hash changes remain provenance diagnostics.
       referenceSemanticFingerprint: '361000c0b48dba27',
       witnessSteps: 241,
       purchaseCount: 29,
+      pressureTarget: Object.freeze([0.08, 0.25])
+    })
+  }),
+  distributedPressureV3: Object.freeze({
+    id: 'distributed-pressure-v3',
+    sourceModel: 'v2-coupled-forgiveness-pressure-compensation-v0.1',
+    sourceCandidateId: 'distributed-pressure-v2',
+    sourceRepairSeedId: 'v2-local-repair-seed-2026-08-26',
+    sourceCompensation: Object.freeze({
+      target: 'enemy', id: 'cometArcher', field: 'atk', from: 128, to: 200
+    }),
+    productionWriteAllowed: false,
+    edits: REVIEW_CANDIDATE_V3_EDITS,
+    purchasePolicy: Object.freeze({
+      shopCycle: Object.freeze(['def', 'atk', 'hp']),
+      shopPlan: REVIEW_CANDIDATE_V3_SHOP_PLAN,
+      referenceHolyPolicy: 'immediate'
+    }),
+    expectedEvidence: Object.freeze({
+      referenceMode: 'event-order-step-witness',
+      terminalHp: 4_459,
+      minNormalizedHpMargin: 0.24545454545454545,
+      referenceWitnessHash: '5f2eaa7dcee33508',
+      referenceSemanticFingerprint: 'f7471edbeb30498d',
+      witnessSteps: 241,
+      purchaseCount: 29,
+      localCatastrophicMutations: 4,
+      localExactUnrecoverableMutations: 4,
+      localRecoveryUnknown: 0,
       pressureTarget: Object.freeze([0.08, 0.25])
     })
   })
@@ -122,6 +170,9 @@ export function cloneReviewCandidate(candidate = REVIEW_CANDIDATES.distributedPr
       pressureTarget: Array.isArray(candidate.expectedEvidence?.pressureTarget)
         ? [...candidate.expectedEvidence.pressureTarget]
         : candidate.expectedEvidence?.pressureTarget
-    }
+    },
+    sourceCompensation: candidate.sourceCompensation
+      ? { ...candidate.sourceCompensation }
+      : candidate.sourceCompensation
   };
 }
