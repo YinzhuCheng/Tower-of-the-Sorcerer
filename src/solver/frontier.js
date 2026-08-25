@@ -11,6 +11,11 @@ export class ParetoFrontier {
     for (const existing of active) {
       const relation = resourceRelation(existing.resources, label.resources, this.fields);
       if (relation === 'dominates' || relation === 'equal') {
+        // A rejected label must not remain externally observable as active. Most
+        // search callers already discard rejected labels immediately, but
+        // analyzers that retain provenance arrays rely on the active bit when a
+        // shared Pareto frontier later determines which witnesses still matter.
+        label.active = false;
         return { accepted: false, removed: [], reason: 'dominated' };
       }
     }
