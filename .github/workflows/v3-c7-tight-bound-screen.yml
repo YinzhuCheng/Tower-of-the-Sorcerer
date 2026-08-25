@@ -1,0 +1,79 @@
+name: V3 C7 Tight Bound Screen
+
+on:
+  push:
+    branches: [solver-phase1-pareto]
+    paths:
+      - 'src/solver/discrete-harvest-bound-preview.js'
+      - 'src/solver/relaxed-pure-hp-access-bound.js'
+      - 'src/solver/fixed-purchase-bound-diagnostics.js'
+      - 'src/analyzer/event-order-core-bridge-tight-bound-screen.js'
+      - 'src/tuner/review-candidate-v3-rebuild.js'
+      - 'src/tuner/review-candidates.js'
+      - 'scripts/analyze-v3-c7-tight-bound-screen.mjs'
+      - 'test/event-order-core-bridge-tight-bound-screen.test.js'
+      - 'docs/v3-c7-tight-bound-screen.md'
+      - '.github/workflows/v3-c7-tight-bound-screen.yml'
+  pull_request:
+    paths:
+      - 'src/solver/discrete-harvest-bound-preview.js'
+      - 'src/solver/relaxed-pure-hp-access-bound.js'
+      - 'src/solver/fixed-purchase-bound-diagnostics.js'
+      - 'src/analyzer/event-order-core-bridge-tight-bound-screen.js'
+      - 'src/tuner/review-candidate-v3-rebuild.js'
+      - 'src/tuner/review-candidates.js'
+      - 'scripts/analyze-v3-c7-tight-bound-screen.mjs'
+      - 'test/event-order-core-bridge-tight-bound-screen.test.js'
+      - 'docs/v3-c7-tight-bound-screen.md'
+      - '.github/workflows/v3-c7-tight-bound-screen.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: v3-c7-tight-bound-screen-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  tight-screen:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - name: Batch-screen representative c7 frontiers
+        run: |
+          node scripts/analyze-v3-c7-tight-bound-screen.mjs \
+            --from-cores=6 --to-cores=7 \
+            --from-boundary-max-expanded=8000 \
+            --from-boundary-max-generated=100000 \
+            --from-boundary-max-goals=64 \
+            --max-prefix-seeds=3 \
+            --bridge-max-expanded-per-prefix=6000 \
+            --bridge-max-generated-per-prefix=90000 \
+            --bridge-max-goals-per-prefix=32 \
+            --json > v3-c7-tight-bound-screen.json
+      - name: Print tight-bound screen
+        if: always()
+        run: |
+          python3 - <<'PY'
+          import json, os
+          path='v3-c7-tight-bound-screen.json'
+          if not os.path.exists(path) or os.path.getsize(path)==0:
+              print('V3 tight bound screen report was not produced.')
+              raise SystemExit(0)
+          x=json.load(open(path)); r=x.get('analysis') or {}
+          print(f"V3_TIGHT_SCREEN status={r.get('status')} reference={(x.get('rebuild') or {}).get('terminalHp')} semantic={(x.get('rebuild') or {}).get('semanticFingerprint')} proofModified={r.get('proofBoundModified')} soundCandidate={r.get('soundBridgeBoundCandidate')}")
+          print(f"OVERALL {r.get('overall')}")
+          for a in r.get('attempts') or []:
+              print(f"PREFIX cert={a.get('prefixCertificateHash')} frontier={a.get('frontier')} summary={a.get('summary')}")
+              for e in a.get('entries') or []:
+                  res=e.get('resources') or {}
+                  print(f"  BRIDGE cert={e.get('certificateHash')} p={e.get('shopPurchases')} hp={res.get('hp')} gold={res.get('gold')} cards={res.get('sun')}/{res.get('moon')}/{res.get('star')} old={e.get('oldUpperBound')} tight={e.get('tightUpperBound')} tightening={e.get('tightening')} tightSlack={e.get('tightSlack')} prune={e.get('prunable')} zeroGold={e.get('zeroDamageGold')} buys={e.get('bestPurchaseCount')} needGold={e.get('requiredEnemyGold')} frac={e.get('fractionalHarvestDamage')} discrete={e.get('discreteHarvestDamage')} access={e.get('accessDamageLowerBound')} accessPenalty={e.get('accessAdditionalPenalty')}")
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: v3-c7-tight-bound-screen
+          path: v3-c7-tight-bound-screen.json
+          if-no-files-found: warn
+          retention-days: 14
