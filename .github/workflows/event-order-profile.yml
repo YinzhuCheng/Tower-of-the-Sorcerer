@@ -79,34 +79,27 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
-        with:
-          node-version: 22
+        with: { node-version: 22 }
       - name: Analyze whole-game event-order best response
         env:
           MAX_EXPANDED: ${{ inputs.max_expanded || '12000' }}
           MAX_GENERATED: ${{ inputs.max_generated || '180000' }}
         run: |
-          node scripts/analyze-event-order-response.mjs \
-            --max-expanded="$MAX_EXPANDED" \
-            --max-generated="$MAX_GENERATED" \
-            --json > event-order-response.json
+          node scripts/analyze-event-order-response.mjs --max-expanded="$MAX_EXPANDED" --max-generated="$MAX_GENERATED" --json > event-order-response.json
       - name: Print compact event-order summary
         run: |
           python3 - <<'PY'
           import json
-          r=json.load(open('event-order-response.json'))
-          s=r.get('solver') or {}; o=s.get('objective') or {}; e=r.get('exploit') or {}; p=s.get('profile') or {}
+          r=json.load(open('event-order-response.json')); s=r.get('solver') or {}; o=s.get('objective') or {}; e=r.get('exploit') or {}; p=s.get('profile') or {}
           print(f"EVENT_ORDER status={r.get('status')} exact={r.get('coverageExact')} exploit={r.get('exploitFound')} referenceHp={(r.get('reference') or {}).get('terminalHp')} searchBest={o.get('searchBest')} best={o.get('best')} stop={s.get('stoppedReason')}")
-          print(f"SEARCH expanded={s.get('expandedStates')} generated={s.get('generatedStates')} structural={s.get('structuralStates')} active={s.get('activeLabels')} frontierPeak={s.get('frontierPeak')} dominated={s.get('prunedDominated')} bound={s.get('prunedBound')}")
+          print(f"SEARCH expanded={s.get('expandedStates')} generated={s.get('generatedStates')} structural={s.get('structuralStates')} active={s.get('activeLabels')} dominated={s.get('prunedDominated')} bound={s.get('prunedBound')}")
           print(f"EXPLOIT deltaHp={e.get('deltaHp')} gain={e.get('relativeGain')} replay={e.get('replayOk')} cert={e.get('certificateHash')}")
-          print('ACTIONS ' + ','.join(f"{k}:{v}" for k,v in sorted((p.get('generatedByAction') or {}).items(), key=lambda x:-x[1])))
-          print('STAGES ' + ','.join(f"{k}:{v}" for k,v in sorted((p.get('expandedByStage') or {}).items(), key=lambda x:-x[1])[:16]))
+          print('STAGES ' + ','.join(f"{k}:{v}" for k,v in sorted((p.get('expandedByStage') or {}).items(), key=lambda x:-x[1])[:20]))
           PY
       - uses: actions/upload-artifact@v4
         with:
           name: event-order-response
           path: event-order-response.json
-          if-no-files-found: error
           retention-days: 7
 
   fixed-purchase-threshold-proof:
@@ -115,17 +108,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
-        with:
-          node-version: 22
+        with: { node-version: 22 }
       - name: Prove or refute a whole-game event-order exploit above the reference
         env:
           MAX_EXPANDED: ${{ inputs.threshold_max_expanded || '50000' }}
           MAX_GENERATED: ${{ inputs.threshold_max_generated || '400000' }}
         run: |
-          node scripts/prove-event-order-threshold.mjs \
-            --max-expanded="$MAX_EXPANDED" \
-            --max-generated="$MAX_GENERATED" \
-            --json > event-order-threshold-proof.json
+          node scripts/prove-event-order-threshold.mjs --max-expanded="$MAX_EXPANDED" --max-generated="$MAX_GENERATED" --json > event-order-threshold-proof.json
       - name: Print compact threshold proof summary
         run: |
           python3 - <<'PY'
@@ -135,49 +124,53 @@ jobs:
           print(f"SEARCH expanded={s.get('expandedStates')} generated={s.get('generatedStates')} structural={s.get('structuralStates')} active={s.get('activeLabels')} dominated={s.get('prunedDominated')} bound={s.get('prunedBound')}")
           print(f"EXPLOIT hp={e.get('terminalHp')} delta={e.get('deltaHp')} replay={e.get('replayOk')} cert={e.get('certificateHash')}")
           print('STAGES ' + ','.join(f"{k}:{v}" for k,v in sorted((p.get('expandedByStage') or {}).items(), key=lambda x:-x[1])[:20]))
-          print('ACTIONS ' + ','.join(f"{k}:{v}" for k,v in sorted((p.get('generatedByAction') or {}).items(), key=lambda x:-x[1])[:20]))
           PY
       - uses: actions/upload-artifact@v4
         with:
           name: event-order-threshold-proof
           path: event-order-threshold-proof.json
-          if-no-files-found: error
           retention-days: 7
 
-  core7-suffix-event-order:
+  staged-core-suffix-event-order:
+    strategy:
+      fail-fast: false
+      matrix:
+        target_cores: [6, 7]
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
-        with:
-          node-version: 22
-      - name: Discover threshold-relevant core7 boundaries and analyze suffixes
+        with: { node-version: 22 }
+      - name: Discover threshold-relevant core boundary and analyze suffix
+        env:
+          TARGET_CORES: ${{ matrix.target_cores }}
         run: |
           node scripts/analyze-event-order-suffix.mjs \
-            --target-cores=7 \
+            --target-cores="$TARGET_CORES" \
             --boundary-max-expanded=6000 \
             --boundary-max-generated=70000 \
             --boundary-max-goals=32 \
             --max-suffix-seeds=4 \
             --suffix-max-expanded=2500 \
             --suffix-max-generated=35000 \
-            --json > event-order-core7-suffix.json
+            --json > "event-order-core${TARGET_CORES}-suffix.json"
       - name: Print compact suffix summary
+        env:
+          TARGET_CORES: ${{ matrix.target_cores }}
         run: |
           python3 - <<'PY'
-          import json
-          r=json.load(open('event-order-core7-suffix.json')); b=r.get('boundary') or {}; e=r.get('exploit') or {}
-          print(f"CORE7_SUFFIX status={r.get('status')} exploit={r.get('exploitFound')} exact={r.get('coverageExact')} referenceHp={(r.get('reference') or {}).get('terminalHp')}")
+          import json,os
+          c=os.environ['TARGET_CORES']; r=json.load(open(f'event-order-core{c}-suffix.json')); b=r.get('boundary') or {}; e=r.get('exploit') or {}
+          print(f"CORE_SUFFIX core={c} status={r.get('status')} exploit={r.get('exploitFound')} exact={r.get('coverageExact')} referenceHp={(r.get('reference') or {}).get('terminalHp')}")
           print(f"BOUNDARY verified={b.get('verifiedGoals')}/{b.get('discoveredGoals')} exact={b.get('coverageExact')} expanded={b.get('expandedStates')} generated={b.get('generatedStates')} stop={b.get('stoppedReason')}")
           for a in r.get('attempts') or []:
               s=a.get('suffix') or {}; o=s.get('objective') or {}
-              print(f"SUFFIX prefix={a.get('prefixCertificateHash')} ub={a.get('optimisticTerminalHpUpperBound')} hp={(a.get('bridgeResources') or {}).get('hp')} gold={(a.get('bridgeResources') or {}).get('gold')} p={a.get('bridgeShopPurchases')} best={o.get('searchBest')} exact={s.get('objectiveExact')} stop={s.get('stoppedReason')} replay={(a.get('suffixReplay') or {}).get('ok')} exploit={a.get('exploit')}")
+              print(f"SUFFIX prefix={a.get('prefixCertificateHash')} ub={a.get('optimisticTerminalHpUpperBound')} hp={(a.get('bridgeResources') or {}).get('hp')} gold={(a.get('bridgeResources') or {}).get('gold')} p={a.get('bridgeShopPurchases')} best={o.get('searchBest')} exact={s.get('exact')} stop={s.get('stoppedReason')} replay={(a.get('suffixReplay') or {}).get('ok')} exploit={a.get('exploit')} exactNoExploit={a.get('exactNoExploit')}")
           print(f"EXPLOIT terminalHp={e.get('terminalHp')} delta={e.get('deltaHp')} gain={e.get('relativeGain')}")
           PY
       - uses: actions/upload-artifact@v4
         with:
-          name: event-order-core7-suffix
-          path: event-order-core7-suffix.json
-          if-no-files-found: error
+          name: event-order-core${{ matrix.target_cores }}-suffix
+          path: event-order-core${{ matrix.target_cores }}-suffix.json
           retention-days: 7
