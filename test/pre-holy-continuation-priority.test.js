@@ -1,27 +1,19 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
-  preHolyContinuationPriority,
-  relaxedBossDamageNeed
+  hasFreeBossCorridor,
+  preHolyContinuationPriority
 } from '../src/solver/pre-holy-stage-adapter.js';
 
 function state({ floor, cores = 5, hp = 1000, atk = 104, def = 100, gold = 2800 } = {}) {
   return { floor, cores, stats: { hp, maxHp: 9500, atk, def, gold } };
 }
 
-function engineState(map, {
-  x = 1,
-  y = 1,
-  hp = 5000,
-  atk = 170,
-  def = 170
-} = {}) {
+function engineState(map, { x = 1, y = 1 } = {}) {
   return {
     floor: 0,
     x,
     y,
-    stats: { hp, maxHp: hp, atk, def, gold: 0 },
-    relics: { ward: false },
     floorStates: [{ map }]
   };
 }
@@ -53,62 +45,38 @@ test('states outside the core5 preparation stage retain base priority', () => {
   assert.equal(value, basePriority);
 });
 
-test('relaxed damage-to-boss includes fixed damage from corridor enemies and boss', () => {
-  const direct = [
-    ['#', '#', '#', '#'],
-    ['#', '.', 'enemy:astralBoss', '#'],
-    ['#', '#', '#', '#']
+test('free boss corridor requires only real zero-event transit tiles', () => {
+  const open = [
+    ['#', '#', '#', '#', '#'],
+    ['#', '.', '.', 'enemy:astralBoss', '#'],
+    ['#', '#', '#', '#', '#']
   ];
-  const withMote = [
+  assert.equal(hasFreeBossCorridor(engineState(open)), true);
+
+  const enemyBlocked = [
     ['#', '#', '#', '#', '#'],
     ['#', '.', 'enemy:mote', 'enemy:astralBoss', '#'],
     ['#', '#', '#', '#', '#']
   ];
-  const bossOnly = relaxedBossDamageNeed(engineState(direct));
-  const corridor = relaxedBossDamageNeed(engineState(withMote));
-  assert.ok(Number.isFinite(bossOnly));
-  assert.ok(Number.isFinite(corridor));
-  assert.ok(corridor >= bossOnly);
+  assert.equal(hasFreeBossCorridor(engineState(enemyBlocked)), false);
 });
 
-test('relaxed damage-to-boss prefers a zero-damage detour around a damaging enemy', () => {
+test('items, doors, runes and Holy remain event blockers for corridor waypoint', () => {
+  for (const blocker of ['item:hp', 'door:moon', 'rune:A', 'item:holy']) {
+    const map = [
+      ['#', '#', '#', '#', '#'],
+      ['#', '.', blocker, 'enemy:astralBoss', '#'],
+      ['#', '#', '#', '#', '#']
+    ];
+    assert.equal(hasFreeBossCorridor(engineState(map)), false, blocker);
+  }
+});
+
+test('shop tiles remain genuine free transit in corridor waypoint', () => {
   const map = [
     ['#', '#', '#', '#', '#'],
-    ['#', '.', 'enemy:catMage', 'enemy:astralBoss', '#'],
-    ['#', '.', '.', '.', '#'],
+    ['#', '.', 'shop', 'enemy:astralBoss', '#'],
     ['#', '#', '#', '#', '#']
   ];
-  const need = relaxedBossDamageNeed(engineState(map));
-  const bossOnly = relaxedBossDamageNeed(engineState([
-    ['#', '#', '#', '#'],
-    ['#', '.', 'enemy:astralBoss', '#'],
-    ['#', '#', '#', '#']
-  ]));
-  assert.equal(need, bossOnly);
-});
-
-test('Holy remains impassable in the no-Holy relaxed damage graph', () => {
-  const map = [
-    ['#', '#', '#', '#', '#'],
-    ['#', '.', 'item:holy', 'enemy:astralBoss', '#'],
-    ['#', '#', '#', '#', '#']
-  ];
-  assert.equal(relaxedBossDamageNeed(engineState(map)), Number.POSITIVE_INFINITY);
-});
-
-test('a relaxed boss-ready F6 state outranks an otherwise identical deficit state', () => {
-  const base = state({ floor: 5, hp: 2000 });
-  const deficit = preHolyContinuationPriority(base, {
-    targetCores: 6,
-    targetFloor: 5,
-    relaxedDamageNeed: 2300,
-    sequenceProgress: 0
-  });
-  const ready = preHolyContinuationPriority(base, {
-    targetCores: 6,
-    targetFloor: 5,
-    relaxedDamageNeed: 1800,
-    sequenceProgress: 0
-  });
-  assert.ok(ready > deficit);
+  assert.equal(hasFreeBossCorridor(engineState(map)), true);
 });
