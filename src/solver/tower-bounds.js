@@ -32,24 +32,39 @@ function optimisticContributionForCode(code) {
     return {
       hpGain: Math.max(0, item?.hp ?? 0),
       atkGain: Math.max(0, item?.atk ?? 0),
-      gold: 0,
+      defGain: Math.max(0, item?.def ?? 0),
+      freeGold: Math.max(0, item?.gold ?? 0),
       lucky: item?.relicKey === 'lucky',
       holy: item?.relicKey === 'holy',
-      ward: item?.relicKey === 'ward'
+      ward: item?.relicKey === 'ward',
+      enemyId: null
     };
   }
   if (parsed.type === 'enemy') {
     const enemy = ENEMIES[parsed.id];
     return {
+      // Reward stats remain completely free in the relaxation even if the enemy
+      // is not selected for gold harvesting. That is intentionally optimistic.
       hpGain: Math.max(0, enemy?.reward?.hp ?? 0),
       atkGain: Math.max(0, enemy?.reward?.atk ?? 0),
-      gold: Math.max(0, enemy?.gold ?? 0),
+      defGain: Math.max(0, enemy?.reward?.def ?? 0),
+      freeGold: 0,
       lucky: false,
       holy: false,
-      ward: false
+      ward: false,
+      enemyId: parsed.id
     };
   }
-  return { hpGain: 0, atkGain: 0, gold: 0, lucky: false, holy: false, ward: false };
+  return {
+    hpGain: 0,
+    atkGain: 0,
+    defGain: 0,
+    freeGold: 0,
+    lucky: false,
+    holy: false,
+    ward: false,
+    enemyId: null
+  };
 }
 
 function shopOption(id) {
@@ -67,30 +82,47 @@ function scanCompactRemainder(baseAdapter, state) {
   const compact = Array.isArray(state.eventStates) ? state : baseAdapter.compactState(state);
   let flatHpGain = 0;
   let flatAtkGain = 0;
-  let baseEnemyGold = 0;
+  let flatDefGain = 0;
+  let freeGold = 0;
   let luckyStillAvailable = false;
   let holyStillAvailable = false;
   let wardStillAvailable = false;
+  const remainingEnemyIds = [];
 
   for (const code of compact.eventStates) {
     const contribution = optimisticContributionForCode(code);
     flatHpGain += contribution.hpGain;
     flatAtkGain += contribution.atkGain;
-    baseEnemyGold += contribution.gold;
+    flatDefGain += contribution.defGain;
+    freeGold += contribution.freeGold;
     luckyStillAvailable ||= contribution.lucky;
     holyStillAvailable ||= contribution.holy;
     wardStillAvailable ||= contribution.ward;
+    if (contribution.enemyId) remainingEnemyIds.push(contribution.enemyId);
   }
 
   return {
     compact,
     flatHpGain,
     flatAtkGain,
-    baseEnemyGold,
+    flatDefGain,
+    freeGold,
     luckyStillAvailable,
     holyStillAvailable,
-    wardStillAvailable
+    wardStillAvailable,
+    remainingEnemyIds
   };
+}
+
+function enemyKillGold(enemy, luckyMultiplier) {
+  return Math.max(0, enemy?.gold ?? 0) * luckyMultiplier
+    + Math.max(0, enemy?.reward?.gold ?? 0);
+}
+
+function optimisticEnemyGold(remainder, luckyMultiplier) {
+  return remainder.remainingEnemyIds.reduce((sum, enemyId) =>
+    sum + enemyKillGold(ENEMIES[enemyId], luckyMultiplier), 0
+  );
 }
 
 function optimisticAdditionalPurchases(state, optimisticFutureGold) {
@@ -105,6 +137,14 @@ function optimisticAdditionalPurchases(state, optimisticFutureGold) {
     purchases += 1;
   }
   return purchases;
+}
+
+function futurePurchaseCost(state, count) {
+  let total = 0;
+  for (let offset = 0; offset < count; offset += 1) {
+    total += getShopCost({ shopPurchases: state.shopPurchases + offset });
+  }
+  return total;
 }
 
 function bitMask(values, predicate) {
@@ -154,17 +194,98 @@ function optimisticBoundContext(baseAdapter, state) {
   const remainder = scanCompactRemainder(baseAdapter, state);
   const compact = remainder.compact;
   const luckyMultiplier = compact.relics.lucky || remainder.luckyStillAvailable ? 2 : 1;
-  const optimisticGold = compact.stats.gold + remainder.baseEnemyGold * luckyMultiplier;
+  const enemyGold = optimisticEnemyGold(remainder, luckyMultiplier);
+  const optimisticGold = compact.stats.gold + remainder.freeGold + enemyGold;
   const additionalPurchases = optimisticAdditionalPurchases(compact, optimisticGold);
   return {
     remainder,
     compact,
+    luckyMultiplier,
+    enemyGold,
     additionalPurchases,
     holyMultiplier: !compact.relics.holy && remainder.holyStillAvailable ? 2 : 1,
     wardAvailable: compact.relics.ward || remainder.wardStillAvailable,
     optimisticBaseAtk: compact.stats.atk + remainder.flatAtkGain,
+    optimisticBaseDef: compact.stats.def + remainder.flatDefGain,
     optimisticBaseHp: compact.stats.hp + remainder.flatHpGain
   };
+}
+
+function fixedPurchaseGains(compact, count, purchaseOptionAt) {
+  const gains = { atk: 0, def: 0, hp: 0 };
+  for (let offset = 0; offset < count; offset += 1) {
+    const purchaseIndex = compact.shopPurchases + offset;
+    const optionId = purchaseOptionAt(purchaseIndex);
+    const option = shopOption(optionId);
+    if (!option) throw new Error(`Unknown fixed purchase option in upper bound: ${optionId}`);
+    gains.atk += Math.max(0, option.effect?.atk ?? 0);
+    gains.def += Math.max(0, option.effect?.def ?? 0);
+    gains.hp += Math.max(0, option.effect?.hp ?? 0);
+  }
+  return gains;
+}
+
+function createFractionalCostCurve(entries) {
+  const useful = entries
+    .filter((entry) => Number.isFinite(entry.value) && entry.value > 0
+      && Number.isFinite(entry.cost) && entry.cost >= 0)
+    .sort((a, b) => (a.cost / a.value) - (b.cost / b.value)
+      || b.value - a.value
+      || a.cost - b.cost);
+  const prefixValue = [0];
+  const prefixCost = [0];
+  for (const entry of useful) {
+    prefixValue.push(prefixValue[prefixValue.length - 1] + entry.value);
+    prefixCost.push(prefixCost[prefixCost.length - 1] + entry.cost);
+  }
+
+  return {
+    totalValue: prefixValue[prefixValue.length - 1],
+    minimumCost(requiredValue) {
+      if (!(requiredValue > 0)) return 0;
+      if (requiredValue > this.totalValue) return 0; // impossible request: stay optimistic rather than over-prune
+      let low = 1;
+      let high = useful.length;
+      while (low < high) {
+        const mid = Math.floor((low + high) / 2);
+        if (prefixValue[mid] >= requiredValue) high = mid;
+        else low = mid + 1;
+      }
+      const index = low;
+      const priorValue = prefixValue[index - 1];
+      const priorCost = prefixCost[index - 1];
+      const entry = useful[index - 1];
+      const fraction = Math.max(0, Math.min(1, (requiredValue - priorValue) / entry.value));
+      // The fractional relaxation can only be cheaper than an integral enemy
+      // subset. Floor once more to avoid floating-point roundoff ever increasing
+      // the damage lower bound by a fraction of one HP.
+      return Math.max(0, Math.floor(priorCost + entry.cost * fraction + 1e-9));
+    }
+  };
+}
+
+/** Pure fractional-knapsack lower bound used by tests and diagnostics. */
+export function fractionalMinimumCostForValue(entries, requiredValue) {
+  return createFractionalCostCurve(entries).minimumCost(requiredValue);
+}
+
+function optimisticGoldHarvestCurve(context, maxFixedGains) {
+  const atk = context.optimisticBaseAtk + maxFixedGains.atk;
+  const def = context.optimisticBaseDef + maxFixedGains.def;
+  const offers = context.remainder.remainingEnemyIds.map((enemyId) => {
+    const enemy = ENEMIES[enemyId];
+    const value = enemyKillGold(enemy, context.luckyMultiplier);
+    const battle = calculateBattle(
+      { hp: Number.MAX_SAFE_INTEGER, atk, def },
+      enemy,
+      { ward: context.wardAvailable }
+    );
+    // If even the globally optimistic stats cannot produce a finite fight, leave
+    // the gold available at zero cost. This is looser than reality, never tighter.
+    const cost = Number.isFinite(battle.totalDamage) ? Math.max(0, battle.totalDamage) : 0;
+    return { value, cost };
+  });
+  return createFractionalCostCurve(offers);
 }
 
 /**
@@ -192,9 +313,6 @@ export function optimisticTerminalHpUpperBound(baseAdapter, state) {
     const atk = context.optimisticBaseAtk + atkPurchases * shopGains.atk;
     const finalDamage = finalBossDamageLowerBound(atk, context.wardAvailable);
     if (!Number.isFinite(finalDamage)) continue;
-
-    // Give every future HP purchase the best possible timing relative to Holy.
-    // This can overestimate the real route but must never underestimate it.
     const hpBeforeFinal = (context.optimisticBaseHp + hpPurchases * shopGains.hp) * context.holyMultiplier;
     upper = Math.max(upper, hpBeforeFinal - finalDamage);
   }
@@ -205,19 +323,25 @@ export function optimisticTerminalHpUpperBound(baseAdapter, state) {
 /**
  * Tighter admissible bound for a fixed purchase-policy sub-problem.
  *
- * `purchaseOptionAt(index)` must return the exact shop option allowed at global
- * purchase index `index`. We still grant the player every remaining item, every
- * remaining enemy reward/gold, Lucky at the best possible time, Ward for the
- * final magic fight, zero damage from all non-final fights, and every affordable
- * future purchase before Holy when that helps. The only relaxation removed is
- * the impossible ability to reassign a fixed future DEF/ATK/HP purchase to a
- * different shop option.
+ * In addition to respecting the exact fixed purchase sequence, this bound no
+ * longer treats enemy gold as completely free. For each possible number of
+ * future purchases, it asks how much enemy gold is required after current/free
+ * gold, then subtracts a fractional-knapsack lower bound on the combat damage
+ * needed to harvest that much gold.
  *
- * Consuming every affordable fixed purchase is weakly optimal in this relaxation:
- * Gold has no direct objective value, each allowed effect is non-negative, and
- * advancing through a neutral DEF purchase can only unlock later non-negative
- * fixed purchases. Therefore this remains an upper bound while normally being
- * strictly tighter than `optimisticTerminalHpUpperBound()`.
+ * The harvest damage remains aggressively optimistic:
+ *
+ * - every remaining stat/HP reward is granted for free even if its enemy is skipped;
+ * - combat uses maximum possible future ATK/DEF from ALL affordable fixed buys;
+ * - Ward is assumed available whenever it can still be collected;
+ * - fractional enemies are allowed, making gold acquisition cheaper than any
+ *   real integral subset;
+ * - the harvest damage is applied after Holy while HP rewards/purchases may be
+ *   credited before Holy.
+ *
+ * Therefore the deducted cost cannot exceed the damage a real route must pay to
+ * fund the same purchase count. This tightens optional-resource exploitation
+ * without changing the proof role of the value as an upper bound.
  */
 export function optimisticFixedPurchaseTerminalHpUpperBound(baseAdapter, state, purchaseOptionAt) {
   if (typeof purchaseOptionAt !== 'function') {
@@ -227,36 +351,27 @@ export function optimisticFixedPurchaseTerminalHpUpperBound(baseAdapter, state, 
   const { compact } = context;
   if (compact.victory) return compact.stats.hp;
 
-  let futureAtkGain = 0;
-  let futureHpGain = 0;
-  for (let offset = 0; offset < context.additionalPurchases; offset += 1) {
-    const purchaseIndex = compact.shopPurchases + offset;
-    const optionId = purchaseOptionAt(purchaseIndex);
-    const option = shopOption(optionId);
-    if (!option) throw new Error(`Unknown fixed purchase option in upper bound: ${optionId}`);
-    futureAtkGain += Math.max(0, option.effect?.atk ?? 0);
-    futureHpGain += Math.max(0, option.effect?.hp ?? 0);
-    // DEF is intentionally not converted to HP/ATK. All intermediate physical
-    // damage is already relaxed to zero, so its only possible value is neutral.
+  const maxFixedGains = fixedPurchaseGains(compact, context.additionalPurchases, purchaseOptionAt);
+  const harvestCurve = optimisticGoldHarvestCurve(context, maxFixedGains);
+  const freeGoldBeforeKills = compact.stats.gold + context.remainder.freeGold;
+  let upper = Number.NEGATIVE_INFINITY;
+
+  for (let purchaseCount = 0; purchaseCount <= context.additionalPurchases; purchaseCount += 1) {
+    const gains = fixedPurchaseGains(compact, purchaseCount, purchaseOptionAt);
+    const requiredGold = Math.max(0, futurePurchaseCost(compact, purchaseCount) - freeGoldBeforeKills);
+    const harvestDamage = harvestCurve.minimumCost(requiredGold);
+    const atk = context.optimisticBaseAtk + gains.atk;
+    const finalDamage = finalBossDamageLowerBound(atk, context.wardAvailable);
+    if (!Number.isFinite(finalDamage)) continue;
+    const hpBeforeFinal = (context.optimisticBaseHp + gains.hp) * context.holyMultiplier;
+    upper = Math.max(upper, hpBeforeFinal - harvestDamage - finalDamage);
   }
 
-  const atk = context.optimisticBaseAtk + futureAtkGain;
-  const finalDamage = finalBossDamageLowerBound(atk, context.wardAvailable);
-  if (!Number.isFinite(finalDamage)) return Number.NEGATIVE_INFINITY;
-  const hpBeforeFinal = (context.optimisticBaseHp + futureHpGain) * context.holyMultiplier;
-  return hpBeforeFinal - finalDamage;
+  return upper;
 }
 
 /**
  * Canonicalize free inter-floor travel once the compass exists.
- *
- * After the boss-stair lock, every visited upper floor proves that the lower
- * floor's boss was defeated and that at least one D→U route was permanently
- * opened. Doors/enemies never re-close. Therefore any upward teleport can be
- * replaced by repeated U traversal at zero resource cost, while any D traversal
- * can be replaced by a direct downward teleport. Keeping only downward
- * teleports removes travel cycles without making legal actions depend on path
- * history, so Pareto labels remain history-free.
  */
 export function canonicalizeCompassTravel(state, actions) {
   if (!state.relics?.compass) return actions;
@@ -300,6 +415,6 @@ export function createBoundedTowerAdapter() {
     enumerateActions: (state) => canonicalizeCompassTravel(state, base.enumerateActions(state)),
     objectiveUpperBound: upperBound,
     verifyIncumbent: (witness, context) => verifyTowerIncumbent(base, witness, context),
-    rulesVersion: () => `${base.rulesVersion()}+boss-stair-lock-v1+canonical-travel-v1+overlay-aware-bound-v1`
+    rulesVersion: () => `${base.rulesVersion()}+boss-stair-lock-v1+canonical-travel-v1+overlay-aware-bound-v2-harvest`
   };
 }
