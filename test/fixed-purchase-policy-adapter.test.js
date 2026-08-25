@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
   createFixedPurchasePolicyTowerAdapter,
+  fixedPurchaseEventOrderPriority,
   fixedPurchaseOptionAt,
   greedyWitnessMatchesFixedPurchasePolicy
 } from '../src/solver/fixed-purchase-policy-adapter.js';
@@ -83,4 +84,25 @@ test('only a witness with the exact fixed purchase policy may seed pruning', () 
   assert.equal(accepted.ok, true);
   assert.equal(accepted.value, 123);
   assert.equal(fake.verifyCalls(), 1);
+});
+
+test('event-order priority keeps cores dominant but favors monotone purchase progress within a core', () => {
+  const base = {
+    cores: 4,
+    floor: 4,
+    shopPurchases: 5,
+    floorMeta: Array.from({ length: 8 }, () => ({ switches: [], sequenceProgress: 0 })),
+    stats: { hp: 5000, atk: 100, def: 90 }
+  };
+  const morePurchases = { ...base, floor: 3, shopPurchases: 6 };
+  assert.ok(
+    fixedPurchaseEventOrderPriority(morePurchases) > fixedPurchaseEventOrderPriority(base),
+    'one completed fixed purchase must outweigh the old high-floor bias'
+  );
+
+  const nextCore = { ...base, cores: 5, shopPurchases: 0 };
+  assert.ok(
+    fixedPurchaseEventOrderPriority(nextCore) > fixedPurchaseEventOrderPriority({ ...base, shopPurchases: 30 }),
+    'core progress must remain the dominant ordering signal'
+  );
 });
