@@ -1,4 +1,4 @@
-import { ENEMIES, FLOORS, ITEMS, getShopCost } from '../game/data.js';
+import { ENEMIES, FLOORS, ITEMS, SHOP_OPTIONS, getShopCost } from '../game/data.js';
 import { calculateBattle, createInitialState, parseToken } from '../game/engine.js';
 import { createTowerAdapter } from './tower-adapter.js';
 import { createTowerStateCodec } from './tower-codec.js';
@@ -15,9 +15,18 @@ const FINAL_BOSS_ENTRY = Object.entries(ENEMIES).find(([, enemy]) => enemy.final
 if (!FINAL_BOSS_ENTRY) throw new Error('Tower bounds require a finalBoss enemy.');
 const [, FINAL_BOSS] = FINAL_BOSS_ENTRY;
 
-const TOKEN_CONTRIBUTIONS = Array.from({ length: BOUND_CODEC.tokenVocabularySize }, (_, code) => {
+// Cache token identity only. Numeric contribution values MUST be read from the
+// current canonical data objects at evaluation time because balance overlays
+// mutate those same identities during candidate analysis.
+const TOKEN_DESCRIPTORS = Array.from({ length: BOUND_CODEC.tokenVocabularySize }, (_, code) => {
   const token = BOUND_CODEC.tokenForCode(code);
-  const parsed = parseToken(token);
+  return { token, parsed: parseToken(token) };
+});
+
+function optimisticContributionForCode(code) {
+  const descriptor = TOKEN_DESCRIPTORS[code];
+  if (!descriptor) throw new Error(`Missing optimistic descriptor for event token code ${code}.`);
+  const { parsed } = descriptor;
   if (parsed.type === 'item') {
     const item = ITEMS[parsed.id];
     return {
@@ -41,7 +50,18 @@ const TOKEN_CONTRIBUTIONS = Array.from({ length: BOUND_CODEC.tokenVocabularySize
     };
   }
   return { hpGain: 0, atkGain: 0, gold: 0, lucky: false, holy: false, ward: false };
-});
+}
+
+function shopOption(id) {
+  return SHOP_OPTIONS.find((option) => option.id === id) ?? null;
+}
+
+function currentShopGains() {
+  return {
+    atk: Math.max(0, shopOption('atk')?.effect?.atk ?? 0),
+    hp: Math.max(0, shopOption('hp')?.effect?.hp ?? 0)
+  };
+}
 
 function scanCompactRemainder(baseAdapter, state) {
   const compact = Array.isArray(state.eventStates) ? state : baseAdapter.compactState(state);
@@ -53,8 +73,7 @@ function scanCompactRemainder(baseAdapter, state) {
   let wardStillAvailable = false;
 
   for (const code of compact.eventStates) {
-    const contribution = TOKEN_CONTRIBUTIONS[code];
-    if (!contribution) throw new Error(`Missing optimistic contribution for event token code ${code}.`);
+    const contribution = optimisticContributionForCode(code);
     flatHpGain += contribution.hpGain;
     flatAtkGain += contribution.atkGain;
     baseEnemyGold += contribution.gold;
@@ -131,6 +150,14 @@ function finalBossDamageLowerBound(atk, wardAvailable) {
   return Number.isFinite(battle.totalDamage) ? battle.totalDamage : Number.POSITIVE_INFINITY;
 }
 
+/**
+ * Admissible terminal-HP upper bound under the CURRENT canonical data objects.
+ *
+ * Balance overlays mutate ITEMS / ENEMIES / SHOP_OPTIONS in place. Reading every
+ * numeric contribution dynamically is therefore a soundness requirement, not a
+ * micro-optimization: a stale lower shop/item/gold value could underestimate the
+ * reachable objective and make branch-and-bound prune the true optimum.
+ */
 export function optimisticTerminalHpUpperBound(baseAdapter, state) {
   const remainder = scanCompactRemainder(baseAdapter, state);
   const compact = remainder.compact;
@@ -143,15 +170,18 @@ export function optimisticTerminalHpUpperBound(baseAdapter, state) {
   const wardAvailable = compact.relics.ward || remainder.wardStillAvailable;
   const optimisticBaseAtk = compact.stats.atk + remainder.flatAtkGain;
   const optimisticBaseHp = compact.stats.hp + remainder.flatHpGain;
+  const shopGains = currentShopGains();
 
   let upper = Number.NEGATIVE_INFINITY;
   for (let atkPurchases = 0; atkPurchases <= additionalPurchases; atkPurchases += 1) {
     const hpPurchases = additionalPurchases - atkPurchases;
-    const atk = optimisticBaseAtk + atkPurchases * 5;
+    const atk = optimisticBaseAtk + atkPurchases * shopGains.atk;
     const finalDamage = finalBossDamageLowerBound(atk, wardAvailable);
     if (!Number.isFinite(finalDamage)) continue;
 
-    const hpBeforeFinal = (optimisticBaseHp + hpPurchases * 900) * holyMultiplier;
+    // Give every future HP purchase the best possible timing relative to Holy.
+    // This can overestimate the real route but must never underestimate it.
+    const hpBeforeFinal = (optimisticBaseHp + hpPurchases * shopGains.hp) * holyMultiplier;
     upper = Math.max(upper, hpBeforeFinal - finalDamage);
   }
 
@@ -211,6 +241,6 @@ export function createBoundedTowerAdapter() {
     enumerateActions: (state) => canonicalizeCompassTravel(state, base.enumerateActions(state)),
     objectiveUpperBound: upperBound,
     verifyIncumbent: (witness, context) => verifyTowerIncumbent(base, witness, context),
-    rulesVersion: () => `${base.rulesVersion()}+boss-stair-lock-v1+canonical-travel-v1`
+    rulesVersion: () => `${base.rulesVersion()}+boss-stair-lock-v1+canonical-travel-v1+overlay-aware-bound-v1`
   };
 }
