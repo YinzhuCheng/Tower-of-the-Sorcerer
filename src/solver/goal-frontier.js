@@ -163,6 +163,7 @@ export function collectGoalFrontier({
     branchTotal += actions.length;
     branchMax = Math.max(branchMax, actions.length);
 
+    let hitGoalLimit = false;
     for (const action of actions) {
       if (generatedStates >= maxGenerated) break;
       generatedStates += 1;
@@ -183,11 +184,16 @@ export function collectGoalFrontier({
       });
       if (adapter.isGoal(nextState)) {
         acceptGoal(nextLabel);
-        if (goalFrontier.activeCount() >= maxGoals) break;
+        if (goalFrontier.activeCount() >= maxGoals) {
+          stoppedReason = 'maxGoals';
+          hitGoalLimit = true;
+          break;
+        }
       } else {
         acceptSearch(nextLabel);
       }
     }
+    if (hitGoalLimit) break;
   }
 
   const exhausted = queue.size === 0 && stoppedReason === null;
