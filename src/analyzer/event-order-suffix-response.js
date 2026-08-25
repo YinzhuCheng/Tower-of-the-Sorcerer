@@ -5,7 +5,6 @@ import { collectGoalFrontier } from '../solver/goal-frontier.js';
 import { createObjectiveThresholdAdapter } from '../solver/objective-threshold-adapter.js';
 import { replayTowerCertificate, replayTowerCertificateToState } from '../solver/replay.js';
 import { solve } from '../solver/search.js';
-import { createVisitedFloorEventMacroAdapter } from '../solver/visited-floor-event-macro-adapter.js';
 import { withBalanceEdits } from '../tuner/balance-overlay.js';
 import { cloneReviewCandidate, REVIEW_CANDIDATES } from '../tuner/review-candidates.js';
 
@@ -47,28 +46,23 @@ function seedUpperBound(adapter, state) {
 /**
  * Exploit-oriented decomposition of fixed-purchase event-order search.
  *
- * The suffix question is not ordinary optimization. A 7083-HP whole-route
- * witness is not a valid incumbent for an arbitrary core7 bridge, so installing
- * it as branch-and-bound state would be unsound. Instead we ask:
+ * The suffix question is intentionally not formulated as ordinary optimization.
+ * A whole-route reference witness is not a valid incumbent for an arbitrary
+ * core7 bridge, so installing it as branch-and-bound state would be unsound.
+ * Instead this analyzer asks the exact existence question:
  *
  *     is there any victory reachable from this bridge with HP > referenceHp ?
  *
- * The threshold wrapper uses the admissible overlay-aware terminal-HP upper bound
- * to prove states with upperBound <= referenceHp irrelevant to that question.
- *
- * The core7 suffix additionally quotients free cross-floor travel. Whole-game
- * travel-fold experiments previously regressed because they multiplied early
- * branching. Here the wrapper is deliberately restricted to the measured late
- * cleanup bottleneck: once seven cores and Compass are present, it exposes the
- * first non-teleport event on every visited floor as one legal composite edge,
- * while certificate steps remain real teleport/closure/event operations.
+ * `createObjectiveThresholdAdapter()` uses the admissible overlay-aware terminal
+ * HP upper bound to prove any state with upperBound <= referenceHp irrelevant to
+ * that question. This allows sound pruning without claiming that the bridge
+ * itself can reproduce the reference route.
  *
  * Flow:
  * 1. discover replay-verified core-count boundary states that still have an
  *    optimistic upper bound above the reference;
  * 2. rank them by that admissible upper bound;
- * 3. from each exact compact bridge, run threshold existence over the late-game
- *    visited-floor event quotient.
+ * 3. run threshold-existence suffix searches from exact compact bridge states.
  *
  * One replayed prefix+suffix chain above the reference proves an exploit.
  * Failure is globally exact only if the filtered boundary frontier is complete
@@ -95,8 +89,8 @@ export function analyzeCoreSuffixEventOrder({
     const expectedHp = snapshot.expectedEvidence?.terminalHp ?? null;
     if (!reference.solvable || (Number.isFinite(expectedHp) && referenceHp !== expectedHp)) {
       return {
-        schemaVersion: 3,
-        model: 'core-suffix-event-order-v0.3-travel-quotient',
+        schemaVersion: 2,
+        model: 'core-suffix-event-order-v0.2-threshold-existence',
         candidateId: snapshot.id,
         status: 'candidate-snapshot-drift',
         exploitFound: false,
@@ -115,24 +109,20 @@ export function analyzeCoreSuffixEventOrder({
       shopPlan: policy.shopPlan,
       shopCycle: policy.shopCycle
     });
-
-    // Prefix/boundary discovery keeps the existing whole-game action model. The
-    // threshold is already safe here and discards prefixes incapable of beating
-    // the reference, but the travel quotient is withheld until the core7 suffix.
-    const boundaryExploitAdapter = createObjectiveThresholdAdapter({
+    const exploitAdapter = createObjectiveThresholdAdapter({
       threshold: referenceHp,
       baseAdapter
     });
     const boundaryAdapter = createCoreBoundaryAdapter({
       targetCores,
-      baseAdapter: boundaryExploitAdapter
+      baseAdapter: exploitAdapter
     });
     const frontier = collectGoalFrontier({
       adapter: boundaryAdapter,
       maxExpanded: boundaryMaxExpanded,
       maxGenerated: boundaryMaxGenerated,
       maxGoals: boundaryMaxGoals,
-      solverVersion: `fixed-purchase-core${targetCores}-exploit-boundary-v0.3`
+      solverVersion: `fixed-purchase-core${targetCores}-exploit-boundary-v0.2`
     });
 
     const verifiedSeeds = frontier.goals.map((goal) => {
@@ -153,28 +143,17 @@ export function analyzeCoreSuffixEventOrder({
     const attempts = [];
     let bestExploit = null;
 
-    // The suffix quotient is intentionally separate from boundary discovery so
-    // we can A/B it independently and never silently alter earlier proof stages.
-    const suffixMacroAdapter = createVisitedFloorEventMacroAdapter({
-      baseAdapter,
-      minCores: targetCores
-    });
-    const suffixExploitAdapter = createObjectiveThresholdAdapter({
-      threshold: referenceHp,
-      baseAdapter: suffixMacroAdapter
-    });
-
     for (const seed of scheduled) {
       const solver = solve({
-        adapter: suffixExploitAdapter,
+        adapter: exploitAdapter,
         initialState: seed.state,
         mode: 'existence',
         maxExpanded: suffixMaxExpanded,
         maxGenerated: suffixMaxGenerated,
-        solverVersion: `fixed-purchase-core${targetCores}-exploit-travel-quotient-v0.3`
+        solverVersion: `fixed-purchase-core${targetCores}-exploit-threshold-v0.2`
       });
       const replay = solver.certificate
-        ? replayTowerCertificate(solver.certificate, { adapter: suffixExploitAdapter, initialState: seed.state })
+        ? replayTowerCertificate(solver.certificate, { adapter: exploitAdapter, initialState: seed.state })
         : null;
       const exploit = solver.solvable === true
         && replay?.ok === true
@@ -237,8 +216,8 @@ export function analyzeCoreSuffixEventOrder({
         : 'coverage-incomplete';
 
     return {
-      schemaVersion: 3,
-      model: 'core-suffix-event-order-v0.3-travel-quotient',
+      schemaVersion: 2,
+      model: 'core-suffix-event-order-v0.2-threshold-existence',
       candidateId: snapshot.id,
       targetCores,
       status,
@@ -255,12 +234,6 @@ export function analyzeCoreSuffixEventOrder({
         objective: 'terminal_hp',
         strictGreaterThan: referenceHp,
         proofRule: 'state is irrelevant when admissible terminal-HP upper bound <= threshold'
-      },
-      lateTravelQuotient: {
-        enabledFromCores: targetCores,
-        model: 'visited-floor-event-macro-v1',
-        standaloneTeleportStates: false,
-        frontierLocationQuotiented: true
       },
       boundary: {
         hasGoals: frontier.hasGoals,
@@ -292,7 +265,7 @@ export function analyzeCoreSuffixEventOrder({
         ? 'replay_verified_core_suffix_event_order_exploit_found'
         : coverageExact
           ? 'complete_threshold_relevant_core_boundary_and_exact_suffixes_prove_no_better_fixed_purchase_suffix'
-          : 'travel_quotiented_threshold_suffix_found_no_exploit_but_boundary_or_suffix_coverage_is_incomplete'
+          : 'threshold_pruned_staged_suffix_search_found_no_exploit_but_boundary_or_suffix_coverage_is_incomplete'
     };
   });
 }
