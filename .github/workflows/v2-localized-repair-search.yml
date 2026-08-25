@@ -1,0 +1,100 @@
+name: V2 Localized Repair Search
+
+on:
+  push:
+    branches:
+      - solver-phase1-pareto
+    paths:
+      - 'src/tuner/v2-localized-repair-search.js'
+      - 'src/analyzer/event-order-purchase-recovery.js'
+      - 'src/analyzer/event-order-witness-counterfactuals.js'
+      - 'src/analyzer/event-order-purchase-local-search.js'
+      - 'src/tuner/review-candidate-v2-rebuild.js'
+      - 'src/tuner/review-candidates.js'
+      - 'scripts/search-v2-localized-repair.mjs'
+      - 'test/v2-localized-repair-search.test.js'
+      - 'docs/v2-localized-repair-search.md'
+      - '.github/workflows/v2-localized-repair-search.yml'
+  pull_request:
+    paths:
+      - 'src/tuner/v2-localized-repair-search.js'
+      - 'src/analyzer/event-order-purchase-recovery.js'
+      - 'src/analyzer/event-order-witness-counterfactuals.js'
+      - 'src/analyzer/event-order-purchase-local-search.js'
+      - 'src/tuner/review-candidate-v2-rebuild.js'
+      - 'src/tuner/review-candidates.js'
+      - 'scripts/search-v2-localized-repair.mjs'
+      - 'test/v2-localized-repair-search.test.js'
+      - 'docs/v2-localized-repair-search.md'
+      - '.github/workflows/v2-localized-repair-search.yml'
+  workflow_dispatch:
+    inputs:
+      max_relative_softening:
+        description: 'Maximum relative softening per localized enemy field'
+        required: false
+        default: '0.50'
+      target_catastrophic_count:
+        description: 'Internal target maximum catastrophic mutations out of 58'
+        required: false
+        default: '4'
+      refine_top_k:
+        description: 'Top coarse candidates receiving purchase-1opt refinement'
+        required: false
+        default: '4'
+
+concurrency:
+  group: v2-localized-repair-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  localized-repair:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - name: Run localized repair search
+        env:
+          MAX_RELATIVE_SOFTENING: ${{ inputs.max_relative_softening || '0.50' }}
+          TARGET_CATASTROPHIC_COUNT: ${{ inputs.target_catastrophic_count || '4' }}
+          REFINE_TOP_K: ${{ inputs.refine_top_k || '4' }}
+        run: |
+          node scripts/search-v2-localized-repair.mjs \
+            --max-relative-softening="$MAX_RELATIVE_SOFTENING" \
+            --target-catastrophic-count="$TARGET_CATASTROPHIC_COUNT" \
+            --refine-top-k="$REFINE_TOP_K" \
+            --json > v2-localized-repair.json
+      - name: Print localized repair evidence
+        if: always()
+        run: |
+          python3 - <<'PY'
+          import json, os
+          if not os.path.exists('v2-localized-repair.json'):
+              print('Localized repair report was not produced.')
+              raise SystemExit(0)
+          r=json.load(open('v2-localized-repair.json'))
+          b=r.get('baseline') or {}; cf=b.get('counterfactuals') or {}; rc=b.get('recovery') or {}
+          print(f"LOCAL_REPAIR model={r.get('model')} interpretation={r.get('interpretation')} source={r.get('sourceCandidateId')}")
+          print(f"BASELINE hp={(b.get('replay') or {}).get('terminalHp')} margin={(b.get('replay') or {}).get('minNormalizedHpMargin')} catastrophic={cf.get('catastrophicMutations')}/{cf.get('totalMutations')} exactUnrecoverable={rc.get('exactUnrecoverableMutations')} unknown={rc.get('unknownMutations')}")
+          for f in r.get('frontiers') or []:
+              c=f.get('cluster') or {}
+              print(f"CLUSTER enemy={c.get('enemyId')} event={c.get('eventId')} size={c.get('size')}")
+              for field in f.get('fields') or []:
+                  pts=[]
+                  for x in field.get('thresholds') or []:
+                      pts.append(f"rescue{x.get('targetRescues')}:{x.get('originalValue')}->{(x.get('edit') or {}).get('value')}")
+                  print(f"  FIELD {field.get('field')} " + ','.join(pts))
+          for c in r.get('refinedCandidates') or []:
+              x=c.get('refinement') or {}; cf2=x.get('counterfactuals') or {}; rr=x.get('recovery') or {}
+              print(f"CANDIDATE id={c.get('id')} edits={c.get('repairEdits')} cost={c.get('relativeEdit')} hp={x.get('bestTerminalHp')} margin={x.get('minNormalizedHpMargin')} catastrophic={cf2.get('catastrophicMutations')} exactUnrecoverable={rr.get('exactUnrecoverableMutations')} unknown={rr.get('unknownMutations')} local={x.get('localOptimal')} pass={x.get('localGatePassed')}")
+          s=r.get('selected') or {}; x=s.get('refinement') or {}; cf3=x.get('counterfactuals') or {}
+          print(f"SELECTED id={s.get('id')} edits={s.get('repairEdits')} hp={x.get('bestTerminalHp')} margin={x.get('minNormalizedHpMargin')} catastrophic={cf3.get('catastrophicMutations')} local={x.get('localOptimal')} pass={x.get('localGatePassed')} semantic={x.get('semanticFingerprint')}")
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: v2-localized-repair
+          path: v2-localized-repair.json
+          if-no-files-found: warn
+          retention-days: 14
