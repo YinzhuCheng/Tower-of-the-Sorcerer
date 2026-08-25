@@ -81,6 +81,9 @@ jobs:
           print(f"EXISTENCE solvable={ex.get('solvable')} exact={ex.get('exact')} replay={ex.get('replayOk')} expanded={ex.get('expandedStates')} generated={ex.get('generatedStates')}")
           print(f"ROBUST recovery={cf.get('recoveryRate')} catastrophic={cf.get('catastrophicRate')} regret={cf.get('highRegretRate')} improvements={cf.get('improvedMutationCount')}")
           print(f"RECOVERY_AWARE recovery={rc.get('fixedEventOrderRecoveryRate')} catastrophic={rc.get('fixedEventOrderUnrecoverableRate')} exact={rc.get('unknownMutations') == 0 if rc else None} unknown={rc.get('unknownMutations')}")
+          for entry in rc.get('exactUnrecoverableExamples') or []:
+              core=entry.get('failureCore') or {}; examples=core.get('examples') or []; first=examples[0] if examples else {}
+              print(f"FAILURE_CORE purchase={entry.get('purchaseNumber')} {entry.get('baselineOption')}->{entry.get('forcedOptionId')} step={core.get('stepIndex')} event={core.get('eventId')} kind={core.get('stepKind')} branches={core.get('attemptedBranches')} reasons={core.get('failureReasons')} resources={first.get('resourcesBefore')} plan={first.get('purchasePlanBefore')}")
           print(f"EVENT_ORDER status={eo.get('status')} exploit={eo.get('exploitFound')} exactNo={eo.get('exactNoExploit')} expanded={(eo.get('solver') or {}).get('expandedStates')} generated={(eo.get('solver') or {}).get('generatedStates')} hp={exploit.get('terminalHp')} delta={exploit.get('deltaHp')}")
           PY
       - uses: actions/upload-artifact@v4
