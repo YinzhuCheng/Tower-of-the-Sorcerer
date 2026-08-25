@@ -1,0 +1,64 @@
+name: Review Candidate V2 Profile
+
+on:
+  push:
+    branches:
+      - solver-phase1-pareto
+    paths:
+      - 'src/tuner/review-candidates.js'
+      - 'src/tuner/review-candidate-reference.js'
+      - 'src/tuner/review-candidate-v2-rebuild.js'
+      - 'src/tuner/review-candidate-v2-validation.js'
+      - 'src/tuner/event-order-witness-ray.js'
+      - 'src/analyzer/event-order-witness-counterfactuals.js'
+      - 'src/analyzer/event-order-witness-threshold-proof.js'
+      - 'src/analyzer/event-order-joint-best-response.js'
+      - 'src/analyzer/event-order-purchase-local-search.js'
+      - 'src/analyzer/pre-holy-static-cut.js'
+      - 'src/solver/replay.js'
+      - 'src/solver/tower-bounds.js'
+      - 'scripts/validate-review-candidate-v2.mjs'
+      - 'test/review-candidate-v2.test.js'
+      - 'docs/review-candidate-v2.md'
+      - '.github/workflows/review-candidate-v2-profile.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: review-candidate-v2-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate-v2:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - name: Validate distributed-pressure V2
+        run: |
+          node scripts/validate-review-candidate-v2.mjs \
+            --max-purchase-passes=12 \
+            --existence-max-expanded=10000 \
+            --existence-max-generated=120000 \
+            --event-order-max-expanded=50000 \
+            --event-order-max-generated=400000 \
+            --json > review-candidate-v2.json
+      - name: Print compact V2 validation summary
+        run: |
+          python3 - <<'PY'
+          import json
+          r=json.load(open('review-candidate-v2.json')); ref=r.get('reference') or {}; ex=r.get('existence') or {}; h=r.get('holyCoverage') or {}; cf=r.get('counterfactuals') or {}; eo=r.get('eventOrder') or {}; s=eo.get('solver') or {}; e=eo.get('exploit') or {}
+          print(f"V2 status={r.get('status')} hp={ref.get('terminalHp')} margin={ref.get('minNormalizedHpMargin')} witness={ref.get('referenceWitnessHash')} rebuild={r.get('rebuild')}")
+          print(f"EXISTENCE solvable={ex.get('solvable')} exact={ex.get('exact')} replay={ex.get('replayOk')} expanded={ex.get('expandedStates')} generated={ex.get('generatedStates')}")
+          print(f"HOLY complete={h.get('coverageComplete')} delayed={','.join(h.get('delayedPoliciesProvenInfeasible') or [])}")
+          print(f"ROBUST recovery={cf.get('recoveryRate')} catastrophic={cf.get('catastrophicRate')} regret={cf.get('highRegretRate')} improvements={cf.get('improvedMutationCount')} mutations={cf.get('totalMutations')}")
+          print(f"EVENT_ORDER status={eo.get('status')} exploit={eo.get('exploitFound')} exactNo={eo.get('exactNoExploit')} expanded={s.get('expandedStates')} generated={s.get('generatedStates')} bound={s.get('prunedBound')} stop={s.get('stoppedReason')} hp={e.get('terminalHp')} delta={e.get('deltaHp')}")
+          print(f"FAILURES {','.join(r.get('failures') or []) or 'none'}")
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: review-candidate-v2
+          path: review-candidate-v2.json
+          if-no-files-found: error
+          retention-days: 7
