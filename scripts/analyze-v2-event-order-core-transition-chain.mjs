@@ -26,7 +26,11 @@ const suffixPriorityMode = choiceFlag(
   'late-game-threshold',
   ['baseline', 'late-game-threshold']
 );
-const suffixPrioritySlackBucket = integerFlag('suffix-priority-slack-bucket', 25);
+// Equal-budget sweep on 2026-08-25 selected 500 HP as the current Pareto
+// corridor: it preserves ~5x baseline late-floor coverage while recovering
+// admissible-bound pruning and materially reducing queue growth versus b25-b250.
+// This is queue ordering only; it does not promote V2 or change proof semantics.
+const suffixPrioritySlackBucket = integerFlag('suffix-priority-slack-bucket', 500);
 const rebuilt = rebuildDistributedPressureV2Reference({
   maxPurchasePasses: integerFlag('max-purchase-passes', 12)
 });
