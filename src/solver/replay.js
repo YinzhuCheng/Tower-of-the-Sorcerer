@@ -18,10 +18,21 @@ function replayPath(state, path) {
   return { ok: true };
 }
 
+/**
+ * Clone an explicit replay starting state in the adapter's canonical search
+ * representation.
+ *
+ * Staged proof/search bridges are already compact Solver states. Calling
+ * `compactState()` on such a bridge treats it as an engine-shaped state in the
+ * Tower codec and is invalid. `cloneState()` is the correct first operation: the
+ * Tower adapter's clone is intentionally representation-aware and accepts either
+ * a compact state or an engine state. Adapters without a clone hook retain the
+ * previous compact-then-structuredClone fallback.
+ */
 function cloneReplayInput(adapter, initialState) {
+  if (typeof adapter.cloneState === 'function') return adapter.cloneState(initialState);
   let candidate = initialState;
   if (typeof adapter.compactState === 'function') candidate = adapter.compactState(candidate);
-  if (typeof adapter.cloneState === 'function') return adapter.cloneState(candidate);
   return structuredClone(candidate);
 }
 
@@ -83,8 +94,9 @@ function applyCertificateSteps(state, certificate) {
  * `initialState` is optional. When supplied, it must match the certificate's
  * `initialStateHash`. This allows proof decomposition (verified prefix state ->
  * verified continuation certificate) without reconstructing a bridge state from
- * a lossy summary. Existing whole-game certificates continue to replay from the
- * canonical engine initial state.
+ * a lossy summary. The explicit state may be either an adapter-native compact
+ * state or an engine-shaped Tower state. Existing whole-game certificates
+ * continue to replay from the canonical engine initial state.
  */
 export function replayTowerCertificate(certificate, {
   adapter = createTowerAdapter(),
