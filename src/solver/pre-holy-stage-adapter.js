@@ -17,52 +17,6 @@ export function filterPreHolyActions(actions) {
 }
 
 /**
- * Canonicalize upward return during F6/core5 delayed-Holy preparation.
- *
- * `createBoundedTowerAdapter()` globally removes upward compass teleports and
- * keeps U traversal. That is a good default for whole-game search, but a lower
- * floor preparation excursion can then require several same-resource U states
- * before returning to the already visited F6 target.
- *
- * The engine natively permits compass teleport from any position to any visited
- * floor. Teleporting upward to F6 lands on F6's D anchor, exactly as entering F6
- * through U. Therefore, for an already visited target F6, every upward U chain
- * can be represented as one direct target-floor teleport. If a strategy wanted
- * to stop on an intermediate upper floor, it can first return to F6 and then use
- * a legal downward teleport to that intermediate floor; both land at its D
- * anchor and no modeled mechanic depends on travel turn count.
- *
- * This function changes only the canonical representation of free travel:
- * - downward teleports from the bounded adapter are retained;
- * - U is removed while below targetFloor;
- * - one legal direct teleport back to targetFloor is added;
- * - D is already absent under canonical-travel-v1.
- *
- * It never creates access to an unvisited floor and does not remove any
- * resource-changing event.
- */
-export function canonicalizePreHolyReturnTravel(state, actions, { targetFloor = 5 } = {}) {
-  const list = [...actions];
-  if (!state?.relics?.compass) return list;
-  if ((state.floor ?? 0) >= targetFloor) return list;
-  if (!Array.isArray(state.visitedFloors) || !state.visitedFloors.includes(targetFloor)) return list;
-
-  const withoutUp = list.filter((action) => !(action.kind === 'tile' && action.token === 'U'));
-  const alreadyHasTargetTeleport = withoutUp.some((action) =>
-    action.kind === 'teleport' && action.targetFloor === targetFloor
-  );
-  if (alreadyHasTargetTeleport) return withoutUp;
-  return [
-    ...withoutUp,
-    {
-      kind: 'teleport',
-      eventId: `teleport:f${targetFloor + 1}:preholy-return`,
-      targetFloor
-    }
-  ];
-}
-
-/**
  * Search-order heuristic for the shared core5 preparation stage.
  *
  * Generic Tower priority rewards `floor * 1e10`. That is useful for ordinary
@@ -117,18 +71,10 @@ export function createPreHolyStageAdapter({
     return baseAdapter.enumerateActions(state);
   }
 
-  function stageActions(state) {
-    const noHoly = filterPreHolyActions(baseActions(state));
-    if (stage === 'preBoss' || stage === 'core6') {
-      return canonicalizePreHolyReturnTravel(state, noHoly, { targetFloor });
-    }
-    return noHoly;
-  }
-
   return {
     ...baseAdapter,
     enumerateActions(state) {
-      return stageActions(state);
+      return filterPreHolyActions(baseActions(state));
     },
     isGoal(state) {
       if (state.relics?.holy) return false;
@@ -136,7 +82,7 @@ export function createPreHolyStageAdapter({
         return state.floor === targetFloor && (state.cores ?? 0) === targetCores - 1;
       }
       if (stage === 'core6') return (state.cores ?? 0) >= targetCores;
-      return stageActions(state).some((action) => actionIsEnemy(action, bossId));
+      return baseActions(state).some((action) => actionIsEnemy(action, bossId));
     },
     priority(state) {
       const base = baseAdapter.priority ? baseAdapter.priority(state) : 0;
@@ -151,7 +97,7 @@ export function createPreHolyStageAdapter({
       return `${base}/preHoly:${stage}`;
     },
     rulesVersion() {
-      return `${baseAdapter.rulesVersion?.() ?? 'tower'}+pre-holy-stage:${stage}+direct-return-f${targetFloor + 1}-v1`;
+      return `${baseAdapter.rulesVersion?.() ?? 'tower'}+pre-holy-stage:${stage}`;
     },
     diagnosticStage: stage,
     diagnosticBossId: bossId,
