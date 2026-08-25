@@ -13,10 +13,12 @@ on:
       - 'src/analyzer/event-order-best-response.js'
       - 'src/analyzer/event-order-suffix-response.js'
       - 'src/analyzer/event-order-threshold-proof.js'
+      - 'src/analyzer/event-order-core-transition-proof.js'
       - 'src/tuner/review-candidates.js'
       - 'scripts/analyze-event-order-response.mjs'
       - 'scripts/analyze-event-order-suffix.mjs'
       - 'scripts/prove-event-order-threshold.mjs'
+      - 'scripts/analyze-event-order-core-transition.mjs'
       - 'test/fixed-purchase-policy-adapter.test.js'
       - 'test/fixed-purchase-bound.test.js'
       - 'test/fractional-harvest-bound.test.js'
@@ -36,10 +38,12 @@ on:
       - 'src/analyzer/event-order-best-response.js'
       - 'src/analyzer/event-order-suffix-response.js'
       - 'src/analyzer/event-order-threshold-proof.js'
+      - 'src/analyzer/event-order-core-transition-proof.js'
       - 'src/tuner/review-candidates.js'
       - 'scripts/analyze-event-order-response.mjs'
       - 'scripts/analyze-event-order-suffix.mjs'
       - 'scripts/prove-event-order-threshold.mjs'
+      - 'scripts/analyze-event-order-core-transition.mjs'
       - 'test/fixed-purchase-policy-adapter.test.js'
       - 'test/fixed-purchase-bound.test.js'
       - 'test/fractional-harvest-bound.test.js'
@@ -129,6 +133,43 @@ jobs:
         with:
           name: event-order-threshold-proof
           path: event-order-threshold-proof.json
+          retention-days: 7
+
+  threshold-core-transition:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - name: Analyze threshold-relevant c6 to c7 transition
+        run: |
+          node scripts/analyze-event-order-core-transition.mjs \
+            --from-cores=6 \
+            --to-cores=7 \
+            --boundary-max-expanded=8000 \
+            --boundary-max-generated=100000 \
+            --boundary-max-goals=64 \
+            --max-transition-seeds=8 \
+            --transition-max-expanded=5000 \
+            --transition-max-generated=70000 \
+            --json > event-order-core6-to-core7.json
+      - name: Print compact transition summary
+        run: |
+          python3 - <<'PY'
+          import json
+          r=json.load(open('event-order-core6-to-core7.json')); b=r.get('boundary') or {}; sc=r.get('schedule') or {}
+          print(f"CORE_TRANSITION status={r.get('status')} found={r.get('transitionFound')} exactNo={r.get('exactNoTransition')} transition=c{r.get('fromCores')}->c{r.get('toCores')} threshold={(r.get('threshold') or {}).get('strictGreaterThan')}")
+          print(f"BOUNDARY relevant={b.get('verifiedRelevantGoals')}/{b.get('discoveredGoals')} exact={b.get('coverageExact')} expanded={b.get('expandedStates')} generated={b.get('generatedStates')} stop={b.get('stoppedReason')}")
+          print(f"SCHEDULE relevant={sc.get('verifiedRelevantSeedCount')} scheduled={sc.get('scheduledSeedCount')}")
+          for a in r.get('attempts') or []:
+              s=a.get('solver') or {}; rp=a.get('replay') or {}
+              print(f"TRANSITION seed={a.get('prefixCertificateHash')} ub={a.get('prefixUpperBound')} hp={(a.get('prefixResources') or {}).get('hp')} gold={(a.get('prefixResources') or {}).get('gold')} p={a.get('prefixShopPurchases')} found={a.get('transitionFound')} exactNo={a.get('exactNoTransition')} expanded={s.get('expandedStates')} generated={s.get('generatedStates')} bound={s.get('prunedBound')} stop={s.get('stoppedReason')} nextUb={rp.get('nextStateUpperBound')}")
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: event-order-core6-to-core7
+          path: event-order-core6-to-core7.json
           retention-days: 7
 
   staged-core-suffix-event-order:
