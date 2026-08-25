@@ -2,73 +2,74 @@
 
 Date: 2026-08-25 (Asia/Tokyo)
 
-This document is the repository-resident handoff for the next development conversation. It intentionally records a **safe intermediate stop**, not a finished balance release.
+This is the repository-resident restart document for the next development conversation. It records a **safe intermediate stop**, not a finished balance release.
 
-Handoff source head before this document commit:
+Handoff source head before this final documentation commit:
 
 ```text
 branch: solver-phase1-pareto
-source head: 3e9c52bcf5150394e619b900114e11ca38ecdb53
+source head: e0b994c300ef207b3c3dd6cbb98ab382cbb248ec
 PR: #15 Solver + Phase 2: exact oracle, adaptive balance tuner, and proof gates
 base: visual-theme-v8@098ff3ddb08a1ca6de7067f259c3146e1bb1226b
 ```
 
-Do **not** merge PR #15 unless the user explicitly asks.
+Do **not** merge PR #15 or PR #14 unless the user explicitly asks.
 
 ---
 
 ## 1. Safe stop status
 
-The repository is in an acceptable intermediate state:
+The repository is at an acceptable intermediate stop:
 
-- ordinary repository CI passes on the source head;
-- Tuner Profile passes;
-- Adaptive Balance Profile passes;
-- Event Order Profile passes;
-- V2 Review Validation workflow executes successfully and preserves its reports;
-- Holy-policy proof infrastructure is intact;
-- canonical production balance values have **not** been replaced by tuner candidates;
-- every tuner/review object still has `productionWriteAllowed = false`;
-- PR #15 remains open and mergeable.
+- ordinary `npm run check` / GitHub CI is green on the recent source heads;
+- Tuner Profile, Adaptive Balance Profile, Event Order Profile and V2 Review Validation execute successfully;
+- Holy `STATIC_CUT` proof infrastructure is repository-resident and tested;
+- all algorithmic ideas needed for continuation live in `src/`, `test/`, `.github/workflows/` or `docs/`;
+- canonical production balance data has **not** been replaced by tuner candidates;
+- tuner/review candidates remain dry-run with `productionWriteAllowed=false`;
+- PR #15 remains open and unmerged.
 
 Important distinction:
 
-> A GitHub Actions workflow being green means the diagnostic executed correctly. It does **not** mean an experimental balance candidate passed its internal promotion gate.
+> A green diagnostic workflow means the analyzer executed correctly. It does **not** mean the experimental balance candidate passed its internal promotion gate.
 
-Current V2 validation is deliberately **blocked**; see section 6.
+The current V2 candidate remains **blocked**, for the concrete reasons in section 6.
 
-Latest GitHub commit status also reports Vercel failure with a target ending in:
+### Vercel
+
+Latest checked commit status still reports Vercel failure with a target ending in:
 
 ```text
 upgradeToPro=build-rate-limit
 ```
 
-Treat this as an external Vercel build-rate-limit condition, not evidence of a repository build failure. Do not weaken CI or change code merely to clear this status. Re-check/redeploy after the Vercel limit clears if deployment verification is needed.
+Treat this as an external Vercel build-rate-limit condition, not a repository build failure. Do not weaken CI or alter game code merely to clear it.
 
 ---
 
 ## 2. Trust model — do not regress
 
-These rules are architecture, not optional conventions.
+These are architecture constraints.
 
 1. `src/game/engine.js` is the only authoritative transition system.
-2. Solver/adapters may select or abstract actions, but certified transitions must replay through the engine.
+2. Solver/adapters may select or abstract actions, but certified transitions must authoritative-replay through the engine.
 3. `uncovered != infeasible`.
 4. `budget exhausted != infeasible`.
-5. Only exhaustive reasoning or a sound over-approximation certificate may produce `infeasible-proven`.
-6. A numeric lower bound cannot prune unless backed by an engine-verified feasible witness.
-7. An optimization upper bound must remain admissible under the **current balance overlay**.
-8. Hard constraints are checked before heuristic/score ranking.
+5. Only exhaustive reasoning or a sound over-approximation may produce `infeasible-proven`.
+6. A numeric lower bound may prune only when backed by an engine-verified feasible witness.
+7. Objective upper bounds must remain admissible under the **current balance overlay**.
+8. Hard constraints are evaluated before heuristic/score ranking.
 9. Candidate snapshots are evidence/configuration, not production writes.
-10. `productionWriteAllowed=false` remains mandatory until materially stronger near-optimal/global exploit coverage exists.
+10. `productionWriteAllowed=false` stays mandatory until near-optimal/global exploit coverage is materially stronger.
+11. Raw proof-certificate identity and semantic player-route identity are different concepts; use semantic identity when proof reconstruction may legitimately change certificate/path metadata.
 
-The overlay-aware upper-bound fix is especially important: `tower-bounds.js` must read current overlay values rather than stale module-load constants. Future tuners may raise as well as lower parameters; a stale underestimated bound would make branch-and-bound unsound.
+The overlay-aware bound rule is especially important. Future tuners may raise as well as lower item/enemy/shop values. A stale underestimated upper bound would make branch-and-bound unsound.
 
 ---
 
 ## 3. Solver / analyzer capabilities already in Git
 
-Major implemented layers include:
+The branch now contains the following reusable stack:
 
 ```text
 canonical engine
@@ -76,26 +77,26 @@ canonical engine
   -> macro-event Tower adapter
   -> Pareto multi-label search
   -> dominance pruning
-  -> conservative objective upper bounds
+  -> conservative overlay-aware upper bounds
   -> authoritative certificates + replay
   -> verified incumbent witnesses
-  -> canonical compass travel
+  -> canonical Compass travel
   -> objective-threshold existence adapter
   -> core-boundary decomposition
   -> replayable compact bridge states
   -> staged threshold/core-transition chains
   -> difficulty / counterfactual analyzers
   -> numeric mutator + sensitivity screen
-  -> adaptive ray tuner
+  -> adaptive numeric ray tuner
   -> purchase best response
   -> Holy-policy proof coverage
   -> fixed-purchase event-order best response
   -> event-order step witnesses
   -> event-order purchase local search
-  -> recovery-aware purchase counterfactuals
+  -> recovery-aware purchase diagnostics
 ```
 
-Relevant entry files include:
+Key entry points:
 
 - `src/solver/search.js`
 - `src/solver/tower-adapter.js`
@@ -112,22 +113,30 @@ Relevant entry files include:
 - `src/tuner/review-candidate-v2-rebuild.js`
 - `src/tuner/review-candidate-v2-validation.js`
 
-Do not reimplement these as independent game simulators.
+Useful V2 CLIs now include:
+
+```bash
+node scripts/validate-review-candidate-v2.mjs --json
+node scripts/analyze-v2-event-order-core-transition.mjs --from-cores=6 --to-cores=7 --json
+node scripts/analyze-v2-event-order-core-transition-chain.mjs --from-cores=6 --to-cores=7 --json
+```
+
+Do not reimplement these as an independent game simulator.
 
 ---
 
 ## 4. Canonical baseline and Holy-policy result
 
-Canonical, unmodified game best-known purchase-only route found during this work:
+Canonical, unmodified game best-known purchase-only route found during this phase:
 
 ```text
 terminal HP: 26,041
 purchase plan: DEF x4 -> HP x15 -> ATK x1 -> HP x10
 ```
 
-It is purchase 1-opt under the modeled route, **not** a global player optimum.
+It is purchase 1-opt under its modeled route, **not** a global player optimum.
 
-Holy timing is no longer an open coverage hole for the current map/rules:
+Holy timing is no longer an open policy-coverage hole for the current map/rules:
 
 ```text
 immediate      -> feasible / optimized
@@ -136,7 +145,7 @@ after-core-7   -> STATIC_CUT proven infeasible
 before-final   -> STATIC_CUT proven infeasible
 ```
 
-The proof is topology/rule based and intentionally relaxes enemies, doors, gates, runes, resources and shop affordability. With Holy forbidden and the upper stair boss-locked, even the optimistic F6 graph cannot reach an `astralBoss`-adjacent cell. Allowing Holy or unlocking `U` restores a reachability witness.
+The static proof relaxes enemies, doors, gates, runes, resources and shop affordability. With Holy forbidden and the upper stair boss-locked, even the optimistic F6 graph cannot reach an `astralBoss`-adjacent cell. Allowing Holy or unlocking `U` restores a reachability witness.
 
 See:
 
@@ -146,7 +155,7 @@ See:
 
 ---
 
-## 5. V1 balance candidate: useful direction, superseded player response
+## 5. V1 candidate: useful direction, superseded by stronger player response
 
 `distributed-pressure-v1` edits:
 
@@ -168,11 +177,11 @@ single-purchase recovery: 93.33%
 catastrophic rate: 6.67%
 ```
 
-This once passed review gate v3, but **must no longer be treated as the strongest player response**.
+It once passed review gate v3, but it is no longer the strongest modeled player response.
 
-### Event-order exploit
+### Fixed-purchase event-order exploit
 
-Fixed-purchase event-order threshold search found and replayed:
+Threshold decomposition found and authoritative-replayed:
 
 ```text
 7,083 -> 7,187 HP
@@ -189,35 +198,35 @@ suffix      b4d28205d98368b5
 
 See `docs/event-order-exploit-7187.md`.
 
-### Joint event-order + purchase response
+### Event-order + purchase response
 
-Purchase 1-opt on the 241-step event-order skeleton improved again:
+Purchase 1-opt on the 241-step event-order skeleton then reached:
 
 ```text
 7,187 -> 7,687 HP
 +604 HP vs the old 7,083 reference
 minimum normalized HP margin: 42.63%
-localOptimal within existing shop-step replacement neighborhood: true
+localOptimal within the existing shop-step replacement neighborhood: true
 ```
 
-Best witness hash recorded in that experiment:
+Recorded best witness hash in that experiment:
 
 ```text
 34a27dcc2d368edf
 ```
 
-This proves the V1 numeric ray was materially too soft against the stronger player model.
+This proved V1 was materially too soft against the stronger player model.
 
 See:
 
 - `docs/event-order-joint-result-7687.md`
 - `docs/event-order-joint-local-search.md`
 
-Do not restore V1 to `ready_for_review` merely because its old v3 checks pass.
+Do not restore V1 to review-ready based on its older v3 checks.
 
 ---
 
-## 6. V2 candidate: current experimental frontier, intentionally BLOCKED
+## 6. V2 candidate: current experimental frontier, reference identity repaired, still BLOCKED
 
 Repository candidate: `REVIEW_CANDIDATES.distributedPressureV2`.
 
@@ -232,159 +241,190 @@ flameCaster.def:          70
 
 It was generated from the stronger event-order-witness pressure ray (`sourceRayStep = 0.8375`).
 
-Persisted expected evidence currently says:
+Current reference evidence:
 
 ```text
 terminal HP: 4,578
 minimum normalized HP margin: 0.14945652173913043
 purchase count: 29
 witness steps: 241
-expected witness hash: 8623f0ba330d21b3
+historical raw witness hash: 8623f0ba330d21b3
+rebuilt raw witness hash:    74d2099e0e9cf529
+semantic fingerprint:        361000c0b48dba27
 ```
 
-### Latest V2 validation on source head `3e9c52bc`
+### 6.1 Raw hash drift was investigated and is no longer a blocker
 
-The repository rebuild produced:
+The earlier handoff version treated the raw hash mismatch as candidate snapshot drift. The branch subsequently fixed the identity model:
+
+- raw witness hash is retained as historical provenance;
+- the hard identity check is now the ordered macro-event / strategic-action semantic fingerprint;
+- source certificate hashes and zero-cost movement paths are excluded from semantic identity because proof reconstruction can legitimately change them without changing the player's strategy.
+
+Commit introducing this distinction:
 
 ```text
-terminal HP: 4,578                         MATCH
-minimum normalized margin: 0.1494565217   MATCH
-purchase plan:                            MATCH
-purchase count: 29                        MATCH
-localOptimal: true                        MATCH
-witness steps: 241                        MATCH
-rebuilt witness hash: 74d2099e0e9cf529  MISMATCH
+be32eabdf8d4d68809f925cf8362018d16a26987
+fix: pin V2 to semantic event-order witness identity
 ```
 
-Therefore the trust chain correctly blocks the reference with:
+Latest V2 rebuild checks after that fix:
 
 ```text
-witness_hash_mismatch:74d2099e0e9cf529!=8623f0ba330d21b3
+sourceEditsMatch       = true
+terminalHpMatch        = true
+marginMatch            = true
+referenceIdentityMatch = true
+purchasePlanMatch      = true
+purchaseCountMatch     = true
+localOptimal           = true
+witnessStepsMatch      = true
 ```
 
-Because the reference is not trusted, the V2 validator does **not** treat downstream counterfactual/Holy/event-order evidence as valid promotion evidence.
+Therefore **do not spend the next conversation re-investigating the old raw hash mismatch** unless semantic fingerprint determinism itself regresses.
 
-The same run also showed independent existence search did not finish inside the current budget:
+### 6.2 Current real V2 blockers
+
+Latest V2 Review Validation result:
 
 ```text
-expanded: 10,000
-generated: 77,332
-solvable: null
-exact: false
+status = blocked
+failures = exactExistence, catastrophic, eventOrderBestResponse
 ```
 
-So V2 is currently:
+#### A. Independent exact existence is not closed at the current budget
+
+```text
+expanded = 10,000
+generated = 77,332
+solvable = null
+exact = false
+```
+
+This is a proof-budget gap, not an infeasibility result.
+
+#### B. No-recourse single-purchase catastrophic rate is just above the gate
+
+```text
+recoveryRate     = 0.896551724137931
+catastrophicRate = 0.10344827586206896
+highRegretRate   = 0
+improving neighbors = 0
+```
+
+The current catastrophic gate is 10%; V2 measures about **10.3448%**.
+
+Do not simply loosen the threshold. The repository already contains recovery-aware diagnostics; inspect whether realistic later purchase recourse materially changes the interpretation before changing any promotion rule.
+
+#### C. Fixed-purchase event-order best response is still coverage-incomplete
+
+Latest whole-game threshold run:
+
+```text
+expanded = 50,000
+generated = 271,383
+exploitFound = false
+exactNoExploit = false
+status = coverage-incomplete
+```
+
+No exploit found is not an optimality proof.
+
+### 6.3 V2 c6 -> c7 threshold bridge is now proven to exist
+
+Once semantic reference identity was restored, the staged V2 transition search produced a replay-verified threshold-relevant bridge:
+
+```text
+reference threshold HP = 4,578
+boundary relevant      = 64 / 64 discovered
+boundary exact         = false (stopped at maxGoals)
+boundary expanded      = 811
+boundary generated     = 4,646
+scheduled seeds        = 8 / 64
+```
+
+First successful scheduled seed:
+
+```text
+prefix certificate = 07159050c73dbb34
+prefix upper bound  = 5,723
+prefix HP           = 2,132
+prefix Gold         = 878
+shop purchases      = 16
+```
+
+Transition result:
+
+```text
+c6 -> c7 threshold-relevant bridge = FOUND
+expanded = 27
+generated = 264
+stop = goalFound
+next-state upper bound = 5,049 > 4,578
+```
+
+This does **not** prove a >4,578 terminal exploit. It proves that threshold-relevant potential survives the mandatory c6->c7 transition and gives a concrete bridge for a focused suffix search.
+
+The branch now also contains `scripts/analyze-v2-event-order-core-transition-chain.mjs` to continue that bridge into the terminal threshold suffix.
+
+### 6.4 Current V2 status
+
+Keep:
 
 ```text
 status = blocked
 productionWriteAllowed = false
 ```
 
-The V2 core-transition diagnostic also stops immediately on the same candidate snapshot drift; no c6->c7 proof conclusion should be inferred from that run.
-
-### Correct next action for V2
-
-Do **not** simply replace the stored hash to make the gate green.
-
-First determine why the deterministic rebuild hash changed while HP, margin, purchase plan/count, step count and local optimum all remained identical.
-
-Recommended sequence:
-
-1. rebuild the V2 reference repeatedly and verify the new hash is deterministic;
-2. diff the witness payload/skeleton against the historical expected witness semantics;
-3. identify whether the difference is metadata/version/serialization-only or an actual action-order change;
-4. if semantics are identical, document the cause and update the expected hash with a regression test;
-5. if semantics differ, keep V2 blocked and treat the rebuilt witness as new evidence rather than silently rewriting history;
-6. only after reference trust is restored should exact existence, counterfactuals and V2 c6->c7/event-order proof budgets be revisited.
-
-This is the highest-value starting point for the next conversation.
+Do not write the V2 edits into canonical `src/game/data.js` yet.
 
 ---
 
-## 7. Event-order proof state
+## 7. Recommended next-conversation priorities
 
-For the V1 7,083 threshold, whole-game threshold search at 50k expanded did not exhaust the space and found no >7,083 route in that particular deep run; this is **coverage incomplete**, not a no-exploit proof. Earlier staged decomposition already found the 7,187 exploit, so the known exploit is authoritative regardless of later bounded misses.
+### Priority 1 — use the V2 replay-verified c7 bridge for terminal threshold suffix search
 
-Important telemetry from the threshold work:
+This is the highest-value next proof step. Whole-game 50k search is expensive and still incomplete; c6->c7 transition already has a verified bridge with upper bound 5,049 > 4,578.
 
-- the difficult region moved to `c6`;
-- c6 threshold-relevant boundaries are cheap to discover;
-- c6 -> c7 continuation and late-game suffix decomposition are implemented;
-- `event-order-core-transition-chain.js` composes prefix -> transition -> suffix certificates and can emit a numeric-agnostic step witness;
-- the chain only produces exact negative evidence when boundary coverage and every required continuation are exact.
-
-Useful scripts:
+Run/inspect:
 
 ```bash
-node scripts/prove-event-order-threshold.mjs --json
-node scripts/analyze-event-order-suffix.mjs --target-cores=6 --json
-node scripts/analyze-event-order-core-transition.mjs --from-cores=6 --to-cores=7 --json
-node scripts/analyze-event-order-core-transition-chain.mjs --from-cores=6 --to-cores=7 --json
+node scripts/analyze-v2-event-order-core-transition-chain.mjs \
+  --from-cores=6 --to-cores=7 --json
 ```
 
-For V2 specifically:
+Outcomes:
 
-```bash
-node scripts/validate-review-candidate-v2.mjs --json
-node scripts/analyze-v2-event-order-core-transition.mjs --from-cores=6 --to-cores=7 --json
-```
+- replayed terminal HP > 4,578 -> persist the stronger event-order witness and feed it back to the tuner;
+- exact no-exploit from this bridge -> useful local negative evidence, but other unscheduled c7 bridges still matter;
+- budget exhaustion -> keep `coverage-incomplete` and profile the suffix rather than blindly increasing whole-game search.
 
-Do not spend large V2 proof budgets until the reference hash drift is resolved.
+### Priority 2 — close or better decompose independent existence
 
----
+The V2 reference itself is authoritative-replayable, but the current review process intentionally requests an independent Solver existence proof. Decide carefully whether to:
 
-## 8. CI / workflows at handoff
+- improve/decompose that independent proof so it closes within practical budget; or
+- formally document a different corroboration policy.
 
-Source head `3e9c52bc` status observed during handoff:
+Do not silently reinterpret a replayed reference witness as satisfying an independently defined exact-existence gate unless the trust model is explicitly revised and tested.
 
-```text
-CI                       success
-Tuner Profile            success
-Adaptive Balance Profile success
-Event Order Profile      success
-V2 Review Validation     success (diagnostic ran; candidate itself BLOCKED)
-Holy Policy Diagnostics  staged proof success; boundary job was still finishing when handoff preparation began
-Vercel                    failure: build-rate-limit / upgradeToPro target
-```
+### Priority 3 — analyze the 10.3448% catastrophic result with recourse
 
-Before doing new development in the next conversation, re-check the latest head/workflows because this handoff document commit itself advances the branch.
+The no-recourse metric freezes every later purchase after a single mistake. The recovery-aware analyzer exists specifically to answer whether a player can adapt later.
 
-Normal first command/check should remain:
+Before changing either numeric values or the 10% gate:
 
-```bash
-npm run check
-```
+1. make recovery-aware output complete/reliable for V2;
+2. compare which forced purchase errors are truly terminal after optimal later purchase choices;
+3. document whether the promotion gate should remain no-recourse, move to recovery-aware, or report both as separate constraints.
 
-GitHub Actions is the authoritative full-repository execution environment when the local VM cannot clone/access GitHub reliably.
+### Priority 4 — retune only if stronger response evidence demands it
 
----
+If the V2 suffix finds a stronger exploit, persist its numeric-agnostic event-order witness and tune against that stronger response. Do not fall back to deterministic event ordering.
 
-## 9. Recommended next-conversation priority
+### Priority 5 — expand placement/topology mutation only after player-response closure stabilizes
 
-### Priority 1 — resolve V2 witness identity drift
-
-This is currently blocking every proof that depends on V2's 4,578-HP threshold.
-
-Do not weaken `referenceRebuilt`, `referenceReplay`, or hash checks to get past it.
-
-### Priority 2 — rerun V2 independent proof stack
-
-After reference trust is restored:
-
-1. exact existence;
-2. no-recourse single-purchase counterfactuals;
-3. recovery-aware counterfactuals;
-4. Holy STATIC_CUT coverage;
-5. fixed-purchase event-order threshold closure;
-6. c6 -> c7 threshold transition/chain if whole-game closure remains expensive.
-
-### Priority 3 — feed any stronger witness back into tuning
-
-If V2 is beaten, persist the new numeric-agnostic event-order witness and re-run the stronger player-response ray. Do not tune against a weaker deterministic route.
-
-### Priority 4 — only then expand mutation space
-
-After a candidate survives the stronger player model, move to topology-preserving content mutations in this order:
+Recommended expansion order remains:
 
 ```text
 item placement within semantic region
@@ -394,16 +434,73 @@ item placement within semantic region
 -> local maze topology
 ```
 
-Do not jump straight to random F9/F10 generation or broad topology search while the player-response oracle is still moving.
+Do not jump to random F9/F10 or broad topology generation while the player oracle is still moving.
+
+---
+
+## 8. Useful event-order proof semantics
+
+For threshold questions, the branch uses staged composition:
+
+```text
+canonical start
+  -> threshold-relevant core boundary
+  -> replay-verified mandatory core transition
+  -> terminal objective-threshold suffix
+```
+
+The chain may produce:
+
+- a replay-verified exploit certificate chain;
+- a numeric-agnostic step witness for future overlays;
+- exact local negative evidence only when the relevant search is actually exhausted.
+
+Global `exactNoExploit` requires complete coverage of all relevant mandatory-boundary paths; a finite scheduled seed subset cannot establish it.
+
+See:
+
+- `docs/event-order-best-response.md`
+- `docs/event-order-threshold-chain.md`
+- `docs/late-game-zero-damage-harvest.md`
+- `src/analyzer/event-order-core-transition-proof.js`
+- `src/analyzer/event-order-core-transition-chain.js`
+
+---
+
+## 9. CI / workflow state at final handoff
+
+Recent checked heads show:
+
+```text
+CI                       success
+Tuner Profile            success
+Adaptive Balance Profile success
+Event Order Profile      success
+V2 Review Validation     success as a workflow; candidate internal status BLOCKED
+```
+
+Holy Policy Diagnostics sometimes shows `cancelled` because its `pre-holy-f6-boundary` diagnostic is long-running and the workflow has:
+
+```text
+concurrency:
+  cancel-in-progress: true
+```
+
+During handoff, one such boundary job was cancelled by a subsequent branch push after exactly two minutes; the same run's `staged-holy-proof` had already succeeded. Treat that cancellation as non-regression housekeeping, not a failed Holy proof.
+
+Vercel status remains externally blocked by build-rate limiting (`upgradeToPro=build-rate-limit`) at the latest checked source head.
+
+The final handoff documentation commit itself will advance the branch again. At the beginning of the next conversation, first re-read PR #15 head and run/workflow status before changing code.
 
 ---
 
 ## 10. Repository continuity notes
 
-- PR #15 is intentionally large because it records the full Solver/tuner research branch. Do not merge it automatically.
-- Existing PR #14 (`visual-theme-v8`) remains the visual parent/base context; do not merge that automatically either.
-- The VM is not the source of truth. Any algorithm, safety rule, threshold definition or design conclusion needed later must live in `src/`, `test/`, `.github/workflows/`, or `docs/`.
-- CI artifacts are evidence snapshots, not the sole storage location for algorithmic decisions.
-- Candidate numeric overlays are dry-run data. Canonical balance values must stay unchanged until the user explicitly chooses to promote a candidate and the proof gates support that decision.
+- PR #15 is intentionally large because it records the full Solver/tuner research branch. Do not merge automatically.
+- PR #14 (`visual-theme-v8`) remains the visual parent/base context. Do not merge automatically.
+- The VM is not the source of truth. Any algorithm, proof invariant, promotion rule, candidate identity rule or important design conclusion needed later must live in the repository.
+- CI artifacts are evidence snapshots, not the sole storage location for algorithms or decisions.
+- Candidate numeric overlays are dry-run data. Canonical balance values stay unchanged until the user explicitly chooses promotion and the proof gates support it.
+- Start a new development conversation by reading this document and current PR #15 metadata, not by relying on older chat summaries or the old 7,083 `ready_for_review` interpretation.
 
 This handoff is the intended restart point for the next development conversation.
