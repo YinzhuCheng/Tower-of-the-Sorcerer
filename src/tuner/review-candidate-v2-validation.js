@@ -1,4 +1,5 @@
 import { analyzeEventOrderWitnessPurchaseCounterfactuals } from '../analyzer/event-order-witness-counterfactuals.js';
+import { analyzeEventOrderWitnessPurchaseRecovery } from '../analyzer/event-order-purchase-recovery.js';
 import { analyzeEventOrderThresholdAgainstReferenceWitness } from '../analyzer/event-order-witness-threshold-proof.js';
 import { provePreHolyCore6StaticCut } from '../analyzer/pre-holy-static-cut.js';
 import { createFixedPurchasePolicyTowerAdapter } from '../solver/fixed-purchase-policy-adapter.js';
@@ -42,9 +43,18 @@ function compactExistence(solver, replay) {
  * under the V2 overlay before any proof uses it. The rebuilt witness shop
  * sequence is also compared against the persisted fixed-purchase policy; matching
  * HP/hash without matching policy is candidate snapshot drift, not valid proof
- * evidence. Numeric/Holy/purchase/robustness gates are evaluated separately from
- * the event-order closure gate so a bounded no-exploit search cannot be mistaken
- * for review readiness.
+ * evidence.
+ *
+ * Purchase robustness is intentionally reported in two confidence layers:
+ *
+ * 1. `counterfactuals`: no-recourse replay, where all later choices remain frozen.
+ * 2. `recoveryAwareCounterfactuals`: exact dynamic programming over every later
+ *    shop choice while the forced mistake and the event-order skeleton remain
+ *    fixed.
+ *
+ * The historical catastrophic gate is preserved for A/B evidence in this
+ * version. The recovery-aware metric is not substituted into promotion rules
+ * until its observed behavior is reviewed and documented.
  */
 export function validateDistributedPressureV2({
   maxPurchasePasses = 12,
@@ -52,6 +62,7 @@ export function validateDistributedPressureV2({
   existenceMaxGenerated = 120_000,
   eventOrderMaxExpanded = 50_000,
   eventOrderMaxGenerated = 400_000,
+  recoveryMaxActiveLabels = 50_000,
   highRegretRelative = 0.20
 } = {}) {
   const candidate = cloneReviewCandidate(REVIEW_CANDIDATES.distributedPressureV2);
@@ -101,6 +112,14 @@ export function validateDistributedPressureV2({
           highRegretRelative
         })
       : null;
+    const recoveryAwareCounterfactuals = counterfactuals
+      ? analyzeEventOrderWitnessPurchaseRecovery({
+          witness: rebuilt.witness,
+          adapter: existenceAdapter,
+          noRecourseReport: counterfactuals,
+          maxActiveLabels: recoveryMaxActiveLabels
+        })
+      : null;
     const staticCut = provePreHolyCore6StaticCut();
     const holyCoverage = {
       immediateFeasible: reference.ok && reference.holyCollected,
@@ -136,6 +155,7 @@ export function validateDistributedPressureV2({
       reference,
       existence: compactExistence(existenceSolver, existenceReplay),
       counterfactuals,
+      recoveryAwareCounterfactuals,
       holyCoverage,
       hardChecks,
       baseHardPassed: Object.values(hardChecks).every(Boolean)
@@ -152,8 +172,8 @@ export function validateDistributedPressureV2({
   const overallPassed = numeric.baseHardPassed && eventOrderBestResponse;
 
   return {
-    schemaVersion: 2,
-    model: 'distributed-pressure-v2-validation-v0.2-purchase-plan-consistency',
+    schemaVersion: 3,
+    model: 'distributed-pressure-v2-validation-v0.3-recovery-aware-diagnostics',
     candidateId: candidate.id,
     productionWriteAllowed: false,
     status: overallPassed ? 'ready_for_review' : 'blocked',
@@ -178,6 +198,7 @@ export function validateDistributedPressureV2({
     existence: numeric.existence,
     holyCoverage: numeric.holyCoverage,
     counterfactuals: numeric.counterfactuals,
+    recoveryAwareCounterfactuals: numeric.recoveryAwareCounterfactuals,
     hardChecks: {
       ...numeric.hardChecks,
       eventOrderBestResponse
