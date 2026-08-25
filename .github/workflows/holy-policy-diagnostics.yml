@@ -41,48 +41,33 @@ on:
       - '.github/workflows/holy-policy-diagnostics.yml'
   workflow_dispatch:
 
+concurrency:
+  group: holy-policy-diagnostics-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
+  # Legacy comparison jobs remain available manually. They are intentionally not
+  # part of normal PR/push feedback because staged proof supersedes their repeated
+  # F1-F5 search and they consume most runner concurrency.
   rescue-diagnostic:
+    if: github.event_name == 'workflow_dispatch'
     strategy:
       fail-fast: false
       matrix:
-        policy:
-          - after-core-6
-          - after-core-7
-          - before-final
+        policy: [after-core-6, after-core-7, before-final]
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
-        with:
-          node-version: 22
+        with: { node-version: 22 }
       - name: Deep deterministic purchase-prefix rescue
-        env:
-          HOLY_POLICY: ${{ matrix.policy }}
-        run: |
-          node scripts/diagnose-holy-purchase-rescue.mjs \
-            --policy="$HOLY_POLICY" \
-            --max-depth=20 \
-            --beam-width=24 \
-            --max-evaluations=2000 \
-            --json > "holy-purchase-rescue-$HOLY_POLICY.json"
-      - name: Print compact rescue diagnostic
-        env:
-          HOLY_POLICY: ${{ matrix.policy }}
-        run: |
-          python3 - <<'PY'
-          import json, os
-          p=os.environ['HOLY_POLICY']
-          rescue=json.load(open(f'holy-purchase-rescue-{p}.json'))
-          progress=(rescue.get('bestProgress') or {}).get('result') or {}
-          print(f"RESCUE policy={p} found={rescue.get('found')} depth={rescue.get('depth')} evals={rescue.get('evaluations')} stop={rescue.get('stoppedReason')} bestFloor={progress.get('floor')} bestCores={progress.get('cores')} bestBattles={progress.get('battles')} bestPurchases={progress.get('purchases')} holy={progress.get('holy')} failure={progress.get('failure')}")
-          PY
+        env: { HOLY_POLICY: '${{ matrix.policy }}' }
+        run: node scripts/diagnose-holy-purchase-rescue.mjs --policy="$HOLY_POLICY" --max-depth=20 --beam-width=24 --max-evaluations=2000 --json > "holy-purchase-rescue-$HOLY_POLICY.json"
       - uses: actions/upload-artifact@v4
         with:
           name: holy-purchase-rescue-${{ matrix.policy }}
           path: holy-purchase-rescue-${{ matrix.policy }}.json
-          if-no-files-found: error
           retention-days: 7
 
   pre-holy-f6-boundary:
@@ -91,30 +76,23 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
-        with:
-          node-version: 22
+        with: { node-version: 22 }
       - name: Collect replayable F6 core5 boundary frontier
-        run: |
-          node scripts/analyze-pre-holy-frontier.mjs \
-            --max-expanded=25000 \
-            --max-generated=250000 \
-            --json > pre-holy-f6-boundary.json
+        run: node scripts/analyze-pre-holy-frontier.mjs --max-expanded=25000 --max-generated=250000 --json > pre-holy-f6-boundary.json
       - name: Print compact boundary summary
         run: |
           python3 - <<'PY'
           import json
-          r=json.load(open('pre-holy-f6-boundary.json'))
-          s=r.get('solver') or {}
+          r=json.load(open('pre-holy-f6-boundary.json')); s=r.get('solver') or {}
           print(f"BOUNDARY found={r.get('hasBoundaryStates')} exact={r.get('coverageExact')} verified={r.get('verifiedSeedCount')}/{r.get('seedCount')} stop={r.get('stoppedReason')} expanded={s.get('expandedStates')} generated={s.get('generatedStates')} goalStates={s.get('goalStructuralStates')} activeGoals={s.get('activeGoalLabels')} interpretation={r.get('interpretation')}")
           for x in (r.get('seeds') or [])[:12]:
-              res=x.get('resources') or {}
-              print(f"BOUNDARY_SEED cert={x.get('certificateHash')} steps={x.get('certificateSteps')} hp={res.get('hp')} atk={res.get('atk')} def={res.get('def')} gold={res.get('gold')} cards={res.get('sun')}/{res.get('moon')}/{res.get('star')} verified={x.get('verified')}")
+              q=x.get('resources') or {}
+              print(f"BOUNDARY_SEED cert={x.get('certificateHash')} steps={x.get('certificateSteps')} hp={q.get('hp')} atk={q.get('atk')} def={q.get('def')} gold={q.get('gold')} cards={q.get('sun')}/{q.get('moon')}/{q.get('star')} verified={x.get('verified')}")
           PY
       - uses: actions/upload-artifact@v4
         with:
           name: pre-holy-f6-boundary
           path: pre-holy-f6-boundary.json
-          if-no-files-found: error
           retention-days: 7
 
   staged-holy-proof:
@@ -123,112 +101,58 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
-        with:
-          node-version: 22
+        with: { node-version: 22 }
       - name: Run staged delayed-Holy proof
-        run: |
-          node scripts/analyze-staged-holy-proof.mjs \
-            --boundary-max-expanded=25000 \
-            --boundary-max-generated=250000 \
-            --max-boundary-seeds=12 \
-            --core6-max-expanded=4000 \
-            --core6-max-generated=40000 \
-            --policy-max-expanded=8000 \
-            --policy-max-generated=80000 \
-            > staged-holy-proof.json
+        run: node scripts/analyze-staged-holy-proof.mjs --boundary-max-expanded=25000 --boundary-max-generated=250000 --max-boundary-seeds=12 --core6-max-expanded=4000 --core6-max-generated=40000 --policy-max-expanded=8000 --policy-max-generated=80000 > staged-holy-proof.json
       - name: Print compact staged proof summary
         run: |
           python3 - <<'PY'
           import json
-          r=json.load(open('staged-holy-proof.json'))
-          b=r.get('boundary') or {}
-          c=r.get('core6') or {}
+          r=json.load(open('staged-holy-proof.json')); b=r.get('boundary') or {}; c=r.get('core6') or {}
           print(f"STAGED_BOUNDARY found={b.get('hasBoundaryStates')} exact={b.get('coverageExact')} verified={b.get('verifiedSeedCount')}/{b.get('seedCount')} interpretation={b.get('interpretation')}")
           print(f"STAGED_CORE6 reached={c.get('reached')} exactInfeasible={c.get('exactInfeasible')} scheduled={c.get('scheduledSeedCount')}/{c.get('verifiedSeedCount')} winner={c.get('winningBoundaryCertificateHash')} interpretation={c.get('interpretation')}")
           for x in r.get('policyResults') or []:
-              s=x.get('solver') or {}
-              rp=x.get('replay') or {}
+              s=x.get('solver') or {}; rp=x.get('replay') or {}
               print(f"STAGED_POLICY policy={x.get('holyPolicy')} feasible={x.get('feasible')} exact={x.get('exact')} stop={s.get('stoppedReason')} expanded={s.get('expandedStates')} generated={s.get('generatedStates')} replay={rp.get('ok')} interpretation={x.get('interpretation')}")
           PY
       - uses: actions/upload-artifact@v4
         with:
           name: staged-holy-proof
           path: staged-holy-proof.json
-          if-no-files-found: error
           retention-days: 7
 
   pre-holy-f6-stage:
+    if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
-        with:
-          node-version: 22
-      - name: Prove shared pre-Holy F6 stages
-        run: |
-          node scripts/analyze-pre-holy-f6.mjs \
-            --max-expanded=25000 \
-            --max-generated=250000 \
-            --json > pre-holy-f6-stage.json
-      - name: Print compact F6 stage summary
-        run: |
-          python3 - <<'PY'
-          import json
-          r=json.load(open('pre-holy-f6-stage.json'))
-          print(f"PRE_HOLY_F6 interpretation={r.get('interpretation')}")
-          for name in ('preBoss','core6'):
-              x=r[name]
-              final=(x.get('authoritativeReplay') or {}).get('final') or (x.get('certificate') or {}).get('final') or {}
-              stats=final.get('stats') or {}
-              print(f"F6_STAGE stage={name} reached={x.get('reached')} exact={x.get('exact')} stop={x.get('stoppedReason')} expanded={(x.get('solver') or {}).get('expandedStates')} generated={(x.get('solver') or {}).get('generatedStates')} floor={final.get('floor')} cores={final.get('cores')} hp={stats.get('hp')} atk={stats.get('atk')} def={stats.get('def')}")
-          PY
+        with: { node-version: 22 }
+      - run: node scripts/analyze-pre-holy-f6.mjs --max-expanded=25000 --max-generated=250000 --json > pre-holy-f6-stage.json
       - uses: actions/upload-artifact@v4
         with:
           name: pre-holy-f6-stage
           path: pre-holy-f6-stage.json
-          if-no-files-found: error
           retention-days: 7
 
   solver-diagnostic:
+    if: github.event_name == 'workflow_dispatch'
     strategy:
       fail-fast: false
       matrix:
-        policy:
-          - after-core-6
-          - after-core-7
-          - before-final
+        policy: [after-core-6, after-core-7, before-final]
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
-        with:
-          node-version: 22
-      - name: Policy-constrained Solver feasibility and certificate seed
-        env:
-          HOLY_POLICY: ${{ matrix.policy }}
-        run: |
-          node scripts/analyze-holy-policy-solver-seeds.mjs \
-            --policy="$HOLY_POLICY" \
-            --max-expanded=25000 \
-            --max-generated=250000 \
-            --json > "holy-policy-solver-seed-$HOLY_POLICY.json"
-      - name: Print compact Solver diagnostic
-        env:
-          HOLY_POLICY: ${{ matrix.policy }}
-        run: |
-          python3 - <<'PY'
-          import json, os
-          p=os.environ['HOLY_POLICY']
-          solver=json.load(open(f'holy-policy-solver-seed-{p}.json'))['results'][0]
-          auth=solver.get('authoritativeReplay') or {}
-          replay=solver.get('deterministicReplay') or {}
-          print(f"SOLVER policy={p} feasible={solver.get('policyFeasible')} exact={solver.get('exact')} stop={solver.get('stoppedReason')} expanded={(solver.get('solver') or {}).get('expandedStates')} generated={(solver.get('solver') or {}).get('generatedStates')} certReplay={auth.get('ok')} certHp={solver.get('certifiedTerminalHpLowerBound')} greedyReplay={replay.get('solvable')} interpretation={solver.get('interpretation')}")
-          PY
+        with: { node-version: 22 }
+      - name: Whole-policy constrained Solver comparison
+        env: { HOLY_POLICY: '${{ matrix.policy }}' }
+        run: node scripts/analyze-holy-policy-solver-seeds.mjs --policy="$HOLY_POLICY" --max-expanded=25000 --max-generated=250000 --json > "holy-policy-solver-seed-$HOLY_POLICY.json"
       - uses: actions/upload-artifact@v4
         with:
           name: holy-policy-solver-seed-${{ matrix.policy }}
           path: holy-policy-solver-seed-${{ matrix.policy }}.json
-          if-no-files-found: error
           retention-days: 7
