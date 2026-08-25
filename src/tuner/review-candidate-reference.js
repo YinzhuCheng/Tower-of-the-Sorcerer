@@ -1,6 +1,7 @@
 import { runGreedyShopStrategy } from '../solver/greedy-strategy.js';
 import { fixedPurchaseOptionAt } from '../solver/fixed-purchase-policy-adapter.js';
 import { replayTowerStepSkeleton } from '../solver/replay.js';
+import { eventOrderWitnessSemanticFingerprint } from '../analyzer/event-order-witness.js';
 
 export function eventOrderWitnessPurchasePlan(witness) {
   return (witness?.steps ?? [])
@@ -68,8 +69,18 @@ function closeEnough(left, right, epsilon = 1e-12) {
  *
  * `greedy-strategy` preserves V1 behavior. `event-order-step-witness` requires a
  * caller-supplied numeric-agnostic witness and replays every action under the
- * current balance overlay before its expected HP/margin is accepted. A stored
- * HP or witness hash alone is never sufficient evidence.
+ * current balance overlay before its expected HP/margin is accepted.
+ *
+ * Event-order candidate identity has two layers:
+ *
+ * - `witnessHash`: exact generated skeleton provenance. It intentionally changes
+ *   when source certificate hashes or free movement paths are reconstructed.
+ * - `referenceSemanticFingerprint`: stable ordered macro-event identity. Once a
+ *   candidate opts into this field it becomes the hard identity check, while a
+ *   raw hash mismatch is retained only as provenance diagnostic evidence.
+ *
+ * Candidates without a semantic fingerprint keep the legacy raw-hash hard check
+ * until they are explicitly migrated.
  */
 export function resolveReviewCandidateReference({
   candidate,
@@ -99,6 +110,8 @@ export function resolveReviewCandidateReference({
       terminalHp,
       minNormalizedHpMargin: route.minNormalizedHpMargin,
       referenceWitnessHash: null,
+      referenceSemanticFingerprint: null,
+      rawWitnessHashMatches: null,
       purchaseCount: route.purchases,
       purchasePolicyComparison: null,
       holyCollected: route.relics?.holy === true,
@@ -107,7 +120,8 @@ export function resolveReviewCandidateReference({
         ...(route.solvable ? [] : [`greedy_reference_failed:${route.failure ?? 'unknown'}`]),
         ...(hpMatches ? [] : [`terminal_hp_mismatch:${terminalHp}!=${expected.terminalHp}`]),
         ...(marginMatches ? [] : [`margin_mismatch:${route.minNormalizedHpMargin}!=${expected.minNormalizedHpMargin}`])
-      ]
+      ],
+      provenanceWarnings: []
     };
   }
 
@@ -121,18 +135,37 @@ export function resolveReviewCandidateReference({
       terminalHp: null,
       minNormalizedHpMargin: null,
       referenceWitnessHash: referenceWitness?.witnessHash ?? null,
+      referenceSemanticFingerprint: null,
+      rawWitnessHashMatches: null,
       purchaseCount: null,
       purchasePolicyComparison: null,
       holyCollected: false,
       route: null,
-      failures: ['event_order_reference_witness_missing']
+      failures: ['event_order_reference_witness_missing'],
+      provenanceWarnings: []
     };
   }
 
   const failures = [];
-  if (expected.referenceWitnessHash && referenceWitness.witnessHash !== expected.referenceWitnessHash) {
+  const provenanceWarnings = [];
+  const semanticFingerprint = referenceWitness.semanticFingerprint
+    ?? eventOrderWitnessSemanticFingerprint(referenceWitness);
+  const semanticPinned = typeof expected.referenceSemanticFingerprint === 'string'
+    && expected.referenceSemanticFingerprint.length > 0;
+  const rawHashMatches = !expected.referenceWitnessHash
+    || referenceWitness.witnessHash === expected.referenceWitnessHash;
+
+  if (semanticPinned) {
+    if (semanticFingerprint !== expected.referenceSemanticFingerprint) {
+      failures.push(`witness_semantic_fingerprint_mismatch:${semanticFingerprint}!=${expected.referenceSemanticFingerprint}`);
+    }
+    if (!rawHashMatches) {
+      provenanceWarnings.push(`witness_hash_changed:${referenceWitness.witnessHash}!=${expected.referenceWitnessHash}`);
+    }
+  } else if (!rawHashMatches) {
     failures.push(`witness_hash_mismatch:${referenceWitness.witnessHash}!=${expected.referenceWitnessHash}`);
   }
+
   const purchasePolicyComparison = compareReferenceWitnessPurchasePolicy(
     referenceWitness,
     candidate.purchasePolicy
@@ -169,10 +202,13 @@ export function resolveReviewCandidateReference({
     terminalHp: replay.ok ? replay.objective : null,
     minNormalizedHpMargin: replay.minNormalizedHpMargin,
     referenceWitnessHash: referenceWitness.witnessHash ?? null,
+    referenceSemanticFingerprint: semanticFingerprint,
+    rawWitnessHashMatches: rawHashMatches,
     purchaseCount,
     purchasePolicyComparison,
     holyCollected,
     route: replay,
-    failures
+    failures,
+    provenanceWarnings
   };
 }
