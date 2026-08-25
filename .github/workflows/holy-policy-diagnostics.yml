@@ -102,31 +102,37 @@ jobs:
       - uses: actions/setup-node@v4
         with: { node-version: 22 }
       - name: Run staged delayed-Holy proof
-        run: node scripts/analyze-staged-holy-proof.mjs --boundary-max-expanded=25000 --boundary-max-generated=250000 --boundary-discovery-goals=512 --max-boundary-seeds=12 --preboss-max-expanded=4000 --preboss-max-generated=40000 --boss-max-expanded=128 --boss-max-generated=2000 --policy-max-expanded=8000 --policy-max-generated=80000 > staged-holy-proof.json
+        run: node scripts/analyze-staged-holy-proof.mjs --boundary-max-expanded=25000 --boundary-max-generated=250000 --boundary-discovery-goals=512 --max-boundary-seeds=12 --corridor-max-expanded=1500 --corridor-max-generated=15000 --preboss-max-expanded=2500 --preboss-max-generated=25000 --boss-max-expanded=128 --boss-max-generated=2000 --policy-max-expanded=8000 --policy-max-generated=80000 > staged-holy-proof.json
       - name: Print compact staged proof summary
         run: |
           python3 - <<'PY'
           import json
-          r=json.load(open('staged-holy-proof.json')); b=r.get('boundary') or {}; pb=r.get('preBoss') or {}; c=r.get('core6') or {}; sched=r.get('seedSchedule') or {}
+          r=json.load(open('staged-holy-proof.json')); b=r.get('boundary') or {}; co=r.get('corridor') or {}; pb=r.get('preBoss') or {}; c=r.get('core6') or {}; sched=r.get('seedSchedule') or {}
+          cap=r.get('proofCapability') or {}
+          print(f"STAGED_MODEL model={r.get('model')} provesExistence={cap.get('provesExistence')} provesGlobalInfeasibility={cap.get('provesGlobalInfeasibility')} reason={cap.get('reason')}")
           print(f"STAGED_BOUNDARY found={b.get('hasBoundaryStates')} exact={b.get('coverageExact')} verified={b.get('verifiedSeedCount')}/{b.get('seedCount')} interpretation={b.get('interpretation')}")
           print(f"STAGED_SCHEDULE scheduler={sched.get('scheduler')} candidates={sched.get('candidateCount')} scheduled={sched.get('scheduledCount')}")
           for x in sched.get('diagnostics') or []:
               q=x.get('resources') or {}
               print(f"STAGED_SEED reason={x.get('selectionReason')} cert={x.get('certificateHash')} hp={q.get('hp')} atk={q.get('atk')} def={q.get('def')} gold={q.get('gold')} cards={q.get('sun')}/{q.get('moon')}/{q.get('star')} p={x.get('shopPurchases')} optMargin={x.get('optimisticBossMargin')} optWin={x.get('optimisticWinnable')} maxBuy={x.get('maxAffordablePurchases')}")
+          print(f"STAGED_CORRIDOR reached={co.get('reached')} winner={co.get('winningBoundaryCertificateHash')} resources={co.get('bridgeResources')} interpretation={co.get('interpretation')}")
           print(f"STAGED_PREBOSS reached={pb.get('reached')} winner={pb.get('winningBoundaryCertificateHash')} resources={pb.get('bridgeResources')} interpretation={pb.get('interpretation')}")
           print(f"STAGED_CORE6 reached={c.get('reached')} exactInfeasible={c.get('exactInfeasible')} scheduled={c.get('scheduledSeedCount')}/{c.get('verifiedSeedCount')} winner={c.get('winningBoundaryCertificateHash')} resources={c.get('bridgeResources')} interpretation={c.get('interpretation')}")
           for a in c.get('attempts') or []:
-              ps=(a.get('preBoss') or {}).get('solver') or {}; cs=(a.get('core6') or {}).get('solver') or {}; sg=a.get('scheduling') or {}
-              print(f"STAGED_ATTEMPT cert={a.get('boundaryCertificateHash')} optMargin={sg.get('optimisticBossMargin')} preBoss={a.get('preBoss',{}).get('verified')} preStop={ps.get('stoppedReason')} preExp={ps.get('expandedStates')} preGen={ps.get('generatedStates')} core6={a.get('verified')} coreStop={cs.get('stoppedReason')} coreExp={cs.get('expandedStates')} coreGen={cs.get('generatedStates')}")
+              xs=a.get('corridor') or {}; ps=a.get('preBoss') or {}; cs=a.get('core6') or {}; sg=a.get('scheduling') or {}
+              xsv=xs.get('solver') or {}; psv=ps.get('solver') or {}; csv=cs.get('solver') or {}
+              print(f"STAGED_ATTEMPT cert={a.get('boundaryCertificateHash')} optMargin={sg.get('optimisticBossMargin')} corridor={xs.get('verified')} corridorStop={xsv.get('stoppedReason')} corridorExp={xsv.get('expandedStates')} corridorGen={xsv.get('generatedStates')} preBoss={ps.get('verified')} preStop={psv.get('stoppedReason')} preExp={psv.get('expandedStates')} preGen={psv.get('generatedStates')} core6={a.get('verified')} coreStop={csv.get('stoppedReason')} coreExp={csv.get('expandedStates')} coreGen={csv.get('generatedStates')}")
           for x in r.get('policyResults') or []:
               s=x.get('solver') or {}; rp=x.get('replay') or {}
               print(f"STAGED_POLICY policy={x.get('holyPolicy')} feasible={x.get('feasible')} exact={x.get('exact')} stop={s.get('stoppedReason')} expanded={s.get('expandedStates')} generated={s.get('generatedStates')} replay={rp.get('ok')} interpretation={x.get('interpretation')}")
           PY
       - uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: staged-holy-proof
           path: staged-holy-proof.json
           retention-days: 7
+          if-no-files-found: warn
 
   pre-holy-f6-stage:
     if: github.event_name == 'workflow_dispatch'
