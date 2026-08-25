@@ -38,3 +38,11 @@ test('core6 stage requires sixth core before Holy', () => {
   assert.equal(adapter.isGoal({ cores: 6, floor: 5, relics: { holy: false } }), true);
   assert.equal(adapter.isGoal({ cores: 6, floor: 5, relics: { holy: true } }), false);
 });
+
+test('default pre-Holy stage proof reuses the proven canonical-travel adapter', () => {
+  const adapter = createPreHolyStageAdapter({ stage: 'core6' });
+  const rules = adapter.rulesVersion();
+  assert.match(rules, /canonical-travel-v1/);
+  assert.match(rules, /pre-holy-stage:core6/);
+  assert.equal(typeof adapter.frontierKey, 'function');
+});
