@@ -1,5 +1,5 @@
 import { HOLY_POLICIES } from './greedy-strategy.js';
-import { createTowerAdapter } from './tower-adapter.js';
+import { createBoundedTowerAdapter } from './tower-bounds.js';
 
 function actionIsHoly(action) {
   return action?.kind === 'tile'
@@ -56,10 +56,17 @@ function structurallyReachableCombatActions(baseAdapter, state) {
  *
  * Goal states are additionally required to have acquired Holy, so a route cannot
  * satisfy the policy by simply never collecting the relic.
+ *
+ * The default base is the bounded Tower adapter. Existence mode ignores its HP
+ * objective bound, but reuses compact frontier keys and canonical compass travel.
+ * The latter has a repository proof argument: after boss-stair locking, upward
+ * teleports are resource-equivalent to repeated U traversal and D is equivalent
+ * to direct downward teleport. Reusing that history-free canonicalization removes
+ * free travel cycles without changing Holy-policy feasibility.
  */
 export function createHolyPolicyTowerAdapter({
   holyPolicy,
-  baseAdapter = createTowerAdapter()
+  baseAdapter = createBoundedTowerAdapter()
 } = {}) {
   if (!HOLY_POLICIES.includes(holyPolicy)) throw new Error(`Unknown Holy policy: ${holyPolicy}`);
   return {
