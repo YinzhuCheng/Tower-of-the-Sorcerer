@@ -2,19 +2,60 @@ import { runGreedyShopStrategy } from '../solver/greedy-strategy.js';
 import { fixedPurchaseOptionAt } from '../solver/fixed-purchase-policy-adapter.js';
 import { replayTowerStepSkeleton } from '../solver/replay.js';
 
-function witnessShopSequence(witness) {
+export function eventOrderWitnessPurchasePlan(witness) {
   return (witness?.steps ?? [])
     .filter((step) => step.kind === 'shop')
     .map((step) => step.action?.optionId ?? null);
 }
 
+/**
+ * Compare the shop actions that an event-order witness actually used against a
+ * fixed purchase-policy sub-problem. The returned expected plan is materialized
+ * only for the purchases present in the witness, so cycle fallback remains part
+ * of the comparison contract.
+ */
+export function compareReferenceWitnessPurchasePolicy(witness, purchasePolicy) {
+  const actualPlan = eventOrderWitnessPurchasePlan(witness);
+  if (!witness?.steps?.length || !purchasePolicy?.shopCycle?.length) {
+    return {
+      ok: false,
+      actualPlan,
+      expectedPlan: [],
+      firstMismatch: {
+        index: 0,
+        actual: actualPlan[0] ?? null,
+        expected: null,
+        reason: 'missing_witness_or_purchase_cycle'
+      }
+    };
+  }
+
+  const expectedPlan = actualPlan.map((_, index) => fixedPurchaseOptionAt(index, purchasePolicy));
+  let firstMismatch = null;
+  for (let index = 0; index < actualPlan.length; index += 1) {
+    const actual = actualPlan[index];
+    const expected = expectedPlan[index];
+    if (typeof actual !== 'string' || actual !== expected) {
+      firstMismatch = {
+        index,
+        actual,
+        expected,
+        reason: typeof actual === 'string' ? 'option_mismatch' : 'invalid_witness_shop_option'
+      };
+      break;
+    }
+  }
+
+  return {
+    ok: firstMismatch == null,
+    actualPlan,
+    expectedPlan,
+    firstMismatch
+  };
+}
+
 export function referenceWitnessMatchesPurchasePolicy(witness, purchasePolicy) {
-  if (!witness?.steps?.length || !purchasePolicy?.shopCycle?.length) return false;
-  const sequence = witnessShopSequence(witness);
-  if (sequence.some((optionId) => typeof optionId !== 'string')) return false;
-  return sequence.every((optionId, index) =>
-    optionId === fixedPurchaseOptionAt(index, purchasePolicy)
-  );
+  return compareReferenceWitnessPurchasePolicy(witness, purchasePolicy).ok;
 }
 
 function closeEnough(left, right, epsilon = 1e-12) {
@@ -59,6 +100,7 @@ export function resolveReviewCandidateReference({
       minNormalizedHpMargin: route.minNormalizedHpMargin,
       referenceWitnessHash: null,
       purchaseCount: route.purchases,
+      purchasePolicyComparison: null,
       holyCollected: route.relics?.holy === true,
       route,
       failures: [
@@ -80,6 +122,7 @@ export function resolveReviewCandidateReference({
       minNormalizedHpMargin: null,
       referenceWitnessHash: referenceWitness?.witnessHash ?? null,
       purchaseCount: null,
+      purchasePolicyComparison: null,
       holyCollected: false,
       route: null,
       failures: ['event_order_reference_witness_missing']
@@ -90,10 +133,20 @@ export function resolveReviewCandidateReference({
   if (expected.referenceWitnessHash && referenceWitness.witnessHash !== expected.referenceWitnessHash) {
     failures.push(`witness_hash_mismatch:${referenceWitness.witnessHash}!=${expected.referenceWitnessHash}`);
   }
-  if (!referenceWitnessMatchesPurchasePolicy(referenceWitness, candidate.purchasePolicy)) {
+  const purchasePolicyComparison = compareReferenceWitnessPurchasePolicy(
+    referenceWitness,
+    candidate.purchasePolicy
+  );
+  if (!purchasePolicyComparison.ok) {
+    const mismatch = purchasePolicyComparison.firstMismatch;
     failures.push('witness_purchase_policy_mismatch');
+    if (mismatch) {
+      failures.push(
+        `witness_purchase_policy_first_mismatch:${mismatch.index}:${mismatch.actual ?? 'null'}!=${mismatch.expected ?? 'null'}`
+      );
+    }
   }
-  const purchaseCount = witnessShopSequence(referenceWitness).length;
+  const purchaseCount = purchasePolicyComparison.actualPlan.length;
   if (Number.isFinite(expected.purchaseCount) && purchaseCount !== expected.purchaseCount) {
     failures.push(`purchase_count_mismatch:${purchaseCount}!=${expected.purchaseCount}`);
   }
@@ -117,6 +170,7 @@ export function resolveReviewCandidateReference({
     minNormalizedHpMargin: replay.minNormalizedHpMargin,
     referenceWitnessHash: referenceWitness.witnessHash ?? null,
     purchaseCount,
+    purchasePolicyComparison,
     holyCollected,
     route: replay,
     failures
