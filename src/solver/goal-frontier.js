@@ -19,11 +19,7 @@ function normalizeWith(adapter, state) {
 
 function structuralKeyHash(key) {
   if (typeof key !== 'string') return hashValue(key);
-  try {
-    return hashValue(JSON.parse(key));
-  } catch {
-    return hashValue(key);
-  }
+  try { return hashValue(JSON.parse(key)); } catch { return hashValue(key); }
 }
 
 function incrementCounter(counter, key, amount = 1) {
@@ -41,10 +37,7 @@ function edgeStepsFor(label, initialSteps) {
   return [...initialSteps, ...groups.flat()];
 }
 
-function buildBoundaryCertificate(label, initialSteps, adapter, {
-  solverVersion,
-  initialStateHash
-}) {
+function buildBoundaryCertificate(label, initialSteps, adapter, { solverVersion, initialStateHash }) {
   const steps = edgeStepsFor(label, initialSteps);
   const payload = {
     schemaVersion: 1,
@@ -68,23 +61,21 @@ function buildBoundaryCertificate(label, initialSteps, adapter, {
 /**
  * Enumerate a Pareto frontier of reachable goal/boundary states.
  *
- * Unlike `solve(..., mode='existence')`, reaching a goal does not stop the whole
- * search. The goal label is inserted into a separate Pareto index and is not
- * expanded beyond the boundary. Non-goal states continue through the normal
- * structural-key + resource-dominance search.
- *
- * This is intended for staged exact proofs. A budget-limited result may provide
- * useful replayable seeds (`hasGoals=true`) but is not exhaustive unless
- * `coverageExact=true` (the non-goal queue was exhausted).
+ * `maxGoals` is a discovery limit, not an exactness shortcut. If the active goal
+ * frontier reaches that size, search stops with `stoppedReason='maxGoals'` and
+ * `coverageExact=false`. The emitted seeds remain valid replayable witnesses;
+ * only frontier completeness is unknown.
  */
 export function collectGoalFrontier({
   adapter,
   initialState = null,
   maxExpanded = 100_000,
   maxGenerated = 1_000_000,
-  solverVersion = 'goal-frontier-v0.1'
+  maxGoals = Number.POSITIVE_INFINITY,
+  solverVersion = 'goal-frontier-v0.2'
 } = {}) {
   if (!adapter) throw new Error('collectGoalFrontier() requires an adapter.');
+  if (!(maxGoals > 0)) throw new Error('collectGoalFrontier() maxGoals must be positive.');
 
   const initialRaw = initialState ?? adapter.createInitialState();
   const initialStateHash = hashValue(adapter.summarizeState ? adapter.summarizeState(initialRaw) : initialRaw);
@@ -109,17 +100,12 @@ export function collectGoalFrontier({
   function makeLabel({ state, parent = null, edgeSteps = [], depth = 0 }) {
     const resources = adapter.resources(state);
     return {
-      id: nextId++,
-      state,
-      resources,
-      key: frontierKeyOf(state, adapter),
-      parent,
-      edgeSteps,
+      id: nextId++, state, resources,
+      key: frontierKeyOf(state, adapter), parent, edgeSteps,
       minHp: parent?.minHp == null || resources.hp == null
         ? (resources.hp ?? parent?.minHp ?? null)
         : Math.min(parent.minHp, resources.hp),
-      depth,
-      active: true
+      depth, active: true
     };
   }
 
@@ -153,6 +139,10 @@ export function collectGoalFrontier({
   else acceptSearch(initialLabel);
 
   while (queue.size > 0) {
+    if (goalFrontier.activeCount() >= maxGoals) {
+      stoppedReason = 'maxGoals';
+      break;
+    }
     if (expandedStates >= maxExpanded) {
       stoppedReason = 'maxExpanded';
       break;
@@ -163,10 +153,7 @@ export function collectGoalFrontier({
     }
 
     const label = queue.pop();
-    if (!label?.active) {
-      stalePops += 1;
-      continue;
-    }
+    if (!label?.active) { stalePops += 1; continue; }
 
     expandedStates += 1;
     const stage = adapter.stageKey ? adapter.stageKey(label.state) : 'all';
@@ -194,8 +181,12 @@ export function collectGoalFrontier({
         edgeSteps: [...(applied.steps ?? []), ...normalized.steps],
         depth: (label.depth ?? 0) + 1
       });
-      if (adapter.isGoal(nextState)) acceptGoal(nextLabel);
-      else acceptSearch(nextLabel);
+      if (adapter.isGoal(nextState)) {
+        acceptGoal(nextLabel);
+        if (goalFrontier.activeCount() >= maxGoals) break;
+      } else {
+        acceptSearch(nextLabel);
+      }
     }
   }
 
@@ -208,10 +199,7 @@ export function collectGoalFrontier({
     structuralKey: label.key,
     depth: label.depth,
     minHp: label.minHp,
-    certificate: buildBoundaryCertificate(label, initialNormalized.steps, adapter, {
-      solverVersion,
-      initialStateHash
-    })
+    certificate: buildBoundaryCertificate(label, initialNormalized.steps, adapter, { solverVersion, initialStateHash })
   }));
 
   return {
@@ -221,6 +209,7 @@ export function collectGoalFrontier({
     hasGoals: goals.length > 0,
     coverageExact: exhausted,
     stoppedReason,
+    maxGoals: Number.isFinite(maxGoals) ? maxGoals : null,
     expandedStates,
     generatedStates,
     prunedDominated,
