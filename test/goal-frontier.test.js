@@ -53,6 +53,17 @@ test('goal frontier keeps incomparable boundary labels and removes dominated one
   assert.ok(result.goals.every((goal) => goal.certificate?.certificateHash));
 });
 
+test('goal discovery limit returns valid seeds without claiming exact coverage', () => {
+  const result = collectGoalFrontier({
+    adapter: mockBoundaryAdapter(),
+    maxGoals: 1
+  });
+  assert.equal(result.hasGoals, true);
+  assert.equal(result.activeGoalLabels, 1);
+  assert.equal(result.coverageExact, false);
+  assert.equal(result.stoppedReason, 'maxGoals');
+});
+
 test('budget-limited goal frontier never claims exhaustive coverage', () => {
   const result = collectGoalFrontier({
     adapter: mockBoundaryAdapter(),
