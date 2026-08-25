@@ -1,9 +1,14 @@
 import { analyzeThresholdCoreTransition } from './event-order-core-transition-proof.js';
+import { buildEventOrderStepWitness } from './event-order-witness.js';
 import { createCoreBoundaryAdapter } from '../solver/core-boundary-adapter.js';
 import { createFixedPurchasePolicyTowerAdapter } from '../solver/fixed-purchase-policy-adapter.js';
 import { createLateGameZeroDamageHarvestAdapter } from '../solver/late-game-zero-damage-harvest-adapter.js';
 import { createObjectiveThresholdAdapter } from '../solver/objective-threshold-adapter.js';
-import { replayTowerCertificateToState, replayTowerCertificate } from '../solver/replay.js';
+import {
+  replayTowerCertificateToState,
+  replayTowerCertificate,
+  replayTowerStepSkeleton
+} from '../solver/replay.js';
 import { solve } from '../solver/search.js';
 import { withBalanceEdits } from '../tuner/balance-overlay.js';
 import { cloneReviewCandidate, REVIEW_CANDIDATES } from '../tuner/review-candidates.js';
@@ -28,15 +33,6 @@ function compactSolver(report) {
   };
 }
 
-/**
- * Evidence classification for a staged threshold chain.
- *
- * Exact failure of one suffix bridge is deliberately NOT promoted to global
- * no-exploit: another threshold-relevant c7 bridge may still succeed. Global
- * exact no-exploit is inherited only when the transition proof itself has
- * complete from-core coverage and proves that no threshold-relevant next-core
- * bridge exists at all.
- */
 export function classifyThresholdCoreChain({
   transitionReport,
   suffixExploit = false
@@ -50,18 +46,10 @@ export function classifyThresholdCoreChain({
  * Continue a replay-verified threshold-relevant core transition directly to the
  * terminal objective-threshold goal.
  *
- * The proof chain is kept as three separately replayable certificates:
- *
- *   canonical start -> c6 prefix -> c7 transition -> terminal HP > reference
- *
- * We intentionally do not flatten certificates from different initial states.
- * Every continuation verifies the previous bridge state hash before executing.
- *
- * Only the terminal suffix adds the late-game zero-damage harvest closure. The
- * prefix and c6->c7 certificates are replayed under the exact adapter stack that
- * produced them. After c7, Lucky is already owned on the measured bridge; any
- * reachable non-boss enemy that currently deals zero authoritative damage is a
- * monotone positive event and can be canonicalized without changing feasibility.
+ * Proof evidence remains a three-certificate chain. When a suffix exploit is
+ * found, the same three certificates are additionally stripped into a numeric-
+ * agnostic step skeleton and replayed once more from the canonical engine start.
+ * The skeleton is a future player warm start, not a proof certificate.
  */
 export function analyzeThresholdCoreTransitionChain({
   candidate = REVIEW_CANDIDATES.distributedPressureV1,
@@ -92,8 +80,8 @@ export function analyzeThresholdCoreTransitionChain({
 
   if (!transitionReport.transitionFound || !transitionReport.transition) {
     return {
-      schemaVersion: 2,
-      model: 'event-order-core-transition-chain-v0.2-late-harvest',
+      schemaVersion: 3,
+      model: 'event-order-core-transition-chain-v0.3-step-witness',
       candidateId: snapshot.id,
       fromCores,
       toCores,
@@ -118,8 +106,6 @@ export function analyzeThresholdCoreTransitionChain({
       shopCycle: policy.shopCycle
     });
 
-    // Replay the prefix/transition certificates under their original threshold
-    // semantics. Do not let suffix-only normalization alter their bridge states.
     const transitionThresholdAdapter = createObjectiveThresholdAdapter({
       threshold: referenceHp,
       baseAdapter: fixedAdapter
@@ -140,8 +126,8 @@ export function analyzeThresholdCoreTransitionChain({
     });
     if (!prefixReplay.ok || !prefixReplay.state) {
       return {
-        schemaVersion: 2,
-        model: 'event-order-core-transition-chain-v0.2-late-harvest',
+        schemaVersion: 3,
+        model: 'event-order-core-transition-chain-v0.3-step-witness',
         candidateId: snapshot.id,
         fromCores,
         toCores,
@@ -162,8 +148,8 @@ export function analyzeThresholdCoreTransitionChain({
     });
     if (!transitionReplay.ok || !transitionReplay.state) {
       return {
-        schemaVersion: 2,
-        model: 'event-order-core-transition-chain-v0.2-late-harvest',
+        schemaVersion: 3,
+        model: 'event-order-core-transition-chain-v0.3-step-witness',
         candidateId: snapshot.id,
         fromCores,
         toCores,
@@ -196,10 +182,11 @@ export function analyzeThresholdCoreTransitionChain({
       mode: 'existence',
       maxExpanded: suffixMaxExpanded,
       maxGenerated: suffixMaxGenerated,
-      solverVersion: `fixed-purchase-core${toCores}-threshold-suffix-v0.2-late-harvest`
+      solverVersion: `fixed-purchase-core${toCores}-threshold-suffix-v0.3-step-witness`
     });
-    const suffixReplay = suffixSolver.certificate
-      ? replayTowerCertificate(suffixSolver.certificate, {
+    const suffixCertificate = suffixSolver.certificate;
+    const suffixReplay = suffixCertificate
+      ? replayTowerCertificate(suffixCertificate, {
           adapter: suffixThresholdAdapter,
           initialState: transitionReplay.state
         })
@@ -211,6 +198,20 @@ export function analyzeThresholdCoreTransitionChain({
     const status = classifyThresholdCoreChain({ transitionReport, suffixExploit });
     const suffixExactNoExploitFromThisBridge = suffixSolver.solvable === false && suffixSolver.exact === true;
 
+    let eventOrderWitness = null;
+    let eventOrderWitnessReplay = null;
+    if (suffixExploit) {
+      eventOrderWitness = buildEventOrderStepWitness({
+        candidateId: snapshot.id,
+        referenceTerminalHp: referenceHp,
+        expectedTerminalHp: suffixReplay.objective,
+        certificates: [prefixCertificate, transitionCertificate, suffixCertificate]
+      });
+      eventOrderWitnessReplay = replayTowerStepSkeleton(eventOrderWitness.steps, {
+        adapter: fixedAdapter
+      });
+    }
+
     const exploit = suffixExploit ? {
       terminalHp: suffixReplay.objective,
       deltaHp: suffixReplay.objective - referenceHp,
@@ -219,14 +220,23 @@ export function analyzeThresholdCoreTransitionChain({
       chain: {
         prefixCertificateHash: prefixCertificate?.certificateHash ?? null,
         transitionCertificateHash: transitionCertificate?.certificateHash ?? null,
-        suffixCertificateHash: suffixSolver.certificate?.certificateHash ?? null
+        suffixCertificateHash: suffixCertificate?.certificateHash ?? null
       },
+      witness: eventOrderWitness,
+      witnessReplay: eventOrderWitnessReplay ? {
+        ok: eventOrderWitnessReplay.ok,
+        failures: eventOrderWitnessReplay.failures,
+        objective: eventOrderWitnessReplay.objective,
+        final: eventOrderWitnessReplay.final,
+        minNormalizedHpMargin: eventOrderWitnessReplay.minNormalizedHpMargin,
+        battles: eventOrderWitnessReplay.battleLog.length
+      } : null,
       final: suffixReplay.final
     } : null;
 
     return {
-      schemaVersion: 2,
-      model: 'event-order-core-transition-chain-v0.2-late-harvest',
+      schemaVersion: 3,
+      model: 'event-order-core-transition-chain-v0.3-step-witness',
       candidateId: snapshot.id,
       fromCores,
       toCores,
@@ -257,7 +267,9 @@ export function analyzeThresholdCoreTransitionChain({
       },
       exploit,
       interpretation: exploit
-        ? 'three_stage_authoritative_certificate_chain_proves_event_order_exploit_above_reference'
+        ? (eventOrderWitnessReplay?.ok && eventOrderWitnessReplay.objective === suffixReplay.objective
+            ? 'three_stage_exploit_and_numeric_agnostic_step_witness_both_replay_authoritatively'
+            : 'three_stage_authoritative_certificate_chain_proves_event_order_exploit_but_step_witness_needs_attention')
         : suffixExactNoExploitFromThisBridge
           ? 'this_threshold_relevant_core7_bridge_is_exactly_non_exploiting_but_other_core7_bridges_remain_possible'
           : 'threshold_relevant_core7_bridge_found_but_terminal_suffix_coverage_is_incomplete'

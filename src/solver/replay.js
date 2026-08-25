@@ -21,13 +21,6 @@ function replayPath(state, path) {
 /**
  * Clone an explicit replay starting state in the adapter's canonical search
  * representation.
- *
- * Staged proof/search bridges are already compact Solver states. Calling
- * `compactState()` on such a bridge treats it as an engine-shaped state in the
- * Tower codec and is invalid. `cloneState()` is the correct first operation: the
- * Tower adapter's clone is intentionally representation-aware and accepts either
- * a compact state or an engine state. Adapters without a clone hook retain the
- * previous compact-then-structuredClone fallback.
  */
 function cloneReplayInput(adapter, initialState) {
   if (typeof adapter.cloneState === 'function') return adapter.cloneState(initialState);
@@ -49,7 +42,36 @@ function summarizedHash(adapter, state) {
   return hashValue(summary);
 }
 
-function applyCertificateSteps(state, certificate) {
+function battleTraceEntry(step, result, statsBefore, statsAfter) {
+  if (!result?.battle || result.blocked) return null;
+  const battle = result.battle;
+  const hpBefore = Number(statsBefore.hp ?? 0);
+  const totalDamage = Number(battle.totalDamage ?? 0);
+  return {
+    eventId: step.eventId,
+    floor: step.floorBefore + 1,
+    enemyId: battle.enemyId,
+    enemyName: battle.enemy?.name ?? null,
+    boss: Boolean(battle.enemy?.boss),
+    finalBoss: Boolean(battle.enemy?.finalBoss),
+    special: battle.enemy?.special ?? null,
+    statsBefore: { ...statsBefore },
+    statsAfter: { ...statsAfter },
+    battle: {
+      winnable: battle.winnable,
+      heroDamage: battle.heroDamage,
+      enemyDamage: battle.enemyDamage,
+      rounds: battle.rounds,
+      counterAttacks: battle.counterAttacks,
+      totalDamage,
+      remainingHp: battle.remainingHp
+    },
+    hpMargin: hpBefore - totalDamage - 1,
+    normalizedHpMargin: (hpBefore - totalDamage - 1) / Math.max(1, hpBefore)
+  };
+}
+
+function applyCertificateSteps(state, certificate, { battleLog = null } = {}) {
   const failures = [];
   for (let index = 0; index < certificate.steps.length; index += 1) {
     const step = certificate.steps[index];
@@ -79,8 +101,14 @@ function applyCertificateSteps(state, certificate) {
           failures.push({ index, eventId: step.eventId, reason: 'Tile event is not adjacent after replay path.' });
           break;
         }
+        const statsBefore = { ...state.stats };
         const result = tryMove(state, dx, dy);
-        if (result.blocked) failures.push({ index, eventId: step.eventId, reason: result.reason });
+        if (result.blocked) {
+          failures.push({ index, eventId: step.eventId, reason: result.reason });
+        } else if (battleLog) {
+          const entry = battleTraceEntry(step, result, statsBefore, state.stats);
+          if (entry) battleLog.push(entry);
+        }
       }
     }
     if (failures.length) break;
@@ -89,14 +117,8 @@ function applyCertificateSteps(state, certificate) {
 }
 
 /**
- * Authoritatively replays a Solver certificate.
- *
- * `initialState` is optional. When supplied, it must match the certificate's
- * `initialStateHash`. This allows proof decomposition (verified prefix state ->
- * verified continuation certificate) without reconstructing a bridge state from
- * a lossy summary. The explicit state may be either an adapter-native compact
- * state or an engine-shaped Tower state. Existing whole-game certificates
- * continue to replay from the canonical engine initial state.
+ * Authoritatively replays a Solver certificate including resource/structural
+ * snapshots. Use this for proof certificates whose numeric state must match.
  */
 export function replayTowerCertificate(certificate, {
   adapter = createTowerAdapter(),
@@ -171,4 +193,42 @@ export function replayTowerCertificateToState(certificate, {
     ? adapter.compactState(bridge)
     : (adapter.cloneState ? adapter.cloneState(bridge) : structuredClone(bridge));
   return { ...replay, state: compactBridge };
+}
+
+/**
+ * Replay only the topological/action skeleton of one or more prior certificates.
+ *
+ * Resource and structural snapshots are intentionally ignored. This is for
+ * numeric-only balance mutation: the same map action sequence can be attempted
+ * under new enemy/shop values, and every move/fight/purchase is still executed
+ * by canonical `engine.js`. If a changed fight becomes illegal, the skeleton
+ * fails naturally at that step.
+ *
+ * This is a player warm-start witness, NOT a proof certificate. It must never be
+ * used as a branch-and-bound incumbent without a domain-specific verification
+ * step for the current candidate.
+ */
+export function replayTowerStepSkeleton(steps, {
+  adapter = createTowerAdapter(),
+  initialState = null,
+  requireGoal = true
+} = {}) {
+  if (!Array.isArray(steps)) throw new Error('Step skeleton must be an array.');
+  const state = replayInitialState(adapter, initialState);
+  const battleLog = [];
+  const failures = applyCertificateSteps(state, { steps }, { battleLog });
+  const goal = failures.length === 0 && adapter.isGoal(state);
+  if (failures.length === 0 && requireGoal && !goal) {
+    failures.push({ index: steps.length, eventId: null, reason: 'Step skeleton ended before adapter goal.' });
+  }
+  const margins = battleLog.map((entry) => entry.normalizedHpMargin).filter(Number.isFinite);
+  return {
+    ok: failures.length === 0 && (!requireGoal || goal),
+    goal,
+    failures,
+    final: adapter.summarizeState(state),
+    objective: adapter.objectiveValue(state),
+    battleLog,
+    minNormalizedHpMargin: margins.length ? Math.min(...margins) : null
+  };
 }
