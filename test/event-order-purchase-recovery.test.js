@@ -71,6 +71,34 @@ function syntheticStepExecutor({ state, step }) {
   return { ok: true, state: next, failures: [] };
 }
 
+function syntheticFullReplay({ witness: route, adapter, initialState = null }) {
+  let state = adapter.cloneState(initialState ?? adapter.createInitialState());
+  const failures = [];
+  for (const step of route.steps) {
+    const result = syntheticStepExecutor({ state, step, adapter });
+    if (!result.ok || !result.state) {
+      failures.push(...(result.failures ?? [{ reason: 'synthetic_replay_failed' }]));
+      break;
+    }
+    state = result.state;
+  }
+  const goal = failures.length === 0 && adapter.isGoal(state);
+  if (!goal && failures.length === 0) failures.push({ reason: 'goal_not_reached' });
+  return {
+    ok: failures.length === 0 && goal,
+    goal,
+    failures,
+    objective: adapter.objectiveValue(state),
+    minNormalizedHpMargin: null,
+    final: adapter.summarizeState(state)
+  };
+}
+
+const syntheticExecutors = {
+  stepExecutor: syntheticStepExecutor,
+  fullReplayExecutor: syntheticFullReplay
+};
+
 test('later purchase choices can exactly recover a forced early mistake', () => {
   const route = witness([
     shop('atk', 0),
@@ -83,7 +111,7 @@ test('later purchase choices can exactly recover a forced early mistake', () => 
     adapter: fakeAdapter(),
     forcedPurchaseIndex: 0,
     forcedOptionId: 'def',
-    stepExecutor: syntheticStepExecutor
+    ...syntheticExecutors
   });
   assert.equal(result.exact, true);
   assert.equal(result.recoverable, true);
@@ -104,7 +132,7 @@ test('a forced mistake is exactly unrecoverable when failure happens before any 
     adapter: fakeAdapter(),
     forcedPurchaseIndex: 0,
     forcedOptionId: 'def',
-    stepExecutor: syntheticStepExecutor
+    ...syntheticExecutors
   });
   assert.equal(result.exact, true);
   assert.equal(result.recoverable, false);
@@ -123,7 +151,7 @@ test('Pareto pruning preserves a necessary nondominated defensive branch', () =>
     adapter: fakeAdapter(),
     forcedPurchaseIndex: 0,
     forcedOptionId: 'hp',
-    stepExecutor: syntheticStepExecutor
+    ...syntheticExecutors
   });
   assert.equal(result.recoverable, true);
   assert.deepEqual(result.recoveryPurchasePlan, ['hp', 'def']);
@@ -141,7 +169,7 @@ test('label safety cap reports unknown instead of false unrecoverability', () =>
     adapter: fakeAdapter(),
     forcedPurchaseIndex: 0,
     forcedOptionId: 'def',
-    stepExecutor: syntheticStepExecutor,
+    ...syntheticExecutors,
     maxActiveLabels: 1
   });
   assert.equal(result.exact, false);
