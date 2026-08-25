@@ -8,6 +8,7 @@ on:
       - 'src/solver/fixed-purchase-policy-adapter.js'
       - 'src/solver/core-boundary-adapter.js'
       - 'src/solver/tower-bounds.js'
+      - 'src/solver/replay.js'
       - 'src/analyzer/event-order-best-response.js'
       - 'src/analyzer/event-order-suffix-response.js'
       - 'src/tuner/review-candidates.js'
@@ -16,6 +17,7 @@ on:
       - 'test/fixed-purchase-policy-adapter.test.js'
       - 'test/core-boundary-adapter.test.js'
       - 'test/tower-bounds-overlay.test.js'
+      - 'test/replay-compact-bridge.test.js'
       - 'docs/event-order-best-response.md'
       - '.github/workflows/event-order-profile.yml'
   pull_request:
@@ -23,6 +25,7 @@ on:
       - 'src/solver/fixed-purchase-policy-adapter.js'
       - 'src/solver/core-boundary-adapter.js'
       - 'src/solver/tower-bounds.js'
+      - 'src/solver/replay.js'
       - 'src/analyzer/event-order-best-response.js'
       - 'src/analyzer/event-order-suffix-response.js'
       - 'src/tuner/review-candidates.js'
@@ -31,6 +34,7 @@ on:
       - 'test/fixed-purchase-policy-adapter.test.js'
       - 'test/core-boundary-adapter.test.js'
       - 'test/tower-bounds-overlay.test.js'
+      - 'test/replay-compact-bridge.test.js'
       - 'docs/event-order-best-response.md'
       - '.github/workflows/event-order-profile.yml'
   workflow_dispatch:
