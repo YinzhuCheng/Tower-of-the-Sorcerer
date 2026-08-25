@@ -13,8 +13,10 @@ function witness(options) {
   };
 }
 
-test('distributed-pressure V2 is repository-resident event-order witness evidence', () => {
+test('distributed-pressure V2 stores the continuation contract for witness reconstruction', () => {
   const candidate = REVIEW_CANDIDATES.distributedPressureV2;
+  assert.equal(candidate.sourceContinuationStartStep, 0.6453125);
+  assert.equal(candidate.sourceRayStep, 0.8375);
   assert.equal(candidate.expectedEvidence.referenceMode, 'event-order-step-witness');
   assert.equal(candidate.expectedEvidence.terminalHp, 4578);
   assert.equal(candidate.expectedEvidence.referenceWitnessHash, '8623f0ba330d21b3');

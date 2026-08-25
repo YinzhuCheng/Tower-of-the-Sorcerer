@@ -22,7 +22,6 @@ const REVIEW_CANDIDATE_V2_EDITS = Object.freeze([
   Object.freeze({ target: 'enemy', id: 'flameCaster', field: 'def', value: 70 })
 ]);
 
-// Purchase 1-opt response on the 241-step event-order witness at ray step 0.8375.
 const REVIEW_CANDIDATE_V2_SHOP_PLAN = Object.freeze([
   'atk', 'atk', 'atk',
   'def', 'def',
@@ -39,12 +38,10 @@ const REVIEW_CANDIDATE_V2_SHOP_PLAN = Object.freeze([
 /**
  * Repository-resident dry-run balance candidates.
  *
- * V1 references a deterministic greedy-event-order route. V2 is intentionally
- * different: its reference is a numeric-agnostic event-order step witness that
- * must be rebuilt and authoritatively replayed under the V2 overlay before its
- * HP may be trusted as a threshold. Keeping that distinction explicit prevents
- * a stronger player-model result from being silently reinterpreted as a greedy
- * route expectation.
+ * V1 references a deterministic greedy-event-order route. V2 references a
+ * numeric-agnostic event-order step witness that must be rebuilt through the
+ * same continuation/warm-start ray that discovered it and then authoritatively
+ * replayed under the V2 overlay before its HP may be trusted as a threshold.
  *
  * These are evidence/configuration, NOT production balance writes. Canonical
  * `src/game/data.js` remains unchanged and production writes stay disabled.
@@ -74,6 +71,7 @@ export const REVIEW_CANDIDATES = Object.freeze({
     id: 'distributed-pressure-v2',
     sourceModel: 'event-order-witness-pressure-ray-v0.1',
     sourceCandidateId: 'distributed-pressure-v1',
+    sourceContinuationStartStep: 0.6453125,
     sourceRayStep: 0.8375,
     productionWriteAllowed: false,
     edits: REVIEW_CANDIDATE_V2_EDITS,
