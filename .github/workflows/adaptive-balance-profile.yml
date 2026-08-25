@@ -9,12 +9,9 @@ on:
       - 'src/tuner/numeric-*.js'
       - 'src/tuner/balance-proposal-v3.js'
       - 'src/analyzer/holy-policy-best-response.js'
-      - 'src/analyzer/holy-policy-solver-seed.js'
       - 'src/analyzer/purchase-prefix-rescue.js'
-      - 'src/solver/holy-policy-adapter.js'
       - 'scripts/adapt-final-pressure.mjs'
       - 'scripts/adapt-numeric-ray.mjs'
-      - 'scripts/analyze-holy-policy-solver-seeds.mjs'
       - 'scripts/search-adaptive-balance.mjs'
       - 'scripts/search-numeric-rays.mjs'
       - '.github/workflows/adaptive-balance-profile.yml'
@@ -24,12 +21,9 @@ on:
       - 'src/tuner/numeric-*.js'
       - 'src/tuner/balance-proposal-v3.js'
       - 'src/analyzer/holy-policy-best-response.js'
-      - 'src/analyzer/holy-policy-solver-seed.js'
       - 'src/analyzer/purchase-prefix-rescue.js'
-      - 'src/solver/holy-policy-adapter.js'
       - 'scripts/adapt-final-pressure.mjs'
       - 'scripts/adapt-numeric-ray.mjs'
-      - 'scripts/analyze-holy-policy-solver-seeds.mjs'
       - 'scripts/search-adaptive-balance.mjs'
       - 'scripts/search-numeric-rays.mjs'
       - '.github/workflows/adaptive-balance-profile.yml'
@@ -78,51 +72,6 @@ jobs:
         with:
           name: adaptive-final-pressure-report
           path: adaptive-final-pressure-report.json
-          if-no-files-found: error
-          retention-days: 7
-
-  holy-policy-solver-seed-profile:
-    strategy:
-      fail-fast: false
-      matrix:
-        policy:
-          - after-core-6
-          - after-core-7
-          - before-final
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22
-      - name: Run constrained Holy-policy Solver seed diagnostic
-        env:
-          HOLY_POLICY: ${{ matrix.policy }}
-        run: |
-          node scripts/analyze-holy-policy-solver-seeds.mjs \
-            --policy="$HOLY_POLICY" \
-            --max-expanded=25000 \
-            --max-generated=250000 \
-            --json > "holy-policy-solver-seed-$HOLY_POLICY.json"
-      - name: Print compact Solver seed summary
-        env:
-          HOLY_POLICY: ${{ matrix.policy }}
-        run: |
-          python3 - <<'PY'
-          import json, os
-          p=os.environ['HOLY_POLICY']
-          r=json.load(open(f'holy-policy-solver-seed-{p}.json'))
-          x=r['results'][0]
-          rep=x.get('deterministicReplay') or {}
-          auth=x.get('authoritativeReplay') or {}
-          cert=x.get('certificate') or {}
-          print(f"HOLY_SOLVER policy={x['holyPolicy']} feasible={x['policyFeasible']} exact={x['exact']} stop={x.get('stoppedReason')} expanded={x['solver']['expandedStates']} generated={x['solver']['generatedStates']} shops={cert.get('shopPurchases')} certReplay={auth.get('ok')} certHp={x.get('certifiedTerminalHpLowerBound')} greedyReplay={rep.get('solvable')} interpretation={x['interpretation']}")
-          PY
-      - uses: actions/upload-artifact@v4
-        with:
-          name: holy-policy-solver-seed-${{ matrix.policy }}
-          path: holy-policy-solver-seed-${{ matrix.policy }}.json
           if-no-files-found: error
           retention-days: 7
 
