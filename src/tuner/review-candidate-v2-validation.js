@@ -7,7 +7,7 @@ import { solve } from '../solver/search.js';
 import { createTowerAdapter } from '../solver/tower-adapter.js';
 import { withBalanceEdits } from './balance-overlay.js';
 import { rebuildDistributedPressureV2Reference } from './review-candidate-v2-rebuild.js';
-import { resolveReviewCandidateReference } from './review-candidate-reference.js';
+import { compareReferenceWitnessPurchasePolicy, resolveReviewCandidateReference } from './review-candidate-reference.js';
 import { cloneReviewCandidate, REVIEW_CANDIDATES } from './review-candidates.js';
 
 function stableEdits(edits) {
@@ -39,9 +39,12 @@ function compactExistence(solver, replay) {
  * Independent dry-run validation for distributed-pressure-v2.
  *
  * The 4,578-HP threshold is rebuilt from repository algorithms and replayed
- * under the V2 overlay before any proof uses it. Numeric/Holy/purchase/robustness
- * gates are evaluated separately from the event-order closure gate so a bounded
- * no-exploit search cannot be mistaken for review readiness.
+ * under the V2 overlay before any proof uses it. The rebuilt witness shop
+ * sequence is also compared against the persisted fixed-purchase policy; matching
+ * HP/hash without matching policy is candidate snapshot drift, not valid proof
+ * evidence. Numeric/Holy/purchase/robustness gates are evaluated separately from
+ * the event-order closure gate so a bounded no-exploit search cannot be mistaken
+ * for review readiness.
  */
 export function validateDistributedPressureV2({
   maxPurchasePasses = 12,
@@ -54,11 +57,17 @@ export function validateDistributedPressureV2({
   const candidate = cloneReviewCandidate(REVIEW_CANDIDATES.distributedPressureV2);
   const rebuilt = rebuildDistributedPressureV2Reference({ maxPurchasePasses });
   const expected = candidate.expectedEvidence;
+  const purchasePolicyComparison = compareReferenceWitnessPurchasePolicy(
+    rebuilt.witness,
+    candidate.purchasePolicy
+  );
   const rebuildChecks = {
     sourceEditsMatch: sameEdits(rebuilt.edits, candidate.edits),
     terminalHpMatch: rebuilt.terminalHp === expected.terminalHp,
     marginMatch: Math.abs(rebuilt.minNormalizedHpMargin - expected.minNormalizedHpMargin) <= 1e-12,
     witnessHashMatch: rebuilt.witnessHash === expected.referenceWitnessHash,
+    purchasePlanMatch: purchasePolicyComparison.ok,
+    purchaseCountMatch: rebuilt.purchaseCount === expected.purchaseCount,
     localOptimal: rebuilt.localOptimal === true,
     witnessStepsMatch: rebuilt.witness.steps.length === expected.witnessSteps
   };
@@ -143,8 +152,8 @@ export function validateDistributedPressureV2({
   const overallPassed = numeric.baseHardPassed && eventOrderBestResponse;
 
   return {
-    schemaVersion: 1,
-    model: 'distributed-pressure-v2-validation-v0.1',
+    schemaVersion: 2,
+    model: 'distributed-pressure-v2-validation-v0.2-purchase-plan-consistency',
     candidateId: candidate.id,
     productionWriteAllowed: false,
     status: overallPassed ? 'ready_for_review' : 'blocked',
@@ -159,6 +168,9 @@ export function validateDistributedPressureV2({
       minNormalizedHpMargin: rebuilt.minNormalizedHpMargin,
       witnessHash: rebuilt.witnessHash,
       witnessSteps: rebuilt.witness.steps.length,
+      purchasePlan: [...rebuilt.purchasePlan],
+      expectedPurchasePlan: [...purchasePolicyComparison.expectedPlan],
+      purchasePolicyMismatch: purchasePolicyComparison.firstMismatch,
       localOptimal: rebuilt.localOptimal,
       checks: rebuildChecks
     },
