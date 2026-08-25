@@ -14,11 +14,13 @@ on:
       - 'src/analyzer/event-order-suffix-response.js'
       - 'src/analyzer/event-order-threshold-proof.js'
       - 'src/analyzer/event-order-core-transition-proof.js'
+      - 'src/analyzer/event-order-core-transition-chain.js'
       - 'src/tuner/review-candidates.js'
       - 'scripts/analyze-event-order-response.mjs'
       - 'scripts/analyze-event-order-suffix.mjs'
       - 'scripts/prove-event-order-threshold.mjs'
       - 'scripts/analyze-event-order-core-transition.mjs'
+      - 'scripts/analyze-event-order-core-transition-chain.mjs'
       - 'test/fixed-purchase-policy-adapter.test.js'
       - 'test/fixed-purchase-bound.test.js'
       - 'test/fractional-harvest-bound.test.js'
@@ -26,6 +28,7 @@ on:
       - 'test/objective-threshold-adapter.test.js'
       - 'test/tower-bounds-overlay.test.js'
       - 'test/replay-compact-bridge.test.js'
+      - 'test/event-order-core-transition-chain.test.js'
       - 'docs/event-order-best-response.md'
       - '.github/workflows/event-order-profile.yml'
   pull_request:
@@ -39,11 +42,13 @@ on:
       - 'src/analyzer/event-order-suffix-response.js'
       - 'src/analyzer/event-order-threshold-proof.js'
       - 'src/analyzer/event-order-core-transition-proof.js'
+      - 'src/analyzer/event-order-core-transition-chain.js'
       - 'src/tuner/review-candidates.js'
       - 'scripts/analyze-event-order-response.mjs'
       - 'scripts/analyze-event-order-suffix.mjs'
       - 'scripts/prove-event-order-threshold.mjs'
       - 'scripts/analyze-event-order-core-transition.mjs'
+      - 'scripts/analyze-event-order-core-transition-chain.mjs'
       - 'test/fixed-purchase-policy-adapter.test.js'
       - 'test/fixed-purchase-bound.test.js'
       - 'test/fractional-harvest-bound.test.js'
@@ -51,6 +56,7 @@ on:
       - 'test/objective-threshold-adapter.test.js'
       - 'test/tower-bounds-overlay.test.js'
       - 'test/replay-compact-bridge.test.js'
+      - 'test/event-order-core-transition-chain.test.js'
       - 'docs/event-order-best-response.md'
       - '.github/workflows/event-order-profile.yml'
   workflow_dispatch:
@@ -142,9 +148,9 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with: { node-version: 22 }
-      - name: Analyze threshold-relevant c6 to c7 transition
+      - name: Analyze c6 to c7 threshold certificate chain and terminal suffix
         run: |
-          node scripts/analyze-event-order-core-transition.mjs \
+          node scripts/analyze-event-order-core-transition-chain.mjs \
             --from-cores=6 \
             --to-cores=7 \
             --boundary-max-expanded=8000 \
@@ -153,23 +159,25 @@ jobs:
             --max-transition-seeds=8 \
             --transition-max-expanded=5000 \
             --transition-max-generated=70000 \
-            --json > event-order-core6-to-core7.json
-      - name: Print compact transition summary
+            --suffix-max-expanded=8000 \
+            --suffix-max-generated=100000 \
+            --json > event-order-core6-to-core7-chain.json
+      - name: Print compact transition-chain summary
         run: |
           python3 - <<'PY'
           import json
-          r=json.load(open('event-order-core6-to-core7.json')); b=r.get('boundary') or {}; sc=r.get('schedule') or {}
-          print(f"CORE_TRANSITION status={r.get('status')} found={r.get('transitionFound')} exactNo={r.get('exactNoTransition')} transition=c{r.get('fromCores')}->c{r.get('toCores')} threshold={(r.get('threshold') or {}).get('strictGreaterThan')}")
+          r=json.load(open('event-order-core6-to-core7-chain.json')); tr=r.get('transition') or {}; b=tr.get('boundary') or {}; sc=tr.get('schedule') or {}; bridge=r.get('bridge') or {}; ss=(r.get('suffix') or {}).get('solver') or {}; e=r.get('exploit') or {}
+          print(f"CORE_CHAIN status={r.get('status')} exploit={r.get('exploitFound')} exactNoExploit={r.get('exactNoExploit')} transition=c{r.get('fromCores')}->c{r.get('toCores')}")
           print(f"BOUNDARY relevant={b.get('verifiedRelevantGoals')}/{b.get('discoveredGoals')} exact={b.get('coverageExact')} expanded={b.get('expandedStates')} generated={b.get('generatedStates')} stop={b.get('stoppedReason')}")
           print(f"SCHEDULE relevant={sc.get('verifiedRelevantSeedCount')} scheduled={sc.get('scheduledSeedCount')}")
-          for a in r.get('attempts') or []:
-              s=a.get('solver') or {}; rp=a.get('replay') or {}
-              print(f"TRANSITION seed={a.get('prefixCertificateHash')} ub={a.get('prefixUpperBound')} hp={(a.get('prefixResources') or {}).get('hp')} gold={(a.get('prefixResources') or {}).get('gold')} p={a.get('prefixShopPurchases')} found={a.get('transitionFound')} exactNo={a.get('exactNoTransition')} expanded={s.get('expandedStates')} generated={s.get('generatedStates')} bound={s.get('prunedBound')} stop={s.get('stoppedReason')} nextUb={rp.get('nextStateUpperBound')}")
+          print(f"BRIDGE cores={bridge.get('cores')} hp={(bridge.get('resources') or {}).get('hp')} gold={(bridge.get('resources') or {}).get('gold')} p={bridge.get('shopPurchases')} ub={bridge.get('optimisticTerminalHpUpperBound')}")
+          print(f"SUFFIX solvable={ss.get('solvable')} exact={ss.get('exact')} expanded={ss.get('expandedStates')} generated={ss.get('generatedStates')} bound={ss.get('prunedBound')} stop={ss.get('stoppedReason')}")
+          print(f"EXPLOIT hp={e.get('terminalHp')} delta={e.get('deltaHp')} gain={e.get('relativeGain')} replay={e.get('replayOk')} chain={(e.get('chain') or {})}")
           PY
       - uses: actions/upload-artifact@v4
         with:
-          name: event-order-core6-to-core7
-          path: event-order-core6-to-core7.json
+          name: event-order-core6-to-core7-chain
+          path: event-order-core6-to-core7-chain.json
           retention-days: 7
 
   staged-core-suffix-event-order:
