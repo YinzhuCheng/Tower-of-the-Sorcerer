@@ -116,6 +116,12 @@ function applyCertificateSteps(state, certificate, { battleLog = null } = {}) {
   return failures;
 }
 
+function compactReplayState(adapter, state) {
+  if (typeof adapter.compactState === 'function') return adapter.compactState(state);
+  if (typeof adapter.cloneState === 'function') return adapter.cloneState(state);
+  return structuredClone(state);
+}
+
 /**
  * Authoritatively replays a Solver certificate including resource/structural
  * snapshots. Use this for proof certificates whose numeric state must match.
@@ -189,10 +195,45 @@ export function replayTowerCertificateToState(certificate, {
   const failures = applyCertificateSteps(bridge, certificate);
   if (failures.length) return { ...replay, ok: false, failures, state: null };
 
-  const compactBridge = typeof adapter.compactState === 'function'
-    ? adapter.compactState(bridge)
-    : (adapter.cloneState ? adapter.cloneState(bridge) : structuredClone(bridge));
-  return { ...replay, state: compactBridge };
+  return { ...replay, state: compactReplayState(adapter, bridge) };
+}
+
+/**
+ * Replay an action skeleton and also expose the exact compact continuation
+ * state. Unlike a proof certificate, resource/structural snapshots on the input
+ * steps are ignored; every action itself is still executed by canonical
+ * `engine.js`.
+ *
+ * This helper is intentionally low-level. It enables dynamic programs that
+ * branch only at selected actions (for example later shop choices after one
+ * forced mistake) while keeping all non-branching event-order transitions
+ * authoritative. The returned state is valid only when `ok=true`.
+ */
+export function replayTowerStepSkeletonToState(steps, {
+  adapter = createTowerAdapter(),
+  initialState = null,
+  requireGoal = false
+} = {}) {
+  if (!Array.isArray(steps)) throw new Error('Step skeleton must be an array.');
+  const state = replayInitialState(adapter, initialState);
+  const battleLog = [];
+  const failures = applyCertificateSteps(state, { steps }, { battleLog });
+  const goal = failures.length === 0 && adapter.isGoal(state);
+  if (failures.length === 0 && requireGoal && !goal) {
+    failures.push({ index: steps.length, eventId: null, reason: 'Step skeleton ended before adapter goal.' });
+  }
+  const margins = battleLog.map((entry) => entry.normalizedHpMargin).filter(Number.isFinite);
+  const ok = failures.length === 0 && (!requireGoal || goal);
+  return {
+    ok,
+    goal,
+    failures,
+    state: ok ? compactReplayState(adapter, state) : null,
+    final: adapter.summarizeState(state),
+    objective: adapter.objectiveValue(state),
+    battleLog,
+    minNormalizedHpMargin: margins.length ? Math.min(...margins) : null
+  };
 }
 
 /**
@@ -213,22 +254,18 @@ export function replayTowerStepSkeleton(steps, {
   initialState = null,
   requireGoal = true
 } = {}) {
-  if (!Array.isArray(steps)) throw new Error('Step skeleton must be an array.');
-  const state = replayInitialState(adapter, initialState);
-  const battleLog = [];
-  const failures = applyCertificateSteps(state, { steps }, { battleLog });
-  const goal = failures.length === 0 && adapter.isGoal(state);
-  if (failures.length === 0 && requireGoal && !goal) {
-    failures.push({ index: steps.length, eventId: null, reason: 'Step skeleton ended before adapter goal.' });
-  }
-  const margins = battleLog.map((entry) => entry.normalizedHpMargin).filter(Number.isFinite);
+  const replay = replayTowerStepSkeletonToState(steps, {
+    adapter,
+    initialState,
+    requireGoal
+  });
   return {
-    ok: failures.length === 0 && (!requireGoal || goal),
-    goal,
-    failures,
-    final: adapter.summarizeState(state),
-    objective: adapter.objectiveValue(state),
-    battleLog,
-    minNormalizedHpMargin: margins.length ? Math.min(...margins) : null
+    ok: replay.ok,
+    goal: replay.goal,
+    failures: replay.failures,
+    final: replay.final,
+    objective: replay.objective,
+    battleLog: replay.battleLog,
+    minNormalizedHpMargin: replay.minNormalizedHpMargin
   };
 }
