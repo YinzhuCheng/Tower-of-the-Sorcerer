@@ -48,8 +48,22 @@ jobs:
         run: |
           python3 - <<'PY'
           import json
-          r=json.load(open('review-candidate-v2.json')); ref=r.get('reference') or {}; ex=r.get('existence') or {}; h=r.get('holyCoverage') or {}; cf=r.get('counterfactuals') or {}; eo=r.get('eventOrder') or {}; s=eo.get('solver') or {}; e=eo.get('exploit') or {}
-          print(f"V2 status={r.get('status')} hp={ref.get('terminalHp')} margin={ref.get('minNormalizedHpMargin')} witness={ref.get('referenceWitnessHash')} rebuild={r.get('rebuild')}")
+          r=json.load(open('review-candidate-v2.json'))
+          ref=r.get('reference') or {}
+          rb=r.get('rebuild') or {}
+          checks=rb.get('checks') or {}
+          ex=r.get('existence') or {}
+          h=r.get('holyCoverage') or {}
+          cf=r.get('counterfactuals') or {}
+          eo=r.get('eventOrder') or {}
+          s=eo.get('solver') or {}
+          e=eo.get('exploit') or {}
+          print(f"V2 status={r.get('status')} hp={ref.get('terminalHp')} margin={ref.get('minNormalizedHpMargin')} witness={ref.get('referenceWitnessHash')}")
+          print(f"REBUILD step={rb.get('sourceRayStep')} hp={rb.get('terminalHp')} margin={rb.get('minNormalizedHpMargin')} hash={rb.get('witnessHash')} local={rb.get('localOptimal')} checks={checks}")
+          print(f"PURCHASE_PLAN actual={','.join(rb.get('purchasePlan') or [])}")
+          print(f"PURCHASE_PLAN expected={','.join(rb.get('expectedPurchasePlan') or [])}")
+          print(f"PURCHASE_MISMATCH {rb.get('purchasePolicyMismatch')}")
+          print(f"REFERENCE failures={ref.get('failures')} policy={ref.get('purchasePolicyComparison')}")
           print(f"EXISTENCE solvable={ex.get('solvable')} exact={ex.get('exact')} replay={ex.get('replayOk')} expanded={ex.get('expandedStates')} generated={ex.get('generatedStates')}")
           print(f"HOLY complete={h.get('coverageComplete')} delayed={','.join(h.get('delayedPoliciesProvenInfeasible') or [])}")
           print(f"ROBUST recovery={cf.get('recoveryRate')} catastrophic={cf.get('catastrophicRate')} regret={cf.get('highRegretRate')} improvements={cf.get('improvedMutationCount')} mutations={cf.get('totalMutations')}")
