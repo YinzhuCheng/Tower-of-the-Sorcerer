@@ -2,12 +2,16 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
   createPreHolyStageAdapter,
+  filterCorridorLocalActions,
   filterPreHolyActions
 } from '../src/solver/pre-holy-stage-adapter.js';
 
 const holy = { kind: 'tile', parsed: { type: 'item', id: 'holy' } };
 const boss = { kind: 'tile', parsed: { type: 'enemy', id: 'astralBoss' } };
 const mote = { kind: 'tile', parsed: { type: 'enemy', id: 'mote' } };
+const teleport = { kind: 'teleport', targetFloor: 0 };
+const up = { kind: 'tile', token: 'U' };
+const down = { kind: 'tile', token: 'D' };
 
 function fakeBase(actions = []) {
   return {
@@ -23,12 +27,26 @@ test('pre-Holy action filter removes Holy but preserves other actions', () => {
   assert.deepEqual(filterPreHolyActions([holy, mote, boss]), [mote, boss]);
 });
 
+test('local corridor witness filter removes cross-floor travel only', () => {
+  assert.deepEqual(filterCorridorLocalActions([mote, teleport, up, down, boss]), [mote, boss]);
+});
+
 test('F6 entry boundary requires floor 6, five cores and no Holy', () => {
   const adapter = createPreHolyStageAdapter({ stage: 'f6Entry', baseAdapter: fakeBase([]) });
   assert.equal(adapter.isGoal({ cores: 5, floor: 5, relics: { holy: false } }), true);
   assert.equal(adapter.isGoal({ cores: 4, floor: 5, relics: { holy: false } }), false);
   assert.equal(adapter.isGoal({ cores: 5, floor: 4, relics: { holy: false } }), false);
   assert.equal(adapter.isGoal({ cores: 5, floor: 5, relics: { holy: true } }), false);
+});
+
+test('corridor stage uses an existence-only local subgraph', () => {
+  const adapter = createPreHolyStageAdapter({
+    stage: 'corridorOpen',
+    baseAdapter: fakeBase([mote, teleport, up, down])
+  });
+  assert.deepEqual(adapter.enumerateActions({ cores: 5, floor: 5, relics: { holy: false } }), [mote]);
+  assert.equal(adapter.proofRestriction, 'local_floor_existence_witness_only');
+  assert.match(adapter.rulesVersion(), /local-corridor-witness-v1/);
 });
 
 test('preBoss stage requires a currently legal astralBoss action without Holy', () => {
