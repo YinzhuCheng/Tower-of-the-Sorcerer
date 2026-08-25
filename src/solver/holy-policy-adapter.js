@@ -25,18 +25,37 @@ export function holyPolicyTriggerReached(state, holyPolicy, actions = []) {
   return false;
 }
 
-export function filterHolyPolicyActions(state, actions, holyPolicy) {
+export function filterHolyPolicyActions(state, actions, holyPolicy, {
+  triggerActions = actions
+} = {}) {
   const list = [...actions];
   if (state?.relics?.holy || holyPolicy === 'immediate') return list;
-  const allowHoly = holyPolicyTriggerReached(state, holyPolicy, list);
+  const allowHoly = holyPolicyTriggerReached(state, holyPolicy, triggerActions);
   return allowHoly ? list : list.filter((action) => !actionIsHoly(action));
 }
 
+function structurallyReachableCombatActions(baseAdapter, state) {
+  const relaxed = baseAdapter.materializeState(state);
+  // The deterministic runner's before-final trigger asks whether the final enemy
+  // is reachable, not whether the current stats can already win the battle. The
+  // normal Tower adapter removes unwinnable enemies from its action list, so use
+  // a disposable combat-relaxed clone only for trigger detection.
+  relaxed.stats.hp = Number.MAX_SAFE_INTEGER;
+  relaxed.stats.maxHp = Number.MAX_SAFE_INTEGER;
+  relaxed.stats.atk = Number.MAX_SAFE_INTEGER;
+  relaxed.stats.def = Number.MAX_SAFE_INTEGER;
+  return baseAdapter.enumerateActions(relaxed);
+}
+
 /**
- * Wraps the canonical Tower adapter without changing engine semantics.
- * The wrapper only removes Holy pickup actions that occur before the requested
- * policy trigger. Goal states are additionally required to have acquired Holy,
- * so a route cannot satisfy the policy by simply never collecting the relic.
+ * Wraps the canonical Tower adapter without changing engine transition rules.
+ * The wrapper only removes Holy pickup actions before the requested policy
+ * trigger. For `before-final`, trigger detection uses structural enemy
+ * reachability rather than battle affordability so it matches the deterministic
+ * runner's policy semantics.
+ *
+ * Goal states are additionally required to have acquired Holy, so a route cannot
+ * satisfy the policy by simply never collecting the relic.
  */
 export function createHolyPolicyTowerAdapter({
   holyPolicy,
@@ -47,7 +66,10 @@ export function createHolyPolicyTowerAdapter({
     ...baseAdapter,
     enumerateActions(state) {
       const actions = baseAdapter.enumerateActions(state);
-      return filterHolyPolicyActions(state, actions, holyPolicy);
+      const triggerActions = holyPolicy === 'before-final' && !state.relics?.holy
+        ? structurallyReachableCombatActions(baseAdapter, state)
+        : actions;
+      return filterHolyPolicyActions(state, actions, holyPolicy, { triggerActions });
     },
     isGoal(state) {
       return baseAdapter.isGoal(state) && state.relics?.holy === true;
