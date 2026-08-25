@@ -82,6 +82,13 @@ jobs:
           retention-days: 7
 
   holy-policy-solver-seed-profile:
+    strategy:
+      fail-fast: false
+      matrix:
+        policy:
+          - after-core-6
+          - after-core-7
+          - before-final
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -89,26 +96,33 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - name: Run constrained Holy-policy Solver seed diagnostics
+      - name: Run constrained Holy-policy Solver seed diagnostic
+        env:
+          HOLY_POLICY: ${{ matrix.policy }}
         run: |
           node scripts/analyze-holy-policy-solver-seeds.mjs \
+            --policy="$HOLY_POLICY" \
             --max-expanded=25000 \
             --max-generated=250000 \
-            --json > holy-policy-solver-seeds.json
+            --json > "holy-policy-solver-seed-$HOLY_POLICY.json"
       - name: Print compact Solver seed summary
+        env:
+          HOLY_POLICY: ${{ matrix.policy }}
         run: |
           python3 - <<'PY'
-          import json
-          r=json.load(open('holy-policy-solver-seeds.json'))
-          for x in r['results']:
-              rep=x.get('deterministicReplay') or {}
-              cert=x.get('certificate') or {}
-              print(f"HOLY_SOLVER policy={x['holyPolicy']} feasible={x['policyFeasible']} exact={x['exact']} stop={x.get('stoppedReason')} expanded={x['solver']['expandedStates']} generated={x['solver']['generatedStates']} shops={cert.get('shopPurchases')} replay={rep.get('solvable')} interpretation={x['interpretation']}")
+          import json, os
+          p=os.environ['HOLY_POLICY']
+          r=json.load(open(f'holy-policy-solver-seed-{p}.json'))
+          x=r['results'][0]
+          rep=x.get('deterministicReplay') or {}
+          auth=x.get('authoritativeReplay') or {}
+          cert=x.get('certificate') or {}
+          print(f"HOLY_SOLVER policy={x['holyPolicy']} feasible={x['policyFeasible']} exact={x['exact']} stop={x.get('stoppedReason')} expanded={x['solver']['expandedStates']} generated={x['solver']['generatedStates']} shops={cert.get('shopPurchases')} certReplay={auth.get('ok')} certHp={x.get('certifiedTerminalHpLowerBound')} greedyReplay={rep.get('solvable')} interpretation={x['interpretation']}")
           PY
       - uses: actions/upload-artifact@v4
         with:
-          name: holy-policy-solver-seeds
-          path: holy-policy-solver-seeds.json
+          name: holy-policy-solver-seed-${{ matrix.policy }}
+          path: holy-policy-solver-seed-${{ matrix.policy }}.json
           if-no-files-found: error
           retention-days: 7
 
@@ -155,7 +169,7 @@ jobs:
           print('EDITS ' + ','.join(f"{e['target']}:{e['id']}:{e['field']}={e['value']}" for e in p.get('edits') or []))
           for s in a.get('samples') or []:
               sh=s.get('holyPolicyAnalysis') or {}
-              print(f"SAMPLE step={s.get('relativeStep')} margin={s.get('margin')} hp={s.get('finalHp')} holy={s.get('holyPolicy')} coverage={sh.get('optimizedPolicies')}/{sh.get('attemptedPolicies')} solvable={s.get('solvable')} local={((s.get('localSearch') or {}).get('localOptimal'))}")
+              print(f"SAMPLE step={s.get('relativeStep')} margin={s.get('margin')} hp={s.get('finalHp')} holy={s.get('holyPolicy')} coverage={sh.get('optimizedPolicies')}/{sh.get('attemptedPolicies']} solvable={s.get('solvable')} local={((s.get('localSearch') or {}).get('localOptimal'))}")
           PY
       - uses: actions/upload-artifact@v4
         with:
