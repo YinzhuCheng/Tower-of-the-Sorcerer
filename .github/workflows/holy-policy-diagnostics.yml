@@ -8,11 +8,15 @@ on:
       - 'src/analyzer/holy-policy-best-response.js'
       - 'src/analyzer/holy-policy-solver-seed.js'
       - 'src/analyzer/pre-holy-stage-proof.js'
+      - 'src/analyzer/pre-holy-boundary-frontier.js'
       - 'src/analyzer/purchase-prefix-rescue.js'
+      - 'src/solver/goal-frontier.js'
       - 'src/solver/holy-policy-adapter.js'
       - 'src/solver/pre-holy-stage-adapter.js'
+      - 'src/solver/replay.js'
       - 'scripts/analyze-holy-policy-solver-seeds.mjs'
       - 'scripts/analyze-pre-holy-f6.mjs'
+      - 'scripts/analyze-pre-holy-frontier.mjs'
       - 'scripts/diagnose-holy-purchase-rescue.mjs'
       - '.github/workflows/holy-policy-diagnostics.yml'
   pull_request:
@@ -20,11 +24,15 @@ on:
       - 'src/analyzer/holy-policy-best-response.js'
       - 'src/analyzer/holy-policy-solver-seed.js'
       - 'src/analyzer/pre-holy-stage-proof.js'
+      - 'src/analyzer/pre-holy-boundary-frontier.js'
       - 'src/analyzer/purchase-prefix-rescue.js'
+      - 'src/solver/goal-frontier.js'
       - 'src/solver/holy-policy-adapter.js'
       - 'src/solver/pre-holy-stage-adapter.js'
+      - 'src/solver/replay.js'
       - 'scripts/analyze-holy-policy-solver-seeds.mjs'
       - 'scripts/analyze-pre-holy-f6.mjs'
+      - 'scripts/analyze-pre-holy-frontier.mjs'
       - 'scripts/diagnose-holy-purchase-rescue.mjs'
       - '.github/workflows/holy-policy-diagnostics.yml'
   workflow_dispatch:
@@ -65,13 +73,43 @@ jobs:
           rescue=json.load(open(f'holy-purchase-rescue-{p}.json'))
           progress=(rescue.get('bestProgress') or {}).get('result') or {}
           print(f"RESCUE policy={p} found={rescue.get('found')} depth={rescue.get('depth')} evals={rescue.get('evaluations')} stop={rescue.get('stoppedReason')} bestFloor={progress.get('floor')} bestCores={progress.get('cores')} bestBattles={progress.get('battles')} bestPurchases={progress.get('purchases')} holy={progress.get('holy')} failure={progress.get('failure')}")
-          for f in (rescue.get('failureReasons') or [])[:8]:
-              print(f"RESCUE_FAIL policy={p} count={f.get('count')} reason={f.get('reason')}")
           PY
       - uses: actions/upload-artifact@v4
         with:
           name: holy-purchase-rescue-${{ matrix.policy }}
           path: holy-purchase-rescue-${{ matrix.policy }}.json
+          if-no-files-found: error
+          retention-days: 7
+
+  pre-holy-f6-boundary:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Collect replayable F6 core5 boundary frontier
+        run: |
+          node scripts/analyze-pre-holy-frontier.mjs \
+            --max-expanded=25000 \
+            --max-generated=250000 \
+            --json > pre-holy-f6-boundary.json
+      - name: Print compact boundary summary
+        run: |
+          python3 - <<'PY'
+          import json
+          r=json.load(open('pre-holy-f6-boundary.json'))
+          s=r.get('solver') or {}
+          print(f"BOUNDARY found={r.get('hasBoundaryStates')} exact={r.get('coverageExact')} verified={r.get('verifiedSeedCount')}/{r.get('seedCount')} stop={r.get('stoppedReason')} expanded={s.get('expandedStates')} generated={s.get('generatedStates')} goalStates={s.get('goalStructuralStates')} activeGoals={s.get('activeGoalLabels')} interpretation={r.get('interpretation')}")
+          for x in (r.get('seeds') or [])[:12]:
+              res=x.get('resources') or {}
+              print(f"BOUNDARY_SEED cert={x.get('certificateHash')} steps={x.get('certificateSteps')} hp={res.get('hp')} atk={res.get('atk')} def={res.get('def')} gold={res.get('gold')} cards={res.get('sun')}/{res.get('moon')}/{res.get('star')} verified={x.get('verified')}")
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pre-holy-f6-boundary
+          path: pre-holy-f6-boundary.json
           if-no-files-found: error
           retention-days: 7
 
