@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
+  createHolyPolicyTowerAdapter,
   extractShopPlanFromSolverCertificate,
   filterHolyPolicyActions,
   holyPolicyTriggerReached
@@ -35,4 +36,11 @@ test('certificate shop-plan extraction preserves purchase order', () => {
     ]
   };
   assert.deepEqual(extractShopPlanFromSolverCertificate(certificate), ['def', 'hp', 'atk']);
+});
+
+test('default Holy-policy proof reuses canonical-travel frontier semantics', () => {
+  const adapter = createHolyPolicyTowerAdapter({ holyPolicy: 'after-core-6' });
+  assert.match(adapter.rulesVersion(), /canonical-travel-v1/);
+  assert.match(adapter.rulesVersion(), /holy-policy:after-core-6/);
+  assert.equal(typeof adapter.frontierKey, 'function');
 });
