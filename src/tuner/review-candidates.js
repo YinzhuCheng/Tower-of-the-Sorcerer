@@ -47,6 +47,13 @@ const REVIEW_CANDIDATE_V2_SHOP_PLAN = Object.freeze([
  * same continuation/warm-start ray that discovered it and then authoritatively
  * replayed under the V2 overlay before its HP may be trusted as a threshold.
  *
+ * Event-order reference identity is semantic-first for V2. The semantic
+ * fingerprint hashes the ordered macro events and strategic action choices while
+ * excluding source certificate hashes and zero-cost movement paths. The raw
+ * witness hash is retained as historical provenance only and may legitimately
+ * change when the same semantic route is reconstructed through different proof
+ * certificates.
+ *
  * These are evidence/configuration, NOT production balance writes. Canonical
  * `src/game/data.js` remains unchanged and production writes stay disabled.
  */
@@ -88,7 +95,11 @@ export const REVIEW_CANDIDATES = Object.freeze({
       referenceMode: 'event-order-step-witness',
       terminalHp: 4_578,
       minNormalizedHpMargin: 0.14945652173913043,
+      // Historical exact-skeleton provenance from the original V2 discovery.
       referenceWitnessHash: '8623f0ba330d21b3',
+      // Stable macro-event identity rebuilt on 2026-08-25. This is now the hard
+      // witness identity check; raw hash changes remain provenance diagnostics.
+      referenceSemanticFingerprint: '361000c0b48dba27',
       witnessSteps: 241,
       purchaseCount: 29,
       pressureTarget: Object.freeze([0.08, 0.25])
