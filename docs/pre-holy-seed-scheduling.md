@@ -145,12 +145,75 @@ core6.scheduledSeedCount
 
 so discovery coverage and expensive continuation budget cannot be confused.
 
+## 512 -> 12 A/B result
+
+The first affordability-scheduled profile discovered and replay-verified 512 F6/core5 seeds, then attempted 12 continuations.
+
+The scheduler materially improved the attempted resource pool. Examples included:
+
+```text
+HP 1364 / ATK 104 / DEF 100 / Gold 2903 / optimistic boss margin 10646
+HP 1076 / ATK 104 / DEF 100 / Gold 3043 / optimistic boss margin 10358
+```
+
+The previous first-goal schedule was concentrated around lower-Gold entries such as 2375–2667 Gold. Therefore discovery-order bias was real and the scheduler is retained.
+
+However, no verified core6 bridge was found at `4000 expanded / 40000 generated` per seed. The correct conclusion remains:
+
+```text
+core6 reachability = unknown
+```
+
+not infeasible.
+
+## Continuation queue diagnosis
+
+Per-seed continuation telemetry showed another stronger bottleneck. Typical 4000-state runs generated roughly:
+
+```text
+teleport = 16k–18k
+enemy    = 2k–4k
+door     = 0.6k–2.1k
+U        = 2k–3k
+shop     = effectively absent from the expanded region
+```
+
+This is inconsistent with the scheduler relaxation: the selected seeds often have enough Gold that one or a few legal purchases would make astralBoss affordable, yet the bounded search rarely reaches shop actions.
+
+The cause is queue ordering. Generic Tower priority contains:
+
+```text
+floor * 1e10
+```
+
+which is appropriate for ordinary upward progress. After the F6/core5 boundary, however, a delayed-Holy route may have to travel down to an already visited shop or remaining resource before returning to F6. Those downward states lose the large floor bonus and are systematically postponed behind F6-local permutations.
+
+## Continuation priority v1
+
+`src/solver/pre-holy-stage-adapter.js` now uses a stage-specific queue priority for `preBoss/core6` while `cores == 5`:
+
+- floor is intentionally removed from the ordering signal;
+- equal-resource free travel therefore competes on equal priority regardless of floor;
+- HP / ATK / DEF / Gold improvements increase queue priority;
+- reaching core6 returns to the normal higher-core priority naturally.
+
+This is another ordering-only change:
+
+```text
+no action removed
+no frontier key changed
+no dominance rule changed
+no feasibility bound added
+```
+
+Therefore a miss remains `unknown`; only a replay-verified certificate proves success.
+
 ## Next decision rule
 
-After the 512 -> 12 A/B profile:
+After the floor-neutral continuation-priority A/B profile:
 
 - if a verified core6 bridge is found, continue immediately into all three delayed-Holy policy continuations;
-- if no bridge is found but the scheduled seeds have materially stronger affordability scores than the old first-12 set, inspect continuation search telemetry before increasing budgets;
-- if scheduled seeds still cluster in one resource family, improve diversity selection rather than widening raw search;
-- if continuation expansions are dominated by shop-order permutations, add a continuation-specific shop macro/POR only after proving its equivalence conditions;
+- if shop actions begin appearing but no bridge is found, inspect purchase option/order branching and boss reachability before changing budgets;
+- if teleport still dominates despite floor-neutral ordering, move toward a continuation-specific cross-floor free-movement quotient rather than history-dependent travel pruning;
+- if a policy continuation succeeds, feed its certificate/shop plan back into the Holy-policy best-response portfolio;
 - status remains `unknown` until a verified success or exhaustive proof exists.
