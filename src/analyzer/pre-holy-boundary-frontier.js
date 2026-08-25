@@ -5,19 +5,22 @@ import { createPreHolyStageAdapter } from '../solver/pre-holy-stage-adapter.js';
 /**
  * Collect the shared F6/core5/no-Holy boundary as a structural-keyed Pareto set.
  *
- * Every returned continuation seed is reconstructed by authoritative certificate
- * replay. Collector-resident states are never trusted directly as bridge states.
+ * `maxGoals` may be finite for fast seed discovery. Such a result is explicitly
+ * incomplete (`coverageExact=false`) but every emitted seed is still required to
+ * pass authoritative certificate replay before it can become a bridge state.
  */
 export function collectPreHolyF6BoundaryFrontier({
   maxExpanded = 25_000,
-  maxGenerated = 250_000
+  maxGenerated = 250_000,
+  maxGoals = Number.POSITIVE_INFINITY
 } = {}) {
   const adapter = createPreHolyStageAdapter({ stage: 'f6Entry' });
   const frontier = collectGoalFrontier({
     adapter,
     maxExpanded,
     maxGenerated,
-    solverVersion: 'pre-holy-f6-boundary-v0.1'
+    maxGoals,
+    solverVersion: 'pre-holy-f6-boundary-v0.2-discovery'
   });
 
   const seeds = frontier.goals.map((goal) => {
@@ -44,10 +47,11 @@ export function collectPreHolyF6BoundaryFrontier({
 
   return {
     schemaVersion: 1,
-    model: 'pre-holy-f6-boundary-frontier-v0.1',
+    model: 'pre-holy-f6-boundary-frontier-v0.2-discovery',
     canonicalBalance: true,
     maxExpanded,
     maxGenerated,
+    maxGoals: Number.isFinite(maxGoals) ? maxGoals : null,
     hasBoundaryStates: frontier.hasGoals,
     coverageExact: frontier.coverageExact,
     stoppedReason: frontier.stoppedReason,
@@ -73,7 +77,9 @@ export function collectPreHolyF6BoundaryFrontier({
           : 'f6_core5_boundary_unknown_within_budget')
       : (frontier.coverageExact && allCertificatesVerified
           ? 'f6_core5_boundary_frontier_complete_and_verified'
-          : 'f6_core5_boundary_seeds_verified_frontier_incomplete')
+          : frontier.stoppedReason === 'maxGoals' && allCertificatesVerified
+            ? 'f6_core5_boundary_discovery_limit_reached_with_verified_seeds'
+            : 'f6_core5_boundary_seeds_verified_frontier_incomplete')
   };
 }
 
@@ -84,6 +90,7 @@ export function summarizePreHolyF6BoundaryFrontier(report) {
     canonicalBalance: report.canonicalBalance,
     maxExpanded: report.maxExpanded,
     maxGenerated: report.maxGenerated,
+    maxGoals: report.maxGoals,
     hasBoundaryStates: report.hasBoundaryStates,
     coverageExact: report.coverageExact,
     stoppedReason: report.stoppedReason,
