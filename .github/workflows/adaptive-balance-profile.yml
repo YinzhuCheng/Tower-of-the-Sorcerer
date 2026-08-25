@@ -118,7 +118,8 @@ jobs:
           print('EDITS ' + ','.join(f"{e['target']}:{e['id']}:{e['field']}={e['value']}" for e in p.get('edits') or []))
           for s in a.get('samples') or []:
               sh=s.get('holyPolicyAnalysis') or {}
-              print(f"SAMPLE step={s.get('relativeStep')} margin={s.get('margin')} hp={s.get('finalHp')} holy={s.get('holyPolicy')} coverage={sh.get('optimizedPolicies')}/{sh.get('attemptedPolicies']} solvable={s.get('solvable')} local={((s.get('localSearch') or {}).get('localOptimal'))}")
+              local=(s.get('localSearch') or {}).get('localOptimal')
+              print(f"SAMPLE step={s.get('relativeStep')} margin={s.get('margin')} hp={s.get('finalHp')} holy={s.get('holyPolicy')} coverage={sh.get('optimizedPolicies')}/{sh.get('attemptedPolicies']} solvable={s.get('solvable')} local={local}")
           PY
       - uses: actions/upload-artifact@v4
         with:
