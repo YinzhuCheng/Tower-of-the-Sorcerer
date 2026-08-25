@@ -1,4 +1,5 @@
 import { analyzeEventOrderJointBestResponse } from '../analyzer/event-order-joint-best-response.js';
+import { eventOrderWitnessSemanticFingerprint } from '../analyzer/event-order-witness.js';
 import { screenNumericLevers } from './numeric-sensitivity-screen.js';
 import { synthesizeBudgetedNumericCandidates } from './numeric-candidate-synthesis.js';
 import {
@@ -84,19 +85,24 @@ export function rebuildDistributedPressureV2Reference({
   if (purchasePlan.some((optionId) => typeof optionId !== 'string')) {
     throw new Error('V2 rebuilt witness contains an invalid shop action.');
   }
+  const semanticFingerprint = sample.bestWitness.semanticFingerprint
+    ?? eventOrderWitnessSemanticFingerprint(sample.bestWitness);
 
   return {
-    schemaVersion: 3,
-    model: 'distributed-pressure-v2-reference-rebuild-v0.3-purchase-plan-evidence',
+    schemaVersion: 4,
+    model: 'distributed-pressure-v2-reference-rebuild-v0.4-semantic-identity',
     continuationStartStep,
     sourceRayStep,
     sourceDirectionId: direction.id,
     sourceLeverKeys: [...direction.leverKeys],
     sourceJointTerminalHp: joint.jointPurchaseResponse.bestTerminalHp,
     sourceJointWitnessHash: joint.jointPurchaseResponse.bestWitness.witnessHash,
+    sourceJointSemanticFingerprint: joint.jointPurchaseResponse.bestWitness.semanticFingerprint
+      ?? eventOrderWitnessSemanticFingerprint(joint.jointPurchaseResponse.bestWitness),
     terminalHp: sample.finalHp,
     minNormalizedHpMargin: sample.margin,
     witnessHash: sample.bestWitness.witnessHash,
+    semanticFingerprint,
     purchasePlan,
     purchaseCount: purchasePlan.length,
     localOptimal: sample.localSearch.localOptimal,
@@ -114,6 +120,9 @@ export function rebuildDistributedPressureV2Reference({
         margin: entry.margin,
         pressureStatus: entry.pressureStatus,
         witnessHash: entry.witnessHash,
+        semanticFingerprint: entry.bestWitness
+          ? (entry.bestWitness.semanticFingerprint ?? eventOrderWitnessSemanticFingerprint(entry.bestWitness))
+          : null,
         localOptimal: entry.localSearch?.localOptimal ?? null
       }))
     }
