@@ -2,6 +2,7 @@ import { runGreedyShopStrategy } from '../solver/greedy-strategy.js';
 import { createCoreBoundaryAdapter } from '../solver/core-boundary-adapter.js';
 import { createFixedPurchasePolicyTowerAdapter } from '../solver/fixed-purchase-policy-adapter.js';
 import { collectGoalFrontier } from '../solver/goal-frontier.js';
+import { createObjectiveThresholdAdapter } from '../solver/objective-threshold-adapter.js';
 import { replayTowerCertificate, replayTowerCertificateToState } from '../solver/replay.js';
 import { solve } from '../solver/search.js';
 import { withBalanceEdits } from '../tuner/balance-overlay.js';
@@ -20,6 +21,7 @@ function compactSuffixSolver(report) {
   return {
     solvable: report.solvable,
     exact: report.exact,
+    existenceExact: report.existenceExact,
     objectiveExact: report.objectiveExact,
     stoppedReason: report.stoppedReason,
     objective: { ...report.objective },
@@ -44,14 +46,27 @@ function seedUpperBound(adapter, state) {
 /**
  * Exploit-oriented decomposition of fixed-purchase event-order search.
  *
- * 1. discover replay-verified `cores >= targetCores` boundary states;
- * 2. rank them by the admissible terminal-HP upper bound;
- * 3. run a bounded optimize suffix from a small number of exact bridge states.
+ * The suffix question is intentionally not formulated as ordinary optimization.
+ * A 7083-HP whole-route witness is not a valid incumbent for an arbitrary core7
+ * bridge, so installing it as branch-and-bound state would be unsound. Instead
+ * this analyzer asks the exact existence question:
  *
- * One replayed prefix+suffix chain above the reference HP proves an exploit.
- * Failure to find one is only exact if the boundary frontier is complete and all
- * relevant suffix searches exhaust exactly. Discovery mode therefore remains
- * conservative by default.
+ *     is there any victory reachable from this bridge with HP > referenceHp ?
+ *
+ * `createObjectiveThresholdAdapter()` uses the admissible overlay-aware terminal
+ * HP upper bound to prove any state with upperBound <= referenceHp is irrelevant
+ * to that question. This allows sound pruning without claiming that the bridge
+ * itself can reproduce the reference route.
+ *
+ * Flow:
+ * 1. discover replay-verified core-count boundary states that still have an
+ *    optimistic upper bound above the reference;
+ * 2. rank them by that admissible upper bound;
+ * 3. run threshold-existence suffix searches from exact compact bridge states.
+ *
+ * One replayed prefix+suffix chain above the reference proves an exploit.
+ * Failure is globally exact only if the filtered boundary frontier is complete
+ * and every relevant suffix proves threshold infeasibility exactly.
  */
 export function analyzeCoreSuffixEventOrder({
   candidate = REVIEW_CANDIDATES.distributedPressureV1,
@@ -74,8 +89,8 @@ export function analyzeCoreSuffixEventOrder({
     const expectedHp = snapshot.expectedEvidence?.terminalHp ?? null;
     if (!reference.solvable || (Number.isFinite(expectedHp) && referenceHp !== expectedHp)) {
       return {
-        schemaVersion: 1,
-        model: 'core-suffix-event-order-v0.1',
+        schemaVersion: 2,
+        model: 'core-suffix-event-order-v0.2-threshold-existence',
         candidateId: snapshot.id,
         status: 'candidate-snapshot-drift',
         exploitFound: false,
@@ -94,13 +109,20 @@ export function analyzeCoreSuffixEventOrder({
       shopPlan: policy.shopPlan,
       shopCycle: policy.shopCycle
     });
-    const boundaryAdapter = createCoreBoundaryAdapter({ targetCores, baseAdapter });
+    const exploitAdapter = createObjectiveThresholdAdapter({
+      threshold: referenceHp,
+      baseAdapter
+    });
+    const boundaryAdapter = createCoreBoundaryAdapter({
+      targetCores,
+      baseAdapter: exploitAdapter
+    });
     const frontier = collectGoalFrontier({
       adapter: boundaryAdapter,
       maxExpanded: boundaryMaxExpanded,
       maxGenerated: boundaryMaxGenerated,
       maxGoals: boundaryMaxGoals,
-      solverVersion: `fixed-purchase-core${targetCores}-boundary-v0.1`
+      solverVersion: `fixed-purchase-core${targetCores}-exploit-boundary-v0.2`
     });
 
     const verifiedSeeds = frontier.goals.map((goal) => {
@@ -112,7 +134,7 @@ export function analyzeCoreSuffixEventOrder({
         state: replay.ok ? replay.state : null,
         upperBound: replay.ok ? seedUpperBound(baseAdapter, replay.state) : Number.NEGATIVE_INFINITY
       };
-    }).filter((seed) => seed.verified)
+    }).filter((seed) => seed.verified && seed.upperBound > referenceHp)
       .sort((a, b) => b.upperBound - a.upperBound
         || (b.goal.resources?.hp ?? 0) - (a.goal.resources?.hp ?? 0)
         || a.goal.certificate.certificateHash.localeCompare(b.goal.certificate.certificateHash));
@@ -123,27 +145,28 @@ export function analyzeCoreSuffixEventOrder({
 
     for (const seed of scheduled) {
       const solver = solve({
-        adapter: baseAdapter,
+        adapter: exploitAdapter,
         initialState: seed.state,
-        mode: 'optimize',
+        mode: 'existence',
         maxExpanded: suffixMaxExpanded,
         maxGenerated: suffixMaxGenerated,
-        solverVersion: `fixed-purchase-core${targetCores}-suffix-v0.1`
+        solverVersion: `fixed-purchase-core${targetCores}-exploit-threshold-v0.2`
       });
       const replay = solver.certificate
-        ? replayTowerCertificate(solver.certificate, { adapter: baseAdapter, initialState: seed.state })
+        ? replayTowerCertificate(solver.certificate, { adapter: exploitAdapter, initialState: seed.state })
         : null;
-      const searchBest = solver.objective?.searchBest;
-      const exploit = Number.isFinite(searchBest)
-        && searchBest > referenceHp
+      const exploit = solver.solvable === true
         && replay?.ok === true
-        && replay.objective === searchBest;
+        && Number.isFinite(replay.objective)
+        && replay.objective > referenceHp;
+      const exactNoExploit = solver.solvable === false && solver.exact === true;
       const attempt = {
         prefixCertificateHash: seed.goal.certificate?.certificateHash ?? null,
         bridgeInitialStateHash: solver.certificate?.initialStateHash ?? null,
         bridgeResources: { ...seed.goal.resources },
         bridgeShopPurchases: seed.state.shopPurchases,
         optimisticTerminalHpUpperBound: seed.upperBound,
+        thresholdHp: referenceHp,
         prefixReplayOk: seed.replay.ok,
         suffix: compactSuffixSolver(solver),
         suffixReplay: replay ? {
@@ -152,16 +175,17 @@ export function analyzeCoreSuffixEventOrder({
           objective: replay.objective,
           final: replay.final
         } : null,
-        exploit
+        exploit,
+        exactNoExploit
       };
       attempts.push(attempt);
 
       if (exploit) {
         bestExploit = {
           referenceHp,
-          terminalHp: searchBest,
-          deltaHp: searchBest - referenceHp,
-          relativeGain: (searchBest - referenceHp) / Math.max(1, referenceHp),
+          terminalHp: replay.objective,
+          deltaHp: replay.objective - referenceHp,
+          relativeGain: (replay.objective - referenceHp) / Math.max(1, referenceHp),
           prefixCertificate: seed.goal.certificate,
           suffixCertificate: solver.certificate,
           prefixReplay: {
@@ -179,18 +203,21 @@ export function analyzeCoreSuffixEventOrder({
     }
 
     const attemptedAllVerified = scheduled.length === verifiedSeeds.length;
-    const allSuffixExact = attempts.length === verifiedSeeds.length
-      && attempts.every((attempt) => attempt.suffix.objectiveExact === true);
-    const coverageExact = frontier.coverageExact && attemptedAllVerified && allSuffixExact;
+    const allSuffixExactNoExploit = attempts.length === verifiedSeeds.length
+      && attempts.every((attempt) => attempt.exactNoExploit);
+    const coverageExact = !bestExploit
+      && frontier.coverageExact
+      && attemptedAllVerified
+      && allSuffixExactNoExploit;
     const status = bestExploit
       ? 'exploit-found'
       : coverageExact
-        ? 'core-suffix-optimal-over-complete-boundary'
+        ? 'core-suffix-no-exploit-exact'
         : 'coverage-incomplete';
 
     return {
-      schemaVersion: 1,
-      model: 'core-suffix-event-order-v0.1',
+      schemaVersion: 2,
+      model: 'core-suffix-event-order-v0.2-threshold-existence',
       candidateId: snapshot.id,
       targetCores,
       status,
@@ -202,6 +229,11 @@ export function analyzeCoreSuffixEventOrder({
         terminalHp: referenceHp,
         minNormalizedHpMargin: reference.minNormalizedHpMargin,
         purchaseCounts: { ...reference.purchaseCounts }
+      },
+      threshold: {
+        objective: 'terminal_hp',
+        strictGreaterThan: referenceHp,
+        proofRule: 'state is irrelevant when admissible terminal-HP upper bound <= threshold'
       },
       boundary: {
         hasGoals: frontier.hasGoals,
@@ -223,7 +255,8 @@ export function analyzeCoreSuffixEventOrder({
           certificateHash: seed.goal.certificate?.certificateHash ?? null,
           resources: { ...seed.goal.resources },
           shopPurchases: seed.state.shopPurchases,
-          optimisticTerminalHpUpperBound: seed.upperBound
+          optimisticTerminalHpUpperBound: seed.upperBound,
+          thresholdSlack: seed.upperBound - referenceHp
         }))
       },
       attempts,
@@ -231,8 +264,8 @@ export function analyzeCoreSuffixEventOrder({
       interpretation: bestExploit
         ? 'replay_verified_core_suffix_event_order_exploit_found'
         : coverageExact
-          ? 'complete_core_boundary_and_exact_suffixes_prove_no_better_fixed_purchase_suffix'
-          : 'staged_suffix_search_found_no_exploit_but_boundary_or_suffix_coverage_is_incomplete'
+          ? 'complete_threshold_relevant_core_boundary_and_exact_suffixes_prove_no_better_fixed_purchase_suffix'
+          : 'threshold_pruned_staged_suffix_search_found_no_exploit_but_boundary_or_suffix_coverage_is_incomplete'
     };
   });
 }
