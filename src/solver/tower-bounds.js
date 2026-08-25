@@ -150,6 +150,23 @@ function finalBossDamageLowerBound(atk, wardAvailable) {
   return Number.isFinite(battle.totalDamage) ? battle.totalDamage : Number.POSITIVE_INFINITY;
 }
 
+function optimisticBoundContext(baseAdapter, state) {
+  const remainder = scanCompactRemainder(baseAdapter, state);
+  const compact = remainder.compact;
+  const luckyMultiplier = compact.relics.lucky || remainder.luckyStillAvailable ? 2 : 1;
+  const optimisticGold = compact.stats.gold + remainder.baseEnemyGold * luckyMultiplier;
+  const additionalPurchases = optimisticAdditionalPurchases(compact, optimisticGold);
+  return {
+    remainder,
+    compact,
+    additionalPurchases,
+    holyMultiplier: !compact.relics.holy && remainder.holyStillAvailable ? 2 : 1,
+    wardAvailable: compact.relics.ward || remainder.wardStillAvailable,
+    optimisticBaseAtk: compact.stats.atk + remainder.flatAtkGain,
+    optimisticBaseHp: compact.stats.hp + remainder.flatHpGain
+  };
+}
+
 /**
  * Admissible terminal-HP upper bound under the CURRENT canonical data objects.
  *
@@ -157,35 +174,77 @@ function finalBossDamageLowerBound(atk, wardAvailable) {
  * numeric contribution dynamically is therefore a soundness requirement, not a
  * micro-optimization: a stale lower shop/item/gold value could underestimate the
  * reachable objective and make branch-and-bound prune the true optimum.
+ *
+ * The generic bound deliberately relaxes future shop choice: every affordable
+ * purchase may be allocated to ATK or HP in whichever split maximizes terminal
+ * HP. This is correct for the unrestricted Tower problem but unnecessarily loose
+ * for a fixed-purchase-policy sub-problem.
  */
 export function optimisticTerminalHpUpperBound(baseAdapter, state) {
-  const remainder = scanCompactRemainder(baseAdapter, state);
-  const compact = remainder.compact;
+  const context = optimisticBoundContext(baseAdapter, state);
+  const { compact } = context;
   if (compact.victory) return compact.stats.hp;
-
-  const luckyMultiplier = compact.relics.lucky || remainder.luckyStillAvailable ? 2 : 1;
-  const optimisticGold = compact.stats.gold + remainder.baseEnemyGold * luckyMultiplier;
-  const additionalPurchases = optimisticAdditionalPurchases(compact, optimisticGold);
-  const holyMultiplier = !compact.relics.holy && remainder.holyStillAvailable ? 2 : 1;
-  const wardAvailable = compact.relics.ward || remainder.wardStillAvailable;
-  const optimisticBaseAtk = compact.stats.atk + remainder.flatAtkGain;
-  const optimisticBaseHp = compact.stats.hp + remainder.flatHpGain;
   const shopGains = currentShopGains();
 
   let upper = Number.NEGATIVE_INFINITY;
-  for (let atkPurchases = 0; atkPurchases <= additionalPurchases; atkPurchases += 1) {
-    const hpPurchases = additionalPurchases - atkPurchases;
-    const atk = optimisticBaseAtk + atkPurchases * shopGains.atk;
-    const finalDamage = finalBossDamageLowerBound(atk, wardAvailable);
+  for (let atkPurchases = 0; atkPurchases <= context.additionalPurchases; atkPurchases += 1) {
+    const hpPurchases = context.additionalPurchases - atkPurchases;
+    const atk = context.optimisticBaseAtk + atkPurchases * shopGains.atk;
+    const finalDamage = finalBossDamageLowerBound(atk, context.wardAvailable);
     if (!Number.isFinite(finalDamage)) continue;
 
     // Give every future HP purchase the best possible timing relative to Holy.
     // This can overestimate the real route but must never underestimate it.
-    const hpBeforeFinal = (optimisticBaseHp + hpPurchases * shopGains.hp) * holyMultiplier;
+    const hpBeforeFinal = (context.optimisticBaseHp + hpPurchases * shopGains.hp) * context.holyMultiplier;
     upper = Math.max(upper, hpBeforeFinal - finalDamage);
   }
 
   return upper;
+}
+
+/**
+ * Tighter admissible bound for a fixed purchase-policy sub-problem.
+ *
+ * `purchaseOptionAt(index)` must return the exact shop option allowed at global
+ * purchase index `index`. We still grant the player every remaining item, every
+ * remaining enemy reward/gold, Lucky at the best possible time, Ward for the
+ * final magic fight, zero damage from all non-final fights, and every affordable
+ * future purchase before Holy when that helps. The only relaxation removed is
+ * the impossible ability to reassign a fixed future DEF/ATK/HP purchase to a
+ * different shop option.
+ *
+ * Consuming every affordable fixed purchase is weakly optimal in this relaxation:
+ * Gold has no direct objective value, each allowed effect is non-negative, and
+ * advancing through a neutral DEF purchase can only unlock later non-negative
+ * fixed purchases. Therefore this remains an upper bound while normally being
+ * strictly tighter than `optimisticTerminalHpUpperBound()`.
+ */
+export function optimisticFixedPurchaseTerminalHpUpperBound(baseAdapter, state, purchaseOptionAt) {
+  if (typeof purchaseOptionAt !== 'function') {
+    throw new Error('fixed-purchase upper bound requires purchaseOptionAt(index).');
+  }
+  const context = optimisticBoundContext(baseAdapter, state);
+  const { compact } = context;
+  if (compact.victory) return compact.stats.hp;
+
+  let futureAtkGain = 0;
+  let futureHpGain = 0;
+  for (let offset = 0; offset < context.additionalPurchases; offset += 1) {
+    const purchaseIndex = compact.shopPurchases + offset;
+    const optionId = purchaseOptionAt(purchaseIndex);
+    const option = shopOption(optionId);
+    if (!option) throw new Error(`Unknown fixed purchase option in upper bound: ${optionId}`);
+    futureAtkGain += Math.max(0, option.effect?.atk ?? 0);
+    futureHpGain += Math.max(0, option.effect?.hp ?? 0);
+    // DEF is intentionally not converted to HP/ATK. All intermediate physical
+    // damage is already relaxed to zero, so its only possible value is neutral.
+  }
+
+  const atk = context.optimisticBaseAtk + futureAtkGain;
+  const finalDamage = finalBossDamageLowerBound(atk, context.wardAvailable);
+  if (!Number.isFinite(finalDamage)) return Number.NEGATIVE_INFINITY;
+  const hpBeforeFinal = (context.optimisticBaseHp + futureHpGain) * context.holyMultiplier;
+  return hpBeforeFinal - finalDamage;
 }
 
 /**
