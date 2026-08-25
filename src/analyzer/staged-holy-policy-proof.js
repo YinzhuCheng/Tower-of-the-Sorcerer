@@ -23,9 +23,7 @@ function compactSolver(solver) {
 
 function seedRank(adapter, seed) {
   const statePriority = adapter.priority ? adapter.priority(seed.state) : 0;
-  return statePriority
-    + (seed.resources?.gold ?? 0) * 1e2
-    + (seed.resources?.hp ?? 0);
+  return statePriority + (seed.resources?.gold ?? 0) * 1e2 + (seed.resources?.hp ?? 0);
 }
 
 function replayContinuation(certificate, { adapter, initialState }) {
@@ -37,10 +35,10 @@ function replayContinuation(certificate, { adapter, initialState }) {
  * Prove the shared no-Holy prefix in stages and then branch into delayed Holy
  * policy continuations.
  *
- * Existence can be established from any verified seed chain, even when the F6
- * boundary frontier is incomplete. Exact infeasibility is much stricter: the
- * boundary frontier must be exhaustive and every verified boundary seed must
- * have an exact-unsatisfiable core6 continuation.
+ * A finite `maxBoundarySeeds` is deliberately used as boundary discovery mode:
+ * finding any replay-verified chain is sufficient to prove feasibility. Exact
+ * infeasibility still requires an exhaustive boundary frontier plus exact failure
+ * from every verified boundary seed.
  */
 export function proveDelayedHolyPoliciesStaged({
   policies = DELAYED_POLICIES,
@@ -54,16 +52,20 @@ export function proveDelayedHolyPoliciesStaged({
 } = {}) {
   const unknown = policies.filter((policy) => !DELAYED_POLICIES.includes(policy));
   if (unknown.length) throw new Error(`Unsupported delayed Holy policies: ${unknown.join(', ')}`);
+  if (!Number.isInteger(maxBoundarySeeds) || maxBoundarySeeds < 1) {
+    throw new Error('maxBoundarySeeds must be a positive integer.');
+  }
 
   const boundary = collectPreHolyF6BoundaryFrontier({
     maxExpanded: boundaryMaxExpanded,
-    maxGenerated: boundaryMaxGenerated
+    maxGenerated: boundaryMaxGenerated,
+    maxGoals: maxBoundarySeeds
   });
   const coreAdapter = createPreHolyStageAdapter({ stage: 'core6' });
   const verifiedSeeds = boundary.seeds
     .filter((seed) => seed.verified && seed.state)
     .sort((a, b) => seedRank(coreAdapter, b) - seedRank(coreAdapter, a));
-  const scheduledSeeds = verifiedSeeds.slice(0, Math.max(0, maxBoundarySeeds));
+  const scheduledSeeds = verifiedSeeds.slice(0, maxBoundarySeeds);
   const coreAttempts = [];
   let core6Bridge = null;
   let winningSeed = null;
@@ -85,11 +87,7 @@ export function proveDelayedHolyPoliciesStaged({
       boundaryCertificateHash: seed.certificate?.certificateHash ?? null,
       boundaryResources: { ...seed.resources },
       solver: compactSolver(solver),
-      replay: replay ? {
-        ok: replay.ok,
-        failures: replay.failures,
-        final: replay.final
-      } : null,
+      replay: replay ? { ok: replay.ok, failures: replay.failures, final: replay.final } : null,
       verified: Boolean(verified)
     });
     if (verified) {
@@ -108,10 +106,11 @@ export function proveDelayedHolyPoliciesStaged({
     && attemptedAllVerifiedSeeds
     && allCoreAttemptsExactUnsat;
 
-  let core6Interpretation;
-  if (core6Bridge) core6Interpretation = 'core6_reached_through_verified_boundary_chain';
-  else if (core6ExactInfeasible) core6Interpretation = 'core6_unreachable_from_complete_boundary_frontier_exact';
-  else core6Interpretation = 'core6_reachability_unknown_after_staged_search';
+  const core6Interpretation = core6Bridge
+    ? 'core6_reached_through_verified_boundary_chain'
+    : core6ExactInfeasible
+      ? 'core6_unreachable_from_complete_boundary_frontier_exact'
+      : 'core6_reachability_unknown_after_staged_search';
 
   const policyResults = [];
   if (core6Bridge) {
@@ -124,19 +123,22 @@ export function proveDelayedHolyPoliciesStaged({
         maxExpanded: policyMaxExpanded,
         maxGenerated: policyMaxGenerated
       });
-      const replay = replayContinuation(solver.certificate, {
-        adapter,
-        initialState: core6Bridge
-      });
+      const replay = replayContinuation(solver.certificate, { adapter, initialState: core6Bridge });
       const feasible = solver.solvable === true && replay?.ok === true;
+
+      // Exact failure from one core6 bridge is not global policy infeasibility:
+      // another nondominated core6 bridge may still satisfy the policy. A single
+      // verified success, however, is globally sufficient as an existence proof.
       policyResults.push({
         holyPolicy,
         feasible,
-        exact: solver.exact,
+        exact: feasible,
+        continuationExact: solver.exact,
+        policyInfeasibleExact: false,
         interpretation: feasible
           ? 'policy_feasible_via_verified_staged_chain'
           : (solver.solvable === false && solver.exact
-              ? 'policy_infeasible_from_verified_core6_bridge_exact'
+              ? 'policy_exactly_unreachable_from_this_core6_bridge_but_global_status_unknown'
               : 'policy_continuation_unknown_within_budget'),
         solver: compactSolver(solver),
         replay: replay ? {
@@ -153,6 +155,8 @@ export function proveDelayedHolyPoliciesStaged({
         holyPolicy,
         feasible: false,
         exact: core6ExactInfeasible,
+        continuationExact: null,
+        policyInfeasibleExact: core6ExactInfeasible,
         interpretation: core6ExactInfeasible
           ? 'policy_infeasible_because_core6_prefix_is_exactly_unreachable'
           : 'policy_unknown_because_core6_bridge_not_found',
@@ -163,8 +167,8 @@ export function proveDelayedHolyPoliciesStaged({
   }
 
   return {
-    schemaVersion: 1,
-    model: 'staged-holy-policy-proof-v0.1',
+    schemaVersion: 2,
+    model: 'staged-holy-policy-proof-v0.2-discovery',
     canonicalBalance: true,
     budgets: {
       boundaryMaxExpanded,
