@@ -11,6 +11,7 @@ on:
       - 'src/tuner/review-candidate-v2-validation.js'
       - 'src/tuner/event-order-witness-ray.js'
       - 'src/analyzer/event-order-witness-counterfactuals.js'
+      - 'src/analyzer/event-order-purchase-recovery.js'
       - 'src/analyzer/event-order-witness-threshold-proof.js'
       - 'src/analyzer/event-order-joint-best-response.js'
       - 'src/analyzer/event-order-purchase-local-search.js'
@@ -19,7 +20,9 @@ on:
       - 'src/solver/tower-bounds.js'
       - 'scripts/validate-review-candidate-v2.mjs'
       - 'test/review-candidate-v2.test.js'
+      - 'test/event-order-purchase-recovery.test.js'
       - 'docs/review-candidate-v2.md'
+      - 'docs/recovery-aware-counterfactuals.md'
       - '.github/workflows/review-candidate-v2-profile.yml'
   workflow_dispatch:
 
@@ -55,6 +58,7 @@ jobs:
           ex=r.get('existence') or {}
           h=r.get('holyCoverage') or {}
           cf=r.get('counterfactuals') or {}
+          rc=r.get('recoveryAwareCounterfactuals') or {}
           eo=r.get('eventOrder') or {}
           s=eo.get('solver') or {}
           e=eo.get('exploit') or {}
@@ -66,7 +70,12 @@ jobs:
           print(f"REFERENCE failures={ref.get('failures')} policy={ref.get('purchasePolicyComparison')}")
           print(f"EXISTENCE solvable={ex.get('solvable')} exact={ex.get('exact')} replay={ex.get('replayOk')} expanded={ex.get('expandedStates')} generated={ex.get('generatedStates')}")
           print(f"HOLY complete={h.get('coverageComplete')} delayed={','.join(h.get('delayedPoliciesProvenInfeasible') or [])}")
-          print(f"ROBUST recovery={cf.get('recoveryRate')} catastrophic={cf.get('catastrophicRate')} regret={cf.get('highRegretRate')} improvements={cf.get('improvedMutationCount')} mutations={cf.get('totalMutations')}")
+          print(f"ROBUST_NORECOURSE recovery={cf.get('recoveryRate')} catastrophic={cf.get('catastrophicRate')} regret={cf.get('highRegretRate')} improvements={cf.get('improvedMutationCount')} mutations={cf.get('totalMutations')}")
+          print(f"ROBUST_RECOVERY exact={rc.get('exactRecoveryClassifiedMutations')}/{rc.get('totalMutations')} recovered={rc.get('recoveredMutations')} unrecoverable={rc.get('exactUnrecoverableMutations')} unknown={rc.get('unknownMutations')} recoveryRate={rc.get('fixedEventOrderRecoveryRate')} unrecoverableRate={rc.get('fixedEventOrderUnrecoverableRate')} formerlyCatastrophicRecovered={len(rc.get('formerlyCatastrophicRecovered') or [])}")
+          for x in rc.get('formerlyCatastrophicRecovered') or []:
+              print(f"RECOVERED purchase={x.get('purchaseNumber')} forced={x.get('forcedOptionId')} hp={x.get('terminalHp')} labels={x.get('peakActiveLabels')} transitions={x.get('generatedTransitions')} witness={x.get('recoveryWitnessHash')}")
+          for x in rc.get('exactUnrecoverableExamples') or []:
+              print(f"UNRECOVERABLE purchase={x.get('purchaseNumber')} forced={x.get('forcedOptionId')} stop={x.get('stoppedReason')} labels={x.get('peakActiveLabels')} transitions={x.get('generatedTransitions')}")
           print(f"EVENT_ORDER status={eo.get('status')} exploit={eo.get('exploitFound')} exactNo={eo.get('exactNoExploit')} expanded={s.get('expandedStates')} generated={s.get('generatedStates')} bound={s.get('prunedBound')} stop={s.get('stoppedReason')} hp={e.get('terminalHp')} delta={e.get('deltaHp')}")
           print(f"FAILURES {','.join(r.get('failures') or []) or 'none'}")
           PY
