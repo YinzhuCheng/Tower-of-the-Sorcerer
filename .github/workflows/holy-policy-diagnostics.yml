@@ -9,6 +9,7 @@ on:
       - 'src/analyzer/holy-policy-solver-seed.js'
       - 'src/analyzer/pre-holy-stage-proof.js'
       - 'src/analyzer/pre-holy-boundary-frontier.js'
+      - 'src/analyzer/pre-holy-seed-scheduler.js'
       - 'src/analyzer/staged-holy-policy-proof.js'
       - 'src/analyzer/purchase-prefix-rescue.js'
       - 'src/solver/goal-frontier.js'
@@ -27,6 +28,7 @@ on:
       - 'src/analyzer/holy-policy-solver-seed.js'
       - 'src/analyzer/pre-holy-stage-proof.js'
       - 'src/analyzer/pre-holy-boundary-frontier.js'
+      - 'src/analyzer/pre-holy-seed-scheduler.js'
       - 'src/analyzer/staged-holy-policy-proof.js'
       - 'src/analyzer/purchase-prefix-rescue.js'
       - 'src/solver/goal-frontier.js'
@@ -46,9 +48,6 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  # Legacy comparison jobs remain available manually. They are intentionally not
-  # part of normal PR/push feedback because staged proof supersedes their repeated
-  # F1-F5 search and they consume most runner concurrency.
   rescue-diagnostic:
     if: github.event_name == 'workflow_dispatch'
     strategy:
@@ -103,13 +102,17 @@ jobs:
       - uses: actions/setup-node@v4
         with: { node-version: 22 }
       - name: Run staged delayed-Holy proof
-        run: node scripts/analyze-staged-holy-proof.mjs --boundary-max-expanded=25000 --boundary-max-generated=250000 --max-boundary-seeds=12 --core6-max-expanded=4000 --core6-max-generated=40000 --policy-max-expanded=8000 --policy-max-generated=80000 > staged-holy-proof.json
+        run: node scripts/analyze-staged-holy-proof.mjs --boundary-max-expanded=25000 --boundary-max-generated=250000 --boundary-discovery-goals=512 --max-boundary-seeds=12 --core6-max-expanded=4000 --core6-max-generated=40000 --policy-max-expanded=8000 --policy-max-generated=80000 > staged-holy-proof.json
       - name: Print compact staged proof summary
         run: |
           python3 - <<'PY'
           import json
-          r=json.load(open('staged-holy-proof.json')); b=r.get('boundary') or {}; c=r.get('core6') or {}
+          r=json.load(open('staged-holy-proof.json')); b=r.get('boundary') or {}; c=r.get('core6') or {}; sched=r.get('seedSchedule') or {}
           print(f"STAGED_BOUNDARY found={b.get('hasBoundaryStates')} exact={b.get('coverageExact')} verified={b.get('verifiedSeedCount')}/{b.get('seedCount')} interpretation={b.get('interpretation')}")
+          print(f"STAGED_SCHEDULE scheduler={sched.get('scheduler')} candidates={sched.get('candidateCount')} scheduled={sched.get('scheduledCount')}")
+          for x in sched.get('diagnostics') or []:
+              q=x.get('resources') or {}
+              print(f"STAGED_SEED reason={x.get('selectionReason')} cert={x.get('certificateHash')} hp={q.get('hp')} atk={q.get('atk')} def={q.get('def')} gold={q.get('gold')} cards={q.get('sun')}/{q.get('moon')}/{q.get('star')} p={x.get('shopPurchases')} optMargin={x.get('optimisticBossMargin')} optWin={x.get('optimisticWinnable')} maxBuy={x.get('maxAffordablePurchases')}")
           print(f"STAGED_CORE6 reached={c.get('reached')} exactInfeasible={c.get('exactInfeasible')} scheduled={c.get('scheduledSeedCount')}/{c.get('verifiedSeedCount')} winner={c.get('winningBoundaryCertificateHash')} interpretation={c.get('interpretation')}")
           for x in r.get('policyResults') or []:
               s=x.get('solver') or {}; rp=x.get('replay') or {}
