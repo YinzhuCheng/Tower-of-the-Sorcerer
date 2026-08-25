@@ -1,0 +1,79 @@
+name: V3 C7 Discrete Bound Preview
+
+on:
+  push:
+    branches: [solver-phase1-pareto]
+    paths:
+      - 'src/solver/discrete-harvest-bound-preview.js'
+      - 'src/solver/relaxed-pure-hp-access-bound.js'
+      - 'src/solver/fixed-purchase-bound-diagnostics.js'
+      - 'src/analyzer/event-order-core-bridge-discrete-bound-preview.js'
+      - 'src/analyzer/event-order-core-bridge-bound-diagnostics.js'
+      - 'src/tuner/review-candidate-v3-rebuild.js'
+      - 'src/tuner/review-candidates.js'
+      - 'scripts/analyze-v3-c7-discrete-bound-preview.mjs'
+      - 'test/discrete-harvest-bound-preview.test.js'
+      - 'docs/v3-discrete-harvest-bound-preview.md'
+      - '.github/workflows/v3-c7-discrete-bound-preview.yml'
+  pull_request:
+    paths:
+      - 'src/solver/discrete-harvest-bound-preview.js'
+      - 'src/solver/relaxed-pure-hp-access-bound.js'
+      - 'src/solver/fixed-purchase-bound-diagnostics.js'
+      - 'src/analyzer/event-order-core-bridge-discrete-bound-preview.js'
+      - 'src/analyzer/event-order-core-bridge-bound-diagnostics.js'
+      - 'src/tuner/review-candidate-v3-rebuild.js'
+      - 'src/tuner/review-candidates.js'
+      - 'scripts/analyze-v3-c7-discrete-bound-preview.mjs'
+      - 'test/discrete-harvest-bound-preview.test.js'
+      - 'docs/v3-discrete-harvest-bound-preview.md'
+      - '.github/workflows/v3-c7-discrete-bound-preview.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: v3-c7-discrete-bound-preview-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  discrete-preview:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - name: Preview discrete harvest and access tightening
+        run: |
+          node scripts/analyze-v3-c7-discrete-bound-preview.mjs \
+            --from-cores=6 --to-cores=7 \
+            --from-boundary-max-expanded=8000 \
+            --from-boundary-max-generated=100000 \
+            --from-boundary-max-goals=64 \
+            --bridge-max-expanded=6000 \
+            --bridge-max-generated=90000 \
+            --bridge-max-goals=32 \
+            --json > v3-c7-discrete-bound-preview.json
+      - name: Print discrete bound preview
+        if: always()
+        run: |
+          python3 - <<'PY'
+          import json, os
+          path='v3-c7-discrete-bound-preview.json'
+          if not os.path.exists(path) or os.path.getsize(path)==0:
+              print('V3 discrete preview report was not produced.')
+              raise SystemExit(0)
+          x=json.load(open(path)); r=x.get('analysis') or {}
+          print(f"V3_DISCRETE status={r.get('status')} reference={(x.get('rebuild') or {}).get('terminalHp')} semantic={(x.get('rebuild') or {}).get('semanticFingerprint')} proofModified={r.get('proofBoundModified')} maxTightening={r.get('maxPreviewTightening')} prunableReps={r.get('previewPrunableRepresentativeCount')}")
+          for e in r.get('representatives') or []:
+              p=e.get('preview') or {}; h=p.get('harvest') or {}; b=p.get('best') or {}; c=b.get('strongestAccessConstraint') or {}; res=e.get('resources') or {}
+              print(f"BRIDGE role={e.get('role')} p={e.get('shopPurchases')} hp={res.get('hp')} gold={res.get('gold')} cards={res.get('sun')}/{res.get('moon')}/{res.get('star')} old={e.get('oldUpperBound')} preview={e.get('previewUpperBound')} tightening={e.get('tightening')} slack={e.get('previewThresholdSlack')} prune={e.get('previewWouldPruneThreshold')} oldMatch={e.get('oldBoundExactMatch')}")
+              print(f"  HARVEST zeroGold={h.get('zeroDamageGold')} totalGold={h.get('totalHarvestGold')} offers={h.get('offerCount')} positive={h.get('positiveDamageOfferCount')} excludedUnwinnable={h.get('excludedUnwinnableGold')}")
+              print(f"  BEST buys={b.get('purchaseCount')} needGold={b.get('requiredEnemyGold')} fracDamage={b.get('fractionalHarvestDamage')} discreteDamage={b.get('discreteHarvestDamage')} increment={b.get('discreteIncrement')} accessItem={c.get('itemId')}@{c.get('x')},{c.get('y')} access={c.get('accessDamageLowerBound')} beyondHarvest={c.get('accessBeyondHarvest')} accessPenalty={b.get('accessAdditionalPenalty')} upper={b.get('previewUpperBound')}")
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: v3-c7-discrete-bound-preview
+          path: v3-c7-discrete-bound-preview.json
+          if-no-files-found: warn
+          retention-days: 14
