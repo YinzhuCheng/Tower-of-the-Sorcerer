@@ -6,33 +6,41 @@ on:
       - solver-phase1-pareto
     paths:
       - 'src/solver/fixed-purchase-policy-adapter.js'
+      - 'src/solver/core-boundary-adapter.js'
       - 'src/solver/tower-bounds.js'
       - 'src/analyzer/event-order-best-response.js'
+      - 'src/analyzer/event-order-suffix-response.js'
       - 'src/tuner/review-candidates.js'
       - 'scripts/analyze-event-order-response.mjs'
+      - 'scripts/analyze-event-order-suffix.mjs'
       - 'test/fixed-purchase-policy-adapter.test.js'
+      - 'test/core-boundary-adapter.test.js'
       - 'test/tower-bounds-overlay.test.js'
       - 'docs/event-order-best-response.md'
       - '.github/workflows/event-order-profile.yml'
   pull_request:
     paths:
       - 'src/solver/fixed-purchase-policy-adapter.js'
+      - 'src/solver/core-boundary-adapter.js'
       - 'src/solver/tower-bounds.js'
       - 'src/analyzer/event-order-best-response.js'
+      - 'src/analyzer/event-order-suffix-response.js'
       - 'src/tuner/review-candidates.js'
       - 'scripts/analyze-event-order-response.mjs'
+      - 'scripts/analyze-event-order-suffix.mjs'
       - 'test/fixed-purchase-policy-adapter.test.js'
+      - 'test/core-boundary-adapter.test.js'
       - 'test/tower-bounds-overlay.test.js'
       - 'docs/event-order-best-response.md'
       - '.github/workflows/event-order-profile.yml'
   workflow_dispatch:
     inputs:
       max_expanded:
-        description: 'Optimize expansion budget'
+        description: 'Whole-game optimize expansion budget'
         required: false
         default: '12000'
       max_generated:
-        description: 'Optimize generated-action budget'
+        description: 'Whole-game generated-action budget'
         required: false
         default: '180000'
 
@@ -49,7 +57,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - name: Analyze event-order best response
+      - name: Analyze whole-game event-order best response
         env:
           MAX_EXPANDED: ${{ inputs.max_expanded || '12000' }}
           MAX_GENERATED: ${{ inputs.max_generated || '180000' }}
@@ -63,10 +71,7 @@ jobs:
           python3 - <<'PY'
           import json
           r=json.load(open('event-order-response.json'))
-          s=r.get('solver') or {}
-          o=s.get('objective') or {}
-          e=r.get('exploit') or {}
-          p=s.get('profile') or {}
+          s=r.get('solver') or {}; o=s.get('objective') or {}; e=r.get('exploit') or {}; p=s.get('profile') or {}
           print(f"EVENT_ORDER status={r.get('status')} exact={r.get('coverageExact')} exploit={r.get('exploitFound')} referenceHp={(r.get('reference') or {}).get('terminalHp')} searchBest={o.get('searchBest')} best={o.get('best')} stop={s.get('stoppedReason')}")
           print(f"SEARCH expanded={s.get('expandedStates')} generated={s.get('generatedStates')} structural={s.get('structuralStates')} active={s.get('activeLabels')} frontierPeak={s.get('frontierPeak')} dominated={s.get('prunedDominated')} bound={s.get('prunedBound')}")
           print(f"EXPLOIT deltaHp={e.get('deltaHp')} gain={e.get('relativeGain')} replay={e.get('replayOk')} cert={e.get('certificateHash')}")
@@ -77,5 +82,43 @@ jobs:
         with:
           name: event-order-response
           path: event-order-response.json
+          if-no-files-found: error
+          retention-days: 7
+
+  core7-suffix-event-order:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Discover core7 boundaries and optimize suffixes
+        run: |
+          node scripts/analyze-event-order-suffix.mjs \
+            --target-cores=7 \
+            --boundary-max-expanded=6000 \
+            --boundary-max-generated=70000 \
+            --boundary-max-goals=32 \
+            --max-suffix-seeds=4 \
+            --suffix-max-expanded=2500 \
+            --suffix-max-generated=35000 \
+            --json > event-order-core7-suffix.json
+      - name: Print compact suffix summary
+        run: |
+          python3 - <<'PY'
+          import json
+          r=json.load(open('event-order-core7-suffix.json')); b=r.get('boundary') or {}; e=r.get('exploit') or {}
+          print(f"CORE7_SUFFIX status={r.get('status')} exploit={r.get('exploitFound')} exact={r.get('coverageExact')} referenceHp={(r.get('reference') or {}).get('terminalHp')}")
+          print(f"BOUNDARY verified={b.get('verifiedGoals')}/{b.get('discoveredGoals')} exact={b.get('coverageExact')} expanded={b.get('expandedStates')} generated={b.get('generatedStates')} stop={b.get('stoppedReason')}")
+          for a in r.get('attempts') or []:
+              s=a.get('suffix') or {}; o=s.get('objective') or {}
+              print(f"SUFFIX prefix={a.get('prefixCertificateHash')} ub={a.get('optimisticTerminalHpUpperBound')} hp={(a.get('bridgeResources') or {}).get('hp')} gold={(a.get('bridgeResources') or {}).get('gold')} p={a.get('bridgeShopPurchases')} best={o.get('searchBest')} exact={s.get('objectiveExact')} stop={s.get('stoppedReason')} replay={(a.get('suffixReplay') or {}).get('ok')} exploit={a.get('exploit')}")
+          print(f"EXPLOIT terminalHp={e.get('terminalHp')} delta={e.get('deltaHp')} gain={e.get('relativeGain')}")
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: event-order-core7-suffix
+          path: event-order-core7-suffix.json
           if-no-files-found: error
           retention-days: 7
