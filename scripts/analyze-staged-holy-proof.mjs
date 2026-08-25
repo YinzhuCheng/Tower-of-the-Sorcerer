@@ -16,12 +16,16 @@ const report = proveDelayedHolyPoliciesStaged({
   boundaryMaxGenerated: numberArg('boundary-max-generated', 250_000),
   boundaryDiscoveryGoals: numberArg('boundary-discovery-goals', 512),
   maxBoundarySeeds: numberArg('max-boundary-seeds', 12),
-  preBossMaxExpanded: numberArg('preboss-max-expanded', legacyCoreExpanded ?? 4_000),
-  preBossMaxGenerated: numberArg('preboss-max-generated', legacyCoreGenerated ?? 40_000),
+  corridorMaxExpanded: numberArg('corridor-max-expanded', 1_500),
+  corridorMaxGenerated: numberArg('corridor-max-generated', 15_000),
+  preBossMaxExpanded: numberArg('preboss-max-expanded', 2_500),
+  preBossMaxGenerated: numberArg('preboss-max-generated', 25_000),
   bossMaxExpanded: numberArg('boss-max-expanded', 128),
   bossMaxGenerated: numberArg('boss-max-generated', 2_000),
   policyMaxExpanded: numberArg('policy-max-expanded', 8_000),
-  policyMaxGenerated: numberArg('policy-max-generated', 80_000)
+  policyMaxGenerated: numberArg('policy-max-generated', 80_000),
+  core6MaxExpanded: legacyCoreExpanded,
+  core6MaxGenerated: legacyCoreGenerated
 });
 
 process.stdout.write(`${JSON.stringify(report)}\n`);
