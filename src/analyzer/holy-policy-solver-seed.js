@@ -1,3 +1,4 @@
+import { replayTowerCertificate } from '../solver/replay.js';
 import { solve } from '../solver/search.js';
 import {
   createHolyPolicyTowerAdapter,
@@ -23,13 +24,15 @@ function compactHolyStep(step) {
 }
 
 /**
- * Uses exact existence search as a stronger feasibility oracle for one Holy
- * policy. If a goal certificate is found, its shop option sequence is replayed
- * through the deterministic runner as a possible local-search seed.
+ * Uses constrained exact existence search as a stronger feasibility oracle for
+ * one Holy policy. Search certificates are independently replayed through the
+ * authoritative engine before their objective is exposed as policy evidence.
  *
- * A Solver proof of policy feasibility and a successful deterministic replay are
- * intentionally reported separately: the certificate may use event ordering the
- * greedy runner cannot currently express with shop choices alone.
+ * The certificate's shop option sequence is also replayed through the
+ * deterministic runner as a possible purchase-local-search seed. Certificate
+ * feasibility and greedy shop-plan replay are intentionally separate claims:
+ * the Solver certificate may rely on event ordering that shop choices alone do
+ * not encode.
  */
 export function findHolyPolicySolverSeed({
   holyPolicy,
@@ -47,8 +50,10 @@ export function findHolyPolicySolverSeed({
   const shopPlan = extractShopPlanFromSolverCertificate(certificate);
   const holyStep = extractHolyStepFromSolverCertificate(certificate);
 
+  let authoritativeReplay = null;
   let deterministicReplay = null;
   if (solverReport.solvable === true && certificate) {
+    authoritativeReplay = replayTowerCertificate(certificate, { adapter });
     deterministicReplay = runGreedyShopStrategy({
       shopCycle: fallbackCycle(),
       shopPlan,
@@ -56,11 +61,17 @@ export function findHolyPolicySolverSeed({
     });
   }
 
+  const replayVerified = authoritativeReplay?.ok === true;
+  const certificateObjective = replayVerified
+    ? authoritativeReplay.objective
+    : null;
+  const policyFeasible = solverReport.solvable === true && replayVerified;
+
   return {
-    schemaVersion: 1,
-    model: 'holy-policy-solver-seed-v0.1',
+    schemaVersion: 2,
+    model: 'holy-policy-solver-seed-v0.2-authoritative-replay',
     holyPolicy,
-    policyFeasible: solverReport.solvable === true,
+    policyFeasible,
     policyInfeasibleExact: solverReport.solvable === false && solverReport.exact === true,
     exact: solverReport.exact,
     stoppedReason: solverReport.stoppedReason,
@@ -72,6 +83,15 @@ export function findHolyPolicySolverSeed({
       certificateHash: certificate?.certificateHash ?? null,
       objective: solverReport.objective
     },
+    authoritativeReplay: authoritativeReplay ? {
+      ok: authoritativeReplay.ok,
+      failures: authoritativeReplay.failures,
+      objective: authoritativeReplay.objective,
+      final: authoritativeReplay.final
+    } : null,
+    certifiedTerminalHpLowerBound: Number.isFinite(certificateObjective)
+      ? certificateObjective
+      : null,
     certificate: certificate ? {
       steps: certificate.steps.length,
       shopPurchases: shopPlan.length,
@@ -89,7 +109,7 @@ export function findHolyPolicySolverSeed({
       holyAcquisition: deterministicReplay.holyAcquisition,
       purchaseCounts: { ...deterministicReplay.purchaseCounts }
     } : null,
-    seed: deterministicReplay?.solvable ? {
+    seed: policyFeasible && deterministicReplay?.solvable ? {
       id: `solver-certificate-${holyPolicy}`,
       cycle: fallbackCycle(),
       shopPlan: [...shopPlan],
@@ -97,9 +117,11 @@ export function findHolyPolicySolverSeed({
       result: deterministicReplay
     } : null,
     interpretation: solverReport.solvable === true
-      ? deterministicReplay?.solvable
-        ? 'policy_feasible_and_shop_plan_replays_in_deterministic_runner'
-        : 'policy_feasible_but_certificate_requires_route_order_not_encoded_by_shop_plan'
+      ? !replayVerified
+        ? 'solver_goal_found_but_authoritative_certificate_replay_failed'
+        : deterministicReplay?.solvable
+          ? 'policy_feasible_and_shop_plan_replays_in_deterministic_runner'
+          : 'policy_feasible_but_certificate_requires_route_order_not_encoded_by_shop_plan'
       : solverReport.exact
         ? 'policy_infeasible_under_constrained_solver_rules'
         : 'policy_feasibility_unknown_within_solver_budget'
