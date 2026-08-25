@@ -7,15 +7,21 @@ on:
     paths:
       - 'src/solver/fixed-purchase-policy-adapter.js'
       - 'src/solver/core-boundary-adapter.js'
+      - 'src/solver/objective-threshold-adapter.js'
       - 'src/solver/tower-bounds.js'
       - 'src/solver/replay.js'
       - 'src/analyzer/event-order-best-response.js'
       - 'src/analyzer/event-order-suffix-response.js'
+      - 'src/analyzer/event-order-threshold-proof.js'
       - 'src/tuner/review-candidates.js'
       - 'scripts/analyze-event-order-response.mjs'
       - 'scripts/analyze-event-order-suffix.mjs'
+      - 'scripts/prove-event-order-threshold.mjs'
       - 'test/fixed-purchase-policy-adapter.test.js'
+      - 'test/fixed-purchase-bound.test.js'
+      - 'test/fractional-harvest-bound.test.js'
       - 'test/core-boundary-adapter.test.js'
+      - 'test/objective-threshold-adapter.test.js'
       - 'test/tower-bounds-overlay.test.js'
       - 'test/replay-compact-bridge.test.js'
       - 'docs/event-order-best-response.md'
@@ -24,15 +30,21 @@ on:
     paths:
       - 'src/solver/fixed-purchase-policy-adapter.js'
       - 'src/solver/core-boundary-adapter.js'
+      - 'src/solver/objective-threshold-adapter.js'
       - 'src/solver/tower-bounds.js'
       - 'src/solver/replay.js'
       - 'src/analyzer/event-order-best-response.js'
       - 'src/analyzer/event-order-suffix-response.js'
+      - 'src/analyzer/event-order-threshold-proof.js'
       - 'src/tuner/review-candidates.js'
       - 'scripts/analyze-event-order-response.mjs'
       - 'scripts/analyze-event-order-suffix.mjs'
+      - 'scripts/prove-event-order-threshold.mjs'
       - 'test/fixed-purchase-policy-adapter.test.js'
+      - 'test/fixed-purchase-bound.test.js'
+      - 'test/fractional-harvest-bound.test.js'
       - 'test/core-boundary-adapter.test.js'
+      - 'test/objective-threshold-adapter.test.js'
       - 'test/tower-bounds-overlay.test.js'
       - 'test/replay-compact-bridge.test.js'
       - 'docs/event-order-best-response.md'
@@ -47,6 +59,14 @@ on:
         description: 'Whole-game generated-action budget'
         required: false
         default: '180000'
+      threshold_max_expanded:
+        description: 'Deep threshold-proof expansion budget'
+        required: false
+        default: '50000'
+      threshold_max_generated:
+        description: 'Deep threshold-proof generated-action budget'
+        required: false
+        default: '400000'
 
 concurrency:
   group: event-order-profile-${{ github.ref }}
@@ -89,6 +109,41 @@ jobs:
           if-no-files-found: error
           retention-days: 7
 
+  fixed-purchase-threshold-proof:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Prove or refute a whole-game event-order exploit above the reference
+        env:
+          MAX_EXPANDED: ${{ inputs.threshold_max_expanded || '50000' }}
+          MAX_GENERATED: ${{ inputs.threshold_max_generated || '400000' }}
+        run: |
+          node scripts/prove-event-order-threshold.mjs \
+            --max-expanded="$MAX_EXPANDED" \
+            --max-generated="$MAX_GENERATED" \
+            --json > event-order-threshold-proof.json
+      - name: Print compact threshold proof summary
+        run: |
+          python3 - <<'PY'
+          import json
+          r=json.load(open('event-order-threshold-proof.json')); s=r.get('solver') or {}; p=s.get('profile') or {}; e=r.get('exploit') or {}
+          print(f"THRESHOLD_PROOF status={r.get('status')} exactNoExploit={r.get('exactNoExploit')} exploit={r.get('exploitFound')} threshold={(r.get('threshold') or {}).get('strictGreaterThan')} stop={s.get('stoppedReason')}")
+          print(f"SEARCH expanded={s.get('expandedStates')} generated={s.get('generatedStates')} structural={s.get('structuralStates')} active={s.get('activeLabels')} dominated={s.get('prunedDominated')} bound={s.get('prunedBound')}")
+          print(f"EXPLOIT hp={e.get('terminalHp')} delta={e.get('deltaHp')} replay={e.get('replayOk')} cert={e.get('certificateHash')}")
+          print('STAGES ' + ','.join(f"{k}:{v}" for k,v in sorted((p.get('expandedByStage') or {}).items(), key=lambda x:-x[1])[:20]))
+          print('ACTIONS ' + ','.join(f"{k}:{v}" for k,v in sorted((p.get('generatedByAction') or {}).items(), key=lambda x:-x[1])[:20]))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: event-order-threshold-proof
+          path: event-order-threshold-proof.json
+          if-no-files-found: error
+          retention-days: 7
+
   core7-suffix-event-order:
     runs-on: ubuntu-latest
     timeout-minutes: 20
@@ -97,7 +152,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - name: Discover core7 boundaries and optimize suffixes
+      - name: Discover threshold-relevant core7 boundaries and analyze suffixes
         run: |
           node scripts/analyze-event-order-suffix.mjs \
             --target-cores=7 \
