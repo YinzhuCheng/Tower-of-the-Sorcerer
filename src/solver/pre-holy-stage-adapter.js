@@ -19,33 +19,20 @@ export function filterPreHolyActions(actions) {
 /**
  * Stage-scoped adapter for the shared delayed-Holy prefix.
  *
- * `preBoss` asks whether a state exists where astralBoss is an actually legal
- * combat action under current stats/resources while Holy has never been taken.
- * `core6` asks whether the boss can actually be defeated and the sixth core
- * obtained before Holy.
- *
- * Both goals terminate before the delayed Holy policies diverge, removing F7/F8
- * and later Holy timing choices from the diagnostic state space.
- *
- * The default base is the bounded Tower adapter rather than the raw adapter.
- * Existence mode does not use its objective bound, but it does reuse two already
- * proven-safe representation/search reductions:
- *
- * - compact frontier keys;
- * - canonical compass travel (downward teleport only; no D after compass).
- *
- * Canonical travel is history-free and resource-equivalent after the boss-stair
- * lock, so this changes exploration multiplicity/order without changing whether
- * a pre-Holy stage is reachable. This matters here because the raw stage search
- * previously spent most generated actions on free inter-floor travel cycles.
+ * `f6Entry` is the first F6/core5 boundary before Holy. It intentionally stops
+ * before requiring astralBoss affordability so a separate Pareto collector can
+ * retain resource trade-offs at the expensive shared-prefix boundary.
+ * `preBoss` asks whether astralBoss is currently a legal combat action.
+ * `core6` asks whether the sixth core can be obtained before Holy.
  */
 export function createPreHolyStageAdapter({
   stage = 'core6',
   bossId = 'astralBoss',
   targetCores = 6,
+  targetFloor = 5,
   baseAdapter = createBoundedTowerAdapter()
 } = {}) {
-  if (!['preBoss', 'core6'].includes(stage)) {
+  if (!['f6Entry', 'preBoss', 'core6'].includes(stage)) {
     throw new Error(`Unknown pre-Holy stage: ${stage}`);
   }
   if (!Number.isInteger(targetCores) || targetCores < 1) {
@@ -63,14 +50,15 @@ export function createPreHolyStageAdapter({
     },
     isGoal(state) {
       if (state.relics?.holy) return false;
+      if (stage === 'f6Entry') {
+        return state.floor === targetFloor && (state.cores ?? 0) === targetCores - 1;
+      }
       if (stage === 'core6') return (state.cores ?? 0) >= targetCores;
       return baseActions(state).some((action) => actionIsEnemy(action, bossId));
     },
     priority(state) {
-      // Ordering only: first keep canonical progress, then strongly prefer the
-      // shared F6/c5 frontier. No state is removed by this score.
       const base = baseAdapter.priority ? baseAdapter.priority(state) : 0;
-      const nearTarget = (state.cores ?? 0) === targetCores - 1 && (state.floor ?? 0) >= 5;
+      const nearTarget = (state.cores ?? 0) === targetCores - 1 && (state.floor ?? 0) >= targetFloor;
       return base + (nearTarget ? 5e9 : 0);
     },
     stageKey(state) {
@@ -82,6 +70,7 @@ export function createPreHolyStageAdapter({
     },
     diagnosticStage: stage,
     diagnosticBossId: bossId,
-    diagnosticTargetCores: targetCores
+    diagnosticTargetCores: targetCores,
+    diagnosticTargetFloor: targetFloor
   };
 }
