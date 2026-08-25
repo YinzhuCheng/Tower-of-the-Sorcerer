@@ -1,4 +1,5 @@
 import { collectPreHolyF6BoundaryFrontier } from './pre-holy-boundary-frontier.js';
+import { schedulePreHolyBoundarySeeds } from './pre-holy-seed-scheduler.js';
 import { replayTowerCertificateToState } from '../solver/replay.js';
 import { solve } from '../solver/search.js';
 import { createHolyPolicyTowerAdapter } from '../solver/holy-policy-adapter.js';
@@ -21,11 +22,6 @@ function compactSolver(solver) {
   };
 }
 
-function seedRank(adapter, seed) {
-  const statePriority = adapter.priority ? adapter.priority(seed.state) : 0;
-  return statePriority + (seed.resources?.gold ?? 0) * 1e2 + (seed.resources?.hp ?? 0);
-}
-
 function replayContinuation(certificate, { adapter, initialState }) {
   if (!certificate) return null;
   return replayTowerCertificateToState(certificate, { adapter, initialState });
@@ -35,15 +31,22 @@ function replayContinuation(certificate, { adapter, initialState }) {
  * Prove the shared no-Holy prefix in stages and then branch into delayed Holy
  * policy continuations.
  *
- * A finite `maxBoundarySeeds` is deliberately used as boundary discovery mode:
- * finding any replay-verified chain is sufficient to prove feasibility. Exact
- * infeasibility still requires an exhaustive boundary frontier plus exact failure
- * from every verified boundary seed.
+ * Boundary discovery and continuation scheduling are deliberately separate:
+ * `boundaryDiscoveryGoals` controls how many replay-verified F6/core5 entries we
+ * are willing to discover, while `maxBoundarySeeds` controls how many expensive
+ * core6 continuations are attempted. The scheduler may reorder the discovered
+ * seeds using boss-affordability heuristics, but it never deletes seeds from the
+ * proof frontier and therefore cannot strengthen an infeasibility claim.
+ *
+ * A finite discovery pool is still discovery mode: one verified chain is enough
+ * to prove feasibility, while exact infeasibility continues to require complete
+ * boundary coverage plus exact failure from every verified boundary seed.
  */
 export function proveDelayedHolyPoliciesStaged({
   policies = DELAYED_POLICIES,
   boundaryMaxExpanded = 25_000,
   boundaryMaxGenerated = 250_000,
+  boundaryDiscoveryGoals = 512,
   maxBoundarySeeds = 64,
   core6MaxExpanded = 8_000,
   core6MaxGenerated = 80_000,
@@ -55,22 +58,30 @@ export function proveDelayedHolyPoliciesStaged({
   if (!Number.isInteger(maxBoundarySeeds) || maxBoundarySeeds < 1) {
     throw new Error('maxBoundarySeeds must be a positive integer.');
   }
+  if (!Number.isInteger(boundaryDiscoveryGoals) || boundaryDiscoveryGoals < 1) {
+    throw new Error('boundaryDiscoveryGoals must be a positive integer.');
+  }
+  const effectiveBoundaryDiscoveryGoals = Math.max(boundaryDiscoveryGoals, maxBoundarySeeds);
 
   const boundary = collectPreHolyF6BoundaryFrontier({
     maxExpanded: boundaryMaxExpanded,
     maxGenerated: boundaryMaxGenerated,
-    maxGoals: maxBoundarySeeds
+    maxGoals: effectiveBoundaryDiscoveryGoals
   });
   const coreAdapter = createPreHolyStageAdapter({ stage: 'core6' });
-  const verifiedSeeds = boundary.seeds
-    .filter((seed) => seed.verified && seed.state)
-    .sort((a, b) => seedRank(coreAdapter, b) - seedRank(coreAdapter, a));
-  const scheduledSeeds = verifiedSeeds.slice(0, maxBoundarySeeds);
+  const verifiedSeeds = boundary.seeds.filter((seed) => seed.verified && seed.state);
+  const seedSchedule = schedulePreHolyBoundarySeeds(verifiedSeeds, {
+    limit: Math.min(maxBoundarySeeds, verifiedSeeds.length || maxBoundarySeeds),
+    bossId: 'astralBoss'
+  });
+  const scheduledSeeds = seedSchedule.scheduled;
   const coreAttempts = [];
   let core6Bridge = null;
   let winningSeed = null;
 
-  for (const seed of scheduledSeeds) {
+  for (let seedIndex = 0; seedIndex < scheduledSeeds.length; seedIndex += 1) {
+    const seed = scheduledSeeds[seedIndex];
+    const scheduling = seedSchedule.diagnostics[seedIndex] ?? null;
     const solver = solve({
       adapter: coreAdapter,
       initialState: seed.state,
@@ -86,6 +97,8 @@ export function proveDelayedHolyPoliciesStaged({
     coreAttempts.push({
       boundaryCertificateHash: seed.certificate?.certificateHash ?? null,
       boundaryResources: { ...seed.resources },
+      boundaryShopPurchases: seed.state.shopPurchases ?? 0,
+      scheduling,
       solver: compactSolver(solver),
       replay: replay ? { ok: replay.ok, failures: replay.failures, final: replay.final } : null,
       verified: Boolean(verified)
@@ -167,12 +180,13 @@ export function proveDelayedHolyPoliciesStaged({
   }
 
   return {
-    schemaVersion: 2,
-    model: 'staged-holy-policy-proof-v0.2-discovery',
+    schemaVersion: 3,
+    model: 'staged-holy-policy-proof-v0.3-seed-scheduling',
     canonicalBalance: true,
     budgets: {
       boundaryMaxExpanded,
       boundaryMaxGenerated,
+      boundaryDiscoveryGoals: effectiveBoundaryDiscoveryGoals,
       maxBoundarySeeds,
       core6MaxExpanded,
       core6MaxGenerated,
@@ -188,6 +202,12 @@ export function proveDelayedHolyPoliciesStaged({
       stoppedReason: boundary.stoppedReason,
       solver: boundary.solver,
       interpretation: boundary.interpretation
+    },
+    seedSchedule: {
+      scheduler: seedSchedule.scheduler,
+      candidateCount: seedSchedule.candidateCount,
+      scheduledCount: seedSchedule.scheduledCount,
+      diagnostics: seedSchedule.diagnostics
     },
     core6: {
       reached: Boolean(core6Bridge),
