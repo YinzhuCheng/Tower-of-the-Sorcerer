@@ -9,6 +9,7 @@ on:
       - 'src/analyzer/holy-policy-solver-seed.js'
       - 'src/analyzer/pre-holy-stage-proof.js'
       - 'src/analyzer/pre-holy-boundary-frontier.js'
+      - 'src/analyzer/staged-holy-policy-proof.js'
       - 'src/analyzer/purchase-prefix-rescue.js'
       - 'src/solver/goal-frontier.js'
       - 'src/solver/holy-policy-adapter.js'
@@ -17,6 +18,7 @@ on:
       - 'scripts/analyze-holy-policy-solver-seeds.mjs'
       - 'scripts/analyze-pre-holy-f6.mjs'
       - 'scripts/analyze-pre-holy-frontier.mjs'
+      - 'scripts/analyze-staged-holy-proof.mjs'
       - 'scripts/diagnose-holy-purchase-rescue.mjs'
       - '.github/workflows/holy-policy-diagnostics.yml'
   pull_request:
@@ -25,6 +27,7 @@ on:
       - 'src/analyzer/holy-policy-solver-seed.js'
       - 'src/analyzer/pre-holy-stage-proof.js'
       - 'src/analyzer/pre-holy-boundary-frontier.js'
+      - 'src/analyzer/staged-holy-policy-proof.js'
       - 'src/analyzer/purchase-prefix-rescue.js'
       - 'src/solver/goal-frontier.js'
       - 'src/solver/holy-policy-adapter.js'
@@ -33,6 +36,7 @@ on:
       - 'scripts/analyze-holy-policy-solver-seeds.mjs'
       - 'scripts/analyze-pre-holy-f6.mjs'
       - 'scripts/analyze-pre-holy-frontier.mjs'
+      - 'scripts/analyze-staged-holy-proof.mjs'
       - 'scripts/diagnose-holy-purchase-rescue.mjs'
       - '.github/workflows/holy-policy-diagnostics.yml'
   workflow_dispatch:
@@ -110,6 +114,46 @@ jobs:
         with:
           name: pre-holy-f6-boundary
           path: pre-holy-f6-boundary.json
+          if-no-files-found: error
+          retention-days: 7
+
+  staged-holy-proof:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Run staged delayed-Holy proof
+        run: |
+          node scripts/analyze-staged-holy-proof.mjs \
+            --boundary-max-expanded=25000 \
+            --boundary-max-generated=250000 \
+            --max-boundary-seeds=12 \
+            --core6-max-expanded=4000 \
+            --core6-max-generated=40000 \
+            --policy-max-expanded=8000 \
+            --policy-max-generated=80000 \
+            > staged-holy-proof.json
+      - name: Print compact staged proof summary
+        run: |
+          python3 - <<'PY'
+          import json
+          r=json.load(open('staged-holy-proof.json'))
+          b=r.get('boundary') or {}
+          c=r.get('core6') or {}
+          print(f"STAGED_BOUNDARY found={b.get('hasBoundaryStates')} exact={b.get('coverageExact')} verified={b.get('verifiedSeedCount')}/{b.get('seedCount')} interpretation={b.get('interpretation')}")
+          print(f"STAGED_CORE6 reached={c.get('reached')} exactInfeasible={c.get('exactInfeasible')} scheduled={c.get('scheduledSeedCount')}/{c.get('verifiedSeedCount')} winner={c.get('winningBoundaryCertificateHash')} interpretation={c.get('interpretation')}")
+          for x in r.get('policyResults') or []:
+              s=x.get('solver') or {}
+              rp=x.get('replay') or {}
+              print(f"STAGED_POLICY policy={x.get('holyPolicy')} feasible={x.get('feasible')} exact={x.get('exact')} stop={s.get('stoppedReason')} expanded={s.get('expandedStates')} generated={s.get('generatedStates')} replay={rp.get('ok')} interpretation={x.get('interpretation')}")
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: staged-holy-proof
+          path: staged-holy-proof.json
           if-no-files-found: error
           retention-days: 7
 
