@@ -1,0 +1,8 @@
+import { analyzeV3ProgressiveTightC7Frontier } from '../src/analyzer/event-order-core-progressive-tight-frontier.js';
+import { rebuildDistributedPressureV3Reference } from '../src/tuner/review-candidate-v3-rebuild.js';
+import { REVIEW_CANDIDATES } from '../src/tuner/review-candidates.js';
+function f(n,d){const p=`--${n}=`;const r=process.argv.find(a=>a.startsWith(p))?.slice(p.length);if(r==null)return d;const v=Number(r);if(!Number.isInteger(v)||v<1)throw new Error(`Invalid --${n}: ${r}`);return v;}
+const rebuilt=rebuildDistributedPressureV3Reference({maxPurchasePasses:f('max-purchase-passes',12)});
+const analysis=analyzeV3ProgressiveTightC7Frontier({candidate:REVIEW_CANDIDATES.distributedPressureV3,referenceWitness:rebuilt.witness,fromCores:f('from-cores',6),toCores:f('to-cores',7),fromBoundaryMaxExpanded:f('from-boundary-max-expanded',8000),fromBoundaryMaxGenerated:f('from-boundary-max-generated',100000),fromBoundaryMaxGoals:f('from-boundary-max-goals',64),maxPrefixSeeds:f('max-prefix-seeds',3),bridgeMaxExpandedPerRound:f('bridge-max-expanded-per-round',12000),bridgeMaxGeneratedPerRound:f('bridge-max-generated-per-round',180000),initialGoalCap:f('initial-goal-cap',32),maxGoalCap:f('max-goal-cap',256),targetResidualGoals:f('target-residual-goals',32)});
+const report={schemaVersion:1,model:'distributed-pressure-v3-progressive-tight-c7-frontier-v0.1',rebuild:{terminalHp:rebuilt.terminalHp,semanticFingerprint:rebuilt.semanticFingerprint},analysis};
+if(process.argv.includes('--json'))process.stdout.write(`${JSON.stringify(report,null,2)}\n`);else console.log(JSON.stringify(report,null,2));
