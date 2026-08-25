@@ -41,9 +41,12 @@ function compactExistence(solver, replay) {
  *
  * The 4,578-HP threshold is rebuilt from repository algorithms and replayed
  * under the V2 overlay before any proof uses it. The rebuilt witness shop
- * sequence is also compared against the persisted fixed-purchase policy; matching
- * HP/hash without matching policy is candidate snapshot drift, not valid proof
- * evidence.
+ * sequence is also compared against the persisted fixed-purchase policy.
+ *
+ * Candidate identity is migration-safe:
+ * - legacy candidates pin the exact raw witness hash;
+ * - candidates with `referenceSemanticFingerprint` pin the stable ordered macro
+ *   event identity instead, while raw hash equality remains provenance evidence.
  *
  * Purchase robustness is intentionally reported in two confidence layers:
  *
@@ -51,10 +54,6 @@ function compactExistence(solver, replay) {
  * 2. `recoveryAwareCounterfactuals`: exact dynamic programming over every later
  *    shop choice while the forced mistake and the event-order skeleton remain
  *    fixed.
- *
- * The historical catastrophic gate is preserved for A/B evidence in this
- * version. The recovery-aware metric is not substituted into promotion rules
- * until its observed behavior is reviewed and documented.
  */
 export function validateDistributedPressureV2({
   maxPurchasePasses = 12,
@@ -72,11 +71,20 @@ export function validateDistributedPressureV2({
     rebuilt.witness,
     candidate.purchasePolicy
   );
+  const semanticPinned = typeof expected.referenceSemanticFingerprint === 'string'
+    && expected.referenceSemanticFingerprint.length > 0;
+  const rawWitnessHashMatch = rebuilt.witnessHash === expected.referenceWitnessHash;
+  const semanticFingerprintMatch = semanticPinned
+    ? rebuilt.semanticFingerprint === expected.referenceSemanticFingerprint
+    : null;
+  const referenceIdentityMatch = semanticPinned
+    ? semanticFingerprintMatch
+    : rawWitnessHashMatch;
   const rebuildChecks = {
     sourceEditsMatch: sameEdits(rebuilt.edits, candidate.edits),
     terminalHpMatch: rebuilt.terminalHp === expected.terminalHp,
     marginMatch: Math.abs(rebuilt.minNormalizedHpMargin - expected.minNormalizedHpMargin) <= 1e-12,
-    witnessHashMatch: rebuilt.witnessHash === expected.referenceWitnessHash,
+    referenceIdentityMatch,
     purchasePlanMatch: purchasePolicyComparison.ok,
     purchaseCountMatch: rebuilt.purchaseCount === expected.purchaseCount,
     localOptimal: rebuilt.localOptimal === true,
@@ -100,7 +108,7 @@ export function validateDistributedPressureV2({
       mode: 'existence',
       maxExpanded: existenceMaxExpanded,
       maxGenerated: existenceMaxGenerated,
-      solverVersion: 'distributed-pressure-v2-existence-v0.1'
+      solverVersion: 'distributed-pressure-v2-existence-v0.2-semantic-identity'
     });
     const existenceReplay = existenceSolver.certificate
       ? replayTowerCertificate(existenceSolver.certificate, { adapter: existenceAdapter })
@@ -172,8 +180,8 @@ export function validateDistributedPressureV2({
   const overallPassed = numeric.baseHardPassed && eventOrderBestResponse;
 
   return {
-    schemaVersion: 3,
-    model: 'distributed-pressure-v2-validation-v0.3-recovery-aware-diagnostics',
+    schemaVersion: 4,
+    model: 'distributed-pressure-v2-validation-v0.4-semantic-reference-identity',
     candidateId: candidate.id,
     productionWriteAllowed: false,
     status: overallPassed ? 'ready_for_review' : 'blocked',
@@ -187,6 +195,12 @@ export function validateDistributedPressureV2({
       terminalHp: rebuilt.terminalHp,
       minNormalizedHpMargin: rebuilt.minNormalizedHpMargin,
       witnessHash: rebuilt.witnessHash,
+      semanticFingerprint: rebuilt.semanticFingerprint,
+      expectedWitnessHash: expected.referenceWitnessHash ?? null,
+      expectedSemanticFingerprint: expected.referenceSemanticFingerprint ?? null,
+      semanticPinned,
+      rawWitnessHashMatch,
+      semanticFingerprintMatch,
       witnessSteps: rebuilt.witness.steps.length,
       purchasePlan: [...rebuilt.purchasePlan],
       expectedPurchasePlan: [...purchasePolicyComparison.expectedPlan],
