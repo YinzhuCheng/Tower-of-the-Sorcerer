@@ -1,0 +1,119 @@
+name: V2 Review Validation
+
+on:
+  push:
+    branches:
+      - solver-phase1-pareto
+    paths:
+      - 'src/tuner/review-candidates.js'
+      - 'src/tuner/review-candidate-reference.js'
+      - 'src/tuner/review-candidate-v2-rebuild.js'
+      - 'src/tuner/review-candidate-v2-validation.js'
+      - 'src/tuner/event-order-witness-ray.js'
+      - 'src/analyzer/event-order-witness-threshold-proof.js'
+      - 'src/analyzer/event-order-core-transition-proof.js'
+      - 'src/analyzer/event-order-purchase-recovery.js'
+      - 'src/analyzer/event-order-witness-counterfactuals.js'
+      - 'src/solver/fixed-purchase-policy-adapter.js'
+      - 'src/solver/objective-threshold-adapter.js'
+      - 'src/solver/core-boundary-adapter.js'
+      - 'src/solver/tower-bounds.js'
+      - 'scripts/validate-review-candidate-v2.mjs'
+      - 'scripts/analyze-v2-event-order-core-transition.mjs'
+      - '.github/workflows/v2-review-validation.yml'
+  pull_request:
+    paths:
+      - 'src/tuner/review-candidates.js'
+      - 'src/tuner/review-candidate-reference.js'
+      - 'src/tuner/review-candidate-v2-rebuild.js'
+      - 'src/tuner/review-candidate-v2-validation.js'
+      - 'src/tuner/event-order-witness-ray.js'
+      - 'src/analyzer/event-order-witness-threshold-proof.js'
+      - 'src/analyzer/event-order-core-transition-proof.js'
+      - 'src/analyzer/event-order-purchase-recovery.js'
+      - 'src/analyzer/event-order-witness-counterfactuals.js'
+      - 'src/solver/fixed-purchase-policy-adapter.js'
+      - 'src/solver/objective-threshold-adapter.js'
+      - 'src/solver/core-boundary-adapter.js'
+      - 'src/solver/tower-bounds.js'
+      - 'scripts/validate-review-candidate-v2.mjs'
+      - 'scripts/analyze-v2-event-order-core-transition.mjs'
+      - '.github/workflows/v2-review-validation.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: v2-review-validation-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate-v2:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - name: Rebuild and validate distributed-pressure V2
+        run: |
+          node scripts/validate-review-candidate-v2.mjs \
+            --max-purchase-passes=12 \
+            --existence-max-expanded=10000 \
+            --existence-max-generated=120000 \
+            --event-order-max-expanded=50000 \
+            --event-order-max-generated=400000 \
+            --json > v2-review-validation.json
+      - name: Print compact V2 validation summary
+        run: |
+          python3 - <<'PY'
+          import json
+          r=json.load(open('v2-review-validation.json')); eo=r.get('eventOrder') or {}; cf=r.get('counterfactuals') or {}; rc=r.get('recoveryAwareCounterfactuals') or {}; ex=r.get('existence') or {}
+          print(f"V2 status={r.get('status')} failures={','.join(r.get('failures') or []) or 'none'}")
+          print(f"REFERENCE hp={(r.get('reference') or {}).get('terminalHp')} margin={(r.get('reference') or {}).get('minNormalizedHpMargin')} witness={(r.get('reference') or {}).get('referenceWitnessHash')}")
+          print(f"REBUILD hp={(r.get('rebuild') or {}).get('terminalHp')} margin={(r.get('rebuild') or {}).get('minNormalizedHpMargin')} hash={(r.get('rebuild') or {}).get('witnessHash')} local={(r.get('rebuild') or {}).get('localOptimal')}")
+          print(f"EXISTENCE solvable={ex.get('solvable')} exact={ex.get('exact')} replay={ex.get('replayOk')} expanded={ex.get('expandedStates')} generated={ex.get('generatedStates')}")
+          print(f"ROBUST recovery={cf.get('recoveryRate')} catastrophic={cf.get('catastrophicRate')} regret={cf.get('highRegretRate')} improvements={cf.get('improvedMutationCount')}")
+          print(f"RECOVERY_AWARE recovery={rc.get('recoveryRate')} catastrophic={rc.get('catastrophicRate')} exact={rc.get('exact')} activePeak={rc.get('activeLabelPeak')}")
+          print(f"EVENT_ORDER status={eo.get('status')} exploit={eo.get('exploitFound')} exactNo={eo.get('exactNoExploit')} expanded={(eo.get('solver') or {}).get('expandedStates')} generated={(eo.get('solver') or {}).get('generatedStates')} hp=(eo.get('exploit') or {}).get('terminalHp')")
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: v2-review-validation
+          path: v2-review-validation.json
+          retention-days: 7
+
+  v2-core-transition:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - name: Analyze V2 c6 to c7 threshold transition
+        run: |
+          node scripts/analyze-v2-event-order-core-transition.mjs \
+            --from-cores=6 \
+            --to-cores=7 \
+            --boundary-max-expanded=8000 \
+            --boundary-max-generated=100000 \
+            --boundary-max-goals=64 \
+            --max-transition-seeds=8 \
+            --transition-max-expanded=5000 \
+            --transition-max-generated=70000 \
+            --json > v2-core-transition.json
+      - name: Print compact V2 transition summary
+        run: |
+          python3 - <<'PY'
+          import json
+          x=json.load(open('v2-core-transition.json')); r=x.get('transition') or {}; b=r.get('boundary') or {}; sc=r.get('schedule') or {}
+          print(f"V2_TRANSITION reference={(x.get('rebuild') or {}).get('terminalHp')} witness={(x.get('rebuild') or {}).get('witnessHash')} status={r.get('status')} found={r.get('transitionFound')} exactNo={r.get('exactNoTransition')}")
+          print(f"BOUNDARY relevant={b.get('verifiedRelevantGoals')}/{b.get('discoveredGoals')} exact={b.get('coverageExact')} expanded={b.get('expandedStates')} generated={b.get('generatedStates')} stop={b.get('stoppedReason')}")
+          print(f"SCHEDULE relevant={sc.get('verifiedRelevantSeedCount')} scheduled={sc.get('scheduledSeedCount')} all={sc.get('attemptedAllVerified')}")
+          for a in r.get('attempts') or []:
+              s=a.get('solver') or {}
+              print(f"SEED cert={a.get('prefixCertificateHash')} ub={a.get('prefixUpperBound')} hp={(a.get('prefixResources') or {}).get('hp')} gold={(a.get('prefixResources') or {}).get('gold')} p={a.get('prefixShopPurchases')} found={a.get('transitionFound')} exactNo={a.get('exactNoTransition')} expanded={s.get('expandedStates')} generated={s.get('generatedStates')} bound={s.get('prunedBound')} stop={s.get('stoppedReason')} nextUb={(a.get('replay') or {}).get('nextStateUpperBound')}")
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: v2-core-transition
+          path: v2-core-transition.json
+          retention-days: 7
