@@ -1,3 +1,5 @@
+import { ENEMIES } from '../game/data.js';
+import { calculateBattle } from '../game/engine.js';
 import { createBoundedTowerAdapter } from './tower-bounds.js';
 
 function actionIsHoly(action) {
@@ -18,28 +20,36 @@ function parseTokenLocal(token) {
   return { type: token.slice(0, separator), id: token.slice(separator + 1) };
 }
 
-function relaxedTraversalCost(token, bossId) {
+function relaxedTraversalDamage(engineState, token, bossId) {
   if (token === '#') return Number.POSITIVE_INFINITY;
   if (token === '.' || token === 'S' || token === 'shop' || token === 'U' || token === 'D') return 0;
   const parsed = parseTokenLocal(token);
-  if (parsed.type === 'enemy' && parsed.id === bossId) return 0;
   if (parsed.type === 'item') return parsed.id === 'holy' ? Number.POSITIVE_INFINITY : 0;
-  if (parsed.type === 'rune') return 0;
-  if (parsed.type === 'enemy' || parsed.type === 'door' || parsed.type === 'gate' || parsed.type === 'switch') return 1;
-  return 1;
+  if (parsed.type === 'rune' || parsed.type === 'door' || parsed.type === 'gate' || parsed.type === 'switch') return 0;
+  if (parsed.type !== 'enemy') return 0;
+  const enemy = ENEMIES[parsed.id];
+  if (!enemy) return Number.POSITIVE_INFINITY;
+  const battle = calculateBattle(engineState.stats, enemy, engineState.relics ?? {});
+  if (!battle.winnable || !Number.isFinite(battle.totalDamage)) return Number.POSITIVE_INFINITY;
+  // The boss damage is included when its tile is entered. The caller can then
+  // compare total relaxed route damage directly with current HP.
+  return battle.totalDamage;
 }
 
 /**
- * 0/1 relaxed topological distance from the current location to the requested
- * boss. Resource preconditions are intentionally ignored for doors/gates/enemies
- * so this remains an optimistic progress heuristic rather than a feasibility
- * test. Holy is treated as impassable because the stage explicitly forbids
- * acquiring it.
+ * Optimistic minimum fixed damage from the current location through the current
+ * dynamic floor to the requested boss, including the boss battle itself.
  *
- * Result = minimum number of unresolved blocking events on any relaxed path,
- * excluding the boss itself. Infinity means even the relaxation has no path.
+ * Doors/gates/switches/runes are relaxed to zero cost, so this is NOT a legal
+ * route proof. Regular free items are also zero-cost; normalization normally
+ * collects immediately reachable monotone items before priority is evaluated.
+ * Holy remains impassable because this stage explicitly forbids acquiring it.
+ * Enemy costs use the authoritative deterministic `calculateBattle()` formula.
+ *
+ * The output is scheduling information only. Infinity means that even this
+ * relaxed damage graph cannot currently break through some enemy/boss defense.
  */
-export function relaxedBossBarrierDistance(engineState, {
+export function relaxedBossDamageNeed(engineState, {
   bossId = 'astralBoss'
 } = {}) {
   const floorState = engineState?.floorStates?.[engineState.floor];
@@ -56,16 +66,16 @@ export function relaxedBossBarrierDistance(engineState, {
   const height = map.length;
   const width = Math.max(...map.map((row) => row.length));
   const dist = Array.from({ length: height }, () => Array(width).fill(Number.POSITIVE_INFINITY));
-  const deque = [{ x: engineState.x, y: engineState.y }];
+  const pending = [{ x: engineState.x, y: engineState.y, damage: 0 }];
   dist[engineState.y][engineState.x] = 0;
-  let head = 0;
 
-  // Small 11x11 maps make a simple repeated-relaxation deque adequate here;
-  // zero-cost edges are inserted before the remaining unprocessed tail.
-  while (head < deque.length) {
-    const current = deque[head++];
-    const base = dist[current.y][current.x];
-    if (current.x === boss.x && current.y === boss.y) return base;
+  // 11x11 floor: dependency-free Dijkstra via sorted small array is simpler and
+  // fast enough for a queue heuristic. We intentionally optimize clarity here.
+  while (pending.length > 0) {
+    pending.sort((a, b) => b.damage - a.damage);
+    const current = pending.pop();
+    if (current.damage !== dist[current.y][current.x]) continue;
+    if (current.x === boss.x && current.y === boss.y) return current.damage;
     const neighbors = [
       [current.x, current.y - 1],
       [current.x, current.y + 1],
@@ -74,18 +84,12 @@ export function relaxedBossBarrierDistance(engineState, {
     ];
     for (const [x, y] of neighbors) {
       if (x < 0 || y < 0 || y >= height || x >= (map[y]?.length ?? 0)) continue;
-      const cost = relaxedTraversalCost(map[y][x], bossId);
-      if (!Number.isFinite(cost)) continue;
-      const next = base + cost;
+      const edgeDamage = relaxedTraversalDamage(engineState, map[y][x], bossId);
+      if (!Number.isFinite(edgeDamage)) continue;
+      const next = current.damage + edgeDamage;
       if (next >= dist[y][x]) continue;
       dist[y][x] = next;
-      if (cost === 0) {
-        // Move zero-cost nodes to the current processing frontier. Array splice
-        // is fine at 11x11 scale and keeps the implementation dependency-free.
-        deque.splice(head, 0, { x, y });
-      } else {
-        deque.push({ x, y });
-      }
+      pending.push({ x, y, damage: next });
     }
   }
   return Number.POSITIVE_INFINITY;
@@ -104,16 +108,16 @@ export function filterPreHolyActions(actions) {
  * shop or resource, and the floor reward starves those states under a bounded
  * existence search.
  *
- * During preBoss/core6 while cores==targetCores-1 we therefore remove floor from
- * the ordering signal. Resource improvements still raise priority, but a free
- * downward travel with unchanged resources competes on equal terms with staying
- * on F6. This function changes queue order only; it is never a proof bound.
+ * During preBoss/core6 while cores==targetCores-1 we remove floor from the base
+ * ordering signal. When the state is on target F6, an optimistic minimum damage
+ * path to astralBoss is added as a much stronger goal-directed signal.
+ * Everything here changes queue order only; none of it is a proof bound.
  */
 export function preHolyContinuationPriority(state, {
   targetCores = 6,
   basePriority = 0,
   targetFloor = 5,
-  bossBarrierDistance = null,
+  relaxedDamageNeed = null,
   sequenceProgress = 0
 } = {}) {
   if ((state?.cores ?? 0) !== targetCores - 1) return basePriority;
@@ -125,12 +129,13 @@ export function preHolyContinuationPriority(state, {
     + Math.min(stats.hp ?? 0, 50_000) * 1e3
     + Math.min(stats.gold ?? 0, 100_000) * 1e2;
 
-  if ((state.floor ?? -1) === targetFloor && Number.isFinite(bossBarrierDistance)) {
-    // Barrier progress deliberately dominates small stat deltas so that states
-    // which actually open the F6 route are popped before unrelated permutations.
-    // 32 exceeds any possible blocker count on the current 11x11 floor.
-    value += Math.max(0, 32 - bossBarrierDistance) * 1e8;
-    value += Math.max(0, sequenceProgress) * 5e7;
+  if ((state.floor ?? -1) === targetFloor && Number.isFinite(relaxedDamageNeed)) {
+    const relaxedMargin = (stats.hp ?? 0) - relaxedDamageNeed - 1;
+    // A relaxed route that can already survive corridor + boss gets a decisive
+    // readiness bonus. Otherwise decreasing the damage deficit is still useful.
+    value += relaxedMargin >= 0 ? 2e10 : 0;
+    value += Math.max(-20_000, Math.min(20_000, relaxedMargin)) * 1e6;
+    value += Math.max(0, sequenceProgress) * 1e7;
   }
   return value;
 }
@@ -178,18 +183,18 @@ export function createPreHolyStageAdapter({
     priority(state) {
       const base = baseAdapter.priority ? baseAdapter.priority(state) : 0;
       if (stage === 'preBoss' || stage === 'core6') {
-        let bossBarrierDistance = null;
+        let relaxedDamageNeed = null;
         let sequenceProgress = 0;
         if ((state.floor ?? -1) === targetFloor && baseAdapter.materializeState) {
           const engineState = baseAdapter.materializeState(state);
-          bossBarrierDistance = relaxedBossBarrierDistance(engineState, { bossId });
+          relaxedDamageNeed = relaxedBossDamageNeed(engineState, { bossId });
           sequenceProgress = engineState.floorStates?.[targetFloor]?.sequenceProgress ?? 0;
         }
         return preHolyContinuationPriority(state, {
           targetCores,
           basePriority: base,
           targetFloor,
-          bossBarrierDistance,
+          relaxedDamageNeed,
           sequenceProgress
         });
       }
@@ -201,7 +206,7 @@ export function createPreHolyStageAdapter({
       return `${base}/preHoly:${stage}`;
     },
     rulesVersion() {
-      return `${baseAdapter.rulesVersion?.() ?? 'tower'}+pre-holy-stage:${stage}+relaxed-boss-distance-v1`;
+      return `${baseAdapter.rulesVersion?.() ?? 'tower'}+pre-holy-stage:${stage}+relaxed-boss-damage-v1`;
     },
     diagnosticStage: stage,
     diagnosticBossId: bossId,
