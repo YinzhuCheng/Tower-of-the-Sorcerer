@@ -127,30 +127,77 @@ exact = false
 
 and a missing recovery remains unknown. The cap may never be interpreted as unrecoverability.
 
-## 5. Why this metric is separate from the promotion gate for now
+## 5. V2 A/B result
 
 The V2 candidate originally reported 6/58 no-recourse catastrophic mutations. All six are alternatives to the first three ATK purchases. That made the old catastrophic rate:
 
 ```text
-6 / 58 = 10.3448%
+6 / 58 = 10.3448275862%
 ```
 
 against a 10% target.
 
-It would be methodologically wrong to replace that gate with a more favorable recovery metric before measuring the new model. V2 validation therefore reports both layers side by side:
+The recovery-aware profile then exhaustively re-optimized **all later shop choices** for those six failures while keeping the 241-step event order fixed.
+
+Result:
+
+```text
+exact classifications     = 58 / 58
+recovered mutations       = 52
+exact unrecoverable       = 6
+unknown                    = 0
+fixed-order recovery rate = 89.6551724138%
+fixed-order trap rate     = 10.3448275862%
+formerly catastrophic recovered = 0
+```
+
+The six exact fixed-order traps are:
+
+```text
+purchase 1: ATK -> DEF
+purchase 1: ATK -> HP
+purchase 2: ATK -> DEF
+purchase 2: ATK -> HP
+purchase 3: ATK -> DEF
+purchase 3: ATK -> HP
+```
+
+All six searches ended with:
+
+```text
+all_branches_dead
+```
+
+rather than a label cap. The largest of these recovery searches needed only 6 simultaneous Pareto labels and 360 generated transitions. Therefore the result is not a computational-budget artifact.
+
+### Interpretation
+
+The no-recourse metric was **not** falsely pessimistic for this candidate. The first three ATK purchases are genuine hard breakpoints under the current event skeleton: if any one is replaced by DEF or HP, no combination of later purchases can restore legality of the same event order.
+
+This does not yet prove a globally dead route because a player might change event order after the mistake. But it is strong enough to reject the idea of changing the difficulty metric merely to make V2 pass.
+
+The design implication is now explicit:
+
+> the next candidate should reduce early attack-breakpoint brittleness rather than relaxing the catastrophic threshold or reclassifying these six failures.
+
+Potential repair levers should target the **early mandatory attack threshold** that makes purchases 1–3 forced. A broad late-game HP buff is a poor repair because it would loosen pressure without addressing the actual trap mechanism.
+
+## 6. Why the promotion metric was not changed before measurement
+
+It would have been methodologically wrong to replace the historical catastrophic gate with a more favorable recovery metric before measuring the new model. V2 validation therefore reported both layers side by side:
 
 ```text
 ROBUST_NORECOURSE
 ROBUST_RECOVERY
 ```
 
-The historical hard gate remains unchanged during this A/B period.
+The A/B result above shows they coincide for V2. Therefore there is currently no empirical reason to weaken the existing 10% catastrophic constraint.
 
-Only after the exact recovery profile is inspected should the difficulty model decide which quantity represents the intended “single-error forgiveness” design target.
+A future candidate can still benefit from recovery-aware analysis: if a no-recourse failure is later shown to be exactly recoverable, the two metrics should remain separate rather than silently overwriting the original observation.
 
-## 6. Candidate validation fields
+## 7. Candidate validation fields
 
-`review-candidate-v2-validation.js` now emits:
+`review-candidate-v2-validation.js` emits:
 
 ```text
 counterfactuals
@@ -172,7 +219,7 @@ exactUnrecoverableExamples
 
 Directly replayable mutations need no further search and count as exactly recoverable. The expensive DP runs only for no-recourse failures.
 
-## 7. Next extension
+## 8. Next extension
 
 If an error is exactly unrecoverable under fixed event order, the next confidence layer is not automatically “dead route”. The player may alter event order after the mistake.
 
@@ -187,7 +234,13 @@ no-recourse replay
 
 Each layer must retain its own confidence label rather than overwriting the weaker measurement.
 
-## 8. Production boundary
+For V2, the immediate priority is **not** to run six expensive global recovery searches. The candidate already fails the design target by one catastrophic neighbor, and whole-game event-order threshold coverage is independently incomplete at core6. The more valuable next engineering work is:
+
+1. decompose the 4,578-HP event-order threshold proof at `core6 -> core7` using the replay-verified V2 reference witness;
+2. identify a low-edit early-breakpoint repair for the next numeric candidate;
+3. re-run purchase/event-order best response after that repair.
+
+## 9. Production boundary
 
 This recovery analyzer does not enable production writes.
 
