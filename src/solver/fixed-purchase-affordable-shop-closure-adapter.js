@@ -41,6 +41,12 @@ function shopEffectIsOrderSafe(option) {
   return true;
 }
 
+function canAffordCanonicalShopCost(state, costCalculator = getShopCost) {
+  const cost = Number(costCalculator(state));
+  const gold = Number(state?.stats?.gold ?? NaN);
+  return Number.isFinite(cost) && cost >= 0 && Number.isFinite(gold) && gold >= cost;
+}
+
 /**
  * Proof gate for forcing one shop action under a fixed purchase policy.
  *
@@ -64,9 +70,7 @@ export function isProvablyMonotoneFixedPurchaseShopAction(state, action, {
 
   const option = shopOptions.find((candidate) => candidate.id === expected);
   if (!shopEffectIsOrderSafe(option)) return false;
-  const cost = Number(costCalculator(state));
-  const gold = Number(state?.stats?.gold ?? NaN);
-  return Number.isFinite(cost) && cost >= 0 && Number.isFinite(gold) && gold >= cost;
+  return canAffordCanonicalShopCost(state, costCalculator);
 }
 
 /**
@@ -145,6 +149,11 @@ export function createFixedPurchaseAffordableShopClosureAdapter({
           continue;
         }
 
+        // Shop cost depends only on purchase count, not floor. If the current
+        // state cannot afford the canonical next cost, no Compass destination can
+        // contain an affordable policy-compatible shop action either. This is a
+        // semantics-preserving constant-time short circuit for the common case.
+        if (!canAffordCanonicalShopCost(working)) break;
         if (!canCompassShopRoundTripWithoutComponentLoss(baseAdapter, working)) break;
         const targets = [...new Set(working.visitedFloors ?? [])]
           .filter((floor) => Number.isInteger(floor) && floor !== homeFloor)
