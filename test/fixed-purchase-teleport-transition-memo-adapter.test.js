@@ -31,7 +31,7 @@ function fakeBase() {
     },
     enumerateActions(state) {
       const actions = [{ kind: 'tile', eventId: `local:${state.floor}` }];
-      if (!state.compass) return actions;
+      if (!state.relics?.compass) return actions;
       for (const targetFloor of state.visited) {
         if (targetFloor === state.floor) continue;
         actions.push({
@@ -50,7 +50,7 @@ function state(overrides = {}) {
     floor: 0,
     component: 'a',
     cores: 7,
-    compass: true,
+    relics: { compass: true },
     visited: [0, 1, 2],
     hp: 1000,
     gold: 50,
@@ -137,7 +137,7 @@ test('memo is inert before minCores and without Compass', () => {
     memoSize: 0
   });
 
-  const noCompass = adapter.enumerateActions(state({ compass: false }));
+  const noCompass = adapter.enumerateActions(state({ relics: { compass: false } }));
   assert.equal(teleportTargets(noCompass).length, 0);
 });
 
