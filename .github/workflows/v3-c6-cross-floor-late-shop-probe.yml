@@ -1,0 +1,61 @@
+name: V3 C6 Cross-Floor Late Shop Probe
+on:
+  push:
+    branches: [solver-phase1-pareto]
+    paths:
+      - '.github/workflows/v3-c6-cross-floor-late-shop-probe.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: v3-c6-cross-floor-late-shop-probe-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - name: Run focused late-shop counterexample probe
+        run: |
+          node scripts/analyze-v3-c6-cross-floor-late-shop-counterexample-hunt.mjs \
+            --from-cores=6 --to-cores=7 \
+            --from-boundary-max-expanded=8000 \
+            --from-boundary-max-generated=100000 \
+            --from-boundary-max-goals=64 \
+            --max-prefix-seeds=1 \
+            --bridge-max-expanded-per-prefix=6000 \
+            --bridge-max-generated-per-prefix=90000 \
+            --bridge-max-goals-per-prefix=32 \
+            --max-suffix-bridges=1 \
+            --suffix-max-expanded-per-bridge=3000 \
+            --suffix-max-generated-per-bridge=50000 \
+            --suffix-priority-slack-bucket=500 \
+            --json > v3-c6-cross-floor-late-shop-probe.json
+      - name: Print focused probe evidence
+        if: always()
+        run: |
+          python3 - <<'PY'
+          import json, os
+          p='v3-c6-cross-floor-late-shop-probe.json'
+          if not os.path.exists(p) or os.path.getsize(p)==0:
+              print('V3 late-shop probe report missing')
+              raise SystemExit(0)
+          x=json.load(open(p)); r=x.get('analysis') or {}; b=r.get('bridgeSummary') or {}; e=r.get('exploit') or {}; f=r.get('fromBoundary') or {}
+          print(f"V3_LATE_SHOP_PROBE status={r.get('status')} exploit={r.get('exploitFound')} reference={(x.get('rebuild') or {}).get('terminalHp')} semantic={(x.get('rebuild') or {}).get('semanticFingerprint')}")
+          print(f"C6 stop={f.get('stoppedReason')} active={f.get('activeGoalLabels')} expanded={f.get('expandedStates')} generated={f.get('generatedStates')} searchStruct={f.get('structuralStates')}")
+          print(f"BRIDGES active={b.get('activePareto')} residualBefore={b.get('residualBeforeLateShop')} rawScheduled={b.get('scheduledRaw')} normalized={b.get('normalizedReplayVerified')} normFailures={b.get('normalizationFailures')} scheduled={b.get('scheduledNormalized')}")
+          for a in (r.get('suffix') or {}).get('attempts') or []:
+              s=a.get('solver') or {}; t=s.get('telemetry') or {}; raw=a.get('rawResources') or {}; res=a.get('resources') or {}; lr=a.get('lateShopReplay') or {}; rr=a.get('replay') or {}
+              print(f"SUFFIX prefix={a.get('prefixCertificateHash')} rawP={a.get('rawShopPurchases')} rawHP={raw.get('hp')} rawGold={raw.get('gold')} p={a.get('shopPurchases')} hp={res.get('hp')} gold={res.get('gold')} norm={a.get('lateShopNormalization')} normReplay={lr.get('ok')} normStruct={lr.get('structuralMatch')} expanded={s.get('expandedStates')} generated={s.get('generatedStates')} bound={s.get('prunedBound')} structural={s.get('structuralStates')} stop={s.get('stoppedReason')} travel={t.get('travelGeneratedRatio')} late={t.get('lateFloorExpandedRatio')} replay={rr.get('ok')} objective={rr.get('objective')} exploit={a.get('exploit')}")
+          print(f"EXPLOIT hp={e.get('terminalHp')} delta={e.get('deltaHp')} witnessReplay={(e.get('witnessReplay') or {}).get('ok')} witnessObjective={(e.get('witnessReplay') or {}).get('objective')}")
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: v3-c6-cross-floor-late-shop-probe
+          path: v3-c6-cross-floor-late-shop-probe.json
+          if-no-files-found: warn
+          retention-days: 14
