@@ -34,18 +34,22 @@ function relicSignature(relics = {}) {
   return Object.keys(relics).sort().map((key) => `${key}:${relics[key] ? 1 : 0}`).join(',');
 }
 
-function safePuzzleCanonicalKey(sample) {
+function safePuzzleCanonicalObject(sample, { includeVisited = true, includeComponent = true } = {}) {
   const state = sample.state;
-  return stableStringify({
+  return {
     floor: state.floor,
-    componentAnchor: state.componentAnchor,
+    ...(includeComponent ? { componentAnchor: state.componentAnchor } : {}),
     eventStates: state.eventStates,
     floorMeta: canonicalizeInactivePuzzleMeta(state, sample.materialized),
     relics: relicSignature(state.relics),
     shopPurchases: state.shopPurchases,
-    visitedFloors: state.visitedFloors,
+    ...(includeVisited ? { visitedFloors: state.visitedFloors } : {}),
     victory: state.victory
-  });
+  };
+}
+
+function safePuzzleCanonicalKey(sample) {
+  return stableStringify(safePuzzleCanonicalObject(sample));
 }
 
 function projectionSummary(samples, keyOf, resourceFields) {
@@ -211,19 +215,12 @@ export function analyzeV3C6FactorizationAudit({
 
     const raw = projectionSummary(samples, (sample) => fixedAdapter.frontierKey(sample.state), fixedAdapter.resourceFields);
     const safePuzzleCanonical = projectionSummary(samples, safePuzzleCanonicalKey, fixedAdapter.resourceFields);
-    const omitVisitedDiagnostic = projectionSummary(samples, (sample) => stableStringify({
-      safe: safePuzzleCanonicalKey(sample),
-      visitedFloors: null
-    }), fixedAdapter.resourceFields);
-    const omitComponentDiagnostic = projectionSummary(samples, (sample) => stableStringify({
-      floor: sample.state.floor,
-      eventStates: sample.state.eventStates,
-      floorMeta: canonicalizeInactivePuzzleMeta(sample.state, sample.materialized),
-      relics: relicSignature(sample.state.relics),
-      shopPurchases: sample.state.shopPurchases,
-      visitedFloors: sample.state.visitedFloors,
-      victory: sample.state.victory
-    }), fixedAdapter.resourceFields);
+    const omitVisitedDiagnostic = projectionSummary(samples, (sample) => stableStringify(
+      safePuzzleCanonicalObject(sample, { includeVisited: false })
+    ), fixedAdapter.resourceFields);
+    const omitComponentDiagnostic = projectionSummary(samples, (sample) => stableStringify(
+      safePuzzleCanonicalObject(sample, { includeComponent: false })
+    ), fixedAdapter.resourceFields);
 
     const byFloor = slotIndexesByFloor(catalog);
     const floorVariation = [...byFloor.entries()]
