@@ -1,0 +1,72 @@
+name: V3 C6 Closure Bridge Screen
+on:
+  push:
+    branches: [solver-phase1-pareto]
+    paths:
+      - 'src/solver/fixed-purchase-zero-damage-closure-adapter.js'
+      - 'src/solver/fixed-purchase-bridge-tight-bound.js'
+      - 'src/analyzer/event-order-c6-zero-damage-closure-bridge-screen.js'
+      - 'scripts/analyze-v3-c6-zero-damage-closure-bridge-screen.mjs'
+      - 'docs/v3-c6-zero-damage-closure-bridge-screen.md'
+      - 'docs/v3-c6-zero-damage-closure-result-2026-08-27.md'
+      - '.github/workflows/v3-c6-zero-damage-closure-bridge-screen.yml'
+  pull_request:
+    paths:
+      - 'src/solver/fixed-purchase-zero-damage-closure-adapter.js'
+      - 'src/solver/fixed-purchase-bridge-tight-bound.js'
+      - 'src/analyzer/event-order-c6-zero-damage-closure-bridge-screen.js'
+      - 'scripts/analyze-v3-c6-zero-damage-closure-bridge-screen.mjs'
+      - 'docs/v3-c6-zero-damage-closure-bridge-screen.md'
+      - 'docs/v3-c6-zero-damage-closure-result-2026-08-27.md'
+      - '.github/workflows/v3-c6-zero-damage-closure-bridge-screen.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: v3-c6-zero-damage-closure-bridge-screen-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  screen:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - name: Screen c6 to c7 bridges under closure
+        run: |
+          node scripts/analyze-v3-c6-zero-damage-closure-bridge-screen.mjs \
+            --from-cores=6 --to-cores=7 \
+            --from-boundary-max-expanded=8000 \
+            --from-boundary-max-generated=100000 \
+            --from-boundary-max-goals=64 \
+            --max-prefix-seeds=6 \
+            --bridge-max-expanded-per-prefix=6000 \
+            --bridge-max-generated-per-prefix=90000 \
+            --bridge-max-goals-per-prefix=32 \
+            --json > v3-c6-zero-damage-closure-bridge-screen.json
+      - name: Print closure bridge evidence
+        if: always()
+        run: |
+          python3 - <<'PY'
+          import json, os
+          p='v3-c6-zero-damage-closure-bridge-screen.json'
+          if not os.path.exists(p) or os.path.getsize(p)==0:
+              print('V3 closure bridge screen report missing')
+              raise SystemExit(0)
+          x=json.load(open(p)); r=x.get('analysis') or {}; f=r.get('fromBoundary') or {}; ps=r.get('prefixSchedule') or {}; b=r.get('bridges') or {}
+          print(f"V3_CLOSURE_BRIDGE status={r.get('status')} reference={(x.get('rebuild') or {}).get('terminalHp')} semantic={(x.get('rebuild') or {}).get('semanticFingerprint')}")
+          print(f"C6 exact={f.get('coverageExact')} stop={f.get('stoppedReason')} active={f.get('activeGoalLabels')} goalStruct={f.get('goalStructuralStates')} expanded={f.get('expandedStates')} generated={f.get('generatedStates')} searchStruct={f.get('structuralStates')}")
+          print(f"PREFIX relevant={ps.get('verifiedRelevantPrefixCount')} scheduled={ps.get('scheduledPrefixCount')} all={ps.get('attemptedAllVerified')} purchases={ps.get('purchaseHistogram')} forcedKills={ps.get('forcedKillRange')}")
+          for a in r.get('prefixAttempts') or []:
+              bf=a.get('bridgeFrontier') or {}
+              print(f"C7 prefix={a.get('prefixCertificateHash')} p={a.get('prefixShopPurchases')} ub={a.get('prefixUpperBound')} prefixKills={a.get('prefixForcedKills')} exact={bf.get('coverageExact')} stop={bf.get('stoppedReason')} active={bf.get('activeGoalLabels')} goalStruct={bf.get('goalStructuralStates')} expanded={bf.get('expandedStates')} generated={bf.get('generatedStates')} searchStruct={bf.get('structuralStates')} replay={a.get('replayableGoals')} relevant={a.get('thresholdRelevantGoals')} accepted={a.get('acceptedParetoGoals')} transitionKills={a.get('forcedTransitionKills')}")
+          print(f"BRIDGES discovered={b.get('discoveredLabels')} active={b.get('activePareto')} structural={b.get('structuralStates')} closed={b.get('boundClosed')} residual={b.get('residual')} purchases={b.get('purchaseHistogram')} residualByPurchase={b.get('residualByPurchase')} oldUB={b.get('oldUpperBound')} tightUB={b.get('tightUpperBound')} forcedKills={b.get('forcedKillRange')}")
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: v3-c6-zero-damage-closure-bridge-screen
+          path: v3-c6-zero-damage-closure-bridge-screen.json
+          if-no-files-found: warn
+          retention-days: 14
