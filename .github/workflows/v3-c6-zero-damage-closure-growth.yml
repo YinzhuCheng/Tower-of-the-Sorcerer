@@ -1,0 +1,68 @@
+name: V3 C6 Zero-Damage Closure Growth
+on:
+  push:
+    branches: [solver-phase1-pareto]
+    paths:
+      - 'src/solver/fixed-purchase-zero-damage-closure-adapter.js'
+      - 'src/solver/fixed-purchase-policy-adapter.js'
+      - 'src/analyzer/event-order-c6-zero-damage-closure-growth.js'
+      - 'scripts/analyze-v3-c6-zero-damage-closure-growth.mjs'
+      - 'test/fixed-purchase-zero-damage-closure-adapter.test.js'
+      - 'docs/v3-c6-zero-damage-closure.md'
+      - 'docs/v3-c6-factorization-audit-result-2026-08-27.md'
+      - '.github/workflows/v3-c6-zero-damage-closure-growth.yml'
+  pull_request:
+    paths:
+      - 'src/solver/fixed-purchase-zero-damage-closure-adapter.js'
+      - 'src/solver/fixed-purchase-policy-adapter.js'
+      - 'src/analyzer/event-order-c6-zero-damage-closure-growth.js'
+      - 'scripts/analyze-v3-c6-zero-damage-closure-growth.mjs'
+      - 'test/fixed-purchase-zero-damage-closure-adapter.test.js'
+      - 'docs/v3-c6-zero-damage-closure.md'
+      - 'docs/v3-c6-factorization-audit-result-2026-08-27.md'
+      - '.github/workflows/v3-c6-zero-damage-closure-growth.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: v3-c6-zero-damage-closure-growth-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  compare-growth:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - name: Run closure unit tests
+        run: node --test test/fixed-purchase-zero-damage-closure-adapter.test.js
+      - name: Profile c6 boundary under zero-damage closure
+        run: |
+          node scripts/analyze-v3-c6-zero-damage-closure-growth.mjs \
+            --target-cores=6 \
+            --goal-caps=64,128,256,512 \
+            --max-expanded=50000 \
+            --max-generated=700000 \
+            --json > v3-c6-zero-damage-closure-growth.json
+      - name: Print closure growth evidence
+        if: always()
+        run: |
+          python3 - <<'PY'
+          import json, os
+          p='v3-c6-zero-damage-closure-growth.json'
+          if not os.path.exists(p) or os.path.getsize(p)==0:
+              print('V3 c6 zero-damage closure report missing')
+              raise SystemExit(0)
+          x=json.load(open(p)); r=x.get('analysis') or {}
+          print(f"V3_C6_ZERO status={r.get('status')} reference={(x.get('rebuild') or {}).get('terminalHp')} exactBoundary={r.get('exactBoundaryFound')}")
+          for q in r.get('rounds') or []:
+              print(f"ROUND cap={q.get('maxGoals')} exact={q.get('coverageExact')} stop={q.get('stoppedReason')} active={q.get('activeGoalLabels')} goalStruct={q.get('goalStructuralStates')} replay={q.get('replayVerifiedGoals')} relevant={q.get('thresholdRelevantGoals')} expanded={q.get('expandedStates')} generated={q.get('generatedStates')} searchStruct={q.get('structuralStates')} kills={q.get('automaticClosureKillSteps')} killsPerGoal={q.get('automaticKillsPerGoalHistogram')} purchases={q.get('purchaseHistogram')}")
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: v3-c6-zero-damage-closure-growth
+          path: v3-c6-zero-damage-closure-growth.json
+          if-no-files-found: warn
+          retention-days: 14
