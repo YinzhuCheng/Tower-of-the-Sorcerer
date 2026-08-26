@@ -1,0 +1,62 @@
+name: V3 C6 Cross-Floor Compass Macro Microprobe
+on:
+  push:
+    branches: [solver-phase1-pareto]
+    paths:
+      - '.github/workflows/v3-c6-cross-floor-compass-macro-microprobe.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: v3-c6-cross-floor-compass-macro-microprobe-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  microprobe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - name: Test Compass macro adapter
+        run: node --test test/fixed-purchase-compass-meaningful-action-macro-adapter.test.js
+      - name: Run reduced Compass macro performance probe
+        run: |
+          node scripts/analyze-v3-c6-cross-floor-compass-macro-counterexample-hunt.mjs \
+            --from-cores=6 --to-cores=7 \
+            --from-boundary-max-expanded=2000 \
+            --from-boundary-max-generated=30000 \
+            --from-boundary-max-goals=8 \
+            --max-prefix-seeds=1 \
+            --bridge-max-expanded-per-prefix=2000 \
+            --bridge-max-generated-per-prefix=30000 \
+            --bridge-max-goals-per-prefix=8 \
+            --max-suffix-bridges=1 \
+            --suffix-max-expanded-per-bridge=500 \
+            --suffix-max-generated-per-bridge=10000 \
+            --suffix-priority-slack-bucket=500 \
+            --json > v3-c6-cross-floor-compass-macro-microprobe.json
+      - name: Print microprobe telemetry
+        if: always()
+        run: |
+          python3 - <<'PY'
+          import json, os
+          p='v3-c6-cross-floor-compass-macro-microprobe.json'
+          if not os.path.exists(p) or os.path.getsize(p)==0:
+              print('V3 Compass macro microprobe report missing')
+              raise SystemExit(0)
+          x=json.load(open(p)); r=x.get('analysis') or {}; b=r.get('bridgeSummary') or {}; f=r.get('fromBoundary') or {}
+          print(f"V3_COMPASS_MACRO_MICRO status={r.get('status')} exploit={r.get('exploitFound')} reference={(x.get('rebuild') or {}).get('terminalHp')}")
+          print(f"C6 stop={f.get('stoppedReason')} goals={f.get('activeGoalLabels')} expanded={f.get('expandedStates')} generated={f.get('generatedStates')} structural={f.get('structuralStates')}")
+          print(f"BRIDGES active={b.get('activePareto')} residual={b.get('residual')} scheduled={b.get('scheduledResidual')}")
+          for a in (r.get('suffix') or {}).get('attempts') or []:
+              s=a.get('solver') or {}; t=s.get('telemetry') or {}; res=a.get('resources') or {}
+              print(f"SUFFIX p={a.get('shopPurchases')} hp={res.get('hp')} gold={res.get('gold')} expanded={s.get('expandedStates')} generated={s.get('generatedStates')} structural={s.get('structuralStates')} active={s.get('activeLabels')} peak={s.get('frontierPeak')} stop={s.get('stoppedReason')} remoteNorm={s.get('remoteNormalizeGenerated')} teleport={t.get('teleportGenerated')} stair={t.get('stairGenerated')} travel={t.get('travelGeneratedRatio')} late={t.get('lateFloorExpandedRatio')}")
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: v3-c6-cross-floor-compass-macro-microprobe
+          path: v3-c6-cross-floor-compass-macro-microprobe.json
+          if-no-files-found: warn
+          retention-days: 7
