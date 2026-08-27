@@ -50,7 +50,7 @@ export function prunabilityMetrics(evidence = {}, {
   const paretoWidth = Number(portfolio.paretoWidth ?? boundary.activeGoalLabels ?? 0);
   const residual = Number(bridge.residual ?? boundary.residual ?? 0);
   const goalStructural = Number(boundary.goalStructuralStates ?? boundary.activeGoalLabels ?? 0);
-  const actionSurfaces = Number(boundary.actionSurfaceStructuralStates ?? goalStructural || 1);
+  const actionSurfaces = Number((boundary.actionSurfaceStructuralStates ?? goalStructural) || 1);
   const historyInflation = goalStructural > 0 ? goalStructural / Math.max(1, actionSurfaces) : 1;
 
   const boundPruneRate = ratio(search.prunedBound, Number(search.expandedStates ?? 0) + Number(search.prunedBound ?? 0));
