@@ -48,6 +48,10 @@ async function applyVisualReplacementPatch() {
 await rm(outDir, { recursive: true, force: true });
 await mkdir(outDir, { recursive: true });
 await copyFile(join(root, 'index.html'), join(outDir, 'index.html'));
+await copyFile(join(root, 'styles.css'), join(outDir, 'styles.css'));
+await copyFile(join(root, 'anime.css'), join(outDir, 'anime.css'));
+await copyFile(join(root, 'ui-v8-4.css'), join(outDir, 'ui-v8-4.css'));
+await copyFile(join(root, 'ui-v8-5.css'), join(outDir, 'ui-v8-5.css'));
 await cp(join(root, 'src'), join(outDir, 'src'), { recursive: true });
 await cp(join(root, 'public'), outDir, { recursive: true });
 await applyVisualReplacementPatch();
