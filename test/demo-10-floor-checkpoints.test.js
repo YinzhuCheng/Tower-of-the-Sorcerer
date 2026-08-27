@@ -1,0 +1,56 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {
+  paretoCheckpointSamples,
+  summarizeDemoTenFloorCheckpoints
+} from '../src/analyzer/demo-10-floor-checkpoints.js';
+
+function sample(policyId, atk, def, hp = 100) {
+  return {
+    policyId,
+    stateClass: 'p:3|c:1|holy:true|ward:false|lucky:false',
+    resources: { hp, maxHp: 100, atk, def, gold: 10 },
+    cards: { sun: 1, moon: 1, star: 0 }
+  };
+}
+
+function report(atk, def) {
+  return {
+    solvable: true,
+    holyPolicy: 'immediate',
+    purchaseLog: [],
+    battleLog: [{
+      floor: 2,
+      enemyId: 'boss',
+      boss: true,
+      statsBefore: { hp: 100, maxHp: 100, atk, def, gold: 10 },
+      purchasesBefore: 3,
+      coresBefore: 1,
+      cardsBefore: { sun: 1, moon: 1, star: 0 },
+      relicsBefore: { holy: true }
+    }]
+  };
+}
+
+test('checkpoint Pareto keeps tradeoffs and drops a dominated resource state', () => {
+  const frontier = paretoCheckpointSamples([
+    sample('atk', 20, 10),
+    sample('def', 10, 20),
+    sample('dominated', 9, 9)
+  ]);
+  assert.deepEqual(frontier.map((entry) => entry.policyId).sort(), ['atk', 'def']);
+});
+
+test('10F checkpoint summary exposes controlled Pareto width and prunability evidence', () => {
+  const reports = [report(20, 10), report(10, 20), report(9, 9)];
+  const policySpecs = [{ id: 'atk' }, { id: 'def' }, { id: 'weak' }];
+  const summary = summarizeDemoTenFloorCheckpoints(reports, {
+    policySpecs,
+    floors: [2],
+    choiceTargetFloors: [2]
+  });
+  assert.equal(summary.floors[2].paretoWidth, 2);
+  assert.equal(summary.choiceLoss, 0);
+  assert.equal(summary.prunabilityEvidence.routePortfolio.paretoWidth, 2);
+  assert.equal(summary.heuristicOnly, true);
+});
