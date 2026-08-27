@@ -1,5 +1,19 @@
-import { ENEMIES, GRID_SIZE } from './data.js';
-import { calculateBattle, deserializeState, getTile, parseToken } from './engine.js';
+import {
+  CARD_LABELS,
+  ENEMIES,
+  FLOORS,
+  GRID_SIZE,
+  ITEMS,
+  SHOP_OPTIONS,
+  getShopCost
+} from './data.js';
+import {
+  calculateBattle,
+  deserializeState,
+  getFloorState,
+  getTile,
+  parseToken
+} from './engine.js';
 
 const AUTO_SAVE_KEY = 'lost-magic-tower:auto:v1';
 const MANUAL_SAVE_KEY = 'lost-magic-tower:manual:v1';
@@ -13,6 +27,36 @@ function specialLabel(enemy) {
   if (enemy.special === 'firstStrike') return '先制攻击';
   if (enemy.special === 'doubleHit') return '二连击';
   return '普通攻击';
+}
+
+function detail(label, value) {
+  return { label, value };
+}
+
+function currentFloor(state) {
+  return FLOORS[state.floor] ?? null;
+}
+
+function switchPuzzleFor(floor, switchId) {
+  const entries = Object.entries(floor?.puzzles?.switches ?? {});
+  const match = entries.find(([, requirements]) => requirements.includes(switchId));
+  if (!match) return null;
+  return { gateId: match[0], requirements: match[1] };
+}
+
+function sequenceInfo(state) {
+  const floor = currentFloor(state);
+  const sequence = floor?.puzzles?.sequence;
+  if (!sequence) return null;
+  const progress = getFloorState(state).sequenceProgress ?? 0;
+  return {
+    ...sequence,
+    progress,
+    expected: sequence.order[progress] ?? null,
+    labelFor(id) {
+      return sequence.labels?.[id] ?? id;
+    }
+  };
 }
 
 export function guardianMarkerLabel(enemy) {
@@ -33,8 +77,11 @@ export function buildEnemyHoverPreview(state, enemyId) {
       : '当前生命不足，会战败';
 
   return {
+    kind: 'enemy',
     enemyId,
     enemy,
+    title: enemy.name,
+    badge: guardianMarkerLabel(enemy) ?? '敌方单位',
     guardian: guardianMarkerLabel(enemy),
     tone,
     damageText,
@@ -44,11 +91,264 @@ export function buildEnemyHoverPreview(state, enemyId) {
   };
 }
 
-export function getEnemyHoverAt(state, x, y) {
+function buildHeroHoverPreview(state) {
+  return {
+    kind: 'hero',
+    title: '绫星·璃',
+    badge: '主角',
+    tone: 'info',
+    description: '当前角色状态。固定数值战斗不会出现随机伤害。',
+    primaryLabel: '生命',
+    primaryValue: `${formatNumber(state.stats.hp)} / ${formatNumber(state.stats.maxHp)} HP`,
+    details: [
+      detail('攻击 / 防御', `${formatNumber(state.stats.atk)} / ${formatNumber(state.stats.def)}`),
+      detail('金币', formatNumber(state.stats.gold)),
+      detail('结界卡', `日 ${state.cards.sun} · 月 ${state.cards.moon} · 星 ${state.cards.star}`)
+    ]
+  };
+}
+
+function buildItemHoverPreview(state, itemId) {
+  const item = ITEMS[itemId];
+  if (!item) return null;
+  const badge = item.kind === 'card' ? '结界卡牌' : item.kind === 'relic' ? '宝物' : '成长宝物';
+  const details = [];
+  if (item.kind === 'card') {
+    details.push(detail('当前持有', `${state.cards[item.card] ?? 0} 张`));
+    details.push(detail('用途', '通过对应颜色结界时消耗 1 张'));
+  } else if (item.kind === 'relic') {
+    const owned = Boolean(state.relics[item.relicKey]);
+    details.push(detail('状态', owned ? '已经获得' : '拾取后永久生效'));
+  } else {
+    details.push(detail('状态', '拾取后立即永久生效'));
+  }
+  return {
+    kind: 'item',
+    itemId,
+    title: item.name,
+    badge,
+    tone: 'info',
+    description: item.description,
+    primaryLabel: item.kind === 'card' ? '拾取' : '效果',
+    primaryValue: item.kind === 'card' ? `+${item.amount ?? 1} 张` : item.description,
+    details
+  };
+}
+
+function buildShopHoverPreview(state) {
+  const cost = getShopCost(state);
+  const affordable = state.stats.gold >= cost;
+  return {
+    kind: 'shop',
+    title: '阵间商店 · 珂珂',
+    badge: '商店',
+    tone: affordable ? 'safe' : 'warning',
+    description: '把敌人掉落的金币转换为永久成长；每次购买后价格会上升。',
+    primaryLabel: '下一次购买',
+    primaryValue: `${formatNumber(cost)} 金币`,
+    details: [
+      detail('当前金币', `${formatNumber(state.stats.gold)} · ${affordable ? '可以购买' : '金币不足'}`),
+      ...SHOP_OPTIONS.map((option) => detail(option.label, option.description))
+    ]
+  };
+}
+
+function buildDoorHoverPreview(state, cardId) {
+  const name = CARD_LABELS[cardId] ?? cardId;
+  const count = state.cards[cardId] ?? 0;
+  const canOpen = count > 0;
+  return {
+    kind: 'door',
+    title: `${name}结界`,
+    badge: '卡牌结界',
+    tone: canOpen ? 'safe' : 'warning',
+    description: '通过时固定消耗 1 张对应结界卡。',
+    primaryLabel: '开启条件',
+    primaryValue: `1 张${name}`,
+    details: [detail('当前持有', `${count} 张 · ${canOpen ? '可以开启' : '暂时无法开启'}`)]
+  };
+}
+
+function buildSwitchHoverPreview(state, switchId) {
+  const floor = currentFloor(state);
+  const floorState = getFloorState(state);
+  const puzzle = switchPuzzleFor(floor, switchId);
+  const activated = floorState.switches.includes(switchId);
+  if (!puzzle) {
+    return {
+      kind: 'switch',
+      title: '魔力机关开关',
+      badge: '机关',
+      tone: activated ? 'safe' : 'info',
+      description: '踏上后触发本层机关。',
+      primaryLabel: '状态',
+      primaryValue: activated ? '已经激活' : '尚未激活',
+      details: []
+    };
+  }
+  const activeCount = puzzle.requirements.filter((id) => floorState.switches.includes(id)).length;
+  return {
+    kind: 'switch',
+    title: '魔力机关开关',
+    badge: '机关',
+    tone: activated ? 'safe' : 'info',
+    description: `本组共有 ${puzzle.requirements.length} 枚开关，全部激活后解除关联封锁。`,
+    primaryLabel: '机关进度',
+    primaryValue: `${activeCount} / ${puzzle.requirements.length}`,
+    details: [detail('本开关', activated ? '已经激活' : '踏上后激活')]
+  };
+}
+
+function buildGateHoverPreview(state, gateId) {
+  const floor = currentFloor(state);
+  const floorState = getFloorState(state);
+  if (floor?.puzzles?.triGate === gateId) {
+    const ready = state.cards.sun > 0 && state.cards.moon > 0 && state.cards.star > 0;
+    return {
+      kind: 'gate',
+      title: '三相结界',
+      badge: '复合结界',
+      tone: ready ? 'safe' : 'warning',
+      description: '同时消耗日曜、月辉、星蚀卡各 1 张才能通过。',
+      primaryLabel: '开启条件',
+      primaryValue: '日 / 月 / 星各 1 张',
+      details: [detail('当前持有', `日 ${state.cards.sun} · 月 ${state.cards.moon} · 星 ${state.cards.star}`)]
+    };
+  }
+
+  const switchRequirements = floor?.puzzles?.switches?.[gateId];
+  if (switchRequirements) {
+    const activeCount = switchRequirements.filter((id) => floorState.switches.includes(id)).length;
+    return {
+      kind: 'gate',
+      title: '机关封锁结界',
+      badge: '机关结界',
+      tone: 'warning',
+      description: '必须先激活全部关联开关，结界才会从地图上解除。',
+      primaryLabel: '机关进度',
+      primaryValue: `${activeCount} / ${switchRequirements.length}`,
+      details: [detail('剩余', `${Math.max(0, switchRequirements.length - activeCount)} 枚开关`)]
+    };
+  }
+
+  const sequence = sequenceInfo(state);
+  if (sequence?.gate === gateId) {
+    const order = sequence.order.map((id) => sequence.labelFor(id)).join(' → ');
+    const next = sequence.expected ? sequence.labelFor(sequence.expected) : '序列已完成';
+    return {
+      kind: 'gate',
+      title: '星序封锁结界',
+      badge: '顺序结界',
+      tone: 'warning',
+      description: `按固定顺序踏过符文：${order}。`,
+      primaryLabel: '当前进度',
+      primaryValue: `${sequence.progress} / ${sequence.order.length}`,
+      details: [detail('下一步', next)]
+    };
+  }
+
+  return {
+    kind: 'gate',
+    title: '封锁结界',
+    badge: '结界',
+    tone: 'warning',
+    description: '当前仍处于封锁状态。寻找本层机关、符文或对应资源解除它。',
+    primaryLabel: '状态',
+    primaryValue: '尚未解除',
+    details: []
+  };
+}
+
+function buildRuneHoverPreview(state, runeId) {
+  const sequence = sequenceInfo(state);
+  if (!sequence) {
+    return {
+      kind: 'rune',
+      title: '魔力符文',
+      badge: '符文机关',
+      tone: 'info',
+      description: '踏上后触发本层符文机关。',
+      primaryLabel: '状态',
+      primaryValue: '等待触发',
+      details: []
+    };
+  }
+  const index = sequence.order.indexOf(runeId);
+  const label = sequence.labelFor(runeId);
+  const expectedLabel = sequence.expected ? sequence.labelFor(sequence.expected) : '序列已完成';
+  const isExpected = sequence.expected === runeId;
+  return {
+    kind: 'rune',
+    title: `${label}符文`,
+    badge: '顺序机关',
+    tone: isExpected ? 'safe' : sequence.expected ? 'warning' : 'perfect',
+    description: `完整顺序：${sequence.order.map((id) => sequence.labelFor(id)).join(' → ')}。踏错会按规则重置序列。`,
+    primaryLabel: '序列位置',
+    primaryValue: index >= 0 ? `第 ${index + 1} / ${sequence.order.length} 步` : '特殊符文',
+    details: [
+      detail('当前进度', `${sequence.progress} / ${sequence.order.length}`),
+      detail('下一步', expectedLabel)
+    ]
+  };
+}
+
+function buildStairHoverPreview(state, direction) {
+  const targetId = direction === 'up' ? state.floor + 1 : state.floor - 1;
+  const target = FLOORS[targetId];
+  const floor = currentFloor(state);
+  if (!target) return null;
+  const locked = direction === 'up' && Boolean(floor?.boss) && !getFloorState(state).bossDefeated;
+  return {
+    kind: 'stairs',
+    title: direction === 'up' ? '上行楼层传送阵' : '下行楼层传送阵',
+    badge: '楼层传送',
+    tone: locked ? 'warning' : 'safe',
+    description: direction === 'up' ? '进入上一层魔法阵。' : '返回已经到达的下一层魔法阵。',
+    primaryLabel: '目标',
+    primaryValue: `第 ${target.number} 阵 · ${target.title}`,
+    details: [
+      detail('状态', locked ? '本层阵眼未解除，需先击败守护者' : '传送通路已开放')
+    ]
+  };
+}
+
+function buildFallbackHoverPreview(token) {
+  const parsed = parseToken(token);
+  return {
+    kind: 'unit',
+    title: '魔法阵交互单位',
+    badge: '交互单位',
+    tone: 'info',
+    description: '靠近或踏上后会触发该地图单位。',
+    primaryLabel: '类型',
+    primaryValue: parsed.type === token ? '特殊阵列' : parsed.type,
+    details: []
+  };
+}
+
+export function buildMapUnitHoverPreview(state, x, y) {
   if (!state || !Number.isInteger(x) || !Number.isInteger(y)) return null;
-  const parsed = parseToken(getTile(state, x, y));
-  if (parsed.type !== 'enemy') return null;
-  return buildEnemyHoverPreview(state, parsed.id);
+  if (x === state.x && y === state.y) return buildHeroHoverPreview(state);
+
+  const token = getTile(state, x, y);
+  if (token === '#' || token === '.' || token === 'S') return null;
+  if (token === 'shop') return buildShopHoverPreview(state);
+  if (token === 'U') return buildStairHoverPreview(state, 'up');
+  if (token === 'D') return buildStairHoverPreview(state, 'down');
+
+  const parsed = parseToken(token);
+  if (parsed.type === 'enemy') return buildEnemyHoverPreview(state, parsed.id);
+  if (parsed.type === 'item') return buildItemHoverPreview(state, parsed.id);
+  if (parsed.type === 'door') return buildDoorHoverPreview(state, parsed.id);
+  if (parsed.type === 'switch') return buildSwitchHoverPreview(state, parsed.id);
+  if (parsed.type === 'gate') return buildGateHoverPreview(state, parsed.id);
+  if (parsed.type === 'rune') return buildRuneHoverPreview(state, parsed.id);
+  return buildFallbackHoverPreview(token);
+}
+
+export function getEnemyHoverAt(state, x, y) {
+  const preview = buildMapUnitHoverPreview(state, x, y);
+  return preview?.kind === 'enemy' ? preview : null;
 }
 
 export function listGuardianMarkers(state) {
@@ -104,22 +404,22 @@ function createTooltip() {
   return card;
 }
 
-function renderTooltip(card, preview) {
-  card.replaceChildren();
-  card.dataset.tone = preview.tone;
-
+function renderHeader(card, preview) {
   const header = document.createElement('div');
   header.className = 'enemy-hover-header';
   const title = document.createElement('strong');
-  title.textContent = preview.enemy.name;
+  title.textContent = preview.title;
   header.append(title);
-  if (preview.guardian) {
+  if (preview.badge) {
     const badge = document.createElement('span');
     badge.className = 'enemy-hover-guardian';
-    badge.textContent = preview.guardian;
+    badge.textContent = preview.badge;
     header.append(badge);
   }
+  card.append(header);
+}
 
+function renderEnemyTooltip(card, preview) {
   const stats = document.createElement('p');
   stats.className = 'enemy-hover-stats';
   stats.textContent = `HP ${formatNumber(preview.enemy.hp)} · ATK ${formatNumber(preview.enemy.atk)} · DEF ${formatNumber(preview.enemy.def)}`;
@@ -136,19 +436,63 @@ function renderTooltip(card, preview) {
   result.className = 'enemy-hover-result';
   result.textContent = preview.remainingText;
 
-  const detail = document.createElement('p');
-  detail.className = 'enemy-hover-detail';
-  detail.textContent = preview.heroDamage <= 0
+  const detailText = document.createElement('p');
+  detailText.className = 'enemy-hover-detail';
+  detailText.textContent = preview.heroDamage <= 0
     ? preview.reason ?? preview.specialText
     : `${preview.rounds} 回合 · 敌方每次反击 ${formatNumber(preview.enemyDamage)} · ${preview.specialText}`;
 
-  card.append(header, stats, damage, result, detail);
+  card.append(stats, damage, result, detailText);
+}
+
+function renderUnitTooltip(card, preview) {
+  if (preview.description) {
+    const description = document.createElement('p');
+    description.className = 'unit-hover-description';
+    description.textContent = preview.description;
+    card.append(description);
+  }
+
+  if (preview.primaryLabel || preview.primaryValue) {
+    const primary = document.createElement('div');
+    primary.className = 'unit-hover-primary';
+    const label = document.createElement('span');
+    label.textContent = preview.primaryLabel ?? '状态';
+    const value = document.createElement('strong');
+    value.textContent = preview.primaryValue ?? '';
+    primary.append(label, value);
+    card.append(primary);
+  }
+
+  if (preview.details?.length) {
+    const details = document.createElement('div');
+    details.className = 'unit-hover-details';
+    preview.details.forEach((entry) => {
+      const row = document.createElement('p');
+      const label = document.createElement('span');
+      label.textContent = entry.label;
+      const value = document.createElement('strong');
+      value.textContent = entry.value;
+      row.append(label, value);
+      details.append(row);
+    });
+    card.append(details);
+  }
+}
+
+function renderTooltip(card, preview) {
+  card.replaceChildren();
+  card.dataset.tone = preview.tone ?? 'info';
+  card.dataset.kind = preview.kind ?? 'unit';
+  renderHeader(card, preview);
+  if (preview.kind === 'enemy') renderEnemyTooltip(card, preview);
+  else renderUnitTooltip(card, preview);
 }
 
 function positionTooltip(card, event) {
   const margin = 10;
-  const width = 276;
-  const height = 154;
+  const width = card.offsetWidth || 294;
+  const height = card.offsetHeight || 180;
   const left = Math.max(margin, Math.min(event.clientX + 16, window.innerWidth - width - margin));
   const top = Math.max(margin, Math.min(event.clientY + 16, window.innerHeight - height - margin));
   card.style.left = `${left}px`;
@@ -185,7 +529,9 @@ function renderGuardianMarkers(layer, canvas, state) {
     node.dataset.enemyId = marker.enemyId;
     node.textContent = marker.label;
     node.style.left = `${rect.left + ((marker.x + 0.5) / GRID_SIZE) * rect.width}px`;
-    node.style.top = `${rect.top + ((marker.y + 0.5) / GRID_SIZE) * rect.height}px`;
+    // Anchor to the cell's top edge, then CSS lifts the entire pill above it.
+    // This keeps the marker outside the enemy portrait instead of covering art.
+    node.style.top = `${rect.top + (marker.y / GRID_SIZE) * rect.height}px`;
     return node;
   });
   layer.replaceChildren(...nodes);
@@ -196,7 +542,7 @@ export async function installTacticalInteractionLayer() {
   const canvas = await waitForCanvas();
   if (!canvas || canvas.dataset.tacticalInteraction === 'installed') return null;
   canvas.dataset.tacticalInteraction = 'installed';
-  canvas.setAttribute('aria-description', '鼠标悬停敌方单位可查看预计耗血；地图会以文字标出当前楼层守护者位置。');
+  canvas.setAttribute('aria-description', '鼠标悬停地图单位可查看功能、资源需求与战斗耗血；地图会以文字标出当前楼层守护者位置。');
 
   const tooltip = createTooltip();
   const markerLayer = createMarkerLayer();
@@ -210,18 +556,18 @@ export async function installTacticalInteractionLayer() {
   const previewAtEvent = (event, persistForTouch = false) => {
     const state = readCurrentState();
     const tile = pointerTile(canvas, event);
-    const preview = tile && state ? getEnemyHoverAt(state, tile.x, tile.y) : null;
+    const preview = tile && state ? buildMapUnitHoverPreview(state, tile.x, tile.y) : null;
     if (!preview) {
       hideTooltip();
       return;
     }
     renderTooltip(tooltip, preview);
-    positionTooltip(tooltip, event);
     tooltip.classList.remove('hidden');
+    positionTooltip(tooltip, event);
     canvas.style.cursor = 'help';
     if (persistForTouch) {
       clearTimeout(touchHideTimer);
-      touchHideTimer = setTimeout(hideTooltip, 1500);
+      touchHideTimer = setTimeout(hideTooltip, 1900);
     }
   };
 
