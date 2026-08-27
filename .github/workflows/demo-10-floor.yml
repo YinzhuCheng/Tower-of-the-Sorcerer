@@ -5,6 +5,7 @@ on:
     paths:
       - 'src/game/demo-10-floor-content.js'
       - 'src/game/demo-10-floor-quality.js'
+      - 'src/game/content-storage-scope.js'
       - 'src/game/anime-assets.js'
       - 'src/demo-main.js'
       - 'src/main.js'
@@ -13,6 +14,7 @@ on:
       - 'scripts/tune-demo-10f-late-game.mjs'
       - 'test/demo-10-floor-content.test.js'
       - 'test/demo-10-floor-engine.test.js'
+      - 'test/content-storage-scope.test.js'
       - 'test/anime-assets-fallback.test.js'
       - 'package.json'
       - 'docs/demo-10-floor-vertical-slice.md'
@@ -23,6 +25,7 @@ on:
     paths:
       - 'src/game/demo-10-floor-content.js'
       - 'src/game/demo-10-floor-quality.js'
+      - 'src/game/content-storage-scope.js'
       - 'src/game/anime-assets.js'
       - 'src/demo-main.js'
       - 'src/main.js'
@@ -31,6 +34,7 @@ on:
       - 'scripts/tune-demo-10f-late-game.mjs'
       - 'test/demo-10-floor-content.test.js'
       - 'test/demo-10-floor-engine.test.js'
+      - 'test/content-storage-scope.test.js'
       - 'test/anime-assets-fallback.test.js'
       - 'package.json'
       - 'docs/demo-10-floor-vertical-slice.md'
@@ -55,7 +59,7 @@ jobs:
         run: npm run check
       - name: Profile late-game pressure candidates
         run: npm run tune:demo10:late
-      - name: Validate ten-floor authoritative heuristic portfolio
+      - name: Validate ten-floor six-build quality portfolio
         run: npm run validate:demo10
       - name: Smoke-test real browser boot with local Canvas fallback
         run: |
