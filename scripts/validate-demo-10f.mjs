@@ -56,9 +56,9 @@ if (quality.violations.length > 0) {
 }
 
 assert.ok(winner, '10F quality gate must retain a winning witness.');
+assert.equal(winner.solvable, true, 'Winning witness must reach authoritative victory.');
 assert.equal(winner.floor, 10, 'Winning witness must end on floor 10.');
 assert.equal(winner.cores, 7, 'Winning witness must recover all seven magic cores.');
-assert.equal(winner.victory, true, 'Winning witness must defeat the final Queen/core sequence authoritatively.');
 assert.ok(winner.final.hp > 0, 'Winning witness must retain positive HP.');
 
 for (const report of reports.filter((candidate) => candidate.solvable)) {
