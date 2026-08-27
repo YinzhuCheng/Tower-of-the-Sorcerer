@@ -15,9 +15,9 @@ function checkpoints(overrides = {}) {
     oversizedCheckpoints: [],
     collapsedCheckpoints: [],
     floors: {
-      7: { historyInflation: 1 },
-      8: { historyInflation: 1 },
-      9: { historyInflation: 1 }
+      7: { policyMultiplicity: 8, eventOrderHistoryInflation: null },
+      8: { policyMultiplicity: 1, eventOrderHistoryInflation: null },
+      9: { policyMultiplicity: 1, eventOrderHistoryInflation: null }
     },
     prunabilityEvidence: {
       routePortfolio: { paretoWidth: 4 },
@@ -27,10 +27,11 @@ function checkpoints(overrides = {}) {
   };
 }
 
-test('healthy 10F checkpoint evidence is allowed to request no setter mutation', () => {
+test('healthy evidence ignores high policy multiplicity when event-order history is unmeasured', () => {
   const plan = proposeDemoTenFloorAdaptiveMutations(checkpoints(), catalog);
   assert.deepEqual(plan.selectedMutationIds, []);
   assert.deepEqual(plan.issueFloors, []);
+  assert.equal(plan.policyMultiplicityIgnored, true);
   assert.equal(plan.productionWriteAllowed, false);
 });
 
@@ -45,6 +46,16 @@ test('oversized F9 checkpoint selects relevant pressure/door/timing families onl
   assert.ok(plan.selectedMutationIds.includes('f9-door'));
   assert.ok(plan.selectedMutationIds.includes('cross'));
   assert.ok(!plan.selectedMutationIds.includes('f8-rune'));
+});
+
+test('measured event-order history inflation can still request reconvergence mutations', () => {
+  const data = checkpoints();
+  data.floors[9].eventOrderHistoryInflation = 5;
+  const plan = proposeDemoTenFloorAdaptiveMutations(data, catalog);
+  assert.deepEqual(plan.issueFloors, [9]);
+  assert.ok(plan.reasons.includes('event-history-inflated:9'));
+  assert.ok(plan.selectedMutationIds.includes('f9-door'));
+  assert.ok(plan.selectedMutationIds.includes('cross'));
 });
 
 test('unhandled checkpoint floor is reported instead of mutating an unrelated late floor', () => {
