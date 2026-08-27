@@ -20,7 +20,7 @@ test('hard-mode pressure restores sharper late boss thresholds including final c
   assert.equal(enemies.voidCore.magicPower, DEMO10_HARD_MODE_PRESSURE.voidCoreMagicPower);
   assert.equal(result.pressure.blackSealKeeperMagicPower, 190);
   assert.equal(result.pressure.blackSealKeeperDef, 96);
-  assert.equal(result.pressure.voidCoreMagicPower, 460);
+  assert.equal(result.pressure.voidCoreMagicPower, 500);
 });
 
 test('tiered-shop hard mode ramps F6-F10 HP/ATK pressure without generic DEF cliffs', () => {
