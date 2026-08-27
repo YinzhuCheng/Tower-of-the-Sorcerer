@@ -41,6 +41,17 @@ test('checkpoint Pareto keeps tradeoffs and drops a dominated resource state', (
   assert.deepEqual(frontier.map((entry) => entry.policyId).sort(), ['atk', 'def']);
 });
 
+test('checkpoint Pareto counts equivalent resource states once while retaining policy provenance', () => {
+  const frontier = paretoCheckpointSamples([
+    sample('same-a', 20, 10),
+    sample('same-b', 20, 10),
+    sample('other', 10, 20)
+  ]);
+  assert.equal(frontier.length, 2);
+  const duplicateState = frontier.find((entry) => entry.resources.atk === 20);
+  assert.deepEqual(duplicateState.equivalentPolicyIds, ['same-a', 'same-b']);
+});
+
 test('10F checkpoint summary exposes controlled Pareto width and prunability evidence', () => {
   const reports = [report(20, 10), report(10, 20), report(9, 9)];
   const policySpecs = [{ id: 'atk' }, { id: 'def' }, { id: 'weak' }];
