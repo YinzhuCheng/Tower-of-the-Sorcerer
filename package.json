@@ -10,6 +10,7 @@
     "build": "node --test && node scripts/build.mjs",
     "test": "node --test",
     "validate": "node scripts/validate-game.mjs",
+    "validate:demo10": "node scripts/validate-demo-10f.mjs",
     "check": "npm run validate && npm run build"
   }
 }
