@@ -29,19 +29,22 @@ const reports = policies.map((shopCycle) => runGreedyShopStrategy({
   holyPolicy: 'immediate',
   maxIterations: 8_000
 }));
-const winner = reports
+const solvableReports = reports
   .filter((report) => report.solvable)
-  .sort((a, b) => b.final.hp - a.final.hp)[0] ?? null;
+  .sort((a, b) => b.final.hp - a.final.hp);
+const winner = solvableReports[0] ?? null;
 
-if (!winner) {
+if (!winner || solvableReports.length < 3) {
   console.error('DEMO10_AUTOSOLVER_FAILED');
   console.error(JSON.stringify(reports.map((report) => ({
     shopCycle: report.shopCycle,
+    solvable: report.solvable,
     floor: report.floor,
     failure: report.failure,
     cores: report.cores,
     purchases: report.purchases,
-    final: report.final
+    final: report.final,
+    minNormalizedHpMargin: report.minNormalizedHpMargin
   })), null, 2));
   process.exit(1);
 }
@@ -49,11 +52,29 @@ if (!winner) {
 assert.equal(winner.floor, 10, 'Winning witness must end on floor 10.');
 assert.equal(winner.cores, 7, 'Winning witness must recover all seven magic cores.');
 assert.ok(winner.final.hp > 0, 'Winning witness must retain positive HP.');
+assert.ok(
+  winner.minNormalizedHpMargin >= 0.15,
+  `Best simple build is too brittle for a public demo: ${winner.minNormalizedHpMargin}`
+);
+assert.ok(
+  winner.minNormalizedHpMargin <= 0.55,
+  `Best simple build is too forgiving for the intended demo pressure: ${winner.minNormalizedHpMargin}`
+);
+
+const weakestWinner = solvableReports.at(-1);
+const terminalHpSpread = winner.final.hp - weakestWinner.final.hp;
 
 console.log('10-floor demo authoritative heuristic validation passed.');
 console.log(JSON.stringify({
   contentId: DEMO_TEN_FLOOR_ID,
   floors: FLOORS.length,
+  qualityGate: {
+    testedSimpleBuilds: reports.length,
+    solvableSimpleBuilds: solvableReports.length,
+    requiredSolvableSimpleBuilds: 3,
+    bestMarginBand: [0.15, 0.55],
+    terminalHpSpread
+  },
   winner: {
     shopCycle: winner.shopCycle,
     terminalHp: winner.final.hp,
@@ -72,6 +93,7 @@ console.log(JSON.stringify({
     floor: report.floor,
     cores: report.cores,
     terminalHp: report.final.hp,
+    minNormalizedHpMargin: report.minNormalizedHpMargin,
     failure: report.failure
   }))
 }, null, 2));
