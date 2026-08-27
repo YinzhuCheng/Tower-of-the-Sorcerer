@@ -328,9 +328,13 @@ function buildFallbackHoverPreview(token) {
 
 export function buildMapUnitHoverPreview(state, x, y) {
   if (!state || !Number.isInteger(x) || !Number.isInteger(y)) return null;
-  if (x === state.x && y === state.y) return buildHeroHoverPreview(state);
-
   const token = getTile(state, x, y);
+
+  // When the hero stands on a persistent interactive tile (shop/stairs/rune),
+  // explain that tile rather than hiding it behind the hero overlay.
+  if (x === state.x && y === state.y && (token === '.' || token === 'S')) {
+    return buildHeroHoverPreview(state);
+  }
   if (token === '#' || token === '.' || token === 'S') return null;
   if (token === 'shop') return buildShopHoverPreview(state);
   if (token === 'U') return buildStairHoverPreview(state, 'up');
