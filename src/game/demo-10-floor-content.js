@@ -32,32 +32,47 @@ export function applyDemoTenFloorContent({ enemies, floors, dialogues, gridSize 
   const finalFloor = floors[7];
 
   Object.assign(enemies, {
+    muteGuard: {
+      name: '缄默近卫', portrait: 'silence_guard', faction: '无声王庭·外环', floor: 8,
+      hp: 1000, atk: 205, def: 82, gold: 155,
+      description: '王庭外环的实体防线，专门惩罚只堆生命、不补防御的路线。'
+    },
+    hushCantor: {
+      name: '止声咏唱者', portrait: 'eclipse_mage', faction: '无声王庭·外环', floor: 8,
+      hp: 900, atk: 198, def: 76, gold: 170, special: 'magic', magicPower: 145,
+      description: '以静默波绕过普通防御，让后期生命储备仍然具有真实价值。'
+    },
+    outerCrown: {
+      name: '外环冠剑姬', portrait: 'sword_boss', faction: '无声王庭·外环', floor: 8,
+      hp: 1180, atk: 212, def: 90, gold: 190, special: 'firstStrike',
+      description: '先制剑压守住侧翼资源，制造是否绕路取宝的真实成本。'
+    },
     palaceWarden: {
       name: '静默执剑官·维拉', portrait: 'sword_boss', faction: '无声王庭·外环', floor: 8,
-      hp: 2250, atk: 190, def: 90, gold: 520, boss: true,
+      hp: 2250, atk: 205, def: 92, gold: 520, boss: true, special: 'magic', magicPower: 260,
       defeatDialogue: 'bossPalaceWarden',
-      description: '守在王庭外环的执剑官。她不持有魔力核心，只负责切断所有未经许可的咏唱。'
+      description: '守在王庭外环的执剑官。她不持有魔力核心，以高压静默剑域检验七核回收后的资源配置。'
     },
     starSentinel: {
       name: '逆星守望者', portrait: 'mirror_doll', faction: '倒悬星桥', floor: 9,
-      hp: 1150, atk: 194, def: 88, gold: 185,
-      description: '以倒悬星轨校准来客的进退路线。'
+      hp: 1200, atk: 220, def: 92, gold: 185,
+      description: '以倒悬星轨校准来客的进退路线，迫使防御路线真正兑现价值。'
     },
     nullCantor: {
       name: '空谱咏唱者', portrait: 'void_priestess', faction: '倒悬星桥', floor: 9,
-      hp: 980, atk: 188, def: 80, gold: 180, special: 'magic', magicPower: 94,
-      description: '将咏唱压缩成无视防御的空谱波。'
+      hp: 1000, atk: 205, def: 82, gold: 180, special: 'magic', magicPower: 170,
+      description: '将咏唱压缩成高强度空谱波，限制无成本回收整层资源。'
     },
     crownShade: {
       name: '冠影巡猎姬', portrait: 'shadow_ninja', faction: '倒悬星桥', floor: 9,
-      hp: 1050, atk: 198, def: 84, gold: 195, special: 'firstStrike',
+      hp: 1100, atk: 225, def: 88, gold: 195, special: 'firstStrike',
       description: '在星桥阴影中先制截击，逼迫入侵者为路线选择付出成本。'
     },
     blackSealKeeper: {
       name: '黯印观测官·塞芙', portrait: 'astral_boss', faction: '王座前厅', floor: 9,
-      hp: 2600, atk: 203, def: 96, gold: 600, boss: true,
+      hp: 2700, atk: 215, def: 100, gold: 600, boss: true, special: 'magic', magicPower: 280,
       defeatDialogue: 'bossBlackSeal',
-      description: '掌管王座前最后一道黯星许可印。她同样不持有七枚核心之一。'
+      description: '掌管王座前最后一道黯星许可印。她不持有核心，而是把前九层积累转化为最终压力测试。'
     },
     finalQueen: { ...enemies.finalQueen, floor: 10 },
     voidCore: { ...enemies.voidCore, floor: 10 }
@@ -94,22 +109,22 @@ export function applyDemoTenFloorContent({ enemies, floors, dialogues, gridSize 
     id: 7,
     number: 8,
     title: '静默前庭',
-    objective: '激活两枚静默开关，打开外环闸门并击败执剑官维拉。',
+    objective: '激活两枚静默开关，权衡侧翼宝物成本，打开外环闸门并击败执剑官维拉。',
     intro: 'floor8',
     boss: 'palaceWarden',
     demoContentId: DEMO_TEN_FLOOR_ID,
     theme: { floor: 0x1e2636, floorAlt: 0x283449, wall: 0x52627a, glow: 0x8ec9ff, fog: 0x111826 },
     map: parseDemoMap(`
       # # # # # # # # # # #
-      # item:dual enemy:crownKnight . . # item:hpLarge enemy:eclipseMage enemy:palaceWarden U #
+      # item:dual enemy:outerCrown . . # item:hpLarge enemy:hushCantor enemy:palaceWarden U #
       # . # # gate:hush # . # # . #
-      # switch:hushB # enemy:silenceGuard . item:atk . # item:star enemy:eclipseMage #
+      # switch:hushB # enemy:muteGuard . item:atk . # item:star enemy:hushCantor #
       # . # . # # # # . # #
-      # item:hpLarge enemy:eclipseMage . # item:def . enemy:crownKnight . # #
+      # item:hpLarge enemy:hushCantor . # item:def . enemy:outerCrown . # #
       # # # door:moon # . # # . # #
-      # item:moon . . enemy:silenceGuard . # switch:hushA item:sun . #
+      # item:moon . . enemy:muteGuard . # switch:hushA item:sun . #
       # . # # # # # . # door:sun #
-      # D . item:moon door:moon enemy:crownKnight item:def . item:hp . #
+      # D . item:moon door:moon enemy:outerCrown item:def . item:hp . #
       # # # # # # # # # # #
     `, gridSize),
     puzzles: { switches: { hush: ['hushA', 'hushB'] } }
@@ -119,7 +134,7 @@ export function applyDemoTenFloorContent({ enemies, floors, dialogues, gridSize 
     id: 8,
     number: 9,
     title: '倒悬星桥',
-    objective: '按月蚀、晨辉、星落的顺序校准星桥，击败黯印观测官塞芙。',
+    objective: '按月蚀、晨辉、星落的顺序校准星桥，在高压守卫间选择资源路径并击败塞芙。',
     intro: 'floor9',
     boss: 'blackSealKeeper',
     demoContentId: DEMO_TEN_FLOOR_ID,
@@ -164,6 +179,9 @@ export function applyDemoTenFloorContent({ enemies, floors, dialogues, gridSize 
     applied: true,
     id: DEMO_TEN_FLOOR_ID,
     floors,
-    addedEnemyIds: ['palaceWarden', 'starSentinel', 'nullCantor', 'crownShade', 'blackSealKeeper']
+    addedEnemyIds: [
+      'muteGuard', 'hushCantor', 'outerCrown', 'palaceWarden',
+      'starSentinel', 'nullCantor', 'crownShade', 'blackSealKeeper'
+    ]
   };
 }
