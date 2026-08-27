@@ -49,7 +49,7 @@ export function applyDemoTenFloorContent({ enemies, floors, dialogues, gridSize 
     },
     palaceWarden: {
       name: '静默执剑官·维拉', portrait: 'sword_boss', faction: '无声王庭·外环', floor: 8,
-      hp: 2250, atk: 205, def: 92, gold: 520, boss: true, special: 'magic', magicPower: 260,
+      hp: 2250, atk: 205, def: 92, gold: 520, boss: true, special: 'magic', magicPower: 240,
       defeatDialogue: 'bossPalaceWarden',
       description: '守在王庭外环的执剑官。她不持有魔力核心，以高压静默剑域检验七核回收后的资源配置。'
     },
@@ -70,7 +70,7 @@ export function applyDemoTenFloorContent({ enemies, floors, dialogues, gridSize 
     },
     blackSealKeeper: {
       name: '黯印观测官·塞芙', portrait: 'astral_boss', faction: '王座前厅', floor: 9,
-      hp: 2700, atk: 215, def: 100, gold: 600, boss: true, special: 'magic', magicPower: 280,
+      hp: 2700, atk: 215, def: 100, gold: 600, boss: true, special: 'magic', magicPower: 270,
       defeatDialogue: 'bossBlackSeal',
       description: '掌管王座前最后一道黯星许可印。她不持有核心，而是把前九层积累转化为最终压力测试。'
     },
