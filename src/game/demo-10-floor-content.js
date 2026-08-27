@@ -134,7 +134,7 @@ export function applyDemoTenFloorContent({ enemies, floors, dialogues, gridSize 
     id: 8,
     number: 9,
     title: '倒悬星桥',
-    objective: '按月蚀、晨辉、星落的顺序校准星桥，在高压守卫间选择资源路径并击败塞芙。',
+    objective: '按月蚀、晨辉、星落的顺序校准星桥，在王座前商店完成最后资源转换并击败塞芙。',
     intro: 'floor9',
     boss: 'blackSealKeeper',
     demoContentId: DEMO_TEN_FLOOR_ID,
@@ -149,7 +149,7 @@ export function applyDemoTenFloorContent({ enemies, floors, dialogues, gridSize 
       # # # door:star # . # # . # #
       # item:sun . . enemy:crownShade . # rune:B item:def . #
       # . # # # # # . # door:moon #
-      # D . item:moon door:sun enemy:starSentinel item:atk . item:hp . #
+      # D . item:moon door:sun enemy:starSentinel item:atk shop item:hp . #
       # # # # # # # # # # #
     `, gridSize),
     puzzles: {
