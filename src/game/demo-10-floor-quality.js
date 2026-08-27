@@ -7,6 +7,9 @@ export const DEMO10_SIMPLE_BUILD_PORTFOLIO = Object.freeze([
   Object.freeze(['hp', 'atk', 'def'])
 ]);
 
+// Historical v1 quality band: intentionally allowed two simple builds to fail
+// in order to preserve a sharper strategic boundary. Keep it for diagnostics
+// and later hard-mode work.
 export const DEMO10_QUALITY_TARGETS = Object.freeze({
   minSolvableBuilds: 4,
   maxSolvableBuilds: 5,
@@ -17,6 +20,23 @@ export const DEMO10_QUALITY_TARGETS = Object.freeze({
   lateFloors: Object.freeze([8, 9, 10]),
   f9ShopCoverageMin: 0.75,
   lateFloorPressureMax: 0.60
+});
+
+// Playable-first development band: the current product milestone values broad
+// human playability above a narrow difficulty optimum. All six recurring build
+// orders should be able to finish; pressure is still bounded so the late game
+// cannot become completely inert. This is a demo-generation target, not an
+// exact global balance claim.
+export const DEMO10_PLAYABILITY_TARGETS = Object.freeze({
+  minSolvableBuilds: 6,
+  maxSolvableBuilds: 6,
+  bestBuildMarginMin: 0.02,
+  bestBuildMarginMax: 0.85,
+  weakestWinningMarginMin: 0.01,
+  minTerminalHpSpread: 0,
+  lateFloors: Object.freeze([8, 9, 10]),
+  f9ShopCoverageMin: 0.75,
+  lateFloorPressureMax: 0.85
 });
 
 function finiteMin(values) {
@@ -173,4 +193,14 @@ export function demoTenFloorQualityLoss(summary, targets = DEMO10_QUALITY_TARGET
     + (Number.isFinite(f8Boss) ? Math.abs(f8Boss - 0.34) * 5 : 25)
     + (Number.isFinite(f9Boss) ? Math.abs(f9Boss - 0.20) * 8 : 25)
     + Math.max(0, targets.minTerminalHpSpread - (summary.terminalHpSpread ?? 0)) / 100;
+}
+
+export function demoTenFloorPlayabilityLoss(summary, targets = DEMO10_PLAYABILITY_TARGETS) {
+  const weakestMargin = summary.weakestWinningReport?.minNormalizedHpMargin;
+  const missingBuilds = Math.max(0, targets.minSolvableBuilds - summary.solvableBuilds);
+  const hardPenalty = summary.violations.length * 1000;
+  return hardPenalty
+    + missingBuilds * 10_000
+    + (Number.isFinite(weakestMargin) ? Math.abs(weakestMargin - 0.08) * 100 : 500)
+    + Math.max(0, targets.f9ShopCoverageMin - (summary.f9ShopCoverage ?? 0)) * 500;
 }
