@@ -5,7 +5,8 @@ import {
   summarizeDemoTenFloorCheckpoints
 } from '../src/analyzer/demo-10-floor-checkpoints.js';
 import {
-  demoTenFloorQualityLoss,
+  DEMO10_PLAYABILITY_TARGETS,
+  demoTenFloorPlayabilityLoss,
   summarizeDemoTenFloorPortfolio
 } from '../src/game/demo-10-floor-quality.js';
 import {
@@ -78,8 +79,8 @@ const baselineTopology = validateDemoTenFloorTopology(FLOORS, contract);
 if (!baselineTopology.ok) throw new Error(`Baseline topology contract failed: ${baselineTopology.violations.join(',')}`);
 
 const baselineQualityReports = qualitySpecs.map(runPolicy);
-const baselineQuality = summarizeDemoTenFloorPortfolio(baselineQualityReports);
-if (baselineQuality.violations.length) throw new Error(`Baseline 10F quality failed: ${baselineQuality.violations.join(',')}`);
+const baselineQuality = summarizeDemoTenFloorPortfolio(baselineQualityReports, DEMO10_PLAYABILITY_TARGETS);
+if (baselineQuality.violations.length) throw new Error(`Baseline 10F playability failed: ${baselineQuality.violations.join(',')}`);
 const baselineDiagnosticReports = diagnosticSpecs.map(runPolicy);
 const baselineCheckpoints = summarizeDemoTenFloorCheckpoints(
   [...baselineQualityReports, ...baselineDiagnosticReports],
@@ -97,7 +98,7 @@ for (const mutation of catalog) {
     if (!topology.ok) return { stage: 'static', topology };
 
     const qualityReports = qualitySpecs.map(runPolicy);
-    const quality = summarizeDemoTenFloorPortfolio(qualityReports);
+    const quality = summarizeDemoTenFloorPortfolio(qualityReports, DEMO10_PLAYABILITY_TARGETS);
     if (quality.violations.length) return { stage: 'quality', topology, quality };
 
     const diagnosticReports = diagnosticSpecs.map(runPolicy);
@@ -111,7 +112,7 @@ for (const mutation of catalog) {
     }
 
     const structuralLoss = topologyDeltaLoss(topology);
-    const qualityLoss = demoTenFloorQualityLoss(quality) / 50;
+    const qualityLoss = demoTenFloorPlayabilityLoss(quality, DEMO10_PLAYABILITY_TARGETS) / 50;
     const checkpointGain = checkpointComparison.checkpointGain ?? 0;
     return {
       stage: 'accepted',
@@ -167,11 +168,13 @@ accepted.sort((a, b) => a.score - b.score || a.id.localeCompare(b.id));
 
 console.log('DEMO10_TOPOLOGY_SEARCH');
 console.log(JSON.stringify({
-  schemaVersion: 2,
-  model: 'demo-10f-constrained-topology-wave1-v0.2-relative-checkpoint',
+  schemaVersion: 3,
+  model: 'demo-10f-constrained-topology-wave1-v0.3-playable-first',
+  milestone: 'playable-first-10f',
   heuristicOnly: true,
   productionWriteAllowed: false,
   catalogSize: catalog.length,
+  playabilityGate: 'all-six-basic-builds-must-finish',
   checkpointGate: 'baseline-relative-no-regression',
   baseline: {
     qualityViolations: baselineQuality.violations,
