@@ -4,6 +4,7 @@ import { DIALOGUES, ENEMIES, FLOORS, GRID_SIZE } from '../src/game/data.js';
 import { applyDemoTenFloorContent } from '../src/game/demo-10-floor-content.js';
 import {
   analyzeDemoFloorTopology,
+  compareDemoTenFloorCheckpointPortfolio,
   createDemoTenFloorTopologyContract,
   validateDemoTenFloorTopology
 } from '../src/tuner/demo-10-floor-topology-validator.js';
@@ -18,6 +19,18 @@ const catalog = createDemoTenFloorTopologyMutationCatalog();
 
 function floor(number) {
   return FLOORS.find((entry) => entry.number === number);
+}
+
+function checkpointPortfolio({ choiceLoss = 0.5, maxParetoWidth = 12, widths = [8, 10] } = {}) {
+  return {
+    choiceLoss,
+    maxParetoWidth,
+    choiceTargetFloors: [8, 9],
+    floors: {
+      8: { paretoWidth: widths[0] },
+      9: { paretoWidth: widths[1] }
+    }
+  };
 }
 
 test('10F topology baseline exposes stable F8/F9 graph metrics', () => {
@@ -64,4 +77,39 @@ test('topology contract rejects a wall-floor swap that creates too many dead end
     assert.ok(report.floors[8].violations.includes('dead-ends'));
   });
   assert.equal(validateDemoTenFloorTopology(FLOORS, contract).ok, true);
+});
+
+test('relative topology checkpoint gate accepts a nonzero baseline tie or improvement', () => {
+  const baseline = checkpointPortfolio({ choiceLoss: 0.5, maxParetoWidth: 12, widths: [8, 10] });
+  const tie = compareDemoTenFloorCheckpointPortfolio(
+    checkpointPortfolio({ choiceLoss: 0.5, maxParetoWidth: 12, widths: [8, 10] }),
+    baseline
+  );
+  assert.equal(tie.ok, true);
+  assert.equal(tie.checkpointGain, 0);
+
+  const improvement = compareDemoTenFloorCheckpointPortfolio(
+    checkpointPortfolio({ choiceLoss: 0.375, maxParetoWidth: 11, widths: [7, 9] }),
+    baseline
+  );
+  assert.equal(improvement.ok, true);
+  assert.equal(improvement.checkpointGain, 0.125);
+  assert.equal(improvement.maxParetoWidthDelta, -1);
+});
+
+test('relative topology checkpoint gate blocks aggregate or per-floor Pareto regressions', () => {
+  const baseline = checkpointPortfolio({ choiceLoss: 0.5, maxParetoWidth: 12, widths: [8, 10] });
+  const aggregateRegression = compareDemoTenFloorCheckpointPortfolio(
+    checkpointPortfolio({ choiceLoss: 0.625, maxParetoWidth: 12, widths: [8, 10] }),
+    baseline
+  );
+  assert.equal(aggregateRegression.ok, false);
+  assert.ok(aggregateRegression.violations.includes('choice-loss-regression'));
+
+  const floorRegression = compareDemoTenFloorCheckpointPortfolio(
+    checkpointPortfolio({ choiceLoss: 0.5, maxParetoWidth: 12, widths: [9, 9] }),
+    baseline
+  );
+  assert.equal(floorRegression.ok, false);
+  assert.ok(floorRegression.violations.includes('f8:pareto-width-regression'));
 });
