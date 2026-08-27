@@ -1,5 +1,6 @@
 const RESOURCE_FIELDS = Object.freeze(['hp', 'maxHp', 'atk', 'def', 'gold']);
 const CARD_FIELDS = Object.freeze(['sun', 'moon', 'star']);
+const SHOP_OPTIONS = Object.freeze(['atk', 'def', 'hp']);
 
 function freezePolicy(spec) {
   return Object.freeze({
@@ -17,34 +18,85 @@ const BASE_CYCLES = [
   ['hp', 'def', 'atk'],
   ['hp', 'atk', 'def']
 ];
+const PUBLIC_WINNING_CYCLES = BASE_CYCLES.slice(0, 4);
 
-/**
- * Generation-time player portfolio for the 10F setter loop.
- *
- * The first six quality-gate policies are the public recurring build cycles.
- * The next twelve perturb the first few purchases while retaining the same
- * recurring fallback cycle. They are heuristic exploration policies, not proof.
- */
-export const DEMO10_CODESIGN_POLICY_SPECS = Object.freeze(BASE_CYCLES.flatMap((cycle) => {
+function recurringPrefix(cycle, length) {
+  return Array.from({ length }, (_, index) => cycle[index % cycle.length]);
+}
+
+function onePurchaseProbe(cycle, cycleIndex, purchaseIndex) {
+  const prefixLength = Math.max(4, purchaseIndex + 1);
+  const plan = recurringPrefix(cycle, prefixLength);
+  const baseline = plan[purchaseIndex];
+  const alternatives = SHOP_OPTIONS.filter((option) => option !== baseline);
+  plan[purchaseIndex] = alternatives[(cycleIndex + purchaseIndex) % alternatives.length];
+  return freezePolicy({
+    id: `one-miss-p${purchaseIndex + 1}:${cycle.join('-')}:${baseline}->${plan[purchaseIndex]}`,
+    shopCycle: cycle,
+    shopPlan: plan,
+    holyPolicy: 'immediate',
+    qualityGate: false,
+    diagnosticFamily: 'one-purchase-perturbation'
+  });
+}
+
+const RECURRING_AND_PREFIX_POLICIES = BASE_CYCLES.flatMap((cycle) => {
   const slug = cycle.join('-');
   return [
-    freezePolicy({ id: `cycle:${slug}`, shopCycle: cycle, shopPlan: null, holyPolicy: 'immediate', qualityGate: true }),
+    freezePolicy({
+      id: `cycle:${slug}`,
+      shopCycle: cycle,
+      shopPlan: null,
+      holyPolicy: 'immediate',
+      qualityGate: true,
+      diagnosticFamily: 'public-recurring-cycle'
+    }),
     freezePolicy({
       id: `double-first:${slug}`,
       shopCycle: cycle,
       shopPlan: [cycle[0], cycle[0], cycle[1], cycle[2]],
       holyPolicy: 'immediate',
-      qualityGate: false
+      qualityGate: false,
+      diagnosticFamily: 'prefix-bias'
     }),
     freezePolicy({
       id: `double-second:${slug}`,
       shopCycle: cycle,
       shopPlan: [cycle[0], cycle[1], cycle[1], cycle[2]],
       holyPolicy: 'immediate',
-      qualityGate: false
+      qualityGate: false,
+      diagnosticFamily: 'prefix-bias'
     })
   ];
+});
+
+const PURE_STAT_POLICIES = SHOP_OPTIONS.map((option) => freezePolicy({
+  id: `pure:${option}`,
+  shopCycle: [option],
+  shopPlan: null,
+  holyPolicy: 'immediate',
+  qualityGate: false,
+  diagnosticFamily: 'pure-stat-extreme'
 }));
+
+const ONE_PURCHASE_PROBES = PUBLIC_WINNING_CYCLES.flatMap((cycle, cycleIndex) =>
+  [0, 1, 2].map((purchaseIndex) => onePurchaseProbe(cycle, cycleIndex, purchaseIndex))
+);
+
+/**
+ * Generation-time player portfolio for the 10F setter loop.
+ *
+ * Hard public quality is still defined only by the six recurring permutations.
+ * The diagnostic side is intentionally broader: prefix-biased variants, three
+ * pure-stat extremes and early one-purchase perturbations of the four public
+ * winning cycles. These extra policies may fail; they exist to reveal hidden
+ * checkpoint width before the setter mutates the tower.
+ */
+export const DEMO10_CODESIGN_POLICY_SPECS = Object.freeze([
+  ...RECURRING_AND_PREFIX_POLICIES,
+  ...PURE_STAT_POLICIES,
+  ...ONE_PURCHASE_PROBES
+]);
 
 function stableResourceSignature(sample) {
   const s = sample.resources;
@@ -208,8 +260,8 @@ export function summarizeDemoTenFloorCheckpoints(reports, {
   const totalActionSurfaces = targetProfiles.reduce((sum, profile) => sum + profile.uniqueResourceStates, 0);
 
   return {
-    schemaVersion: 2,
-    model: 'demo-10f-checkpoint-portfolio-v0.2-dedup',
+    schemaVersion: 3,
+    model: 'demo-10f-checkpoint-portfolio-v0.3-broader-player-model',
     heuristicOnly: true,
     policyCount: reports.length,
     paretoWidthBand: [...paretoWidthBand],
