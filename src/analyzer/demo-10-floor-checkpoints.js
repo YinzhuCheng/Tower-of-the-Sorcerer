@@ -191,7 +191,7 @@ function sampleFromReport(report, floor, policyId) {
     purchasesBefore,
     coresBefore,
     stateClass,
-    historySignature: `${policyId}|${report.holyPolicy ?? 'immediate'}|${purchasePrefix}`
+    policyPathSignature: `${policyId}|${report.holyPolicy ?? 'immediate'}|${purchasePrefix}`
   };
   sample.resourceSignature = stableResourceSignature(sample);
   return sample;
@@ -222,15 +222,19 @@ export function summarizeDemoTenFloorCheckpoints(reports, {
     )).filter(Boolean);
     const frontier = paretoCheckpointSamples(samples);
     const uniqueStates = new Set(samples.map((sample) => sample.resourceSignature));
-    const uniqueHistories = new Set(samples.map((sample) => sample.historySignature));
+    const uniquePolicyPaths = new Set(samples.map((sample) => sample.policyPathSignature));
     profiles[floor] = {
       floor,
       sampledPolicies: samples.length,
       victoriousPolicies: samples.filter((sample) => sample.solvable).length,
       uniqueResourceStates: uniqueStates.size,
-      uniqueHistories: uniqueHistories.size,
+      uniquePolicyPaths: uniquePolicyPaths.size,
       paretoWidth: frontier.length,
-      historyInflation: uniqueHistories.size / Math.max(1, uniqueStates.size),
+      // This ratio describes diagnostic-policy multiplicity only. It is NOT an
+      // engine event-order state-space measurement and must never drive proof
+      // history pruning or setter reconvergence mutations by itself.
+      policyMultiplicity: uniquePolicyPaths.size / Math.max(1, uniqueStates.size),
+      eventOrderHistoryInflation: null,
       frontierPolicyIds: frontier.flatMap((sample) => sample.equivalentPolicyIds ?? [sample.policyId]).sort(),
       frontierStateCount: frontier.length,
       samples
@@ -242,7 +246,7 @@ export function summarizeDemoTenFloorCheckpoints(reports, {
   const meanParetoWidth = targetProfiles.length
     ? targetProfiles.reduce((sum, profile) => sum + profile.paretoWidth, 0) / targetProfiles.length
     : 0;
-  const maxHistoryInflation = Math.max(1, ...targetProfiles.map((profile) => profile.historyInflation));
+  const maxPolicyMultiplicity = Math.max(1, ...targetProfiles.map((profile) => profile.policyMultiplicity));
   const choiceLoss = targetProfiles.length
     ? targetProfiles.reduce((sum, profile) => sum + distanceToWidthBand(
       profile.paretoWidth,
@@ -256,29 +260,33 @@ export function summarizeDemoTenFloorCheckpoints(reports, {
   const collapsedCheckpoints = targetProfiles
     .filter((profile) => profile.paretoWidth < paretoWidthBand[0])
     .map((profile) => profile.floor);
-  const totalHistories = targetProfiles.reduce((sum, profile) => sum + profile.uniqueHistories, 0);
-  const totalActionSurfaces = targetProfiles.reduce((sum, profile) => sum + profile.uniqueResourceStates, 0);
+  const totalResourceStates = targetProfiles.reduce((sum, profile) => sum + profile.uniqueResourceStates, 0);
 
   return {
-    schemaVersion: 3,
-    model: 'demo-10f-checkpoint-portfolio-v0.3-broader-player-model',
+    schemaVersion: 4,
+    model: 'demo-10f-checkpoint-portfolio-v0.4-policy-multiplicity-separated',
     heuristicOnly: true,
     policyCount: reports.length,
     paretoWidthBand: [...paretoWidthBand],
     choiceTargetFloors: [...choiceTargetFloors],
     maxParetoWidth,
     meanParetoWidth,
-    maxHistoryInflation,
+    maxPolicyMultiplicity,
+    eventOrderHistoryInflationMeasured: false,
     choiceLoss,
     oversizedCheckpoints,
     collapsedCheckpoints,
     floors: profiles,
+    // Checkpoint portfolio evidence may support route-width heuristics, but it
+    // contains no engine structural-key/event-history measurement. Therefore
+    // the boundary ratio is deliberately neutral (1.0) rather than fabricated
+    // from policy IDs.
     prunabilityEvidence: {
       routePortfolio: { paretoWidth: maxParetoWidth },
       boundary: {
         activeGoalLabels: maxParetoWidth,
-        goalStructuralStates: totalHistories,
-        actionSurfaceStructuralStates: Math.max(1, totalActionSurfaces)
+        goalStructuralStates: Math.max(1, totalResourceStates),
+        actionSurfaceStructuralStates: Math.max(1, totalResourceStates)
       }
     }
   };
