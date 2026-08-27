@@ -13,4 +13,9 @@ globalThis.__TOWER_DEMO_CONTENT__ = Object.freeze({
   floors: FLOORS.length
 });
 
+// The page CSP intentionally disallows third-party scripts. The demo therefore
+// skips Phaser CDN probes and boots the repository-local Canvas renderer
+// immediately; engine.js remains the authoritative gameplay transition system.
+globalThis.__TOWER_FORCE_CANVAS__ = true;
+
 await import('./main.js');
