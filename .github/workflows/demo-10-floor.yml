@@ -7,8 +7,10 @@ on:
       - 'src/game/demo-10-floor-quality.js'
       - 'src/game/content-storage-scope.js'
       - 'src/game/anime-assets.js'
+      - 'src/game/tactical-interaction.js'
       - 'src/demo-main.js'
       - 'src/main.js'
+      - 'styles.css'
       - 'index.html'
       - 'scripts/validate-demo-10f.mjs'
       - 'scripts/tune-demo-10f-late-game.mjs'
@@ -16,6 +18,7 @@ on:
       - 'test/demo-10-floor-engine.test.js'
       - 'test/content-storage-scope.test.js'
       - 'test/anime-assets-fallback.test.js'
+      - 'test/tactical-interaction.test.js'
       - 'package.json'
       - 'docs/demo-10-floor-vertical-slice.md'
       - 'docs/demo-10-floor-result-2026-08-27.md'
@@ -27,8 +30,10 @@ on:
       - 'src/game/demo-10-floor-quality.js'
       - 'src/game/content-storage-scope.js'
       - 'src/game/anime-assets.js'
+      - 'src/game/tactical-interaction.js'
       - 'src/demo-main.js'
       - 'src/main.js'
+      - 'styles.css'
       - 'index.html'
       - 'scripts/validate-demo-10f.mjs'
       - 'scripts/tune-demo-10f-late-game.mjs'
@@ -36,6 +41,7 @@ on:
       - 'test/demo-10-floor-engine.test.js'
       - 'test/content-storage-scope.test.js'
       - 'test/anime-assets-fallback.test.js'
+      - 'test/tactical-interaction.test.js'
       - 'package.json'
       - 'docs/demo-10-floor-vertical-slice.md'
       - 'docs/demo-10-floor-result-2026-08-27.md'
@@ -111,6 +117,9 @@ jobs:
               'hud_floor_number': '第 1 阵' in dom,
               'hud_floor_title': '月白门廊' in dom,
               'renderer_canvas': '<canvas' in dom,
+              'tactical_tooltip_layer': 'enemy-hover-card' in dom,
+              'guardian_marker_layer': 'guardian-marker-layer' in dom,
+              'guardian_marker_visible': '结界守护者' in dom,
               'no_boot_failure': '启动失败：' not in dom,
           }
           print('10F_BROWSER_SMOKE', checks)
@@ -124,4 +133,4 @@ jobs:
               raise SystemExit(1)
           PY
 
-          echo '10F browser smoke passed with rendered canvas and initialized HUD.'
+          echo '10F browser smoke passed with rendered canvas, tactical hover layer, and guardian marker.'
