@@ -1,0 +1,102 @@
+name: 10F Visual Audit Screenshots
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [demo-10-floor-codesign]
+    paths:
+      - 'visual-audit.html'
+      - 'src/visual-audit-main.js'
+      - 'src/game/anime-canvas-scene.js'
+      - 'src/game/canvas-scene.js'
+      - 'src/game/map-assets.js'
+      - 'src/game/enemy-assets.js'
+      - 'src/game/data.js'
+      - 'src/game/demo-10-floor-content.js'
+      - 'src/game/demo-10-floor-hard-mode.js'
+      - 'public/assets/anime/**'
+      - '.github/workflows/visual-audit-screenshots.yml'
+
+concurrency:
+  group: visual-audit-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  export-screenshots:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Start static server
+        run: |
+          set -euo pipefail
+          python3 -m http.server 4173 > /tmp/tower-visual-audit-server.log 2>&1 &
+          echo $! > /tmp/tower-visual-audit-server.pid
+          for i in $(seq 1 40); do
+            if curl -fsS http://127.0.0.1:4173/visual-audit.html?floor=1 >/dev/null 2>&1; then
+              exit 0
+            fi
+            sleep 0.25
+          done
+          cat /tmp/tower-visual-audit-server.log >&2 || true
+          exit 1
+
+      - name: Export ten floor screenshots
+        run: |
+          set -euo pipefail
+          chrome="$(command -v google-chrome || command -v chromium || command -v chromium-browser || true)"
+          if [ -z "$chrome" ]; then
+            echo 'No headless Chrome binary available on runner.' >&2
+            exit 1
+          fi
+
+          mkdir -p visual-audit-screenshots
+          for floor in $(seq 1 10); do
+            file="visual-audit-screenshots/floor-$(printf '%02d' "$floor").png"
+            "$chrome" \
+              --headless=new \
+              --no-sandbox \
+              --disable-gpu \
+              --disable-dev-shm-usage \
+              --hide-scrollbars \
+              --run-all-compositor-stages-before-draw \
+              --virtual-time-budget=12000 \
+              --window-size=660,690 \
+              --screenshot="$file" \
+              "http://127.0.0.1:4173/visual-audit.html?floor=$floor" \
+              >/tmp/visual-audit-floor-${floor}.log 2>&1
+          done
+
+      - name: Validate screenshot bundle
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import struct
+
+          root = Path('visual-audit-screenshots')
+          files = sorted(root.glob('floor-*.png'))
+          assert len(files) == 10, f'expected 10 screenshots, got {len(files)}'
+          for path in files:
+              data = path.read_bytes()
+              assert data[:8] == b'\x89PNG\r\n\x1a\n', f'{path} is not PNG'
+              width, height = struct.unpack('>II', data[16:24])
+              assert width >= 638 and height >= 638, f'{path} too small: {width}x{height}'
+              assert len(data) > 50_000, f'{path} suspiciously small: {len(data)} bytes'
+              print(path.name, width, height, len(data))
+          PY
+
+      - name: Upload visual audit artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: demo10-visual-audit-screenshots
+          path: visual-audit-screenshots/*.png
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Stop static server
+        if: always()
+        run: |
+          if [ -f /tmp/tower-visual-audit-server.pid ]; then
+            kill "$(cat /tmp/tower-visual-audit-server.pid)" 2>/dev/null || true
+          fi
