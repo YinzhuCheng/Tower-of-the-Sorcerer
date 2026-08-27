@@ -16,36 +16,36 @@ const NUMERIC_SPECS = Object.freeze([
 ]);
 
 const SWAP_SPECS = Object.freeze([
-  ['f8-reward-side-cache-swap', 'f8-reward-side-cache', 8, [1, 1], [6, 1]],
-  ['f8-reward-mid-stat-swap', 'f8-reward-mid-stat', 8, [5, 3], [5, 5]],
-  ['f8-card-route-swap', 'f8-card-route', 8, [8, 3], [1, 7]],
-  ['f8-card-star-lower-moon-swap', 'f8-card-route', 8, [8, 3], [2, 9]],
-  ['f8-card-sun-lower-moon-swap', 'f8-card-route', 8, [8, 7], [2, 9]],
-  ['f8-enemy-upper-swap', 'f8-enemy-upper', 8, [2, 1], [7, 1]],
-  ['f8-enemy-lower-swap', 'f8-enemy-lower', 8, [4, 7], [5, 9]],
-  ['f8-door-upper-moon-sun-swap', 'f8-door-colors', 8, [3, 6], [8, 8]],
-  ['f8-door-lower-moon-sun-swap', 'f8-door-colors', 8, [4, 9], [8, 8]],
-  ['f9-reward-side-cache-swap', 'f9-reward-side-cache', 9, [1, 1], [6, 1]],
-  ['f9-reward-mid-stat-swap', 'f9-reward-mid-stat', 9, [5, 3], [5, 5]],
-  ['f9-card-route-swap', 'f9-card-route', 9, [8, 3], [1, 7]],
-  ['f9-card-star-moon-swap', 'f9-card-route', 9, [8, 3], [2, 9]],
-  ['f9-card-sun-moon-swap', 'f9-card-route', 9, [1, 7], [2, 9]],
-  ['f9-enemy-upper-swap', 'f9-enemy-upper', 9, [2, 1], [7, 1]],
-  ['f9-enemy-mid-swap', 'f9-enemy-mid', 9, [3, 3], [7, 5]],
-  ['f9-door-star-moon-swap', 'f9-door-colors', 9, [3, 6], [8, 8]],
-  ['f9-door-star-sun-swap', 'f9-door-colors', 9, [3, 6], [4, 9]],
-  ['f9-door-moon-sun-swap', 'f9-door-colors', 9, [8, 8], [4, 9]],
-  ['f9-rune-c-a-swap', 'f9-rune-placement', 9, [1, 3], [4, 5]],
-  ['f9-rune-c-b-swap', 'f9-rune-placement', 9, [1, 3], [7, 7]],
-  ['f9-rune-a-b-swap', 'f9-rune-placement', 9, [4, 5], [7, 7]]
+  ['f8-reward-side-cache-swap', 'f8-reward-side-cache', 8, 'rewardNorthwest', 'rewardNortheast'],
+  ['f8-reward-mid-stat-swap', 'f8-reward-mid-stat', 8, 'rewardMidAtk', 'rewardMidDef'],
+  ['f8-card-route-swap', 'f8-card-route', 8, 'cardStarEast', 'cardMoonWest'],
+  ['f8-card-star-lower-moon-swap', 'f8-card-route', 8, 'cardStarEast', 'cardMoonSouth'],
+  ['f8-card-sun-lower-moon-swap', 'f8-card-route', 8, 'cardSunEast', 'cardMoonSouth'],
+  ['f8-enemy-upper-swap', 'f8-enemy-upper', 8, 'enemyOuterNorthwest', 'enemyHushNorth'],
+  ['f8-enemy-lower-swap', 'f8-enemy-lower', 8, 'enemyMuteWest', 'enemyOuterSouth'],
+  ['f8-door-upper-moon-sun-swap', 'f8-door-colors', 8, 'doorMoonUpper', 'doorSunEast'],
+  ['f8-door-lower-moon-sun-swap', 'f8-door-colors', 8, 'doorMoonSouth', 'doorSunEast'],
+  ['f9-reward-side-cache-swap', 'f9-reward-side-cache', 9, 'rewardNorthwest', 'rewardNortheast'],
+  ['f9-reward-mid-stat-swap', 'f9-reward-mid-stat', 9, 'rewardMidDef', 'rewardMidAtk'],
+  ['f9-card-route-swap', 'f9-card-route', 9, 'cardStarEast', 'cardSunWest'],
+  ['f9-card-star-moon-swap', 'f9-card-route', 9, 'cardStarEast', 'cardMoonSouth'],
+  ['f9-card-sun-moon-swap', 'f9-card-route', 9, 'cardSunWest', 'cardMoonSouth'],
+  ['f9-enemy-upper-swap', 'f9-enemy-upper', 9, 'enemySentinelNorthwest', 'enemyNullNorth'],
+  ['f9-enemy-mid-swap', 'f9-enemy-mid', 9, 'enemyCrownMid', 'enemySentinelMid'],
+  ['f9-door-star-moon-swap', 'f9-door-colors', 9, 'doorStarUpper', 'doorMoonEast'],
+  ['f9-door-star-sun-swap', 'f9-door-colors', 9, 'doorStarUpper', 'doorSunSouth'],
+  ['f9-door-moon-sun-swap', 'f9-door-colors', 9, 'doorMoonEast', 'doorSunSouth'],
+  ['f9-rune-c-a-swap', 'f9-rune-placement', 9, 'runeC', 'runeA'],
+  ['f9-rune-c-b-swap', 'f9-rune-placement', 9, 'runeC', 'runeB'],
+  ['f9-rune-a-b-swap', 'f9-rune-placement', 9, 'runeA', 'runeB']
 ]);
 
 const CROSS_FLOOR_EXCHANGE_SPECS = Object.freeze([
-  ['cross-stat-f8-def-f9-atk', 'cross-stat-timing', [8, 5, 5], [9, 5, 5]],
-  ['cross-stat-f8-atk-f9-def', 'cross-stat-timing', [8, 5, 3], [9, 8, 7]],
-  ['cross-hp-f8-large-f9-atk', 'cross-resource-timing', [8, 1, 5], [9, 5, 5]],
-  ['cross-card-f8-star-f9-moon', 'cross-card-timing', [8, 8, 3], [9, 2, 9]],
-  ['cross-card-f8-sun-f9-star', 'cross-card-timing', [8, 8, 7], [9, 8, 3]]
+  ['cross-stat-f8-def-f9-atk', 'cross-stat-timing', [8, 'rewardMidDef'], [9, 'rewardMidAtk']],
+  ['cross-stat-f8-atk-f9-def', 'cross-stat-timing', [8, 'rewardMidAtk'], [9, 'rewardDefSouth']],
+  ['cross-hp-f8-large-f9-atk', 'cross-resource-timing', [8, 'rewardHpWest'], [9, 'rewardMidAtk']],
+  ['cross-card-f8-star-f9-moon', 'cross-card-timing', [8, 'cardStarEast'], [9, 'cardMoonSouth']],
+  ['cross-card-f8-sun-f9-star', 'cross-card-timing', [8, 'cardSunEast'], [9, 'cardStarEast']]
 ]);
 
 function floorByNumber(number) {
@@ -54,12 +54,25 @@ function floorByNumber(number) {
   return floor;
 }
 
-function tokenAt(floor, [x, y]) {
-  return floor.map[y]?.[x];
+function resolveSemanticSlot(floorNumber, slotId) {
+  const floor = floorByNumber(floorNumber);
+  const slot = floor.codesignSlots?.[slotId];
+  if (!slot) throw new Error(`10F semantic slot unavailable: f${floorNumber}.${slotId}`);
+  const actual = floor.map[slot.y]?.[slot.x];
+  if (actual !== slot.expected) {
+    throw new Error(`10F semantic slot drift: f${floorNumber}.${slotId} expected ${slot.expected}, got ${actual}`);
+  }
+  return Object.freeze({
+    floor: floorNumber,
+    slotId,
+    x: slot.x,
+    y: slot.y,
+    baselineToken: actual
+  });
 }
 
-function slotTouch(floor, x, y) {
-  return `slot:f${floor}:${x},${y}`;
+function slotTouch(slot) {
+  return `slot:f${slot.floor}:${slot.slotId}`;
 }
 
 function numericTouch(enemyId, field) {
@@ -83,35 +96,20 @@ export function createDemoTenFloorMutationCatalog() {
       touches: Object.freeze([numericTouch(enemyId, field)])
     });
   });
-  const swaps = SWAP_SPECS.map(([id, group, floorNumber, a, b]) => {
-    const floor = floorByNumber(floorNumber);
-    const tokenA = tokenAt(floor, a);
-    const tokenB = tokenAt(floor, b);
-    if (!tokenA || !tokenB || tokenA === '#' || tokenB === '#') {
-      throw new Error(`10F mutation slot unavailable: ${id}`);
-    }
+  const swaps = SWAP_SPECS.map(([id, group, floorNumber, slotA, slotB]) => {
+    const a = resolveSemanticSlot(floorNumber, slotA);
+    const b = resolveSemanticSlot(floorNumber, slotB);
     return Object.freeze({
-      id, group, kind: 'slot-swap', floor: floorNumber,
-      a: Object.freeze({ x: a[0], y: a[1], baselineToken: tokenA }),
-      b: Object.freeze({ x: b[0], y: b[1], baselineToken: tokenB }),
-      touches: Object.freeze([slotTouch(floorNumber, a[0], a[1]), slotTouch(floorNumber, b[0], b[1])])
+      id, group, kind: 'slot-swap', floor: floorNumber, a, b,
+      touches: Object.freeze([slotTouch(a), slotTouch(b)])
     });
   });
-  const crossFloor = CROSS_FLOOR_EXCHANGE_SPECS.map(([id, group, a, b]) => {
-    const [floorA, xA, yA] = a;
-    const [floorB, xB, yB] = b;
-    const sourceA = floorByNumber(floorA);
-    const sourceB = floorByNumber(floorB);
-    const tokenA = tokenAt(sourceA, [xA, yA]);
-    const tokenB = tokenAt(sourceB, [xB, yB]);
-    if (!tokenA || !tokenB || tokenA === '#' || tokenB === '#') {
-      throw new Error(`10F cross-floor mutation slot unavailable: ${id}`);
-    }
+  const crossFloor = CROSS_FLOOR_EXCHANGE_SPECS.map(([id, group, specA, specB]) => {
+    const a = resolveSemanticSlot(specA[0], specA[1]);
+    const b = resolveSemanticSlot(specB[0], specB[1]);
     return Object.freeze({
-      id, group, kind: 'cross-floor-swap',
-      a: Object.freeze({ floor: floorA, x: xA, y: yA, baselineToken: tokenA }),
-      b: Object.freeze({ floor: floorB, x: xB, y: yB, baselineToken: tokenB }),
-      touches: Object.freeze([slotTouch(floorA, xA, yA), slotTouch(floorB, xB, yB)])
+      id, group, kind: 'cross-floor-swap', a, b,
+      touches: Object.freeze([slotTouch(a), slotTouch(b)])
     });
   });
   return Object.freeze([...numeric, ...swaps, ...crossFloor]);
@@ -155,7 +153,9 @@ export function demoTenFloorCandidateEditLoss(candidate, catalog) {
   return Math.min(1, loss);
 }
 
-function applySlotExchange(mutation, undo, floorA, a, floorB, b) {
+function applySlotExchange(mutation, undo, a, b) {
+  const floorA = floorByNumber(a.floor);
+  const floorB = floorByNumber(b.floor);
   const tokenA = floorA.map[a.y]?.[a.x];
   const tokenB = floorB.map[b.y]?.[b.x];
   if (tokenA !== a.baselineToken || tokenB !== b.baselineToken) {
@@ -178,20 +178,8 @@ function applyMutation(mutation, undo) {
     enemy[mutation.field] = mutation.baseline + mutation.delta;
     return;
   }
-  if (mutation.kind === 'slot-swap') {
-    const floor = floorByNumber(mutation.floor);
-    applySlotExchange(mutation, undo, floor, mutation.a, floor, mutation.b);
-    return;
-  }
-  if (mutation.kind === 'cross-floor-swap') {
-    applySlotExchange(
-      mutation,
-      undo,
-      floorByNumber(mutation.a.floor),
-      mutation.a,
-      floorByNumber(mutation.b.floor),
-      mutation.b
-    );
+  if (mutation.kind === 'slot-swap' || mutation.kind === 'cross-floor-swap') {
+    applySlotExchange(mutation, undo, mutation.a, mutation.b);
     return;
   }
   throw new Error(`Unsupported 10F mutation kind: ${mutation.kind}`);
