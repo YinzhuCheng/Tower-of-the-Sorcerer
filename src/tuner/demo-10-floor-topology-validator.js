@@ -213,3 +213,74 @@ export function validateDemoTenFloorTopology(floors, contract) {
   }
   return { ok: violations.length === 0, violations, floors: floorsReport };
 }
+
+/**
+ * Conservative wave-1 checkpoint gate for topology mutations.
+ *
+ * The broader 33-policy diagnostic portfolio intentionally exposes more
+ * nondominated resource states than the original six public quality builds, so
+ * the baseline is not expected to have zero checkpoint loss. Topology variants
+ * are therefore compared against the measured baseline rather than an obsolete
+ * absolute-zero target. A wave-1 candidate may improve or tie the baseline, but
+ * it may not worsen aggregate choice loss, maximum width, or any individual
+ * target-floor Pareto width.
+ */
+export function compareDemoTenFloorCheckpointPortfolio(candidate, baseline, { epsilon = 1e-12 } = {}) {
+  const violations = [];
+  if (!candidate || !baseline) {
+    return {
+      ok: false,
+      violations: ['missing-checkpoint-portfolio'],
+      choiceLossDelta: null,
+      checkpointGain: null,
+      maxParetoWidthDelta: null
+    };
+  }
+
+  const candidateChoiceLoss = Number(candidate.choiceLoss);
+  const baselineChoiceLoss = Number(baseline.choiceLoss);
+  if (!Number.isFinite(candidateChoiceLoss) || !Number.isFinite(baselineChoiceLoss)) {
+    violations.push('non-finite-choice-loss');
+  } else if (candidateChoiceLoss > baselineChoiceLoss + epsilon) {
+    violations.push('choice-loss-regression');
+  }
+
+  const candidateMaxWidth = Number(candidate.maxParetoWidth);
+  const baselineMaxWidth = Number(baseline.maxParetoWidth);
+  if (!Number.isFinite(candidateMaxWidth) || !Number.isFinite(baselineMaxWidth)) {
+    violations.push('non-finite-max-pareto-width');
+  } else if (candidateMaxWidth > baselineMaxWidth) {
+    violations.push('max-pareto-width-regression');
+  }
+
+  const targetFloors = baseline.choiceTargetFloors ?? [];
+  for (const floorNumber of targetFloors) {
+    const baselineFloor = baseline.floors?.[floorNumber];
+    const candidateFloor = candidate.floors?.[floorNumber];
+    if (!baselineFloor || !candidateFloor) {
+      violations.push(`f${floorNumber}:missing-checkpoint`);
+      continue;
+    }
+    const baselineWidth = Number(baselineFloor.paretoWidth);
+    const candidateWidth = Number(candidateFloor.paretoWidth);
+    if (!Number.isFinite(baselineWidth) || !Number.isFinite(candidateWidth)) {
+      violations.push(`f${floorNumber}:non-finite-pareto-width`);
+    } else if (candidateWidth > baselineWidth) {
+      violations.push(`f${floorNumber}:pareto-width-regression`);
+    }
+  }
+
+  return {
+    ok: violations.length === 0,
+    violations,
+    choiceLossDelta: Number.isFinite(candidateChoiceLoss) && Number.isFinite(baselineChoiceLoss)
+      ? candidateChoiceLoss - baselineChoiceLoss
+      : null,
+    checkpointGain: Number.isFinite(candidateChoiceLoss) && Number.isFinite(baselineChoiceLoss)
+      ? baselineChoiceLoss - candidateChoiceLoss
+      : null,
+    maxParetoWidthDelta: Number.isFinite(candidateMaxWidth) && Number.isFinite(baselineMaxWidth)
+      ? candidateMaxWidth - baselineMaxWidth
+      : null
+  };
+}
