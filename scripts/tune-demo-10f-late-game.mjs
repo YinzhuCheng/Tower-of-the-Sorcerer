@@ -1,7 +1,10 @@
 import { DIALOGUES, ENEMIES, FLOORS, GRID_SIZE } from '../src/game/data.js';
 import { applyDemoTenFloorContent } from '../src/game/demo-10-floor-content.js';
 import {
+  DEMO10_PLAYABILITY_TARGETS,
+  DEMO10_QUALITY_TARGETS,
   DEMO10_SIMPLE_BUILD_PORTFOLIO,
+  demoTenFloorPlayabilityLoss,
   demoTenFloorQualityLoss,
   summarizeDemoTenFloorPortfolio
 } from '../src/game/demo-10-floor-quality.js';
@@ -9,9 +12,10 @@ import {
 applyDemoTenFloorContent({ enemies: ENEMIES, floors: FLOORS, dialogues: DIALOGUES, gridSize: GRID_SIZE });
 const { runGreedyShopStrategy } = await import('../src/solver/greedy-strategy.js');
 
-// Quality track: keep the narrow historical pressure scan for comparison.
+// Historical quality track remains useful as a later hard-mode reference.
 const palaceMagicCandidates = [220, 240, 260, 280];
 const blackSealMagicCandidates = [220, 230, 240, 250, 260, 270, 280];
+const historicalBlackSealDef = 100;
 
 // Playable-first track: F9 is the observed cliff for the two HP-first cycles.
 // Search only the two highest-leverage F9 boss fields so the algorithm can
@@ -27,18 +31,21 @@ function runPortfolio() {
   }));
 }
 
-function evaluate(palaceMagicPower, blackSealMagicPower, blackSealDef = ENEMIES.blackSealKeeper.def) {
+function evaluate(palaceMagicPower, blackSealMagicPower, blackSealDef, {
+  targets,
+  loss
+}) {
   ENEMIES.palaceWarden.magicPower = palaceMagicPower;
   ENEMIES.blackSealKeeper.magicPower = blackSealMagicPower;
   ENEMIES.blackSealKeeper.def = blackSealDef;
 
   const reports = runPortfolio();
-  const summary = summarizeDemoTenFloorPortfolio(reports);
+  const summary = summarizeDemoTenFloorPortfolio(reports, targets);
   return {
     palaceMagicPower,
     blackSealMagicPower,
     blackSealDef,
-    score: demoTenFloorQualityLoss(summary),
+    score: loss(summary, targets),
     valid: summary.violations.length === 0,
     solvableBuilds: summary.solvableBuilds,
     terminalHpSpread: summary.terminalHpSpread,
@@ -61,14 +68,9 @@ function evaluate(palaceMagicPower, blackSealMagicPower, blackSealDef = ENEMIES.
 }
 
 function playableFirstLoss(candidate, baseline) {
-  const missingBuilds = DEMO10_SIMPLE_BUILD_PORTFOLIO.length - candidate.solvableBuilds;
-  const weakest = Number.isFinite(candidate.weakestMargin) ? candidate.weakestMargin : -1;
-  const desiredWeakest = 0.08;
   const editDistance = Math.abs(candidate.blackSealMagicPower - baseline.magicPower) / Math.max(1, baseline.magicPower)
     + Math.abs(candidate.blackSealDef - baseline.def) / Math.max(1, baseline.def);
-  return missingBuilds * 10_000
-    + Math.abs(weakest - desiredWeakest) * 100
-    + editDistance * 4;
+  return candidate.score + editDistance * 4;
 }
 
 const originalPalaceMagic = ENEMIES.palaceWarden.magicPower;
@@ -80,13 +82,23 @@ const playableCandidates = [];
 try {
   for (const palaceMagicPower of palaceMagicCandidates) {
     for (const blackSealMagicPower of blackSealMagicCandidates) {
-      qualityCandidates.push(evaluate(palaceMagicPower, blackSealMagicPower, originalBlackSealDef));
+      qualityCandidates.push(evaluate(
+        palaceMagicPower,
+        blackSealMagicPower,
+        historicalBlackSealDef,
+        { targets: DEMO10_QUALITY_TARGETS, loss: demoTenFloorQualityLoss }
+      ));
     }
   }
 
   for (const blackSealMagicPower of playableBlackSealMagicCandidates) {
     for (const blackSealDef of playableBlackSealDefCandidates) {
-      const candidate = evaluate(originalPalaceMagic, blackSealMagicPower, blackSealDef);
+      const candidate = evaluate(
+        originalPalaceMagic,
+        blackSealMagicPower,
+        blackSealDef,
+        { targets: DEMO10_PLAYABILITY_TARGETS, loss: demoTenFloorPlayabilityLoss }
+      );
       candidate.playableFirstLoss = playableFirstLoss(candidate, baselineBlackSeal);
       playableCandidates.push(candidate);
     }
@@ -97,12 +109,13 @@ try {
   ENEMIES.blackSealKeeper.def = originalBlackSealDef;
 }
 
-qualityCandidates.sort((a, b) => a.score - b.score
-  || Number(b.valid) - Number(a.valid)
+qualityCandidates.sort((a, b) => Number(b.valid) - Number(a.valid)
+  || a.score - b.score
   || a.palaceMagicPower - b.palaceMagicPower
   || a.blackSealMagicPower - b.blackSealMagicPower);
 
-playableCandidates.sort((a, b) => b.solvableBuilds - a.solvableBuilds
+playableCandidates.sort((a, b) => Number(b.valid) - Number(a.valid)
+  || b.solvableBuilds - a.solvableBuilds
   || a.playableFirstLoss - b.playableFirstLoss
   || a.blackSealDef - b.blackSealDef
   || a.blackSealMagicPower - b.blackSealMagicPower);
@@ -138,9 +151,9 @@ console.log(JSON.stringify({
   qualityRecommended: compact(qualityBest),
   playableFirstRecommended: compact(playableBest),
   playableFirstTarget: {
-    priority: 'maximize-solvable-simple-builds',
+    priority: 'six-build-playability-before-fine-balance',
     desiredSolvableBuilds: DEMO10_SIMPLE_BUILD_PORTFOLIO.length,
-    desiredWeakestWinningMargin: 0.08,
+    weakestWinningMarginMin: DEMO10_PLAYABILITY_TARGETS.weakestWinningMarginMin,
     productionWriteAllowed: false
   },
   qualityTopCandidates: qualityCandidates.slice(0, 5).map(compact),
