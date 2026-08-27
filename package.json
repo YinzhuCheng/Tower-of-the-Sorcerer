@@ -10,6 +10,10 @@
     "build": "node --test && node scripts/build.mjs",
     "test": "node --test",
     "validate": "node scripts/validate-game.mjs",
+    "validate:demo10": "node scripts/validate-demo-10f.mjs",
+    "tune:demo10:late": "node scripts/tune-demo-10f-late-game.mjs",
+    "search:demo10:codesign": "node scripts/search-demo-10f-codesign.mjs",
+    "search:demo10:topology": "node scripts/search-demo-10f-topology.mjs",
     "check": "npm run validate && npm run build"
   }
 }

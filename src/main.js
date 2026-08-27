@@ -422,6 +422,7 @@ async function loadScript(src, timeoutMs = 2500) {
 }
 
 async function ensurePhaser() {
+  if (globalThis.__TOWER_FORCE_CANVAS__ === true) return null;
   if (window.Phaser) return window.Phaser;
   const fallbacks = [
     'https://cdnjs.cloudflare.com/ajax/libs/phaser/3.90.0/phaser.min.js',
@@ -502,7 +503,7 @@ async function boot() {
       });
       return;
     }
-    console.info('Phaser CDN unavailable; using the local Canvas renderer.');
+    console.info('Phaser CDN unavailable or Canvas explicitly requested; using the local Canvas renderer.');
     createCanvasTowerScene(bridge);
   } catch (error) {
     console.error(error);

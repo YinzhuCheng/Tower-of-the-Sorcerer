@@ -12,7 +12,11 @@ function rankEvaluated(entries) {
 /**
  * Heuristic SETTER-side search over tower variants.
  *
- * `expand(candidate, round)` returns local tower mutations.
+ * `expand(candidate, round, parentEvaluation)` returns local tower mutations.
+ * Passing the already-computed parent evaluation lets an evidence-driven setter
+ * select mutation families without recomputing player diagnostics. Existing
+ * two-argument expanders remain valid because JavaScript ignores extra args.
+ *
  * `evaluate(candidate, round)` may use approximate / bounded player search and
  * returns the inputs expected by scoreTowerCodesignCandidate(). A replay-verified
  * solvability witness is the only hard generation gate. Nothing returned by this
@@ -30,7 +34,7 @@ export function runTowerCodesignBeamSearch({
   scoreOptions = {}
 } = {}) {
   if (!Array.isArray(seeds) || seeds.length === 0) throw new Error('codesign beam search requires seed candidates.');
-  if (typeof expand !== 'function') throw new Error('codesign beam search requires expand(candidate, round).');
+  if (typeof expand !== 'function') throw new Error('codesign beam search requires expand(candidate, round, parentEvaluation).');
   if (typeof evaluate !== 'function') throw new Error('codesign beam search requires evaluate(candidate, round).');
   if (typeof keyOf !== 'function') throw new Error('keyOf must be a function.');
   if (!Number.isInteger(beamWidth) || beamWidth < 1) throw new Error('beamWidth must be positive.');
@@ -59,7 +63,7 @@ export function runTowerCodesignBeamSearch({
     const pool = [...beam];
     let generated = 0;
     for (const parent of beam) {
-      const neighbors = expand(parent.candidate, round) ?? [];
+      const neighbors = expand(parent.candidate, round, parent.evaluation) ?? [];
       for (const candidate of neighbors) {
         generated += 1;
         pool.push(evaluateOne(candidate, round, parent.key));
@@ -73,8 +77,8 @@ export function runTowerCodesignBeamSearch({
   }
 
   return {
-    schemaVersion: 1,
-    model: 'tower-solver-codesign-beam-v0.1',
+    schemaVersion: 2,
+    model: 'tower-solver-codesign-beam-v0.2-evidence-expansion',
     heuristicOnly: true,
     productionWriteAllowed: false,
     beamWidth,

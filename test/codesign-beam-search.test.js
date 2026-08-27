@@ -73,3 +73,29 @@ test('beam search drops variants without replay-verified solvability witness', (
   });
   assert.deepEqual(report.portfolio.map((entry) => entry.candidate.id), ['live']);
 });
+
+test('beam expansion receives the already-computed parent evaluation', () => {
+  const observed = [];
+  const report = runTowerCodesignBeamSearch({
+    seeds: [{ id: 'seed', x: 1 }],
+    beamWidth: 1,
+    rounds: 1,
+    keyOf: (candidate) => candidate.id,
+    expand(candidate, round, parentEvaluation) {
+      observed.push({ candidate: candidate.id, round, marker: parentEvaluation.marker });
+      return [{ id: 'child', x: 0 }];
+    },
+    evaluate(candidate) {
+      return {
+        marker: `eval:${candidate.id}`,
+        solvabilityWitnessVerified: true,
+        qualityLoss: candidate.x / 100,
+        funLoss: 0,
+        editLoss: 0,
+        prunabilityEvidence: evidence(0)
+      };
+    }
+  });
+  assert.deepEqual(observed, [{ candidate: 'seed', round: 1, marker: 'eval:seed' }]);
+  assert.equal(report.best.candidate.id, 'child');
+});

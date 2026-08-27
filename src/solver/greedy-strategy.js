@@ -292,6 +292,15 @@ function collectDeferredHoly(state) {
   return { ok: true, collected: true, acquisition };
 }
 
+function checkpointRelics(state) {
+  return {
+    holy: Boolean(state.relics.holy),
+    ward: Boolean(state.relics.ward),
+    lucky: Boolean(state.relics.lucky),
+    compass: Boolean(state.relics.compass)
+  };
+}
+
 function battleCheckpoint(state, action) {
   if (action.parsed?.type !== 'enemy') return null;
   const enemy = ENEMIES[action.parsed.id];
@@ -306,6 +315,11 @@ function battleCheckpoint(state, action) {
     finalBoss: Boolean(enemy.finalBoss),
     special: enemy.special ?? null,
     statsBefore,
+    cardsBefore: { ...state.cards },
+    coresBefore: state.cores,
+    purchasesBefore: state.shopPurchases,
+    relicsBefore: checkpointRelics(state),
+    positionBefore: { floor: state.floor + 1, x: state.x, y: state.y },
     battle: {
       winnable: battle.winnable,
       heroDamage: battle.heroDamage,
@@ -327,6 +341,11 @@ function finishBattleCheckpoint(checkpoint, state) {
   return {
     ...checkpoint,
     statsAfter: { ...state.stats },
+    cardsAfter: { ...state.cards },
+    coresAfter: state.cores,
+    purchasesAfter: state.shopPurchases,
+    relicsAfter: checkpointRelics(state),
+    positionAfter: { floor: state.floor + 1, x: state.x, y: state.y },
     goldGain: state.stats.gold - checkpoint.statsBefore.gold
   };
 }

@@ -146,6 +146,49 @@ export function solve({
   let keyCharsMax = 0;
   const expandedByStage = {};
   const generatedByAction = {};
+  const stageTelemetry = {};
+
+  function stageKeyOf(state) {
+    return adapter.stageKey ? adapter.stageKey(state) : 'all';
+  }
+
+  function stageProfile(stage) {
+    if (!stageTelemetry[stage]) {
+      stageTelemetry[stage] = {
+        expandedLabels: 0,
+        generatedActions: 0,
+        acceptedLabels: 0,
+        paretoFrontierPeak: 0,
+        branchSamples: 0,
+        branchTotal: 0,
+        branchMax: 0
+      };
+    }
+    return stageTelemetry[stage];
+  }
+
+  function recordAcceptedStage(state, insertion) {
+    const profile = stageProfile(stageKeyOf(state));
+    profile.acceptedLabels += 1;
+    profile.paretoFrontierPeak = Math.max(
+      profile.paretoFrontierPeak,
+      Number(insertion?.frontierSize ?? 0)
+    );
+  }
+
+  function compactStageTelemetry() {
+    return Object.fromEntries(Object.entries(stageTelemetry).map(([stage, profile]) => [stage, {
+      expanded: profile.expandedLabels,
+      generated: profile.generatedActions,
+      accepted: profile.acceptedLabels,
+      paretoFrontierPeak: profile.paretoFrontierPeak,
+      branching: {
+        samples: profile.branchSamples,
+        mean: profile.branchSamples ? profile.branchTotal / profile.branchSamples : 0,
+        max: profile.branchMax
+      }
+    }]));
+  }
 
   function currentObjectiveLowerBound() {
     const searchBest = bestGoal
@@ -181,7 +224,8 @@ export function solve({
     depth: 0,
     active: true
   };
-  frontier.insert(initialLabel.key, initialLabel);
+  const initialInsertion = frontier.insert(initialLabel.key, initialLabel);
+  recordAcceptedStage(initialLabel.state, initialInsertion);
   recordAcceptedKey(initialKey);
   queue.push(initialLabel, defaultPriority(initialLabel.state, adapter));
   queuePeak = Math.max(queuePeak, queue.size);
@@ -204,7 +248,9 @@ export function solve({
 
     expandedStates += 1;
     maxDepth = Math.max(maxDepth, label.depth ?? 0);
-    const stage = adapter.stageKey ? adapter.stageKey(label.state) : 'all';
+    const stage = stageKeyOf(label.state);
+    const currentStageProfile = stageProfile(stage);
+    currentStageProfile.expandedLabels += 1;
     incrementCounter(expandedByStage, stage);
 
     if (adapter.isGoal(label.state)) {
@@ -227,10 +273,14 @@ export function solve({
     branchSamples += 1;
     branchTotal += actions.length;
     branchMax = Math.max(branchMax, actions.length);
+    currentStageProfile.branchSamples += 1;
+    currentStageProfile.branchTotal += actions.length;
+    currentStageProfile.branchMax = Math.max(currentStageProfile.branchMax, actions.length);
 
     for (const action of actions) {
       if (generatedStates >= maxGenerated) break;
       generatedStates += 1;
+      currentStageProfile.generatedActions += 1;
       const actionClass = adapter.actionClass ? adapter.actionClass(action) : (action.kind ?? 'unknown');
       incrementCounter(generatedByAction, actionClass);
 
@@ -272,6 +322,7 @@ export function solve({
         continue;
       }
       prunedDominated += insertion.removed.length;
+      recordAcceptedStage(nextState, insertion);
       recordAcceptedKey(key);
       queue.push(nextLabel, defaultPriority(nextState, adapter));
       queuePeak = Math.max(queuePeak, queue.size);
@@ -340,7 +391,8 @@ export function solve({
         max: keyCharsMax
       },
       expandedByStage,
-      generatedByAction
+      generatedByAction,
+      stageTelemetry: compactStageTelemetry()
     }
   };
 }
