@@ -1,0 +1,49 @@
+name: 10F Co-design Profile
+on:
+  push:
+    branches: [demo-10-floor-codesign]
+    paths:
+      - 'src/analyzer/demo-10-floor-checkpoints.js'
+      - 'src/tuner/demo-10-floor-mutations.js'
+      - 'src/tuner/codesign-beam-search.js'
+      - 'src/tuner/prunability-score.js'
+      - 'src/game/demo-10-floor-content.js'
+      - 'src/game/demo-10-floor-quality.js'
+      - 'scripts/search-demo-10f-codesign.mjs'
+      - 'test/demo-10-floor-checkpoints.test.js'
+      - 'test/demo-10-floor-mutations.test.js'
+      - 'package.json'
+      - '.github/workflows/demo-10-floor-codesign.yml'
+  pull_request:
+    paths:
+      - 'src/analyzer/demo-10-floor-checkpoints.js'
+      - 'src/tuner/demo-10-floor-mutations.js'
+      - 'src/tuner/codesign-beam-search.js'
+      - 'src/tuner/prunability-score.js'
+      - 'src/game/demo-10-floor-content.js'
+      - 'src/game/demo-10-floor-quality.js'
+      - 'scripts/search-demo-10f-codesign.mjs'
+      - 'test/demo-10-floor-checkpoints.test.js'
+      - 'test/demo-10-floor-mutations.test.js'
+      - 'package.json'
+      - '.github/workflows/demo-10-floor-codesign.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: demo-10f-codesign-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  profile:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - name: Preserve repository regression suite
+        run: npm run check
+      - name: Preserve 10F v1 quality contract
+        run: npm run validate:demo10
+      - name: Search proof-friendly 10F setter neighborhood
+        run: npm run search:demo10:codesign
