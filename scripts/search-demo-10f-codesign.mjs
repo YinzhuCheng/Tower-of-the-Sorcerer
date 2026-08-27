@@ -5,7 +5,8 @@ import {
   summarizeDemoTenFloorCheckpoints
 } from '../src/analyzer/demo-10-floor-checkpoints.js';
 import {
-  demoTenFloorQualityLoss,
+  DEMO10_PLAYABILITY_TARGETS,
+  demoTenFloorPlayabilityLoss,
   summarizeDemoTenFloorPortfolio
 } from '../src/game/demo-10-floor-quality.js';
 import { runTowerCodesignBeamSearch } from '../src/tuner/codesign-beam-search.js';
@@ -58,7 +59,7 @@ function compactMutationPlan(plan) {
 function evaluateCandidate(candidate) {
   return withDemoTenFloorCandidate(candidate, catalog, () => {
     const qualityReports = qualitySpecs.map(runPolicy);
-    const quality = summarizeDemoTenFloorPortfolio(qualityReports);
+    const quality = summarizeDemoTenFloorPortfolio(qualityReports, DEMO10_PLAYABILITY_TARGETS);
     const witnessVerified = quality.violations.length === 0 && Boolean(quality.winner?.solvable);
     if (!witnessVerified) {
       return {
@@ -81,7 +82,7 @@ function evaluateCandidate(candidate) {
     const mutationPlan = proposeDemoTenFloorAdaptiveMutations(checkpoints, catalog);
     return {
       solvabilityWitnessVerified: true,
-      qualityLoss: demoTenFloorQualityLoss(quality) / 50,
+      qualityLoss: demoTenFloorPlayabilityLoss(quality) / 50,
       funLoss: checkpoints.choiceLoss,
       editLoss: demoTenFloorCandidateEditLoss(candidate, catalog),
       prunabilityEvidence: checkpoints.prunabilityEvidence,
@@ -123,9 +124,9 @@ const result = runTowerCodesignBeamSearch({
   beamWidth: 6,
   rounds: 2,
   scoreOptions: {
-    qualityWeight: 0.45,
+    qualityWeight: 0.55,
     funWeight: 0.20,
-    prunabilityWeight: 0.30,
+    prunabilityWeight: 0.20,
     editWeight: 0.05,
     prunabilityOptions: {
       weights: {
@@ -147,6 +148,7 @@ const compactEntry = (entry) => entry ? ({
 console.log('DEMO10_CODESIGN_SEARCH');
 console.log(JSON.stringify({
   model: result.model,
+  milestone: 'playable-first-10f',
   heuristicOnly: result.heuristicOnly,
   productionWriteAllowed: result.productionWriteAllowed,
   mutationCatalogSize: catalog.length,
@@ -163,5 +165,5 @@ if (result.productionWriteAllowed !== false) {
   throw new Error('10F co-design search must never enable production writes.');
 }
 if (!result.best || !Number.isFinite(result.best.score.score)) {
-  throw new Error('10F co-design search failed to retain any quality-gated candidate.');
+  throw new Error('10F co-design search failed to retain any playability-gated candidate.');
 }
