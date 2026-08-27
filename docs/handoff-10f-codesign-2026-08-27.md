@@ -1,6 +1,6 @@
 # 10F Co-design Handoff — 2026-08-27
 
-This document is the repository-resident checkpoint for continuing automatic Tower design in a new conversation.
+This document is the repository-resident checkpoint for continuing automatic Tower design in a new coding session.
 
 ## Repository / PR state
 
@@ -8,9 +8,10 @@ This document is the repository-resident checkpoint for continuing automatic Tow
 - Working branch: `demo-10-floor-codesign`
 - Pull request: **#16** — `Demo: 10F v1 playable vertical slice with automated quality gates`
 - Base branch: `solver-phase1-pareto`
-- PR state at handoff: **open, draft, unmerged**
-- Functionally validated code head: **`c416c7f8e49ca49c3eb773ff5cd1fc48961ab038`**
-- This handoff is committed after that validated code head and is documentation-only.
+- PR state: **open, draft, unmerged**
+- Functionally validated co-design code head: **`c416c7f8e49ca49c3eb773ff5cd1fc48961ab038`**
+- Documentation checkpoint before this correction: `f5421ed524cd0181a36166e00ee5c78fbc0368a1`
+- Latest full validation used for this handoff: PR workflow merge ref for `f5421ed...`; all four relevant workflows succeeded.
 
 Do **not** merge PR #16, PR #15, or PR #14 without explicit approval.
 
@@ -20,14 +21,16 @@ The following constraints remain hard:
 
 1. `src/game/engine.js` is the sole authoritative transition system.
 2. Co-design / tuner candidates are generation-time dry runs only.
-3. `productionWriteAllowed` must remain `false` for the current co-design and topology searches.
+3. `productionWriteAllowed` must remain `false` for current co-design and topology searches.
 4. Do not write heuristic candidates into canonical `src/game/data.js`.
 5. Do not weaken quality or proof gates merely to make a candidate pass.
 6. A bounded Solver miss is coverage-incomplete / unknown, not a proof of infeasibility.
 7. The 10F demo content remains isolated through `src/game/demo-10-floor-content.js`.
 8. Exact/sound Solver work is reserved for shortlisted variants; generation-time heuristic evidence must not be presented as a global optimality proof.
 
-## Current 10-floor product baseline
+## Frozen 10F v1 gameplay baseline
+
+The current product sandbox remains the 10-floor demo overlay:
 
 ```text
 F1-F7  existing seven-core campaign
@@ -36,16 +39,14 @@ F9     倒悬星桥       ordered-rune checkpoint + pre-throne shop
 F10    无声王座       finalQueen -> voidCore
 ```
 
-The campaign still contains exactly seven recoverable magic cores. F8/F9 are palace defenses rather than extra core floors.
-
-Selected late-game v1 pressure values remain:
+Late-game pressure values remain:
 
 ```text
 palaceWarden.magicPower      240
 blackSealKeeper.magicPower   270
 ```
 
-### Hard six-build quality portfolio
+Authoritative six-build contract:
 
 ```text
 DEF-ATK-HP   win F10   HP 4198   min margin 36.47%
@@ -56,307 +57,240 @@ HP-DEF-ATK   F9 fail   HP 3153
 HP-ATK-DEF   F9 fail   HP 2881
 ```
 
-The hard contract still requires:
+Quality summary:
 
-- 4–5 of 6 recurring ATK/DEF/HP build permutations finish;
-- strongest winning simple-build margin stays in 15–50%;
-- weakest winning simple-build margin is at least 5%;
-- winning terminal-HP spread is at least 900;
-- every winning build has battle + boss coverage on F8/F9/F10;
-- F9 shop coverage among winners is at least 75%;
-- late-floor mean margin above 60% is rejected;
-- seven cores, F10 completion, positive HP, and final `voidCore` defeat are required.
+- 4 / 6 simple recurring builds finish.
+- Winning terminal-HP spread: **2352**.
+- F9 shop coverage among winners: **100%**.
+- Hard quality violations: **0**.
+- No topology or numeric co-design candidate has been promoted into the v1 map.
 
-The current baseline continues to pass this contract with 4/6 finishes and terminal-HP spread 2352.
+## Current 33-policy checkpoint diagnostics
 
-## Player-side diagnostic model
+The generation-time player portfolio contains 33 policies: 6 hard quality policies plus 27 diagnostic policies.
 
-Generation-time co-design now uses **33 policies**:
+Current baseline checkpoint Pareto widths:
 
-- 6 public recurring quality-gate cycles;
-- 27 diagnostic policies, including prefix-biased routes, pure ATK/DEF/HP extremes, and early one-purchase perturbations of public winning builds.
+| Floor | Pareto width |
+| ---: | ---: |
+| F2 | 10 |
+| F3 | 13 |
+| F4 | 13 |
+| F5 | 12 |
+| F6 | 12 |
+| F7 | **16** |
+| F8 | 12 |
+| F9 | 11 |
 
-Only the original six recurring cycles define the hard product quality contract. The additional 27 policies are heuristic probes for hidden route/resource diversity.
+Aggregate generation diagnostics:
 
-### Authoritative checkpoint telemetry
+- checkpoint choice loss: **0.546875**
+- max Pareto width: **16**
+- mean Pareto width: **12.375**
+- oversized checkpoints: F2-F9
+- current mutation planner reports unhandled floors: **F2-F7**
+- measured event-order history inflation: **not yet available**
 
-`greedy-strategy` now records real pre/post-battle strategic state, including cards, cores, purchases, and relics. The checkpoint analyzer therefore reads authoritative strategic resources rather than reconstructing those fields from floor-number heuristics.
+Important distinction: this checkpoint width is diversity in the sampled **player-policy/resource portfolio**. It is not yet direct Solver structural-frontier telemetry and must not be described as exact event-order state-space size.
 
-### Current 33-policy checkpoint widths
+## Numeric / placement co-design wave
 
-The measured baseline Pareto widths are:
+Latest successful `10F Co-design Profile` run evaluated:
 
-```text
-F1   3
-F2  10
-F3  13
-F4  13
-F5  12
-F6  12
-F7  16
-F8  12
-F9  11
-F10  6
-```
-
-For the current target floors F2–F9:
-
-```text
-checkpointChoiceLoss  0.546875
-maxParetoWidth        16
-meanParetoWidth       12.375
-```
-
-These values are intentionally **not** forced back into the earlier 2–8 diagnostic band by weakening the band. The broader player model exposed real additional resource tradeoffs.
-
-### Important measurement correction
-
-`policyMultiplicity` means multiple sampled diagnostic policies arrived at the same resource state. It is **not** Solver/event-order history inflation.
-
-The checkpoint analyzer therefore no longer feeds policy multiplicity into proof-state `historyInflation`. Genuine Solver structural/history inflation remains unmeasured/null until structural-key/frontier evidence is collected from the Solver itself.
-
-This distinction must be preserved; otherwise the setter can be driven to simplify nonexistent proof-state explosion.
-
-## Evidence-driven numeric / placement co-design
-
-Relevant files:
-
-- `src/analyzer/demo-10-floor-checkpoints.js`
-- `src/tuner/demo-10-floor-adaptive-mutations.js`
-- `src/tuner/demo-10-floor-mutations.js`
-- `src/tuner/codesign-beam-search.js`
-- `scripts/search-demo-10f-codesign.mjs`
-
-The mutation layer currently has 39 white-listed numeric / enemy / reward / card / door / rune / cross-floor timing mutations for F8/F9. Semantic slots are used rather than naked coordinates.
-
-The beam expander receives the already-computed parent evaluation, so mutation families can be selected from checkpoint evidence instead of blindly enumerating every mutation for every parent.
-
-Current result: **baseline remains the preferred candidate; no numeric/placement mutation is promoted.**
-
-The broader 33-policy evidence currently identifies oversized checkpoints on F2–F9, while the existing setter catalog only has semantic mutation surfaces for F8/F9. Therefore the important diagnostic is:
-
-```text
-unhandledFloors = [2, 3, 4, 5, 6, 7]
-```
-
-Do not mutate unrelated F8/F9 content merely to compensate for evidence originating on F2–F7.
-
-## Constrained topology wave 1
-
-Wave 1 introduced safe local topology mutation for F8/F9 only.
-
-Relevant files:
-
-- `src/analyzer/demo-10-floor-topology.js`
-- `src/tuner/demo-10-floor-topology-mutations.js`
-- `src/tuner/demo-10-floor-topology-validator.js`
-- `scripts/search-demo-10f-topology.mjs`
-- `test/demo-10-floor-topology.test.js`
-
-### Mutation semantics
-
-There are exactly **32** candidates. Each candidate swaps one semantic wall slot `#` with one semantic floor slot `.` on a single floor.
-
-Wave 1 deliberately does **not** move:
-
-- enemies;
-- rewards/items;
-- doors;
-- switches/runes/gates;
-- D/U stairs;
-- event token coordinates.
-
-The mutation preserves the passable-tile budget. Static validation runs before any expensive authoritative player evaluation.
-
-### Baseline graph contract
-
-```text
-F8: passable=52 edges=55 cycleRank=4 deadEnds=0 branchNodes=6 D->U=16
-F9: passable=53 edges=57 cycleRank=5 deadEnds=0 branchNodes=7 D->U=16
-```
-
-The static contract also checks map dimensions, boundary walls, exactly one D and U, event signature, semantic-slot anchors, connectivity, passable budget, cycle rank, branching, dead ends, and D→U distance.
-
-### Fixed checkpoint gate
-
-An earlier topology script incorrectly required the broader 33-policy baseline to have `choiceLoss === 0`. That was an obsolete assumption, not a gameplay failure.
-
-The validated implementation now uses:
-
-`baseline-relative-no-regression`
-
-A topology candidate may tie or improve the measured nonzero baseline, but it must not worsen:
-
-1. aggregate checkpoint choice loss;
-2. maximum Pareto width;
-3. any individual target-floor Pareto width.
-
-This is implemented by `compareDemoTenFloorCheckpointPortfolio(...)` and covered by tests for both nonzero-baseline ties/improvements and aggregate/per-floor regressions.
-
-### Fresh wave-1 result on validated code head
-
-GitHub Actions evidence:
-
-- workflow run: **`33075612715`**
-- job: **`98528975192`**
-- model: `demo-10f-constrained-topology-wave1-v0.2-relative-checkpoint`
-- `heuristicOnly=true`
+- model: `tower-solver-codesign-beam-v0.2-evidence-expansion`
+- mutation catalogue: **39**
+- player policies: **33**
+- evaluated candidates: **197**
+- heuristic-only: `true`
 - `productionWriteAllowed=false`
-- `checkpointGate=baseline-relative-no-regression`
 
-Exact candidate accounting:
+Result: **baseline remains best**. No numeric, reward, card, door, enemy-placement, or cross-floor exchange mutation was promoted.
+
+The round-2 beam still contains useful diagnostic alternatives such as:
+
+- `f9-crown-atk-down6+f9-seal-magic-up10`
+- `f8-outer-atk-up6+f9-crown-atk-down6`
+- `f9-crown-atk-down6`
+- `f8-warden-magic-up10+f9-crown-atk-down6`
+- `f9-null-magic-down10+f9-seal-magic-up10`
+
+They remain heuristic alternatives only.
+
+## F8/F9 topology wave 1 — corrected final result
+
+The constrained one-wall/one-floor topology search uses:
+
+- model: `demo-10f-constrained-topology-wave1-v0.2-relative-checkpoint`
+- catalogue size: **32**
+- checkpoint gate: **baseline-relative-no-regression**
+- heuristic-only: `true`
+- `productionWriteAllowed=false`
+
+Baseline topology:
+
+| Floor | Nodes | Edges | Cycle rank | Dead ends | Branch nodes | D→U distance |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| F8 | 52 | 55 | 4 | 0 | 6 | 16 |
+| F9 | 53 | 57 | 5 | 0 | 7 | 16 |
+
+Final candidate accounting:
 
 ```text
-catalog                    32
-static rejected            20
-hard-quality rejected       8
-checkpoint rejected         1
-accepted shortlist          3
+catalog                 32
+static rejected         20
+hard-quality rejected    8
+checkpoint rejected      1
+accepted shortlist       3
 ```
 
-The single checkpoint-rejected candidate was:
+The single checkpoint-regression rejection is:
 
-```text
-f8-topology-wallNwBridge-floorNorthCenter
-reason: f2:pareto-width-regression
-```
+`f8-topology-wallEastLower-floorLowerEast`
 
-Its aggregate `choiceLoss` and `maxParetoWidth` happened to remain unchanged, so this rejection is useful evidence that the **per-floor no-regression gate is active** rather than merely checking aggregate metrics.
+because it changes:
 
-### Accepted shortlist
+- choice loss: `0.546875 -> 0.5625`
+- delta: `+0.015625`
+- and regresses F9 Pareto width.
+
+This confirms that the relative checkpoint gate is active and can reject a topology mutation even when global max Pareto width remains 16.
+
+### Accepted feasibility shortlist
+
+All three accepted candidates preserve 4 / 6 solvable simple builds and do not worsen checkpoint choice loss or max Pareto width. None improves the checkpoint metric (`checkpointGain=0`).
 
 1. `f8-topology-wallMidWest-floorLowerCenter`
-   - score `0.1095`
-   - structuralLoss `0.2875`
-   - checkpointGain `0`
-   - F8 becomes: passable52 / edges54 / cycleRank3 / deadEnds0 / branchNodes4 / D→U16
+   - score `0.18075570890340295`
+   - choice loss `0.546875`
+   - max Pareto width `16`
+   - best margin `37.113%`
+   - weakest winning margin `8.701%`
+   - F8: 52 nodes, 55 edges, cycle rank 4, 2 dead ends, 7 branch nodes, D→U 16
 
-2. `f8-topology-wallMidLower-floorMidCenter`
-   - score `0.1345`
-   - structuralLoss `0.4125`
-   - checkpointGain `0`
-   - F8 becomes: passable52 / edges53 / cycleRank2 / deadEnds0 / branchNodes4 / D→U16
+2. `f9-topology-wallEastLower-floorLowerEast`
+   - score `0.1878740587984261`
+   - choice loss `0.546875`
+   - max Pareto width `16`
+   - best margin `36.474%`
+   - weakest winning margin `7.349%`
+   - F9: 53 nodes, 59 edges, cycle rank 7, 0 dead ends, 9 branch nodes, D→U 16
 
-3. `f9-topology-wallMidEast-floorMidCenter`
-   - score `0.2345`
-   - structuralLoss `0.9125`
-   - checkpointGain `0`
-   - F9 becomes: passable53 / edges60 / cycleRank8 / deadEnds0 / branchNodes8 / D→U16
+3. `f8-topology-wallMidLower-floorMidCenter`
+   - score `0.18870254051743166`
+   - choice loss `0.546875`
+   - max Pareto width `16`
+   - best margin `36.913%`
+   - weakest winning margin `8.279%`
+   - F8: 52 nodes, 55 edges, cycle rank 4, 2 dead ends, 8 branch nodes, D→U 16
 
-For all three accepted alternatives:
+### Topology decision
+
+**Do not promote any wave-1 topology mutation.**
+
+The shortlist demonstrates that constrained topology mutation can preserve playability, but this mutation surface did not reduce player checkpoint width or choice loss. Preserve the v1 F8/F9 maps and move the search effort to the actual diagnostic bottleneck instead of forcing a late-floor edit.
+
+## Validation state
+
+At documentation checkpoint `f5421ed524cd0181a36166e00ee5c78fbc0368a1`, all relevant PR workflows passed:
+
+- `CI` — success
+- `10F Playable Demo` — success
+- `Tuner Profile` — success
+- `10F Co-design Profile` — success
+
+The co-design workflow itself reported:
 
 ```text
-solvableBuilds       4
-choiceLoss           0.546875
-maxParetoWidth       16
-checkpointGain       0
-terminalHpSpread     2352
-bestMargin           36.47%
-weakestMargin         7.35%
+Node tests: 301 passed / 0 failed
+validate:demo10: passed
+numeric/placement co-design search: completed
+F8/F9 topology search: completed
 ```
 
-### Wave-1 decision
+A documentation-only correction to this handoff may create a newer branch head after those runs. Treat `c416c7f8...` as the functionally validated code head and the latest handoff commit as the repository continuation pointer.
 
-**Do not promote any topology mutation.**
+## Next coding-session priorities
 
-The three accepted variants prove that the constrained topology machinery works and can preserve the hard quality contract, but none improves the 33-policy checkpoint diagnostics. They are feasibility examples, not better designs.
+### P0 — add F7 semantic mutation surface
 
-The current F8/F9 baseline remains the product-facing 10F v1 map.
+F7 currently has the largest sampled player checkpoint Pareto width: **16**. The current adaptive mutation planner explicitly reports F2-F7 as unhandled, so the next mutation family should begin at F7 rather than continuing blind F8/F9 topology edits.
 
-## Validation at the functional code head
+Candidate families should be semantic and reversible, for example:
 
-Functionally validated code head:
+- enemy position swaps within protected role classes;
+- card / door timing swaps that conserve the campaign resource budget;
+- reward placement swaps;
+- local pressure adjustments coupled to the existing hard quality contract;
+- only then narrowly constrained topology mutations if a structural reason is measured.
 
-`c416c7f8e49ca49c3eb773ff5cd1fc48961ab038`
+Every candidate must still run through authoritative engine replay and the existing 10F quality gate.
 
-At that head:
+### P1 — add genuine Solver structural checkpoint telemetry
 
-- repository CI: **success**;
-- `10F Playable Demo`: **success**;
-- `Tuner Profile`: **success**;
-- `10F Co-design Profile`: **success**;
-- Node test suite: **301 passed, 0 failed**;
-- six-build 10F quality gate: **passed**;
-- browser Canvas smoke: **passed**;
-- numeric/placement search remained dry-run;
-- topology wave1 remained dry-run.
+The current 33-policy diagnostic records player-policy/resource diversity. Add Solver-side checkpoint telemetry that measures the actual search frontier without conflating it with sampled policy multiplicity.
 
-Useful commands:
+Useful measurements include, per semantic campaign checkpoint:
+
+- unique Solver structural keys;
+- active Pareto labels;
+- frontier width / peak;
+- generated and expanded states since previous checkpoint;
+- action-family branching;
+- event-order-history distinctions retained in keys;
+- pruned-dominated / pruned-bound counts where applicable.
+
+Do not use these diagnostics to weaken proof semantics. A bounded search remains unknown unless the existing exact classifier says otherwise.
+
+### P2 — continue evidence-driven floor coverage
+
+After F7, target the remaining unhandled floors by measured width:
+
+1. F3 / F4 — width 13
+2. F5 / F6 — width 12
+3. F2 — width 10
+
+The objective is not to force every floor to a tiny width. Preserve meaningful strategic trade-offs while eliminating accidental near-duplicate branches and proof-hostile state inflation.
+
+### P3 — CEGIS-style automatic design loop
+
+Continue toward the long-term goal:
+
+```text
+generate mutation
+  -> static invariant screen
+  -> authoritative multi-policy replay
+  -> hard 10F quality gate
+  -> player checkpoint diagnostics
+  -> Solver structural diagnostics
+  -> shortlist
+  -> exact/sound Solver budget only on shortlist
+  -> counterexample / failure-core feedback
+  -> generate next mutation
+```
+
+Important algorithms, result documents, counterexamples, and validation evidence should be committed to GitHub rather than left only in a transient coding environment.
+
+## Recommended commands
+
+From the repository branch:
 
 ```bash
 npm run check
 npm run validate:demo10
-npm run tune:demo10:late
 npm run search:demo10:codesign
 npm run search:demo10:topology
 ```
 
-## Recommended next work
+Use the dedicated GitHub workflows as the reproducible CI evidence source.
 
-The next conversation should continue from this order rather than restarting broad manual tuning.
+## New-session start instruction
 
-### P0 — Add mutation surface where the evidence is largest
+A new coding session should begin by reading this file and PR #16, then:
 
-Start with **F7**, because its current diagnostic Pareto width is **16**, the largest checkpoint. Add semantic design slots and tightly white-listed mutation families for F7 before considering more F8/F9 changes.
-
-Then expand based on evidence:
-
-```text
-F3/F4  width 13
-F5/F6  width 12
-F2     width 10
-```
-
-Do not add all floors at once. Introduce one floor/family at a time with slot-anchor tests and restoration tests.
-
-### P1 — Add genuine Solver structural checkpoint telemetry
-
-Player-policy Pareto width and Solver proof-state width are different quantities. Instrument real Solver boundary/frontier checkpoints so co-design can observe, per semantic checkpoint:
-
-- structural-key count;
-- active Pareto labels;
-- queue/frontier width;
-- action branching;
-- travel/action class counts;
-- pruning by dominance / admissible bound;
-- event-order/history variants that survive canonicalization.
-
-Only after this exists should `historyInflation` influence topology/proof-friendly mutation selection.
-
-### P2 — Continue CEGIS-style co-design
-
-Use this loop:
-
-```text
-diagnostic counterexample / oversized checkpoint
-  -> local semantic mutation family
-  -> static semantic + topology invariants
-  -> authoritative six-build hard quality gate
-  -> 33-policy diagnostic portfolio
-  -> exact/sound Solver work only on shortlist
-  -> witness/failure evidence returned to setter
-```
-
-This is the intended route toward automatic adjustment of enemy values, rewards, doors/cards/items, mechanisms, and later topology without manual per-number tuning.
-
-### P3 — Do not expand topology too aggressively yet
-
-Do not jump directly to arbitrary two-wall or free-form maze generation. Wave 1 showed that F8/F9 single-wall changes can be safe but currently provide zero diagnostic gain.
-
-Only introduce topology wave 2 after local-floor evidence indicates topology is the limiting variable. Keep semantic event identities stable and retain the static graph contract.
-
-### Promotion rule
-
-A dry-run candidate should be considered for product promotion only when it demonstrates a measurable benefit over baseline, survives hard gameplay gates, and does not create a new proof/coverage regression. No shortlist item in the current wave satisfies the “measurable benefit” condition.
-
-## Clean handoff state
-
-At this breakpoint:
-
-- the unfinished topology wave from the prior session is completed;
-- the obsolete zero-choice-loss assertion is removed;
-- topology wave1 has a fresh, successful, fully accounted 32-candidate run;
-- no inferior candidate was written back into the game;
-- all functional validation is green at `c416c7f8e49ca49c3eb773ff5cd1fc48961ab038`;
-- PR #16 remains draft/unmerged;
-- the next high-value implementation target is F7 semantic mutation coverage plus real Solver structural checkpoint telemetry.
+1. confirm the current `demo-10-floor-codesign` head;
+2. confirm PR #16 is still draft/unmerged;
+3. preserve all trust-boundary rules above;
+4. implement P0 F7 semantic mutation support and P1 Solver structural checkpoint telemetry;
+5. run the hard 10F quality contract and relevant regression suite;
+6. push important code, tests, docs, and evidence to GitHub;
+7. do not promote a heuristic candidate or merge any protected PR without explicit approval.
