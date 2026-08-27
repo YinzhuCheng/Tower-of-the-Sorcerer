@@ -47,6 +47,13 @@ test('map hover explains hero, treasure, shop, card barrier and floor transfer u
   assert.equal(stairs.tone, 'warning');
   assert.match(stairs.primaryValue, /第 2 阵/);
   assert.match(stairs.details[0].value, /守护者/);
+
+  state.floor = 1;
+  state.x = 1;
+  state.y = 9;
+  const occupiedDownStairs = buildMapUnitHoverPreview(state, state.x, state.y);
+  assert.equal(occupiedDownStairs.kind, 'stairs');
+  assert.match(occupiedDownStairs.primaryValue, /第 1 阵/);
 });
 
 test('map hover exposes switch progress, rune order and composite gate requirements', () => {
