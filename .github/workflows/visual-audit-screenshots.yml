@@ -25,7 +25,7 @@ concurrency:
 jobs:
   export-screenshots:
     runs-on: ubuntu-latest
-    timeout-minutes: 12
+    timeout-minutes: 8
     steps:
       - uses: actions/checkout@v4
 
@@ -45,7 +45,7 @@ jobs:
           python3 -m http.server 4173 > /tmp/tower-visual-audit-server.log 2>&1 &
           echo $! > /tmp/tower-visual-audit-server.pid
           for i in $(seq 1 40); do
-            if curl -fsS 'http://127.0.0.1:4173/visual-audit.html?floor=1' >/dev/null 2>&1; then
+            if curl -fsS 'http://127.0.0.1:4173/visual-audit.html?all=1' >/dev/null 2>&1; then
               exit 0
             fi
             sleep 0.25
@@ -59,7 +59,7 @@ jobs:
           curl -fsS http://127.0.0.1:4173/assets/anime/enemies/manifest.json >/dev/null
           curl -fsS http://127.0.0.1:4173/assets/anime/map/manifest.json >/dev/null
 
-      - name: Export ten floor screenshots
+      - name: Render and export all ten floors in one browser load
         run: |
           set -euo pipefail
           chrome="$(command -v google-chrome || command -v chromium || command -v chromium-browser || true)"
@@ -68,22 +68,48 @@ jobs:
             exit 1
           fi
 
+          "$chrome" \
+            --headless=new \
+            --no-sandbox \
+            --disable-gpu \
+            --disable-dev-shm-usage \
+            --hide-scrollbars \
+            --run-all-compositor-stages-before-draw \
+            --virtual-time-budget=15000 \
+            --window-size=660,690 \
+            --dump-dom \
+            'http://127.0.0.1:4173/visual-audit.html?all=1' \
+            > /tmp/visual-audit-dom.html \
+            2> /tmp/visual-audit-browser.log
+
           mkdir -p visual-audit-screenshots
-          for floor in $(seq 1 10); do
-            file="visual-audit-screenshots/floor-$(printf '%02d' "$floor").png"
-            "$chrome" \
-              --headless=new \
-              --no-sandbox \
-              --disable-gpu \
-              --disable-dev-shm-usage \
-              --hide-scrollbars \
-              --run-all-compositor-stages-before-draw \
-              --virtual-time-budget=12000 \
-              --window-size=660,690 \
-              --screenshot="$file" \
-              "http://127.0.0.1:4173/visual-audit.html?floor=$floor" \
-              >/tmp/visual-audit-floor-${floor}.log 2>&1
-          done
+          python3 - <<'PY'
+          from pathlib import Path
+          import base64
+          import re
+
+          dom = Path('/tmp/visual-audit-dom.html').read_text(errors='replace')
+          if 'data-visual-audit-failed="true"' in dom:
+              raise SystemExit('visual audit page reported failure')
+          if 'data-visual-audit-ready="true"' not in dom:
+              raise SystemExit('visual audit page never became ready')
+
+          tags = re.findall(r'<img\b[^>]*data-audit-floor="\d+"[^>]*>', dom)
+          if len(tags) != 10:
+              raise SystemExit(f'expected 10 exported image tags, got {len(tags)}')
+
+          root = Path('visual-audit-screenshots')
+          for tag in tags:
+              floor_match = re.search(r'data-audit-floor="(\d+)"', tag)
+              src_match = re.search(r'src="data:image/png;base64,([^"]+)"', tag)
+              if not floor_match or not src_match:
+                  raise SystemExit('malformed visual audit export tag')
+              floor = int(floor_match.group(1))
+              payload = base64.b64decode(src_match.group(1))
+              path = root / f'floor-{floor:02d}.png'
+              path.write_bytes(payload)
+              print(path.name, len(payload))
+          PY
 
       - name: Validate screenshot bundle
         run: |
@@ -98,7 +124,7 @@ jobs:
               data = path.read_bytes()
               assert data[:8] == b'\x89PNG\r\n\x1a\n', f'{path} is not PNG'
               width, height = struct.unpack('>II', data[16:24])
-              assert width >= 638 and height >= 638, f'{path} too small: {width}x{height}'
+              assert width == 638 and height == 638, f'{path} unexpected size: {width}x{height}'
               assert len(data) > 80_000, f'{path} suspiciously small: {len(data)} bytes'
               print(path.name, width, height, len(data))
           PY
