@@ -7,14 +7,20 @@ import {
 } from '../src/game/demo-10-floor-hard-mode.js';
 import { buildExpertNoHpShopPlan, EXPERT_NO_HP_STRATEGY_ID } from '../src/solver/expert-strategy.js';
 
-test('hard-mode pressure restores the sharper F9 boss thresholds', () => {
-  const enemies = { palaceWarden: { magicPower: 160 }, blackSealKeeper: { magicPower: 160, def: 95 } };
+test('hard-mode pressure restores sharper late boss thresholds including final core', () => {
+  const enemies = {
+    palaceWarden: { magicPower: 160 },
+    blackSealKeeper: { magicPower: 160, def: 95 },
+    voidCore: { floor: 10, hp: 3400, atk: 205, def: 98, special: 'magic', magicPower: 164 }
+  };
   const result = applyDemoTenFloorHardMode({ enemies });
   assert.equal(enemies.palaceWarden.magicPower, DEMO10_HARD_MODE_PRESSURE.palaceWardenMagicPower);
   assert.equal(enemies.blackSealKeeper.magicPower, DEMO10_HARD_MODE_PRESSURE.blackSealKeeperMagicPower);
   assert.equal(enemies.blackSealKeeper.def, DEMO10_HARD_MODE_PRESSURE.blackSealKeeperDef);
+  assert.equal(enemies.voidCore.magicPower, DEMO10_HARD_MODE_PRESSURE.voidCoreMagicPower);
   assert.equal(result.pressure.blackSealKeeperMagicPower, 190);
   assert.equal(result.pressure.blackSealKeeperDef, 96);
+  assert.equal(result.pressure.voidCoreMagicPower, 460);
 });
 
 test('tiered-shop hard mode ramps F6-F10 HP/ATK pressure without generic DEF cliffs', () => {
