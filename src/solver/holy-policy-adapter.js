@@ -1,0 +1,107 @@
+import { HOLY_POLICIES } from './greedy-strategy.js';
+import { createBoundedTowerAdapter } from './tower-bounds.js';
+
+function actionIsHoly(action) {
+  return action?.kind === 'tile'
+    && action?.parsed?.type === 'item'
+    && action?.parsed?.id === 'holy';
+}
+
+function finalEncounterAvailable(actions) {
+  return actions.some((action) =>
+    action?.kind === 'tile'
+    && action?.parsed?.type === 'enemy'
+    && ['finalQueen', 'voidCore'].includes(action.parsed.id)
+  );
+}
+
+export function holyPolicyTriggerReached(state, holyPolicy, actions = []) {
+  if (!HOLY_POLICIES.includes(holyPolicy)) throw new Error(`Unknown Holy policy: ${holyPolicy}`);
+  if (state?.relics?.holy) return true;
+  if (holyPolicy === 'immediate') return true;
+  if (holyPolicy === 'after-core-6') return (state?.cores ?? 0) >= 6;
+  if (holyPolicy === 'after-core-7') return (state?.cores ?? 0) >= 7;
+  if (holyPolicy === 'before-final') return finalEncounterAvailable(actions);
+  return false;
+}
+
+export function filterHolyPolicyActions(state, actions, holyPolicy, {
+  triggerActions = actions
+} = {}) {
+  const list = [...actions];
+  if (state?.relics?.holy || holyPolicy === 'immediate') return list;
+  const allowHoly = holyPolicyTriggerReached(state, holyPolicy, triggerActions);
+  return allowHoly ? list : list.filter((action) => !actionIsHoly(action));
+}
+
+function structurallyReachableCombatActions(baseAdapter, state) {
+  const relaxed = baseAdapter.materializeState(state);
+  // The deterministic runner's before-final trigger asks whether the final enemy
+  // is reachable, not whether the current stats can already win the battle. The
+  // normal Tower adapter removes unwinnable enemies from its action list, so use
+  // a disposable combat-relaxed clone only for trigger detection.
+  relaxed.stats.hp = Number.MAX_SAFE_INTEGER;
+  relaxed.stats.maxHp = Number.MAX_SAFE_INTEGER;
+  relaxed.stats.atk = Number.MAX_SAFE_INTEGER;
+  relaxed.stats.def = Number.MAX_SAFE_INTEGER;
+  return baseAdapter.enumerateActions(relaxed);
+}
+
+/**
+ * Wraps the canonical Tower adapter without changing engine transition rules.
+ * The wrapper only removes Holy pickup actions before the requested policy
+ * trigger. For `before-final`, trigger detection uses structural enemy
+ * reachability rather than battle affordability so it matches the deterministic
+ * runner's policy semantics.
+ *
+ * Goal states are additionally required to have acquired Holy, so a route cannot
+ * satisfy the policy by simply never collecting the relic.
+ *
+ * The default base is the bounded Tower adapter. Existence mode ignores its HP
+ * objective bound, but reuses compact frontier keys and canonical compass travel.
+ * The latter has a repository proof argument: after boss-stair locking, upward
+ * teleports are resource-equivalent to repeated U traversal and D is equivalent
+ * to direct downward teleport. Reusing that history-free canonicalization removes
+ * free travel cycles without changing Holy-policy feasibility.
+ */
+export function createHolyPolicyTowerAdapter({
+  holyPolicy,
+  baseAdapter = createBoundedTowerAdapter()
+} = {}) {
+  if (!HOLY_POLICIES.includes(holyPolicy)) throw new Error(`Unknown Holy policy: ${holyPolicy}`);
+  return {
+    ...baseAdapter,
+    enumerateActions(state) {
+      const actions = baseAdapter.enumerateActions(state);
+      const triggerActions = holyPolicy === 'before-final' && !state.relics?.holy
+        ? structurallyReachableCombatActions(baseAdapter, state)
+        : actions;
+      return filterHolyPolicyActions(state, actions, holyPolicy, { triggerActions });
+    },
+    isGoal(state) {
+      return baseAdapter.isGoal(state) && state.relics?.holy === true;
+    },
+    stageKey(state) {
+      const base = baseAdapter.stageKey ? baseAdapter.stageKey(state) : 'all';
+      return `${base}/holy:${state.relics?.holy ? 1 : 0}`;
+    },
+    rulesVersion() {
+      return `${baseAdapter.rulesVersion?.() ?? 'tower'}+holy-policy:${holyPolicy}`;
+    },
+    holyPolicy
+  };
+}
+
+export function extractShopPlanFromSolverCertificate(certificate) {
+  if (!certificate?.steps) return [];
+  return certificate.steps
+    .filter((step) => step.kind === 'shop' && typeof step.action?.optionId === 'string')
+    .map((step) => step.action.optionId);
+}
+
+export function extractHolyStepFromSolverCertificate(certificate) {
+  return certificate?.steps?.find((step) =>
+    step.kind === 'tile'
+    && step.action?.token === 'item:holy'
+  ) ?? null;
+}

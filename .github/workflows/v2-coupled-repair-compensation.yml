@@ -1,0 +1,91 @@
+name: V2 Coupled Repair Compensation
+
+on:
+  push:
+    branches:
+      - solver-phase1-pareto
+    paths:
+      - 'src/tuner/v2-coupled-repair-search.js'
+      - 'src/tuner/v2-local-repair-seed.js'
+      - 'src/tuner/v2-localized-repair-search.js'
+      - 'src/tuner/numeric-mutation-space.js'
+      - 'src/analyzer/event-order-purchase-local-search.js'
+      - 'src/analyzer/event-order-purchase-recovery.js'
+      - 'src/analyzer/event-order-witness-counterfactuals.js'
+      - 'scripts/search-v2-coupled-repair-compensation.mjs'
+      - 'test/v2-coupled-repair-search.test.js'
+      - 'docs/v2-coupled-repair-compensation.md'
+      - '.github/workflows/v2-coupled-repair-compensation.yml'
+  pull_request:
+    paths:
+      - 'src/tuner/v2-coupled-repair-search.js'
+      - 'src/tuner/v2-local-repair-seed.js'
+      - 'src/tuner/v2-localized-repair-search.js'
+      - 'src/tuner/numeric-mutation-space.js'
+      - 'src/analyzer/event-order-purchase-local-search.js'
+      - 'src/analyzer/event-order-purchase-recovery.js'
+      - 'src/analyzer/event-order-witness-counterfactuals.js'
+      - 'scripts/search-v2-coupled-repair-compensation.mjs'
+      - 'test/v2-coupled-repair-search.test.js'
+      - 'docs/v2-coupled-repair-compensation.md'
+      - '.github/workflows/v2-coupled-repair-compensation.yml'
+  workflow_dispatch:
+    inputs:
+      max_relative_hardening:
+        description: 'Maximum relative hardening for a single F6-F8 hazard'
+        required: false
+        default: '1.50'
+      refine_top_k:
+        description: 'Top single-lever compensation boundaries to fully validate'
+        required: false
+        default: '8'
+
+concurrency:
+  group: v2-coupled-repair-compensation-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  coupled-search:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - name: Search coupled forgiveness and late pressure
+        env:
+          MAX_RELATIVE_HARDENING: ${{ inputs.max_relative_hardening || '1.50' }}
+          REFINE_TOP_K: ${{ inputs.refine_top_k || '8' }}
+        run: |
+          node scripts/search-v2-coupled-repair-compensation.mjs \
+            --max-relative-hardening="$MAX_RELATIVE_HARDENING" \
+            --refine-top-k="$REFINE_TOP_K" \
+            --json > v2-coupled-repair-compensation.json
+      - name: Print coupled search evidence
+        if: always()
+        run: |
+          python3 - <<'PY'
+          import json, os
+          if not os.path.exists('v2-coupled-repair-compensation.json'):
+              print('Coupled search report was not produced.')
+              raise SystemExit(0)
+          r=json.load(open('v2-coupled-repair-compensation.json'))
+          rep=(r.get('repairSeed') or {}).get('reconstructed') or {}
+          print(f"COUPLED model={r.get('model')} interpretation={r.get('interpretation')}")
+          print(f"REPAIR hp={rep.get('terminalHp')} margin={rep.get('minNormalizedHpMargin')} local={rep.get('localOptimal')} semantic={rep.get('semanticFingerprint')}")
+          for x in (r.get('compensationFrontier') or []):
+              if not x.get('targetReachable'): continue
+              print(f"FRONTIER key={x.get('parameterKey')} floor={x.get('floor')} boss={x.get('boss')} {x.get('originalValue')}->{x.get('boundaryValue')} rel={x.get('relativeEdit')} fixedHp={(x.get('boundaryReplay') or {}).get('terminalHp')} fixedMargin={(x.get('boundaryReplay') or {}).get('minNormalizedHpMargin')}")
+          for c in r.get('candidates') or []:
+              cf=c.get('counterfactuals') or {}; rr=c.get('recovery') or {}
+              print(f"CANDIDATE id={c.get('id')} edits={c.get('compensationEdits')} hp={c.get('terminalHp')} margin={c.get('minNormalizedHpMargin')} catastrophic={cf.get('catastrophicMutations')} exactUnrecoverable={rr.get('exactUnrecoverableMutations')} unknown={rr.get('unknownMutations')} local={c.get('localOptimal')} pass={c.get('localGatePassed')} semantic={c.get('semanticFingerprint')}")
+          s=r.get('selected') or {}; cf=s.get('counterfactuals') or {}; rr=s.get('recovery') or {}
+          print(f"SELECTED id={s.get('id')} edits={s.get('compensationEdits')} hp={s.get('terminalHp')} margin={s.get('minNormalizedHpMargin')} catastrophic={cf.get('catastrophicMutations')} exactUnrecoverable={rr.get('exactUnrecoverableMutations')} unknown={rr.get('unknownMutations')} pass={s.get('localGatePassed')} witness={s.get('witnessHash')} semantic={s.get('semanticFingerprint')} plan={s.get('purchasePlan')}")
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: v2-coupled-repair-compensation
+          path: v2-coupled-repair-compensation.json
+          if-no-files-found: warn
+          retention-days: 14

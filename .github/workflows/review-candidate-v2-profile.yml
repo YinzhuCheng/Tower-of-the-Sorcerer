@@ -1,0 +1,130 @@
+name: Review Candidate V2 Profile
+
+on:
+  push:
+    branches:
+      - solver-phase1-pareto
+    paths:
+      - 'src/tuner/review-candidates.js'
+      - 'src/tuner/review-candidate-reference.js'
+      - 'src/tuner/review-candidate-v2-rebuild.js'
+      - 'src/tuner/review-candidate-v2-validation.js'
+      - 'src/tuner/event-order-witness-ray.js'
+      - 'src/analyzer/event-order-witness-counterfactuals.js'
+      - 'src/analyzer/event-order-purchase-recovery.js'
+      - 'src/analyzer/event-order-witness-threshold-proof.js'
+      - 'src/analyzer/event-order-core-transition-proof.js'
+      - 'src/analyzer/event-order-joint-best-response.js'
+      - 'src/analyzer/event-order-purchase-local-search.js'
+      - 'src/analyzer/pre-holy-static-cut.js'
+      - 'src/solver/replay.js'
+      - 'src/solver/tower-bounds.js'
+      - 'scripts/validate-review-candidate-v2.mjs'
+      - 'scripts/analyze-v2-event-order-core-transition.mjs'
+      - 'test/review-candidate-v2.test.js'
+      - 'test/event-order-purchase-recovery.test.js'
+      - 'test/event-order-core-transition-proof.test.js'
+      - 'docs/review-candidate-v2.md'
+      - 'docs/recovery-aware-counterfactuals.md'
+      - 'docs/v2-core-transition-proof.md'
+      - '.github/workflows/review-candidate-v2-profile.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: review-candidate-v2-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate-v2:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - name: Validate distributed-pressure V2
+        run: |
+          node scripts/validate-review-candidate-v2.mjs \
+            --max-purchase-passes=12 \
+            --existence-max-expanded=10000 \
+            --existence-max-generated=120000 \
+            --event-order-max-expanded=50000 \
+            --event-order-max-generated=400000 \
+            --json > review-candidate-v2.json
+      - name: Print compact V2 validation summary
+        run: |
+          python3 - <<'PY'
+          import json
+          r=json.load(open('review-candidate-v2.json'))
+          ref=r.get('reference') or {}
+          rb=r.get('rebuild') or {}
+          checks=rb.get('checks') or {}
+          ex=r.get('existence') or {}
+          h=r.get('holyCoverage') or {}
+          cf=r.get('counterfactuals') or {}
+          rc=r.get('recoveryAwareCounterfactuals') or {}
+          eo=r.get('eventOrder') or {}
+          s=eo.get('solver') or {}
+          e=eo.get('exploit') or {}
+          print(f"V2 status={r.get('status')} hp={ref.get('terminalHp')} margin={ref.get('minNormalizedHpMargin')} witness={ref.get('referenceWitnessHash')}")
+          print(f"REBUILD step={rb.get('sourceRayStep')} hp={rb.get('terminalHp')} margin={rb.get('minNormalizedHpMargin')} hash={rb.get('witnessHash')} local={rb.get('localOptimal')} checks={checks}")
+          print(f"PURCHASE_PLAN actual={','.join(rb.get('purchasePlan') or [])}")
+          print(f"PURCHASE_PLAN expected={','.join(rb.get('expectedPurchasePlan') or [])}")
+          print(f"PURCHASE_MISMATCH {rb.get('purchasePolicyMismatch')}")
+          print(f"REFERENCE failures={ref.get('failures')} policy={ref.get('purchasePolicyComparison')}")
+          print(f"EXISTENCE solvable={ex.get('solvable')} exact={ex.get('exact')} replay={ex.get('replayOk')} expanded={ex.get('expandedStates')} generated={ex.get('generatedStates')}")
+          print(f"HOLY complete={h.get('coverageComplete')} delayed={','.join(h.get('delayedPoliciesProvenInfeasible') or [])}")
+          print(f"ROBUST_NORECOURSE recovery={cf.get('recoveryRate')} catastrophic={cf.get('catastrophicRate')} regret={cf.get('highRegretRate')} improvements={cf.get('improvedMutationCount')} mutations={cf.get('totalMutations')}")
+          print(f"ROBUST_RECOVERY exact={rc.get('exactRecoveryClassifiedMutations')}/{rc.get('totalMutations')} recovered={rc.get('recoveredMutations')} unrecoverable={rc.get('exactUnrecoverableMutations')} unknown={rc.get('unknownMutations')} recoveryRate={rc.get('fixedEventOrderRecoveryRate')} unrecoverableRate={rc.get('fixedEventOrderUnrecoverableRate')} formerlyCatastrophicRecovered={len(rc.get('formerlyCatastrophicRecovered') or [])}")
+          for x in rc.get('formerlyCatastrophicRecovered') or []:
+              print(f"RECOVERED purchase={x.get('purchaseNumber')} forced={x.get('forcedOptionId')} hp={x.get('terminalHp')} labels={x.get('peakActiveLabels')} transitions={x.get('generatedTransitions')} witness={x.get('recoveryWitnessHash')}")
+          for x in rc.get('exactUnrecoverableExamples') or []:
+              print(f"UNRECOVERABLE purchase={x.get('purchaseNumber')} forced={x.get('forcedOptionId')} stop={x.get('stoppedReason')} labels={x.get('peakActiveLabels')} transitions={x.get('generatedTransitions')}")
+          print(f"EVENT_ORDER status={eo.get('status')} exploit={eo.get('exploitFound')} exactNo={eo.get('exactNoExploit')} expanded={s.get('expandedStates')} generated={s.get('generatedStates')} bound={s.get('prunedBound')} stop={s.get('stoppedReason')} hp={e.get('terminalHp')} delta={e.get('deltaHp')}")
+          print(f"FAILURES {','.join(r.get('failures') or []) or 'none'}")
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: review-candidate-v2
+          path: review-candidate-v2.json
+          if-no-files-found: error
+          retention-days: 7
+
+  threshold-core6-to-core7:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - name: Analyze V2 threshold-relevant core6 to core7 transition
+        run: |
+          node scripts/analyze-v2-event-order-core-transition.mjs \
+            --from-cores=6 \
+            --to-cores=7 \
+            --max-purchase-passes=12 \
+            --boundary-max-expanded=8000 \
+            --boundary-max-generated=100000 \
+            --boundary-max-goals=64 \
+            --max-transition-seeds=8 \
+            --transition-max-expanded=5000 \
+            --transition-max-generated=70000 \
+            --json > v2-core6-to-core7-threshold.json
+      - name: Print compact V2 transition summary
+        run: |
+          python3 - <<'PY'
+          import json
+          r=json.load(open('v2-core6-to-core7-threshold.json')); b=r.get('rebuild') or {}; t=r.get('transition') or {}; bd=t.get('boundary') or {}; sch=t.get('schedule') or {}
+          print(f"V2_TRANSITION reference={b.get('terminalHp')} margin={b.get('minNormalizedHpMargin')} witness={b.get('witnessHash')} transition=c{t.get('fromCores')}->c{t.get('toCores')} status={t.get('status')} found={t.get('transitionFound')} exactNo={t.get('exactNoTransition')}")
+          print(f"BOUNDARY relevant={bd.get('verifiedRelevantGoals')}/{bd.get('discoveredGoals')} exact={bd.get('coverageExact')} expanded={bd.get('expandedStates')} generated={bd.get('generatedStates')} stop={bd.get('stoppedReason')}")
+          print(f"SCHEDULE scheduled={sch.get('scheduledSeedCount')}/{sch.get('verifiedRelevantSeedCount')} attemptedAll={sch.get('attemptedAllVerified')}")
+          for a in t.get('attempts') or []:
+              s=a.get('solver') or {}; rp=a.get('replay') or {}
+              print(f"ATTEMPT seed={a.get('prefixCertificateHash')} ub={a.get('prefixUpperBound')} hp={(a.get('prefixResources') or {}).get('hp')} gold={(a.get('prefixResources') or {}).get('gold')} p={a.get('prefixShopPurchases')} found={a.get('transitionFound')} exactNo={a.get('exactNoTransition')} expanded={s.get('expandedStates')} generated={s.get('generatedStates')} bound={s.get('prunedBound')} stop={s.get('stoppedReason')} replay={rp.get('ok')} nextUb={rp.get('nextStateUpperBound')}")
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: v2-core6-to-core7-threshold
+          path: v2-core6-to-core7-threshold.json
+          if-no-files-found: error
+          retention-days: 7

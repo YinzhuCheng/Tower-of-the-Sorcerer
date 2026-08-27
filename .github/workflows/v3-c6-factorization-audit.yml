@@ -1,0 +1,71 @@
+name: V3 C6 Factorization Audit
+on:
+  push:
+    branches: [solver-phase1-pareto]
+    paths:
+      - 'src/analyzer/event-order-c6-factorization-audit.js'
+      - 'src/solver/tower-adapter.js'
+      - 'src/solver/tower-codec.js'
+      - 'src/solver/tower-bounds.js'
+      - 'src/solver/fixed-purchase-policy-adapter.js'
+      - 'scripts/analyze-v3-c6-factorization-audit.mjs'
+      - 'test/event-order-c6-factorization-audit.test.js'
+      - 'docs/v3-c6-factorization-audit.md'
+      - '.github/workflows/v3-c6-factorization-audit.yml'
+  pull_request:
+    paths:
+      - 'src/analyzer/event-order-c6-factorization-audit.js'
+      - 'src/solver/tower-adapter.js'
+      - 'src/solver/tower-codec.js'
+      - 'src/solver/tower-bounds.js'
+      - 'src/solver/fixed-purchase-policy-adapter.js'
+      - 'scripts/analyze-v3-c6-factorization-audit.mjs'
+      - 'test/event-order-c6-factorization-audit.test.js'
+      - 'docs/v3-c6-factorization-audit.md'
+      - '.github/workflows/v3-c6-factorization-audit.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: v3-c6-factorization-audit-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - name: Audit c6 factorization dimensions
+        run: |
+          node scripts/analyze-v3-c6-factorization-audit.mjs \
+            --target-cores=6 \
+            --max-goals=512 \
+            --max-expanded=50000 \
+            --max-generated=700000 \
+            --json > v3-c6-factorization-audit.json
+      - name: Print c6 factorization evidence
+        if: always()
+        run: |
+          python3 - <<'PY'
+          import json, os
+          p='v3-c6-factorization-audit.json'
+          if not os.path.exists(p) or os.path.getsize(p)==0:
+              print('V3 c6 factorization audit report missing')
+              raise SystemExit(0)
+          x=json.load(open(p)); r=x.get('analysis') or {}; b=r.get('boundary') or {}; pjs=r.get('projections') or {}; axes=r.get('stateAxes') or {}; mono=r.get('monotoneCandidates') or {}
+          print(f"V3_C6_FACTOR status={r.get('status')} reference={(x.get('rebuild') or {}).get('terminalHp')} exact={b.get('coverageExact')} stop={b.get('stoppedReason')} goals={b.get('activeGoalLabels')} relevant={b.get('replayVerifiedRelevantGoals')}")
+          print(f"PROJECTION raw={pjs.get('raw')} safePuzzle={pjs.get('safePuzzleCanonical')} omitVisited={pjs.get('omitVisitedDiagnostic')} omitComponent={pjs.get('omitComponentDiagnostic')} actionSurfaces={pjs.get('actionSurfaceStructuralStates')}")
+          print(f"AXES purchases={axes.get('purchaseHistogram')} relics={axes.get('relicSignatures')} visited={axes.get('visitedSignatures')} components={axes.get('componentSignatures')}")
+          print(f"MONOTONE reachableZeroGoals={mono.get('goalsWithReachableZeroDamageEnemy')} reachableZeroHist={mono.get('reachableZeroDamageEnemyCountHistogram')} remainingSafeGoals={mono.get('goalsWithAnyRemainingZeroDamageSafeEnemy')} remainingSafeHist={mono.get('remainingZeroDamageSafeCountHistogram')} safeSetSignatures={mono.get('remainingZeroDamageSafeSetSignatures')} affordableShopGoals={mono.get('goalsWithAffordableFixedShop')}")
+          for f in r.get('floorVariation') or []:
+              print(f"FLOOR floor={f.get('floor')} slots={f.get('dynamicSlots')} variable={f.get('variableSlots')} types={f.get('variableByType')} signatures={f.get('uniqueEventSignatures')}")
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: v3-c6-factorization-audit
+          path: v3-c6-factorization-audit.json
+          if-no-files-found: warn
+          retention-days: 14

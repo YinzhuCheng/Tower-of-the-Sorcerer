@@ -88,6 +88,31 @@ test('card doors remain closed without a card and consume exactly one card when 
   assert.equal(getTile(state, state.x, state.y), '.');
 });
 
+test('upper stairs stay sealed until the current floor boss is defeated', () => {
+  const state = createInitialState();
+  state.floor = 6;
+  // Floor 7 has an alternate corridor adjacent to U, so this reproduces the
+  // topology that previously allowed the solver/player to enter floor 8 with
+  // only six recovered cores.
+  state.x = 9;
+  state.y = 2;
+  assert.equal(getTile(state, 9, 1), 'U');
+  assert.equal(state.floorStates[6].bossDefeated, false);
+
+  const blocked = tryMove(state, 0, -1);
+  assert.equal(blocked.blocked, true);
+  assert.equal(blocked.moved, false);
+  assert.equal(state.floor, 6);
+  assert.match(blocked.reason, /守护者|阵眼/);
+
+  state.floorStates[6].bossDefeated = true;
+  const opened = tryMove(state, 0, -1);
+  assert.equal(opened.blocked, false);
+  assert.equal(opened.moved, true);
+  assert.equal(opened.floorChanged, true);
+  assert.equal(state.floor, 7);
+});
+
 test('items and relics apply deterministic permanent effects only once where applicable', () => {
   const state = createInitialState();
   collectItem(state, 'atk');

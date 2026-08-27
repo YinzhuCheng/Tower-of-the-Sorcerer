@@ -1,0 +1,68 @@
+name: V3 C6 Cross-Floor Teleport Memo Probe
+on:
+  push:
+    branches: [solver-phase1-pareto]
+    paths:
+      - 'src/solver/fixed-purchase-teleport-transition-memo-adapter.js'
+      - 'src/analyzer/event-order-c6-cross-floor-teleport-memo-counterexample-hunt.js'
+      - 'scripts/analyze-v3-c6-cross-floor-teleport-memo-counterexample-hunt.mjs'
+      - 'test/fixed-purchase-teleport-transition-memo-adapter.test.js'
+      - 'docs/v3-c7-compass-macro-v1-result-and-teleport-memo-plan-2026-08-27.md'
+      - '.github/workflows/v3-c6-cross-floor-teleport-memo-probe.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: v3-c6-cross-floor-teleport-memo-probe-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - name: Test equivalent-teleport memo adapter
+        run: node --test test/fixed-purchase-teleport-transition-memo-adapter.test.js
+      - name: Run one-family teleport-memo probe
+        run: |
+          node scripts/analyze-v3-c6-cross-floor-teleport-memo-counterexample-hunt.mjs \
+            --from-cores=6 --to-cores=7 \
+            --from-boundary-max-expanded=8000 \
+            --from-boundary-max-generated=100000 \
+            --from-boundary-max-goals=64 \
+            --max-prefix-seeds=1 \
+            --bridge-max-expanded-per-prefix=6000 \
+            --bridge-max-generated-per-prefix=90000 \
+            --bridge-max-goals-per-prefix=32 \
+            --max-suffix-bridges=1 \
+            --suffix-max-expanded-per-bridge=3000 \
+            --suffix-max-generated-per-bridge=50000 \
+            --suffix-priority-slack-bucket=500 \
+            --json > v3-c6-cross-floor-teleport-memo-probe.json
+      - name: Print teleport-memo probe evidence
+        if: always()
+        run: |
+          python3 - <<'PY'
+          import json, os
+          p='v3-c6-cross-floor-teleport-memo-probe.json'
+          if not os.path.exists(p) or os.path.getsize(p)==0:
+              print('V3 teleport-memo probe report missing')
+              raise SystemExit(0)
+          x=json.load(open(p)); r=x.get('analysis') or {}; b=r.get('bridgeSummary') or {}; e=r.get('exploit') or {}; f=r.get('fromBoundary') or {}
+          print(f"V3_TELEPORT_MEMO_PROBE status={r.get('status')} exploit={r.get('exploitFound')} reference={(x.get('rebuild') or {}).get('terminalHp')} semantic={(x.get('rebuild') or {}).get('semanticFingerprint')}")
+          print(f"C6 stop={f.get('stoppedReason')} active={f.get('activeGoalLabels')} expanded={f.get('expandedStates')} generated={f.get('generatedStates')} searchStruct={f.get('structuralStates')}")
+          print(f"BRIDGES active={b.get('activePareto')} residual={b.get('residual')} scheduled={b.get('scheduledResidual')} families={b.get('scheduledFamilies')}")
+          for a in (r.get('suffix') or {}).get('attempts') or []:
+              s=a.get('solver') or {}; t=s.get('telemetry') or {}; m=s.get('teleportMemo') or {}; br=s.get('branching') or {}; res=a.get('resources') or {}; rr=a.get('replay') or {}
+              print(f"SUFFIX prefix={a.get('prefixCertificateHash')} bridge={a.get('bridgeId')} p={a.get('shopPurchases')} hp={res.get('hp')} gold={res.get('gold')} tight={a.get('tightUpperBound')} expanded={s.get('expandedStates')} generated={s.get('generatedStates')} dominated={s.get('prunedDominated')} bound={s.get('prunedBound')} structural={s.get('structuralStates')} active={s.get('activeLabels')} peak={s.get('frontierPeak')} stop={s.get('stoppedReason')} branchMean={br.get('mean')} branchMax={br.get('max')} memoFirst={m.get('firstTeleportClasses')} memoOmitted={m.get('omittedEquivalentTeleports')} memoSize={m.get('memoSize')} teleport={t.get('teleportGenerated')} stair={t.get('stairGenerated')} travel={t.get('travelGeneratedRatio')} late={t.get('lateFloorExpandedRatio')} replay={rr.get('ok')} objective={rr.get('objective')} exploit={a.get('exploit')}")
+          print(f"EXPLOIT hp={e.get('terminalHp')} delta={e.get('deltaHp')} witnessReplay={(e.get('witnessReplay') or {}).get('ok')} witnessObjective={(e.get('witnessReplay') or {}).get('objective')}")
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: v3-c6-cross-floor-teleport-memo-probe
+          path: v3-c6-cross-floor-teleport-memo-probe.json
+          if-no-files-found: warn
+          retention-days: 14

@@ -1,0 +1,40 @@
+name: V3 C6 Boundary Growth
+on:
+  push:
+    branches: [solver-phase1-pareto]
+    paths: ['src/analyzer/event-order-c6-boundary-growth.js','scripts/analyze-v3-c6-boundary-growth.mjs','test/event-order-c6-boundary-growth.test.js','docs/v3-c6-boundary-growth.md','.github/workflows/v3-c6-boundary-growth.yml']
+  pull_request:
+    paths: ['src/analyzer/event-order-c6-boundary-growth.js','scripts/analyze-v3-c6-boundary-growth.mjs','test/event-order-c6-boundary-growth.test.js','docs/v3-c6-boundary-growth.md','.github/workflows/v3-c6-boundary-growth.yml']
+  workflow_dispatch:
+concurrency:
+  group: v3-c6-boundary-growth-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  growth:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - name: Profile c6 goal-cap ladder
+        run: node scripts/analyze-v3-c6-boundary-growth.mjs --target-cores=6 --goal-caps=64,128,256,512 --max-expanded=50000 --max-generated=700000 --json > v3-c6-boundary-growth.json
+      - name: Print c6 growth
+        if: always()
+        run: |
+          python3 - <<'PY'
+          import json,os
+          p='v3-c6-boundary-growth.json'
+          if not os.path.exists(p) or os.path.getsize(p)==0: print('report missing'); raise SystemExit(0)
+          x=json.load(open(p)); r=x.get('analysis') or {}
+          print(f"V3_C6_GROWTH status={r.get('status')} exactBoundary={r.get('exactBoundaryFound')} reference={(x.get('rebuild') or {}).get('terminalHp')} interpretation={r.get('interpretation')}")
+          for q in r.get('rounds') or []: print(f"ROUND cap={q.get('maxGoals')} exact={q.get('coverageExact')} stop={q.get('stoppedReason')} goals={q.get('activeGoalLabels')} structuralGoals={q.get('goalStructuralStates')} verified={q.get('replayVerifiedGoals')} relevant={q.get('thresholdRelevantGoals')} purchases={q.get('purchaseHistogram')} expanded={q.get('expandedStates')} generated={q.get('generatedStates')} searchStructural={q.get('structuralStates')} active={q.get('activeSearchLabels')}")
+          print(f"DELTAS {r.get('deltas')}")
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: v3-c6-boundary-growth
+          path: v3-c6-boundary-growth.json
+          if-no-files-found: warn
+          retention-days: 14

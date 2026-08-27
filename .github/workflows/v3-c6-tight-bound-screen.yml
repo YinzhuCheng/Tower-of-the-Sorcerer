@@ -1,0 +1,39 @@
+name: V3 C6 Tight Bound Screen
+on:
+  push:
+    branches: [solver-phase1-pareto]
+    paths: ['src/analyzer/event-order-core-prefix-tight-bound-screen.js','src/solver/fixed-purchase-bridge-tight-bound.js','scripts/analyze-v3-c6-tight-bound-screen.mjs','test/event-order-core-prefix-tight-bound-screen.test.js','docs/v3-c6-tight-bound-screen.md','.github/workflows/v3-c6-tight-bound-screen.yml']
+  pull_request:
+    paths: ['src/analyzer/event-order-core-prefix-tight-bound-screen.js','src/solver/fixed-purchase-bridge-tight-bound.js','scripts/analyze-v3-c6-tight-bound-screen.mjs','test/event-order-core-prefix-tight-bound-screen.test.js','docs/v3-c6-tight-bound-screen.md','.github/workflows/v3-c6-tight-bound-screen.yml']
+  workflow_dispatch:
+concurrency:
+  group: v3-c6-tight-bound-screen-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  c6-screen:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - name: Screen c6 prefix frontier
+        run: node scripts/analyze-v3-c6-tight-bound-screen.mjs --target-cores=6 --boundary-max-expanded=20000 --boundary-max-generated=250000 --boundary-max-goals=128 --json > v3-c6-tight-bound-screen.json
+      - name: Print c6 screen
+        if: always()
+        run: |
+          python3 - <<'PY'
+          import json,os
+          p='v3-c6-tight-bound-screen.json'
+          if not os.path.exists(p) or os.path.getsize(p)==0: print('report missing'); raise SystemExit(0)
+          x=json.load(open(p)); r=x.get('analysis') or {}; f=r.get('frontier') or {}; s=r.get('summary') or {}
+          print(f"V3_C6_TIGHT status={r.get('status')} reference={(x.get('rebuild') or {}).get('terminalHp')} frontierExact={f.get('coverageExact')} stop={f.get('stoppedReason')} goals={f.get('activeGoalLabels')} expanded={f.get('expandedStates')} generated={f.get('generatedStates')}")
+          print(f"SCREEN screened={r.get('screenedCount')} oldClosed={r.get('oldBoundClosed')} replayFailures={r.get('replayFailures')} summary={s}")
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: v3-c6-tight-bound-screen
+          path: v3-c6-tight-bound-screen.json
+          if-no-files-found: warn
+          retention-days: 14

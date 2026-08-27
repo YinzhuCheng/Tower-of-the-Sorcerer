@@ -1,0 +1,131 @@
+name: V3 Review Validation
+
+on:
+  push:
+    branches:
+      - solver-phase1-pareto
+    paths:
+      - 'src/tuner/review-candidates.js'
+      - 'src/tuner/review-candidate-v3-rebuild.js'
+      - 'src/tuner/review-candidate-v3-validation.js'
+      - 'src/tuner/review-candidate-reference.js'
+      - 'src/analyzer/event-order-witness-threshold-proof.js'
+      - 'src/analyzer/event-order-core-transition-proof.js'
+      - 'src/analyzer/event-order-core-transition-chain.js'
+      - 'src/analyzer/event-order-purchase-recovery.js'
+      - 'src/solver/fixed-purchase-policy-adapter.js'
+      - 'src/solver/objective-threshold-adapter.js'
+      - 'src/solver/core-boundary-adapter.js'
+      - 'src/solver/tower-bounds.js'
+      - 'scripts/validate-review-candidate-v3.mjs'
+      - 'scripts/analyze-v3-event-order-core-transition-chain.mjs'
+      - 'test/review-candidate-v3.test.js'
+      - '.github/workflows/v3-review-validation.yml'
+  pull_request:
+    paths:
+      - 'src/tuner/review-candidates.js'
+      - 'src/tuner/review-candidate-v3-rebuild.js'
+      - 'src/tuner/review-candidate-v3-validation.js'
+      - 'src/tuner/review-candidate-reference.js'
+      - 'src/analyzer/event-order-witness-threshold-proof.js'
+      - 'src/analyzer/event-order-core-transition-proof.js'
+      - 'src/analyzer/event-order-core-transition-chain.js'
+      - 'src/analyzer/event-order-purchase-recovery.js'
+      - 'src/solver/fixed-purchase-policy-adapter.js'
+      - 'src/solver/objective-threshold-adapter.js'
+      - 'src/solver/core-boundary-adapter.js'
+      - 'src/solver/tower-bounds.js'
+      - 'scripts/validate-review-candidate-v3.mjs'
+      - 'scripts/analyze-v3-event-order-core-transition-chain.mjs'
+      - 'test/review-candidate-v3.test.js'
+      - '.github/workflows/v3-review-validation.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: v3-review-validation-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate-v3:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - name: Rebuild and globally validate V3
+        run: |
+          node scripts/validate-review-candidate-v3.mjs \
+            --max-purchase-passes=12 \
+            --existence-max-expanded=10000 \
+            --existence-max-generated=120000 \
+            --event-order-max-expanded=50000 \
+            --event-order-max-generated=400000 \
+            --json > v3-review-validation.json
+      - name: Print compact V3 validation summary
+        if: always()
+        run: |
+          python3 - <<'PY'
+          import json, os
+          if not os.path.exists('v3-review-validation.json'):
+              print('V3 report was not produced.')
+              raise SystemExit(0)
+          r=json.load(open('v3-review-validation.json')); eo=r.get('eventOrder') or {}; cf=r.get('counterfactuals') or {}; rc=r.get('recoveryAwareCounterfactuals') or {}; ex=r.get('existence') or {}; exploit=eo.get('exploit') or {}
+          print(f"V3 status={r.get('status')} failures={','.join(r.get('failures') or []) or 'none'}")
+          print(f"REBUILD hp={(r.get('rebuild') or {}).get('terminalHp')} margin={(r.get('rebuild') or {}).get('minNormalizedHpMargin')} hash={(r.get('rebuild') or {}).get('witnessHash')} semantic={(r.get('rebuild') or {}).get('semanticFingerprint')} local={(r.get('rebuild') or {}).get('localOptimal')} checks={(r.get('rebuild') or {}).get('checks')}")
+          print(f"EXISTENCE solvable={ex.get('solvable')} exact={ex.get('exact')} replay={ex.get('replayOk')} expanded={ex.get('expandedStates')} generated={ex.get('generatedStates')} stop={ex.get('stoppedReason')}")
+          print(f"ROBUST recovery={cf.get('recoveryRate')} catastrophic={cf.get('catastrophicRate')} improved={cf.get('improvedMutationCount')}")
+          print(f"RECOVERY_AWARE recovered={rc.get('recoveredMutations')} exactUnrecoverable={rc.get('exactUnrecoverableMutations')} unknown={rc.get('unknownMutations')} rate={r.get('recoveryUnrecoverableRate')}")
+          print(f"EVENT_ORDER status={eo.get('status')} exploit={eo.get('exploitFound')} exactNo={eo.get('exactNoExploit')} expanded={(eo.get('solver') or {}).get('expandedStates')} generated={(eo.get('solver') or {}).get('generatedStates')} hp={exploit.get('terminalHp')} delta={exploit.get('deltaHp')}")
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: v3-review-validation
+          path: v3-review-validation.json
+          if-no-files-found: warn
+          retention-days: 14
+
+  v3-core-transition-chain:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - name: Continue V3 c6 threshold bridge to terminal suffix
+        run: |
+          node scripts/analyze-v3-event-order-core-transition-chain.mjs \
+            --from-cores=6 \
+            --to-cores=7 \
+            --boundary-max-expanded=8000 \
+            --boundary-max-generated=100000 \
+            --boundary-max-goals=64 \
+            --max-transition-seeds=8 \
+            --transition-max-expanded=5000 \
+            --transition-max-generated=70000 \
+            --suffix-max-expanded=8000 \
+            --suffix-max-generated=100000 \
+            --suffix-priority-slack-bucket=500 \
+            --json > v3-core-transition-chain.json
+      - name: Print compact V3 chain summary
+        if: always()
+        run: |
+          python3 - <<'PY'
+          import json, os
+          if not os.path.exists('v3-core-transition-chain.json'):
+              print('V3 chain report was not produced.')
+              raise SystemExit(0)
+          x=json.load(open('v3-core-transition-chain.json')); r=x.get('chain') or {}; t=r.get('transition') or {}; b=r.get('bridge') or {}; s=(r.get('suffix') or {}).get('solver') or {}; tele=s.get('telemetry') or {}; e=r.get('exploit') or {}; wr=e.get('witnessReplay') or {}
+          print(f"V3_CHAIN reference={(x.get('rebuild') or {}).get('terminalHp')} semantic={(x.get('rebuild') or {}).get('semanticFingerprint')} status={r.get('status')} exploit={r.get('exploitFound')} exactNo={r.get('exactNoExploit')}")
+          print(f"TRANSITION status={t.get('status')} found={t.get('transitionFound')} bridgeUpper={b.get('optimisticTerminalHpUpperBound')}")
+          print(f"SUFFIX solvable={s.get('solvable')} exact={s.get('exact')} expanded={s.get('expandedStates')} generated={s.get('generatedStates')} bound={s.get('prunedBound')} stop={s.get('stoppedReason')} travelRatio={tele.get('travelGeneratedRatio')} lateRatio={tele.get('lateFloorExpandedRatio')}")
+          print(f"EXPLOIT hp={e.get('terminalHp')} delta={e.get('deltaHp')} gain={e.get('relativeGain')} replay={wr.get('ok')} semantic={(e.get('witness') or {}).get('semanticFingerprint')}")
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: v3-core-transition-chain
+          path: v3-core-transition-chain.json
+          if-no-files-found: warn
+          retention-days: 14

@@ -1,0 +1,98 @@
+name: V3 Bridge Frontier Growth
+
+on:
+  push:
+    branches:
+      - solver-phase1-pareto
+    paths:
+      - 'src/analyzer/event-order-core-bridge-frontier-growth.js'
+      - 'src/solver/goal-frontier.js'
+      - 'src/solver/core-boundary-adapter.js'
+      - 'src/solver/fixed-purchase-policy-adapter.js'
+      - 'src/solver/objective-threshold-adapter.js'
+      - 'src/tuner/review-candidate-v3-rebuild.js'
+      - 'src/tuner/review-candidates.js'
+      - 'scripts/analyze-v3-event-order-bridge-frontier-growth.mjs'
+      - 'test/event-order-core-bridge-frontier-growth.test.js'
+      - 'docs/v3-bridge-frontier-growth.md'
+      - 'docs/v3-economy-bridge-result-2026-08-26.md'
+      - '.github/workflows/v3-bridge-frontier-growth.yml'
+  pull_request:
+    paths:
+      - 'src/analyzer/event-order-core-bridge-frontier-growth.js'
+      - 'src/solver/goal-frontier.js'
+      - 'src/solver/core-boundary-adapter.js'
+      - 'src/solver/fixed-purchase-policy-adapter.js'
+      - 'src/solver/objective-threshold-adapter.js'
+      - 'src/tuner/review-candidate-v3-rebuild.js'
+      - 'src/tuner/review-candidates.js'
+      - 'scripts/analyze-v3-event-order-bridge-frontier-growth.mjs'
+      - 'test/event-order-core-bridge-frontier-growth.test.js'
+      - 'docs/v3-bridge-frontier-growth.md'
+      - 'docs/v3-economy-bridge-result-2026-08-26.md'
+      - '.github/workflows/v3-bridge-frontier-growth.yml'
+  workflow_dispatch:
+    inputs:
+      max_prefix_seeds:
+        description: 'Representative c6 prefix families to expand'
+        required: false
+        default: '3'
+      bridge_max_goals_per_prefix:
+        description: 'Active c7 goal-frontier cap per representative prefix'
+        required: false
+        default: '32'
+
+concurrency:
+  group: v3-bridge-frontier-growth-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  frontier-growth:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - name: Expand representative c7 bridge frontiers
+        env:
+          MAX_PREFIX_SEEDS: ${{ inputs.max_prefix_seeds || '3' }}
+          BRIDGE_MAX_GOALS: ${{ inputs.bridge_max_goals_per_prefix || '32' }}
+        run: |
+          node scripts/analyze-v3-event-order-bridge-frontier-growth.mjs \
+            --from-cores=6 \
+            --to-cores=7 \
+            --from-boundary-max-expanded=8000 \
+            --from-boundary-max-generated=100000 \
+            --from-boundary-max-goals=64 \
+            --max-prefix-seeds="$MAX_PREFIX_SEEDS" \
+            --bridge-max-expanded-per-prefix=6000 \
+            --bridge-max-generated-per-prefix=90000 \
+            --bridge-max-goals-per-prefix="$BRIDGE_MAX_GOALS" \
+            --json > v3-bridge-frontier-growth.json
+      - name: Print bridge-frontier diversity
+        if: always()
+        run: |
+          python3 - <<'PY'
+          import json, os
+          path='v3-bridge-frontier-growth.json'
+          if not os.path.exists(path) or os.path.getsize(path) == 0:
+              print('V3 bridge frontier growth report was not produced.')
+              raise SystemExit(0)
+          x=json.load(open(path)); r=x.get('analysis') or {}; ps=r.get('prefixSchedule') or {}
+          print(f"V3_BRIDGE_GROWTH status={r.get('status')} interpretation={r.get('interpretation')} reference={(x.get('rebuild') or {}).get('terminalHp')} semantic={(x.get('rebuild') or {}).get('semanticFingerprint')}")
+          print(f"PREFIX relevant={ps.get('verifiedRelevantPrefixCount')} scheduled={ps.get('scheduledPrefixCount')} all={ps.get('attemptedAllVerified')} boundaryExact={(r.get('fromBoundary') or {}).get('coverageExact')} boundaryStop={(r.get('fromBoundary') or {}).get('stoppedReason')}")
+          print(f"GLOBAL purchaseCounts={r.get('observedPurchaseCounts')} newStratum={r.get('observedNewPurchaseStratumBeyond20And21')} goalCap={r.get('bridgeGoalCap')}")
+          for a in r.get('attempts') or []:
+              f=a.get('frontier') or {}; d=a.get('diversity') or {}
+              print(f"FRONTIER prefix={a.get('prefixCertificateHash')} goals={f.get('activeGoalLabels')} stop={f.get('stoppedReason')} exact={f.get('coverageExact')} expanded={f.get('expandedStates')} generated={f.get('generatedStates')} replayable={a.get('replayableThresholdRelevant')} strata={d.get('purchaseCounts')} structural={d.get('uniqueStructuralStates')} cards={d.get('uniqueCardVectors')} gold={d.get('gold')}")
+              for s in d.get('strata') or []:
+                  print(f"  STRATUM p={s.get('shopPurchases')} count={s.get('count')} structural={s.get('uniqueStructuralStates')} cards={s.get('uniqueCardVectors')} gold={s.get('gold')} hp={s.get('hp')} maxHp={s.get('maxHp')} ub={s.get('upperBound')} vectors={s.get('cardVectors')}")
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: v3-bridge-frontier-growth
+          path: v3-bridge-frontier-growth.json
+          if-no-files-found: warn
+          retention-days: 14

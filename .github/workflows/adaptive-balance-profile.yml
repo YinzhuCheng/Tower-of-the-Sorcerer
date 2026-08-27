@@ -1,0 +1,134 @@
+name: Adaptive Balance Profile
+
+on:
+  push:
+    branches:
+      - solver-phase1-pareto
+    paths:
+      - 'src/tuner/adaptive-*.js'
+      - 'src/tuner/numeric-*.js'
+      - 'src/tuner/balance-proposal-v3.js'
+      - 'src/analyzer/holy-policy-best-response.js'
+      - 'src/analyzer/pre-holy-static-cut.js'
+      - 'src/analyzer/purchase-prefix-rescue.js'
+      - 'scripts/adapt-final-pressure.mjs'
+      - 'scripts/adapt-numeric-ray.mjs'
+      - 'scripts/search-adaptive-balance.mjs'
+      - 'scripts/search-numeric-rays.mjs'
+      - 'test/pre-holy-static-cut.test.js'
+      - '.github/workflows/adaptive-balance-profile.yml'
+  pull_request:
+    paths:
+      - 'src/tuner/adaptive-*.js'
+      - 'src/tuner/numeric-*.js'
+      - 'src/tuner/balance-proposal-v3.js'
+      - 'src/analyzer/holy-policy-best-response.js'
+      - 'src/analyzer/pre-holy-static-cut.js'
+      - 'src/analyzer/purchase-prefix-rescue.js'
+      - 'scripts/adapt-final-pressure.mjs'
+      - 'scripts/adapt-numeric-ray.mjs'
+      - 'scripts/search-adaptive-balance.mjs'
+      - 'scripts/search-numeric-rays.mjs'
+      - 'test/pre-holy-static-cut.test.js'
+      - '.github/workflows/adaptive-balance-profile.yml'
+  workflow_dispatch:
+    inputs:
+      hp_reward:
+        description: 'Legacy final-pressure shop HP reward'
+        required: false
+        default: '90'
+
+jobs:
+  adaptive-final-profile:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Run legacy adaptive final-pressure tuner
+        env:
+          HP_REWARD: ${{ inputs.hp_reward || '90' }}
+        run: |
+          node scripts/adapt-final-pressure.mjs \
+            --hp-reward="$HP_REWARD" \
+            --target-margin=0.165 \
+            --max-outer=6 \
+            --max-local-passes=12 \
+            --max-expanded=5000 \
+            --max-generated=50000 \
+            --json > adaptive-final-pressure-report.json
+      - name: Print compact legacy summary
+        run: |
+          python3 - <<'PY'
+          import json
+          r=json.load(open('adaptive-final-pressure-report.json'))
+          print(f"ADAPT_FINAL hp={r['hpReward']} magic={r.get('magicPower')} converged={r.get('converged')} hard={r.get('acceptedHardConstraints')} rejection={r.get('rejection')}")
+          route=r.get('route') or {}
+          cf=r.get('counterfactuals') or {}
+          solver=r.get('solver') or {}
+          print(f"FINAL hp={route.get('final',{}).get('hp')} margin={route.get('minNormalizedHpMargin')} counts={route.get('purchaseCounts')}")
+          print(f"PROOF solvable={solver.get('solvable')} exact={solver.get('exact')} expanded={solver.get('expandedStates')} generated={solver.get('generatedStates')}")
+          print(f"ROBUST recovery={cf.get('recoveryRate')} catastrophic={cf.get('catastrophicRate')} regret={cf.get('highRegretRate')} improvements={cf.get('improvedMutationCount')}")
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: adaptive-final-pressure-report
+          path: adaptive-final-pressure-report.json
+          if-no-files-found: error
+          retention-days: 7
+
+  adaptive-numeric-ray-profile:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Run general adaptive numeric ray
+        run: |
+          node scripts/adapt-numeric-ray.mjs \
+            --top-k=16 \
+            --max-candidates=4 \
+            --target-margin=0.165 \
+            --margin-tolerance=0.02 \
+            --step-tolerance=0.01 \
+            --max-adaptive-iterations=6 \
+            --max-local-passes=12 \
+            --json > adaptive-numeric-ray-report.json
+      - name: Print compact adaptive ray summary
+        run: |
+          python3 - <<'PY'
+          import json
+          r=json.load(open('adaptive-numeric-ray-report.json'))
+          a=r['adaptive']
+          p=r.get('proposal') or {}
+          b=a.get('best') or {}
+          holy=a.get('holyPolicyAnalysis') or {}
+          print(f"ADAPT_RAY candidate={a.get('candidateId')} step={b.get('relativeStep')} margin={b.get('margin')} hp={b.get('finalHp')} holy={b.get('holyPolicy')} converged={a.get('converged')} hard={a.get('acceptedHardConstraints')} rejection={a.get('rejection')}")
+          print(f"LEVERS {','.join(a.get('leverKeys') or [])}")
+          print(f"HOLY_COVERAGE optimized={holy.get('optimizedPolicies')}/{holy.get('attemptedPolicies')} provenInfeasible={holy.get('provenInfeasiblePolicies')} complete={holy.get('coverageComplete')} stable={holy.get('stableWithCompleteCoverage')} uncovered={','.join(holy.get('uncoveredPolicies') or []) or 'none'}")
+          for alt in holy.get('alternatives') or []:
+              proof=(alt.get('infeasibilityProof') or {}).get('type')
+              print(f"HOLY policy={alt.get('holyPolicy')} status={alt.get('status')} hp={alt.get('bestTerminalHp')} regret={alt.get('normalizedRegret')} local={alt.get('localOptimal')} proof={proof} rescue={alt.get('rescueFound')} rescueEvals={alt.get('rescueEvaluations')}")
+          bracket=a.get('bracket') or {}
+          print(f"BRACKET low={bracket.get('lowStep')}:{bracket.get('lowMargin')} high={bracket.get('highStep')}:{bracket.get('highMargin')} width={bracket.get('width')} violations={len(a.get('monotonicViolations') or [])}")
+          solver=a.get('solver') or {}
+          cf=a.get('counterfactuals') or {}
+          print(f"PROOF solvable={solver.get('solvable')} exact={solver.get('exact')} expanded={solver.get('expandedStates')} generated={solver.get('generatedStates')}")
+          print(f"ROBUST recovery={cf.get('recoveryRate')} catastrophic={cf.get('catastrophicRate')} regret={cf.get('highRegretRate')} improvements={cf.get('improvedMutationCount')}")
+          print(f"PROPOSAL status={p.get('status')} productionWrite={p.get('productionWriteAllowed')} failures={','.join((p.get('gate') or {}).get('failures') or []) or 'none'}")
+          print('EDITS ' + ','.join(f"{e['target']}:{e['id']}:{e['field']}={e['value']}" for e in p.get('edits') or []))
+          for s in a.get('samples') or []:
+              sh=s.get('holyPolicyAnalysis') or {}
+              local=(s.get('localSearch') or {}).get('localOptimal')
+              print(f"SAMPLE step={s.get('relativeStep')} margin={s.get('margin')} hp={s.get('finalHp')} holy={s.get('holyPolicy')} coverage={sh.get('coveredPolicies')}/{sh.get('attemptedPolicies')} solvable={s.get('solvable')} local={local}")
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: adaptive-numeric-ray-report
+          path: adaptive-numeric-ray-report.json
+          if-no-files-found: error
+          retention-days: 7

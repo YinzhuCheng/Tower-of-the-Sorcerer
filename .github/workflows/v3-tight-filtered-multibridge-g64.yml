@@ -1,0 +1,72 @@
+name: V3 Tight-Filtered Multi-Bridge G64
+
+on:
+  push:
+    branches: [solver-phase1-pareto]
+    paths:
+      - 'src/analyzer/event-order-core-transition-tight-filter.js'
+      - 'src/solver/fixed-purchase-bridge-tight-bound.js'
+      - 'scripts/analyze-v3-event-order-tight-filtered-multibridge.mjs'
+      - 'docs/v3-progressive-tight-c7-result-2026-08-26.md'
+      - '.github/workflows/v3-tight-filtered-multibridge-g64.yml'
+  pull_request:
+    paths:
+      - 'src/analyzer/event-order-core-transition-tight-filter.js'
+      - 'src/solver/fixed-purchase-bridge-tight-bound.js'
+      - 'scripts/analyze-v3-event-order-tight-filtered-multibridge.mjs'
+      - 'docs/v3-progressive-tight-c7-result-2026-08-26.md'
+      - '.github/workflows/v3-tight-filtered-multibridge-g64.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: v3-tight-filtered-multibridge-g64-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  profile:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - name: Run six-family c7 tight-filtered profile at goal cap 64
+        run: |
+          node scripts/analyze-v3-event-order-tight-filtered-multibridge.mjs \
+            --from-cores=6 --to-cores=7 \
+            --from-boundary-max-expanded=8000 \
+            --from-boundary-max-generated=100000 \
+            --from-boundary-max-goals=64 \
+            --max-prefix-seeds=6 \
+            --bridge-max-expanded-per-prefix=12000 \
+            --bridge-max-generated-per-prefix=180000 \
+            --bridge-max-goals-per-prefix=64 \
+            --max-suffix-bridges=6 \
+            --suffix-max-expanded-per-bridge=3000 \
+            --suffix-max-generated-per-bridge=50000 \
+            --suffix-priority-slack-bucket=500 \
+            --json > v3-tight-filtered-multibridge-g64.json
+      - name: Print G64 proof evidence
+        if: always()
+        run: |
+          python3 - <<'PY'
+          import json,os
+          p='v3-tight-filtered-multibridge-g64.json'
+          if not os.path.exists(p) or os.path.getsize(p)==0: print('report missing'); raise SystemExit(0)
+          x=json.load(open(p)); r=x.get('analysis') or {}; bp=r.get('bridgeProof') or {}; ps=r.get('prefixSchedule') or {}; e=r.get('exploit') or {}
+          print(f"V3_G64 status={r.get('status')} exploit={r.get('exploitFound')} exactNo={r.get('exactNoExploit')} reference={(x.get('rebuild') or {}).get('terminalHp')} semantic={(x.get('rebuild') or {}).get('semanticFingerprint')}")
+          print(f"PREFIX relevant={ps.get('verifiedRelevantPrefixCount')} scheduled={ps.get('scheduledPrefixCount')} boundaryExact={(r.get('fromBoundary') or {}).get('coverageExact')} boundaryStop={(r.get('fromBoundary') or {}).get('stoppedReason')}")
+          print(f"BRIDGE_PROOF closed={bp.get('boundClosedCount')} residual={bp.get('residualCount')} summary={bp.get('summary')}")
+          for a in (r.get('suffix') or {}).get('attempts') or []:
+              s=a.get('solver') or {}; t=s.get('telemetry') or {}; res=a.get('resources') or {}
+              print(f"SUFFIX prefix={a.get('prefixCertificateHash')} p={a.get('shopPurchases')} hp={res.get('hp')} gold={res.get('gold')} old={a.get('oldUpperBound')} tight={a.get('tightUpperBound')} slack={a.get('tightThresholdSlack')} expanded={s.get('expandedStates')} generated={s.get('generatedStates')} exact={s.get('exact')} stop={s.get('stoppedReason')} late={t.get('lateFloorExpandedRatio')} exploit={a.get('exploit')}")
+          print(f"EVIDENCE {r.get('evidence')}")
+          print(f"EXPLOIT hp={e.get('terminalHp')} delta={e.get('deltaHp')} replay={(e.get('witnessReplay') or {}).get('ok')} semantic={(e.get('witness') or {}).get('semanticFingerprint')}")
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: v3-tight-filtered-multibridge-g64
+          path: v3-tight-filtered-multibridge-g64.json
+          if-no-files-found: warn
+          retention-days: 14

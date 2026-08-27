@@ -1,0 +1,108 @@
+name: V3 Multi-Bridge Event Order
+
+on:
+  push:
+    branches:
+      - solver-phase1-pareto
+    paths:
+      - 'src/analyzer/event-order-core-transition-multibridge.js'
+      - 'src/analyzer/event-order-core-transition-chain.js'
+      - 'src/solver/frontier.js'
+      - 'src/solver/goal-frontier.js'
+      - 'src/solver/late-game-threshold-priority-adapter.js'
+      - 'src/solver/late-game-zero-damage-harvest-adapter.js'
+      - 'src/tuner/review-candidate-v3-rebuild.js'
+      - 'src/tuner/review-candidates.js'
+      - 'scripts/analyze-v3-event-order-core-multibridge.mjs'
+      - 'test/event-order-core-multibridge.test.js'
+      - 'docs/v3-multibridge-event-order.md'
+      - 'docs/v3-multibridge-result-2026-08-26.md'
+      - '.github/workflows/v3-multibridge-event-order.yml'
+  pull_request:
+    paths:
+      - 'src/analyzer/event-order-core-transition-multibridge.js'
+      - 'src/analyzer/event-order-core-transition-chain.js'
+      - 'src/solver/frontier.js'
+      - 'src/solver/goal-frontier.js'
+      - 'src/solver/late-game-threshold-priority-adapter.js'
+      - 'src/solver/late-game-zero-damage-harvest-adapter.js'
+      - 'src/tuner/review-candidate-v3-rebuild.js'
+      - 'src/tuner/review-candidates.js'
+      - 'scripts/analyze-v3-event-order-core-multibridge.mjs'
+      - 'test/event-order-core-multibridge.test.js'
+      - 'docs/v3-multibridge-event-order.md'
+      - 'docs/v3-multibridge-result-2026-08-26.md'
+      - '.github/workflows/v3-multibridge-event-order.yml'
+  workflow_dispatch:
+    inputs:
+      max_prefix_seeds:
+        description: 'Number of threshold-relevant c6 prefix states to continue'
+        required: false
+        default: '6'
+      max_suffix_bridges:
+        description: 'Number of active c7 Pareto bridges to suffix-search'
+        required: false
+        default: '6'
+      suffix_max_expanded_per_bridge:
+        description: 'Expansion budget per c7 terminal suffix'
+        required: false
+        default: '3000'
+
+concurrency:
+  group: v3-multibridge-event-order-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  multibridge:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - name: Analyze V3 c6-c7 prefix-diverse multi-bridge suffixes
+        env:
+          MAX_PREFIX_SEEDS: ${{ inputs.max_prefix_seeds || '6' }}
+          MAX_SUFFIX_BRIDGES: ${{ inputs.max_suffix_bridges || '6' }}
+          SUFFIX_MAX_EXPANDED: ${{ inputs.suffix_max_expanded_per_bridge || '3000' }}
+        run: |
+          node scripts/analyze-v3-event-order-core-multibridge.mjs \
+            --from-cores=6 \
+            --to-cores=7 \
+            --from-boundary-max-expanded=8000 \
+            --from-boundary-max-generated=100000 \
+            --from-boundary-max-goals=64 \
+            --max-prefix-seeds="$MAX_PREFIX_SEEDS" \
+            --bridge-max-expanded-per-prefix=2500 \
+            --bridge-max-generated-per-prefix=35000 \
+            --bridge-max-goals-per-prefix=8 \
+            --max-suffix-bridges="$MAX_SUFFIX_BRIDGES" \
+            --suffix-max-expanded-per-bridge="$SUFFIX_MAX_EXPANDED" \
+            --suffix-max-generated-per-bridge=50000 \
+            --suffix-priority-slack-bucket=500 \
+            --json > v3-multibridge-event-order.json
+      - name: Print multi-bridge evidence
+        if: always()
+        run: |
+          python3 - <<'PY'
+          import json, os
+          path='v3-multibridge-event-order.json'
+          if not os.path.exists(path) or os.path.getsize(path) == 0:
+              print('V3 multi-bridge report was not produced.')
+              raise SystemExit(0)
+          x=json.load(open(path)); r=x.get('analysis') or {}; b=r.get('bridges') or {}; ps=r.get('prefixSchedule') or {}; e=r.get('exploit') or {}
+          print(f"V3_MULTIBRIDGE status={r.get('status')} exploit={r.get('exploitFound')} exactNo={r.get('exactNoExploit')} reference={(x.get('rebuild') or {}).get('terminalHp')} semantic={(x.get('rebuild') or {}).get('semanticFingerprint')}")
+          print(f"PREFIX relevant={ps.get('verifiedRelevantPrefixCount')} scheduled={ps.get('scheduledPrefixCount')} all={ps.get('attemptedAllVerified')} boundaryExact={(r.get('fromBoundary') or {}).get('coverageExact')} boundaryStop={(r.get('fromBoundary') or {}).get('stoppedReason')}")
+          print(f"BRIDGES discovered={b.get('discoveredReplayable')} dominated={b.get('crossPrefixDominated')} active={b.get('activeParetoCount')} scheduled={b.get('scheduledSuffixCount')} mode={b.get('scheduleMode')} families={len(b.get('scheduledPrefixFamilies') or [])}")
+          for a in (r.get('suffix') or {}).get('attempts') or []:
+              s=a.get('solver') or {}; t=s.get('telemetry') or {}
+              print(f"SUFFIX prefix={a.get('prefixCertificateHash')} bridge={a.get('bridgeId')} ub={a.get('upperBound')} hp={(a.get('resources') or {}).get('hp')} gold={(a.get('resources') or {}).get('gold')} p={a.get('shopPurchases')} expanded={s.get('expandedStates')} generated={s.get('generatedStates')} bound={s.get('prunedBound')} exact={s.get('exact')} stop={s.get('stoppedReason')} travel={t.get('travelGeneratedRatio')} late={t.get('lateFloorExpandedRatio')} exploit={a.get('exploit')}")
+          print(f"EXPLOIT hp={e.get('terminalHp')} delta={e.get('deltaHp')} gain={e.get('relativeGain')} replay={(e.get('witnessReplay') or {}).get('ok')} witness={(e.get('witness') or {}).get('witnessHash')} semantic={(e.get('witness') or {}).get('semanticFingerprint')}")
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: v3-multibridge-event-order
+          path: v3-multibridge-event-order.json
+          if-no-files-found: warn
+          retention-days: 14
