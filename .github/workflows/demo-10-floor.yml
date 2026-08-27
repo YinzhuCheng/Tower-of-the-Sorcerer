@@ -45,33 +45,65 @@ jobs:
         run: npm run validate:demo10
       - name: Smoke-test real browser boot with local Canvas fallback
         run: |
+          set -euo pipefail
           python3 -m http.server 4173 > /tmp/tower-demo-server.log 2>&1 &
           server_pid=$!
-          trap 'kill "$server_pid" || true' EXIT
-          for i in $(seq 1 20); do
-            if curl -fsS http://127.0.0.1:4173/ >/dev/null; then break; fi
+          trap 'kill "$server_pid" 2>/dev/null || true' EXIT
+
+          ready=0
+          for i in $(seq 1 40); do
+            if curl -fsS http://127.0.0.1:4173/ >/dev/null 2>&1; then
+              ready=1
+              break
+            fi
             sleep 0.25
           done
+          if [ "$ready" -ne 1 ]; then
+            echo 'Local demo server did not become ready.' >&2
+            cat /tmp/tower-demo-server.log >&2 || true
+            exit 1
+          fi
+
           chrome="$(command -v google-chrome || command -v chromium || command -v chromium-browser || true)"
           if [ -z "$chrome" ]; then
             echo 'No headless Chrome binary available on runner.' >&2
             exit 1
           fi
+
           "$chrome" \
             --headless=new \
             --no-sandbox \
             --disable-gpu \
             --disable-dev-shm-usage \
-            --virtual-time-budget=7000 \
+            --run-all-compositor-stages-before-draw \
+            --virtual-time-budget=12000 \
             --dump-dom http://127.0.0.1:4173/ \
             > /tmp/tower-demo-dom.html \
             2> /tmp/tower-demo-browser.log
-          grep -q '10F VERTICAL SLICE' /tmp/tower-demo-dom.html
-          grep -q '第 1 阵' /tmp/tower-demo-dom.html
-          grep -q '月白门廊' /tmp/tower-demo-dom.html
-          grep -q '<canvas' /tmp/tower-demo-dom.html
-          if grep -q '启动失败：' /tmp/tower-demo-dom.html; then
-            cat /tmp/tower-demo-browser.log >&2
-            exit 1
-          fi
+
+          python3 - <<'PY'
+          from pathlib import Path
+          dom_path = Path('/tmp/tower-demo-dom.html')
+          browser_path = Path('/tmp/tower-demo-browser.log')
+          server_path = Path('/tmp/tower-demo-server.log')
+          dom = dom_path.read_text(errors='replace') if dom_path.exists() else ''
+          checks = {
+              'demo_header': '10F VERTICAL SLICE' in dom,
+              'game_container': 'id="game-container"' in dom,
+              'hud_floor_number': '第 1 阵' in dom,
+              'hud_floor_title': '月白门廊' in dom,
+              'renderer_canvas': '<canvas' in dom,
+              'no_boot_failure': '启动失败：' not in dom,
+          }
+          print('10F_BROWSER_SMOKE', checks)
+          if not all(checks.values()):
+              print('--- browser stderr ---')
+              print(browser_path.read_text(errors='replace')[-12000:] if browser_path.exists() else '<missing>')
+              print('--- server log ---')
+              print(server_path.read_text(errors='replace')[-4000:] if server_path.exists() else '<missing>')
+              print('--- DOM tail ---')
+              print(dom[-12000:])
+              raise SystemExit(1)
+          PY
+
           echo '10F browser smoke passed with rendered canvas and initialized HUD.'
