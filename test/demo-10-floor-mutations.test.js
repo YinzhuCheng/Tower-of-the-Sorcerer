@@ -11,6 +11,20 @@ import {
 applyDemoTenFloorContent({ enemies: ENEMIES, floors: FLOORS, dialogues: DIALOGUES, gridSize: GRID_SIZE });
 const catalog = createDemoTenFloorMutationCatalog();
 
+test('10F semantic co-design slots stay anchored to their expected baseline tokens', () => {
+  for (const floorNumber of [8, 9]) {
+    const floor = FLOORS.find((entry) => entry.number === floorNumber);
+    assert.ok(floor?.codesignSlots);
+    for (const [slotId, slot] of Object.entries(floor.codesignSlots)) {
+      assert.equal(
+        floor.map[slot.y]?.[slot.x],
+        slot.expected,
+        `f${floorNumber}.${slotId} drifted from its semantic baseline`
+      );
+    }
+  }
+});
+
 test('10F numeric setter mutation reaches authoritative data and restores baseline', () => {
   const baseline = ENEMIES.palaceWarden.magicPower;
   withDemoTenFloorCandidate({ mutationIds: ['f8-warden-magic-down10'] }, catalog, () => {
