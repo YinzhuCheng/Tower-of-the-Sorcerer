@@ -9,6 +9,7 @@ import {
   summarizeDemoTenFloorPortfolio
 } from '../src/game/demo-10-floor-quality.js';
 import {
+  compareDemoTenFloorCheckpointPortfolio,
   createDemoTenFloorTopologyContract,
   validateDemoTenFloorTopology
 } from '../src/tuner/demo-10-floor-topology-validator.js';
@@ -104,18 +105,24 @@ for (const mutation of catalog) {
       [...qualityReports, ...diagnosticReports],
       { policySpecs: [...qualitySpecs, ...diagnosticSpecs] }
     );
-    if (checkpoints.choiceLoss > 0) return { stage: 'checkpoint', topology, quality, checkpoints };
+    const checkpointComparison = compareDemoTenFloorCheckpointPortfolio(checkpoints, baselineCheckpoints);
+    if (!checkpointComparison.ok) {
+      return { stage: 'checkpoint', topology, quality, checkpoints, checkpointComparison };
+    }
 
     const structuralLoss = topologyDeltaLoss(topology);
     const qualityLoss = demoTenFloorQualityLoss(quality) / 50;
+    const checkpointGain = checkpointComparison.checkpointGain ?? 0;
     return {
       stage: 'accepted',
       topology,
       quality,
       checkpoints,
-      score: qualityLoss + 0.20 * structuralLoss,
+      checkpointComparison,
+      score: qualityLoss + 0.20 * structuralLoss - 0.50 * checkpointGain,
       qualityLoss,
-      structuralLoss
+      structuralLoss,
+      checkpointGain
     };
   });
 
@@ -127,6 +134,12 @@ for (const mutation of catalog) {
   } else if (result.stage === 'checkpoint') {
     rejectedCheckpoint.push({
       ...compact,
+      violations: result.checkpointComparison.violations,
+      choiceLoss: result.checkpoints.choiceLoss,
+      baselineChoiceLoss: baselineCheckpoints.choiceLoss,
+      choiceLossDelta: result.checkpointComparison.choiceLossDelta,
+      maxParetoWidth: result.checkpoints.maxParetoWidth,
+      baselineMaxParetoWidth: baselineCheckpoints.maxParetoWidth,
       oversized: result.checkpoints.oversizedCheckpoints,
       collapsed: result.checkpoints.collapsedCheckpoints
     });
@@ -136,6 +149,10 @@ for (const mutation of catalog) {
       score: result.score,
       qualityLoss: result.qualityLoss,
       structuralLoss: result.structuralLoss,
+      checkpointGain: result.checkpointGain,
+      choiceLoss: result.checkpoints.choiceLoss,
+      baselineChoiceLoss: baselineCheckpoints.choiceLoss,
+      maxParetoWidth: result.checkpoints.maxParetoWidth,
       solvableBuilds: result.quality.solvableBuilds,
       bestMargin: result.quality.winner?.minNormalizedHpMargin ?? null,
       weakestMargin: result.quality.weakestWinningReport?.minNormalizedHpMargin ?? null,
@@ -150,15 +167,17 @@ accepted.sort((a, b) => a.score - b.score || a.id.localeCompare(b.id));
 
 console.log('DEMO10_TOPOLOGY_SEARCH');
 console.log(JSON.stringify({
-  schemaVersion: 1,
-  model: 'demo-10f-constrained-topology-wave1-v0.1',
+  schemaVersion: 2,
+  model: 'demo-10f-constrained-topology-wave1-v0.2-relative-checkpoint',
   heuristicOnly: true,
   productionWriteAllowed: false,
   catalogSize: catalog.length,
+  checkpointGate: 'baseline-relative-no-regression',
   baseline: {
     qualityViolations: baselineQuality.violations,
     solvableBuilds: baselineQuality.solvableBuilds,
     checkpointChoiceLoss: baselineCheckpoints.choiceLoss,
+    maxParetoWidth: baselineCheckpoints.maxParetoWidth,
     checkpoints: compactCheckpoints(baselineCheckpoints),
     topology: compactTopology(baselineTopology)
   },
@@ -176,4 +195,6 @@ console.log(JSON.stringify({
 }, null, 2));
 
 if (catalog.length !== 32) throw new Error(`Expected 32 topology mutations, got ${catalog.length}.`);
-if (baselineCheckpoints.choiceLoss !== 0) throw new Error('Baseline checkpoint width contract must remain healthy.');
+if (!Number.isFinite(baselineCheckpoints.choiceLoss) || !Number.isFinite(baselineCheckpoints.maxParetoWidth)) {
+  throw new Error('Baseline checkpoint portfolio must expose finite relative-gate metrics.');
+}
