@@ -74,9 +74,9 @@ export function applyDemoTenFloorContent({ enemies, floors, dialogues, gridSize 
     },
     blackSealKeeper: {
       name: '黯印观测官·塞芙', portrait: 'astral_boss', faction: '王座前厅', floor: 9,
-      hp: 2700, atk: 215, def: 100, gold: 600, boss: true, special: 'magic', magicPower: 270,
+      hp: 2700, atk: 215, def: 95, gold: 600, boss: true, special: 'magic', magicPower: 160,
       defeatDialogue: 'bossBlackSeal',
-      description: '掌管王座前最后一道黯星许可印。她不持有核心，而是把前九层积累转化为最终压力测试。'
+      description: '掌管王座前最后一道黯星许可印。当前试玩版优先保证多种基础成长路线都能进入王座，同时保留明显的后期压力。'
     },
     finalQueen: { ...enemies.finalQueen, floor: 10 },
     voidCore: { ...enemies.voidCore, floor: 10 }
