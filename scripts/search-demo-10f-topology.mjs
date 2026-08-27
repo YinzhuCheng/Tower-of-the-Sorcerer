@@ -10,12 +10,22 @@ applyDemoTenFloorContent({ enemies: ENEMIES, floors: FLOORS, dialogues: DIALOGUE
 applyDemoTenFloorHardMode({ enemies: ENEMIES });
 const { runGreedyShopStrategy } = await import('../src/solver/greedy-strategy.js');
 const { runExpertNoHpStrategy, EXPERT_NO_HP_STRATEGY_ID } = await import('../src/solver/expert-strategy.js');
+const baselineExpertPlanning = runExpertNoHpStrategy({ holyPolicy: 'immediate', maxIterations: 8_000, horizon: 2, attackAdvantageRequired: 2_000 });
+const frozenExpertShopPlan = Object.freeze([...baselineExpertPlanning.planning.shopPlan]);
 const diagnosticSpecs = DEMO10_CODESIGN_POLICY_SPECS;
 const expertSpec = Object.freeze({ id: EXPERT_NO_HP_STRATEGY_ID });
 const contract = createDemoTenFloorTopologyContract(FLOORS);
 const catalog = createDemoTenFloorTopologyMutationCatalog();
 function runDiagnosticPolicy(spec) { return runGreedyShopStrategy({ shopCycle: spec.shopCycle, shopPlan: spec.shopPlan, holyPolicy: spec.holyPolicy, maxIterations: 8_000 }); }
-function runExpertPolicy() { return runExpertNoHpStrategy({ holyPolicy: 'immediate', maxIterations: 8_000, horizon: 2, attackAdvantageRequired: 2_000 }); }
+function runExpertPolicy() {
+  const report = runGreedyShopStrategy({ shopCycle: ['def'], shopPlan: frozenExpertShopPlan, holyPolicy: 'immediate', maxIterations: 8_000 });
+  return {
+    ...report,
+    strategyId: EXPERT_NO_HP_STRATEGY_ID,
+    strategy: { shopHpAllowed: false, defaultInvestment: 'def', witnessMode: 'frozen-baseline-plan-with-def-fallback' },
+    planning: { shopPlan: [...frozenExpertShopPlan] }
+  };
+}
 function topologyDeltaLoss(topology) { const deltas = []; for (const floorNumber of contract.floorNumbers) { const current = topology.floors[floorNumber].current; const base = contract.profiles[floorNumber]; deltas.push(Math.abs(current.cycleRank - base.cycleRank) / Math.max(1, contract.tolerances.cycleRank)); deltas.push(Math.abs(current.branchNodes - base.branchNodes) / Math.max(1, contract.tolerances.branchNodes)); deltas.push(Math.max(0, current.deadEnds - base.deadEnds) / Math.max(1, contract.tolerances.extraDeadEnds)); deltas.push(Math.abs(current.downToUpDistance - base.downToUpDistance) / Math.max(1, contract.tolerances.downToUpDistance)); } return deltas.reduce((sum, value) => sum + value, 0) / Math.max(1, deltas.length); }
 function compactTopology(topology) { return Object.fromEntries(contract.floorNumbers.map((floorNumber) => { const profile = topology.floors[floorNumber].current; return [floorNumber, { passableNodes: profile.passableNodes, edges: profile.edges, cycleRank: profile.cycleRank, deadEnds: profile.deadEnds, branchNodes: profile.branchNodes, downToUpDistance: profile.downToUpDistance }]; })); }
 function compactCheckpoints(checkpoints) { return Object.fromEntries(checkpoints.choiceTargetFloors.map((floorNumber) => { const profile = checkpoints.floors[floorNumber]; return [floorNumber, { sampledPolicies: profile.sampledPolicies, paretoWidth: profile.paretoWidth, uniqueResourceStates: profile.uniqueResourceStates, policyMultiplicity: Number(profile.policyMultiplicity.toFixed(3)) }]; })); }
@@ -46,6 +56,6 @@ for (const mutation of catalog) {
 }
 accepted.sort((a, b) => a.score - b.score || a.id.localeCompare(b.id));
 console.log('DEMO10_TOPOLOGY_SEARCH');
-console.log(JSON.stringify({ schemaVersion: 4, model: 'demo-10f-constrained-topology-wave1-v0.4-expert-hard-mode', milestone: 'hard-mode-expert-10f', heuristicOnly: true, productionWriteAllowed: false, catalogSize: catalog.length, playabilityGate: EXPERT_NO_HP_STRATEGY_ID, checkpointGate: 'baseline-relative-no-regression', baseline: { qualityViolations: baselineExpert.quality.violations, expertMargin: baselineExpert.report.minNormalizedHpMargin, expertPurchaseCounts: baselineExpert.report.purchaseCounts, checkpointChoiceLoss: baselineCheckpoints.choiceLoss, maxParetoWidth: baselineCheckpoints.maxParetoWidth, checkpoints: compactCheckpoints(baselineCheckpoints), topology: compactTopology(baselineTopology) }, counts: { staticRejected: rejectedStatic.length, qualityRejected: rejectedQuality.length, checkpointRejected: rejectedCheckpoint.length, accepted: accepted.length }, bestAlternative: accepted[0] ?? null, accepted, rejectedStatic, rejectedQuality, rejectedCheckpoint }, null, 2));
+console.log(JSON.stringify({ schemaVersion: 4, model: 'demo-10f-constrained-topology-wave1-v0.4-expert-hard-mode', milestone: 'hard-mode-expert-10f', heuristicOnly: true, productionWriteAllowed: false, catalogSize: catalog.length, playabilityGate: EXPERT_NO_HP_STRATEGY_ID, frozenExpertWitness: true, checkpointGate: 'baseline-relative-no-regression', baseline: { qualityViolations: baselineExpert.quality.violations, expertMargin: baselineExpert.report.minNormalizedHpMargin, expertPurchaseCounts: baselineExpert.report.purchaseCounts, checkpointChoiceLoss: baselineCheckpoints.choiceLoss, maxParetoWidth: baselineCheckpoints.maxParetoWidth, checkpoints: compactCheckpoints(baselineCheckpoints), topology: compactTopology(baselineTopology) }, counts: { staticRejected: rejectedStatic.length, qualityRejected: rejectedQuality.length, checkpointRejected: rejectedCheckpoint.length, accepted: accepted.length }, bestAlternative: accepted[0] ?? null, accepted, rejectedStatic, rejectedQuality, rejectedCheckpoint }, null, 2));
 if (catalog.length !== 32) throw new Error(`Expected 32 topology mutations, got ${catalog.length}.`);
 if (!Number.isFinite(baselineCheckpoints.choiceLoss) || !Number.isFinite(baselineCheckpoints.maxParetoWidth)) throw new Error('Baseline checkpoint portfolio must expose finite relative-gate metrics.');
