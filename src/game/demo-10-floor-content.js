@@ -7,6 +7,10 @@ function parseDemoMap(text, gridSize = 11) {
   return rows;
 }
 
+function slot(x, y, expected) {
+  return Object.freeze({ x, y, expected });
+}
+
 export const DEMO_TEN_FLOOR_ID = 'demo-10f-v1';
 
 /**
@@ -127,7 +131,25 @@ export function applyDemoTenFloorContent({ enemies, floors, dialogues, gridSize 
       # D . item:moon door:moon enemy:outerCrown item:def . item:hp . #
       # # # # # # # # # # #
     `, gridSize),
-    puzzles: { switches: { hush: ['hushA', 'hushB'] } }
+    puzzles: { switches: { hush: ['hushA', 'hushB'] } },
+    codesignSlots: Object.freeze({
+      rewardNorthwest: slot(1, 1, 'item:dual'),
+      rewardNortheast: slot(6, 1, 'item:hpLarge'),
+      rewardMidAtk: slot(5, 3, 'item:atk'),
+      rewardMidDef: slot(5, 5, 'item:def'),
+      rewardHpWest: slot(1, 5, 'item:hpLarge'),
+      cardStarEast: slot(8, 3, 'item:star'),
+      cardMoonWest: slot(1, 7, 'item:moon'),
+      cardSunEast: slot(8, 7, 'item:sun'),
+      cardMoonSouth: slot(3, 9, 'item:moon'),
+      enemyOuterNorthwest: slot(2, 1, 'enemy:outerCrown'),
+      enemyHushNorth: slot(7, 1, 'enemy:hushCantor'),
+      enemyMuteWest: slot(4, 7, 'enemy:muteGuard'),
+      enemyOuterSouth: slot(5, 9, 'enemy:outerCrown'),
+      doorMoonUpper: slot(3, 6, 'door:moon'),
+      doorSunEast: slot(9, 8, 'door:sun'),
+      doorMoonSouth: slot(4, 9, 'door:moon')
+    })
   };
 
   const floor9 = {
@@ -158,7 +180,28 @@ export function applyDemoTenFloorContent({ enemies, floors, dialogues, gridSize 
         gate: 'blackstar',
         labels: { A: '晨辉', B: '月蚀', C: '星落' }
       }
-    }
+    },
+    codesignSlots: Object.freeze({
+      rewardNorthwest: slot(1, 1, 'item:dual'),
+      rewardNortheast: slot(6, 1, 'item:hpLarge'),
+      rewardMidDef: slot(5, 3, 'item:def'),
+      rewardMidAtk: slot(5, 5, 'item:atk'),
+      rewardHpWest: slot(1, 5, 'item:hpLarge'),
+      rewardDefSouth: slot(8, 7, 'item:def'),
+      cardStarEast: slot(8, 3, 'item:star'),
+      cardSunWest: slot(1, 7, 'item:sun'),
+      cardMoonSouth: slot(3, 9, 'item:moon'),
+      enemySentinelNorthwest: slot(2, 1, 'enemy:starSentinel'),
+      enemyNullNorth: slot(7, 1, 'enemy:nullCantor'),
+      enemyCrownMid: slot(3, 3, 'enemy:crownShade'),
+      enemySentinelMid: slot(7, 5, 'enemy:starSentinel'),
+      doorStarUpper: slot(3, 6, 'door:star'),
+      doorMoonEast: slot(9, 8, 'door:moon'),
+      doorSunSouth: slot(4, 9, 'door:sun'),
+      runeC: slot(1, 3, 'rune:C'),
+      runeA: slot(4, 5, 'rune:A'),
+      runeB: slot(7, 7, 'rune:B')
+    })
   };
 
   const floor10 = {
