@@ -207,6 +207,18 @@ async function validateProductionDemoBuild() {
     maxIterations: 10_000
   }));
   const winners = reports.filter((report) => report.solvable);
+  console.log('PRODUCTION_DEMO_BALANCE_PROBE', JSON.stringify(reports.map((report) => ({
+    cycle: report.shopCycle.join('-'),
+    solvable: report.solvable,
+    floor: report.floor,
+    hp: report.final.hp,
+    atk: report.final.atk,
+    def: report.final.def,
+    gold: report.final.gold,
+    purchases: report.purchases,
+    purchaseFloors: [...new Set(report.purchaseLog.map((entry) => entry.floor))],
+    failure: report.failure
+  }))));
   assertBuild(winners.length >= 2, `At least two basic shop cycles must remain playable, got ${winners.length}/6.`);
   assertBuild(winners.length <= 5, `Hard production profile must not make all six basic cycles trivial, got ${winners.length}/6.`);
   assertBuild(winners.some((report) => report.purchaseLog.some((entry) => entry.floor === 9)), 'At least one winning route must use the F9 enhanced shop.');
