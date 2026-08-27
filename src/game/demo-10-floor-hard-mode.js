@@ -3,7 +3,8 @@ export const DEMO10_HARD_MODE_ID = 'demo-10f-hard-v2-tiered-shops';
 export const DEMO10_HARD_MODE_PRESSURE = Object.freeze({
   palaceWardenMagicPower: 245,
   blackSealKeeperMagicPower: 190,
-  blackSealKeeperDef: 96
+  blackSealKeeperDef: 96,
+  voidCoreMagicPower: 460
 });
 
 export const DEMO10_HIGH_FLOOR_SCALING = Object.freeze({
@@ -25,7 +26,9 @@ function scaleStat(value, multiplier) {
  * efficiently. To keep that stronger late conversion from flattening the end
  * game, ordinary enemies and bosses from F6 onward receive a gradual HP/ATK
  * pressure ramp. DEF is deliberately left stable to avoid creating surprise
- * hard breakpoints; the two late magic bosses keep explicit threshold values.
+ * hard breakpoints. Late magic bosses keep explicit threshold values, while
+ * the final core carries the sharpest fixed-damage check so weak shop-order
+ * choices remain meaningfully punishable even after the 130% F9 shop.
  */
 export function applyDemoTenFloorHardMode({ enemies } = {}) {
   if (!enemies?.palaceWarden || !enemies?.blackSealKeeper) {
@@ -45,8 +48,12 @@ export function applyDemoTenFloorHardMode({ enemies } = {}) {
   enemies.palaceWarden.magicPower = DEMO10_HARD_MODE_PRESSURE.palaceWardenMagicPower;
   enemies.blackSealKeeper.magicPower = DEMO10_HARD_MODE_PRESSURE.blackSealKeeperMagicPower;
   enemies.blackSealKeeper.def = DEMO10_HARD_MODE_PRESSURE.blackSealKeeperDef;
+  if (enemies.voidCore) enemies.voidCore.magicPower = DEMO10_HARD_MODE_PRESSURE.voidCoreMagicPower;
   enemies.palaceWarden.description = '王庭外环的高压执剑官。分层商店让中后期资源转换更有效，因此她用更高的固定魔法压力检查前七层的资源配置。';
   enemies.blackSealKeeper.description = '王座前最后一道黯星许可印。F9 强化商店提高最终配点效率，她因此使用更高的魔法阈值与破防阈值，错误投资不会获得保底。';
+  if (enemies.voidCore) {
+    enemies.voidCore.description = '女王与七重阵眼融合后的终局核心。F9 的 130% 强化商店能制造更高终盘战力，因此核心以极高固定魔法伤害检验玩家是否把金币转成了真正可承受的最终配置。';
+  }
 
   return {
     id: DEMO10_HARD_MODE_ID,
