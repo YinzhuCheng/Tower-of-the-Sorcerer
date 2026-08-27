@@ -49,6 +49,25 @@ test('inserted demo maps are 11x11 and provide boss-locked upward stairs on F8/F
   }
 });
 
+test('F8/F9 expose distinct checkpoint mechanics and F9 converts late Gold before the throne', () => {
+  const fixture = baseFixture();
+  applyDemoTenFloorContent(fixture);
+  const floor8 = fixture.floors[7];
+  const floor9 = fixture.floors[8];
+
+  assert.deepEqual(floor8.puzzles?.switches?.hush, ['hushA', 'hushB']);
+  assert.deepEqual(floor9.puzzles?.sequence?.order, ['B', 'A', 'C']);
+  assert.ok(floor9.map.some((row) => row.includes('shop')), 'F9 must keep a pre-throne resource-conversion checkpoint.');
+
+  const lateEnemyIds = [
+    'muteGuard', 'hushCantor', 'outerCrown', 'palaceWarden',
+    'starSentinel', 'nullCantor', 'crownShade', 'blackSealKeeper'
+  ];
+  assert.ok(lateEnemyIds.every((id) => fixture.enemies[id]), 'Every F8/F9 demo enemy must resolve.');
+  assert.equal(fixture.enemies.palaceWarden.reward?.core ?? 0, 0);
+  assert.equal(fixture.enemies.blackSealKeeper.reward?.core ?? 0, 0);
+});
+
 test('10F overlay is idempotent', () => {
   const fixture = baseFixture();
   applyDemoTenFloorContent(fixture);
