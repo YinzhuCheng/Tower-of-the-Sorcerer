@@ -7,9 +7,6 @@ export const DEMO10_SIMPLE_BUILD_PORTFOLIO = Object.freeze([
   Object.freeze(['hp', 'atk', 'def'])
 ]);
 
-// Historical v1 quality band: intentionally allowed two simple builds to fail
-// in order to preserve a sharper strategic boundary. Keep it for diagnostics
-// and later hard-mode work.
 export const DEMO10_QUALITY_TARGETS = Object.freeze({
   minSolvableBuilds: 4,
   maxSolvableBuilds: 5,
@@ -22,11 +19,6 @@ export const DEMO10_QUALITY_TARGETS = Object.freeze({
   lateFloorPressureMax: 0.60
 });
 
-// Playable-first development band: the current product milestone values broad
-// human playability above a narrow difficulty optimum. All six recurring build
-// orders should be able to finish; pressure is still bounded so the late game
-// cannot become completely inert. This is a demo-generation target, not an
-// exact global balance claim.
 export const DEMO10_PLAYABILITY_TARGETS = Object.freeze({
   minSolvableBuilds: 6,
   maxSolvableBuilds: 6,
@@ -37,6 +29,18 @@ export const DEMO10_PLAYABILITY_TARGETS = Object.freeze({
   lateFloors: Object.freeze([8, 9, 10]),
   f9ShopCoverageMin: 0.75,
   lateFloorPressureMax: 0.85
+});
+
+export const DEMO10_EXPERT_TARGETS = Object.freeze({
+  minSolvableBuilds: 1,
+  maxSolvableBuilds: 1,
+  bestBuildMarginMin: 0.04,
+  bestBuildMarginMax: 0.65,
+  weakestWinningMarginMin: 0.04,
+  minTerminalHpSpread: 0,
+  lateFloors: Object.freeze([8, 9, 10]),
+  f9ShopCoverageMin: 1,
+  lateFloorPressureMax: 0.75
 });
 
 function finiteMin(values) {
@@ -123,45 +127,27 @@ export function summarizeDemoTenFloorPortfolio(reports, targets = DEMO10_QUALITY
     : 0;
 
   const violations = [];
-  if (winningReports.length < targets.minSolvableBuilds) {
-    violations.push(`solvable-builds-below-min:${winningReports.length}<${targets.minSolvableBuilds}`);
-  }
-  if (winningReports.length > targets.maxSolvableBuilds) {
-    violations.push(`solvable-builds-above-max:${winningReports.length}>${targets.maxSolvableBuilds}`);
-  }
+  if (winningReports.length < targets.minSolvableBuilds) violations.push(`solvable-builds-below-min:${winningReports.length}<${targets.minSolvableBuilds}`);
+  if (winningReports.length > targets.maxSolvableBuilds) violations.push(`solvable-builds-above-max:${winningReports.length}>${targets.maxSolvableBuilds}`);
   if (!winner || !Number.isFinite(winner.minNormalizedHpMargin)) {
     violations.push('missing-best-winning-margin');
   } else {
-    if (winner.minNormalizedHpMargin < targets.bestBuildMarginMin) {
-      violations.push(`best-build-too-brittle:${round(winner.minNormalizedHpMargin)}`);
-    }
-    if (winner.minNormalizedHpMargin > targets.bestBuildMarginMax) {
-      violations.push(`best-build-too-forgiving:${round(winner.minNormalizedHpMargin)}`);
-    }
+    if (winner.minNormalizedHpMargin < targets.bestBuildMarginMin) violations.push(`best-build-too-brittle:${round(winner.minNormalizedHpMargin)}`);
+    if (winner.minNormalizedHpMargin > targets.bestBuildMarginMax) violations.push(`best-build-too-forgiving:${round(winner.minNormalizedHpMargin)}`);
   }
   if (!weakestWinningReport || !Number.isFinite(weakestWinningReport.minNormalizedHpMargin)) {
     violations.push('missing-weakest-winning-margin');
   } else if (weakestWinningReport.minNormalizedHpMargin < targets.weakestWinningMarginMin) {
     violations.push(`weakest-win-too-brittle:${round(weakestWinningReport.minNormalizedHpMargin)}`);
   }
-  if (!Number.isFinite(terminalHpSpread) || terminalHpSpread < targets.minTerminalHpSpread) {
-    violations.push(`terminal-hp-spread-too-small:${terminalHpSpread ?? 'null'}`);
-  }
-  if (f9ShopCoverage < targets.f9ShopCoverageMin) {
-    violations.push(`f9-shop-coverage-too-low:${round(f9ShopCoverage)}`);
-  }
+  if (!Number.isFinite(terminalHpSpread) || terminalHpSpread < targets.minTerminalHpSpread) violations.push(`terminal-hp-spread-too-small:${terminalHpSpread ?? 'null'}`);
+  if (f9ShopCoverage < targets.f9ShopCoverageMin) violations.push(`f9-shop-coverage-too-low:${round(f9ShopCoverage)}`);
 
   for (const floor of targets.lateFloors) {
     const profile = lateFloors[floor];
-    if (profile.buildsWithBattles !== winningReports.length) {
-      violations.push(`f${floor}-missing-battle-coverage:${profile.buildsWithBattles}/${winningReports.length}`);
-    }
-    if (profile.buildsWithBossBattle !== winningReports.length) {
-      violations.push(`f${floor}-missing-boss-coverage:${profile.buildsWithBossBattle}/${winningReports.length}`);
-    }
-    if (Number.isFinite(profile.meanMinMargin) && profile.meanMinMargin > targets.lateFloorPressureMax) {
-      violations.push(`f${floor}-too-forgiving:${profile.meanMinMargin}`);
-    }
+    if (profile.buildsWithBattles !== winningReports.length) violations.push(`f${floor}-missing-battle-coverage:${profile.buildsWithBattles}/${winningReports.length}`);
+    if (profile.buildsWithBossBattle !== winningReports.length) violations.push(`f${floor}-missing-boss-coverage:${profile.buildsWithBossBattle}/${winningReports.length}`);
+    if (Number.isFinite(profile.meanMinMargin) && profile.meanMinMargin > targets.lateFloorPressureMax) violations.push(`f${floor}-too-forgiving:${profile.meanMinMargin}`);
   }
 
   return {
@@ -203,4 +189,21 @@ export function demoTenFloorPlayabilityLoss(summary, targets = DEMO10_PLAYABILIT
     + missingBuilds * 10_000
     + (Number.isFinite(weakestMargin) ? Math.abs(weakestMargin - 0.08) * 100 : 500)
     + Math.max(0, targets.f9ShopCoverageMin - (summary.f9ShopCoverage ?? 0)) * 500;
+}
+
+export function demoTenFloorExpertLoss(summary, targets = DEMO10_EXPERT_TARGETS) {
+  const margin = summary.winner?.minNormalizedHpMargin;
+  const f8Boss = summary.lateFloors?.[8]?.meanBossMinMargin;
+  const f9Boss = summary.lateFloors?.[9]?.meanBossMinMargin;
+  const f10Boss = summary.lateFloors?.[10]?.meanBossMinMargin;
+  const hardPenalty = summary.violations.length * 10_000;
+  const missingExpert = Math.max(0, targets.minSolvableBuilds - summary.solvableBuilds);
+
+  return hardPenalty
+    + missingExpert * 100_000
+    + (Number.isFinite(margin) ? Math.abs(margin - 0.12) * 120 : 5_000)
+    + (Number.isFinite(f8Boss) ? Math.abs(f8Boss - 0.30) * 10 : 250)
+    + (Number.isFinite(f9Boss) ? Math.abs(f9Boss - 0.18) * 18 : 250)
+    + (Number.isFinite(f10Boss) ? Math.abs(f10Boss - 0.30) * 8 : 250)
+    + Math.max(0, targets.f9ShopCoverageMin - (summary.f9ShopCoverage ?? 0)) * 1_000;
 }
