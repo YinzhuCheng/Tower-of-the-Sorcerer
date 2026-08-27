@@ -1,0 +1,41 @@
+name: 10F Playable Demo
+on:
+  push:
+    branches: [demo-10-floor-codesign]
+    paths:
+      - 'src/game/demo-10-floor-content.js'
+      - 'src/demo-main.js'
+      - 'index.html'
+      - 'scripts/validate-demo-10f.mjs'
+      - 'test/demo-10-floor-content.test.js'
+      - 'package.json'
+      - 'docs/demo-10-floor-vertical-slice.md'
+      - '.github/workflows/demo-10-floor.yml'
+  pull_request:
+    paths:
+      - 'src/game/demo-10-floor-content.js'
+      - 'src/demo-main.js'
+      - 'index.html'
+      - 'scripts/validate-demo-10f.mjs'
+      - 'test/demo-10-floor-content.test.js'
+      - 'package.json'
+      - 'docs/demo-10-floor-vertical-slice.md'
+      - '.github/workflows/demo-10-floor.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: demo-10-floor-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate-demo:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - name: Preserve eight-floor research regression suite
+        run: npm run check
+      - name: Validate ten-floor authoritative heuristic witness
+        run: npm run validate:demo10
