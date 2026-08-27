@@ -11,6 +11,32 @@ function slot(x, y, expected) {
   return Object.freeze({ x, y, expected });
 }
 
+function removeShops(map) {
+  let removed = 0;
+  for (const row of map) {
+    for (let x = 0; x < row.length; x += 1) {
+      if (row[x] !== 'shop') continue;
+      row[x] = '.';
+      removed += 1;
+    }
+  }
+  return removed;
+}
+
+function ensureShop(map, { x, y }) {
+  if (map.some((row) => row.includes('shop'))) return;
+  if (map[y]?.[x] !== '.') throw new Error(`Demo shop slot ${x},${y} is not free.`);
+  map[y][x] = 'shop';
+}
+
+function dialogueTurn(speaker, portrait, text) {
+  return Object.freeze({ speaker, portrait, text });
+}
+
+function dialogueSequence(title, turns) {
+  return Object.freeze({ title, turns: Object.freeze(turns) });
+}
+
 export const DEMO_TEN_FLOOR_ID = 'demo-10f-v1';
 
 /**
@@ -35,6 +61,25 @@ export function applyDemoTenFloorContent({ enemies, floors, dialogues, gridSize 
 
   const finalFloor = floors[7];
 
+  // Production demo economy: only F1 / F5 / F9 contain shops. Later shops
+  // expose stronger conversion multipliers while the eight-floor research
+  // baseline remains untouched unless this overlay is explicitly installed.
+  for (const floor of floors.slice(0, 7)) {
+    if (![1, 5].includes(floor.number)) removeShops(floor.map);
+  }
+  ensureShop(floors[0].map, { x: 6, y: 7 });
+  ensureShop(floors[4].map, { x: 5, y: 7 });
+  Object.assign(floors[0], {
+    objective: '使用初始魔眼图鉴判断损伤，击败猫卫长米露并回收月影核心。',
+    initialRelics: Object.freeze(['codex', 'compass']),
+    shopEffectMultiplier: 1,
+    shopTierLabel: '基础咏唱'
+  });
+  Object.assign(floors[4], {
+    shopEffectMultiplier: 1.15,
+    shopTierLabel: '中层强化'
+  });
+
   Object.assign(enemies, {
     muteGuard: {
       name: '缄默近卫', portrait: 'silence_guard', faction: '无声王庭·外环', floor: 8,
@@ -54,7 +99,6 @@ export function applyDemoTenFloorContent({ enemies, floors, dialogues, gridSize 
     palaceWarden: {
       name: '静默执剑官·维拉', portrait: 'sword_boss', faction: '无声王庭·外环', floor: 8,
       hp: 2250, atk: 205, def: 92, gold: 520, boss: true, special: 'magic', magicPower: 240,
-      defeatDialogue: 'bossPalaceWarden',
       description: '守在王庭外环的执剑官。她不持有魔力核心，以高压静默剑域检验七核回收后的资源配置。'
     },
     starSentinel: {
@@ -75,9 +119,11 @@ export function applyDemoTenFloorContent({ enemies, floors, dialogues, gridSize 
     blackSealKeeper: {
       name: '黯印观测官·塞芙', portrait: 'astral_boss', faction: '王座前厅', floor: 9,
       hp: 2700, atk: 215, def: 95, gold: 600, boss: true, special: 'magic', magicPower: 160,
-      defeatDialogue: 'bossBlackSeal',
-      description: '掌管王座前最后一道黯星许可印。当前试玩版优先保证多种基础成长路线都能进入王座，同时保留明显的后期压力。'
+      description: '掌管王座前最后一道黯星许可印。王座前强化商店允许更高效的最终资源转换，因此她承担更高的终盘压力。'
     },
+    silenceGuard: { ...enemies.silenceGuard, floor: 10 },
+    eclipseMage: { ...enemies.eclipseMage, floor: 10 },
+    crownKnight: { ...enemies.crownKnight, floor: 10 },
     finalQueen: { ...enemies.finalQueen, floor: 10 },
     voidCore: { ...enemies.voidCore, floor: 10 }
   });
@@ -93,21 +139,120 @@ export function applyDemoTenFloorContent({ enemies, floors, dialogues, gridSize 
     },
     floor9: {
       speaker: '绫星·璃', portrait: 'hero', title: '第九阵：倒悬星桥',
-      text: '王座就在上方。这里的星序不是力量测试，而是路线测试：依次踏过“月蚀、晨辉、星落”，才能打开黯星门。'
+      text: '王座就在上方。这里的星序不是力量测试，而是路线测试：依次踏过“月蚀、晨辉、星落”，才能打开黯星门。这里也是最后一座强化商店。'
     },
     floor10: {
       speaker: '无声女王·诺克缇娅', portrait: 'final_queen', title: '第十阵：无声王座',
       text: '“你已经证明自己能把无数选择收束成答案。但我仍认为，最安全的世界是不允许任何人选择。”\n\n七枚核心同时回应。璃踏入最后的王座。'
     },
-    bossPalaceWarden: {
-      speaker: '静默执剑官·维拉', portrait: 'sword_boss', title: '王庭外环解除',
-      text: '维拉收剑退到墙边：“我只负责确认你不是依赖偶然性走到这里。固定数值已经给出了答案——继续向上。”'
-    },
-    bossBlackSeal: {
-      speaker: '黯印观测官·塞芙', portrait: 'astral_boss', title: '黯星通行印解除',
-      text: '倒悬星桥停止旋转。塞芙撤去最后一道许可印：“王座已无中间层。下一场战斗，只剩你与女王的选择。”'
-    }
+
+    bossCatPreDemo: dialogueSequence('第一阵守护者：猫卫长·米露', [
+      dialogueTurn('猫卫长·米露', 'cat_boss', '停下。强制术式要求我守住月影核心——哪怕我知道这命令并不属于我。'),
+      dialogueTurn('绫星·璃', 'hero', '那我就把命令和核心一起斩开。先说好，我只取回属于我的魔力。')
+    ]),
+    bossCatPostDemo: dialogueSequence('月影核心回收', [
+      dialogueTurn('猫卫长·米露', 'cat_boss', '结界命令解除了……原来输掉这一战，反而能让我重新听见自己的想法。'),
+      dialogueTurn('绫星·璃', 'hero', '休息吧。下一层的强制术式，我会继续拆掉。')
+    ]),
+    bossFoxPreDemo: dialogueSequence('第二阵守护者：狐祝·绯叶', [
+      dialogueTurn('狐祝·绯叶', 'fox_boss', '森罗结界会记录你的每一张卡、每一次取舍。让我看看你是不是只会凭力量往前撞。'),
+      dialogueTurn('绫星·璃', 'hero', '固定数值已经把代价写清楚了。我来这里就是为了对自己的选择负责。')
+    ]),
+    bossFoxPostDemo: dialogueSequence('森罗核心回收', [
+      dialogueTurn('狐祝·绯叶', 'fox_boss', '判断合格。你没有把钥匙和生命当成可以随便浪费的东西。'),
+      dialogueTurn('绫星·璃', 'hero', '因为真正的魔法不是“能不能做”，而是“值不值得做”。')
+    ]),
+    bossWhalePreDemo: dialogueSequence('第三阵守护者：深蓝歌姬·澜音', [
+      dialogueTurn('深蓝歌姬·澜音', 'whale_boss', '鲸歌会直接穿过防御。若你的生命储备只是表面漂亮，现在就会被它揭穿。'),
+      dialogueTurn('绫星·璃', 'hero', '那就让伤害结算说话。我的路线能不能撑住，不需要运气回答。')
+    ]),
+    bossWhalePostDemo: dialogueSequence('潮汐核心回收', [
+      dialogueTurn('深蓝歌姬·澜音', 'whale_boss', '鲸歌停下了……谢谢你没有把我的失控当成罪。'),
+      dialogueTurn('绫星·璃', 'hero', '控制你的人才该为这场战斗负责。')
+    ]),
+    bossSwordPreDemo: dialogueSequence('第四阵守护者：剑圣·塞蕾娜', [
+      dialogueTurn('剑圣·塞蕾娜', 'sword_boss', '不破防，就没有侥幸；防得住，就没有额外伤害。这一阵只承认计算与执行。'),
+      dialogueTurn('绫星·璃', 'hero', '正合我意。让每一点攻击和防御都承担它该承担的结果。')
+    ]),
+    bossSwordPostDemo: dialogueSequence('锋刃核心回收', [
+      dialogueTurn('剑圣·塞蕾娜', 'sword_boss', '你赢的不是数值本身，而是对数值的理解。'),
+      dialogueTurn('绫星·璃', 'hero', '数值只是规则。选择才是玩家真正留下的痕迹。')
+    ]),
+    bossDragonPreDemo: dialogueSequence('第五阵守护者：龙姬·焰璃', [
+      dialogueTurn('龙姬·焰璃', 'dragon_boss', '这里有第二座商店，也有更重的龙火。把金币换成什么，就是你接下来几层要背负的答案。'),
+      dialogueTurn('绫星·璃', 'hero', '我不会为了眼前轻松，把后面的路卖掉。来吧。')
+    ]),
+    bossDragonPostDemo: dialogueSequence('赤焰核心回收', [
+      dialogueTurn('龙姬·焰璃', 'dragon_boss', '强制契约断了。再往上，敌人不会因为你走到高层就手下留情。'),
+      dialogueTurn('绫星·璃', 'hero', '最好如此。太轻的胜利证明不了任何东西。')
+    ]),
+    bossAstralPreDemo: dialogueSequence('第六阵守护者：天穹魔女·露米', [
+      dialogueTurn('天穹魔女·露米', 'astral_boss', '星图给出的结果很简单：错误顺序会归零，错误配点会留下永久代价。'),
+      dialogueTurn('绫星·璃', 'hero', '所以我先解序列，再解你。把不可逆的风险留到最后。')
+    ]),
+    bossAstralPostDemo: dialogueSequence('天穹核心回收', [
+      dialogueTurn('天穹魔女·露米', 'astral_boss', '演算更新：你的胜率已经从异常值变成主分支。'),
+      dialogueTurn('绫星·璃', 'hero', '那就继续观察。我还没走到结论。')
+    ]),
+    bossShadowPreDemo: dialogueSequence('第七阵守护者：影织姬·鸦羽', [
+      dialogueTurn('影织姬·鸦羽', 'shadow_boss', '三相结界之后就是王庭。到那里，不会再有核心奖励替你修正错误。'),
+      dialogueTurn('绫星·璃', 'hero', '所以这一战之后，我只靠之前做过的选择。很好。')
+    ]),
+    bossShadowPostDemo: dialogueSequence('虚影核心回收', [
+      dialogueTurn('影织姬·鸦羽', 'shadow_boss', '七枚核心齐了。女王真正害怕的不是你的力量，是你证明力量可以被选择。'),
+      dialogueTurn('绫星·璃', 'hero', '那我就把这个答案带到她面前。')
+    ]),
+    bossPalacePreDemo: dialogueSequence('第八阵守护者：静默执剑官·维拉', [
+      dialogueTurn('静默执剑官·维拉', 'sword_boss', '七核齐全不代表合格。王庭外环只检查一件事：你的资源配置能不能承受真实压力。'),
+      dialogueTurn('绫星·璃', 'hero', '不用给我保底。让我看看前七层的选择到底值多少。')
+    ]),
+    bossPalacePostDemo: dialogueSequence('王庭外环解除', [
+      dialogueTurn('静默执剑官·维拉', 'sword_boss', '固定数值已经给出了答案。你不是靠偶然性站在这里。'),
+      dialogueTurn('绫星·璃', 'hero', '下一道门也一样。')
+    ]),
+    bossBlackSealPreDemo: dialogueSequence('第九阵守护者：黯印观测官·塞芙', [
+      dialogueTurn('黯印观测官·塞芙', 'astral_boss', '最后一座商店的咏唱效率更高。你可以把积攒的金币一次性转成战力——但我的阈值也因此更高。'),
+      dialogueTurn('绫星·璃', 'hero', '高收益对应高门槛。公平。现在检查我的最终配置吧。')
+    ]),
+    bossBlackSealPostDemo: dialogueSequence('黯星通行印解除', [
+      dialogueTurn('黯印观测官·塞芙', 'astral_boss', '许可印解除。王座已无中间层，也没有下一家商店。'),
+      dialogueTurn('绫星·璃', 'hero', '足够了。剩下的数值就是我自己的答案。')
+    ]),
+    bossQueenPreDemo: dialogueSequence('第十阵：无声女王', [
+      dialogueTurn('无声女王·诺克缇娅', 'final_queen', '你把钥匙、金币和生命都变成了选择，却仍然把这种不确定性称为自由？'),
+      dialogueTurn('绫星·璃', 'hero', '自由不是没有代价。自由是代价写清楚以后，仍然由自己决定。'),
+      dialogueTurn('无声女王·诺克缇娅', 'final_queen', '那就用最后一战证明，你愿意承担这个答案。')
+    ]),
+    queenPhaseDemo: dialogueSequence('最终术式展开', [
+      dialogueTurn('无声女王·诺克缇娅', 'final_queen', '人形只是最后一层限制。现在，七层魔阵会一起向你结算。'),
+      dialogueTurn('绫星·璃', 'hero', '那就一起算。这里没有随机数，也没有借口。')
+    ]),
+    bossQueenPostDemo: dialogueSequence('终章：魔法重新被选择', [
+      dialogueTurn('绫星·璃', 'hero', '黯星核心破碎了。你已经不能再替所有人决定要不要拥有魔法。'),
+      dialogueTurn('无声女王·诺克缇娅', 'final_queen', '也许我真正害怕的，从来不是魔法失控……而是别人做出我无法控制的选择。'),
+      dialogueTurn('残响精灵·纱雾', 'guide', '十重阵列解除。咏唱是否响起，再次回到每个人自己手中。')
+    ])
   });
+
+  const bossDialogueBindings = {
+    catBoss: ['bossCatPreDemo', 'bossCatPostDemo'],
+    foxBoss: ['bossFoxPreDemo', 'bossFoxPostDemo'],
+    whaleBoss: ['bossWhalePreDemo', 'bossWhalePostDemo'],
+    swordBoss: ['bossSwordPreDemo', 'bossSwordPostDemo'],
+    dragonBoss: ['bossDragonPreDemo', 'bossDragonPostDemo'],
+    astralBoss: ['bossAstralPreDemo', 'bossAstralPostDemo'],
+    shadowBoss: ['bossShadowPreDemo', 'bossShadowPostDemo'],
+    palaceWarden: ['bossPalacePreDemo', 'bossPalacePostDemo'],
+    blackSealKeeper: ['bossBlackSealPreDemo', 'bossBlackSealPostDemo']
+  };
+  for (const [enemyId, [preBattleDialogue, defeatDialogue]] of Object.entries(bossDialogueBindings)) {
+    if (!enemies[enemyId]) continue;
+    enemies[enemyId].preBattleDialogue = preBattleDialogue;
+    enemies[enemyId].defeatDialogue = defeatDialogue;
+  }
+  enemies.finalQueen.preBattleDialogue = 'bossQueenPreDemo';
+  enemies.finalQueen.phaseDialogue = 'queenPhaseDemo';
+  enemies.voidCore.defeatDialogue = 'bossQueenPostDemo';
 
   const floor8 = {
     id: 7,
@@ -156,10 +301,12 @@ export function applyDemoTenFloorContent({ enemies, floors, dialogues, gridSize 
     id: 8,
     number: 9,
     title: '倒悬星桥',
-    objective: '按月蚀、晨辉、星落的顺序校准星桥，在王座前商店完成最后资源转换并击败塞芙。',
+    objective: '按月蚀、晨辉、星落的顺序校准星桥，在王座前强化商店完成最后资源转换并击败塞芙。',
     intro: 'floor9',
     boss: 'blackSealKeeper',
     demoContentId: DEMO_TEN_FLOOR_ID,
+    shopEffectMultiplier: 1.3,
+    shopTierLabel: '王座强化',
     theme: { floor: 0x1a1838, floorAlt: 0x292151, wall: 0x62528f, glow: 0xc5a3ff, fog: 0x0f0c23 },
     map: parseDemoMap(`
       # # # # # # # # # # #
@@ -204,16 +351,18 @@ export function applyDemoTenFloorContent({ enemies, floors, dialogues, gridSize 
     })
   };
 
+  const floor10Map = finalFloor.map.map((row) => [...row]);
+  removeShops(floor10Map);
   const floor10 = {
     ...finalFloor,
     id: 9,
     number: 10,
     title: '无声王座',
-    objective: '突破最后近卫，击败无声女王及其黯星核心。',
+    objective: '突破最后近卫，击败无声女王及其黯星核心。这里没有商店，也没有后续补救。',
     intro: 'floor10',
     boss: 'voidCore',
     demoContentId: DEMO_TEN_FLOOR_ID,
-    map: finalFloor.map.map((row) => [...row])
+    map: floor10Map
   };
 
   floors.splice(7, 1, floor8, floor9, floor10);
