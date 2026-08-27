@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
+  DEMO10_CODESIGN_POLICY_SPECS,
   paretoCheckpointSamples,
   summarizeDemoTenFloorCheckpoints
 } from '../src/analyzer/demo-10-floor-checkpoints.js';
@@ -31,6 +32,13 @@ function report(atk, def) {
     }]
   };
 }
+
+test('10F diagnostic player portfolio keeps six hard cycles but broadens heuristic coverage', () => {
+  assert.equal(DEMO10_CODESIGN_POLICY_SPECS.length, 33);
+  assert.equal(DEMO10_CODESIGN_POLICY_SPECS.filter((spec) => spec.qualityGate).length, 6);
+  assert.equal(DEMO10_CODESIGN_POLICY_SPECS.filter((spec) => spec.diagnosticFamily === 'pure-stat-extreme').length, 3);
+  assert.equal(DEMO10_CODESIGN_POLICY_SPECS.filter((spec) => spec.diagnosticFamily === 'one-purchase-perturbation').length, 12);
+});
 
 test('checkpoint Pareto keeps tradeoffs and drops a dominated resource state', () => {
   const frontier = paretoCheckpointSamples([
