@@ -60,7 +60,10 @@ export class FrontierIndex {
     }
     const result = frontier.insert(label);
     this.peakWidth = Math.max(this.peakWidth, frontier.size);
-    return result;
+    return {
+      ...result,
+      frontierSize: frontier.size
+    };
   }
 
   activeCount() {
