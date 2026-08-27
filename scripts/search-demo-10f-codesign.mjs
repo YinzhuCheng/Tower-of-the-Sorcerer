@@ -39,7 +39,8 @@ function compactCheckpoint(checkpoints) {
     sampledPolicies: profile.sampledPolicies,
     uniqueResourceStates: profile.uniqueResourceStates,
     paretoWidth: profile.paretoWidth,
-    historyInflation: Number(profile.historyInflation.toFixed(3))
+    policyMultiplicity: Number(profile.policyMultiplicity.toFixed(3)),
+    eventOrderHistoryInflation: profile.eventOrderHistoryInflation
   }]));
 }
 
@@ -48,6 +49,7 @@ function compactMutationPlan(plan) {
     reasons: plan.reasons,
     issueFloors: plan.issueFloors,
     unhandledFloors: plan.unhandledFloors,
+    policyMultiplicityIgnored: plan.policyMultiplicityIgnored,
     selectedMutationCount: plan.selectedMutationIds.length,
     selectedMutationIds: plan.selectedMutationIds
   };
@@ -95,7 +97,8 @@ function evaluateCandidate(candidate) {
         checkpointChoiceLoss: checkpoints.choiceLoss,
         maxParetoWidth: checkpoints.maxParetoWidth,
         meanParetoWidth: checkpoints.meanParetoWidth,
-        maxHistoryInflation: checkpoints.maxHistoryInflation,
+        maxPolicyMultiplicity: checkpoints.maxPolicyMultiplicity,
+        eventOrderHistoryInflationMeasured: checkpoints.eventOrderHistoryInflationMeasured,
         oversizedCheckpoints: checkpoints.oversizedCheckpoints,
         collapsedCheckpoints: checkpoints.collapsedCheckpoints,
         adaptiveMutationPlan: compactMutationPlan(mutationPlan),
