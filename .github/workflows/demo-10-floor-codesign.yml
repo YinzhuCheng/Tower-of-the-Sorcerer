@@ -4,27 +4,37 @@ on:
     branches: [demo-10-floor-codesign]
     paths:
       - 'src/analyzer/demo-10-floor-checkpoints.js'
+      - 'src/tuner/demo-10-floor-adaptive-mutations.js'
       - 'src/tuner/demo-10-floor-mutations.js'
       - 'src/tuner/codesign-beam-search.js'
       - 'src/tuner/prunability-score.js'
+      - 'src/solver/greedy-strategy.js'
       - 'src/game/demo-10-floor-content.js'
       - 'src/game/demo-10-floor-quality.js'
       - 'scripts/search-demo-10f-codesign.mjs'
+      - 'test/codesign-beam-search.test.js'
+      - 'test/demo-10-floor-adaptive-mutations.test.js'
       - 'test/demo-10-floor-checkpoints.test.js'
       - 'test/demo-10-floor-mutations.test.js'
+      - 'test/greedy-checkpoint-telemetry.test.js'
       - 'package.json'
       - '.github/workflows/demo-10-floor-codesign.yml'
   pull_request:
     paths:
       - 'src/analyzer/demo-10-floor-checkpoints.js'
+      - 'src/tuner/demo-10-floor-adaptive-mutations.js'
       - 'src/tuner/demo-10-floor-mutations.js'
       - 'src/tuner/codesign-beam-search.js'
       - 'src/tuner/prunability-score.js'
+      - 'src/solver/greedy-strategy.js'
       - 'src/game/demo-10-floor-content.js'
       - 'src/game/demo-10-floor-quality.js'
       - 'scripts/search-demo-10f-codesign.mjs'
+      - 'test/codesign-beam-search.test.js'
+      - 'test/demo-10-floor-adaptive-mutations.test.js'
       - 'test/demo-10-floor-checkpoints.test.js'
       - 'test/demo-10-floor-mutations.test.js'
+      - 'test/greedy-checkpoint-telemetry.test.js'
       - 'package.json'
       - '.github/workflows/demo-10-floor-codesign.yml'
   workflow_dispatch:
@@ -45,5 +55,5 @@ jobs:
         run: npm run check
       - name: Preserve 10F v1 quality contract
         run: npm run validate:demo10
-      - name: Search proof-friendly 10F setter neighborhood
+      - name: Search evidence-driven 10F setter neighborhood
         run: npm run search:demo10:codesign
