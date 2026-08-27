@@ -11,6 +11,7 @@
     "test": "node --test",
     "validate": "node scripts/validate-game.mjs",
     "validate:demo10": "node scripts/validate-demo-10f.mjs",
+    "tune:demo10:late": "node scripts/tune-demo-10f-late-game.mjs",
     "check": "npm run validate && npm run build"
   }
 }
