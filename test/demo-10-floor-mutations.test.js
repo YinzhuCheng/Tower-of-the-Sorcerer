@@ -25,6 +25,35 @@ test('10F semantic co-design slots stay anchored to their expected baseline toke
   }
 });
 
+test('bounded F7 semantic mutations stay off tri-gate cards, boss/core and stairs', () => {
+  const floor7 = FLOORS.find((floor) => floor.number === 7);
+  const f7 = catalog.filter((mutation) => mutation.floor === 7);
+  assert.deepEqual(f7.map((mutation) => mutation.id).sort(), [
+    'f7-enemy-mid-swap',
+    'f7-reward-mid-stat-swap'
+  ]);
+  assert.equal(floor7.map[3][5], 'item:def');
+  assert.equal(floor7.map[5][5], 'item:atk');
+  assert.equal(floor7.map[5][2], 'enemy:voidPriestess');
+  assert.equal(floor7.map[5][7], 'enemy:duskDragon');
+  for (const mutation of f7) {
+    const tokens = [mutation.a.baselineToken, mutation.b.baselineToken];
+    assert.ok(tokens.every((token) => !['item:sun', 'item:moon', 'item:star', 'enemy:shadowBoss', 'U', 'D', 'gate:tri'].includes(token)));
+  }
+});
+
+test('F7 reward timing swap changes placement and restores the baseline', () => {
+  const floor7 = FLOORS.find((floor) => floor.number === 7);
+  const beforeDef = floor7.map[3][5];
+  const beforeAtk = floor7.map[5][5];
+  withDemoTenFloorCandidate({ mutationIds: ['f7-reward-mid-stat-swap'] }, catalog, () => {
+    assert.equal(floor7.map[3][5], beforeAtk);
+    assert.equal(floor7.map[5][5], beforeDef);
+  });
+  assert.equal(floor7.map[3][5], beforeDef);
+  assert.equal(floor7.map[5][5], beforeAtk);
+});
+
 test('10F numeric setter mutation reaches authoritative data and restores baseline', () => {
   const baseline = ENEMIES.palaceWarden.magicPower;
   withDemoTenFloorCandidate({ mutationIds: ['f8-warden-magic-down10'] }, catalog, () => {
