@@ -1,10 +1,4 @@
-import {
-  FLOORS,
-  GRID_SIZE,
-  SHOP_OPTIONS,
-  TILE_SIZE,
-  getShopCost
-} from './game/data.js';
+import { ENEMIES, FLOORS, GRID_SIZE, SHOP_OPTIONS, TILE_SIZE, getShopCost } from './game/data.js';
 import {
   buyShopUpgrade,
   createInitialState,
@@ -14,22 +8,18 @@ import {
   getDialogue,
   getProgressPercent,
   getRelicLabels,
+  initialDialogue,
   serializeState,
   teleportToFloor
 } from './game/engine.js';
 import { createMagicTowerScene } from './game/scene.js';
 import { createCanvasTowerScene } from './game/canvas-scene.js';
-import { portraitUrl } from './game/portraits.js';
-import { installV8VisualLayer, applySceneThemeV8 } from './game/visual-theme-v8.js';
-import { installV83UiFixes, applyV83RenderFixes } from './game/visual-patch-v83.js';
+import { hydratePortraits, portraitUrl } from './game/portraits.js';
+import { applySceneThemeV8, installV8VisualLayer } from './game/visual-theme-v8.js';
+import { applyV83RenderFixes, installV83UiFixes } from './game/visual-patch-v83.js';
 
-const MANUAL_SAVE_KEY = 'tower-save-v1';
-const AUTO_SAVE_KEY = 'tower-auto-save-v1';
-
-let state = createInitialState();
-let scene = null;
-let modalClosable = true;
-let toastTimer = null;
+const MANUAL_SAVE_KEY = 'lost-magic-tower:manual:v1';
+const AUTO_SAVE_KEY = 'lost-magic-tower:auto:v1';
 
 const $ = (selector) => document.querySelector(selector);
 const elements = {
@@ -58,9 +48,10 @@ const elements = {
   modalClose: $('#modal-close')
 };
 
-function formatNumber(value) {
-  return new Intl.NumberFormat('zh-CN').format(value);
-}
+let state = createInitialState();
+let scene = null;
+let modalClosable = true;
+let toastTimer = null;
 
 function escapeHtml(value) {
   return String(value)
@@ -71,27 +62,21 @@ function escapeHtml(value) {
     .replaceAll("'", '&#039;');
 }
 
+function formatNumber(value) {
+  return Number.isFinite(value) ? Math.round(value).toLocaleString('zh-CN') : '∞';
+}
+
 function specialLabel(enemy) {
-  if (enemy.finalBoss) return '最终形态 · 固定魔法伤害';
-  if (enemy.phaseNext) return '多阶段首领';
-  if (enemy.boss) return '阵眼首领';
+  if (enemy.special === 'magic') return `魔法伤害 ${enemy.magicPower}/次`;
   if (enemy.special === 'firstStrike') return '先制攻击';
   if (enemy.special === 'doubleHit') return '二连击';
-  if (enemy.special === 'magic') return '魔法伤害 · 无视防御';
   return '普通攻击';
 }
 
-function initialDialogue(currentState) {
-  const floor = FLOORS[currentState.floor];
-  if (!floor) return null;
-  if (currentState.floor === 0 && !currentState.storySeen.includes('prologue')) return 'prologue';
-  return floor.intro && !currentState.storySeen.includes(floor.intro) ? floor.intro : null;
-}
-
-function showToast(message, duration = 1800) {
+function showToast(message, duration = 1700) {
+  clearTimeout(toastTimer);
   elements.loading.textContent = message;
   elements.loading.classList.remove('hidden');
-  clearTimeout(toastTimer);
   toastTimer = setTimeout(() => elements.loading.classList.add('hidden'), duration);
 }
 
