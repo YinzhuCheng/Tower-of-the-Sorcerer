@@ -9,6 +9,7 @@ import {
   summarizeDemoTenFloorPortfolio
 } from '../src/game/demo-10-floor-quality.js';
 import { runTowerCodesignBeamSearch } from '../src/tuner/codesign-beam-search.js';
+import { proposeDemoTenFloorAdaptiveMutations } from '../src/tuner/demo-10-floor-adaptive-mutations.js';
 import {
   createDemoTenFloorMutationCatalog,
   demoTenFloorCandidateEditLoss,
@@ -42,6 +43,16 @@ function compactCheckpoint(checkpoints) {
   }]));
 }
 
+function compactMutationPlan(plan) {
+  return {
+    reasons: plan.reasons,
+    issueFloors: plan.issueFloors,
+    unhandledFloors: plan.unhandledFloors,
+    selectedMutationCount: plan.selectedMutationIds.length,
+    selectedMutationIds: plan.selectedMutationIds
+  };
+}
+
 function evaluateCandidate(candidate) {
   return withDemoTenFloorCandidate(candidate, catalog, () => {
     const qualityReports = qualitySpecs.map(runPolicy);
@@ -65,12 +76,15 @@ function evaluateCandidate(candidate) {
     const reports = [...qualityReports, ...explorationReports];
     const specs = [...qualitySpecs, ...explorationSpecs];
     const checkpoints = summarizeDemoTenFloorCheckpoints(reports, { policySpecs: specs });
+    const mutationPlan = proposeDemoTenFloorAdaptiveMutations(checkpoints, catalog);
     return {
       solvabilityWitnessVerified: true,
       qualityLoss: demoTenFloorQualityLoss(quality) / 50,
       funLoss: checkpoints.choiceLoss,
       editLoss: demoTenFloorCandidateEditLoss(candidate, catalog),
       prunabilityEvidence: checkpoints.prunabilityEvidence,
+      checkpointDiagnostics: checkpoints,
+      mutationPlan,
       compact: {
         qualityViolations: quality.violations,
         solvableBuilds: quality.solvableBuilds,
@@ -84,15 +98,23 @@ function evaluateCandidate(candidate) {
         maxHistoryInflation: checkpoints.maxHistoryInflation,
         oversizedCheckpoints: checkpoints.oversizedCheckpoints,
         collapsedCheckpoints: checkpoints.collapsedCheckpoints,
+        adaptiveMutationPlan: compactMutationPlan(mutationPlan),
         checkpoints: compactCheckpoint(checkpoints)
       }
     };
   });
 }
 
+function expandFromEvidence(candidate, _round, parentEvaluation) {
+  const requested = parentEvaluation?.mutationPlan?.selectedMutationIds ?? [];
+  const activeIds = new Set([...(candidate.mutationIds ?? []), ...requested]);
+  const activeCatalog = catalog.filter((mutation) => activeIds.has(mutation.id));
+  return expandDemoTenFloorCandidate(candidate, activeCatalog, { maxEdits: 2 });
+}
+
 const result = runTowerCodesignBeamSearch({
   seeds: [{ mutationIds: [] }],
-  expand: (candidate) => expandDemoTenFloorCandidate(candidate, catalog, { maxEdits: 2 }),
+  expand: expandFromEvidence,
   evaluate: evaluateCandidate,
   keyOf: demoTenFloorCandidateKey,
   beamWidth: 6,
@@ -126,6 +148,8 @@ console.log(JSON.stringify({
   productionWriteAllowed: result.productionWriteAllowed,
   mutationCatalogSize: catalog.length,
   policyPortfolioSize: DEMO10_CODESIGN_POLICY_SPECS.length,
+  qualityPolicyCount: qualitySpecs.length,
+  diagnosticPolicyCount: explorationSpecs.length,
   evaluatedCandidates: result.evaluatedCandidates,
   history: result.history,
   best: compactEntry(result.best),
