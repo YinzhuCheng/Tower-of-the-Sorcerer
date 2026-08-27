@@ -45,14 +45,25 @@ async function applyVisualReplacementPatch() {
   await writeFile(scenePath, source);
 }
 
+async function applyTacticalDisclosurePatch() {
+  const interactionPath = join(outDir, 'src', 'game', 'tactical-interaction.js');
+  let source = await readFile(interactionPath, 'utf8');
+  const before = "  stats.textContent = `HP ${formatNumber(preview.enemy.hp)} · ATK ${formatNumber(preview.enemy.atk)} · DEF ${formatNumber(preview.enemy.def)}`;";
+  const after = "  stats.textContent = `HP ${formatNumber(preview.enemy.hp)} · ATK ${formatNumber(preview.enemy.atk)} · DEF ${formatNumber(preview.enemy.def)} · 击败奖励 ${formatNumber(preview.enemy.gold ?? 0)} 金币`;";
+  if (!source.includes(before)) throw new Error('Enemy gold disclosure patch anchor missing');
+  source = source.replace(before, after);
+  await writeFile(interactionPath, source);
+}
+
 await rm(outDir, { recursive: true, force: true });
 await mkdir(outDir, { recursive: true });
 await copyFile(join(root, 'index.html'), join(outDir, 'index.html'));
 await copyFile(join(root, 'styles.css'), join(outDir, 'styles.css'));
 await copyFile(join(root, 'anime.css'), join(outDir, 'anime.css'));
-await copyFile(join(root, 'ui-v8-4.css'), join(outDir, 'ui-v8-4.css'));
-await copyFile(join(root, 'ui-v8-5.css'), join(outDir, 'ui-v8-5.css'));
+await copyFile(join(root, 'ui-v8-4.css'), join(root, 'dist/ui-v8-4.css'));
+await copyFile(join(root, 'ui-v8-5.css'), join(root, 'dist/ui-v8-5.css'));
 await cp(join(root, 'src'), join(outDir, 'src'), { recursive: true });
 await cp(join(root, 'public'), outDir, { recursive: true });
 await applyVisualReplacementPatch();
+await applyTacticalDisclosurePatch();
 console.log(`Static build written to ${outDir}`);
