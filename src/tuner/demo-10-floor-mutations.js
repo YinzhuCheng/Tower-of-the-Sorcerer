@@ -15,7 +15,19 @@ const NUMERIC_SPECS = Object.freeze([
   ['f9-crown-atk-up6', 'f9-crown-atk', 'crownShade', 'atk', 6]
 ]);
 
+// F7 predates the 10F overlay's named codesignSlots. Keep these anchors small,
+// local and drift-checked until stable semantic event IDs replace coordinate
+// anchors. None of them touches tri-gate cards, the boss/core, stairs or gates.
+const F7_LOCAL_SLOT_SPECS = Object.freeze({
+  rewardMidDef: Object.freeze({ x: 5, y: 3, expected: 'item:def' }),
+  rewardMidAtk: Object.freeze({ x: 5, y: 5, expected: 'item:atk' }),
+  enemyVoidWest: Object.freeze({ x: 2, y: 5, expected: 'enemy:voidPriestess' }),
+  enemyDuskMid: Object.freeze({ x: 7, y: 5, expected: 'enemy:duskDragon' })
+});
+
 const SWAP_SPECS = Object.freeze([
+  ['f7-reward-mid-stat-swap', 'f7-reward-mid-stat', 7, 'rewardMidDef', 'rewardMidAtk'],
+  ['f7-enemy-mid-swap', 'f7-enemy-mid', 7, 'enemyVoidWest', 'enemyDuskMid'],
   ['f8-reward-side-cache-swap', 'f8-reward-side-cache', 8, 'rewardNorthwest', 'rewardNortheast'],
   ['f8-reward-mid-stat-swap', 'f8-reward-mid-stat', 8, 'rewardMidAtk', 'rewardMidDef'],
   ['f8-card-route-swap', 'f8-card-route', 8, 'cardStarEast', 'cardMoonWest'],
@@ -56,7 +68,8 @@ function floorByNumber(number) {
 
 function resolveSemanticSlot(floorNumber, slotId) {
   const floor = floorByNumber(floorNumber);
-  const slot = floor.codesignSlots?.[slotId];
+  const slot = floor.codesignSlots?.[slotId]
+    ?? (floorNumber === 7 ? F7_LOCAL_SLOT_SPECS[slotId] : null);
   if (!slot) throw new Error(`10F semantic slot unavailable: f${floorNumber}.${slotId}`);
   const actual = floor.map[slot.y]?.[slot.x];
   if (actual !== slot.expected) {
