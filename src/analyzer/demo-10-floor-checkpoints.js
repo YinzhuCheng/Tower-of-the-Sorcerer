@@ -74,8 +74,28 @@ function dominates(a, b) {
   return strictlyBetter;
 }
 
+function dedupeCheckpointSamples(samples = []) {
+  const byState = new Map();
+  for (const sample of samples) {
+    const signature = sample.resourceSignature ?? stableResourceSignature(sample);
+    const existing = byState.get(signature);
+    if (!existing) {
+      byState.set(signature, {
+        ...sample,
+        resourceSignature: signature,
+        equivalentPolicyIds: [sample.policyId]
+      });
+      continue;
+    }
+    existing.equivalentPolicyIds.push(sample.policyId);
+    existing.equivalentPolicyIds.sort();
+  }
+  return [...byState.values()];
+}
+
 export function paretoCheckpointSamples(samples = []) {
-  return samples.filter((candidate, index) => !samples.some((other, otherIndex) =>
+  const unique = dedupeCheckpointSamples(samples);
+  return unique.filter((candidate, index) => !unique.some((other, otherIndex) =>
     otherIndex !== index && dominates(other, candidate)
   ));
 }
@@ -159,7 +179,8 @@ export function summarizeDemoTenFloorCheckpoints(reports, {
       uniqueHistories: uniqueHistories.size,
       paretoWidth: frontier.length,
       historyInflation: uniqueHistories.size / Math.max(1, uniqueStates.size),
-      frontierPolicyIds: frontier.map((sample) => sample.policyId).sort(),
+      frontierPolicyIds: frontier.flatMap((sample) => sample.equivalentPolicyIds ?? [sample.policyId]).sort(),
+      frontierStateCount: frontier.length,
       samples
     };
   }
@@ -187,8 +208,8 @@ export function summarizeDemoTenFloorCheckpoints(reports, {
   const totalActionSurfaces = targetProfiles.reduce((sum, profile) => sum + profile.uniqueResourceStates, 0);
 
   return {
-    schemaVersion: 1,
-    model: 'demo-10f-checkpoint-portfolio-v0.1',
+    schemaVersion: 2,
+    model: 'demo-10f-checkpoint-portfolio-v0.2-dedup',
     heuristicOnly: true,
     policyCount: reports.length,
     paretoWidthBand: [...paretoWidthBand],
