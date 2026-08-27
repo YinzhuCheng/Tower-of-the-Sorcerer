@@ -21,3 +21,5 @@ globalThis.__TOWER_DEMO_CONTENT__ = Object.freeze({
 
 globalThis.__TOWER_FORCE_CANVAS__ = true;
 await import('./main.js');
+const { installTacticalInteractionLayer } = await import('./game/tactical-interaction.js');
+void installTacticalInteractionLayer().catch((error) => console.warn('Tactical interaction layer failed:', error));
