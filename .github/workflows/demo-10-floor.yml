@@ -5,6 +5,7 @@ on:
     paths:
       - 'src/game/demo-10-floor-content.js'
       - 'src/demo-main.js'
+      - 'src/main.js'
       - 'index.html'
       - 'scripts/validate-demo-10f.mjs'
       - 'test/demo-10-floor-content.test.js'
@@ -17,6 +18,7 @@ on:
     paths:
       - 'src/game/demo-10-floor-content.js'
       - 'src/demo-main.js'
+      - 'src/main.js'
       - 'index.html'
       - 'scripts/validate-demo-10f.mjs'
       - 'test/demo-10-floor-content.test.js'
