@@ -16,6 +16,12 @@ export const HOLY_POLICIES = ['immediate', 'after-core-6', 'after-core-7', 'befo
 export const SHOP_TRAVEL_POLICIES = ['current-only', 'stall-recovery'];
 const SHOP_OPTION_IDS = ['atk', 'def', 'hp'];
 
+function defaultShopTravelPolicy() {
+  const shopCount = FLOORS.filter((floor) => floor.map?.some((row) => row.includes('shop'))).length;
+  const initialCompass = FLOORS[0]?.initialRelics?.includes('compass');
+  return shopCount <= 3 && initialCompass ? 'stall-recovery' : 'current-only';
+}
+
 function tileIsTransit(token, { allowRunes = false } = {}) {
   if (token === '.' || token === 'shop') return true;
   const parsed = parseToken(token);
@@ -387,7 +393,7 @@ export function runGreedyShopStrategy({
   shopCycle = ['atk', 'def', 'hp'],
   shopPlan = null,
   holyPolicy = 'immediate',
-  shopTravelPolicy = 'current-only',
+  shopTravelPolicy = defaultShopTravelPolicy(),
   maxIterations = 5_000
 } = {}) {
   if (!Array.isArray(shopCycle) || shopCycle.length === 0) throw new Error('shopCycle must not be empty.');
