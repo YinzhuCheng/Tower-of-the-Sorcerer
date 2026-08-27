@@ -63,3 +63,19 @@ test('unhandled checkpoint floor is reported instead of mutating an unrelated la
   assert.deepEqual(plan.unhandledFloors, [7]);
   assert.deepEqual(plan.selectedMutationIds, []);
 });
+
+test('bounded F7 reward/enemy families resolve an F7 checkpoint issue when present', () => {
+  const f7Catalog = [
+    ...catalog,
+    { id: 'f7-reward', kind: 'slot-swap', group: 'f7-reward-mid-stat', floor: 7 },
+    { id: 'f7-enemy', kind: 'slot-swap', group: 'f7-enemy-mid', floor: 7 }
+  ];
+  const plan = proposeDemoTenFloorAdaptiveMutations(
+    checkpoints({ oversizedCheckpoints: [7] }),
+    f7Catalog
+  );
+  assert.deepEqual(plan.unhandledFloors, []);
+  assert.ok(plan.selectedMutationIds.includes('f7-reward'));
+  assert.ok(plan.selectedMutationIds.includes('f7-enemy'));
+  assert.equal(plan.productionWriteAllowed, false);
+});
