@@ -1,0 +1,58 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { applyDemoTenFloorContent, DEMO_TEN_FLOOR_ID } from '../src/game/demo-10-floor-content.js';
+
+function baseFixture() {
+  const emptyMap = Array.from({ length: 11 }, () => Array(11).fill('.'));
+  return {
+    enemies: {
+      finalQueen: { floor: 8, boss: true, phaseNext: 'voidCore' },
+      voidCore: { floor: 8, boss: true, finalBoss: true }
+    },
+    floors: Array.from({ length: 8 }, (_, index) => ({
+      id: index,
+      number: index + 1,
+      title: `F${index + 1}`,
+      map: emptyMap.map((row) => [...row]),
+      ...(index === 7 ? { boss: 'voidCore', intro: 'floor8' } : {})
+    })),
+    dialogues: {}
+  };
+}
+
+test('10F overlay preserves seven baseline floors and inserts two palace floors before final', () => {
+  const fixture = baseFixture();
+  const result = applyDemoTenFloorContent(fixture);
+  assert.equal(result.applied, true);
+  assert.equal(fixture.floors.length, 10);
+  assert.deepEqual(fixture.floors.slice(0, 7).map((floor) => floor.number), [1, 2, 3, 4, 5, 6, 7]);
+  assert.equal(fixture.floors[7].title, '静默前庭');
+  assert.equal(fixture.floors[7].boss, 'palaceWarden');
+  assert.equal(fixture.floors[8].title, '倒悬星桥');
+  assert.equal(fixture.floors[8].boss, 'blackSealKeeper');
+  assert.equal(fixture.floors[9].title, '无声王座');
+  assert.equal(fixture.floors[9].boss, 'voidCore');
+  assert.equal(fixture.floors[9].demoContentId, DEMO_TEN_FLOOR_ID);
+  assert.equal(fixture.enemies.finalQueen.floor, 10);
+  assert.equal(fixture.enemies.voidCore.floor, 10);
+});
+
+test('inserted demo maps are 11x11 and provide boss-locked upward stairs on F8/F9', () => {
+  const fixture = baseFixture();
+  applyDemoTenFloorContent(fixture);
+  for (const floor of fixture.floors.slice(7, 9)) {
+    assert.equal(floor.map.length, 11);
+    assert.ok(floor.map.every((row) => row.length === 11));
+    assert.ok(floor.map.some((row) => row.includes('U')));
+    assert.ok(floor.map.some((row) => row.includes('D')));
+    assert.ok(floor.map.some((row) => row.includes(`enemy:${floor.boss}`)));
+  }
+});
+
+test('10F overlay is idempotent', () => {
+  const fixture = baseFixture();
+  applyDemoTenFloorContent(fixture);
+  const second = applyDemoTenFloorContent(fixture);
+  assert.equal(second.applied, false);
+  assert.equal(fixture.floors.length, 10);
+});
