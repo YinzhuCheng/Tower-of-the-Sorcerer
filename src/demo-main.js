@@ -1,5 +1,6 @@
 import { DIALOGUES, ENEMIES, FLOORS, GRID_SIZE } from './game/data.js';
-import { applyDemoTenFloorContent } from './game/demo-10-floor-content.js';
+import { applyDemoTenFloorContent, DEMO_TEN_FLOOR_ID } from './game/demo-10-floor-content.js';
+import { installContentStorageScope } from './game/content-storage-scope.js';
 
 applyDemoTenFloorContent({
   enemies: ENEMIES,
@@ -8,8 +9,10 @@ applyDemoTenFloorContent({
   gridSize: GRID_SIZE
 });
 
+installContentStorageScope({ contentId: DEMO_TEN_FLOOR_ID });
+
 globalThis.__TOWER_DEMO_CONTENT__ = Object.freeze({
-  id: 'demo-10f-v1',
+  id: DEMO_TEN_FLOOR_ID,
   floors: FLOORS.length
 });
 
@@ -18,7 +21,6 @@ globalThis.__TOWER_DEMO_CONTENT__ = Object.freeze({
 // immediately; engine.js remains the authoritative gameplay transition system.
 globalThis.__TOWER_FORCE_CANVAS__ = true;
 
-// Keep the bootstrap dependency-light: apply the content overlay first, then let
-// canonical main.js own portrait/art initialization. This ensures the UI/render
-// module is requested immediately instead of being delayed by demo preloads.
+// Keep the bootstrap dependency-light: apply the content overlay and save scope
+// first, then let canonical main.js own portrait/art initialization.
 await import('./main.js');
