@@ -13,6 +13,7 @@ import {
 
 const DIR_LIST = Object.entries(DIRECTIONS).map(([name, vector]) => ({ name, ...vector }));
 export const HOLY_POLICIES = ['immediate', 'after-core-6', 'after-core-7', 'before-final'];
+export const SHOP_TRAVEL_POLICIES = ['current-only', 'stall-recovery'];
 const SHOP_OPTION_IDS = ['atk', 'def', 'hp'];
 
 function tileIsTransit(token, { allowRunes = false } = {}) {
@@ -158,6 +159,38 @@ function buyAvailableUpgrades(state, shopCycle, shopPlan, purchaseCounts, purcha
     count += 1;
   }
   return { ok: true, count };
+}
+
+function floorContainsShop(state, floorIndex) {
+  return getFloorState(state, floorIndex).map.some((row) => row.includes('shop'));
+}
+
+function buyVisitedShopRecovery(state, shopCycle, shopPlan, purchaseCounts, purchaseLog, shopTravelPolicy) {
+  if (shopTravelPolicy !== 'stall-recovery') return { ok: true, count: 0, visitedFloor: null };
+  if (!state.relics.compass || state.stats.gold < getShopCost(state)) {
+    return { ok: true, count: 0, visitedFloor: null };
+  }
+
+  const originFloor = state.floor;
+  const candidates = [...state.visitedFloors]
+    .filter((floorIndex) => floorIndex !== originFloor && floorContainsShop(state, floorIndex))
+    .sort((a, b) => b - a);
+
+  for (const floorIndex of candidates) {
+    const travel = teleportToFloor(state, floorIndex);
+    if (!travel.ok) continue;
+    const bought = buyAvailableUpgrades(state, shopCycle, shopPlan, purchaseCounts, purchaseLog);
+    const returnTrip = teleportToFloor(state, originFloor);
+    if (!returnTrip.ok) return { ok: false, reason: returnTrip.reason };
+    if (!bought.ok) return bought;
+    if (bought.count > 0) return { ok: true, count: bought.count, visitedFloor: floorIndex + 1 };
+  }
+
+  if (state.floor !== originFloor) {
+    const returnTrip = teleportToFloor(state, originFloor);
+    if (!returnTrip.ok) return { ok: false, reason: returnTrip.reason };
+  }
+  return { ok: true, count: 0, visitedFloor: null };
 }
 
 function solveSequenceIfPossible(state) {
@@ -354,6 +387,7 @@ export function runGreedyShopStrategy({
   shopCycle = ['atk', 'def', 'hp'],
   shopPlan = null,
   holyPolicy = 'immediate',
+  shopTravelPolicy = 'current-only',
   maxIterations = 5_000
 } = {}) {
   if (!Array.isArray(shopCycle) || shopCycle.length === 0) throw new Error('shopCycle must not be empty.');
@@ -367,6 +401,7 @@ export function runGreedyShopStrategy({
     }
   }
   if (!HOLY_POLICIES.includes(holyPolicy)) throw new Error(`Unknown Holy policy: ${holyPolicy}`);
+  if (!SHOP_TRAVEL_POLICIES.includes(shopTravelPolicy)) throw new Error(`Unknown shop travel policy: ${shopTravelPolicy}`);
 
   const state = createInitialState();
   const purchaseCounts = { atk: 0, def: 0, hp: 0 };
@@ -412,6 +447,26 @@ export function runGreedyShopStrategy({
     }
 
     const action = chooseAction(state, actions, holyPolicy);
+    const bossLockedExit = action?.token === 'U'
+      && Boolean(FLOORS[state.floor]?.boss)
+      && !getFloorState(state).bossDefeated;
+
+    if (!action || bossLockedExit) {
+      const recovery = buyVisitedShopRecovery(
+        state,
+        shopCycle,
+        shopPlan,
+        purchaseCounts,
+        purchaseLog,
+        shopTravelPolicy
+      );
+      if (!recovery.ok) {
+        failure = recovery.reason;
+        break;
+      }
+      if (recovery.count > 0) continue;
+    }
+
     if (!action) {
       const retry = buyAvailableUpgrades(state, shopCycle, shopPlan, purchaseCounts, purchaseLog);
       if (!retry.ok) {
@@ -451,6 +506,7 @@ export function runGreedyShopStrategy({
     shopCycle: [...shopCycle],
     shopPlan: shopPlan ? [...shopPlan] : null,
     holyPolicy,
+    shopTravelPolicy,
     holyAcquisition,
     iterations,
     purchases: state.shopPurchases,
