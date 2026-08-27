@@ -26,19 +26,20 @@ function intersects(values, set) {
 /**
  * Turn checkpoint diagnostics into a concrete 10F mutation subset.
  *
- * The selector is deliberately conservative: if the diagnostic problem is on a
- * floor for which the current mutation catalogue has no semantic slots, it
- * reports that floor as unhandled instead of mutating an unrelated late floor.
- * A healthy checkpoint portfolio may legitimately request zero mutations.
+ * Policy multiplicity is intentionally ignored here. Multiple diagnostic
+ * policies collapsing to the same authoritative resource state is not engine
+ * event-order history inflation. Only a future structural-history measurement
+ * may activate reconvergence mutations through `eventOrderHistoryInflation`.
  */
 export function proposeDemoTenFloorAdaptiveMutations(checkpoints, catalog = []) {
   const targetFloors = checkpoints?.choiceTargetFloors ?? [];
   const profiles = checkpoints?.floors ?? {};
   const oversized = new Set(checkpoints?.oversizedCheckpoints ?? []);
   const collapsed = new Set(checkpoints?.collapsedCheckpoints ?? []);
-  const historyInflated = new Set(targetFloors.filter((floor) =>
-    Number(profiles[floor]?.historyInflation ?? 1) > 4
-  ));
+  const historyInflated = new Set(targetFloors.filter((floor) => {
+    const value = profiles[floor]?.eventOrderHistoryInflation;
+    return Number.isFinite(value) && value > 4;
+  }));
   const genericSuggestions = proposeProofFriendlyMutations(checkpoints?.prunabilityEvidence ?? {});
   const suggestionIds = new Set(genericSuggestions.map((suggestion) => suggestion.id));
   const issueFloors = new Set([...oversized, ...collapsed, ...historyInflated]);
@@ -48,7 +49,7 @@ export function proposeDemoTenFloorAdaptiveMutations(checkpoints, catalog = []) 
   const reasons = [];
   if (oversized.size) reasons.push(`oversized:${[...oversized].sort((a, b) => a - b).join(',')}`);
   if (collapsed.size) reasons.push(`collapsed:${[...collapsed].sort((a, b) => a - b).join(',')}`);
-  if (historyInflated.size) reasons.push(`history-inflated:${[...historyInflated].sort((a, b) => a - b).join(',')}`);
+  if (historyInflated.size) reasons.push(`event-history-inflated:${[...historyInflated].sort((a, b) => a - b).join(',')}`);
   for (const suggestion of genericSuggestions) reasons.push(`generic:${suggestion.id}`);
 
   const selected = catalog.filter((mutation) => {
@@ -82,14 +83,15 @@ export function proposeDemoTenFloorAdaptiveMutations(checkpoints, catalog = []) 
   });
 
   return {
-    schemaVersion: 1,
-    model: 'demo-10f-adaptive-mutation-plan-v0.1',
+    schemaVersion: 2,
+    model: 'demo-10f-adaptive-mutation-plan-v0.2-real-history-only',
     heuristicOnly: true,
     productionWriteAllowed: false,
     reasons,
     genericSuggestions,
     issueFloors: [...issueFloors].sort((a, b) => a - b),
     unhandledFloors,
+    policyMultiplicityIgnored: true,
     selectedMutationIds: selected.map((mutation) => mutation.id).sort(),
     selectedMutations: selected
   };
