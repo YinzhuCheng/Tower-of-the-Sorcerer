@@ -77,6 +77,100 @@ export function requiredGuardianFailurePressure(report) {
   };
 }
 
+/**
+ * Find the next ATK threshold that changes authoritative damage against the
+ * current mandatory guardian frontier. ATK is discrete in this game: several
+ * purchases can appear worthless until `ceil(enemy.hp / heroDamage)` drops by
+ * one round. Tracking the distance to that breakpoint gives bounded planning a
+ * useful potential function without hard-coding magic enemies or floor ids.
+ */
+export function requiredGuardianAttackBreakpoint(report) {
+  if (!report || report.solvable) return null;
+  const parsed = guardianIdsFromFailure(report);
+  if (!parsed || !report.final || !report.relics) return null;
+
+  const breakpoints = parsed.guardianIds.map((enemyId) => {
+    const enemy = ENEMIES[enemyId];
+    if (!enemy) {
+      return {
+        enemyId,
+        currentRounds: null,
+        requiredAtk: null,
+        atkGap: Number.POSITIVE_INFINITY,
+        damageSaved: 0
+      };
+    }
+
+    const battle = calculateBattle(report.final, enemy, report.relics);
+    if (battle.winnable) {
+      return {
+        enemyId,
+        currentRounds: battle.rounds,
+        requiredAtk: report.final.atk,
+        atkGap: 0,
+        damageSaved: 0
+      };
+    }
+
+    if (!Number.isFinite(battle.rounds) || battle.heroDamage <= 0) {
+      const requiredAtk = enemy.def + 1;
+      return {
+        enemyId,
+        currentRounds: null,
+        requiredAtk,
+        atkGap: Math.max(0, requiredAtk - report.final.atk),
+        damageSaved: 0
+      };
+    }
+
+    if (battle.rounds <= 1 || !Number.isFinite(battle.enemyDamage) || battle.enemyDamage <= 0) {
+      return {
+        enemyId,
+        currentRounds: battle.rounds,
+        requiredAtk: null,
+        atkGap: Number.POSITIVE_INFINITY,
+        damageSaved: 0
+      };
+    }
+
+    const targetRounds = battle.rounds - 1;
+    const requiredHeroDamage = Math.ceil(enemy.hp / targetRounds);
+    const requiredAtk = enemy.def + requiredHeroDamage;
+    const atkGap = Math.max(0, requiredAtk - report.final.atk);
+    const improvedBattle = calculateBattle(
+      { ...report.final, atk: requiredAtk },
+      enemy,
+      report.relics
+    );
+    const damageSaved = Number.isFinite(improvedBattle.totalDamage)
+      ? Math.max(0, battle.totalDamage - improvedBattle.totalDamage)
+      : 0;
+
+    return {
+      enemyId,
+      currentRounds: battle.rounds,
+      targetRounds,
+      requiredAtk,
+      atkGap,
+      damageSaved
+    };
+  });
+
+  const useful = breakpoints
+    .filter((entry) => Number.isFinite(entry.atkGap))
+    .sort((a, b) => a.atkGap - b.atkGap || b.damageSaved - a.damageSaved || a.enemyId.localeCompare(b.enemyId));
+
+  return {
+    floor: parsed.floor,
+    guardianIds: parsed.guardianIds,
+    signature: `${parsed.floor}:${parsed.guardianIds.join('+')}`,
+    breakpoints,
+    next: useful[0] ?? null,
+    minAtkGap: useful[0]?.atkGap ?? Number.POSITIVE_INFINITY,
+    nextDamageSaved: useful[0]?.damageSaved ?? 0
+  };
+}
+
 function sameStrategicStage(left, right) {
   return Boolean(left && right)
     && Boolean(left.solvable) === Boolean(right.solvable)
@@ -87,9 +181,11 @@ function sameStrategicStage(left, right) {
 
 /**
  * Compare two reports only when they are stalled at the same mandatory guardian
- * frontier. Returns +1 when `left` is closer to clearing it, -1 when `right` is
- * closer, and 0 when the frontier is not comparable or the gap is below the
- * requested materiality threshold.
+ * frontier. Actual HP-equivalent deficit is primary. When neither continuation
+ * changes damage materially yet, distance to the next ATK round breakpoint is
+ * the potential-function tie breaker; this prevents a short horizon from
+ * abandoning a strategically necessary run of ATK purchases between thresholds.
+ * Returns +1 when `left` is better, -1 when `right` is better, otherwise 0.
  */
 export function compareRequiredGuardianFrontier(left, right, minimumAdvantage = 0) {
   if (!sameStrategicStage(left, right)) return 0;
@@ -101,18 +197,33 @@ export function compareRequiredGuardianFrontier(left, right, minimumAdvantage = 
   const rightGap = rightPressure.totalDeficit;
   if (Number.isFinite(leftGap) && !Number.isFinite(rightGap)) return 1;
   if (!Number.isFinite(leftGap) && Number.isFinite(rightGap)) return -1;
-  if (!Number.isFinite(leftGap) || !Number.isFinite(rightGap)) return 0;
-  if (rightGap - leftGap > minimumAdvantage) return 1;
-  if (leftGap - rightGap > minimumAdvantage) return -1;
+  if (Number.isFinite(leftGap) && Number.isFinite(rightGap)) {
+    if (rightGap - leftGap > minimumAdvantage) return 1;
+    if (leftGap - rightGap > minimumAdvantage) return -1;
+  }
+
+  const leftBreakpoint = requiredGuardianAttackBreakpoint(left);
+  const rightBreakpoint = requiredGuardianAttackBreakpoint(right);
+  if (!leftBreakpoint || !rightBreakpoint || leftBreakpoint.signature !== rightBreakpoint.signature) return 0;
+
+  const leftAtkGap = leftBreakpoint.minAtkGap;
+  const rightAtkGap = rightBreakpoint.minAtkGap;
+  if (Number.isFinite(leftAtkGap) && !Number.isFinite(rightAtkGap)) return 1;
+  if (!Number.isFinite(leftAtkGap) && Number.isFinite(rightAtkGap)) return -1;
+  if (Number.isFinite(leftAtkGap) && Number.isFinite(rightAtkGap)) {
+    if (leftAtkGap < rightAtkGap) return 1;
+    if (rightAtkGap < leftAtkGap) return -1;
+    if (leftBreakpoint.nextDamageSaved > rightBreakpoint.nextDamageSaved) return 1;
+    if (rightBreakpoint.nextDamageSaved > leftBreakpoint.nextDamageSaved) return -1;
+  }
   return 0;
 }
 
 /**
  * Coarse downstream utility for generation-time planning.
  * Progress dominates everything; once two continuations reach the same stage,
- * retained HP and lower battle damage decide. Mandatory-guardian deficit is
- * handled separately by compareRequiredGuardianFrontier so magic bosses do not
- * get hidden behind accumulated DEF value.
+ * retained HP and lower battle damage decide. Mandatory-guardian deficit and
+ * ATK breakpoints are handled separately by compareRequiredGuardianFrontier.
  */
 export function scoreExpertStrategyReport(report) {
   const margin = Number.isFinite(report.minNormalizedHpMargin) ? report.minNormalizedHpMargin : -1;
@@ -167,9 +278,10 @@ function bestContinuation({ prefix, horizon, holyPolicy, progressionPriority, ma
  * Build a receding-horizon shop plan that never buys HP.
  *
  * Default behavior remains defensive, but a continuation stalled at the same
- * required guardian may select ATK whenever it materially reduces that exact
- * authoritative combat deficit. This lets magic guardians correctly reward
- * shorter fights without hard-coding a particular floor or enemy id.
+ * required guardian may select ATK either because it already reduces the exact
+ * authoritative combat deficit or because it moves closer to the next
+ * round-reduction breakpoint. This stays generic across physical, magic and
+ * grouped guardians without increasing the combinatorial horizon.
  */
 export function buildExpertNoHpShopPlan({
   holyPolicy = 'immediate',
@@ -228,6 +340,8 @@ export function buildExpertNoHpShopPlan({
     const selectedCandidate = best[selected];
     const defPressure = requiredGuardianFailurePressure(defCandidate?.report);
     const atkPressure = requiredGuardianFailurePressure(atkCandidate?.report);
+    const defBreakpoint = requiredGuardianAttackBreakpoint(defCandidate?.report);
+    const atkBreakpoint = requiredGuardianAttackBreakpoint(atkCandidate?.report);
     shopPlan.push(selected);
     decisions.push({
       purchase: shopPlan.length - 1,
@@ -242,6 +356,8 @@ export function buildExpertNoHpShopPlan({
       guardianFrontierPreference,
       defGuardianDeficit: defPressure?.totalDeficit ?? null,
       atkGuardianDeficit: atkPressure?.totalDeficit ?? null,
+      defAtkGapToBreakpoint: defBreakpoint?.minAtkGap ?? null,
+      atkAtkGapToBreakpoint: atkBreakpoint?.minAtkGap ?? null,
       guardianSignature: defPressure?.signature === atkPressure?.signature
         ? defPressure?.signature ?? null
         : null,
@@ -286,7 +402,7 @@ export function runExpertNoHpStrategy(options = {}) {
       shopHpAllowed: false,
       defaultInvestment: 'def',
       progressionPriority,
-      attackRule: 'prefer ATK when bounded lookahead materially shrinks the same required-guardian combat deficit; otherwise require the configured downstream score advantage',
+      attackRule: 'prefer ATK when bounded lookahead reduces the same required-guardian deficit or advances toward its next authoritative round breakpoint; otherwise require the configured downstream score advantage',
       horizon: planning.horizon,
       attackAdvantageRequired: planning.attackAdvantageRequired,
       guardianDeficitAdvantageRequired: planning.guardianDeficitAdvantageRequired
