@@ -38,10 +38,11 @@ test('semantic graph extracts landmarks, cut structure and corridors', () => {
   const graph = buildSemanticMapGraph(floor);
   assert.equal(graph.entryKey, '1,1');
   assert.equal(graph.goalKey, '5,1');
-  assert.equal(graph.componentCount, 2);
+  assert.equal(graph.componentCount, 1);
   assert.ok(graph.landmarks.length >= 5);
   assert.ok(graph.corridors.length > 0);
   assert.ok(graph.articulationKeys.size > 0);
+  assert.ok(graph.bridgeEdges.size > 0);
 });
 
 test('semantic route sampler exposes distinct alternatives and Pareto tradeoffs', () => {
