@@ -10,6 +10,17 @@ import {
 applyDemoTenFloorContent({ enemies: ENEMIES, floors: FLOORS, dialogues: DIALOGUES, gridSize: GRID_SIZE });
 applyDemoTenFloorHardMode({ enemies: ENEMIES });
 
+function bossIdsByFloor() {
+  const result = {};
+  for (const [enemyId, enemy] of Object.entries(ENEMIES)) {
+    if (!enemy?.boss || !Number.isInteger(enemy.floor)) continue;
+    (result[enemy.floor] ??= []).push(enemyId);
+  }
+  return result;
+}
+
+const floorBossIds = bossIdsByFloor();
+
 function landmarkHistogram(analysis) {
   const counts = {};
   for (const key of analysis.graph.landmarks) {
@@ -20,7 +31,7 @@ function landmarkHistogram(analysis) {
 }
 
 function compactFloor(floor) {
-  const analysis = analyzeSemanticMap(floor, { limit: 8 });
+  const analysis = analyzeSemanticMap(floor, { limit: 8, bossIds: floorBossIds[floor.number] ?? [] });
   return {
     floor: floor.number,
     title: floor.title,
@@ -47,6 +58,7 @@ function compactFloor(floor) {
 const floorNumbers = FLOORS.map((floor) => floor.number);
 const catalog = createSemanticTopologyMutationCatalog(FLOORS, {
   floorNumbers,
+  bossIdsByFloor: floorBossIds,
   maxPerFloor: 8,
   maxClosures: 12,
   maxOpenings: 12,
