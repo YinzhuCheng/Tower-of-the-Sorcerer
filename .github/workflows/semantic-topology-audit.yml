@@ -8,7 +8,10 @@ on:
     paths:
       - 'src/game/data.js'
       - 'src/game/demo-10-floor-content.js'
+      - 'src/game/progression-rules.js'
+      - 'src/tuner/card-economy.js'
       - 'src/tuner/semantic-map-graph.js'
+      - 'src/tuner/spatial-design-grammar.js'
       - 'src/tuner/semantic-topology-mutations.js'
       - 'src/tuner/demo-10-floor-topology-mutations.js'
       - 'scripts/analyze-semantic-topology.mjs'
