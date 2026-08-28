@@ -10,6 +10,15 @@ import {
   findToken,
   getShopCost
 } from './data.js';
+import {
+  consumeCardRequirements,
+  getCardGateRequirements,
+  getGuardianGateRequirements,
+  getMissingCards,
+  getMissingGuardianIds,
+  getRemainingExitGuardianIds,
+  recordDefeatedBoss
+} from './progression-rules.js';
 
 export const DIRECTIONS = {
   up: { dx: 0, dy: -1 },
@@ -27,6 +36,7 @@ export function createInitialState() {
     map: cloneMap(floor.map),
     switches: [],
     sequenceProgress: 0,
+    defeatedBossIds: [],
     bossDefeated: false
   }));
   const start = findToken(floorStates[0].map, 'S');
@@ -196,6 +206,21 @@ function openGateTiles(state, gateId) {
   return opened;
 }
 
+function openSatisfiedGuardianGates(state) {
+  const floor = FLOORS[state.floor];
+  const floorState = getFloorState(state);
+  const guardianGates = floor.puzzles?.guardianGates ?? {};
+  let opened = 0;
+  const gateIds = [];
+  for (const gateId of Object.keys(guardianGates)) {
+    if (getMissingGuardianIds(floorState, floor, gateId).length > 0) continue;
+    const count = openGateTiles(state, gateId);
+    if (count > 0) gateIds.push(gateId);
+    opened += count;
+  }
+  return { opened, gateIds };
+}
+
 function handleSwitch(state, switchId) {
   const floor = FLOORS[state.floor];
   const floorState = getFloorState(state);
@@ -262,6 +287,12 @@ function enterFloor(state, targetFloor, direction) {
   return dialogue;
 }
 
+function formatCardRequirement(requirements) {
+  return Object.entries(requirements)
+    .map(([card, amount]) => `${CARD_LABELS[card] ?? card}×${amount}`)
+    .join('、');
+}
+
 export function initialDialogue(state) {
   const id = FLOORS[state.floor].intro;
   if (!id || state.storySeen.includes(id)) return null;
@@ -297,9 +328,13 @@ export function tryMove(state, dx, dy) {
       return result;
     }
     const floor = FLOORS[state.floor];
-    if (floor.boss && !getFloorState(state).bossDefeated) {
+    const remainingGuardians = getRemainingExitGuardianIds(getFloorState(state), floor);
+    if (remainingGuardians.length > 0) {
       result.blocked = true;
-      result.reason = '本层阵眼尚未解除，必须先击败守护者。';
+      result.remainingExitGuardians = remainingGuardians;
+      result.reason = remainingGuardians.length === 1
+        ? '本层阵眼尚未解除，必须先击败守护者。'
+        : `上楼结界仍由 ${remainingGuardians.length} 名守卫维持，必须全部击败。`;
       return result;
     }
     result.dialogue = enterFloor(state, state.floor + 1, 'up');
@@ -372,24 +407,41 @@ export function tryMove(state, dx, dy) {
   }
 
   if (parsed.type === 'gate') {
-    const triGateId = FLOORS[state.floor].puzzles?.triGate;
-    if (parsed.id === triGateId) {
-      const missing = Object.entries(state.cards).filter(([, value]) => value <= 0).map(([key]) => CARD_LABELS[key]);
+    const floor = FLOORS[state.floor];
+    const cardRequirements = getCardGateRequirements(floor, parsed.id);
+    if (cardRequirements) {
+      const missing = getMissingCards(state.cards, cardRequirements);
       if (missing.length > 0) {
         result.blocked = true;
-        result.reason = `三相结界需要日、月、星卡各 1 张；缺少：${missing.join('、')}。`;
+        result.reason = `结界需要：${formatCardRequirement(cardRequirements)}。`;
+        result.missingCards = missing;
         return result;
       }
-      state.cards.sun -= 1;
-      state.cards.moon -= 1;
-      state.cards.star -= 1;
-      setTile(state, x, y, '.');
+      consumeCardRequirements(state.cards, cardRequirements);
+      const opened = openGateTiles(state, parsed.id);
       moveTo(state, x, y);
-      addLog(state, '三相卡片共鸣，虚影结界解除。');
+      addLog(state, `卡片共鸣：消耗 ${formatCardRequirement(cardRequirements)}。`);
       result.moved = true;
-      result.events.push({ type: 'triGate' });
+      result.events.push({ type: 'cardGate', gateId: parsed.id, requirements: cardRequirements, opened });
       return result;
     }
+
+    const guardianRequirements = getGuardianGateRequirements(floor, parsed.id);
+    if (guardianRequirements) {
+      const missingGuardians = getMissingGuardianIds(getFloorState(state), floor, parsed.id);
+      if (missingGuardians.length > 0) {
+        result.blocked = true;
+        result.missingGuardians = missingGuardians;
+        result.reason = `守护结界仍由 ${missingGuardians.length} 名守卫维持。`;
+        return result;
+      }
+      const opened = openGateTiles(state, parsed.id);
+      moveTo(state, x, y);
+      result.moved = true;
+      result.events.push({ type: 'guardianGate', gateId: parsed.id, opened });
+      return result;
+    }
+
     result.blocked = true;
     result.reason = '机关结界尚未解除。';
     return result;
@@ -433,8 +485,21 @@ export function tryMove(state, dx, dy) {
     }
 
     if (enemy.boss) {
-      getFloorState(state).bossDefeated = true;
+      const floor = FLOORS[state.floor];
+      const floorState = getFloorState(state);
+      const remainingExitGuardians = recordDefeatedBoss(floorState, floor, parsed.id);
+      const guardianGateResult = openSatisfiedGuardianGates(state);
       result.bossDefeated = true;
+      result.defeatedBossId = parsed.id;
+      result.remainingExitGuardians = remainingExitGuardians;
+      result.floorExitUnlocked = remainingExitGuardians.length === 0;
+      if (guardianGateResult.opened > 0) {
+        result.events.push({
+          type: 'guardianGatesOpened',
+          gateIds: guardianGateResult.gateIds,
+          opened: guardianGateResult.opened
+        });
+      }
       result.dialogue = enemy.defeatDialogue ?? null;
       if (result.dialogue && !state.storySeen.includes(result.dialogue)) state.storySeen.push(result.dialogue);
     }
