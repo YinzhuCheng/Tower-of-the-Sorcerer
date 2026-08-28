@@ -1,7 +1,12 @@
 import { DIALOGUES, ENEMIES, FLOORS, GRID_SIZE } from '../src/game/data.js';
 import { applyDemoTenFloorContent } from '../src/game/demo-10-floor-content.js';
 import { applyDemoTenFloorHardMode } from '../src/game/demo-10-floor-hard-mode.js';
+import { analyzeCardEconomy, validateDemoTenFloorCardHierarchy } from '../src/tuner/card-economy.js';
 import { analyzeSemanticMap } from '../src/tuner/semantic-map-graph.js';
+import {
+  analyzeFloorSpatialGrammar,
+  analyzeTowerPressureGrammar
+} from '../src/tuner/spatial-design-grammar.js';
 import {
   createSemanticTopologyMutationCatalog,
   describeSemanticTopologyCandidate
@@ -31,7 +36,9 @@ function landmarkHistogram(analysis) {
 }
 
 function compactFloor(floor) {
-  const analysis = analyzeSemanticMap(floor, { limit: 8, bossIds: floorBossIds[floor.number] ?? [] });
+  const bossIds = floorBossIds[floor.number] ?? [];
+  const analysis = analyzeSemanticMap(floor, { limit: 8, bossIds });
+  const spatial = analyzeFloorSpatialGrammar(floor, { bossIds, graph: analysis.graph });
   return {
     floor: floor.number,
     title: floor.title,
@@ -45,6 +52,29 @@ function compactFloor(floor) {
     graphBridges: analysis.graph.bridgeEdges.size,
     corridors: analysis.graph.corridors.length,
     landmarks: landmarkHistogram(analysis),
+    spatial: {
+      roomCoreCoverage: spatial.roomCoreCoverage,
+      corridorCoverage: spatial.corridorCoverage,
+      roomCount: spatial.roomCount,
+      meaningfulRoomCount: spatial.meaningfulRoomCount,
+      largestRoomCoreArea: spatial.largestRoomCoreArea,
+      treasureVaultCount: spatial.treasureVaultCount,
+      bossArenaCount: spatial.bossArenaCount,
+      junctionRoomCount: spatial.junctionRoomCount,
+      chamberScore: spatial.chamberScore,
+      rooms: spatial.rooms.map((room) => ({
+        id: room.id,
+        type: room.type,
+        coreArea: room.coreArea,
+        bbox: room.bbox,
+        entrances: room.entrances,
+        gatedEntrances: room.gatedEntrances,
+        rewardCount: room.rewardCount,
+        rewardValue: room.rewardValue,
+        hazardCount: room.hazardCount,
+        bossCount: room.bossCount
+      }))
+    },
     routes: analysis.routes.map((route) => ({
       steps: route.steps,
       semanticBurden: route.semanticBurden,
@@ -71,14 +101,32 @@ const candidatesByFloor = Object.fromEntries(floorNumbers.map((floorNumber) => [
     .filter((mutation) => mutation.floor === floorNumber)
     .map(describeSemanticTopologyCandidate)
 ]));
+const pressure = analyzeTowerPressureGrammar(FLOORS, ENEMIES);
+const cardEconomy = analyzeCardEconomy(FLOORS);
+const cardHierarchy = validateDemoTenFloorCardHierarchy(FLOORS);
 
 console.log('SEMANTIC_TOPOLOGY_AUDIT');
 console.log(JSON.stringify({
-  schemaVersion: 1,
-  model: 'semantic-map-graph-v2',
+  schemaVersion: 2,
+  model: 'semantic-map-graph-v2-room-aware',
   heuristicOnly: true,
   productionWriteAllowed: false,
-  purpose: 'cheap topology candidate generation before authoritative solver/portfolio gates',
+  purpose: 'cheap room/corridor, pressure-cluster and topology candidate analysis before authoritative solver/portfolio gates',
+  designSignals: {
+    pressure,
+    cardEconomy: {
+      supply: cardEconomy.supply,
+      demand: cardEconomy.demand,
+      net: cardEconomy.net
+    },
+    cardHierarchy: {
+      valid: cardHierarchy.valid,
+      preFinalSunDemand: cardHierarchy.preFinalSunDemand,
+      finalSunDemand: cardHierarchy.finalSunDemand,
+      finalSunGate: cardHierarchy.finalSunGate,
+      violations: cardHierarchy.violations
+    }
+  },
   floors: FLOORS.map(compactFloor),
   candidateCount: catalog.length,
   candidatesByFloor
