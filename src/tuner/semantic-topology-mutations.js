@@ -136,6 +136,7 @@ function summarizePreview(baseline, candidate) {
 
 export function createSemanticTopologyMutationCatalog(floors, {
   floorNumbers = floors.map((floor) => floor.number),
+  bossIdsByFloor = {},
   maxPerFloor = 16,
   maxClosures = 12,
   maxOpenings = 12,
@@ -150,7 +151,8 @@ export function createSemanticTopologyMutationCatalog(floors, {
   for (const floorNumber of floorNumbers) {
     const floor = byNumber.get(floorNumber);
     if (!floor) continue;
-    const baseline = analyzeSemanticMap(floor, { limit: routeSampleLimit });
+    const bossIds = bossIdsByFloor[floorNumber] ?? bossIdsByFloor[String(floorNumber)] ?? [];
+    const baseline = analyzeSemanticMap(floor, { limit: routeSampleLimit, bossIds });
     if (!baseline.graph.entryKey || !baseline.graph.goalKey || baseline.graph.componentCount !== 1 || !baseline.routes[0]) continue;
     const closures = candidateClosures(floor, baseline, { maxClosures });
     const openings = candidateOpenings(floor, baseline, { maxOpenings });
@@ -159,7 +161,7 @@ export function createSemanticTopologyMutationCatalog(floors, {
     for (const close of closures) {
       for (const open of openings) {
         const candidateFloor = cloneFloorWithSwap(floor, close, open);
-        const candidate = analyzeSemanticMap(candidateFloor, { limit: routeSampleLimit });
+        const candidate = analyzeSemanticMap(candidateFloor, { limit: routeSampleLimit, bossIds });
         if (candidate.graph.componentCount !== 1 || !candidate.routes[0]) continue;
         if (candidate.graph.nodes.length !== baseline.graph.nodes.length) continue;
 
