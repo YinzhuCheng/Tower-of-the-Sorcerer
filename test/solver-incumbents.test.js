@@ -41,7 +41,7 @@ test('all-HP immediate-Holy greedy strategy is rejected before the endgame', () 
   const result = runGreedyShopStrategy({ shopCycle: ['hp'], holyPolicy: 'immediate' });
   assert.equal(result.solvable, false);
   assert.ok(result.floor < 8);
-  assert.match(result.failure ?? '', /No reachable progress action|守护者|阵眼/);
+  assert.match(result.failure ?? '', /No reachable progress action|Required exit guardian|守护者|阵眼/);
 });
 
 test('incumbent policy portfolio scans shop order and Holy timing', () => {
