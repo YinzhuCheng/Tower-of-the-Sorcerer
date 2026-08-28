@@ -321,14 +321,15 @@ function chooseAction(state, actions, holyPolicy, progressionPriority, strategic
     }))
     .filter((action) => action.battle.winnable)
     .sort((a, b) => {
-      if (strategicShopPending && a.path.length !== b.path.length) {
-        return a.path.length - b.path.length;
+      const bossA = ENEMIES[a.parsed.id].boss ? 1 : 0;
+      const bossB = ENEMIES[b.parsed.id].boss ? 1 : 0;
+      if (strategicShopPending) {
+        if (bossA !== bossB) return bossA - bossB;
+        if (a.path.length !== b.path.length) return a.path.length - b.path.length;
       }
       if (guardianFirst && !strategicShopPending && a.requiredGuardian !== b.requiredGuardian) {
         return a.requiredGuardian ? -1 : 1;
       }
-      const bossA = ENEMIES[a.parsed.id].boss ? 1 : 0;
-      const bossB = ENEMIES[b.parsed.id].boss ? 1 : 0;
       return bossA - bossB || a.battle.totalDamage - b.battle.totalDamage;
     });
   if (enemies.length) return enemies[0];
