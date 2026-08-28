@@ -38,19 +38,20 @@ export function scoreExpertStrategyReport(report) {
     - finiteBattleDamage(report) * 0.01;
 }
 
-function simulatePlan({ plan, holyPolicy, maxIterations }) {
+function simulatePlan({ plan, holyPolicy, progressionPriority, maxIterations }) {
   return runGreedyShopStrategy({
     shopCycle: ['def'],
     shopPlan: plan,
     holyPolicy,
+    progressionPriority,
     maxIterations
   });
 }
 
-function bestContinuation({ prefix, horizon, holyPolicy, maxIterations }) {
+function bestContinuation({ prefix, horizon, holyPolicy, progressionPriority, maxIterations }) {
   const candidates = enumeratePatterns(horizon).map((pattern) => {
     const plan = [...prefix, ...pattern];
-    const report = simulatePlan({ plan, holyPolicy, maxIterations });
+    const report = simulatePlan({ plan, holyPolicy, progressionPriority, maxIterations });
     return {
       first: pattern[0],
       pattern,
@@ -77,6 +78,7 @@ function bestContinuation({ prefix, horizon, holyPolicy, maxIterations }) {
  */
 export function buildExpertNoHpShopPlan({
   holyPolicy = 'immediate',
+  progressionPriority = 'legacy-clear',
   maxIterations = 8_000,
   horizon = 2,
   maxDecisions = 48,
@@ -91,7 +93,7 @@ export function buildExpertNoHpShopPlan({
 
   const shopPlan = [];
   const decisions = [];
-  let probe = simulatePlan({ plan: shopPlan, holyPolicy, maxIterations });
+  let probe = simulatePlan({ plan: shopPlan, holyPolicy, progressionPriority, maxIterations });
 
   for (let decision = 0; decision < maxDecisions; decision += 1) {
     if (probe.purchases <= shopPlan.length) break;
@@ -100,6 +102,7 @@ export function buildExpertNoHpShopPlan({
       prefix: shopPlan,
       horizon,
       holyPolicy,
+      progressionPriority,
       maxIterations
     });
     const defCandidate = best.def;
@@ -129,7 +132,7 @@ export function buildExpertNoHpShopPlan({
       projectedSolvable: Boolean(selectedCandidate?.report?.solvable)
     });
 
-    probe = simulatePlan({ plan: shopPlan, holyPolicy, maxIterations });
+    probe = simulatePlan({ plan: shopPlan, holyPolicy, progressionPriority, maxIterations });
   }
 
   return {
@@ -139,6 +142,7 @@ export function buildExpertNoHpShopPlan({
     horizon,
     maxDecisions,
     attackAdvantageRequired,
+    progressionPriority,
     planningProbe: probe
   };
 }
@@ -146,12 +150,14 @@ export function buildExpertNoHpShopPlan({
 export function runExpertNoHpStrategy(options = {}) {
   const {
     holyPolicy = 'immediate',
+    progressionPriority = 'legacy-clear',
     maxIterations = 8_000
   } = options;
   const planning = buildExpertNoHpShopPlan(options);
   const report = simulatePlan({
     plan: planning.shopPlan,
     holyPolicy,
+    progressionPriority,
     maxIterations
   });
 
@@ -161,6 +167,7 @@ export function runExpertNoHpStrategy(options = {}) {
     strategy: {
       shopHpAllowed: false,
       defaultInvestment: 'def',
+      progressionPriority,
       attackRule: 'select ATK only when bounded downstream lookahead beats DEF by the configured threshold',
       horizon: planning.horizon,
       attackAdvantageRequired: planning.attackAdvantageRequired
