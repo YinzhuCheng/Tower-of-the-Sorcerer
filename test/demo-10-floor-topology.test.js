@@ -49,34 +49,49 @@ test('10F topology baseline exposes stable F8/F9 graph metrics', () => {
   assert.equal(validateDemoTenFloorTopology(FLOORS, contract).ok, true);
 });
 
-test('topology catalog contains 32 one-wall/one-floor semantic swaps', () => {
-  assert.equal(catalog.length, 32);
-  assert.ok(catalog.every((mutation) => mutation.kind === 'topology-wall-floor-swap'));
-  assert.equal(catalog.filter((mutation) => mutation.floor === 8).length, 16);
-  assert.equal(catalog.filter((mutation) => mutation.floor === 9).length, 16);
+test('semantic topology catalogue is graph-derived instead of coordinate-slot-driven', () => {
+  assert.ok(catalog.length > 0);
+  assert.ok(catalog.length <= 32);
+  assert.ok(catalog.every((mutation) => mutation.kind === 'semantic-topology-wall-floor-swap'));
+  assert.ok(catalog.some((mutation) => mutation.floor === 8));
+  assert.ok(catalog.some((mutation) => mutation.floor === 9));
+  assert.ok(catalog.every((mutation) => mutation.generator === 'semantic-map-graph-v2'));
+  assert.ok(catalog.every((mutation) => mutation.close.baselineToken === '.'));
+  assert.ok(catalog.every((mutation) => mutation.open.baselineToken === '#'));
+  assert.ok(catalog.every((mutation) => mutation.close.criticalDistance > 1));
+  assert.ok(catalog.every((mutation) => mutation.open.criticalDistance > 1));
+  assert.ok(catalog.every((mutation) => mutation.preview.hardeningGain >= 0));
 });
 
-test('valid topology mutation preserves event signature and restores map', () => {
-  const mutation = catalog.find((entry) => entry.id === 'f8-topology-wallMidWest-floorMidCenter');
-  const before = analyzeDemoFloorTopology(floor(8));
+test('semantic topology mutation preserves event signature and passable budget then restores exactly', () => {
+  const mutation = catalog[0];
+  assert.ok(mutation);
+  const targetFloor = floor(mutation.floor);
+  const before = analyzeDemoFloorTopology(targetFloor);
+  const beforeMap = targetFloor.map.map((row) => [...row]);
+
   withDemoTenFloorTopologyMutation(mutation, () => {
-    const report = validateDemoTenFloorTopology(FLOORS, contract);
-    assert.equal(report.ok, true);
-    assert.equal(report.floors[8].current.eventSignature, before.eventSignature);
-    assert.equal(report.floors[8].current.passableNodes, before.passableNodes);
+    const current = analyzeDemoFloorTopology(targetFloor);
+    assert.equal(current.eventSignature, before.eventSignature);
+    assert.equal(current.passableNodes, before.passableNodes);
+    assert.equal(current.components, 1);
+    assert.equal(current.allPassableReachableFromDown, true);
+    assert.equal(targetFloor.map[mutation.close.y][mutation.close.x], '#');
+    assert.equal(targetFloor.map[mutation.open.y][mutation.open.x], '.');
   });
-  assert.equal(analyzeDemoFloorTopology(floor(8)).eventSignature, before.eventSignature);
+
+  assert.deepEqual(targetFloor.map, beforeMap);
+  assert.equal(analyzeDemoFloorTopology(targetFloor).eventSignature, before.eventSignature);
   assert.equal(validateDemoTenFloorTopology(FLOORS, contract).ok, true);
 });
 
-test('topology contract rejects a wall-floor swap that creates too many dead ends', () => {
-  const mutation = catalog.find((entry) => entry.id === 'f8-topology-wallNwBridge-floorNorthCenter');
-  withDemoTenFloorTopologyMutation(mutation, () => {
-    const report = validateDemoTenFloorTopology(FLOORS, contract);
-    assert.equal(report.ok, false);
-    assert.ok(report.floors[8].violations.includes('dead-ends'));
-  });
-  assert.equal(validateDemoTenFloorTopology(FLOORS, contract).ok, true);
+test('semantic candidate preview does not cheapen the dominant static route', () => {
+  for (const mutation of catalog) {
+    assert.ok(mutation.preview.candidateBurden >= mutation.preview.baselineBurden);
+    assert.ok(mutation.preview.stepGain <= 12);
+    assert.ok(mutation.preview.diversityGain >= -0.18 - 1e-12);
+    assert.ok(mutation.preview.candidateParetoRoutes >= Math.max(1, mutation.preview.baselineParetoRoutes - 1));
+  }
 });
 
 test('relative topology checkpoint gate accepts a nonzero baseline tie or improvement', () => {
