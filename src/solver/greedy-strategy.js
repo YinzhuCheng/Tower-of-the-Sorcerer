@@ -21,6 +21,7 @@ import {
 const DIR_LIST = Object.entries(DIRECTIONS).map(([name, vector]) => ({ name, ...vector }));
 export const HOLY_POLICIES = ['immediate', 'after-core-6', 'after-core-7', 'before-final'];
 export const SHOP_TRAVEL_POLICIES = ['current-only', 'stall-recovery'];
+export const PROGRESSION_PRIORITIES = ['legacy-clear', 'guardian-first'];
 const SHOP_OPTION_IDS = ['atk', 'def', 'hp'];
 
 function defaultShopTravelPolicy() {
@@ -265,7 +266,7 @@ function remainingExitGuardianIds(state) {
   return getRemainingExitGuardianIds(getFloorState(state), FLOORS[state.floor]);
 }
 
-function chooseAction(state, actions, holyPolicy) {
+function chooseAction(state, actions, holyPolicy, progressionPriority) {
   const items = actions.filter((action) =>
     action.parsed.type === 'item' && (action.parsed.id !== 'holy' || localHolyAllowed(state, holyPolicy))
   );
@@ -277,7 +278,7 @@ function chooseAction(state, actions, holyPolicy) {
 
   const remainingGuardians = new Set(remainingExitGuardianIds(state));
   const up = actions.find((action) => action.token === 'U');
-  if (up && remainingGuardians.size === 0) return up;
+  if (progressionPriority === 'guardian-first' && up && remainingGuardians.size === 0) return up;
 
   const switches = actions.filter((action) => action.parsed.type === 'switch');
   if (switches.length) return switches[0];
@@ -302,14 +303,16 @@ function chooseAction(state, actions, holyPolicy) {
     }))
     .filter((action) => action.battle.winnable)
     .sort((a, b) => {
-      if (a.requiredGuardian !== b.requiredGuardian) return a.requiredGuardian ? -1 : 1;
+      if (progressionPriority === 'guardian-first' && a.requiredGuardian !== b.requiredGuardian) {
+        return a.requiredGuardian ? -1 : 1;
+      }
       const bossA = ENEMIES[a.parsed.id].boss ? 1 : 0;
       const bossB = ENEMIES[b.parsed.id].boss ? 1 : 0;
       return bossA - bossB || a.battle.totalDamage - b.battle.totalDamage;
     });
   if (enemies.length) return enemies[0];
 
-  return null;
+  return up ?? null;
 }
 
 function holyTriggerReached(state, holyPolicy, actions = []) {
@@ -437,6 +440,7 @@ export function runGreedyShopStrategy({
   shopPlan = null,
   holyPolicy = 'immediate',
   shopTravelPolicy = defaultShopTravelPolicy(),
+  progressionPriority = 'legacy-clear',
   maxIterations = 5_000
 } = {}) {
   if (!Array.isArray(shopCycle) || shopCycle.length === 0) throw new Error('shopCycle must not be empty.');
@@ -451,6 +455,9 @@ export function runGreedyShopStrategy({
   }
   if (!HOLY_POLICIES.includes(holyPolicy)) throw new Error(`Unknown Holy policy: ${holyPolicy}`);
   if (!SHOP_TRAVEL_POLICIES.includes(shopTravelPolicy)) throw new Error(`Unknown shop travel policy: ${shopTravelPolicy}`);
+  if (!PROGRESSION_PRIORITIES.includes(progressionPriority)) {
+    throw new Error(`Unknown progression priority: ${progressionPriority}`);
+  }
 
   const state = createInitialState();
   const purchaseCounts = { atk: 0, def: 0, hp: 0 };
@@ -495,9 +502,10 @@ export function runGreedyShopStrategy({
       continue;
     }
 
-    const action = chooseAction(state, actions, holyPolicy);
+    const action = chooseAction(state, actions, holyPolicy, progressionPriority);
+    const exitLocked = action?.token === 'U' && remainingExitGuardianIds(state).length > 0;
 
-    if (!action) {
+    if (!action || exitLocked) {
       const recovery = buyVisitedShopRecovery(
         state,
         shopCycle,
@@ -511,7 +519,14 @@ export function runGreedyShopStrategy({
         break;
       }
       if (recovery.count > 0) continue;
+    }
 
+    if (exitLocked) {
+      failure = describeBlockedExit(state) ?? `No reachable progress action on floor ${state.floor + 1}.`;
+      break;
+    }
+
+    if (!action) {
       const retry = buyAvailableUpgrades(state, shopCycle, shopPlan, purchaseCounts, purchaseLog);
       if (!retry.ok) {
         failure = retry.reason;
@@ -551,6 +566,7 @@ export function runGreedyShopStrategy({
     shopPlan: shopPlan ? [...shopPlan] : null,
     holyPolicy,
     shopTravelPolicy,
+    progressionPriority,
     holyAcquisition,
     iterations,
     purchases: state.shopPurchases,
