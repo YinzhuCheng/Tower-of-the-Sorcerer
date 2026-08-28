@@ -1,6 +1,7 @@
 import { DIALOGUES, ENEMIES, FLOORS, GRID_SIZE } from '../src/game/data.js';
 import { applyDemoTenFloorContent } from '../src/game/demo-10-floor-content.js';
 import { applyDemoTenFloorHardMode } from '../src/game/demo-10-floor-hard-mode.js';
+import { applyDemoTenFloorProgressionGrammar } from '../src/game/demo-10-floor-progression.js';
 import { DEMO10_CODESIGN_POLICY_SPECS, summarizeDemoTenFloorCheckpoints } from '../src/analyzer/demo-10-floor-checkpoints.js';
 import { DEMO10_EXPERT_TARGETS, demoTenFloorExpertLoss, summarizeDemoTenFloorPortfolio } from '../src/game/demo-10-floor-quality.js';
 import { runTowerCodesignBeamSearch } from '../src/tuner/codesign-beam-search.js';
@@ -8,6 +9,7 @@ import { proposeDemoTenFloorAdaptiveMutations } from '../src/tuner/demo-10-floor
 import { createDemoTenFloorMutationCatalog, demoTenFloorCandidateEditLoss, demoTenFloorCandidateKey, expandDemoTenFloorCandidate, withDemoTenFloorCandidate } from '../src/tuner/demo-10-floor-mutations.js';
 
 applyDemoTenFloorContent({ enemies: ENEMIES, floors: FLOORS, dialogues: DIALOGUES, gridSize: GRID_SIZE });
+applyDemoTenFloorProgressionGrammar({ enemies: ENEMIES, floors: FLOORS, dialogues: DIALOGUES });
 applyDemoTenFloorHardMode({ enemies: ENEMIES });
 const { runGreedyShopStrategy } = await import('../src/solver/greedy-strategy.js');
 const { runExpertNoHpStrategy, EXPERT_NO_HP_STRATEGY_ID } = await import('../src/solver/expert-strategy.js');
