@@ -179,6 +179,13 @@ function floorContainsShop(state, floorIndex) {
   return getFloorState(state, floorIndex).map.some((row) => row.includes('shop'));
 }
 
+function strategicShopPurchasePending(state, purchaseLog, progressionPriority) {
+  if (!guardianPriorityAppliesToFloor(state, progressionPriority)) return false;
+  if (!floorContainsShop(state, state.floor)) return false;
+  if (state.stats.gold < getShopCost(state)) return false;
+  return !purchaseLog.some((entry) => entry.floor === state.floor + 1);
+}
+
 function buyVisitedShopRecovery(state, shopCycle, shopPlan, purchaseCounts, purchaseLog, shopTravelPolicy) {
   if (shopTravelPolicy !== 'stall-recovery') return { ok: true, count: 0, visitedFloor: null };
   if (!state.relics.compass || state.stats.gold < getShopCost(state)) {
@@ -277,7 +284,7 @@ export function guardianPriorityAppliesToFloor(state, progressionPriority = 'leg
   return progressionPriority === 'guardian-first' && Boolean(FLOORS[state.floor]?.demoContentId);
 }
 
-function chooseAction(state, actions, holyPolicy, progressionPriority) {
+function chooseAction(state, actions, holyPolicy, progressionPriority, strategicShopPending = false) {
   const items = actions.filter((action) =>
     action.parsed.type === 'item' && (action.parsed.id !== 'holy' || localHolyAllowed(state, holyPolicy))
   );
@@ -290,7 +297,7 @@ function chooseAction(state, actions, holyPolicy, progressionPriority) {
   const remainingGuardians = new Set(remainingExitGuardianIds(state));
   const guardianFirst = guardianPriorityAppliesToFloor(state, progressionPriority);
   const up = actions.find((action) => action.token === 'U');
-  if (guardianFirst && up && remainingGuardians.size === 0) return up;
+  if (guardianFirst && !strategicShopPending && up && remainingGuardians.size === 0) return up;
 
   const switches = actions.filter((action) => action.parsed.type === 'switch');
   if (switches.length) return switches[0];
@@ -315,7 +322,10 @@ function chooseAction(state, actions, holyPolicy, progressionPriority) {
     }))
     .filter((action) => action.battle.winnable)
     .sort((a, b) => {
-      if (guardianFirst && a.requiredGuardian !== b.requiredGuardian) {
+      if (strategicShopPending && a.path.length !== b.path.length) {
+        return a.path.length - b.path.length;
+      }
+      if (guardianFirst && !strategicShopPending && a.requiredGuardian !== b.requiredGuardian) {
         return a.requiredGuardian ? -1 : 1;
       }
       const bossA = ENEMIES[a.parsed.id].boss ? 1 : 0;
@@ -514,7 +524,8 @@ export function runGreedyShopStrategy({
       continue;
     }
 
-    const action = chooseAction(state, actions, holyPolicy, progressionPriority);
+    const strategicShopPending = strategicShopPurchasePending(state, purchaseLog, progressionPriority);
+    const action = chooseAction(state, actions, holyPolicy, progressionPriority, strategicShopPending);
     const exitLocked = action?.token === 'U' && remainingExitGuardianIds(state).length > 0;
 
     if (!action || exitLocked) {
