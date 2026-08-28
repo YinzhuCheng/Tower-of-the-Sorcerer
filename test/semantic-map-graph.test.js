@@ -45,6 +45,26 @@ test('semantic graph extracts landmarks, cut structure and corridors', () => {
   assert.ok(graph.bridgeEdges.size > 0);
 });
 
+test('explicit visible boss ids support multi-phase floors without an upper stair', () => {
+  const floor = {
+    number: 10,
+    boss: 'phaseTwo',
+    map: parseMap(`
+      # # # # # # #
+      # D . . . . #
+      # . # . # . #
+      # . . enemy:phaseOne . . #
+      # # # # # # #
+    `)
+  };
+  const withoutVisibleBoss = buildSemanticMapGraph(floor);
+  assert.equal(withoutVisibleBoss.goalKey, null);
+  const withVisibleBoss = buildSemanticMapGraph(floor, { bossIds: ['phaseOne', 'phaseTwo'] });
+  assert.equal(withVisibleBoss.goalKey, '3,3');
+  assert.equal(withVisibleBoss.nodeByKey.get('3,3').semantic.kind, 'boss');
+  assert.ok(findSemanticRoute(withVisibleBoss));
+});
+
 test('semantic route sampler exposes distinct alternatives and Pareto tradeoffs', () => {
   const floor = {
     number: 2,
