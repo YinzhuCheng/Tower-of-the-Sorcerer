@@ -14,6 +14,7 @@
     "tune:demo10:late": "node scripts/tune-demo-10f-late-game.mjs",
     "search:demo10:codesign": "node scripts/search-demo-10f-codesign.mjs",
     "search:demo10:topology": "node scripts/search-demo-10f-topology.mjs",
+    "analyze:topology": "node scripts/analyze-semantic-topology.mjs",
     "check": "npm run validate && npm run build"
   }
 }
