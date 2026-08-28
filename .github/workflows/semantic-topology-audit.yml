@@ -24,7 +24,7 @@ jobs:
         with:
           node-version: 22
       - name: Analyze semantic topology
-        run: npm run analyze:topology > semantic-topology-audit.log
+        run: npm run analyze:topology | tee semantic-topology-audit.log
       - name: Upload semantic topology audit
         uses: actions/upload-artifact@v4
         with:
