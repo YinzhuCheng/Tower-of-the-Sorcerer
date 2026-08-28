@@ -274,14 +274,128 @@ function bestContinuation({ prefix, horizon, holyPolicy, progressionPriority, ma
   return bestByFirst;
 }
 
+function lateDefPurchaseIndices(plan, report, maxFlips) {
+  const indicesByRecency = (report.purchaseLog ?? [])
+    .map((entry) => ({
+      index: Number(entry.purchase) - 1,
+      floor: Number(entry.floor ?? 0)
+    }))
+    .filter((entry) => Number.isInteger(entry.index)
+      && entry.index >= 0
+      && entry.index < plan.length
+      && plan[entry.index] === 'def')
+    .sort((a, b) => b.floor - a.floor || b.index - a.index);
+
+  const indices = [];
+  const seen = new Set();
+  for (const entry of indicesByRecency) {
+    if (seen.has(entry.index)) continue;
+    seen.add(entry.index);
+    indices.push(entry.index);
+    if (indices.length >= maxFlips) break;
+  }
+  return indices;
+}
+
+/**
+ * Cross discrete combat valleys without expanding the receding horizon.
+ *
+ * Starting from a complete no-HP plan, this bounded pass progressively converts
+ * the latest DEF purchases into ATK and evaluates every cumulative allocation.
+ * Late purchases are tested first because they preserve the early physical
+ * survival investment while allowing several consecutive ATK buys to cross a
+ * guardian round breakpoint. Every candidate is replayed through the same
+ * authoritative greedy route and ranked by strategic progress / mandatory
+ * guardian pressure before residual HP.
+ */
+export function optimizeLateGuardianAttackReallocation({
+  plan,
+  report,
+  holyPolicy = 'immediate',
+  progressionPriority = 'legacy-clear',
+  maxIterations = 8_000,
+  maxFlips = 14
+}) {
+  if (!Array.isArray(plan)) throw new Error('guardian reallocation plan must be an array.');
+  if (!Number.isInteger(maxFlips) || maxFlips < 0 || maxFlips > 24) {
+    throw new Error('guardian reallocation maxFlips must be an integer from 0 to 24.');
+  }
+
+  const baselinePlan = [...plan];
+  const baselineReport = report ?? simulatePlan({
+    plan: baselinePlan,
+    holyPolicy,
+    progressionPriority,
+    maxIterations
+  });
+  const baseline = {
+    plan: baselinePlan,
+    report: baselineReport,
+    score: scoreExpertStrategyReport(baselineReport),
+    flippedIndices: []
+  };
+
+  const candidateIndices = lateDefPurchaseIndices(baselinePlan, baselineReport, maxFlips);
+  let best = baseline;
+  const evaluations = [];
+  const working = [...baselinePlan];
+  const flippedIndices = [];
+
+  for (const index of candidateIndices) {
+    working[index] = 'atk';
+    flippedIndices.push(index);
+    const candidatePlan = [...working];
+    const candidateReport = simulatePlan({
+      plan: candidatePlan,
+      holyPolicy,
+      progressionPriority,
+      maxIterations
+    });
+    const candidate = {
+      plan: candidatePlan,
+      report: candidateReport,
+      score: scoreExpertStrategyReport(candidateReport),
+      flippedIndices: [...flippedIndices]
+    };
+    const pressure = requiredGuardianFailurePressure(candidateReport);
+    evaluations.push({
+      flips: candidate.flippedIndices.length,
+      flippedIndices: [...candidate.flippedIndices],
+      solvable: candidateReport.solvable,
+      floor: candidateReport.floor,
+      cores: candidateReport.cores,
+      purchases: candidateReport.purchases,
+      atk: candidateReport.final?.atk ?? null,
+      def: candidateReport.final?.def ?? null,
+      hp: candidateReport.final?.hp ?? null,
+      guardianSignature: pressure?.signature ?? null,
+      guardianDeficit: pressure?.totalDeficit ?? null
+    });
+    if (candidateBeatsExisting(candidate, best)) best = candidate;
+  }
+
+  return {
+    attempted: candidateIndices.length > 0,
+    candidateIndices,
+    candidatesEvaluated: evaluations.length,
+    evaluations,
+    baselinePressure: requiredGuardianFailurePressure(baselineReport),
+    selectedPressure: requiredGuardianFailurePressure(best.report),
+    selectedFlips: [...best.flippedIndices],
+    improved: best !== baseline,
+    plan: [...best.plan],
+    report: best.report
+  };
+}
+
 /**
  * Build a receding-horizon shop plan that never buys HP.
  *
  * Default behavior remains defensive, but a continuation stalled at the same
  * required guardian may select ATK either because it already reduces the exact
  * authoritative combat deficit or because it moves closer to the next
- * round-reduction breakpoint. This stays generic across physical, magic and
- * grouped guardians without increasing the combinatorial horizon.
+ * round-reduction breakpoint. A final bounded late-purchase reallocation pass
+ * can then cross multi-buy valleys without increasing the combinatorial horizon.
  */
 export function buildExpertNoHpShopPlan({
   holyPolicy = 'immediate',
@@ -290,7 +404,8 @@ export function buildExpertNoHpShopPlan({
   horizon = 2,
   maxDecisions = 48,
   attackAdvantageRequired = 2_000,
-  guardianDeficitAdvantageRequired = 8
+  guardianDeficitAdvantageRequired = 8,
+  guardianRescueMaxFlips = 14
 } = {}) {
   if (!Number.isInteger(horizon) || horizon < 1 || horizon > 4) {
     throw new Error('expert strategy horizon must be an integer from 1 to 4.');
@@ -300,6 +415,9 @@ export function buildExpertNoHpShopPlan({
   }
   if (!Number.isFinite(guardianDeficitAdvantageRequired) || guardianDeficitAdvantageRequired < 0) {
     throw new Error('guardianDeficitAdvantageRequired must be a non-negative finite number.');
+  }
+  if (!Number.isInteger(guardianRescueMaxFlips) || guardianRescueMaxFlips < 0 || guardianRescueMaxFlips > 24) {
+    throw new Error('guardianRescueMaxFlips must be an integer from 0 to 24.');
   }
 
   const shopPlan = [];
@@ -368,14 +486,45 @@ export function buildExpertNoHpShopPlan({
     probe = simulatePlan({ plan: shopPlan, holyPolicy, progressionPriority, maxIterations });
   }
 
+  let guardianRescue = {
+    attempted: false,
+    candidateIndices: [],
+    candidatesEvaluated: 0,
+    evaluations: [],
+    baselinePressure: requiredGuardianFailurePressure(probe),
+    selectedPressure: requiredGuardianFailurePressure(probe),
+    selectedFlips: [],
+    improved: false,
+    plan: [...shopPlan],
+    report: probe
+  };
+
+  if (progressionPriority === 'guardian-first'
+      && guardianRescueMaxFlips > 0
+      && !probe.solvable
+      && requiredGuardianFailurePressure(probe)) {
+    guardianRescue = optimizeLateGuardianAttackReallocation({
+      plan: shopPlan,
+      report: probe,
+      holyPolicy,
+      progressionPriority,
+      maxIterations,
+      maxFlips: guardianRescueMaxFlips
+    });
+    shopPlan.splice(0, shopPlan.length, ...guardianRescue.plan);
+    probe = guardianRescue.report;
+  }
+
   return {
     strategyId: EXPERT_NO_HP_STRATEGY_ID,
     shopPlan,
     decisions,
+    guardianRescue,
     horizon,
     maxDecisions,
     attackAdvantageRequired,
     guardianDeficitAdvantageRequired,
+    guardianRescueMaxFlips,
     progressionPriority,
     planningProbe: probe
   };
@@ -388,12 +537,7 @@ export function runExpertNoHpStrategy(options = {}) {
     maxIterations = 8_000
   } = options;
   const planning = buildExpertNoHpShopPlan(options);
-  const report = simulatePlan({
-    plan: planning.shopPlan,
-    holyPolicy,
-    progressionPriority,
-    maxIterations
-  });
+  const report = planning.planningProbe;
 
   return {
     ...report,
@@ -402,14 +546,16 @@ export function runExpertNoHpStrategy(options = {}) {
       shopHpAllowed: false,
       defaultInvestment: 'def',
       progressionPriority,
-      attackRule: 'prefer ATK when bounded lookahead reduces the same required-guardian deficit or advances toward its next authoritative round breakpoint; otherwise require the configured downstream score advantage',
+      attackRule: 'prefer ATK when bounded lookahead reduces the same required-guardian deficit or advances toward its next authoritative round breakpoint; in guardian-first demo mode, also test a bounded cumulative late DEF-to-ATK reallocation to cross multi-buy valleys',
       horizon: planning.horizon,
       attackAdvantageRequired: planning.attackAdvantageRequired,
-      guardianDeficitAdvantageRequired: planning.guardianDeficitAdvantageRequired
+      guardianDeficitAdvantageRequired: planning.guardianDeficitAdvantageRequired,
+      guardianRescueMaxFlips: planning.guardianRescueMaxFlips
     },
     planning: {
       shopPlan: [...planning.shopPlan],
-      decisions: planning.decisions
+      decisions: planning.decisions,
+      guardianRescue: planning.guardianRescue
     }
   };
 }
