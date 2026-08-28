@@ -9,16 +9,17 @@ applyDemoTenFloorProgressionGrammar({ enemies: ENEMIES, floors: FLOORS, dialogue
 applyDemoTenFloorHardMode({ enemies: ENEMIES });
 const { runGreedyShopStrategy } = await import('../src/solver/greedy-strategy.js');
 const { runExpertNoHpStrategy } = await import('../src/solver/expert-strategy.js');
+const progressionPriority = 'guardian-first';
 
 const palaceMagicCandidates = [240];
 const blackSealMagicCandidates = [250, 260, 270, 280, 290];
 const blackSealDefCandidates = [95, 100, 105];
-function runSimplePortfolio() { return DEMO10_SIMPLE_BUILD_PORTFOLIO.map((shopCycle) => runGreedyShopStrategy({ shopCycle, holyPolicy: 'immediate', maxIterations: 8_000 })); }
+function runSimplePortfolio() { return DEMO10_SIMPLE_BUILD_PORTFOLIO.map((shopCycle) => runGreedyShopStrategy({ shopCycle, holyPolicy: 'immediate', progressionPriority, maxIterations: 8_000 })); }
 function evaluate(palaceMagicPower, blackSealMagicPower, blackSealDef) {
   ENEMIES.palaceWarden.magicPower = palaceMagicPower;
   ENEMIES.blackSealKeeper.magicPower = blackSealMagicPower;
   ENEMIES.blackSealKeeper.def = blackSealDef;
-  const expertReport = runExpertNoHpStrategy({ holyPolicy: 'immediate', maxIterations: 8_000, horizon: 2, attackAdvantageRequired: 2_000 });
+  const expertReport = runExpertNoHpStrategy({ holyPolicy: 'immediate', progressionPriority, maxIterations: 8_000, horizon: 2, attackAdvantageRequired: 2_000 });
   const expert = summarizeDemoTenFloorPortfolio([expertReport], DEMO10_EXPERT_TARGETS);
   const simpleReports = runSimplePortfolio();
   const boundary = summarizeDemoTenFloorPortfolio(simpleReports, DEMO10_QUALITY_TARGETS);
@@ -34,5 +35,5 @@ finally { ENEMIES.palaceWarden.magicPower = original.palaceMagicPower; ENEMIES.b
 candidates.sort((a, b) => Number(b.valid) - Number(a.valid) || a.score - b.score || b.blackSealMagicPower - a.blackSealMagicPower || b.blackSealDef - a.blackSealDef);
 const best = candidates[0] ?? null;
 console.log('DEMO10_LATE_GAME_TUNER');
-console.log(JSON.stringify({ model: 'expert-def-threshold-no-hp-hard-mode-v1', selectedCurrent: original, target: { primaryPlayer: 'DEF-first; ATK only on meaningful downstream thresholds; shop HP forbidden', expertTargets: DEMO10_EXPERT_TARGETS, naiveBoundaryTargets: DEMO10_QUALITY_TARGETS, productionWriteAllowed: false }, recommended: best, topCandidates: candidates.slice(0, 8) }, null, 2));
+console.log(JSON.stringify({ model: 'expert-def-threshold-no-hp-hard-mode-v1', progressionPriority, selectedCurrent: original, target: { primaryPlayer: 'DEF-first; ATK only on meaningful downstream thresholds; shop HP forbidden', expertTargets: DEMO10_EXPERT_TARGETS, naiveBoundaryTargets: DEMO10_QUALITY_TARGETS, productionWriteAllowed: false }, recommended: best, topCandidates: candidates.slice(0, 8) }, null, 2));
 if (!best) throw new Error('Hard-mode tuner produced no candidates.');
