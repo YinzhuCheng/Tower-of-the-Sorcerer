@@ -1,9 +1,11 @@
 import { DIALOGUES, ENEMIES, FLOORS, GRID_SIZE } from '../src/game/data.js';
 import { applyDemoTenFloorContent } from '../src/game/demo-10-floor-content.js';
 import { applyDemoTenFloorHardMode, DEMO10_HARD_MODE_PRESSURE } from '../src/game/demo-10-floor-hard-mode.js';
+import { applyDemoTenFloorProgressionGrammar } from '../src/game/demo-10-floor-progression.js';
 import { DEMO10_EXPERT_TARGETS, DEMO10_QUALITY_TARGETS, DEMO10_SIMPLE_BUILD_PORTFOLIO, demoTenFloorExpertLoss, demoTenFloorQualityLoss, summarizeDemoTenFloorPortfolio } from '../src/game/demo-10-floor-quality.js';
 
 applyDemoTenFloorContent({ enemies: ENEMIES, floors: FLOORS, dialogues: DIALOGUES, gridSize: GRID_SIZE });
+applyDemoTenFloorProgressionGrammar({ enemies: ENEMIES, floors: FLOORS, dialogues: DIALOGUES });
 applyDemoTenFloorHardMode({ enemies: ENEMIES });
 const { runGreedyShopStrategy } = await import('../src/solver/greedy-strategy.js');
 const { runExpertNoHpStrategy } = await import('../src/solver/expert-strategy.js');
