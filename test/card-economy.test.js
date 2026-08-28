@@ -26,8 +26,8 @@ test('card economy counts ordinary doors and grouped card gates once by requirem
 
 test('demo hierarchy requires star > moon > one Sun and reserves Sun for final seal', () => {
   const validFloors = [
-    floor(1, ['item:star item:star item:moon']),
-    floor(2, ['item:star item:sun .']),
+    floor(1, ['item:star item:star item:moon item:moon']),
+    floor(2, ['item:star item:star item:sun .']),
     floor(3, ['gate:throneSeal gate:throneSeal .'], {
       cardGates: { throneSeal: { sun: 1 } }
     })
@@ -36,6 +36,7 @@ test('demo hierarchy requires star > moon > one Sun and reserves Sun for final s
   assert.equal(valid.valid, true);
   assert.equal(valid.preFinalSunDemand, 0);
   assert.equal(valid.finalSunDemand, 1);
+  assert.deepEqual(valid.economy.supply, { star: 4, moon: 2, sun: 1 });
 
   const invalidFloors = [
     floor(1, ['item:sun door:sun item:moon']),
