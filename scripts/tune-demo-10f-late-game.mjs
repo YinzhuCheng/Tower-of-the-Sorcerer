@@ -54,12 +54,30 @@ function summarizeGuardianRescue(report) {
   };
 }
 
+function summarizeRouteTelemetry(report) {
+  const purchaseFloors = [...new Set((report.purchaseLog ?? []).map((entry) => entry.floor))];
+  const f9Purchases = (report.purchaseLog ?? []).filter((entry) => entry.floor === 9);
+  const f9Battles = (report.battleLog ?? []).filter((entry) => entry.floor === 9);
+  const f10Battles = (report.battleLog ?? []).filter((entry) => entry.floor === 10);
+  return {
+    purchases: report.purchases,
+    purchaseFloors,
+    f9Purchases: f9Purchases.length,
+    f9PurchaseOptions: f9Purchases.map((entry) => entry.optionId),
+    f9BattleIds: f9Battles.map((entry) => entry.enemyId),
+    f10BattleIds: f10Battles.map((entry) => entry.enemyId),
+    finalGold: report.final.gold
+  };
+}
+
 function summarizeBoundary(boundary, simpleReports) {
   return {
     solvableBuilds: boundary.solvableBuilds,
     terminalHpSpread: boundary.terminalHpSpread,
     bestMargin: boundary.winner?.minNormalizedHpMargin ?? null,
     weakestMargin: boundary.weakestWinningReport?.minNormalizedHpMargin ?? null,
+    aggregateF9ShopCoverage: boundary.f9ShopCoverage,
+    note: 'aggregateF9ShopCoverage is computed only across winning reports; inspect per-attempt f9Purchases for failed builds.',
     violations: boundary.violations,
     attempts: simpleReports.map((report) => ({
       shopCycle: report.shopCycle.join('-'),
@@ -68,6 +86,7 @@ function summarizeBoundary(boundary, simpleReports) {
       hp: report.final.hp,
       atk: report.final.atk,
       def: report.final.def,
+      ...summarizeRouteTelemetry(report),
       failure: report.failure
     }))
   };
@@ -136,6 +155,7 @@ function evaluate(palaceMagicPower, blackSealMagicPower, blackSealDef, finalQuee
       def: expertReport.final.def,
       purchases: expertReport.purchases,
       purchaseCounts: expertReport.purchaseCounts,
+      ...summarizeRouteTelemetry(expertReport),
       shopPlan: expertReport.planning?.shopPlan,
       guardianRescue: summarizeGuardianRescue(expertReport),
       margin: expertMargin,
