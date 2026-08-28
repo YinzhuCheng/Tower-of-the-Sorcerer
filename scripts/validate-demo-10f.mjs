@@ -11,6 +11,7 @@ applyDemoTenFloorHardMode({ enemies: ENEMIES });
 
 const { runGreedyShopStrategy } = await import('../src/solver/greedy-strategy.js');
 const { runExpertNoHpStrategy, EXPERT_NO_HP_STRATEGY_ID } = await import('../src/solver/expert-strategy.js');
+const progressionPriority = 'guardian-first';
 
 assert.equal(FLOORS.length, 10);
 assert.equal(FLOORS[9].demoContentId, DEMO_TEN_FLOOR_ID);
@@ -25,7 +26,7 @@ assert.equal(ENEMIES.blackSealKeeper.magicPower, DEMO10_HARD_MODE_PRESSURE.black
 assert.equal(ENEMIES.blackSealKeeper.def, DEMO10_HARD_MODE_PRESSURE.blackSealKeeperDef);
 assert.equal(Object.values(ENEMIES).reduce((sum, enemy) => sum + Number(enemy?.reward?.core ?? 0), 0), 7);
 
-const expertReport = runExpertNoHpStrategy({ holyPolicy: 'immediate', maxIterations: 8_000, horizon: 2, attackAdvantageRequired: 2_000 });
+const expertReport = runExpertNoHpStrategy({ holyPolicy: 'immediate', progressionPriority, maxIterations: 8_000, horizon: 2, attackAdvantageRequired: 2_000 });
 const expertQuality = summarizeDemoTenFloorPortfolio([expertReport], DEMO10_EXPERT_TARGETS);
 if (expertQuality.violations.length) {
   console.error('DEMO10_EXPERT_HARD_MODE_GATE_FAILED');
@@ -44,7 +45,7 @@ const bossIds = new Set(expertReport.battleLog.filter((entry) => entry.boss || e
 for (const bossId of ['palaceWarden', 'blackSealKeeper', 'voidCore']) assert.ok(bossIds.has(bossId));
 assert.ok(expertReport.purchaseLog.some((entry) => entry.floor === 9));
 
-const simpleReports = DEMO10_SIMPLE_BUILD_PORTFOLIO.map((shopCycle) => runGreedyShopStrategy({ shopCycle, holyPolicy: 'immediate', maxIterations: 8_000 }));
+const simpleReports = DEMO10_SIMPLE_BUILD_PORTFOLIO.map((shopCycle) => runGreedyShopStrategy({ shopCycle, holyPolicy: 'immediate', progressionPriority, maxIterations: 8_000 }));
 const strategicBoundary = summarizeDemoTenFloorPortfolio(simpleReports, DEMO10_QUALITY_TARGETS);
 if (strategicBoundary.violations.length) {
   console.error('DEMO10_STRATEGIC_BOUNDARY_GATE_FAILED');
@@ -54,4 +55,4 @@ if (strategicBoundary.violations.length) {
 assert.ok(simpleReports.filter((report) => report.shopCycle[0] === 'hp').some((report) => !report.solvable));
 
 console.log('10-floor hard-mode expert validation passed.');
-console.log(JSON.stringify({ contentId: DEMO_TEN_FLOOR_ID, mode: DEMO10_HARD_MODE_ID, progressionGrammar, pressure: DEMO10_HARD_MODE_PRESSURE, expertGate: { strategyId: expertReport.strategyId, shopHpAllowed: false, solvable: expertReport.solvable, terminalHp: expertReport.final.hp, atk: expertReport.final.atk, def: expertReport.final.def, purchases: expertReport.purchases, purchaseCounts: expertReport.purchaseCounts, shopPlan: expertReport.planning?.shopPlan, minNormalizedHpMargin: expertReport.minNormalizedHpMargin, f9Purchases: expertReport.purchaseLog.filter((entry) => entry.floor === 9).length, violations: expertQuality.violations }, strategicBoundary: { testedSimpleBuilds: strategicBoundary.testedBuilds, solvableSimpleBuilds: strategicBoundary.solvableBuilds, failedSimpleBuilds: strategicBoundary.failedBuilds, allowedSolvableBuilds: [DEMO10_QUALITY_TARGETS.minSolvableBuilds, DEMO10_QUALITY_TARGETS.maxSolvableBuilds], violations: strategicBoundary.violations, attempts: simpleReports.map((report) => ({ shopCycle: report.shopCycle.join('-'), solvable: report.solvable, floor: report.floor, terminalHp: report.final.hp, cards: report.cards, failure: report.failure })) } }, null, 2));
+console.log(JSON.stringify({ contentId: DEMO_TEN_FLOOR_ID, mode: DEMO10_HARD_MODE_ID, progressionPriority, progressionGrammar, pressure: DEMO10_HARD_MODE_PRESSURE, expertGate: { strategyId: expertReport.strategyId, shopHpAllowed: false, solvable: expertReport.solvable, terminalHp: expertReport.final.hp, atk: expertReport.final.atk, def: expertReport.final.def, purchases: expertReport.purchases, purchaseCounts: expertReport.purchaseCounts, shopPlan: expertReport.planning?.shopPlan, minNormalizedHpMargin: expertReport.minNormalizedHpMargin, f9Purchases: expertReport.purchaseLog.filter((entry) => entry.floor === 9).length, violations: expertQuality.violations }, strategicBoundary: { testedSimpleBuilds: strategicBoundary.testedBuilds, solvableSimpleBuilds: strategicBoundary.solvableBuilds, failedSimpleBuilds: strategicBoundary.failedBuilds, allowedSolvableBuilds: [DEMO10_QUALITY_TARGETS.minSolvableBuilds, DEMO10_QUALITY_TARGETS.maxSolvableBuilds], violations: strategicBoundary.violations, attempts: simpleReports.map((report) => ({ shopCycle: report.shopCycle.join('-'), solvable: report.solvable, floor: report.floor, terminalHp: report.final.hp, cards: report.cards, failure: report.failure })) } }, null, 2));
