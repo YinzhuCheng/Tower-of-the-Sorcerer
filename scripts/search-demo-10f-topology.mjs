@@ -12,8 +12,9 @@ applyDemoTenFloorProgressionGrammar({ enemies: ENEMIES, floors: FLOORS, dialogue
 applyDemoTenFloorHardMode({ enemies: ENEMIES });
 const { runGreedyShopStrategy } = await import('../src/solver/greedy-strategy.js');
 const { runExpertNoHpStrategy, EXPERT_NO_HP_STRATEGY_ID } = await import('../src/solver/expert-strategy.js');
+const progressionPriority = 'guardian-first';
 
-const baselineExpertPlanning = runExpertNoHpStrategy({ holyPolicy: 'immediate', maxIterations: 8_000, horizon: 2, attackAdvantageRequired: 2_000 });
+const baselineExpertPlanning = runExpertNoHpStrategy({ holyPolicy: 'immediate', progressionPriority, maxIterations: 8_000, horizon: 2, attackAdvantageRequired: 2_000 });
 const frozenExpertShopPlan = Object.freeze([...baselineExpertPlanning.planning.shopPlan]);
 const fullDiagnosticPolicyCount = DEMO10_CODESIGN_POLICY_SPECS.length;
 const diagnosticSpecs = DEMO10_CODESIGN_POLICY_SPECS.filter((_, index) => index % 3 === 0);
@@ -22,17 +23,18 @@ const contract = createDemoTenFloorTopologyContract(FLOORS);
 const catalog = createDemoTenFloorTopologyMutationCatalog({ floorNumbers: contract.floorNumbers, maxPerFloor: 16, routeSampleLimit: 6 });
 
 function runDiagnosticPolicy(spec) {
-  return runGreedyShopStrategy({ shopCycle: spec.shopCycle, shopPlan: spec.shopPlan, holyPolicy: spec.holyPolicy, maxIterations: 8_000 });
+  return runGreedyShopStrategy({ shopCycle: spec.shopCycle, shopPlan: spec.shopPlan, holyPolicy: spec.holyPolicy, progressionPriority, maxIterations: 8_000 });
 }
 
 function runExpertPolicy() {
-  const report = runGreedyShopStrategy({ shopCycle: ['def'], shopPlan: frozenExpertShopPlan, holyPolicy: 'immediate', maxIterations: 8_000 });
+  const report = runGreedyShopStrategy({ shopCycle: ['def'], shopPlan: frozenExpertShopPlan, holyPolicy: 'immediate', progressionPriority, maxIterations: 8_000 });
   return {
     ...report,
     strategyId: EXPERT_NO_HP_STRATEGY_ID,
     strategy: {
       shopHpAllowed: false,
       defaultInvestment: 'def',
+      progressionPriority,
       witnessMode: 'frozen-baseline-plan-with-def-fallback'
     },
     planning: { shopPlan: [...frozenExpertShopPlan] }
@@ -196,6 +198,7 @@ console.log(JSON.stringify({
     catalog.filter((mutation) => mutation.floor === floorNumber).length
   ])),
   playabilityGate: EXPERT_NO_HP_STRATEGY_ID,
+  progressionPriority,
   frozenExpertWitness: true,
   diagnosticPolicyCount: diagnosticSpecs.length,
   fullDiagnosticPolicyCount,
