@@ -182,8 +182,8 @@ function floorContainsShop(state, floorIndex) {
 function strategicShopPurchasePending(state, purchaseLog, progressionPriority) {
   if (!guardianPriorityAppliesToFloor(state, progressionPriority)) return false;
   if (!floorContainsShop(state, state.floor)) return false;
-  if (state.stats.gold < getShopCost(state)) return false;
-  return !purchaseLog.some((entry) => entry.floor === state.floor + 1);
+  if (purchaseLog.some((entry) => entry.floor === state.floor + 1)) return false;
+  return reachableShop(state) === null;
 }
 
 function buyVisitedShopRecovery(state, shopCycle, shopPlan, purchaseCounts, purchaseLog, shopTravelPolicy) {
