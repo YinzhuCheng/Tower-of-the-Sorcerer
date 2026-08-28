@@ -261,6 +261,10 @@ function gateIsUsable(state, action) {
   return false;
 }
 
+function remainingExitGuardianIds(state) {
+  return getRemainingExitGuardianIds(getFloorState(state), FLOORS[state.floor]);
+}
+
 function chooseAction(state, actions, holyPolicy) {
   const items = actions.filter((action) =>
     action.parsed.type === 'item' && (action.parsed.id !== 'holy' || localHolyAllowed(state, holyPolicy))
@@ -270,6 +274,10 @@ function chooseAction(state, actions, holyPolicy) {
     items.sort((a, b) => priority.indexOf(a.parsed.id) - priority.indexOf(b.parsed.id));
     return items[0];
   }
+
+  const remainingGuardians = new Set(remainingExitGuardianIds(state));
+  const up = actions.find((action) => action.token === 'U');
+  if (up && remainingGuardians.size === 0) return up;
 
   const switches = actions.filter((action) => action.parsed.type === 'switch');
   if (switches.length) return switches[0];
@@ -289,17 +297,19 @@ function chooseAction(state, actions, holyPolicy) {
     .filter((action) => action.parsed.type === 'enemy')
     .map((action) => ({
       ...action,
-      battle: calculateBattle(state.stats, ENEMIES[action.parsed.id], state.relics)
+      battle: calculateBattle(state.stats, ENEMIES[action.parsed.id], state.relics),
+      requiredGuardian: remainingGuardians.has(action.parsed.id)
     }))
     .filter((action) => action.battle.winnable)
     .sort((a, b) => {
+      if (a.requiredGuardian !== b.requiredGuardian) return a.requiredGuardian ? -1 : 1;
       const bossA = ENEMIES[a.parsed.id].boss ? 1 : 0;
       const bossB = ENEMIES[b.parsed.id].boss ? 1 : 0;
       return bossA - bossB || a.battle.totalDamage - b.battle.totalDamage;
     });
   if (enemies.length) return enemies[0];
 
-  return actions.find((action) => action.token === 'U') ?? null;
+  return null;
 }
 
 function holyTriggerReached(state, holyPolicy, actions = []) {
@@ -408,6 +418,20 @@ function finishBattleCheckpoint(checkpoint, state) {
   };
 }
 
+function describeBlockedExit(state) {
+  const remaining = remainingExitGuardianIds(state);
+  if (!remaining.length) return null;
+  const details = remaining.map((enemyId) => {
+    const enemy = ENEMIES[enemyId];
+    if (!enemy) return `${enemyId}:missing-data`;
+    const battle = calculateBattle(state.stats, enemy, state.relics);
+    if (battle.winnable) return `${enemyId}:not-reachable`;
+    if (!Number.isFinite(battle.totalDamage)) return `${enemyId}:atk-below-def`;
+    return `${enemyId}:needs-${Math.max(1, battle.totalDamage - state.stats.hp + 1)}-more-hp-equivalent`;
+  });
+  return `Required exit guardian unresolved on floor ${state.floor + 1}: ${details.join(', ')}.`;
+}
+
 export function runGreedyShopStrategy({
   shopCycle = ['atk', 'def', 'hp'],
   shopPlan = null,
@@ -472,10 +496,8 @@ export function runGreedyShopStrategy({
     }
 
     const action = chooseAction(state, actions, holyPolicy);
-    const exitLocked = action?.token === 'U'
-      && getRemainingExitGuardianIds(getFloorState(state), FLOORS[state.floor]).length > 0;
 
-    if (!action || exitLocked) {
+    if (!action) {
       const recovery = buyVisitedShopRecovery(
         state,
         shopCycle,
@@ -489,16 +511,14 @@ export function runGreedyShopStrategy({
         break;
       }
       if (recovery.count > 0) continue;
-    }
 
-    if (!action) {
       const retry = buyAvailableUpgrades(state, shopCycle, shopPlan, purchaseCounts, purchaseLog);
       if (!retry.ok) {
         failure = retry.reason;
         break;
       }
       if (retry.count > 0) continue;
-      failure = `No reachable progress action on floor ${state.floor + 1}.`;
+      failure = describeBlockedExit(state) ?? `No reachable progress action on floor ${state.floor + 1}.`;
       break;
     }
 
