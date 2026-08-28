@@ -1,9 +1,18 @@
-import { FLOORS } from '../game/data.js';
+import { ENEMIES, FLOORS } from '../game/data.js';
 import {
   createSemanticTopologyMutationCatalog,
   describeSemanticTopologyCandidate,
   withSemanticTopologyMutation
 } from './semantic-topology-mutations.js';
+
+function demoBossIdsByFloor() {
+  const result = {};
+  for (const [enemyId, enemy] of Object.entries(ENEMIES)) {
+    if (!enemy?.boss || !Number.isInteger(enemy.floor)) continue;
+    (result[enemy.floor] ??= []).push(enemyId);
+  }
+  return result;
+}
 
 export function createDemoTenFloorTopologyMutationCatalog({
   floorNumbers = [8, 9],
@@ -12,6 +21,7 @@ export function createDemoTenFloorTopologyMutationCatalog({
 } = {}) {
   return createSemanticTopologyMutationCatalog(FLOORS, {
     floorNumbers,
+    bossIdsByFloor: demoBossIdsByFloor(),
     maxPerFloor,
     routeSampleLimit,
     maxClosures: 14,
