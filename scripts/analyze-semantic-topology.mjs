@@ -1,6 +1,7 @@
 import { DIALOGUES, ENEMIES, FLOORS, GRID_SIZE } from '../src/game/data.js';
 import { applyDemoTenFloorContent } from '../src/game/demo-10-floor-content.js';
 import { applyDemoTenFloorHardMode } from '../src/game/demo-10-floor-hard-mode.js';
+import { applyDemoTenFloorProgressionGrammar } from '../src/game/demo-10-floor-progression.js';
 import { analyzeCardEconomy, validateDemoTenFloorCardHierarchy } from '../src/tuner/card-economy.js';
 import { analyzeSemanticMap } from '../src/tuner/semantic-map-graph.js';
 import {
@@ -13,6 +14,11 @@ import {
 } from '../src/tuner/semantic-topology-mutations.js';
 
 applyDemoTenFloorContent({ enemies: ENEMIES, floors: FLOORS, dialogues: DIALOGUES, gridSize: GRID_SIZE });
+const progressionGrammar = applyDemoTenFloorProgressionGrammar({
+  enemies: ENEMIES,
+  floors: FLOORS,
+  dialogues: DIALOGUES
+});
 applyDemoTenFloorHardMode({ enemies: ENEMIES });
 
 function bossIdsByFloor() {
@@ -107,12 +113,13 @@ const cardHierarchy = validateDemoTenFloorCardHierarchy(FLOORS);
 
 console.log('SEMANTIC_TOPOLOGY_AUDIT');
 console.log(JSON.stringify({
-  schemaVersion: 2,
-  model: 'semantic-map-graph-v2-room-aware',
+  schemaVersion: 3,
+  model: 'semantic-map-graph-v2-room-aware-card-hierarchy',
   heuristicOnly: true,
   productionWriteAllowed: false,
   purpose: 'cheap room/corridor, pressure-cluster and topology candidate analysis before authoritative solver/portfolio gates',
   designSignals: {
+    progressionGrammar,
     pressure,
     cardEconomy: {
       supply: cardEconomy.supply,
