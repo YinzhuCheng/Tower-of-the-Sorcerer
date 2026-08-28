@@ -10,6 +10,13 @@ import {
   teleportToFloor,
   tryMove
 } from '../game/engine.js';
+import {
+  getCardGateRequirements,
+  getGuardianGateRequirements,
+  getMissingCards,
+  getMissingGuardianIds,
+  getRemainingExitGuardianIds
+} from '../game/progression-rules.js';
 
 const DIR_LIST = Object.entries(DIRECTIONS).map(([name, vector]) => ({ name, ...vector }));
 export const HOLY_POLICIES = ['immediate', 'after-core-6', 'after-core-7', 'before-final'];
@@ -240,6 +247,20 @@ function localHolyAllowed(state, holyPolicy) {
   return false;
 }
 
+function gateIsUsable(state, action) {
+  if (action?.parsed?.type !== 'gate') return false;
+  const floor = FLOORS[state.floor];
+  const floorState = getFloorState(state);
+  const gateId = action.parsed.id;
+  const cardRequirements = getCardGateRequirements(floor, gateId);
+  if (cardRequirements) return getMissingCards(state.cards, cardRequirements).length === 0;
+  const guardianRequirements = getGuardianGateRequirements(floor, gateId);
+  if (guardianRequirements) {
+    return getMissingGuardianIds(floorState, floor, gateId).length === 0;
+  }
+  return false;
+}
+
 function chooseAction(state, actions, holyPolicy) {
   const items = actions.filter((action) =>
     action.parsed.type === 'item' && (action.parsed.id !== 'holy' || localHolyAllowed(state, holyPolicy))
@@ -253,10 +274,8 @@ function chooseAction(state, actions, holyPolicy) {
   const switches = actions.filter((action) => action.parsed.type === 'switch');
   if (switches.length) return switches[0];
 
-  const triGate = actions.find((action) =>
-    action.token === 'gate:tri' && state.cards.sun > 0 && state.cards.moon > 0 && state.cards.star > 0
-  );
-  if (triGate) return triGate;
+  const gate = actions.find((action) => gateIsUsable(state, action));
+  if (gate) return gate;
 
   const doors = actions.filter((action) =>
     action.parsed.type === 'door' && state.cards[action.parsed.id] > 0
@@ -453,11 +472,10 @@ export function runGreedyShopStrategy({
     }
 
     const action = chooseAction(state, actions, holyPolicy);
-    const bossLockedExit = action?.token === 'U'
-      && Boolean(FLOORS[state.floor]?.boss)
-      && !getFloorState(state).bossDefeated;
+    const exitLocked = action?.token === 'U'
+      && getRemainingExitGuardianIds(getFloorState(state), FLOORS[state.floor]).length > 0;
 
-    if (!action || bossLockedExit) {
+    if (!action || exitLocked) {
       const recovery = buyVisitedShopRecovery(
         state,
         shopCycle,
