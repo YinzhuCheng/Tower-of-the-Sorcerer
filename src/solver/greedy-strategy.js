@@ -266,6 +266,17 @@ function remainingExitGuardianIds(state) {
   return getRemainingExitGuardianIds(getFloorState(state), FLOORS[state.floor]);
 }
 
+/**
+ * The 10F demo preserves the first seven canonical floors as the resource-building
+ * campaign spine. `guardian-first` therefore accelerates only the demo-added
+ * palace floors (F8+), where optional side rooms and vaults are intentional.
+ * This prevents the automation from leaving F1-F7 the instant a boss becomes
+ * barely winnable while still letting late-game validation skip optional rooms.
+ */
+export function guardianPriorityAppliesToFloor(state, progressionPriority = 'legacy-clear') {
+  return progressionPriority === 'guardian-first' && Boolean(FLOORS[state.floor]?.demoContentId);
+}
+
 function chooseAction(state, actions, holyPolicy, progressionPriority) {
   const items = actions.filter((action) =>
     action.parsed.type === 'item' && (action.parsed.id !== 'holy' || localHolyAllowed(state, holyPolicy))
@@ -277,8 +288,9 @@ function chooseAction(state, actions, holyPolicy, progressionPriority) {
   }
 
   const remainingGuardians = new Set(remainingExitGuardianIds(state));
+  const guardianFirst = guardianPriorityAppliesToFloor(state, progressionPriority);
   const up = actions.find((action) => action.token === 'U');
-  if (progressionPriority === 'guardian-first' && up && remainingGuardians.size === 0) return up;
+  if (guardianFirst && up && remainingGuardians.size === 0) return up;
 
   const switches = actions.filter((action) => action.parsed.type === 'switch');
   if (switches.length) return switches[0];
@@ -303,7 +315,7 @@ function chooseAction(state, actions, holyPolicy, progressionPriority) {
     }))
     .filter((action) => action.battle.winnable)
     .sort((a, b) => {
-      if (progressionPriority === 'guardian-first' && a.requiredGuardian !== b.requiredGuardian) {
+      if (guardianFirst && a.requiredGuardian !== b.requiredGuardian) {
         return a.requiredGuardian ? -1 : 1;
       }
       const bossA = ENEMIES[a.parsed.id].boss ? 1 : 0;
