@@ -8,6 +8,7 @@ on:
     paths:
       - 'src/game/data.js'
       - 'src/game/demo-10-floor-content.js'
+      - 'src/game/demo-10-floor-progression.js'
       - 'src/game/progression-rules.js'
       - 'src/tuner/card-economy.js'
       - 'src/tuner/semantic-map-graph.js'
