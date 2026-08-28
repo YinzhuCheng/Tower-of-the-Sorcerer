@@ -49,18 +49,22 @@ test('10F topology baseline exposes stable F8/F9 graph metrics', () => {
   assert.equal(validateDemoTenFloorTopology(FLOORS, contract).ok, true);
 });
 
-test('semantic topology catalogue is graph-derived instead of coordinate-slot-driven', () => {
+test('semantic topology catalogue is graph-derived and room-aware instead of coordinate-slot-driven', () => {
   assert.ok(catalog.length > 0);
   assert.ok(catalog.length <= 32);
   assert.ok(catalog.every((mutation) => mutation.kind === 'semantic-topology-wall-floor-swap'));
   assert.ok(catalog.some((mutation) => mutation.floor === 8));
   assert.ok(catalog.some((mutation) => mutation.floor === 9));
-  assert.ok(catalog.every((mutation) => mutation.generator === 'semantic-map-graph-v2'));
+  assert.ok(catalog.every((mutation) => mutation.generator.startsWith('semantic-map-graph-v2')));
+  assert.ok(catalog.every((mutation) => mutation.generator.includes('room-aware')));
   assert.ok(catalog.every((mutation) => mutation.close.baselineToken === '.'));
   assert.ok(catalog.every((mutation) => mutation.open.baselineToken === '#'));
   assert.ok(catalog.every((mutation) => mutation.close.criticalDistance > 1));
   assert.ok(catalog.every((mutation) => mutation.open.criticalDistance > 1));
+  assert.ok(catalog.every((mutation) => Number.isFinite(mutation.open.chamberPotential)));
   assert.ok(catalog.every((mutation) => mutation.preview.hardeningGain >= 0));
+  assert.ok(catalog.every((mutation) => Number.isFinite(mutation.preview.chamberScoreGain)));
+  assert.ok(catalog.every((mutation) => mutation.preview.chamberScoreGain >= -0.03 - 1e-12));
 });
 
 test('semantic topology mutation preserves event signature and passable budget then restores exactly', () => {
@@ -85,11 +89,12 @@ test('semantic topology mutation preserves event signature and passable budget t
   assert.equal(validateDemoTenFloorTopology(FLOORS, contract).ok, true);
 });
 
-test('semantic candidate preview does not cheapen the dominant static route', () => {
+test('semantic candidate preview does not cheapen the dominant static route or collapse chamber grammar', () => {
   for (const mutation of catalog) {
     assert.ok(mutation.preview.candidateBurden >= mutation.preview.baselineBurden);
     assert.ok(mutation.preview.stepGain <= 12);
     assert.ok(mutation.preview.diversityGain >= -0.18 - 1e-12);
+    assert.ok(mutation.preview.chamberScoreGain >= -0.03 - 1e-12);
     assert.ok(mutation.preview.candidateParetoRoutes >= Math.max(1, mutation.preview.baselineParetoRoutes - 1));
   }
 });
