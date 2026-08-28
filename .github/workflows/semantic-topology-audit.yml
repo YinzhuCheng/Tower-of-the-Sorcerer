@@ -1,0 +1,34 @@
+name: Semantic Topology Audit
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - semantic-topology-v2
+    paths:
+      - 'src/game/data.js'
+      - 'src/game/demo-10-floor-content.js'
+      - 'src/tuner/semantic-map-graph.js'
+      - 'src/tuner/semantic-topology-mutations.js'
+      - 'src/tuner/demo-10-floor-topology-mutations.js'
+      - 'scripts/analyze-semantic-topology.mjs'
+      - '.github/workflows/semantic-topology-audit.yml'
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Analyze semantic topology
+        run: npm run analyze:topology > semantic-topology-audit.log
+      - name: Upload semantic topology audit
+        uses: actions/upload-artifact@v4
+        with:
+          name: semantic-topology-audit
+          path: semantic-topology-audit.log
+          if-no-files-found: error
+          retention-days: 14
