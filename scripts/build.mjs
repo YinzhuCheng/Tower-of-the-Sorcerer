@@ -105,12 +105,14 @@ async function validateProductionDemoBuild() {
   const content = await import(moduleUrl('src/game/demo-10-floor-content.js'));
   const hardMode = await import(moduleUrl('src/game/demo-10-floor-hard-mode.js'));
   const progression = await import(moduleUrl('src/game/demo-10-floor-progression.js'));
+  const spatial = await import(moduleUrl('src/game/demo-10-floor-spatial-redesign.js'));
   content.applyDemoTenFloorContent({
     enemies: data.ENEMIES,
     floors: data.FLOORS,
     dialogues: data.DIALOGUES,
     gridSize: data.GRID_SIZE
   });
+  spatial.applyDemoTenFloorSpatialRedesign({ floors: data.FLOORS, gridSize: data.GRID_SIZE });
   const progressionGrammar = progression.applyDemoTenFloorProgressionGrammar({
     enemies: data.ENEMIES,
     floors: data.FLOORS,
@@ -138,11 +140,21 @@ async function validateProductionDemoBuild() {
   assertBuild(shopSamples[2].options.find((option) => option.id === 'hp').effect.hp === 1170, 'F9 HP shop must scale to +1170.');
 
   const preludeState = engine.createInitialState();
-  preludeState.x = 7;
-  preludeState.y = 1;
-  const prelude = engine.prepareBossEncounter(preludeState, 1, 0);
+  let catBoss = null;
+  for (let y = 0; y < data.FLOORS[0].map.length; y += 1) {
+    for (let x = 0; x < data.FLOORS[0].map[y].length; x += 1) {
+      if (data.FLOORS[0].map[y][x] === 'enemy:catBoss') catBoss = { x, y };
+    }
+  }
+  const bossApproach = catBoss == null ? null : [[1, 0], [-1, 0], [0, 1], [0, -1]]
+    .map(([dx, dy]) => ({ x: catBoss.x + dx, y: catBoss.y + dy, dx, dy }))
+    .find(({ x, y }) => data.FLOORS[0].map[y]?.[x] === '.');
+  assertBuild(bossApproach != null, 'F1 boss must have a floor-tile approach.');
+  preludeState.x = bossApproach.x;
+  preludeState.y = bossApproach.y;
+  const prelude = engine.prepareBossEncounter(preludeState, -bossApproach.dx, -bossApproach.dy);
   assertBuild(prelude?.bossEncounter === true && prelude.dialogue === 'bossCatPreDemo', 'F1 boss must open a pre-battle dialogue.');
-  assertBuild(engine.prepareBossEncounter(preludeState, 1, 0) === null, 'Boss pre-battle dialogue must trigger only once.');
+  assertBuild(engine.prepareBossEncounter(preludeState, -bossApproach.dx, -bossApproach.dy) === null, 'Boss pre-battle dialogue must trigger only once.');
 
   const demoSequences = Object.entries(data.DIALOGUES).filter(([id, dialogue]) => id.endsWith('Demo') && Array.isArray(dialogue?.turns));
   assertBuild(demoSequences.length >= 20, 'Every floor must provide pre/post boss dialogue sequences.');

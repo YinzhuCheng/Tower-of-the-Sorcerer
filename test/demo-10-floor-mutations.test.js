@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { DIALOGUES, ENEMIES, FLOORS, GRID_SIZE } from '../src/game/data.js';
 import { applyDemoTenFloorContent } from '../src/game/demo-10-floor-content.js';
+import { applyDemoTenFloorSpatialRedesign } from '../src/game/demo-10-floor-spatial-redesign.js';
 import {
   createDemoTenFloorMutationCatalog,
   expandDemoTenFloorCandidate,
@@ -9,6 +10,7 @@ import {
 } from '../src/tuner/demo-10-floor-mutations.js';
 
 applyDemoTenFloorContent({ enemies: ENEMIES, floors: FLOORS, dialogues: DIALOGUES, gridSize: GRID_SIZE });
+applyDemoTenFloorSpatialRedesign({ floors: FLOORS, gridSize: GRID_SIZE });
 const catalog = createDemoTenFloorMutationCatalog();
 
 test('10F semantic co-design slots stay anchored to their expected baseline tokens', () => {

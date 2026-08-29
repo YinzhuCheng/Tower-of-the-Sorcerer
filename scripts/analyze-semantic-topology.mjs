@@ -2,6 +2,7 @@ import { DIALOGUES, ENEMIES, FLOORS, GRID_SIZE } from '../src/game/data.js';
 import { applyDemoTenFloorContent } from '../src/game/demo-10-floor-content.js';
 import { applyDemoTenFloorHardMode } from '../src/game/demo-10-floor-hard-mode.js';
 import { applyDemoTenFloorProgressionGrammar } from '../src/game/demo-10-floor-progression.js';
+import { applyDemoTenFloorSpatialRedesign } from '../src/game/demo-10-floor-spatial-redesign.js';
 import { analyzeCardEconomy, validateDemoTenFloorCardHierarchy } from '../src/tuner/card-economy.js';
 import { analyzeSemanticMap } from '../src/tuner/semantic-map-graph.js';
 import {
@@ -14,6 +15,7 @@ import {
 } from '../src/tuner/semantic-topology-mutations.js';
 
 applyDemoTenFloorContent({ enemies: ENEMIES, floors: FLOORS, dialogues: DIALOGUES, gridSize: GRID_SIZE });
+applyDemoTenFloorSpatialRedesign({ floors: FLOORS, gridSize: GRID_SIZE });
 const progressionGrammar = applyDemoTenFloorProgressionGrammar({
   enemies: ENEMIES,
   floors: FLOORS,
