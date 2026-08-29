@@ -81,6 +81,12 @@ function summarizeReportFloor(report, floor) {
   };
 }
 
+function reportLateMinMargin(report, lateFloorSet) {
+  return finiteMin(report.battleLog
+    .filter((entry) => lateFloorSet.has(entry.floor))
+    .map((entry) => entry.normalizedHpMargin));
+}
+
 function aggregateFloor(floor, winningReports) {
   const samples = winningReports.map((report) => summarizeReportFloor(report, floor));
   return {
@@ -95,14 +101,14 @@ function aggregateFloor(floor, winningReports) {
     bossMinMargin: round(finiteMin(samples.map((sample) => sample.bossMinMargin))),
     meanBossMinMargin: round(finiteMean(samples.map((sample) => sample.bossMinMargin))),
     maxBossMinMargin: round(finiteMax(samples.map((sample) => sample.bossMinMargin))),
-    totalDamageRange: [
+    totalDamageRange: samples.length ? [
       Math.min(...samples.map((sample) => sample.totalDamage)),
       Math.max(...samples.map((sample) => sample.totalDamage))
-    ],
-    purchaseCountRange: [
+    ] : [null, null],
+    purchaseCountRange: samples.length ? [
       Math.min(...samples.map((sample) => sample.purchases)),
       Math.max(...samples.map((sample) => sample.purchases))
-    ],
+    ] : [null, null],
     samples
   };
 }
@@ -115,6 +121,20 @@ export function summarizeDemoTenFloorPortfolio(reports, targets = DEMO10_QUALITY
   const winningReports = reports.filter((report) => report.solvable);
   const winningByHp = [...winningReports].sort((a, b) => b.final.hp - a.final.hp);
   const winner = winningByHp[0] ?? null;
+  const lateFloorSet = new Set(targets.lateFloors);
+  const lateMarginByReport = new Map(
+    winningReports.map((report) => [report, reportLateMinMargin(report, lateFloorSet)])
+  );
+  const winnerLateMinMargin = winner ? lateMarginByReport.get(winner) ?? null : null;
+  const weakestLateWinningReport = [...winningReports]
+    .sort((a, b) => (lateMarginByReport.get(a) ?? Infinity) - (lateMarginByReport.get(b) ?? Infinity))[0] ?? null;
+  const weakestWinningLateMargin = weakestLateWinningReport
+    ? lateMarginByReport.get(weakestLateWinningReport) ?? null
+    : null;
+
+  // Preserve the historical all-floor weakest report as telemetry. The 10F
+  // hard-mode gate deliberately does not use it because F1-F7 are the canonical
+  // research baseline and should not be retuned to satisfy a late-game target.
   const weakestWinningReport = [...winningReports]
     .sort((a, b) => (a.minNormalizedHpMargin ?? Infinity) - (b.minNormalizedHpMargin ?? Infinity))[0] ?? null;
   const weakestTerminalReport = winningByHp.at(-1) ?? null;
@@ -129,16 +149,16 @@ export function summarizeDemoTenFloorPortfolio(reports, targets = DEMO10_QUALITY
   const violations = [];
   if (winningReports.length < targets.minSolvableBuilds) violations.push(`solvable-builds-below-min:${winningReports.length}<${targets.minSolvableBuilds}`);
   if (winningReports.length > targets.maxSolvableBuilds) violations.push(`solvable-builds-above-max:${winningReports.length}>${targets.maxSolvableBuilds}`);
-  if (!winner || !Number.isFinite(winner.minNormalizedHpMargin)) {
+  if (!winner || !Number.isFinite(winnerLateMinMargin)) {
     violations.push('missing-best-winning-margin');
   } else {
-    if (winner.minNormalizedHpMargin < targets.bestBuildMarginMin) violations.push(`best-build-too-brittle:${round(winner.minNormalizedHpMargin)}`);
-    if (winner.minNormalizedHpMargin > targets.bestBuildMarginMax) violations.push(`best-build-too-forgiving:${round(winner.minNormalizedHpMargin)}`);
+    if (winnerLateMinMargin < targets.bestBuildMarginMin) violations.push(`best-build-too-brittle:${round(winnerLateMinMargin)}`);
+    if (winnerLateMinMargin > targets.bestBuildMarginMax) violations.push(`best-build-too-forgiving:${round(winnerLateMinMargin)}`);
   }
-  if (!weakestWinningReport || !Number.isFinite(weakestWinningReport.minNormalizedHpMargin)) {
+  if (!weakestLateWinningReport || !Number.isFinite(weakestWinningLateMargin)) {
     violations.push('missing-weakest-winning-margin');
-  } else if (weakestWinningReport.minNormalizedHpMargin < targets.weakestWinningMarginMin) {
-    violations.push(`weakest-win-too-brittle:${round(weakestWinningReport.minNormalizedHpMargin)}`);
+  } else if (weakestWinningLateMargin < targets.weakestWinningMarginMin) {
+    violations.push(`weakest-win-too-brittle:${round(weakestWinningLateMargin)}`);
   }
   if (!Number.isFinite(terminalHpSpread) || terminalHpSpread < targets.minTerminalHpSpread) violations.push(`terminal-hp-spread-too-small:${terminalHpSpread ?? 'null'}`);
   if (f9ShopCoverage < targets.f9ShopCoverageMin) violations.push(`f9-shop-coverage-too-low:${round(f9ShopCoverage)}`);
@@ -155,7 +175,10 @@ export function summarizeDemoTenFloorPortfolio(reports, targets = DEMO10_QUALITY
     solvableBuilds: winningReports.length,
     failedBuilds: reports.length - winningReports.length,
     winner,
+    winnerLateMinMargin: round(winnerLateMinMargin),
     weakestWinningReport,
+    weakestLateWinningReport,
+    weakestWinningLateMargin: round(weakestWinningLateMargin),
     weakestTerminalReport,
     terminalHpSpread,
     f9ShopCoverage: round(f9ShopCoverage),
@@ -166,8 +189,8 @@ export function summarizeDemoTenFloorPortfolio(reports, targets = DEMO10_QUALITY
 }
 
 export function demoTenFloorQualityLoss(summary, targets = DEMO10_QUALITY_TARGETS) {
-  const winnerMargin = summary.winner?.minNormalizedHpMargin;
-  const weakestMargin = summary.weakestWinningReport?.minNormalizedHpMargin;
+  const winnerMargin = summary.winnerLateMinMargin;
+  const weakestMargin = summary.weakestWinningLateMargin;
   const f8Boss = summary.lateFloors?.[8]?.meanBossMinMargin;
   const f9Boss = summary.lateFloors?.[9]?.meanBossMinMargin;
   const hardPenalty = summary.violations.length * 1000;
@@ -182,7 +205,7 @@ export function demoTenFloorQualityLoss(summary, targets = DEMO10_QUALITY_TARGET
 }
 
 export function demoTenFloorPlayabilityLoss(summary, targets = DEMO10_PLAYABILITY_TARGETS) {
-  const weakestMargin = summary.weakestWinningReport?.minNormalizedHpMargin;
+  const weakestMargin = summary.weakestWinningLateMargin;
   const missingBuilds = Math.max(0, targets.minSolvableBuilds - summary.solvableBuilds);
   const hardPenalty = summary.violations.length * 1000;
   return hardPenalty
@@ -192,7 +215,7 @@ export function demoTenFloorPlayabilityLoss(summary, targets = DEMO10_PLAYABILIT
 }
 
 export function demoTenFloorExpertLoss(summary, targets = DEMO10_EXPERT_TARGETS) {
-  const margin = summary.winner?.minNormalizedHpMargin;
+  const margin = summary.winnerLateMinMargin;
   const f8Boss = summary.lateFloors?.[8]?.meanBossMinMargin;
   const f9Boss = summary.lateFloors?.[9]?.meanBossMinMargin;
   const f10Boss = summary.lateFloors?.[10]?.meanBossMinMargin;
