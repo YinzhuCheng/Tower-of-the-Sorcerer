@@ -37,9 +37,9 @@ function locate(map, wanted) {
   return null;
 }
 
-function isReachable(map, blockedToken = null) {
-  const start = locate(map, 'S');
-  const exit = locate(map, 'U');
+function isReachable(map, { startToken = 'S', targetToken = 'U', blockedToken = null } = {}) {
+  const start = locate(map, startToken);
+  const exit = locate(map, targetToken);
   assert.ok(start);
   assert.ok(exit);
   const queue = [start];
@@ -72,18 +72,35 @@ test('F1 spatial redesign turns the tutorial maze into rooms without changing it
   assert.equal(floor.demoSpatialRedesignId, DEMO10_SPATIAL_REDESIGN_ID);
   assert.deepEqual(eventHistogram(floor.map), before);
   assert.ok(isReachable(floor.map));
-  assert.equal(isReachable(floor.map, 'enemy:catBoss'), false, 'F1 exit must not bypass the boss.');
+  assert.equal(isReachable(floor.map, { blockedToken: 'enemy:catBoss' }), false, 'F1 exit must not bypass the boss.');
   assert.ok(spatial.meaningfulRoomCount >= 5, 'F1 should expose several readable rooms.');
   assert.ok(spatial.treasureVaultCount >= 2, 'optional rewards should live in visible side rooms.');
   assert.ok(spatial.junctionRoomCount >= 1, 'the shop should sit in a central connector room.');
 });
 
-test('F1 spatial redesign is idempotent after the room map is installed', () => {
+test('F2 spatial redesign makes the vine switch and gate a readable progression sequence', () => {
+  const fixture = createFixture();
+  const floor = fixture.floors[1];
+  const before = eventHistogram(floor.map);
+
+  applyDemoTenFloorSpatialRedesign({ floors: fixture.floors, gridSize: GRID_SIZE });
+  const spatial = analyzeFloorSpatialGrammar(floor, { bossIds: ['foxBoss'] });
+
+  assert.equal(floor.demoSpatialRedesignId, DEMO10_SPATIAL_REDESIGN_ID);
+  assert.deepEqual(eventHistogram(floor.map), before);
+  assert.ok(isReachable(floor.map, { startToken: 'D', targetToken: 'switch:vine', blockedToken: 'gate:vine' }), 'the vine switch must remain reachable.');
+  assert.equal(isReachable(floor.map, { startToken: 'D', blockedToken: 'gate:vine' }), false, 'F2 exit must remain sealed while the vine gate is closed.');
+  assert.equal(isReachable(floor.map, { startToken: 'D', blockedToken: 'enemy:foxBoss' }), false, 'F2 exit must not bypass the boss.');
+  assert.ok(spatial.meaningfulRoomCount >= 5);
+  assert.ok(spatial.junctionRoomCount >= 1, 'the vine switch should sit in a central connector room.');
+});
+
+test('room-based spatial redesign is idempotent after F1 and F2 maps are installed', () => {
   const fixture = createFixture();
   applyDemoTenFloorSpatialRedesign({ floors: fixture.floors, gridSize: GRID_SIZE });
-  const firstMap = fixture.floors[0].map.map((row) => [...row]);
+  const firstMaps = fixture.floors.slice(0, 2).map((floor) => floor.map.map((row) => [...row]));
   const second = applyDemoTenFloorSpatialRedesign({ floors: fixture.floors, gridSize: GRID_SIZE });
 
   assert.equal(second.applied, false);
-  assert.deepEqual(fixture.floors[0].map, firstMap);
+  assert.deepEqual(fixture.floors.slice(0, 2).map((floor) => floor.map), firstMaps);
 });
