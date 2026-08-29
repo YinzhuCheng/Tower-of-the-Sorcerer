@@ -146,7 +146,8 @@ jobs:
               'renderer_canvas': '<canvas' in dom,
               'tactical_tooltip_layer': 'enemy-hover-card' in dom,
               'guardian_marker_layer': 'guardian-marker-layer' in dom,
-              'guardian_marker_visible': '结界守护者' in dom,
+              'bossless_tutorial_contract': '本层不设 Boss 税' in dom,
+              'no_legacy_f1_guardian': '结界守护者' not in dom,
               'no_boot_failure': '启动失败：' not in dom,
           }
           print('10F_BROWSER_SMOKE', checks)
@@ -160,4 +161,4 @@ jobs:
               raise SystemExit(1)
           PY
 
-          echo '10F browser smoke passed with rendered canvas, tactical hover layer, and guardian marker.'
+          echo '10F browser smoke passed with rendered canvas, tactical hover layer, and the bossless F1 contract.'
