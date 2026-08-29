@@ -62,8 +62,8 @@ locks are deliberately narrow and readable:
 | F5 | `ember` | Shield side cache; the three guardians still lock the stair |
 | F6 | `mirror` | Holy |
 | F7 | `tri` | Ward |
-| F8 | `hush`, `hushVault` | Dual relic side cache; optional guardian vault |
-| F9 | `blackstar` | Dual relic side cache before final conversion |
+| F8 | `hush`, `hushVault` | Dual relic side cache and Warden ante-room; optional guardian vault |
+| F9 | `blackstar` | Dual relic side cache and Black Seal Keeper ante-room |
 | F10 | `throneSeal` | Final Queen and Core phase |
 
 All former card doors that did not protect a route or reward are intentionally

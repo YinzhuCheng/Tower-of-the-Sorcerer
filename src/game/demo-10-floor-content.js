@@ -268,7 +268,7 @@ export function applyDemoTenFloorContent({ enemies, floors, dialogues, gridSize 
     map: parseDemoMap(`
       # # # # # # # # # # #
       # . enemy:outerCrown # item:dual # item:hpLarge enemy:hushCantor enemy:palaceWarden U #
-      # . # # gate:hush # . # # . #
+      # . # # gate:hush # gate:hush # # gate:hush #
       # switch:hushB # enemy:muteGuard . item:atk . # item:star enemy:hushCantor #
       # . # . # # # # . # #
       # item:hpLarge enemy:hushCantor . # item:def . enemy:outerCrown . # #
@@ -312,7 +312,7 @@ export function applyDemoTenFloorContent({ enemies, floors, dialogues, gridSize 
     map: parseDemoMap(`
       # # # # # # # # # # #
       # . enemy:starSentinel # item:dual # item:hpLarge enemy:nullCantor enemy:blackSealKeeper U #
-      # . # # gate:blackstar # . # # . #
+      # . # # gate:blackstar # gate:blackstar # # gate:blackstar #
       # rune:C # enemy:crownShade . item:def . # item:star enemy:nullCantor #
       # . # . # # # # . # #
       # item:hpLarge enemy:nullCantor . rune:A item:atk . enemy:starSentinel . # #

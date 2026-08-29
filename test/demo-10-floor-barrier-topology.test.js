@@ -135,7 +135,6 @@ test('every remaining 10F visual barrier separates two distinct regions', () => 
 });
 
 test('critical rewards and finale remain unreachable until their named barrier opens', () => {
-  const { floors } = createFixture();
   const protectedTargets = [
     [1, 'door:star', 'item:def', 4, 9],
     [2, 'gate:dualKeyVault', 'item:lucky', 1, 1],
@@ -144,12 +143,15 @@ test('critical rewards and finale remain unreachable until their named barrier o
     [6, 'gate:mirror', 'item:holy', 4, 1],
     [7, 'gate:tri', 'item:ward', 4, 1],
     [8, 'gate:hush', 'item:dual', 4, 1],
+    [8, 'gate:hush', 'enemy:palaceWarden', 8, 1],
     [8, 'gate:hushVault', 'item:hp', 9, 9],
     [9, 'gate:blackstar', 'item:dual', 4, 1],
+    [9, 'gate:blackstar', 'enemy:blackSealKeeper', 8, 1],
     [10, 'gate:throneSeal', 'enemy:finalQueen', 7, 1]
   ];
 
   for (const [number, barrier, target, x, y] of protectedTargets) {
+    const { floors } = createFixture();
     const floor = findFloor(floors, number);
     assert.equal(floor.map[y][x], target, `F${number} target position must remain stable.`);
     assert.equal(
