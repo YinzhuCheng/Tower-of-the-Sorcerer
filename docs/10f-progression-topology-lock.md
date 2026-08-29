@@ -1,6 +1,6 @@
 # 10F progression topology lock
 
-Status: **approved product direction, pending map implementation**.
+Status: **implemented in the 10F demo overlay; room maps and critical anchors are frozen.**
 
 This document supersedes the old assumption that every core floor must contain
 one boss who individually seals its upward stair. It locks the progression
@@ -9,7 +9,8 @@ before any further room layout or numerical tuning. Numeric values are
 intentionally out of scope until this topology is implemented and replayable.
 
 The canonical eight-floor dataset remains a research baseline. Everything in
-this document is implemented only through the ten-floor demo overlay.
+this document is implemented only through the ten-floor demo overlay. Numeric
+rebaselining begins only after this locked map state.
 
 ## Design rules
 

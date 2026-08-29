@@ -1,98 +1,130 @@
+import { DEMO10_PROGRESSION_TOPOLOGY_ID } from './demo-10-floor-progression-topology.js';
+
 const GRID_SIZE = 11;
 
-export const DEMO10_SPATIAL_REDESIGN_ID = 'demo-10f-spatial-redesign-v2';
-
-const F1_EVENT_HISTOGRAM = Object.freeze({
-  'door:sun': 3,
-  'enemy:catBoss': 1,
-  'enemy:catMage': 1,
-  'enemy:catScout': 3,
-  'enemy:mote': 4,
-  'item:atk': 1,
-  'item:codex': 1,
-  'item:def': 2,
-  'item:hp': 3,
-  'item:moon': 1,
-  'item:sun': 4,
-  S: 1,
-  shop: 1,
-  U: 1
-});
-
-const F2_EVENT_HISTOGRAM = Object.freeze({
-  D: 1,
-  'door:moon': 1,
-  'door:sun': 2,
-  'enemy:foxAcolyte': 4,
-  'enemy:foxArcher': 3,
-  'enemy:foxBoss': 1,
-  'enemy:vineDruid': 1,
-  'gate:vine': 1,
-  'item:atk': 2,
-  'item:def': 2,
-  'item:hp': 2,
-  'item:moon': 2,
-  'item:sun': 2,
-  'switch:vine': 1,
-  U: 1
-});
+export const DEMO10_SPATIAL_REDESIGN_ID = 'demo-10f-spatial-redesign-v4-topology-locked';
 
 function parseMap(text) {
   const rows = text.trim().split('\n').map((row) => row.trim().split(/\s+/));
   if (rows.length !== GRID_SIZE || rows.some((row) => row.length !== GRID_SIZE)) {
-    throw new Error('F1 spatial redesign must remain an 11×11 map.');
+    throw new Error('10F spatial redesign maps must remain 11×11.');
   }
   return rows;
 }
 
-// F1 teaches the player to read a room, choose optional rewards, then return
-// through a clear hub before entering the boss room. Every existing event token
-// is retained so this is a spatial redesign, not an economy rebalance.
-const F1_ROOM_MAP = parseMap(`
-  # # # # # # # # # # #
-  # item:sun door:sun enemy:mote # # # item:atk enemy:catScout U #
-  # item:hp . . # # # enemy:catBoss enemy:catMage item:moon #
-  # . . . # # # . # # #
-  # item:hp # . enemy:catScout . item:def . # # #
-  # enemy:mote . # enemy:mote shop . # . . #
-  # . door:sun # . . . . enemy:catScout . #
-  # item:hp item:sun enemy:mote . # # # . . #
-  # . item:codex . # # # # item:sun item:def #
-  # S item:sun door:sun . # # # # # #
-  # # # # # # # # # # #
-`);
+// These layouts deliberately encode the progression topology, not numerical
+// balance. Critical Boss groups, relics, gates and stairs are fixed here;
+// ordinary enemy values and allowed encounter slots are tuned only afterwards.
+const ROOM_MAPS = Object.freeze({
+  1: parseMap(`
+    # # # # # # # # # # #
+    # item:sun door:sun enemy:mote # # # item:atk enemy:catScout U #
+    # item:hp . . # # # enemy:catMage item:moon . #
+    # . . . # # # . # . #
+    # item:hp # . enemy:catScout . item:def . # . #
+    # enemy:mote . # enemy:mote shop . # . . #
+    # . door:sun # . . . . enemy:catScout . #
+    # item:hp item:sun enemy:mote . # # # . . #
+    # . item:codex . # # # # item:sun item:def #
+    # S item:sun door:sun . # # # # # #
+    # # # # # # # # # # #
+  `),
+  2: parseMap(`
+    # # # # # # # # # # #
+    # item:lucky gate:dualKeyVault # # # item:atk . . U #
+    # enemy:catBoss . . # # # item:hp . enemy:foxBoss #
+    # . . . # # # enemy:foxAcolyte gate:vine # #
+    # item:hp # . enemy:foxAcolyte switch:vine item:def # enemy:foxArcher # #
+    # enemy:vineDruid . # enemy:foxArcher . . # . # #
+    # . door:moon # . . . . enemy:foxAcolyte . #
+    # item:moon item:sun enemy:foxAcolyte . # # # item:sun item:atk #
+    # . . . # # # # door:sun . #
+    # D . . . # # # # # #
+    # # # # # # # # # # #
+  `),
+  3: parseMap(`
+    # # # # # # # # # # #
+    # # # # . enemy:whaleSinger . U # # #
+    # # # # . enemy:whaleSinger # # # # #
+    # # # # # gate:tide # # # # #
+    # item:atk enemy:shellGuard . door:moon . door:moon . enemy:shellGuard item:hp #
+    # item:moon . enemy:tideLancer switch:tideB . switch:tideA enemy:tideLancer . item:moon #
+    # item:compass . . # . # item:hpLarge . # #
+    # . door:sun enemy:whaleSinger . . . enemy:whaleSinger . . #
+    # item:def . . # . # . . item:def #
+    # . item:sun . enemy:whaleSinger D item:atk . item:hp . #
+    # # # # # # # # # # #
+  `),
+  4: parseMap(`
+    # # # # # # # # # # #
+    # item:hp enemy:swordKnight . . # item:weapon enemy:bladePriestess . U #
+    # . # # gate:forge # . # # . #
+    # item:moon # enemy:swordApprentice . . switch:forge # item:star enemy:swordKnight #
+    # . # . # # # # . # #
+    # item:hp enemy:bladePriestess . # item:def . enemy:swordKnight . # #
+    # # # door:moon # . # # . # #
+    # item:sun . . enemy:swordApprentice . # item:atk item:sun item:hpLarge #
+    # . # # # # # . # door:star #
+    # D . item:moon door:sun enemy:swordApprentice item:def . item:hp . #
+    # # # # # # # # # # #
+  `),
+  5: parseMap(`
+    # # # # # # # # # # #
+    # item:dual enemy:whaleBoss . . # item:shield enemy:swordBoss . U #
+    # . # # gate:ember # . # # . #
+    # switch:emberB # enemy:flameCaster . . switch:emberA # item:star enemy:dragonGuard #
+    # . # . # # # # . # #
+    # item:hpLarge enemy:dragonGuard . # item:def . enemy:dragonBoss . # #
+    # # # door:moon # . # # . # #
+    # item:moon . . enemy:flameCaster . # item:atk item:moon item:hpLarge #
+    # . # # # # # . # door:star #
+    # D . item:moon door:moon enemy:flameCaster item:def shop item:hp item:star #
+    # # # # # # # # # # #
+  `),
+  6: parseMap(`
+    # # # # # # # # # # #
+    # item:dual enemy:mirrorDoll . . # item:holy enemy:starWitch enemy:starWitch U #
+    # . # # gate:mirror # . # # . #
+    # rune:C # enemy:cometArcher . item:def . # item:star enemy:starWitch #
+    # . # . # # # # . # #
+    # item:hpLarge enemy:starWitch . rune:B item:atk . enemy:mirrorDoll . # #
+    # # # door:star # . # # . # #
+    # item:moon . . enemy:cometArcher . # rune:A item:def . #
+    # . # # # # # . # door:moon #
+    # D . item:star door:star enemy:mirrorDoll item:atk . item:hp . #
+    # # # # # # # # # # #
+  `),
+  7: parseMap(`
+    # # # # # # # # # # #
+    # item:ward enemy:astralBoss . . # item:dual enemy:shadowWardBlade enemy:shadowBoss U #
+    # . # # gate:tri # . # # . #
+    # item:sun # enemy:shadowNinja . item:def . # item:star enemy:shadowWardCantor #
+    # . # . # # # # . # #
+    # item:hpLarge enemy:voidPriestess . # item:atk . enemy:duskDragon . # #
+    # # # door:moon # . # # . # #
+    # item:moon . . enemy:shadowNinja . # item:star item:moon item:hpLarge #
+    # . # # # # # . # door:star #
+    # D . item:moon door:moon enemy:duskDragon item:atk . item:hp . #
+    # # # # # # # # # # #
+  `)
+});
 
-// F2 turns the vine mechanism into a legible spatial promise: the player can
-// see the sealed boss court, find the switch in the central relay, and choose
-// whether to clear either side chamber before returning to the main route.
-const F2_ROOM_MAP = parseMap(`
-  # # # # # # # # # # #
-  # item:def door:sun enemy:foxArcher # # # item:atk # U #
-  # item:moon . . # # # item:hp . enemy:foxBoss #
-  # . . . # # # enemy:foxAcolyte gate:vine # #
-  # item:hp # . enemy:foxAcolyte switch:vine item:def # enemy:foxArcher # #
-  # enemy:vineDruid . # enemy:foxArcher . . # . # #
-  # . door:moon # . . . . enemy:foxAcolyte . #
-  # item:moon item:sun enemy:foxAcolyte . # # # item:sun item:atk #
-  # . . . # # # # door:sun . #
-  # D . . . # # # # # #
-  # # # # # # # # # # #
-`);
+const ROOM_PLANS = Object.freeze({
+  1: Object.freeze(['入口补给室', '月影资源密室', '中央商店枢纽', '侧藏宝间', '上行门廊']),
+  2: Object.freeze(['下行入口室', '猫卫长翼室', '藤蔓继电枢纽', '狐祝翼室', '双钥秘库']),
+  3: Object.freeze(['港厅入口室', '西潮圣所', '东潮圣所', '中轴潮门前庭', '上行航道']),
+  4: Object.freeze(['下行庭院', '左侧锻炉翼', '中央锻炉室', '右侧资源翼', '上行剑廊']),
+  5: Object.freeze(['下行熔炉入口', '潮汐核心室', '锋刃核心室', '赤焰核心室', '封印上行台']),
+  6: Object.freeze(['下行书库前厅', '镜序准备室', '星镜仪式室', '圣辉侧室', '上行藏书廊']),
+  7: Object.freeze(['下行影廊', '天穹守卫室', '双相结界厅', '影仪双卫室', '王庭上行台'])
+});
 
-function eventHistogram(map) {
-  const counts = {};
-  for (const row of map) {
-    for (const token of row) {
-      if (token === '#' || token === '.') continue;
-      counts[token] = (counts[token] ?? 0) + 1;
-    }
-  }
-  return counts;
+function copyMap(map) {
+  return map.map((row) => [...row]);
 }
 
-function sameHistogram(left, right) {
-  const keys = new Set([...Object.keys(left), ...Object.keys(right)]);
-  return [...keys].every((key) => left[key] === right[key]);
+function hasToken(map, token) {
+  return map.some((row) => row.includes(token));
 }
 
 function locate(map, token) {
@@ -104,7 +136,8 @@ function locate(map, token) {
   return null;
 }
 
-function canReach(map, start, target, blockedToken = null) {
+function canReach(map, start, target, blockedTokens = []) {
+  const blocked = new Set(blockedTokens);
   const queue = [start];
   const seen = new Set([`${start.x},${start.y}`]);
   for (let head = 0; head < queue.length; head += 1) {
@@ -115,7 +148,7 @@ function canReach(map, start, target, blockedToken = null) {
       const y = current.y + dy;
       const token = map[y]?.[x];
       const key = `${x},${y}`;
-      if (token == null || token === '#' || token === blockedToken || seen.has(key)) continue;
+      if (token == null || token === '#' || blocked.has(token) || seen.has(key)) continue;
       seen.add(key);
       queue.push({ x, y });
     }
@@ -123,43 +156,39 @@ function canReach(map, start, target, blockedToken = null) {
   return false;
 }
 
-function assertSpatialInventory(map, expected, label) {
-  if (!sameHistogram(eventHistogram(map), expected)) {
-    throw new Error(`${label} spatial redesign must preserve the complete event inventory.`);
+function assertMapContract(floorNumber, map) {
+  const entry = locate(map, floorNumber === 1 ? 'S' : 'D');
+  const stairs = locate(map, 'U');
+  if (!entry || !stairs) throw new Error(`F${floorNumber} spatial map requires both its entry and upper stair.`);
+  if (!canReach(map, entry, stairs)) throw new Error(`F${floorNumber} spatial map must stay topologically connected.`);
+}
+
+function assertTopologyAnchors(floorNumber, map) {
+  const required = {
+    1: [],
+    2: ['enemy:catBoss', 'enemy:foxBoss', 'gate:dualKeyVault', 'item:lucky'],
+    3: ['switch:tideA', 'switch:tideB', 'gate:tide'],
+    4: ['switch:forge', 'gate:forge', 'item:weapon'],
+    5: ['enemy:whaleBoss', 'enemy:swordBoss', 'enemy:dragonBoss'],
+    6: ['rune:A', 'rune:B', 'rune:C', 'gate:mirror', 'item:holy'],
+    7: ['enemy:astralBoss', 'enemy:shadowBoss', 'enemy:shadowWardBlade', 'enemy:shadowWardCantor', 'gate:tri', 'item:ward']
+  }[floorNumber] ?? [];
+  for (const token of required) {
+    if (!hasToken(map, token)) throw new Error(`F${floorNumber} topology map is missing ${token}.`);
+  }
+  if (floorNumber === 1 && hasToken(map, 'enemy:catBoss')) {
+    throw new Error('F1 is a bossless tutorial floor in the locked progression topology.');
   }
 }
 
-function assertF1SpatialContract(map) {
-  assertSpatialInventory(map, F1_EVENT_HISTOGRAM, 'F1');
-  const start = locate(map, 'S');
-  const exit = locate(map, 'U');
-  if (!start || !exit || !canReach(map, start, exit)) {
-    throw new Error('F1 spatial redesign must keep every room connected from the entry.');
-  }
-  if (canReach(map, start, exit, 'enemy:catBoss')) {
-    throw new Error('F1 spatial redesign must keep the upward stair behind catBoss.');
-  }
-}
-
-function assertF2SpatialContract(map) {
-  assertSpatialInventory(map, F2_EVENT_HISTOGRAM, 'F2');
-  const start = locate(map, 'D');
-  const exit = locate(map, 'U');
-  const vineSwitch = locate(map, 'switch:vine');
-  if (!start || !exit || !vineSwitch || !canReach(map, start, vineSwitch, 'gate:vine')) {
-    throw new Error('F2 spatial redesign must keep the vine switch reachable from the entry.');
-  }
-  if (canReach(map, start, exit, 'gate:vine')) {
-    throw new Error('F2 spatial redesign must keep the boss court behind the vine gate.');
-  }
-  if (canReach(map, start, exit, 'enemy:foxBoss')) {
-    throw new Error('F2 spatial redesign must keep the upward stair behind foxBoss.');
-  }
+function floorByNumber(floors, number) {
+  return floors.find((floor) => floor.number === number) ?? null;
 }
 
 /**
- * Applies the first two floors' room-based layouts after the 10F content overlay.
- * The map stays idempotent and keeps the event/economy inventory unchanged.
+ * Applies all F1–F7 room maps after content and progression topology overlays.
+ * It is deliberately one atomic spatial pass: individually roomizing old
+ * single-Boss floors would recreate the topology that this campaign replaces.
  */
 export function applyDemoTenFloorSpatialRedesign({ floors, gridSize = GRID_SIZE } = {}) {
   if (!Array.isArray(floors)) throw new Error('10F spatial redesign requires floors.');
@@ -167,35 +196,32 @@ export function applyDemoTenFloorSpatialRedesign({ floors, gridSize = GRID_SIZE 
   if (floors.length !== 10 || floors[9]?.demoContentId == null) {
     throw new Error('10F spatial redesign expects the installed 10F demo content overlay.');
   }
+  if (floors[9]?.demoProgressionTopologyId !== DEMO10_PROGRESSION_TOPOLOGY_ID) {
+    throw new Error('10F spatial redesign requires the locked progression topology first.');
+  }
 
-  const floor1 = floors.find((entry) => entry.number === 1);
-  const floor2 = floors.find((entry) => entry.number === 2);
-  if (!floor1 || !floor2) throw new Error('10F spatial redesign could not find floors 1 and 2.');
   let applied = false;
-
-  if (floor1.demoSpatialRedesignId !== DEMO10_SPATIAL_REDESIGN_ID) {
-    assertSpatialInventory(floor1.map, F1_EVENT_HISTOGRAM, 'F1');
-    assertF1SpatialContract(F1_ROOM_MAP);
-    floor1.map = F1_ROOM_MAP.map((row) => [...row]);
-    Object.assign(floor1, {
-      objective: '从入口室选择补给路径，在中央商店准备后挑战猫卫长米露并回收月影核心。',
-      demoSpatialRedesignId: DEMO10_SPATIAL_REDESIGN_ID,
-      roomPlan: Object.freeze(['入口补给室', '月影资源密室', '中央商店枢纽', '侧藏宝间', '猫卫长战斗室'])
-    });
+  const redesigned = [];
+  for (const floorNumber of Object.keys(ROOM_MAPS).map(Number)) {
+    const floor = floorByNumber(floors, floorNumber);
+    if (!floor) throw new Error(`10F spatial redesign could not find F${floorNumber}.`);
+    if (floor.demoSpatialRedesignId === DEMO10_SPATIAL_REDESIGN_ID) {
+      redesigned.push(floor);
+      continue;
+    }
+    const map = ROOM_MAPS[floorNumber];
+    assertMapContract(floorNumber, map);
+    assertTopologyAnchors(floorNumber, map);
+    floor.map = copyMap(map);
+    floor.roomPlan = ROOM_PLANS[floorNumber];
+    floor.demoSpatialRedesignId = DEMO10_SPATIAL_REDESIGN_ID;
+    redesigned.push(floor);
     applied = true;
   }
 
-  if (floor2.demoSpatialRedesignId !== DEMO10_SPATIAL_REDESIGN_ID) {
-    assertSpatialInventory(floor2.map, F2_EVENT_HISTOGRAM, 'F2');
-    assertF2SpatialContract(F2_ROOM_MAP);
-    floor2.map = F2_ROOM_MAP.map((row) => [...row]);
-    Object.assign(floor2, {
-      objective: '探索藤蔓侧室，启动中央继电机关，穿过藤蔓门后击败狐祝绯叶。',
-      demoSpatialRedesignId: DEMO10_SPATIAL_REDESIGN_ID,
-      roomPlan: Object.freeze(['入口补给室', '藤蔓资源室', '中央继电枢纽', '侧路宝库', '狐祝战斗室'])
-    });
-    applied = true;
-  }
-
-  return { applied, id: DEMO10_SPATIAL_REDESIGN_ID, floors: [floor1, floor2] };
+  return Object.freeze({
+    applied,
+    id: DEMO10_SPATIAL_REDESIGN_ID,
+    floors: Object.freeze(redesigned)
+  });
 }

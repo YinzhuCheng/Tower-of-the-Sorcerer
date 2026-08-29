@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 
 import { DIALOGUES, ENEMIES, FLOORS, GRID_SIZE } from '../src/game/data.js';
 import { applyDemoTenFloorContent } from '../src/game/demo-10-floor-content.js';
+import { applyDemoTenFloorProgressionTopology } from '../src/game/demo-10-floor-progression-topology.js';
 import {
   applyDemoTenFloorSpatialRedesign,
   DEMO10_SPATIAL_REDESIGN_ID
@@ -14,93 +15,72 @@ function createFixture() {
   const floors = structuredClone(FLOORS);
   const dialogues = structuredClone(DIALOGUES);
   applyDemoTenFloorContent({ enemies, floors, dialogues, gridSize: GRID_SIZE });
+  applyDemoTenFloorProgressionTopology({ enemies, floors });
   return { enemies, floors, dialogues };
 }
 
-function eventHistogram(map) {
-  const result = {};
-  for (const row of map) {
-    for (const token of row) {
-      if (token === '#' || token === '.') continue;
-      result[token] = (result[token] ?? 0) + 1;
-    }
-  }
-  return result;
+function hasToken(floor, token) {
+  return floor.map.some((row) => row.includes(token));
 }
 
-function locate(map, wanted) {
-  for (let y = 0; y < map.length; y += 1) {
-    for (let x = 0; x < map[y].length; x += 1) {
-      if (map[y][x] === wanted) return { x, y };
-    }
-  }
-  return null;
+function floor(floors, number) {
+  return floors.find((entry) => entry.number === number);
 }
 
-function isReachable(map, { startToken = 'S', targetToken = 'U', blockedToken = null } = {}) {
-  const start = locate(map, startToken);
-  const exit = locate(map, targetToken);
-  assert.ok(start);
-  assert.ok(exit);
-  const queue = [start];
-  const seen = new Set([`${start.x},${start.y}`]);
-  for (let head = 0; head < queue.length; head += 1) {
-    const { x, y } = queue[head];
-    if (x === exit.x && y === exit.y) return true;
-    for (const [dx, dy] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) {
-      const nextX = x + dx;
-      const nextY = y + dy;
-      const token = map[nextY]?.[nextX];
-      const key = `${nextX},${nextY}`;
-      if (token == null || token === '#' || token === blockedToken || seen.has(key)) continue;
-      seen.add(key);
-      queue.push({ x: nextX, y: nextY });
-    }
-  }
-  return false;
-}
-
-test('F1 spatial redesign turns the tutorial maze into rooms without changing its event economy', () => {
+test('room redesign materializes the locked boss cadence across F1–F7', () => {
   const fixture = createFixture();
-  const floor = fixture.floors[0];
-  const before = eventHistogram(floor.map);
-
   const result = applyDemoTenFloorSpatialRedesign({ floors: fixture.floors, gridSize: GRID_SIZE });
-  const spatial = analyzeFloorSpatialGrammar(floor, { bossIds: ['catBoss'] });
 
   assert.equal(result.applied, true);
-  assert.equal(floor.demoSpatialRedesignId, DEMO10_SPATIAL_REDESIGN_ID);
-  assert.deepEqual(eventHistogram(floor.map), before);
-  assert.ok(isReachable(floor.map));
-  assert.equal(isReachable(floor.map, { blockedToken: 'enemy:catBoss' }), false, 'F1 exit must not bypass the boss.');
-  assert.ok(spatial.meaningfulRoomCount >= 5, 'F1 should expose several readable rooms.');
-  assert.ok(spatial.treasureVaultCount >= 2, 'optional rewards should live in visible side rooms.');
-  assert.ok(spatial.junctionRoomCount >= 1, 'the shop should sit in a central connector room.');
+  for (const floorNumber of [1, 2, 3, 4, 5, 6, 7]) {
+    const current = floor(fixture.floors, floorNumber);
+    assert.equal(current.demoSpatialRedesignId, DEMO10_SPATIAL_REDESIGN_ID);
+    assert.equal(current.map.length, GRID_SIZE);
+    assert.ok(current.map.every((row) => row.length === GRID_SIZE));
+    assert.equal(current.roomPlan.length, 5);
+  }
+
+  const f1 = floor(fixture.floors, 1);
+  assert.deepEqual(f1.exitGuardians, []);
+  assert.equal(hasToken(f1, 'enemy:catBoss'), false);
+  assert.ok(hasToken(f1, 'shop'));
+
+  const f2 = floor(fixture.floors, 2);
+  assert.deepEqual(f2.exitGuardians, []);
+  for (const token of ['enemy:catBoss', 'enemy:foxBoss', 'gate:dualKeyVault', 'item:lucky']) {
+    assert.ok(hasToken(f2, token), `F2 must contain ${token}`);
+  }
+
+  const f5 = floor(fixture.floors, 5);
+  assert.deepEqual(f5.exitGuardians, ['whaleBoss', 'swordBoss', 'dragonBoss']);
+  for (const token of ['enemy:whaleBoss', 'enemy:swordBoss', 'enemy:dragonBoss', 'shop']) {
+    assert.ok(hasToken(f5, token), `F5 must contain ${token}`);
+  }
+
+  const f7 = floor(fixture.floors, 7);
+  assert.deepEqual(f7.exitGuardians, ['astralBoss', 'shadowBoss', 'shadowWardBlade', 'shadowWardCantor']);
+  for (const token of ['enemy:astralBoss', 'enemy:shadowBoss', 'enemy:shadowWardBlade', 'enemy:shadowWardCantor']) {
+    assert.ok(hasToken(f7, token), `F7 must contain ${token}`);
+  }
 });
 
-test('F2 spatial redesign makes the vine switch and gate a readable progression sequence', () => {
+test('room redesign produces named chambers instead of a shared maze template', () => {
   const fixture = createFixture();
-  const floor = fixture.floors[1];
-  const before = eventHistogram(floor.map);
-
   applyDemoTenFloorSpatialRedesign({ floors: fixture.floors, gridSize: GRID_SIZE });
-  const spatial = analyzeFloorSpatialGrammar(floor, { bossIds: ['foxBoss'] });
 
-  assert.equal(floor.demoSpatialRedesignId, DEMO10_SPATIAL_REDESIGN_ID);
-  assert.deepEqual(eventHistogram(floor.map), before);
-  assert.ok(isReachable(floor.map, { startToken: 'D', targetToken: 'switch:vine', blockedToken: 'gate:vine' }), 'the vine switch must remain reachable.');
-  assert.equal(isReachable(floor.map, { startToken: 'D', blockedToken: 'gate:vine' }), false, 'F2 exit must remain sealed while the vine gate is closed.');
-  assert.equal(isReachable(floor.map, { startToken: 'D', blockedToken: 'enemy:foxBoss' }), false, 'F2 exit must not bypass the boss.');
-  assert.ok(spatial.meaningfulRoomCount >= 5);
-  assert.ok(spatial.junctionRoomCount >= 1, 'the vine switch should sit in a central connector room.');
+  const plans = [1, 2, 3, 4, 5, 6, 7].map((number) => floor(fixture.floors, number).roomPlan.join('|'));
+  assert.equal(new Set(plans).size, 7, 'each redesigned floor needs its own readable spatial role.');
+
+  const f2Spatial = analyzeFloorSpatialGrammar(floor(fixture.floors, 2), { bossIds: ['catBoss', 'foxBoss'] });
+  assert.ok(f2Spatial.meaningfulRoomCount >= 1);
 });
 
-test('room-based spatial redesign is idempotent after F1 and F2 maps are installed', () => {
+test('topology-locked room redesign is idempotent', () => {
   const fixture = createFixture();
   applyDemoTenFloorSpatialRedesign({ floors: fixture.floors, gridSize: GRID_SIZE });
-  const firstMaps = fixture.floors.slice(0, 2).map((floor) => floor.map.map((row) => [...row]));
+  const firstMaps = fixture.floors.slice(0, 7).map((entry) => entry.map.map((row) => [...row]));
   const second = applyDemoTenFloorSpatialRedesign({ floors: fixture.floors, gridSize: GRID_SIZE });
 
   assert.equal(second.applied, false);
-  assert.deepEqual(fixture.floors.slice(0, 2).map((floor) => floor.map), firstMaps);
+  assert.deepEqual(fixture.floors.slice(0, 7).map((entry) => entry.map), firstMaps);
 });

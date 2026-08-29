@@ -15,6 +15,7 @@ import {
   getTile,
   parseToken
 } from './engine.js';
+import { getRemainingExitGuardianIds } from './progression-rules.js';
 
 const AUTO_SAVE_KEY = 'lost-magic-tower:auto:v1';
 const MANUAL_SAVE_KEY = 'lost-magic-tower:manual:v1';
@@ -303,7 +304,13 @@ function buildStairHoverPreview(state, direction) {
   const target = FLOORS[targetId];
   const floor = currentFloor(state);
   if (!target) return null;
-  const locked = direction === 'up' && Boolean(floor?.boss) && !getFloorState(state).bossDefeated;
+  const remainingGuardians = direction === 'up'
+    ? getRemainingExitGuardianIds(getFloorState(state), floor)
+    : [];
+  const locked = remainingGuardians.length > 0;
+  const guardianNames = remainingGuardians
+    .map((id) => ENEMIES[id]?.name ?? id)
+    .join('、');
   return {
     kind: 'stairs',
     title: direction === 'up' ? '上行楼层传送阵' : '下行楼层传送阵',
@@ -313,7 +320,9 @@ function buildStairHoverPreview(state, direction) {
     primaryLabel: '目标',
     primaryValue: `第 ${target.number} 阵 · ${target.title}`,
     details: [
-      detail('状态', locked ? '本层阵眼未解除，需先击败守护者' : '传送通路已开放')
+      detail('状态', locked
+        ? `上行结界仍由 ${remainingGuardians.length} 名守护者维持：${guardianNames}`
+        : '传送通路已开放')
     ]
   };
 }

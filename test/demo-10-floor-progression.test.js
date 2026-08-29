@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 
 import { DIALOGUES, ENEMIES, FLOORS, GRID_SIZE } from '../src/game/data.js';
 import { applyDemoTenFloorContent } from '../src/game/demo-10-floor-content.js';
+import { applyDemoTenFloorProgressionTopology } from '../src/game/demo-10-floor-progression-topology.js';
 import { applyDemoTenFloorSpatialRedesign } from '../src/game/demo-10-floor-spatial-redesign.js';
 import {
   applyDemoTenFloorProgressionGrammar,
@@ -17,6 +18,7 @@ function createFixture() {
   const floors = structuredClone(FLOORS);
   const dialogues = structuredClone(DIALOGUES);
   applyDemoTenFloorContent({ enemies, floors, dialogues, gridSize: GRID_SIZE });
+  applyDemoTenFloorProgressionTopology({ enemies, floors });
   applyDemoTenFloorSpatialRedesign({ floors, gridSize: GRID_SIZE });
   return { enemies, floors, dialogues };
 }

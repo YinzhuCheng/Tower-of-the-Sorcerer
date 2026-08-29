@@ -130,3 +130,123 @@ export function validateDemoTenFloorProgressionTopology(topology = DEMO10_PROGRE
     ))
   });
 }
+
+function floorByNumber(floors, number) {
+  return floors.find((floor) => floor.number === number) ?? null;
+}
+
+function configureFloor(floor, { title, objective, exitGuardians, guardianGates, primaryBoss } = {}) {
+  if (!floor) throw new Error('10F progression topology could not find a required floor.');
+  if (title) floor.title = title;
+  if (objective) floor.objective = objective;
+  floor.exitGuardians = [...(exitGuardians ?? [])];
+  if (guardianGates) {
+    floor.puzzles = {
+      ...(floor.puzzles ?? {}),
+      guardianGates: {
+        ...(floor.puzzles?.guardianGates ?? {}),
+        ...Object.fromEntries(Object.entries(guardianGates).map(([gateId, ids]) => [gateId, [...ids]]))
+      }
+    };
+  }
+  if (primaryBoss) floor.boss = primaryBoss;
+  else delete floor.boss;
+  floor.demoProgressionTopologyId = DEMO10_PROGRESSION_TOPOLOGY_ID;
+}
+
+function installShadowWardens(enemies) {
+  Object.assign(enemies, {
+    shadowWardBlade: {
+      name: '影仪近卫·断棱', portrait: 'sword_boss', faction: '虚影织界·四相仪式', floor: 7,
+      hp: 1180, atk: 174, def: 82, gold: 260, boss: true, special: 'firstStrike',
+      description: '四相仪式的执刃近卫。她不持有核心，但与其余守卫共同维持通往王庭的上楼结界。'
+    },
+    shadowWardCantor: {
+      name: '影仪近卫·残歌', portrait: 'void_priestess', faction: '虚影织界·四相仪式', floor: 7,
+      hp: 1120, atk: 168, def: 78, gold: 260, boss: true, special: 'magic', magicPower: 118,
+      description: '四相仪式的咏唱近卫。她的固定魔法伤害迫使玩家在进入王庭前确认防护与生命储备。'
+    }
+  });
+}
+
+/**
+ * Applies the demo-only progression topology before the spatial redesign.
+ * The spatial layer is responsible for giving these semantics authored rooms
+ * and final coordinates. No engine transition is duplicated here.
+ */
+export function applyDemoTenFloorProgressionTopology({ floors, enemies } = {}) {
+  if (!Array.isArray(floors) || !enemies) {
+    throw new Error('10F progression topology requires floors and enemies.');
+  }
+  if (floors.length !== 10 || floors[9]?.demoContentId == null) {
+    throw new Error('10F progression topology expects installed ten-floor demo content.');
+  }
+  if (floors[9]?.demoProgressionTopologyId === DEMO10_PROGRESSION_TOPOLOGY_ID) {
+    return Object.freeze({ applied: false, id: DEMO10_PROGRESSION_TOPOLOGY_ID });
+  }
+
+  const validation = validateDemoTenFloorProgressionTopology();
+  if (!validation.ok) throw new Error(`Invalid 10F progression topology: ${validation.violations.join(', ')}`);
+  for (const bearer of CORE_BEARERS) {
+    if (!enemies[bearer.enemyId]) throw new Error(`10F progression topology requires ${bearer.enemyId}.`);
+    enemies[bearer.enemyId].floor = bearer.floor;
+  }
+  installShadowWardens(enemies);
+
+  configureFloor(floorByNumber(floors, 1), {
+    title: '月白门廊',
+    objective: '在入口房与第一座商店之间学习伤害、卡片与资源取舍；本层不设 Boss 税。',
+    exitGuardians: []
+  });
+  configureFloor(floorByNumber(floors, 2), {
+    title: '森罗双钥',
+    objective: '主路可直接上行；击败猫卫长与狐祝会解开双钥秘库，取得招财星币并回收前两枚核心。',
+    exitGuardians: [],
+    guardianGates: { dualKeyVault: ['catBoss', 'foxBoss'] }
+  });
+  configureFloor(floorByNumber(floors, 3), {
+    title: '深蓝航道',
+    objective: '激活双潮机关，读懂无视防御的魔法伤害；本层用机关而非 Boss 控制上行。',
+    exitGuardians: []
+  });
+  configureFloor(floorByNumber(floors, 4), {
+    title: '锋刃锻炉',
+    objective: '开启锻炉并取得辉月魔刃，用攻击与防御断点为中层守卫群做准备。',
+    exitGuardians: []
+  });
+  configureFloor(floorByNumber(floors, 5), {
+    title: '赤焰熔心',
+    objective: '在中层商店完成配装后，击败潮汐、锋刃与赤焰三名核心守卫；三人全部落败才会打开上楼结界。',
+    exitGuardians: ['whaleBoss', 'swordBoss', 'dragonBoss'],
+    primaryBoss: 'dragonBoss'
+  });
+  configureFloor(floorByNumber(floors, 6), {
+    title: '星镜书库',
+    objective: '按正确顺序完成星镜仪式，取得圣辉原液；这是进入四守卫升阶前的准备层。',
+    exitGuardians: []
+  });
+  configureFloor(floorByNumber(floors, 7), {
+    title: '虚影合鸣',
+    objective: '穿过双相结界，击败四相仪式的全部守卫；天穹与虚影核心会在此回收，王庭上行结界只在四人皆败后解除。',
+    exitGuardians: ['astralBoss', 'shadowBoss', 'shadowWardBlade', 'shadowWardCantor'],
+    primaryBoss: 'shadowBoss'
+  });
+  configureFloor(floorByNumber(floors, 8), {
+    exitGuardians: ['palaceWarden'],
+    primaryBoss: 'palaceWarden'
+  });
+  configureFloor(floorByNumber(floors, 9), {
+    exitGuardians: ['blackSealKeeper'],
+    primaryBoss: 'blackSealKeeper'
+  });
+  configureFloor(floorByNumber(floors, 10), {
+    primaryBoss: 'voidCore'
+  });
+
+  return Object.freeze({
+    applied: true,
+    id: DEMO10_PROGRESSION_TOPOLOGY_ID,
+    coreBearersByFloor: coreBearerIdsByFloor(),
+    shadowWardens: Object.freeze(['shadowWardBlade', 'shadowWardCantor'])
+  });
+}

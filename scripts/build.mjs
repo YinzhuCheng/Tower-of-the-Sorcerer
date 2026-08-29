@@ -105,6 +105,7 @@ async function validateProductionDemoBuild() {
   const content = await import(moduleUrl('src/game/demo-10-floor-content.js'));
   const hardMode = await import(moduleUrl('src/game/demo-10-floor-hard-mode.js'));
   const progression = await import(moduleUrl('src/game/demo-10-floor-progression.js'));
+  const topology = await import(moduleUrl('src/game/demo-10-floor-progression-topology.js'));
   const spatial = await import(moduleUrl('src/game/demo-10-floor-spatial-redesign.js'));
   content.applyDemoTenFloorContent({
     enemies: data.ENEMIES,
@@ -112,6 +113,7 @@ async function validateProductionDemoBuild() {
     dialogues: data.DIALOGUES,
     gridSize: data.GRID_SIZE
   });
+  topology.applyDemoTenFloorProgressionTopology({ enemies: data.ENEMIES, floors: data.FLOORS });
   spatial.applyDemoTenFloorSpatialRedesign({ floors: data.FLOORS, gridSize: data.GRID_SIZE });
   const progressionGrammar = progression.applyDemoTenFloorProgressionGrammar({
     enemies: data.ENEMIES,
@@ -139,21 +141,29 @@ async function validateProductionDemoBuild() {
   assertBuild(shopSamples[2].options.find((option) => option.id === 'atk').effect.atk === 7, 'F9 ATK shop must scale to +7.');
   assertBuild(shopSamples[2].options.find((option) => option.id === 'hp').effect.hp === 1170, 'F9 HP shop must scale to +1170.');
 
+  const f1EnemyIds = data.FLOORS[0].map.flat()
+    .filter((token) => token.startsWith('enemy:'))
+    .map((token) => token.slice('enemy:'.length));
+  assertBuild(f1EnemyIds.every((enemyId) => data.ENEMIES[enemyId]?.boss !== true), 'F1 must remain a bossless tutorial floor.');
+  assertBuild(JSON.stringify(data.FLOORS[4].exitGuardians) === JSON.stringify(['whaleBoss', 'swordBoss', 'dragonBoss']), 'F5 must retain its three-guardian stair seal.');
+  assertBuild(JSON.stringify(data.FLOORS[6].exitGuardians) === JSON.stringify(['astralBoss', 'shadowBoss', 'shadowWardBlade', 'shadowWardCantor']), 'F7 must retain its four-guardian stair seal.');
+
   const preludeState = engine.createInitialState();
   let catBoss = null;
-  for (let y = 0; y < data.FLOORS[0].map.length; y += 1) {
-    for (let x = 0; x < data.FLOORS[0].map[y].length; x += 1) {
-      if (data.FLOORS[0].map[y][x] === 'enemy:catBoss') catBoss = { x, y };
+  for (let y = 0; y < data.FLOORS[1].map.length; y += 1) {
+    for (let x = 0; x < data.FLOORS[1].map[y].length; x += 1) {
+      if (data.FLOORS[1].map[y][x] === 'enemy:catBoss') catBoss = { x, y };
     }
   }
   const bossApproach = catBoss == null ? null : [[1, 0], [-1, 0], [0, 1], [0, -1]]
     .map(([dx, dy]) => ({ x: catBoss.x + dx, y: catBoss.y + dy, dx, dy }))
-    .find(({ x, y }) => data.FLOORS[0].map[y]?.[x] === '.');
-  assertBuild(bossApproach != null, 'F1 boss must have a floor-tile approach.');
+    .find(({ x, y }) => data.FLOORS[1].map[y]?.[x] === '.');
+  assertBuild(bossApproach != null, 'F2 cat guardian must have a floor-tile approach.');
+  preludeState.floor = 1;
   preludeState.x = bossApproach.x;
   preludeState.y = bossApproach.y;
   const prelude = engine.prepareBossEncounter(preludeState, -bossApproach.dx, -bossApproach.dy);
-  assertBuild(prelude?.bossEncounter === true && prelude.dialogue === 'bossCatPreDemo', 'F1 boss must open a pre-battle dialogue.');
+  assertBuild(prelude?.bossEncounter === true && prelude.dialogue === 'bossCatPreDemo', 'F2 cat guardian must open a pre-battle dialogue.');
   assertBuild(engine.prepareBossEncounter(preludeState, -bossApproach.dx, -bossApproach.dy) === null, 'Boss pre-battle dialogue must trigger only once.');
 
   const demoSequences = Object.entries(data.DIALOGUES).filter(([id, dialogue]) => id.endsWith('Demo') && Array.isArray(dialogue?.turns));

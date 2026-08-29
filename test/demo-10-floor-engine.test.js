@@ -2,9 +2,11 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { DIALOGUES, ENEMIES, FLOORS, GRID_SIZE, RELIC_LABELS } from '../src/game/data.js';
 import { applyDemoTenFloorContent } from '../src/game/demo-10-floor-content.js';
+import { applyDemoTenFloorProgressionTopology } from '../src/game/demo-10-floor-progression-topology.js';
 import { applyDemoTenFloorSpatialRedesign } from '../src/game/demo-10-floor-spatial-redesign.js';
 
 applyDemoTenFloorContent({ enemies: ENEMIES, floors: FLOORS, dialogues: DIALOGUES, gridSize: GRID_SIZE });
+applyDemoTenFloorProgressionTopology({ enemies: ENEMIES, floors: FLOORS });
 applyDemoTenFloorSpatialRedesign({ floors: FLOORS, gridSize: GRID_SIZE });
 
 const {
@@ -15,6 +17,7 @@ const {
   getShopOptions,
   getProgressPercent,
   serializeState,
+  tryMove,
   validateStateShape,
   buyShopUpgrade
 } = await import('../src/game/engine.js');
@@ -68,8 +71,47 @@ test('10F demo initial relics and tiered shops use source engine semantics', () 
   assert.equal(purchase.ok, true);
   assert.equal(state.stats.atk, 20, 'F5 purchase must apply the source-authoritative +6 effect');
 
-  const hover = buildMapUnitHoverPreview({ ...state, floor: 4 }, 5, 7);
+  const shopY = state.floorStates[4].map.findIndex((row) => row.includes('shop'));
+  const shopX = state.floorStates[4].map[shopY].indexOf('shop');
+  const hover = buildMapUnitHoverPreview({ ...state, floor: 4 }, shopX, shopY);
   assert.equal(hover.kind, 'shop');
   assert.equal(hover.badge, '效率 +15%');
   assert.ok(hover.details.some((detail) => detail.value === '攻击永久 +6'));
+});
+
+test('10F topology applies distinct reward and stair guardian groups through the authoritative engine', () => {
+  const state = createInitialState();
+
+  state.floor = 1;
+  state.x = 1;
+  state.y = 1;
+  let result = tryMove(state, 1, 0);
+  assert.equal(result.blocked, true);
+  assert.deepEqual(result.missingGuardians, ['catBoss', 'foxBoss']);
+
+  state.floorStates[1].defeatedBossIds = ['catBoss', 'foxBoss'];
+  result = tryMove(state, 1, 0);
+  assert.equal(result.moved, true);
+  assert.ok(result.events.some((event) => event.type === 'guardianGate'));
+
+  state.floor = 4;
+  state.x = 8;
+  state.y = 1;
+  state.floorStates[4].defeatedBossIds = ['whaleBoss'];
+  result = tryMove(state, 1, 0);
+  assert.equal(result.blocked, true);
+  assert.deepEqual(result.remainingExitGuardians, ['swordBoss', 'dragonBoss']);
+
+  state.floorStates[4].defeatedBossIds = ['whaleBoss', 'swordBoss', 'dragonBoss'];
+  result = tryMove(state, 1, 0);
+  assert.equal(result.floorChanged, true);
+  assert.equal(state.floor, 5);
+
+  state.floor = 6;
+  state.x = 8;
+  state.y = 1;
+  state.floorStates[6].defeatedBossIds = ['astralBoss', 'shadowBoss', 'shadowWardBlade'];
+  result = tryMove(state, 1, 0);
+  assert.equal(result.blocked, true);
+  assert.deepEqual(result.remainingExitGuardians, ['shadowWardCantor']);
 });
