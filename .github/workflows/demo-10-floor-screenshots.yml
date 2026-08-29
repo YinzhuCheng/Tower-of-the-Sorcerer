@@ -41,6 +41,10 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
+      - name: Install Chinese screenshot fonts
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes fonts-noto-cjk
       - name: Build browser demo
         run: node scripts/build.mjs
       - name: Capture the ten floor overviews

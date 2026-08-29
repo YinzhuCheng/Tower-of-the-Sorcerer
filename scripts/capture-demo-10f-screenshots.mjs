@@ -185,9 +185,14 @@ async function main() {
     });
     await client.send('Page.navigate', { url: options.url });
     await waitFor(
-      () => evaluate(client, "Boolean(document.querySelector('#game-container canvas') && localStorage.getItem('lost-magic-tower:auto:v1'))"),
+      () => evaluate(client, "Boolean(document.querySelector('#game-container canvas') && localStorage.getItem('lost-magic-tower:auto:v1') && document.querySelector('#loading-note')?.classList.contains('hidden'))"),
       'The 10F demo did not finish booting with a canvas renderer.'
     );
+    // onReady hides the loading note immediately before opening the initial
+    // dialogue. Give that final modal mutation time to settle, then suppress
+    // it so every floor image captures the map rather than story UI.
+    await sleep(300);
+    await evaluate(client, "document.querySelector('#modal-root')?.classList.add('hidden')");
 
     const manifest = [];
     for (let floorIndex = 0; floorIndex < FLOOR_COUNT; floorIndex += 1) {
@@ -196,6 +201,7 @@ async function main() {
         () => evaluate(client, `document.querySelector('#floor-number')?.textContent === '第 ${floorIndex + 1} 阵'`),
         `Floor ${floorIndex + 1} did not become active in the rendered demo.`
       );
+      await evaluate(client, "document.querySelector('#modal-root')?.classList.add('hidden')");
       await sleep(250);
       const image = await client.send('Page.captureScreenshot', {
         format: 'png',
