@@ -49,7 +49,10 @@ if (qualitySpecs.length !== DEMO10_SIMPLE_BUILD_PORTFOLIO.length) {
   throw new Error(`Expected ${DEMO10_SIMPLE_BUILD_PORTFOLIO.length} release quality policies, got ${qualitySpecs.length}.`);
 }
 const diagnosticPool = DEMO10_CODESIGN_POLICY_SPECS.filter((spec) => !spec.qualityGate);
-const diagnosticSpecs = diagnosticPool.filter((_, index) => index % 3 === 0);
+// Do not thin the declared diagnostic portfolio. A candidate that merely looks
+// good under a rotating 1/3 sample can overfit the omitted purchase, Holy or
+// guardian-order responses.
+const diagnosticSpecs = diagnosticPool;
 const fullDiagnosticPolicyCount = diagnosticPool.length;
 const expertSpec = Object.freeze({ id: EXPERT_NO_HP_STRATEGY_ID });
 
@@ -70,7 +73,7 @@ function runQualityPolicy(spec) {
     shopCycle: spec.shopCycle,
     shopPlan: spec.shopPlan,
     holyPolicy: spec.holyPolicy,
-    progressionPriority: releaseProgressionPriority,
+    progressionPriority: spec.progressionPriority ?? releaseProgressionPriority,
     maxIterations: 8_000
   });
 }
@@ -80,7 +83,7 @@ function runDiagnosticPolicy(spec) {
     shopCycle: spec.shopCycle,
     shopPlan: spec.shopPlan,
     holyPolicy: spec.holyPolicy,
-    progressionPriority: releaseProgressionPriority,
+    progressionPriority: spec.progressionPriority ?? releaseProgressionPriority,
     maxIterations: 8_000
   });
 }
@@ -254,6 +257,7 @@ console.log(JSON.stringify({
   qualityPolicyCount: qualitySpecs.length,
   diagnosticPolicyCount: diagnosticSpecs.length + 1,
   fullDiagnosticPolicyCount: fullDiagnosticPolicyCount + 1,
+  diagnosticCoverage: 'complete-declared-portfolio',
   evaluatedCandidates: result.evaluatedCandidates,
   history: result.history,
   best: compactEntry(result.best),
