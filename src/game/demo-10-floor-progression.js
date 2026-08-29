@@ -1,5 +1,7 @@
 const CARD_TYPES = Object.freeze(['star', 'moon', 'sun']);
 const FINAL_SEAL_ID = 'throneSeal';
+const F8_VAULT_ID = 'hushVault';
+const F8_VAULT_GUARDIANS = Object.freeze(['hushVaultBlade', 'hushVaultCantor']);
 
 function walkMap(floor, visit) {
   for (let y = 0; y < (floor?.map?.length ?? 0); y += 1) {
@@ -32,7 +34,9 @@ function updateCodesignSlotExpectations(floor) {
       continue;
     }
     if ((spec.expected === 'item:sun' && actual === 'item:star')
-      || (spec.expected === 'door:sun' && actual === 'door:star')) {
+      || (spec.expected === 'door:sun' && actual === 'door:star')
+      || (floor.number === 8 && id === 'cardSunEast' && actual === `gate:${F8_VAULT_ID}`)
+      || (floor.number === 8 && id === 'doorSunEast' && actual === 'item:moon')) {
       updated[id] = Object.freeze({ ...spec, expected: actual });
       changed = true;
       continue;
@@ -94,6 +98,82 @@ function rewriteLegacyTriGate(floors, dialogues) {
     };
   }
   return Object.freeze({ floor: 7, gateId, requirements: Object.freeze({ moon: 1, star: 1 }) });
+}
+
+function assertToken(floor, x, y, expected, label) {
+  const actual = floor?.map?.[y]?.[x];
+  if (actual !== expected) {
+    throw new Error(`10F ${label} expected ${expected} at ${x},${y}, got ${actual}.`);
+  }
+}
+
+function installFloor8GuardianVault(floors, enemies) {
+  const floor = floors.find((entry) => entry.number === 8);
+  if (!floor) throw new Error('10F guardian vault requires floor 8.');
+
+  if (floor.puzzles?.guardianGates?.[F8_VAULT_ID]) {
+    return Object.freeze({
+      floor: 8,
+      gateId: F8_VAULT_ID,
+      guardians: F8_VAULT_GUARDIANS,
+      gateTiles: Object.freeze([{ x: 8, y: 7 }, { x: 8, y: 9 }]),
+      rewardTiles: Object.freeze([{ x: 9, y: 7 }, { x: 8, y: 8 }, { x: 9, y: 8 }, { x: 9, y: 9 }])
+    });
+  }
+
+  // The lower-right branch is deliberately converted into a real chamber:
+  // two distinct elite guardians stand outside, while two synchronized gate
+  // tiles seal a 2x3 reward room. The hushA switch is moved one tile left so
+  // the vault remains entirely optional for the main palaceWarden -> U route.
+  assertToken(floor, 7, 7, 'switch:hushA', 'F8 vault switch source');
+  assertToken(floor, 8, 7, 'item:star', 'F8 vault star source');
+  assertToken(floor, 7, 8, '.', 'F8 vault guardian slot');
+  assertToken(floor, 8, 8, '#', 'F8 vault chamber wall');
+  assertToken(floor, 9, 8, 'door:star', 'F8 vault former card door');
+  assertToken(floor, 6, 9, 'item:def', 'F8 vault switch destination');
+  assertToken(floor, 7, 9, '.', 'F8 vault second guardian slot');
+  assertToken(floor, 8, 9, 'item:hp', 'F8 vault hp source');
+  assertToken(floor, 9, 9, '.', 'F8 vault reward destination');
+
+  Object.assign(enemies, {
+    hushVaultBlade: {
+      name: '寂光双卫·刃', portrait: 'sword_boss', faction: '静默前庭·宝库', floor: 8,
+      hp: 1500, atk: 214, def: 88, gold: 280, boss: true, special: 'firstStrike',
+      description: '不负责封锁上楼，而是与另一名守卫共同守住王庭侧翼宝库。击败两人后宝库结界才会解除。'
+    },
+    hushVaultCantor: {
+      name: '寂光双卫·咏', portrait: 'eclipse_mage', faction: '静默前庭·宝库', floor: 8,
+      hp: 1450, atk: 198, def: 84, gold: 280, boss: true, special: 'magic', magicPower: 132,
+      description: '双卫中的术式守门人。她的存在让宝库成为高价值可选战，而不是每层都要缴纳的 Boss 税。'
+    }
+  });
+
+  floor.map[9][6] = 'switch:hushA';
+  floor.map[7][7] = 'enemy:hushVaultBlade';
+  floor.map[8][7] = 'enemy:hushVaultCantor';
+  floor.map[7][8] = `gate:${F8_VAULT_ID}`;
+  floor.map[8][8] = 'item:def';
+  floor.map[9][8] = `gate:${F8_VAULT_ID}`;
+  floor.map[7][9] = 'item:star';
+  floor.map[8][9] = 'item:moon';
+  floor.map[9][9] = 'item:hp';
+
+  floor.puzzles = {
+    ...(floor.puzzles ?? {}),
+    guardianGates: {
+      ...(floor.puzzles?.guardianGates ?? {}),
+      [F8_VAULT_ID]: [...F8_VAULT_GUARDIANS]
+    }
+  };
+  floor.objective = '激活两枚静默开关并击败执剑官维拉即可上楼；侧翼寂光双卫只守宝库，击败两人可开启月卡与高价值资源房。';
+
+  return Object.freeze({
+    floor: 8,
+    gateId: F8_VAULT_ID,
+    guardians: F8_VAULT_GUARDIANS,
+    gateTiles: Object.freeze([{ x: 8, y: 7 }, { x: 8, y: 9 }]),
+    rewardTiles: Object.freeze([{ x: 9, y: 7 }, { x: 8, y: 8 }, { x: 9, y: 8 }, { x: 9, y: 9 }])
+  });
 }
 
 function isBossEncounterToken(token, enemies) {
@@ -208,7 +288,8 @@ function countCards(floors) {
  * The canonical eight-floor dataset is intentionally not changed. This helper
  * runs after the 10F overlay is assembled and gives the browser milestone a
  * clear permission hierarchy: Star = common, Moon = strategic, Sun = unique
- * final-audience key.
+ * final-audience key. It also installs the first real optional guardian vault,
+ * proving that concentrated bosses can protect rewards without taxing stairs.
  */
 export function applyDemoTenFloorProgressionGrammar({ floors, enemies, dialogues } = {}) {
   if (!Array.isArray(floors) || floors.length !== 10) {
@@ -227,6 +308,7 @@ export function applyDemoTenFloorProgressionGrammar({ floors, enemies, dialogues
   const rewrittenCardGates = rewritePreFinalCardGates(floors, finalFloorNumber);
   const legacyTriGate = rewriteLegacyTriGate(floors, dialogues);
   const uniqueSunLocation = reserveSunLocation(floors, originalSunItems, finalFloorNumber);
+  const guardianVault = installFloor8GuardianVault(floors, enemies);
   const finalFloor = floors.find((floor) => floor.number === finalFloorNumber);
   const throneSeal = installFinalThroneSeal(finalFloor, enemies);
 
@@ -246,10 +328,15 @@ export function applyDemoTenFloorProgressionGrammar({ floors, enemies, dialogues
     rewrittenCardGates: Object.freeze(rewrittenCardGates),
     legacyTriGate,
     uniqueSunLocation,
+    guardianVault,
     throneSeal,
     supply: Object.freeze(counts.supply),
     doors: Object.freeze(counts.doors)
   });
 }
 
-export { FINAL_SEAL_ID as DEMO10_FINAL_SUN_SEAL_ID };
+export {
+  FINAL_SEAL_ID as DEMO10_FINAL_SUN_SEAL_ID,
+  F8_VAULT_ID as DEMO10_F8_VAULT_ID,
+  F8_VAULT_GUARDIANS as DEMO10_F8_VAULT_GUARDIANS
+};
