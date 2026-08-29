@@ -1,4 +1,4 @@
-import { ENEMIES, FLOORS, GRID_SIZE, SHOP_OPTIONS, TILE_SIZE, getShopCost } from './game/data.js';
+import { ENEMIES, FLOORS, GRID_SIZE, TILE_SIZE, getShopCost } from './game/data.js';
 import {
   buyShopUpgrade,
   createInitialState,
@@ -8,6 +8,8 @@ import {
   getDialogue,
   getProgressPercent,
   getRelicLabels,
+  getShopEffectMultiplier,
+  getShopOptions,
   initialDialogue,
   serializeState,
   teleportToFloor
@@ -233,7 +235,8 @@ function showHelp() {
       <p><code>(需要攻击回合数 - 1) × max(敌方攻击 - 主角防御, 0)</code></p>
       <p>先制敌人会额外攻击一次；二连击每次反击造成两段伤害；魔法攻击无视防御，但可被“静谧耳坠”削减。</p>
       <p>日曜、月辉、星蚀卡分别解除对应颜色的魔力结界。钥匙资源可能决定路线，开启结界前应先查看后方收益。</p>
-      <p>方向键或 WASD 移动；点击相邻格也可行动。E 打开图鉴，T 打开楼层罗盘。游戏会自动存档，也可使用顶部按钮建立手动存档。</p>
+      <p>魔眼图鉴与层间罗盘为初始持有物：E 打开图鉴，T 打开楼层罗盘。方向键或 WASD 移动；点击相邻格也可行动。</p>
+      <p>商店只设置在第 1、5、9 阵。越靠后的商店永久成长效率越高，因此可以选择早买保命，或保存金币换取后期更高收益。</p>
     `,
     actions: [{ label: '返回游戏', className: 'primary' }]
   });
@@ -241,16 +244,19 @@ function showHelp() {
 
 function showShop() {
   const cost = getShopCost(state);
+  const multiplier = getShopEffectMultiplier(state);
+  const bonus = Math.max(0, Math.round((multiplier - 1) * 100));
+  const options = getShopOptions(state);
+  const tier = FLOORS[state.floor]?.shopTierLabel ?? '基础咏唱';
   openModal({
-    kicker: '阵间商店 · 珂珂',
+    kicker: `阵间商店 · ${tier}`,
     title: `下一次咏唱需要 ${cost} 金币`,
     body: `
-      <div class="dialogue-grid" style="margin-bottom:16px">
-        <img src="${portraitUrl('merchant')}" alt="阵间商人珂珂" />
-        <div class="dialogue-copy"><p>“金币是敌方术式崩解后的残余魔力。放心使用，它不会影响其他结局。”</p></div>
+      <div class="dialogue-copy shop-intro" style="margin-bottom:16px">
+        <p>金币是敌方术式崩解后的残余魔力。本层永久成长效率为 <strong>${Math.round(multiplier * 100)}%</strong>${bonus > 0 ? `（比底层约高 ${bonus}%）` : ''}。</p>
       </div>
       <div class="shop-grid">
-        ${SHOP_OPTIONS.map((option) => `
+        ${options.map((option) => `
           <article class="shop-option">
             <h3>${escapeHtml(option.label)}</h3>
             <p>${escapeHtml(option.description)}</p>

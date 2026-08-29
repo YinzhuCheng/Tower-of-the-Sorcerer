@@ -16,26 +16,10 @@ async function applyEngineProductionPatch() {
 
   source = replaceRequired(
     source,
-    "  floorStates[0].map[start.y][start.x] = '.';\n\n  return {\n",
-    "  floorStates[0].map[start.y][start.x] = '.';\n\n  const initialRelics = new Set(FLOORS[0]?.initialRelics ?? []);\n  if (initialRelics.size > 0) {\n    const duplicatePickupTokens = new Set([...initialRelics].map((key) => `item:${key}`));\n    for (const floorState of floorStates) {\n      for (const row of floorState.map) {\n        for (let x = 0; x < row.length; x += 1) {\n          if (duplicatePickupTokens.has(row[x])) row[x] = '.';\n        }\n      }\n    }\n  }\n  const initialRelicNames = [...initialRelics].map((key) => RELIC_LABELS[key]).filter(Boolean);\n\n  return {\n",
-    'Initial relic setup'
-  );
-  source = replaceRequired(
-    source,
-    "    relics: { codex: false, compass: false, lucky: false, ward: false, holy: false },\n    relicNames: [],\n",
-    "    relics: {\n      codex: initialRelics.has('codex'),\n      compass: initialRelics.has('compass'),\n      lucky: initialRelics.has('lucky'),\n      ward: initialRelics.has('ward'),\n      holy: initialRelics.has('holy')\n    },\n    relicNames: initialRelicNames,\n",
-    'Initial relic state'
-  );
-  source = replaceRequired(
-    source,
     "export function tryMove(state, dx, dy) {\n",
     "export function prepareBossEncounter(state, dx, dy) {\n  if (!state || state.victory) return null;\n  const parsed = parseToken(getTile(state, state.x + dx, state.y + dy));\n  if (parsed.type !== 'enemy') return null;\n  const enemy = ENEMIES[parsed.id];\n  const dialogue = enemy?.boss ? enemy.preBattleDialogue : null;\n  if (!dialogue || state.storySeen.includes(dialogue)) return null;\n  state.storySeen.push(dialogue);\n  addLog(state, `与「${enemy.name}」对峙。`);\n  return {\n    bossEncounter: true,\n    dialogue,\n    enemyId: parsed.id,\n    enemy,\n    moved: false,\n    blocked: false,\n    events: []\n  };\n}\n\nexport function tryMove(state, dx, dy) {\n",
     'Boss encounter prelude'
   );
-
-  const oldShop = `export function buyShopUpgrade(state, optionId) {\n  const option = SHOP_OPTIONS.find((candidate) => candidate.id === optionId);\n  if (!option) return { ok: false, reason: '未知升级。' };\n  const cost = getShopCost(state);\n  if (state.stats.gold < cost) return { ok: false, reason: \`金币不足，需要 \${cost}。\`, cost };\n  state.stats.gold -= cost;\n  state.shopPurchases += 1;\n  applyEffect(state, option.effect);\n  addLog(state, \`商店购买「\${option.label}」，花费 \${cost} 金币。\`);\n  return { ok: true, option, cost, nextCost: getShopCost(state) };\n}\n`;
-  const newShop = `export function getShopEffectMultiplier(state) {\n  const multiplier = FLOORS[state?.floor]?.shopEffectMultiplier;\n  return Number.isFinite(multiplier) && multiplier > 0 ? multiplier : 1;\n}\n\nfunction describeScaledShopOption(option, effect) {\n  if (option.id === 'hp') return \`生命上限与当前生命 +\${effect.maxHp ?? effect.hp ?? 0}\`;\n  if (option.id === 'atk') return \`攻击永久 +\${effect.atk ?? 0}\`;\n  if (option.id === 'def') return \`防御永久 +\${effect.def ?? 0}\`;\n  return option.description;\n}\n\nexport function getShopOptions(state) {\n  const multiplier = getShopEffectMultiplier(state);\n  return SHOP_OPTIONS.map((option) => {\n    const effect = Object.fromEntries(Object.entries(option.effect).map(([key, value]) => [\n      key,\n      Number.isFinite(value) ? Math.ceil(value * multiplier) : value\n    ]));\n    return {\n      ...option,\n      effect,\n      multiplier,\n      description: describeScaledShopOption(option, effect)\n    };\n  });\n}\n\nexport function buyShopUpgrade(state, optionId) {\n  const option = getShopOptions(state).find((candidate) => candidate.id === optionId);\n  if (!option) return { ok: false, reason: '未知升级。' };\n  const cost = getShopCost(state);\n  if (state.stats.gold < cost) return { ok: false, reason: \`金币不足，需要 \${cost}。\`, cost };\n  state.stats.gold -= cost;\n  state.shopPurchases += 1;\n  applyEffect(state, option.effect);\n  addLog(state, \`商店购买「\${option.label}」，花费 \${cost} 金币。\`);\n  return { ok: true, option, cost, nextCost: getShopCost(state) };\n}\n`;
-  source = replaceRequired(source, oldShop, newShop, 'Tiered shop engine');
 
   await writeFile(enginePath, source);
 }
@@ -89,21 +73,6 @@ async function applyTacticalInteractionPatch() {
   let source = await readFile(interactionPath, 'utf8');
   source = replaceRequired(
     source,
-    "  ITEMS,\n  SHOP_OPTIONS,\n  getShopCost\n} from './data.js';\n",
-    "  ITEMS,\n  getShopCost\n} from './data.js';\n",
-    'Tactical shop data import'
-  );
-  source = replaceRequired(
-    source,
-    "  deserializeState,\n  getFloorState,\n  getTile,\n  parseToken\n} from './engine.js';\n",
-    "  deserializeState,\n  getFloorState,\n  getShopEffectMultiplier,\n  getShopOptions,\n  getTile,\n  parseToken\n} from './engine.js';\n",
-    'Tactical shop engine import'
-  );
-  const oldShopHover = `function buildShopHoverPreview(state) {\n  const cost = getShopCost(state);\n  const affordable = state.stats.gold >= cost;\n  return {\n    kind: 'shop',\n    title: '阵间商店 · 珂珂',\n    badge: '商店',\n    tone: affordable ? 'safe' : 'warning',\n    description: '把敌人掉落的金币转换为永久成长；每次购买后价格会上升。',\n    primaryLabel: '下一次购买',\n    primaryValue: \`\${formatNumber(cost)} 金币\`,\n    details: [\n      detail('当前金币', \`\${formatNumber(state.stats.gold)} · \${affordable ? '可以购买' : '金币不足'}\`),\n      ...SHOP_OPTIONS.map((option) => detail(option.label, option.description))\n    ]\n  };\n}\n`;
-  const newShopHover = `function buildShopHoverPreview(state) {\n  const cost = getShopCost(state);\n  const affordable = state.stats.gold >= cost;\n  const multiplier = getShopEffectMultiplier(state);\n  const bonus = Math.max(0, Math.round((multiplier - 1) * 100));\n  const options = getShopOptions(state);\n  return {\n    kind: 'shop',\n    title: \`阵间商店 · \${FLOORS[state.floor]?.shopTierLabel ?? '基础咏唱'}\`,\n    badge: bonus > 0 ? \`效率 +\${bonus}%\` : '商店',\n    tone: affordable ? 'safe' : 'warning',\n    description: bonus > 0\n      ? \`本层商店的永久成长效率提高约 \${bonus}%；每次购买后价格仍会全局上升。\`\n      : '把敌人掉落的金币转换为永久成长；每次购买后价格会上升。',\n    primaryLabel: '下一次购买',\n    primaryValue: \`\${formatNumber(cost)} 金币\`,\n    details: [\n      detail('当前金币', \`\${formatNumber(state.stats.gold)} · \${affordable ? '可以购买' : '金币不足'}\`),\n      ...options.map((option) => detail(option.label, option.description))\n    ]\n  };\n}\n`;
-  source = replaceRequired(source, oldShopHover, newShopHover, 'Tactical shop hover');
-  source = replaceRequired(
-    source,
     "  stats.textContent = `HP ${formatNumber(preview.enemy.hp)} · ATK ${formatNumber(preview.enemy.atk)} · DEF ${formatNumber(preview.enemy.def)}`;",
     "  stats.textContent = `HP ${formatNumber(preview.enemy.hp)} · ATK ${formatNumber(preview.enemy.atk)} · DEF ${formatNumber(preview.enemy.def)} · 击败奖励 ${formatNumber(preview.enemy.gold ?? 0)} 金币`;",
     'Enemy gold disclosure'
@@ -114,33 +83,10 @@ async function applyTacticalInteractionPatch() {
 async function applyMainProductionPatch() {
   const mainPath = join(outDir, 'src', 'main.js');
   let source = await readFile(mainPath, 'utf8');
-  source = replaceRequired(
-    source,
-    "import { ENEMIES, FLOORS, GRID_SIZE, SHOP_OPTIONS, TILE_SIZE, getShopCost } from './game/data.js';\n",
-    "import { ENEMIES, FLOORS, GRID_SIZE, TILE_SIZE, getShopCost } from './game/data.js';\n",
-    'Main shop data import'
-  );
-  source = replaceRequired(
-    source,
-    "  getProgressPercent,\n  getRelicLabels,\n  initialDialogue,\n",
-    "  getProgressPercent,\n  getRelicLabels,\n  getShopEffectMultiplier,\n  getShopOptions,\n  initialDialogue,\n",
-    'Main shop engine import'
-  );
 
   const oldDialogue = `function showDialogue(dialogueId, after = null) {\n  const dialogue = getDialogue(dialogueId);\n  if (!dialogue) return;\n  openModal({\n    kicker: dialogue.speaker,\n    title: dialogue.title,\n    body: \`\n      <div class="dialogue-grid">\n        <img src="\${portraitUrl(dialogue.portrait)}" alt="\${escapeHtml(dialogue.speaker)}" />\n        <div class="dialogue-copy">\n          <strong>\${escapeHtml(dialogue.speaker)}</strong>\n          <p>\${escapeHtml(dialogue.text).replaceAll('\\n', '<br>')}</p>\n        </div>\n      </div>\n    \`,\n    actions: [{ label: state.victory && dialogueId === 'ending' ? '查看通关结算' : '继续', className: 'primary', onClick: after }]\n  });\n}\n`;
   const newDialogue = `function showDialogue(dialogueId, after = null, { finalLabel = null } = {}) {\n  const dialogue = getDialogue(dialogueId);\n  if (!dialogue) return;\n  const turns = Array.isArray(dialogue.turns) && dialogue.turns.length\n    ? dialogue.turns\n    : [{ speaker: dialogue.speaker, portrait: dialogue.portrait, text: dialogue.text }];\n  let index = 0;\n\n  const renderTurn = () => {\n    const turn = turns[index];\n    const isLast = index >= turns.length - 1;\n    const label = isLast\n      ? (finalLabel ?? (state.victory ? '查看通关结算' : '继续'))\n      : \`继续 · \${index + 2}/\${turns.length}\`;\n    openModal({\n      kicker: turn.speaker,\n      title: dialogue.title,\n      closable: finalLabel ? false : true,\n      body: \`\n        <div class="dialogue-grid">\n          <img src="\${portraitUrl(turn.portrait)}" alt="\${escapeHtml(turn.speaker)}" />\n          <div class="dialogue-copy">\n            <strong>\${escapeHtml(turn.speaker)}</strong>\n            <p>\${escapeHtml(turn.text).replaceAll('\\n', '<br>')}</p>\n          </div>\n        </div>\n      \`,\n      actions: [{\n        label,\n        className: 'primary',\n        close: isLast,\n        onClick: () => {\n          if (isLast) after?.();\n          else {\n            index += 1;\n            renderTurn();\n          }\n        }\n      }]\n    });\n  };\n\n  renderTurn();\n}\n`;
   source = replaceRequired(source, oldDialogue, newDialogue, 'Multi-turn dialogue');
-
-  source = replaceRequired(
-    source,
-    "      <p>方向键或 WASD 移动；点击相邻格也可行动。E 打开图鉴，T 打开楼层罗盘。游戏会自动存档，也可使用顶部按钮建立手动存档。</p>\n",
-    "      <p>魔眼图鉴与层间罗盘为初始持有物：E 打开图鉴，T 打开楼层罗盘。方向键或 WASD 移动；点击相邻格也可行动。</p>\n      <p>商店只设置在第 1、5、9 阵。越靠后的商店永久成长效率越高，因此可以选择早买保命，或保存金币换取后期更高收益。</p>\n",
-    'Help economy disclosure'
-  );
-
-  const oldShop = `function showShop() {\n  const cost = getShopCost(state);\n  openModal({\n    kicker: '阵间商店 · 珂珂',\n    title: \`下一次咏唱需要 \${cost} 金币\`,\n    body: \`\n      <div class="dialogue-grid" style="margin-bottom:16px">\n        <img src="\${portraitUrl('merchant')}" alt="阵间商人珂珂" />\n        <div class="dialogue-copy"><p>“金币是敌方术式崩解后的残余魔力。放心使用，它不会影响其他结局。”</p></div>\n      </div>\n      <div class="shop-grid">\n        \${SHOP_OPTIONS.map((option) => \`\n          <article class="shop-option">\n            <h3>\${escapeHtml(option.label)}</h3>\n            <p>\${escapeHtml(option.description)}</p>\n            <button data-shop-option="\${option.id}" \${state.stats.gold < cost ? 'disabled' : ''}>购买 · \${cost} 金币</button>\n          </article>\n        \`).join('')}\n      </div>\n    \`,\n    actions: [{ label: '离开商店' }],\n    afterOpen: () => {\n      elements.modalBody.querySelectorAll('[data-shop-option]').forEach((button) => {\n        button.addEventListener('click', () => {\n          const result = buyShopUpgrade(state, button.dataset.shopOption);\n          if (!result.ok) {\n            showToast(result.reason);\n            return;\n          }\n          updateHud();\n          autoSave();\n          showShop();\n        });\n      });\n    }\n  });\n}\n`;
-  const newShop = `function showShop() {\n  const cost = getShopCost(state);\n  const multiplier = getShopEffectMultiplier(state);\n  const bonus = Math.max(0, Math.round((multiplier - 1) * 100));\n  const options = getShopOptions(state);\n  const tier = FLOORS[state.floor]?.shopTierLabel ?? '基础咏唱';\n  openModal({\n    kicker: \`阵间商店 · \${tier}\`,\n    title: \`下一次咏唱需要 \${cost} 金币\`,\n    body: \`\n      <div class="dialogue-copy shop-intro" style="margin-bottom:16px">\n        <p>金币是敌方术式崩解后的残余魔力。本层永久成长效率为 <strong>\${Math.round(multiplier * 100)}%</strong>\${bonus > 0 ? \`（比底层约高 \${bonus}%）\` : ''}。</p>\n      </div>\n      <div class="shop-grid">\n        \${options.map((option) => \`\n          <article class="shop-option">\n            <h3>\${escapeHtml(option.label)}</h3>\n            <p>\${escapeHtml(option.description)}</p>\n            <button data-shop-option="\${option.id}" \${state.stats.gold < cost ? 'disabled' : ''}>购买 · \${cost} 金币</button>\n          </article>\n        \`).join('')}\n      </div>\n    \`,\n    actions: [{ label: '离开商店' }],\n    afterOpen: () => {\n      elements.modalBody.querySelectorAll('[data-shop-option]').forEach((button) => {\n        button.addEventListener('click', () => {\n          const result = buyShopUpgrade(state, button.dataset.shopOption);\n          if (!result.ok) {\n            showToast(result.reason);\n            return;\n          }\n          updateHud();\n          autoSave();\n          showShop();\n        });\n      });\n    }\n  });\n}\n`;
-  source = replaceRequired(source, oldShop, newShop, 'Portrait-free tiered shop');
 
   const oldResult = `function handleSceneResult(result) {\n  updateHud();\n  if (result.blocked) showToast(result.reason ?? '无法行动。');\n  if (result.openShop) showShop();\n  if (result.dialogue) {\n    showDialogue(result.dialogue, result.victory ? showVictory : null);\n  } else if (result.victory) {\n    showVictory();\n  }\n  if (result.moved || result.battle || result.floorChanged) autoSave();\n}\n`;
   const newResult = `function handleSceneResult(result) {\n  updateHud();\n  if (result.blocked) showToast(result.reason ?? '无法行动。');\n  if (result.openShop) showShop();\n  if (result.bossEncounter && result.dialogue) {\n    showDialogue(result.dialogue, () => scene?.move(result.resumeDirection), { finalLabel: '开战' });\n  } else if (result.dialogue) {\n    showDialogue(result.dialogue, result.victory ? showVictory : null);\n  } else if (result.victory) {\n    showVictory();\n  }\n  if (result.moved || result.battle || result.floorChanged || result.bossEncounter) autoSave();\n}\n`;
@@ -158,11 +104,17 @@ async function validateProductionDemoBuild() {
   const data = await import(moduleUrl('src/game/data.js'));
   const content = await import(moduleUrl('src/game/demo-10-floor-content.js'));
   const hardMode = await import(moduleUrl('src/game/demo-10-floor-hard-mode.js'));
+  const progression = await import(moduleUrl('src/game/demo-10-floor-progression.js'));
   content.applyDemoTenFloorContent({
     enemies: data.ENEMIES,
     floors: data.FLOORS,
     dialogues: data.DIALOGUES,
     gridSize: data.GRID_SIZE
+  });
+  const progressionGrammar = progression.applyDemoTenFloorProgressionGrammar({
+    enemies: data.ENEMIES,
+    floors: data.FLOORS,
+    dialogues: data.DIALOGUES
   });
   hardMode.applyDemoTenFloorHardMode({ enemies: data.ENEMIES });
 
@@ -225,6 +177,7 @@ async function validateProductionDemoBuild() {
 
   console.log('PRODUCTION_DEMO_BUILD', JSON.stringify({
     initialRelics: state.relics,
+    progressionGrammar,
     shopFloors,
     shopSamples: shopSamples.map((sample) => ({
       floor: sample.floor,

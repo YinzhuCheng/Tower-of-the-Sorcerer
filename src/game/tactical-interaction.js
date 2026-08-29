@@ -4,13 +4,14 @@ import {
   FLOORS,
   GRID_SIZE,
   ITEMS,
-  SHOP_OPTIONS,
   getShopCost
 } from './data.js';
 import {
   calculateBattle,
   deserializeState,
   getFloorState,
+  getShopEffectMultiplier,
+  getShopOptions,
   getTile,
   parseToken
 } from './engine.js';
@@ -138,17 +139,22 @@ function buildItemHoverPreview(state, itemId) {
 function buildShopHoverPreview(state) {
   const cost = getShopCost(state);
   const affordable = state.stats.gold >= cost;
+  const multiplier = getShopEffectMultiplier(state);
+  const bonus = Math.max(0, Math.round((multiplier - 1) * 100));
+  const options = getShopOptions(state);
   return {
     kind: 'shop',
-    title: '阵间商店 · 珂珂',
-    badge: '商店',
+    title: `阵间商店 · ${FLOORS[state.floor]?.shopTierLabel ?? '基础咏唱'}`,
+    badge: bonus > 0 ? `效率 +${bonus}%` : '商店',
     tone: affordable ? 'safe' : 'warning',
-    description: '把敌人掉落的金币转换为永久成长；每次购买后价格会上升。',
+    description: bonus > 0
+      ? `本层商店的永久成长效率提高约 ${bonus}%；每次购买后价格仍会全局上升。`
+      : '把敌人掉落的金币转换为永久成长；每次购买后价格会上升。',
     primaryLabel: '下一次购买',
     primaryValue: `${formatNumber(cost)} 金币`,
     details: [
       detail('当前金币', `${formatNumber(state.stats.gold)} · ${affordable ? '可以购买' : '金币不足'}`),
-      ...SHOP_OPTIONS.map((option) => detail(option.label, option.description))
+      ...options.map((option) => detail(option.label, option.description))
     ]
   };
 }

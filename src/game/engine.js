@@ -43,6 +43,19 @@ export function createInitialState() {
   if (!start) throw new Error('Start tile not found.');
   floorStates[0].map[start.y][start.x] = '.';
 
+  const initialRelics = new Set(FLOORS[0]?.initialRelics ?? []);
+  if (initialRelics.size > 0) {
+    const duplicatePickupTokens = new Set([...initialRelics].map((key) => `item:${key}`));
+    for (const floorState of floorStates) {
+      for (const row of floorState.map) {
+        for (let x = 0; x < row.length; x += 1) {
+          if (duplicatePickupTokens.has(row[x])) row[x] = '.';
+        }
+      }
+    }
+  }
+  const initialRelicNames = [...initialRelics].map((key) => RELIC_LABELS[key]).filter(Boolean);
+
   return {
     version: GAME_VERSION,
     floor: 0,
@@ -57,8 +70,14 @@ export function createInitialState() {
       gold: 0
     },
     cards: { sun: 0, moon: 0, star: 0 },
-    relics: { codex: false, compass: false, lucky: false, ward: false, holy: false },
-    relicNames: [],
+    relics: {
+      codex: initialRelics.has('codex'),
+      compass: initialRelics.has('compass'),
+      lucky: initialRelics.has('lucky'),
+      ward: initialRelics.has('ward'),
+      holy: initialRelics.has('holy')
+    },
+    relicNames: initialRelicNames,
     cores: 0,
     shopPurchases: 0,
     floorStates,
@@ -516,8 +535,36 @@ export function tryMove(state, dx, dy) {
   return result;
 }
 
+export function getShopEffectMultiplier(state) {
+  const multiplier = FLOORS[state?.floor]?.shopEffectMultiplier;
+  return Number.isFinite(multiplier) && multiplier > 0 ? multiplier : 1;
+}
+
+function describeScaledShopOption(option, effect) {
+  if (option.id === 'hp') return `生命上限与当前生命 +${effect.maxHp ?? effect.hp ?? 0}`;
+  if (option.id === 'atk') return `攻击永久 +${effect.atk ?? 0}`;
+  if (option.id === 'def') return `防御永久 +${effect.def ?? 0}`;
+  return option.description;
+}
+
+export function getShopOptions(state) {
+  const multiplier = getShopEffectMultiplier(state);
+  return SHOP_OPTIONS.map((option) => {
+    const effect = Object.fromEntries(Object.entries(option.effect).map(([key, value]) => [
+      key,
+      Number.isFinite(value) ? Math.ceil(value * multiplier) : value
+    ]));
+    return {
+      ...option,
+      effect,
+      multiplier,
+      description: describeScaledShopOption(option, effect)
+    };
+  });
+}
+
 export function buyShopUpgrade(state, optionId) {
-  const option = SHOP_OPTIONS.find((candidate) => candidate.id === optionId);
+  const option = getShopOptions(state).find((candidate) => candidate.id === optionId);
   if (!option) return { ok: false, reason: '未知升级。' };
   const cost = getShopCost(state);
   if (state.stats.gold < cost) return { ok: false, reason: `金币不足，需要 ${cost}。`, cost };
