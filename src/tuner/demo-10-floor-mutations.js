@@ -55,9 +55,6 @@ const SWAP_SPECS = Object.freeze([
   ['f9-card-sun-moon-swap', 'f9-card-route', 9, 'cardSunWest', 'cardMoonSouth'],
   ['f9-enemy-upper-swap', 'f9-enemy-upper', 9, 'enemySentinelNorthwest', 'enemyNullNorth'],
   ['f9-enemy-mid-swap', 'f9-enemy-mid', 9, 'enemyCrownMid', 'enemySentinelMid'],
-  ['f9-door-star-moon-swap', 'f9-door-colors', 9, 'doorStarUpper', 'doorMoonEast'],
-  ['f9-door-star-sun-swap', 'f9-door-colors', 9, 'doorStarUpper', 'doorSunSouth'],
-  ['f9-door-moon-sun-swap', 'f9-door-colors', 9, 'doorMoonEast', 'doorSunSouth'],
   ['f9-rune-c-a-swap', 'f9-rune-placement', 9, 'runeC', 'runeA'],
   ['f9-rune-c-b-swap', 'f9-rune-placement', 9, 'runeC', 'runeB'],
   ['f9-rune-a-b-swap', 'f9-rune-placement', 9, 'runeA', 'runeB']
