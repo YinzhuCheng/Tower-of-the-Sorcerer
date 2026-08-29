@@ -19,7 +19,8 @@ applyDemoTenFloorHardMode({ enemies: ENEMIES });
 
 const { runGreedyShopStrategy } = await import('../src/solver/greedy-strategy.js');
 const { runExpertNoHpStrategy } = await import('../src/solver/expert-strategy.js');
-const progressionPriority = 'guardian-first';
+const releaseProgressionPriority = 'legacy-clear';
+const guardianStressPriority = 'guardian-first';
 
 function summarizeReport(report) {
   return {
@@ -42,10 +43,18 @@ function summarizeReport(report) {
 const simpleReports = DEMO10_SIMPLE_BUILD_PORTFOLIO.map((shopCycle) => runGreedyShopStrategy({
   shopCycle,
   holyPolicy: 'immediate',
-  progressionPriority,
+  progressionPriority: releaseProgressionPriority,
   maxIterations: 8_000
 }));
 const strategicBoundary = summarizeDemoTenFloorPortfolio(simpleReports, DEMO10_QUALITY_TARGETS);
+
+const guardianStressReports = DEMO10_SIMPLE_BUILD_PORTFOLIO.map((shopCycle) => runGreedyShopStrategy({
+  shopCycle,
+  holyPolicy: 'immediate',
+  progressionPriority: guardianStressPriority,
+  maxIterations: 8_000
+}));
+const guardianStressSummary = summarizeDemoTenFloorPortfolio(guardianStressReports, DEMO10_QUALITY_TARGETS);
 
 // The no-HP route is intentionally diagnostic during spatial redesign. It is
 // still useful for exposing ATK/DEF breakpoint behavior, but it is not allowed
@@ -53,7 +62,7 @@ const strategicBoundary = summarizeDemoTenFloorPortfolio(simpleReports, DEMO10_Q
 // are changing underneath the old research policy.
 const expertReport = runExpertNoHpStrategy({
   holyPolicy: 'immediate',
-  progressionPriority,
+  progressionPriority: guardianStressPriority,
   maxIterations: 8_000,
   horizon: 2,
   attackAdvantageRequired: 2_000
@@ -61,8 +70,9 @@ const expertReport = runExpertNoHpStrategy({
 const expertSummary = summarizeDemoTenFloorPortfolio([expertReport], DEMO10_EXPERT_TARGETS);
 
 const result = {
-  model: 'spatial-redesign-diagnostics-v1',
-  progressionPriority,
+  model: 'spatial-redesign-diagnostics-v2',
+  releaseProgressionPriority,
+  guardianStressPriority,
   productionWriteAllowed: false,
   pressure: DEMO10_HARD_MODE_PRESSURE,
   progressionGrammar: {
@@ -83,6 +93,12 @@ const result = {
     weakestWinningLateMargin: strategicBoundary.weakestWinningLateMargin,
     violations: strategicBoundary.violations,
     attempts: simpleReports.map(summarizeReport)
+  },
+  guardianStressDiagnostic: {
+    blocking: false,
+    solvableBuilds: guardianStressSummary.solvableBuilds,
+    violationsAgainstReleaseTargets: guardianStressSummary.violations,
+    attempts: guardianStressReports.map(summarizeReport)
   },
   expertDiagnostic: {
     blocking: false,
