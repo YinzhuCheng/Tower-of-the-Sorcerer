@@ -5,6 +5,8 @@ import { DIALOGUES, ENEMIES, FLOORS, GRID_SIZE } from '../src/game/data.js';
 import { applyDemoTenFloorContent } from '../src/game/demo-10-floor-content.js';
 import {
   applyDemoTenFloorProgressionGrammar,
+  DEMO10_F8_VAULT_GUARDIANS,
+  DEMO10_F8_VAULT_ID,
   DEMO10_FINAL_SUN_SEAL_ID
 } from '../src/game/demo-10-floor-progression.js';
 import { validateDemoTenFloorCardHierarchy } from '../src/tuner/card-economy.js';
@@ -79,6 +81,26 @@ test('F7 becomes a Moon+Star strategic gate instead of consuming the unique Sun 
   assert.ok(floor7);
   assert.equal(floor7.puzzles.triGate, undefined);
   assert.deepEqual(floor7.puzzles.cardGates.tri, { moon: 1, star: 1 });
+});
+
+test('F8 uses two optional guardians to protect a real reward chamber without locking the stairs', () => {
+  const fixture = createFixture();
+  const report = applyDemoTenFloorProgressionGrammar(fixture);
+  const floor8 = fixture.floors.find((floor) => floor.number === 8);
+
+  assert.ok(floor8);
+  assert.equal(report.guardianVault.gateId, DEMO10_F8_VAULT_ID);
+  assert.deepEqual(report.guardianVault.guardians, DEMO10_F8_VAULT_GUARDIANS);
+  assert.equal(new Set(DEMO10_F8_VAULT_GUARDIANS).size, 2, 'vault guardians must have distinct semantic ids');
+  assert.deepEqual(floor8.puzzles.guardianGates[DEMO10_F8_VAULT_ID], [...DEMO10_F8_VAULT_GUARDIANS]);
+  assert.equal(tokens([floor8], `gate:${DEMO10_F8_VAULT_ID}`).length, 2, 'the chamber should read as a wide synchronized seal');
+  for (const enemyId of DEMO10_F8_VAULT_GUARDIANS) assert.equal(fixture.enemies[enemyId].boss, true);
+  assert.equal(floor8.boss, 'palaceWarden', 'optional vault guardians must not become stair guardians');
+  assert.equal(reachableWithoutSeal(floor8, 'D', 'U', DEMO10_F8_VAULT_ID), true, 'main route must remain available when the vault is treated as closed');
+  assert.deepEqual(
+    report.guardianVault.rewardTiles.map(({ x, y }) => floor8.map[y][x]).sort(),
+    ['item:def', 'item:hp', 'item:moon', 'item:star'].sort()
+  );
 });
 
 test('F10 uses one Sun payment to unlock a multi-tile audience seal around the visible final boss', () => {
