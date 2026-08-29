@@ -2,9 +2,9 @@ export const DEMO10_HARD_MODE_ID = 'demo-10f-hard-v2-tiered-shops';
 
 export const DEMO10_HARD_MODE_PRESSURE = Object.freeze({
   palaceWardenMagicPower: 245,
-  blackSealKeeperMagicPower: 190,
+  blackSealKeeperMagicPower: 220,
   blackSealKeeperDef: 96,
-  voidCoreMagicPower: 506
+  voidCoreMagicPower: 465
 });
 
 export const DEMO10_HIGH_FLOOR_SCALING = Object.freeze({
