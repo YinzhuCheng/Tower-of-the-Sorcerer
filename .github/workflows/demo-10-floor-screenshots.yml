@@ -1,0 +1,56 @@
+name: 10F Screenshot Gallery
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [semantic-topology-v2]
+    paths:
+      - 'index.html'
+      - 'styles.css'
+      - 'anime.css'
+      - 'ui-v8-5.css'
+      - 'src/**'
+      - 'scripts/build.mjs'
+      - 'scripts/capture-demo-10f-screenshots.mjs'
+      - '.github/workflows/demo-10-floor-screenshots.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: demo-10-floor-screenshots-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Build browser demo
+        run: node scripts/build.mjs
+      - name: Capture the ten floor overviews
+        run: |
+          set -euo pipefail
+          python3 -m http.server 4173 --directory dist > /tmp/tower-screenshot-server.log 2>&1 &
+          server_pid=$!
+          trap 'kill "$server_pid" 2>/dev/null || true' EXIT
+
+          for i in $(seq 1 40); do
+            if curl -fsS http://127.0.0.1:4173/ >/dev/null; then break; fi
+            sleep 0.25
+          done
+
+          node scripts/capture-demo-10f-screenshots.mjs \
+            --url http://127.0.0.1:4173/ \
+            --output /tmp/tower-10f-screenshots
+      - name: Upload ten floor screenshots
+        uses: actions/upload-artifact@v4
+        with:
+          name: ten-floor-screenshots
+          path: /tmp/tower-10f-screenshots
+          if-no-files-found: error
+          retention-days: 14
