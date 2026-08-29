@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 
-import { mkdir, writeFile } from 'node:fs/promises';
+import { mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises';
 import { join, resolve } from 'node:path';
+import { tmpdir } from 'node:os';
 import { spawn, spawnSync } from 'node:child_process';
 
 const AUTO_SAVE_KEY = 'lost-magic-tower:auto:v1';
@@ -155,6 +156,10 @@ async function main() {
   const options = readOptions(process.argv.slice(2));
   const output = resolve(options.output);
   await mkdir(output, { recursive: true });
+  // Chrome 136+ ignores remote-debugging-port on its default profile. An
+  // isolated disposable profile keeps the DevTools endpoint available both in
+  // GitHub Actions and in local capture runs.
+  const chromeProfile = await mkdtemp(join(tmpdir(), 'tower-screenshot-chrome-'));
 
   const chrome = spawn(findChrome(), [
     '--headless=new',
@@ -163,6 +168,7 @@ async function main() {
     '--disable-dev-shm-usage',
     '--hide-scrollbars',
     `--remote-debugging-port=${options.chromePort}`,
+    `--user-data-dir=${chromeProfile}`,
     '--window-size=1600,1060',
     'about:blank'
   ], { stdio: ['ignore', 'pipe', 'pipe'] });
@@ -221,6 +227,7 @@ async function main() {
   } finally {
     client?.close();
     await stopProcess(chrome);
+    await rm(chromeProfile, { recursive: true, force: true });
   }
 }
 
