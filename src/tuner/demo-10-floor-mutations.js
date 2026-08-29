@@ -32,11 +32,8 @@ const SWAP_SPECS = Object.freeze([
   ['f8-reward-mid-stat-swap', 'f8-reward-mid-stat', 8, 'rewardMidAtk', 'rewardMidDef'],
   ['f8-card-route-swap', 'f8-card-route', 8, 'cardStarEast', 'cardMoonWest'],
   ['f8-card-star-lower-moon-swap', 'f8-card-route', 8, 'cardStarEast', 'cardMoonSouth'],
-  ['f8-card-sun-lower-moon-swap', 'f8-card-route', 8, 'cardSunEast', 'cardMoonSouth'],
   ['f8-enemy-upper-swap', 'f8-enemy-upper', 8, 'enemyOuterNorthwest', 'enemyHushNorth'],
   ['f8-enemy-lower-swap', 'f8-enemy-lower', 8, 'enemyMuteWest', 'enemyOuterSouth'],
-  ['f8-door-upper-moon-sun-swap', 'f8-door-colors', 8, 'doorMoonUpper', 'doorSunEast'],
-  ['f8-door-lower-moon-sun-swap', 'f8-door-colors', 8, 'doorMoonSouth', 'doorSunEast'],
   ['f9-reward-side-cache-swap', 'f9-reward-side-cache', 9, 'rewardNorthwest', 'rewardNortheast'],
   ['f9-reward-mid-stat-swap', 'f9-reward-mid-stat', 9, 'rewardMidDef', 'rewardMidAtk'],
   ['f9-card-route-swap', 'f9-card-route', 9, 'cardStarEast', 'cardSunWest'],
@@ -56,8 +53,7 @@ const CROSS_FLOOR_EXCHANGE_SPECS = Object.freeze([
   ['cross-stat-f8-def-f9-atk', 'cross-stat-timing', [8, 'rewardMidDef'], [9, 'rewardMidAtk']],
   ['cross-stat-f8-atk-f9-def', 'cross-stat-timing', [8, 'rewardMidAtk'], [9, 'rewardDefSouth']],
   ['cross-hp-f8-large-f9-atk', 'cross-resource-timing', [8, 'rewardHpWest'], [9, 'rewardMidAtk']],
-  ['cross-card-f8-star-f9-moon', 'cross-card-timing', [8, 'cardStarEast'], [9, 'cardMoonSouth']],
-  ['cross-card-f8-sun-f9-star', 'cross-card-timing', [8, 'cardSunEast'], [9, 'cardStarEast']]
+  ['cross-card-f8-star-f9-moon', 'cross-card-timing', [8, 'cardStarEast'], [9, 'cardMoonSouth']]
 ]);
 
 function floorByNumber(number) {
