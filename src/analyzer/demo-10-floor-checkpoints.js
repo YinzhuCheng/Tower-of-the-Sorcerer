@@ -83,19 +83,48 @@ const ONE_PURCHASE_PROBES = PUBLIC_WINNING_CYCLES.flatMap((cycle, cycleIndex) =>
   [0, 1, 2].map((purchaseIndex) => onePurchaseProbe(cycle, cycleIndex, purchaseIndex))
 );
 
+// Holy timing and guardian ordering are independent player-response axes. They
+// are intentionally enumerated as separate local families rather than a large
+// cartesian product with every purchase perturbation. A failure here is useful
+// diagnostic evidence, never an infeasibility proof or a release-gate rewrite.
+const DELAYED_HOLY_POLICIES = ['after-core-6', 'after-core-7', 'before-final'];
+const HOLY_TIMING_DIAGNOSTICS = PUBLIC_WINNING_CYCLES.flatMap((cycle) =>
+  DELAYED_HOLY_POLICIES.map((holyPolicy) => freezePolicy({
+    id: `holy:${holyPolicy}:${cycle.join('-')}`,
+    shopCycle: cycle,
+    shopPlan: null,
+    holyPolicy,
+    qualityGate: false,
+    diagnosticFamily: 'holy-timing'
+  }))
+);
+
+const GUARDIAN_PRIORITY_DIAGNOSTICS = PUBLIC_WINNING_CYCLES.map((cycle) => freezePolicy({
+  id: `guardian-first:${cycle.join('-')}`,
+  shopCycle: cycle,
+  shopPlan: null,
+  holyPolicy: 'immediate',
+  progressionPriority: 'guardian-first',
+  qualityGate: false,
+  diagnosticFamily: 'guardian-priority'
+}));
+
 /**
  * Generation-time player portfolio for the 10F setter loop.
  *
  * Hard public quality is still defined only by the six recurring permutations.
  * The diagnostic side is intentionally broader: prefix-biased variants, three
- * pure-stat extremes and early one-purchase perturbations of the four public
- * winning cycles. These extra policies may fail; they exist to reveal hidden
- * checkpoint width before the setter mutates the tower.
+ * pure-stat extremes, early one-purchase perturbations, delayed-Holy probes
+ * and guardian-first routes of the four public winning cycles. These extra
+ * policies may fail; they exist to reveal hidden checkpoint width before the
+ * setter mutates the tower.
  */
 export const DEMO10_CODESIGN_POLICY_SPECS = Object.freeze([
   ...RECURRING_AND_PREFIX_POLICIES,
   ...PURE_STAT_POLICIES,
-  ...ONE_PURCHASE_PROBES
+  ...ONE_PURCHASE_PROBES,
+  ...HOLY_TIMING_DIAGNOSTICS,
+  ...GUARDIAN_PRIORITY_DIAGNOSTICS
 ]);
 
 function stableResourceSignature(sample) {

@@ -30,12 +30,14 @@ are the reviewable whitelist in `DEMO10_SOLVER_TUNING_PROFILE`.
 
 ## Player and acceptance contract
 
-`npm run tune:demo10:portfolio` evaluates every bounded candidate through the
-authoritative engine using all six recurring shop builds. The release gate
-requires 4–5 winning builds, F9 shop use, meaningful F8–F10 pressure, a
-non-brittle weakest win and no overly forgiving best win. Guardian-first and
-frozen no-HP routes remain diagnostic telemetry; they cannot silently rewrite
-the release target.
+`npm run tune:demo10:portfolio` first applies the release gate to all six
+recurring shop builds, then evaluates the complete declared diagnostic
+portfolio: prefix biases, pure-stat extremes, one-purchase perturbations,
+delayed Holy timing, guardian-first routes and the frozen no-HP route. The
+release gate still requires 4–5 winning builds, F9 shop use, meaningful F8–F10
+pressure, a non-brittle weakest win and no overly forgiving best win.
+Diagnostics may expose a candidate risk, but they cannot silently rewrite that
+release target or claim a bounded miss is an infeasibility proof.
 
 The search is heuristic and has `productionWriteAllowed: false`. It returns a
 ranked, replayable portfolio for human review; nothing is applied to game data

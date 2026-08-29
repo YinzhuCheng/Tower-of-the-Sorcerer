@@ -34,10 +34,12 @@ function report(atk, def) {
 }
 
 test('10F diagnostic player portfolio keeps six hard cycles but broadens heuristic coverage', () => {
-  assert.equal(DEMO10_CODESIGN_POLICY_SPECS.length, 33);
+  assert.equal(DEMO10_CODESIGN_POLICY_SPECS.length, 49);
   assert.equal(DEMO10_CODESIGN_POLICY_SPECS.filter((spec) => spec.qualityGate).length, 6);
   assert.equal(DEMO10_CODESIGN_POLICY_SPECS.filter((spec) => spec.diagnosticFamily === 'pure-stat-extreme').length, 3);
   assert.equal(DEMO10_CODESIGN_POLICY_SPECS.filter((spec) => spec.diagnosticFamily === 'one-purchase-perturbation').length, 12);
+  assert.equal(DEMO10_CODESIGN_POLICY_SPECS.filter((spec) => spec.diagnosticFamily === 'holy-timing').length, 12);
+  assert.equal(DEMO10_CODESIGN_POLICY_SPECS.filter((spec) => spec.diagnosticFamily === 'guardian-priority').length, 4);
 });
 
 test('checkpoint Pareto keeps tradeoffs and drops a dominated resource state', () => {
