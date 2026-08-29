@@ -3,6 +3,7 @@ import { applyDemoTenFloorContent, DEMO_TEN_FLOOR_ID } from './game/demo-10-floo
 import { applyDemoTenFloorHardMode, DEMO10_HARD_MODE_ID } from './game/demo-10-floor-hard-mode.js';
 import { applyDemoTenFloorProgressionGrammar } from './game/demo-10-floor-progression.js';
 import { applyDemoTenFloorProgressionTopology } from './game/demo-10-floor-progression-topology.js';
+import { applyDemoTenFloorPalaceSpatialRedesign } from './game/demo-10-floor-palace-spatial-redesign.js';
 import { applyDemoTenFloorSpatialRedesign } from './game/demo-10-floor-spatial-redesign.js';
 import { installContentStorageScope } from './game/content-storage-scope.js';
 
@@ -19,6 +20,7 @@ const progressionGrammar = applyDemoTenFloorProgressionGrammar({
   floors: FLOORS,
   dialogues: DIALOGUES
 });
+applyDemoTenFloorPalaceSpatialRedesign({ floors: FLOORS, gridSize: GRID_SIZE });
 applyDemoTenFloorHardMode({ enemies: ENEMIES });
 
 installContentStorageScope({ contentId: DEMO_TEN_FLOOR_ID });

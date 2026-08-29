@@ -106,6 +106,7 @@ async function validateProductionDemoBuild() {
   const hardMode = await import(moduleUrl('src/game/demo-10-floor-hard-mode.js'));
   const progression = await import(moduleUrl('src/game/demo-10-floor-progression.js'));
   const topology = await import(moduleUrl('src/game/demo-10-floor-progression-topology.js'));
+  const palaceSpatial = await import(moduleUrl('src/game/demo-10-floor-palace-spatial-redesign.js'));
   const spatial = await import(moduleUrl('src/game/demo-10-floor-spatial-redesign.js'));
   content.applyDemoTenFloorContent({
     enemies: data.ENEMIES,
@@ -120,6 +121,7 @@ async function validateProductionDemoBuild() {
     floors: data.FLOORS,
     dialogues: data.DIALOGUES
   });
+  palaceSpatial.applyDemoTenFloorPalaceSpatialRedesign({ floors: data.FLOORS, gridSize: data.GRID_SIZE });
   hardMode.applyDemoTenFloorHardMode({ enemies: data.ENEMIES });
 
   const engine = await import(moduleUrl('src/game/engine.js'));

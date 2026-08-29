@@ -6,6 +6,7 @@ import { applyDemoTenFloorContent } from '../src/game/demo-10-floor-content.js';
 import { applyDemoTenFloorProgressionTopology } from '../src/game/demo-10-floor-progression-topology.js';
 import { applyDemoTenFloorSpatialRedesign } from '../src/game/demo-10-floor-spatial-redesign.js';
 import { applyDemoTenFloorProgressionGrammar } from '../src/game/demo-10-floor-progression.js';
+import { applyDemoTenFloorPalaceSpatialRedesign } from '../src/game/demo-10-floor-palace-spatial-redesign.js';
 import { applyDemoTenFloorHardMode } from '../src/game/demo-10-floor-hard-mode.js';
 
 const DIRECTIONS = Object.freeze([[1, 0], [-1, 0], [0, 1], [0, -1]]);
@@ -18,6 +19,7 @@ function createFixture() {
   applyDemoTenFloorProgressionTopology({ enemies, floors });
   applyDemoTenFloorSpatialRedesign({ floors, gridSize: GRID_SIZE });
   applyDemoTenFloorProgressionGrammar({ floors, enemies, dialogues });
+  applyDemoTenFloorPalaceSpatialRedesign({ floors, gridSize: GRID_SIZE });
   applyDemoTenFloorHardMode({ enemies });
   return { floors };
 }
@@ -134,20 +136,37 @@ test('every remaining 10F visual barrier separates two distinct regions', () => 
   assert.deepEqual(nonSeparating, []);
 });
 
-test('critical rewards and finale remain unreachable until their named barrier opens', () => {
+test('critical rooms, card costs and finale remain unreachable until their named barrier opens', () => {
   const protectedTargets = [
     [1, 'door:star', 'item:def', 4, 9],
+    [1, 'door:moon', 'U', 9, 1],
     [2, 'gate:dualKeyVault', 'item:lucky', 1, 1],
-    [4, 'gate:forge', 'item:weapon', 4, 1],
-    [5, 'gate:ember', 'item:shield', 4, 1],
-    [6, 'gate:mirror', 'item:holy', 4, 1],
-    [7, 'gate:tri', 'item:ward', 4, 1],
-    [8, 'gate:hush', 'item:dual', 4, 1],
+    [3, 'door:star', 'switch:tideA', 2, 5],
+    [3, 'door:moon', 'switch:tideB', 8, 5],
+    [3, 'gate:tide', 'U', 5, 1],
+    [4, 'door:moon', 'switch:forge', 3, 5],
+    [4, 'gate:forge', 'item:weapon', 5, 1],
+    [4, 'door:star', 'U', 9, 1],
+    [5, 'gate:ember', 'item:shield', 2, 1],
+    [5, 'door:star', 'enemy:whaleBoss', 1, 5],
+    [5, 'door:moon', 'enemy:swordBoss', 9, 3],
+    [6, 'gate:mirror', 'item:holy', 2, 1],
+    [6, 'door:star', 'rune:C', 9, 6],
+    [6, 'door:moon', 'U', 7, 1],
+    [7, 'door:star', 'enemy:shadowWardBlade', 1, 4],
+    [7, 'gate:tri', 'item:ward', 5, 5],
+    [7, 'door:moon', 'enemy:shadowWardCantor', 9, 4],
+    [8, 'door:star', 'switch:hushB', 4, 7],
+    [8, 'door:moon', 'switch:hushA', 8, 7],
+    [8, 'gate:hush', 'item:hpLarge', 5, 1],
     [8, 'gate:hush', 'enemy:palaceWarden', 8, 1],
-    [8, 'gate:hushVault', 'item:hp', 9, 9],
-    [9, 'gate:blackstar', 'item:dual', 4, 1],
+    [8, 'gate:hushVault', 'item:dual', 9, 9],
+    [9, 'gate:blackstar', 'item:dual', 3, 1],
+    [9, 'door:star', 'rune:C', 3, 7],
+    [9, 'door:moon', 'shop', 8, 7],
     [9, 'gate:blackstar', 'enemy:blackSealKeeper', 8, 1],
-    [10, 'gate:throneSeal', 'enemy:finalQueen', 7, 1]
+    [10, 'door:moon', 'item:dual', 4, 7],
+    [10, 'gate:throneSeal', 'enemy:finalQueen', 5, 1]
   ];
 
   for (const [number, barrier, target, x, y] of protectedTargets) {

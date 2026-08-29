@@ -270,7 +270,7 @@ export function applyDemoTenFloorContent({ enemies, floors, dialogues, gridSize 
       # . enemy:outerCrown # item:dual # item:hpLarge enemy:hushCantor enemy:palaceWarden U #
       # . # # gate:hush # gate:hush # # gate:hush #
       # switch:hushB # enemy:muteGuard . item:atk . # item:star enemy:hushCantor #
-      # . # . # # # # . # #
+      # door:star # . # # # # . # #
       # item:hpLarge enemy:hushCantor . # item:def . enemy:outerCrown . # #
       # # # . # . # # . # #
       # item:moon . . enemy:muteGuard . # switch:hushA item:sun . #
@@ -314,12 +314,12 @@ export function applyDemoTenFloorContent({ enemies, floors, dialogues, gridSize 
       # . enemy:starSentinel # item:dual # item:hpLarge enemy:nullCantor enemy:blackSealKeeper U #
       # . # # gate:blackstar # gate:blackstar # # gate:blackstar #
       # rune:C # enemy:crownShade . item:def . # item:star enemy:nullCantor #
-      # . # . # # # # . # #
+      # door:star # . # # # # . # #
       # item:hpLarge enemy:nullCantor . rune:A item:atk . enemy:starSentinel . # #
       # # # . # . # # . # #
       # item:sun . . enemy:crownShade . # rune:B item:def . #
-      # . # # # # # . # . #
-      # D . item:moon . enemy:starSentinel item:atk shop item:hp . #
+      # . # # # # # door:moon # # #
+      # D . item:moon . enemy:starSentinel # shop item:hp item:atk #
       # # # # # # # # # # #
     `, gridSize),
     puzzles: {

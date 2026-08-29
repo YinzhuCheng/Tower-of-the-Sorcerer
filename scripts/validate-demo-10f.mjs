@@ -4,6 +4,7 @@ import { applyDemoTenFloorContent, DEMO_TEN_FLOOR_ID } from '../src/game/demo-10
 import { applyDemoTenFloorHardMode, DEMO10_HARD_MODE_ID, DEMO10_HARD_MODE_PRESSURE } from '../src/game/demo-10-floor-hard-mode.js';
 import { applyDemoTenFloorSpatialRedesign, DEMO10_SPATIAL_REDESIGN_ID } from '../src/game/demo-10-floor-spatial-redesign.js';
 import { applyDemoTenFloorProgressionTopology } from '../src/game/demo-10-floor-progression-topology.js';
+import { applyDemoTenFloorPalaceSpatialRedesign } from '../src/game/demo-10-floor-palace-spatial-redesign.js';
 import {
   applyDemoTenFloorProgressionGrammar,
   DEMO10_F8_VAULT_GUARDIANS,
@@ -21,6 +22,7 @@ applyDemoTenFloorContent({ enemies: ENEMIES, floors: FLOORS, dialogues: DIALOGUE
 applyDemoTenFloorProgressionTopology({ enemies: ENEMIES, floors: FLOORS });
 applyDemoTenFloorSpatialRedesign({ floors: FLOORS, gridSize: GRID_SIZE });
 const progressionGrammar = applyDemoTenFloorProgressionGrammar({ enemies: ENEMIES, floors: FLOORS, dialogues: DIALOGUES });
+applyDemoTenFloorPalaceSpatialRedesign({ floors: FLOORS, gridSize: GRID_SIZE });
 applyDemoTenFloorHardMode({ enemies: ENEMIES });
 
 const { runGreedyShopStrategy } = await import('../src/solver/greedy-strategy.js');

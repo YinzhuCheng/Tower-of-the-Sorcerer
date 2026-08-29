@@ -3,6 +3,7 @@ import { applyDemoTenFloorContent } from '../src/game/demo-10-floor-content.js';
 import { applyDemoTenFloorHardMode } from '../src/game/demo-10-floor-hard-mode.js';
 import { applyDemoTenFloorProgressionGrammar } from '../src/game/demo-10-floor-progression.js';
 import { applyDemoTenFloorProgressionTopology } from '../src/game/demo-10-floor-progression-topology.js';
+import { applyDemoTenFloorPalaceSpatialRedesign } from '../src/game/demo-10-floor-palace-spatial-redesign.js';
 import { applyDemoTenFloorSpatialRedesign } from '../src/game/demo-10-floor-spatial-redesign.js';
 import { analyzeCardEconomy, validateDemoTenFloorCardHierarchy } from '../src/tuner/card-economy.js';
 import { analyzeSemanticMap } from '../src/tuner/semantic-map-graph.js';
@@ -23,6 +24,7 @@ const progressionGrammar = applyDemoTenFloorProgressionGrammar({
   floors: FLOORS,
   dialogues: DIALOGUES
 });
+applyDemoTenFloorPalaceSpatialRedesign({ floors: FLOORS, gridSize: GRID_SIZE });
 applyDemoTenFloorHardMode({ enemies: ENEMIES });
 
 function bossIdsByFloor() {
