@@ -4,7 +4,7 @@ export const DEMO10_HARD_MODE_PRESSURE = Object.freeze({
   palaceWardenMagicPower: 245,
   blackSealKeeperMagicPower: 220,
   blackSealKeeperDef: 96,
-  voidCoreMagicPower: 465
+  voidCoreMagicPower: 420
 });
 
 export const DEMO10_HIGH_FLOOR_SCALING = Object.freeze({
