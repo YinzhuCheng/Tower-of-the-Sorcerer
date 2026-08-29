@@ -2,43 +2,104 @@ import { DIALOGUES, ENEMIES, FLOORS, GRID_SIZE } from '../src/game/data.js';
 import { applyDemoTenFloorContent } from '../src/game/demo-10-floor-content.js';
 import { applyDemoTenFloorHardMode } from '../src/game/demo-10-floor-hard-mode.js';
 import { applyDemoTenFloorProgressionGrammar } from '../src/game/demo-10-floor-progression.js';
-import { DEMO10_CODESIGN_POLICY_SPECS, summarizeDemoTenFloorCheckpoints } from '../src/analyzer/demo-10-floor-checkpoints.js';
-import { DEMO10_EXPERT_TARGETS, demoTenFloorExpertLoss, summarizeDemoTenFloorPortfolio } from '../src/game/demo-10-floor-quality.js';
-import { compareDemoTenFloorCheckpointPortfolio, createDemoTenFloorTopologyContract, validateDemoTenFloorTopology } from '../src/tuner/demo-10-floor-topology-validator.js';
-import { createDemoTenFloorTopologyMutationCatalog, withDemoTenFloorTopologyMutation } from '../src/tuner/demo-10-floor-topology-mutations.js';
+import {
+  DEMO10_CODESIGN_POLICY_SPECS,
+  summarizeDemoTenFloorCheckpoints
+} from '../src/analyzer/demo-10-floor-checkpoints.js';
+import {
+  DEMO10_QUALITY_TARGETS,
+  DEMO10_SIMPLE_BUILD_PORTFOLIO,
+  demoTenFloorQualityLoss,
+  summarizeDemoTenFloorPortfolio
+} from '../src/game/demo-10-floor-quality.js';
+import {
+  compareDemoTenFloorCheckpointPortfolio,
+  createDemoTenFloorTopologyContract,
+  validateDemoTenFloorTopology
+} from '../src/tuner/demo-10-floor-topology-validator.js';
+import {
+  createDemoTenFloorTopologyMutationCatalog,
+  withDemoTenFloorTopologyMutation
+} from '../src/tuner/demo-10-floor-topology-mutations.js';
 
 applyDemoTenFloorContent({ enemies: ENEMIES, floors: FLOORS, dialogues: DIALOGUES, gridSize: GRID_SIZE });
 applyDemoTenFloorProgressionGrammar({ enemies: ENEMIES, floors: FLOORS, dialogues: DIALOGUES });
 applyDemoTenFloorHardMode({ enemies: ENEMIES });
+
 const { runGreedyShopStrategy } = await import('../src/solver/greedy-strategy.js');
 const { runExpertNoHpStrategy, EXPERT_NO_HP_STRATEGY_ID } = await import('../src/solver/expert-strategy.js');
-const progressionPriority = 'guardian-first';
 
-const baselineExpertPlanning = runExpertNoHpStrategy({ holyPolicy: 'immediate', progressionPriority, maxIterations: 8_000, horizon: 2, attackAdvantageRequired: 2_000 });
-const frozenExpertShopPlan = Object.freeze([...baselineExpertPlanning.planning.shopPlan]);
-const fullDiagnosticPolicyCount = DEMO10_CODESIGN_POLICY_SPECS.length;
-const diagnosticSpecs = DEMO10_CODESIGN_POLICY_SPECS.filter((_, index) => index % 3 === 0);
+const releaseProgressionPriority = 'legacy-clear';
+const guardianStressPriority = 'guardian-first';
+const qualitySpecs = DEMO10_CODESIGN_POLICY_SPECS.filter((spec) => spec.qualityGate);
+if (qualitySpecs.length !== DEMO10_SIMPLE_BUILD_PORTFOLIO.length) {
+  throw new Error(`Expected ${DEMO10_SIMPLE_BUILD_PORTFOLIO.length} release quality policies, got ${qualitySpecs.length}.`);
+}
+const diagnosticPool = DEMO10_CODESIGN_POLICY_SPECS.filter((spec) => !spec.qualityGate);
+const diagnosticSpecs = diagnosticPool.filter((_, index) => index % 3 === 0);
+const fullDiagnosticPolicyCount = diagnosticPool.length;
 const expertSpec = Object.freeze({ id: EXPERT_NO_HP_STRATEGY_ID });
-const contract = createDemoTenFloorTopologyContract(FLOORS);
-const catalog = createDemoTenFloorTopologyMutationCatalog({ floorNumbers: contract.floorNumbers, maxPerFloor: 16, routeSampleLimit: 6 });
 
-function runDiagnosticPolicy(spec) {
-  return runGreedyShopStrategy({ shopCycle: spec.shopCycle, shopPlan: spec.shopPlan, holyPolicy: spec.holyPolicy, progressionPriority, maxIterations: 8_000 });
+const baselineExpertPlanning = runExpertNoHpStrategy({
+  holyPolicy: 'immediate',
+  progressionPriority: guardianStressPriority,
+  maxIterations: 8_000,
+  horizon: 2,
+  attackAdvantageRequired: 2_000
+});
+const frozenExpertShopPlan = Object.freeze([...(baselineExpertPlanning.planning?.shopPlan ?? [])]);
+const contract = createDemoTenFloorTopologyContract(FLOORS);
+const catalog = createDemoTenFloorTopologyMutationCatalog({
+  floorNumbers: contract.floorNumbers,
+  maxPerFloor: 16,
+  routeSampleLimit: 6
+});
+
+function runQualityPolicy(spec) {
+  return runGreedyShopStrategy({
+    shopCycle: spec.shopCycle,
+    shopPlan: spec.shopPlan,
+    holyPolicy: spec.holyPolicy,
+    progressionPriority: releaseProgressionPriority,
+    maxIterations: 8_000
+  });
 }
 
-function runExpertPolicy() {
-  const report = runGreedyShopStrategy({ shopCycle: ['def'], shopPlan: frozenExpertShopPlan, holyPolicy: 'immediate', progressionPriority, maxIterations: 8_000 });
+function runDiagnosticPolicy(spec) {
+  return runGreedyShopStrategy({
+    shopCycle: spec.shopCycle,
+    shopPlan: spec.shopPlan,
+    holyPolicy: spec.holyPolicy,
+    progressionPriority: releaseProgressionPriority,
+    maxIterations: 8_000
+  });
+}
+
+function runExpertDiagnosticPolicy() {
+  const report = runGreedyShopStrategy({
+    shopCycle: ['def'],
+    shopPlan: frozenExpertShopPlan,
+    holyPolicy: 'immediate',
+    progressionPriority: guardianStressPriority,
+    maxIterations: 8_000
+  });
   return {
     ...report,
     strategyId: EXPERT_NO_HP_STRATEGY_ID,
     strategy: {
       shopHpAllowed: false,
       defaultInvestment: 'def',
-      progressionPriority,
+      progressionPriority: guardianStressPriority,
       witnessMode: 'frozen-baseline-plan-with-def-fallback'
     },
     planning: { shopPlan: [...frozenExpertShopPlan] }
   };
+}
+
+function qualityPortfolio() {
+  const reports = qualitySpecs.map(runQualityPolicy);
+  const quality = summarizeDemoTenFloorPortfolio(reports, DEMO10_QUALITY_TARGETS);
+  return { reports, quality };
 }
 
 function topologyDeltaLoss(topology) {
@@ -80,23 +141,37 @@ function compactCheckpoints(checkpoints) {
   }));
 }
 
-function qualityReport() {
-  const report = runExpertPolicy();
-  const quality = summarizeDemoTenFloorPortfolio([report], DEMO10_EXPERT_TARGETS);
-  const hpClean = report.purchaseCounts.hp === 0 && report.purchaseLog.every((entry) => entry.optionId !== 'hp');
-  if (!hpClean) quality.violations.push('expert-shop-hp-purchase');
-  return { report, quality };
+function compactExpertDiagnostic(report) {
+  return {
+    blocking: false,
+    progressionPriority: guardianStressPriority,
+    solvable: report.solvable,
+    floor: report.floor,
+    failure: report.failure,
+    minNormalizedHpMargin: report.minNormalizedHpMargin,
+    purchaseCounts: report.purchaseCounts,
+    f9Purchases: report.purchaseLog.filter((entry) => entry.floor === 9).length
+  };
+}
+
+function checkpointPortfolio(qualityReports, expertReport) {
+  const diagnosticReports = diagnosticSpecs.map(runDiagnosticPolicy);
+  return summarizeDemoTenFloorCheckpoints(
+    [...qualityReports, ...diagnosticReports, expertReport],
+    { policySpecs: [...qualitySpecs, ...diagnosticSpecs, expertSpec] }
+  );
 }
 
 const baselineTopology = validateDemoTenFloorTopology(FLOORS, contract);
-if (!baselineTopology.ok) throw new Error(`Baseline topology contract failed: ${baselineTopology.violations.join(',')}`);
-const baselineExpert = qualityReport();
-if (baselineExpert.quality.violations.length) throw new Error(`Baseline 10F expert hard-mode gate failed: ${baselineExpert.quality.violations.join(',')}`);
-const baselineDiagnosticReports = diagnosticSpecs.map(runDiagnosticPolicy);
-const baselineCheckpoints = summarizeDemoTenFloorCheckpoints(
-  [baselineExpert.report, ...baselineDiagnosticReports],
-  { policySpecs: [expertSpec, ...diagnosticSpecs] }
-);
+if (!baselineTopology.ok) {
+  throw new Error(`Baseline topology contract failed: ${baselineTopology.violations.join(',')}`);
+}
+const baselineQuality = qualityPortfolio();
+if (baselineQuality.quality.violations.length) {
+  throw new Error(`Baseline 10F release portfolio gate failed: ${baselineQuality.quality.violations.join(',')}`);
+}
+const baselineExpert = runExpertDiagnosticPolicy();
+const baselineCheckpoints = checkpointPortfolio(baselineQuality.reports, baselineExpert);
 
 const rejectedStatic = [];
 const rejectedQuality = [];
@@ -108,34 +183,42 @@ for (const mutation of catalog) {
     const topology = validateDemoTenFloorTopology(FLOORS, contract);
     if (!topology.ok) return { stage: 'static', topology };
 
-    const expert = qualityReport();
-    if (expert.quality.violations.length) {
-      return { stage: 'quality', topology, quality: expert.quality, expertReport: expert.report };
+    const release = qualityPortfolio();
+    if (release.quality.violations.length) {
+      return { stage: 'quality', topology, quality: release.quality };
     }
 
-    const diagnosticReports = diagnosticSpecs.map(runDiagnosticPolicy);
-    const checkpoints = summarizeDemoTenFloorCheckpoints(
-      [expert.report, ...diagnosticReports],
-      { policySpecs: [expertSpec, ...diagnosticSpecs] }
-    );
+    const expertReport = runExpertDiagnosticPolicy();
+    const checkpoints = checkpointPortfolio(release.reports, expertReport);
     const checkpointComparison = compareDemoTenFloorCheckpointPortfolio(checkpoints, baselineCheckpoints);
     if (!checkpointComparison.ok) {
-      return { stage: 'checkpoint', topology, quality: expert.quality, checkpoints, checkpointComparison };
+      return {
+        stage: 'checkpoint',
+        topology,
+        quality: release.quality,
+        checkpoints,
+        checkpointComparison,
+        expertReport
+      };
     }
 
     const structuralLoss = topologyDeltaLoss(topology);
-    const qualityLoss = demoTenFloorExpertLoss(expert.quality, DEMO10_EXPERT_TARGETS) / 50;
+    const qualityLoss = demoTenFloorQualityLoss(release.quality, DEMO10_QUALITY_TARGETS) / 50;
     const checkpointGain = checkpointComparison.checkpointGain ?? 0;
     const semanticHardeningGain = mutation.preview?.hardeningGain ?? 0;
     const semanticDiversityGain = mutation.preview?.diversityGain ?? 0;
     return {
       stage: 'accepted',
       topology,
-      quality: expert.quality,
-      expertReport: expert.report,
+      quality: release.quality,
+      expertReport,
       checkpoints,
       checkpointComparison,
-      score: qualityLoss + 0.20 * structuralLoss - 0.50 * checkpointGain - 0.08 * semanticHardeningGain - 0.05 * semanticDiversityGain,
+      score: qualityLoss
+        + 0.20 * structuralLoss
+        - 0.50 * checkpointGain
+        - 0.08 * semanticHardeningGain
+        - 0.05 * semanticDiversityGain,
       qualityLoss,
       structuralLoss,
       checkpointGain
@@ -149,8 +232,8 @@ for (const mutation of catalog) {
     rejectedQuality.push({
       ...compact,
       violations: result.quality.violations,
-      expertFloor: result.expertReport?.floor ?? null,
-      expertFailure: result.expertReport?.failure ?? null
+      solvableBuilds: result.quality.solvableBuilds,
+      f9ShopCoverage: result.quality.f9ShopCoverage
     });
   } else if (result.stage === 'checkpoint') {
     rejectedCheckpoint.push({
@@ -162,7 +245,8 @@ for (const mutation of catalog) {
       maxParetoWidth: result.checkpoints.maxParetoWidth,
       baselineMaxParetoWidth: baselineCheckpoints.maxParetoWidth,
       oversized: result.checkpoints.oversizedCheckpoints,
-      collapsed: result.checkpoints.collapsedCheckpoints
+      collapsed: result.checkpoints.collapsedCheckpoints,
+      expertDiagnostic: compactExpertDiagnostic(result.expertReport)
     });
   } else {
     accepted.push({
@@ -171,11 +255,15 @@ for (const mutation of catalog) {
       qualityLoss: result.qualityLoss,
       structuralLoss: result.structuralLoss,
       checkpointGain: result.checkpointGain,
+      solvableBuilds: result.quality.solvableBuilds,
+      f9ShopCoverage: result.quality.f9ShopCoverage,
+      terminalHpSpread: result.quality.terminalHpSpread,
+      winnerLateMinMargin: result.quality.winnerLateMinMargin,
+      weakestWinningLateMargin: result.quality.weakestWinningLateMargin,
       choiceLoss: result.checkpoints.choiceLoss,
       baselineChoiceLoss: baselineCheckpoints.choiceLoss,
       maxParetoWidth: result.checkpoints.maxParetoWidth,
-      expertMargin: result.expertReport.minNormalizedHpMargin,
-      expertPurchaseCounts: result.expertReport.purchaseCounts,
+      expertDiagnostic: compactExpertDiagnostic(result.expertReport),
       topology: compactTopology(result.topology),
       checkpoints: compactCheckpoints(result.checkpoints)
     });
@@ -185,9 +273,9 @@ for (const mutation of catalog) {
 accepted.sort((a, b) => a.score - b.score || a.id.localeCompare(b.id));
 console.log('DEMO10_TOPOLOGY_SEARCH');
 console.log(JSON.stringify({
-  schemaVersion: 5,
-  model: 'demo-10f-semantic-topology-v2-expert-hard-mode',
-  milestone: 'semantic-topology-v2',
+  schemaVersion: 6,
+  model: 'demo-10f-semantic-topology-v2-release-portfolio',
+  milestone: 'semantic-topology-v2-spatial-redesign',
   heuristicOnly: true,
   productionWriteAllowed: false,
   mutationGenerator: 'semantic-map-graph-v2-room-aware',
@@ -197,16 +285,23 @@ console.log(JSON.stringify({
     floorNumber,
     catalog.filter((mutation) => mutation.floor === floorNumber).length
   ])),
-  playabilityGate: EXPERT_NO_HP_STRATEGY_ID,
-  progressionPriority,
-  frozenExpertWitness: true,
-  diagnosticPolicyCount: diagnosticSpecs.length,
-  fullDiagnosticPolicyCount,
+  playabilityGate: 'six-build-release-portfolio',
+  releaseProgressionPriority,
+  guardianStressPriority,
+  expertDiagnosticModel: EXPERT_NO_HP_STRATEGY_ID,
+  frozenExpertDiagnostic: true,
+  qualityPolicyCount: qualitySpecs.length,
+  diagnosticPolicyCount: diagnosticSpecs.length + 1,
+  fullDiagnosticPolicyCount: fullDiagnosticPolicyCount + 1,
   checkpointGate: 'baseline-relative-no-regression',
   baseline: {
-    qualityViolations: baselineExpert.quality.violations,
-    expertMargin: baselineExpert.report.minNormalizedHpMargin,
-    expertPurchaseCounts: baselineExpert.report.purchaseCounts,
+    qualityViolations: baselineQuality.quality.violations,
+    solvableBuilds: baselineQuality.quality.solvableBuilds,
+    f9ShopCoverage: baselineQuality.quality.f9ShopCoverage,
+    terminalHpSpread: baselineQuality.quality.terminalHpSpread,
+    winnerLateMinMargin: baselineQuality.quality.winnerLateMinMargin,
+    weakestWinningLateMargin: baselineQuality.quality.weakestWinningLateMargin,
+    expertDiagnostic: compactExpertDiagnostic(baselineExpert),
     checkpointChoiceLoss: baselineCheckpoints.choiceLoss,
     maxParetoWidth: baselineCheckpoints.maxParetoWidth,
     checkpoints: compactCheckpoints(baselineCheckpoints),
