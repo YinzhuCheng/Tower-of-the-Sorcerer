@@ -87,7 +87,7 @@ test('F7 becomes a Moon+Star strategic gate instead of consuming the unique Sun 
   assert.deepEqual(floor7.puzzles.cardGates.tri, { moon: 1, star: 1 });
 });
 
-test('F8 uses two optional guardians to protect a real reward chamber without locking the stairs', () => {
+test('F8 uses two optional guardians to protect a real narrow-entry reward chamber without locking the stairs', () => {
   const fixture = createFixture();
   const report = applyDemoTenFloorProgressionGrammar(fixture);
   const floor8 = fixture.floors.find((floor) => floor.number === 8);
@@ -97,7 +97,7 @@ test('F8 uses two optional guardians to protect a real reward chamber without lo
   assert.deepEqual(report.guardianVault.guardians, DEMO10_F8_VAULT_GUARDIANS);
   assert.equal(new Set(DEMO10_F8_VAULT_GUARDIANS).size, 2, 'vault guardians must have distinct semantic ids');
   assert.deepEqual(floor8.puzzles.guardianGates[DEMO10_F8_VAULT_ID], [...DEMO10_F8_VAULT_GUARDIANS]);
-  assert.equal(tokens([floor8], `gate:${DEMO10_F8_VAULT_ID}`).length, 2, 'the chamber should read as a wide synchronized seal');
+  assert.equal(tokens([floor8], `gate:${DEMO10_F8_VAULT_ID}`).length, 1, 'the chamber must have one meaningful entrance rather than a redundant seal tile');
   for (const enemyId of DEMO10_F8_VAULT_GUARDIANS) assert.equal(fixture.enemies[enemyId].boss, true);
   assert.equal(floor8.boss, 'palaceWarden', 'optional vault guardians must not become stair guardians');
   assert.equal(reachableWithoutSeal(floor8, 'D', 'U', DEMO10_F8_VAULT_ID), true, 'main route must remain available when the vault is treated as closed');

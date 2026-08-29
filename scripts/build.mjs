@@ -106,6 +106,7 @@ async function validateProductionDemoBuild() {
   const hardMode = await import(moduleUrl('src/game/demo-10-floor-hard-mode.js'));
   const progression = await import(moduleUrl('src/game/demo-10-floor-progression.js'));
   const topology = await import(moduleUrl('src/game/demo-10-floor-progression-topology.js'));
+  const palaceSpatial = await import(moduleUrl('src/game/demo-10-floor-palace-spatial-redesign.js'));
   const spatial = await import(moduleUrl('src/game/demo-10-floor-spatial-redesign.js'));
   content.applyDemoTenFloorContent({
     enemies: data.ENEMIES,
@@ -120,6 +121,7 @@ async function validateProductionDemoBuild() {
     floors: data.FLOORS,
     dialogues: data.DIALOGUES
   });
+  palaceSpatial.applyDemoTenFloorPalaceSpatialRedesign({ floors: data.FLOORS, gridSize: data.GRID_SIZE });
   hardMode.applyDemoTenFloorHardMode({ enemies: data.ENEMIES });
 
   const engine = await import(moduleUrl('src/game/engine.js'));
@@ -169,6 +171,20 @@ async function validateProductionDemoBuild() {
   const demoSequences = Object.entries(data.DIALOGUES).filter(([id, dialogue]) => id.endsWith('Demo') && Array.isArray(dialogue?.turns));
   assertBuild(demoSequences.length >= 20, 'Every floor must provide pre/post boss dialogue sequences.');
   assertBuild(demoSequences.every(([, dialogue]) => dialogue.turns.length >= 2 && dialogue.turns.length <= 5), 'Boss dialogue sequences must stay within 2-5 turns.');
+
+  // The screenshot gallery is a topology-review tool.  It must load the same
+  // browser build but cannot be allowed to pull a solver verdict forward into
+  // the room-design phase. Production builds retain the full probe below.
+  if (process.env.TOWER_SKIP_NUMERIC_VALIDATION === '1') {
+    console.log('PRODUCTION_DEMO_TOPOLOGY_VISUAL_BUILD', JSON.stringify({
+      initialRelics: state.relics,
+      progressionGrammar,
+      shopFloors,
+      skipped: 'numeric-solver-probe'
+    }));
+    return;
+  }
+
   assertBuild(data.ENEMIES.blackSealKeeper.magicPower === hardMode.DEMO10_HARD_MODE_PRESSURE.blackSealKeeperMagicPower, 'F9 boss magic pressure mismatch.');
   assertBuild(data.ENEMIES.blackSealKeeper.def === hardMode.DEMO10_HARD_MODE_PRESSURE.blackSealKeeperDef, 'F9 boss DEF pressure mismatch.');
   assertBuild(data.ENEMIES.voidCore.hp > 3400 && data.ENEMIES.voidCore.magicPower > 164, 'F10 final core must receive the high-floor pressure ramp.');

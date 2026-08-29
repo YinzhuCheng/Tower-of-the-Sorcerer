@@ -4,6 +4,7 @@ import { mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises';
 import { join, resolve } from 'node:path';
 import { tmpdir } from 'node:os';
 import { spawn, spawnSync } from 'node:child_process';
+import { createServer } from 'node:net';
 
 const AUTO_SAVE_KEY = 'lost-magic-tower:auto:v1';
 const FLOOR_COUNT = 10;
@@ -16,7 +17,7 @@ function readOptions(argv) {
   const options = {
     url: 'http://127.0.0.1:4173/',
     output: '/tmp/tower-10f-screenshots',
-    chromePort: 9229
+    chromePort: null
   };
   for (let index = 0; index < argv.length; index += 1) {
     const value = argv[index];
@@ -25,6 +26,22 @@ function readOptions(argv) {
     if (value === '--chrome-port') options.chromePort = Number(argv[++index]);
   }
   return options;
+}
+
+async function allocateLoopbackPort() {
+  return new Promise((resolvePort, rejectPort) => {
+    const server = createServer();
+    server.once('error', rejectPort);
+    server.listen(0, '127.0.0.1', () => {
+      const address = server.address();
+      const port = typeof address === 'object' && address ? address.port : null;
+      server.close((error) => {
+        if (error) rejectPort(error);
+        else if (!Number.isInteger(port)) rejectPort(new Error('Unable to allocate a Chrome debugging port.'));
+        else resolvePort(port);
+      });
+    });
+  });
 }
 
 function findChrome() {
@@ -41,7 +58,7 @@ function findChrome() {
   throw new Error('No Chrome/Chromium binary found. Set CHROME_BIN to override detection.');
 }
 
-async function requestJson(url, attempts = 50) {
+async function requestJson(url, attempts = 150) {
   let lastError = null;
   for (let index = 0; index < attempts; index += 1) {
     try {
@@ -155,27 +172,31 @@ async function stopProcess(processHandle) {
 async function main() {
   const options = readOptions(process.argv.slice(2));
   const output = resolve(options.output);
+  const chromePort = options.chromePort ?? await allocateLoopbackPort();
   await mkdir(output, { recursive: true });
   // Chrome 136+ ignores remote-debugging-port on its default profile. An
   // isolated disposable profile keeps the DevTools endpoint available both in
   // GitHub Actions and in local capture runs.
   const chromeProfile = await mkdtemp(join(tmpdir(), 'tower-screenshot-chrome-'));
 
+  const chromeStderr = [];
   const chrome = spawn(findChrome(), [
     '--headless=new',
     '--no-sandbox',
     '--disable-gpu',
     '--disable-dev-shm-usage',
     '--hide-scrollbars',
-    `--remote-debugging-port=${options.chromePort}`,
+    `--remote-debugging-address=127.0.0.1`,
+    `--remote-debugging-port=${chromePort}`,
     `--user-data-dir=${chromeProfile}`,
     '--window-size=1600,1060',
     'about:blank'
   ], { stdio: ['ignore', 'pipe', 'pipe'] });
+  chrome.stderr?.on('data', (chunk) => chromeStderr.push(String(chunk)));
 
   let client = null;
   try {
-    const targets = await requestJson(`http://127.0.0.1:${options.chromePort}/json/list`);
+    const targets = await requestJson(`http://127.0.0.1:${chromePort}/json/list`);
     const target = targets.find((entry) => entry.type === 'page' && entry.webSocketDebuggerUrl);
     if (!target) throw new Error('Chrome DevTools did not expose a page target.');
 
@@ -224,6 +245,10 @@ async function main() {
       console.log(`Captured ${fileName}`);
     }
     await writeFile(join(output, 'manifest.json'), `${JSON.stringify(manifest, null, 2)}\n`);
+  } catch (error) {
+    const stderr = chromeStderr.join('').trim();
+    if (stderr) error.message = `${error.message}\nChrome stderr:\n${stderr.slice(-2_000)}`;
+    throw error;
   } finally {
     client?.close();
     await stopProcess(chrome);

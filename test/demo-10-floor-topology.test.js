@@ -42,11 +42,11 @@ test('10F topology baseline exposes stable F8/F9 graph metrics', () => {
   const f9 = analyzeDemoFloorTopology(floor(9));
   assert.deepEqual(
     [f8.passableNodes, f8.edges, f8.cycleRank, f8.deadEnds, f8.branchNodes, f8.downToUpDistance],
-    [52, 55, 4, 0, 6, 16]
+    [51, 53, 3, 2, 6, 16]
   );
   assert.deepEqual(
     [f9.passableNodes, f9.edges, f9.cycleRank, f9.deadEnds, f9.branchNodes, f9.downToUpDistance],
-    [53, 57, 5, 0, 7, 16]
+    [52, 55, 4, 2, 7, 16]
   );
   assert.equal(f8.allPassableReachableFromDown, true);
   assert.equal(f9.allPassableReachableFromDown, true);

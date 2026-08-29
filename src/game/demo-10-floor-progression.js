@@ -116,14 +116,14 @@ function installFloor8GuardianVault(floors, enemies) {
       floor: 8,
       gateId: F8_VAULT_ID,
       guardians: F8_VAULT_GUARDIANS,
-      gateTiles: Object.freeze([{ x: 8, y: 7 }, { x: 8, y: 9 }]),
+      gateTiles: Object.freeze([{ x: 8, y: 7 }]),
       rewardTiles: Object.freeze([{ x: 9, y: 7 }, { x: 8, y: 8 }, { x: 9, y: 8 }, { x: 9, y: 9 }])
     });
   }
 
   // The lower-right branch is deliberately converted into a real chamber:
-  // two distinct elite guardians stand outside, while two synchronized gate
-  // tiles seal a 2x3 reward room. The hushA switch is moved one tile left so
+  // two distinct elite guardians stand outside, while one narrow entrance
+  // seals a 2x3 reward room. The hushA switch is moved one tile left so
   // the vault remains entirely optional for the main palaceWarden -> U route.
   assertToken(floor, 7, 7, 'switch:hushA', 'F8 vault switch source');
   assertToken(floor, 8, 7, 'item:star', 'F8 vault star source');
@@ -153,7 +153,7 @@ function installFloor8GuardianVault(floors, enemies) {
   floor.map[8][7] = 'enemy:hushVaultCantor';
   floor.map[7][8] = `gate:${F8_VAULT_ID}`;
   floor.map[8][8] = 'item:def';
-  floor.map[9][8] = `gate:${F8_VAULT_ID}`;
+  floor.map[9][8] = '#';
   floor.map[7][9] = 'item:star';
   floor.map[8][9] = 'item:moon';
   floor.map[9][9] = 'item:hp';
@@ -171,7 +171,7 @@ function installFloor8GuardianVault(floors, enemies) {
     floor: 8,
     gateId: F8_VAULT_ID,
     guardians: F8_VAULT_GUARDIANS,
-    gateTiles: Object.freeze([{ x: 8, y: 7 }, { x: 8, y: 9 }]),
+    gateTiles: Object.freeze([{ x: 8, y: 7 }]),
     rewardTiles: Object.freeze([{ x: 9, y: 7 }, { x: 8, y: 8 }, { x: 9, y: 8 }, { x: 9, y: 9 }])
   });
 }
