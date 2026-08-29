@@ -23,6 +23,12 @@ import {
   expandDemoTenFloorCandidate,
   withDemoTenFloorCandidate
 } from '../src/tuner/demo-10-floor-mutations.js';
+import {
+  assertDemoTenFloorSolverLocks,
+  captureDemoTenFloorSolverLocks,
+  DEMO10_SOLVER_TUNING_PROFILE,
+  selectDemoTenFloorSolverMutations
+} from '../src/tuner/demo-10-floor-solver-profile.js';
 
 applyDemoTenFloorContent({ enemies: ENEMIES, floors: FLOORS, dialogues: DIALOGUES, gridSize: GRID_SIZE });
 applyDemoTenFloorProgressionTopology({ enemies: ENEMIES, floors: FLOORS });
@@ -33,12 +39,11 @@ applyDemoTenFloorHardMode({ enemies: ENEMIES });
 const { runGreedyShopStrategy } = await import('../src/solver/greedy-strategy.js');
 const { runExpertNoHpStrategy, EXPERT_NO_HP_STRATEGY_ID } = await import('../src/solver/expert-strategy.js');
 
-const releaseProgressionPriority = 'legacy-clear';
-const guardianStressPriority = 'guardian-first';
+const { releaseProgressionPriority, guardianStressPriority } = DEMO10_SOLVER_TUNING_PROFILE;
 
 // The six public recurring cycles are the blocking release witness. Extra policy
-// families remain heuristic checkpoint probes. The old no-HP expert is retained
-// only as a nonblocking threshold/stress diagnostic during spatial redesign.
+// families remain heuristic checkpoint probes. The frozen no-HP expert remains
+// a nonblocking threshold/stress diagnostic and cannot reopen the topology lock.
 const qualitySpecs = DEMO10_CODESIGN_POLICY_SPECS.filter((spec) => spec.qualityGate);
 if (qualitySpecs.length !== DEMO10_SIMPLE_BUILD_PORTFOLIO.length) {
   throw new Error(`Expected ${DEMO10_SIMPLE_BUILD_PORTFOLIO.length} release quality policies, got ${qualitySpecs.length}.`);
@@ -56,7 +61,9 @@ const baselineExpertPlanning = runExpertNoHpStrategy({
   attackAdvantageRequired: 2_000
 });
 const frozenExpertShopPlan = Object.freeze([...(baselineExpertPlanning.planning?.shopPlan ?? [])]);
-const catalog = createDemoTenFloorMutationCatalog();
+const fullCatalog = createDemoTenFloorMutationCatalog();
+const catalog = selectDemoTenFloorSolverMutations(fullCatalog);
+const lockedCampaign = captureDemoTenFloorSolverLocks({ floors: FLOORS, enemies: ENEMIES });
 
 function runQualityPolicy(spec) {
   return runGreedyShopStrategy({
@@ -135,6 +142,7 @@ function compactExpertDiagnostic(report) {
 
 function evaluateCandidate(candidate) {
   return withDemoTenFloorCandidate(candidate, catalog, () => {
+    assertDemoTenFloorSolverLocks(lockedCampaign, { floors: FLOORS, enemies: ENEMIES });
     const qualityReports = qualitySpecs.map(runQualityPolicy);
     const quality = summarizeDemoTenFloorPortfolio(qualityReports, DEMO10_QUALITY_TARGETS);
     const releaseWitnessVerified = quality.violations.length === 0;
@@ -184,29 +192,26 @@ function evaluateCandidate(candidate) {
         oversizedCheckpoints: checkpoints.oversizedCheckpoints,
         collapsedCheckpoints: checkpoints.collapsedCheckpoints,
         adaptiveMutationPlan: compactMutationPlan(mutationPlan),
+        adaptiveMutationPlanRole: 'diagnostic-only; solver-profile whitelist controls expansion',
         checkpoints: compactCheckpoint(checkpoints)
       }
     };
   });
 }
 
-function expandFromEvidence(candidate, _round, parentEvaluation) {
-  const requested = parentEvaluation?.mutationPlan?.selectedMutationIds ?? [];
-  const activeIds = new Set([...(candidate.mutationIds ?? []), ...requested]);
-  return expandDemoTenFloorCandidate(
-    candidate,
-    catalog.filter((mutation) => activeIds.has(mutation.id)),
-    { maxEdits: 2 }
-  );
+function expandWithinSolverProfile(candidate) {
+  return expandDemoTenFloorCandidate(candidate, catalog, {
+    maxEdits: DEMO10_SOLVER_TUNING_PROFILE.maxEdits
+  });
 }
 
 const result = runTowerCodesignBeamSearch({
   seeds: [{ mutationIds: [] }],
-  expand: expandFromEvidence,
+  expand: expandWithinSolverProfile,
   evaluate: evaluateCandidate,
   keyOf: demoTenFloorCandidateKey,
-  beamWidth: 6,
-  rounds: 2,
+  beamWidth: DEMO10_SOLVER_TUNING_PROFILE.beamWidth,
+  rounds: DEMO10_SOLVER_TUNING_PROFILE.rounds,
   scoreOptions: {
     qualityWeight: 0.55,
     funWeight: 0.20,
@@ -227,7 +232,16 @@ const compactEntry = (entry) => entry ? ({
 console.log('DEMO10_CODESIGN_SEARCH');
 console.log(JSON.stringify({
   model: result.model,
-  milestone: 'spatial-redesign-release-portfolio',
+  milestone: 'topology-locked-solver-tuning',
+  tuningProfile: {
+    id: DEMO10_SOLVER_TUNING_PROFILE.id,
+    topologyId: DEMO10_SOLVER_TUNING_PROFILE.topologyId,
+    productionWriteAllowed: DEMO10_SOLVER_TUNING_PROFILE.productionWriteAllowed,
+    mutableFamilies: DEMO10_SOLVER_TUNING_PROFILE.mutableFamilies,
+    protectedCriticalEnemyCount: DEMO10_SOLVER_TUNING_PROFILE.criticalEnemyIds.length,
+    fullCatalogSize: fullCatalog.length,
+    allowedMutationIds: DEMO10_SOLVER_TUNING_PROFILE.allowedMutationIds
+  },
   primaryPlayerModel: 'six-build-release-portfolio',
   releaseProgressionPriority,
   guardianStressPriority,
@@ -246,7 +260,7 @@ console.log(JSON.stringify({
   portfolio: result.portfolio.map(compactEntry)
 }, null, 2));
 
-if (result.productionWriteAllowed !== false) {
+if (result.productionWriteAllowed !== false || DEMO10_SOLVER_TUNING_PROFILE.productionWriteAllowed !== false) {
   throw new Error('10F co-design search must never enable production writes.');
 }
 if (!result.best || !Number.isFinite(result.best.score.score)) {

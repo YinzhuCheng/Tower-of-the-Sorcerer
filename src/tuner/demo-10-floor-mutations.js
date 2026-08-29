@@ -1,6 +1,16 @@
 import { ENEMIES, FLOORS } from '../game/data.js';
 
 const NUMERIC_SPECS = Object.freeze([
+  ['f3-whale-singer-magic-down4', 'f3-whale-singer-magic', 'whaleSinger', 'magicPower', -4],
+  ['f3-whale-singer-magic-up4', 'f3-whale-singer-magic', 'whaleSinger', 'magicPower', 4],
+  ['f5-flame-caster-magic-down5', 'f5-flame-caster-magic', 'flameCaster', 'magicPower', -5],
+  ['f5-flame-caster-magic-up5', 'f5-flame-caster-magic', 'flameCaster', 'magicPower', 5],
+  ['f6-star-witch-magic-down6', 'f6-star-witch-magic', 'starWitch', 'magicPower', -6],
+  ['f6-star-witch-magic-up6', 'f6-star-witch-magic', 'starWitch', 'magicPower', 6],
+  ['f7-void-priestess-magic-down6', 'f7-void-priestess-magic', 'voidPriestess', 'magicPower', -6],
+  ['f7-void-priestess-magic-up6', 'f7-void-priestess-magic', 'voidPriestess', 'magicPower', 6],
+  ['f7-dusk-dragon-atk-down5', 'f7-dusk-dragon-atk', 'duskDragon', 'atk', -5],
+  ['f7-dusk-dragon-atk-up5', 'f7-dusk-dragon-atk', 'duskDragon', 'atk', 5],
   ['f8-warden-magic-down10', 'f8-warden-magic', 'palaceWarden', 'magicPower', -10],
   ['f8-warden-magic-up10', 'f8-warden-magic', 'palaceWarden', 'magicPower', 10],
   ['f8-hush-magic-down10', 'f8-hush-magic', 'hushCantor', 'magicPower', -10],
@@ -12,7 +22,11 @@ const NUMERIC_SPECS = Object.freeze([
   ['f9-null-magic-down10', 'f9-null-magic', 'nullCantor', 'magicPower', -10],
   ['f9-null-magic-up10', 'f9-null-magic', 'nullCantor', 'magicPower', 10],
   ['f9-crown-atk-down6', 'f9-crown-atk', 'crownShade', 'atk', -6],
-  ['f9-crown-atk-up6', 'f9-crown-atk', 'crownShade', 'atk', 6]
+  ['f9-crown-atk-up6', 'f9-crown-atk', 'crownShade', 'atk', 6],
+  ['f10-eclipse-mage-magic-down6', 'f10-eclipse-mage-magic', 'eclipseMage', 'magicPower', -6],
+  ['f10-eclipse-mage-magic-up6', 'f10-eclipse-mage-magic', 'eclipseMage', 'magicPower', 6],
+  ['f10-crown-knight-atk-down5', 'f10-crown-knight-atk', 'crownKnight', 'atk', -5],
+  ['f10-crown-knight-atk-up5', 'f10-crown-knight-atk', 'crownKnight', 'atk', 5]
 ]);
 
 // F7 predates the 10F overlay's named codesignSlots. Keep these anchors small,
