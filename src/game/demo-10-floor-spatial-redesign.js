@@ -18,27 +18,27 @@ function parseMap(text) {
 const ROOM_MAPS = Object.freeze({
   1: parseMap(`
     # # # # # # # # # # #
-    # item:sun door:sun enemy:mote # # # item:atk enemy:catScout U #
+    # item:sun . enemy:mote # # # item:atk enemy:catScout U #
     # item:hp . . # # # enemy:catMage item:moon . #
     # . . . # # # . # . #
     # item:hp # . enemy:catScout . item:def . # . #
     # enemy:mote . # enemy:mote shop . # . . #
-    # . door:sun # . . . . enemy:catScout . #
+    # . . # . . . . enemy:catScout . #
     # item:hp item:sun enemy:mote . # # # . . #
-    # . item:codex . # # # # item:sun item:def #
-    # S item:sun door:sun . # # # # # #
+    # . item:codex . # # # # item:sun . #
+    # S item:sun door:sun item:def # # # # # #
     # # # # # # # # # # #
   `),
   2: parseMap(`
     # # # # # # # # # # #
-    # item:lucky gate:dualKeyVault # # # item:atk . . U #
-    # enemy:catBoss . . # # # item:hp . enemy:foxBoss #
+    # item:lucky # # # # item:atk . . U #
+    # gate:dualKeyVault enemy:catBoss . # # # item:hp . enemy:foxBoss #
     # . . . # # # enemy:foxAcolyte gate:vine # #
     # item:hp # . enemy:foxAcolyte switch:vine item:def # enemy:foxArcher # #
     # enemy:vineDruid . # enemy:foxArcher . . # . # #
-    # . door:moon # . . . . enemy:foxAcolyte . #
+    # . . # . . . . enemy:foxAcolyte . #
     # item:moon item:sun enemy:foxAcolyte . # # # item:sun item:atk #
-    # . . . # # # # door:sun . #
+    # . . . # # # # . . #
     # D . . . # # # # # #
     # # # # # # # # # # #
   `),
@@ -47,64 +47,64 @@ const ROOM_MAPS = Object.freeze({
     # # # # . enemy:whaleSinger . U # # #
     # # # # . enemy:whaleSinger # # # # #
     # # # # # gate:tide # # # # #
-    # item:atk enemy:shellGuard . door:moon . door:moon . enemy:shellGuard item:hp #
+    # item:atk enemy:shellGuard . . . . . enemy:shellGuard item:hp #
     # item:moon . enemy:tideLancer switch:tideB . switch:tideA enemy:tideLancer . item:moon #
     # item:compass . . # . # item:hpLarge . # #
-    # . door:sun enemy:whaleSinger . . . enemy:whaleSinger . . #
+    # . . enemy:whaleSinger . . . enemy:whaleSinger . . #
     # item:def . . # . # . . item:def #
     # . item:sun . enemy:whaleSinger D item:atk . item:hp . #
     # # # # # # # # # # #
   `),
   4: parseMap(`
     # # # # # # # # # # #
-    # item:hp enemy:swordKnight . . # item:weapon enemy:bladePriestess . U #
+    # item:hp enemy:swordKnight # item:weapon # . enemy:bladePriestess . U #
     # . # # gate:forge # . # # . #
     # item:moon # enemy:swordApprentice . . switch:forge # item:star enemy:swordKnight #
     # . # . # # # # . # #
     # item:hp enemy:bladePriestess . # item:def . enemy:swordKnight . # #
-    # # # door:moon # . # # . # #
+    # # # . # . # # . # #
     # item:sun . . enemy:swordApprentice . # item:atk item:sun item:hpLarge #
-    # . # # # # # . # door:star #
-    # D . item:moon door:sun enemy:swordApprentice item:def . item:hp . #
+    # . # # # # # . # . #
+    # D . item:moon . enemy:swordApprentice item:def . item:hp . #
     # # # # # # # # # # #
   `),
   5: parseMap(`
     # # # # # # # # # # #
-    # item:dual enemy:whaleBoss . . # item:shield enemy:swordBoss . U #
+    # item:dual enemy:whaleBoss # item:shield # . enemy:swordBoss . U #
     # . # # gate:ember # . # # . #
     # switch:emberB # enemy:flameCaster . . switch:emberA # item:star enemy:dragonGuard #
     # . # . # # # # . # #
     # item:hpLarge enemy:dragonGuard . # item:def . enemy:dragonBoss . # #
-    # # # door:moon # . # # . # #
+    # # # . # . # # . # #
     # item:moon . . enemy:flameCaster . # item:atk item:moon item:hpLarge #
-    # . # # # # # . # door:star #
-    # D . item:moon door:moon enemy:flameCaster item:def shop item:hp item:star #
+    # . # # # # # . # . #
+    # D . item:moon . enemy:flameCaster item:def shop item:hp item:star #
     # # # # # # # # # # #
   `),
   6: parseMap(`
     # # # # # # # # # # #
-    # item:dual enemy:mirrorDoll . . # item:holy enemy:starWitch enemy:starWitch U #
+    # item:dual enemy:mirrorDoll # item:holy # . enemy:starWitch enemy:starWitch U #
     # . # # gate:mirror # . # # . #
     # rune:C # enemy:cometArcher . item:def . # item:star enemy:starWitch #
     # . # . # # # # . # #
     # item:hpLarge enemy:starWitch . rune:B item:atk . enemy:mirrorDoll . # #
-    # # # door:star # . # # . # #
+    # # # . # . # # . # #
     # item:moon . . enemy:cometArcher . # rune:A item:def . #
-    # . # # # # # . # door:moon #
-    # D . item:star door:star enemy:mirrorDoll item:atk . item:hp . #
+    # . # # # # # . # . #
+    # D . item:star . enemy:mirrorDoll item:atk . item:hp . #
     # # # # # # # # # # #
   `),
   7: parseMap(`
     # # # # # # # # # # #
-    # item:ward enemy:astralBoss . . # item:dual enemy:shadowWardBlade enemy:shadowBoss U #
+    # . enemy:astralBoss # item:ward # item:dual enemy:shadowWardBlade enemy:shadowBoss U #
     # . # # gate:tri # . # # . #
     # item:sun # enemy:shadowNinja . item:def . # item:star enemy:shadowWardCantor #
     # . # . # # # # . # #
     # item:hpLarge enemy:voidPriestess . # item:atk . enemy:duskDragon . # #
-    # # # door:moon # . # # . # #
+    # # # . # . # # . # #
     # item:moon . . enemy:shadowNinja . # item:star item:moon item:hpLarge #
-    # . # # # # # . # door:star #
-    # D . item:moon door:moon enemy:duskDragon item:atk . item:hp . #
+    # . # # # # # . # . #
+    # D . item:moon . enemy:duskDragon item:atk . item:hp . #
     # # # # # # # # # # #
   `)
 });
@@ -169,7 +169,7 @@ function assertTopologyAnchors(floorNumber, map) {
     2: ['enemy:catBoss', 'enemy:foxBoss', 'gate:dualKeyVault', 'item:lucky'],
     3: ['switch:tideA', 'switch:tideB', 'gate:tide'],
     4: ['switch:forge', 'gate:forge', 'item:weapon'],
-    5: ['enemy:whaleBoss', 'enemy:swordBoss', 'enemy:dragonBoss'],
+    5: ['enemy:whaleBoss', 'enemy:swordBoss', 'enemy:dragonBoss', 'gate:ember', 'item:shield'],
     6: ['rune:A', 'rune:B', 'rune:C', 'gate:mirror', 'item:holy'],
     7: ['enemy:astralBoss', 'enemy:shadowBoss', 'enemy:shadowWardBlade', 'enemy:shadowWardCantor', 'gate:tri', 'item:ward']
   }[floorNumber] ?? [];

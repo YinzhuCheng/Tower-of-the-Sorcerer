@@ -84,13 +84,13 @@ test('10F topology applies distinct reward and stair guardian groups through the
 
   state.floor = 1;
   state.x = 1;
-  state.y = 1;
-  let result = tryMove(state, 1, 0);
+  state.y = 3;
+  let result = tryMove(state, 0, -1);
   assert.equal(result.blocked, true);
   assert.deepEqual(result.missingGuardians, ['catBoss', 'foxBoss']);
 
   state.floorStates[1].defeatedBossIds = ['catBoss', 'foxBoss'];
-  result = tryMove(state, 1, 0);
+  result = tryMove(state, 0, -1);
   assert.equal(result.moved, true);
   assert.ok(result.events.some((event) => event.type === 'guardianGate'));
 

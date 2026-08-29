@@ -24,6 +24,9 @@ rebaselining begins only after this locked map state.
 5. Critical boss identity, core ownership, key-relic ownership, card gates and
    mandatory encounter order are frozen before roomization. Ordinary encounter
    slots and every numeric value remain available to the later solver/tuner.
+6. Every rendered `door:` or `gate:` must separate two otherwise disconnected
+   regions while closed. A gate that can be walked around, or only opens onto
+   an empty dead end, is removed rather than kept as visual decoration.
 
 ## Locked campaign cadence
 
@@ -43,6 +46,30 @@ rebaselining begins only after this locked map state.
 The regular-core cadence is therefore **2 + 3 + 2 = 7**. Visible Boss
 pressure is intentionally clustered at F2, F5, F7, F8 and F10; F1, F3, F4 and
 F6 exist to create contrast, preparation and meaningful route decisions.
+
+## Physical barrier contract
+
+The map may not rely on a label in `puzzles` alone: the named reward or goal
+must be physically unreachable until its gate is opened. The current authored
+locks are deliberately narrow and readable:
+
+| Floor | Real barrier | Protected outcome |
+| --- | --- | --- |
+| F1 | One Star door | Optional DEF tutorial alcove |
+| F2 | `dualKeyVault` | Lucky Coin after both early guardians |
+| F3 | `tide` | Upper route and stair |
+| F4 | `forge` | Weapon |
+| F5 | `ember` | Shield side cache; the three guardians still lock the stair |
+| F6 | `mirror` | Holy |
+| F7 | `tri` | Ward |
+| F8 | `hush`, `hushVault` | Dual relic side cache; optional guardian vault |
+| F9 | `blackstar` | Dual relic side cache before final conversion |
+| F10 | `throneSeal` | Final Queen and Core phase |
+
+All former card doors that did not protect a route or reward are intentionally
+absent from the 10F overlay. This is a topology decision, not a balance
+adjustment: card supply, enemy records, shop effects and rewards retain their
+existing values until the later numeric pass.
 
 ## Locked critical ownership
 
@@ -96,6 +123,9 @@ merely valid:
   route.
 - F10: the throne seal, Queen and Core phase retain a single unambiguous final
   route with no post-seal recovery.
+- Every remaining visual barrier has two neighbors in distinct open regions,
+  and every key reward listed above is unreachable before its named barrier
+  opens.
 
 ## Acceptance order
 
@@ -127,6 +157,9 @@ merely valid:
 - F9 remains the last shop; the F10 throne seal consumes exactly one Sun card.
 - UI stair and gate previews list all remaining guardians, not a legacy
   singular “Boss defeated” boolean.
+- The barrier-topology regression rejects any non-separating `door:` or
+  `gate:` tile and verifies the protected rewards/finale are actually behind
+  their corresponding locks.
 
 No numerical target belongs in this document. Those targets are created only
 after the topology and authored rooms are stable enough for the solver to
