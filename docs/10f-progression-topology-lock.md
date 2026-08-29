@@ -1,8 +1,10 @@
 # 10F progression topology lock
 
-Status: **implemented in the 10F demo overlay; static topology and card-state
-checks are green, awaiting final screenshot review before the lock is declared
-frozen.**
+Status: **frozen in the 10F demo overlay on 2026-08-29.** Static topology and
+card-state checks are green, and GitHub Actions `10F Screenshot Gallery` run
+24 verified the authored maps in real Chrome. Future solver/mutator work may
+change only ordinary encounter placement and numbers; it must not rewrite this
+lock without an explicit topology revision.
 
 This document supersedes the old assumption that every core floor must contain
 one boss who individually seals its upward stair. It locks the progression
