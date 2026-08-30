@@ -122,6 +122,20 @@ test('existence mode returns an exact existence proof after first goal', () => {
   assert.equal(report.stoppedReason, 'goalFound');
 });
 
+test('ordering-only heuristic can direct a witness without changing proof semantics', () => {
+  const adapter = mockAdapter();
+  const report = solve({
+    adapter,
+    mode: 'existence',
+    maxExpanded: 100,
+    heuristic: (state) => state.atk * 10_000
+  });
+  assert.equal(report.heuristic.enabled, true);
+  assert.equal(report.heuristic.proofRole, 'ordering-only');
+  assert.equal(report.existenceExact, true);
+  assert.deepEqual(report.certificate.steps.map((step) => step.eventId), ['power', 'finish-power']);
+});
+
 test('bounded optimization reports unknown exactness instead of claiming optimality', () => {
   const report = solve({ adapter: mockAdapter(), mode: 'optimize', maxExpanded: 1 });
   assert.equal(report.exact, false);

@@ -171,6 +171,15 @@ export function createTowerStateCodec({ baseState, floors, enemies }) {
         plan: engineState.council?.plan ? JSON.parse(JSON.stringify(engineState.council.plan)) : null,
         outcome: engineState.council?.outcome ? JSON.parse(JSON.stringify(engineState.council.outcome)) : null
       },
+      alliance: { bonds: { ...(engineState.alliance?.bonds ?? {}) } },
+      challenge: {
+        selectedId: engineState.challenge?.selectedId ?? null,
+        result: engineState.challenge?.result ? JSON.parse(JSON.stringify(engineState.challenge.result)) : null
+      },
+      doctrine: {
+        selectedId: engineState.doctrine?.selectedId ?? null,
+        legacyOpen: engineState.doctrine?.legacyOpen === true
+      },
       relics: { ...engineState.relics },
       cores: engineState.cores,
       shopPurchases: engineState.shopPurchases,
@@ -206,6 +215,15 @@ export function createTowerStateCodec({ baseState, floors, enemies }) {
         completed: Boolean(compactState.council?.completed),
         plan: compactState.council?.plan ? JSON.parse(JSON.stringify(compactState.council.plan)) : null,
         outcome: compactState.council?.outcome ? JSON.parse(JSON.stringify(compactState.council.outcome)) : null
+      },
+      alliance: { bonds: { ...(compactState.alliance?.bonds ?? {}) } },
+      challenge: {
+        selectedId: compactState.challenge?.selectedId ?? null,
+        result: compactState.challenge?.result ? JSON.parse(JSON.stringify(compactState.challenge.result)) : null
+      },
+      doctrine: {
+        selectedId: compactState.doctrine?.selectedId ?? null,
+        legacyOpen: compactState.doctrine?.legacyOpen === true
       },
       relics: { ...compactState.relics },
       eventStates: [...compactState.eventStates],
@@ -244,6 +262,15 @@ export function createTowerStateCodec({ baseState, floors, enemies }) {
         completed: Boolean(state.council?.completed),
         plan: state.council?.plan ? JSON.parse(JSON.stringify(state.council.plan)) : null,
         outcome: state.council?.outcome ? JSON.parse(JSON.stringify(state.council.outcome)) : null
+      },
+      alliance: { bonds: { ...(state.alliance?.bonds ?? {}) } },
+      challenge: {
+        selectedId: state.challenge?.selectedId ?? null,
+        result: state.challenge?.result ? JSON.parse(JSON.stringify(state.challenge.result)) : null
+      },
+      doctrine: {
+        selectedId: state.doctrine?.selectedId ?? null,
+        legacyOpen: state.doctrine?.legacyOpen === true
       },
       relics: { ...state.relics },
       relicNames: [],

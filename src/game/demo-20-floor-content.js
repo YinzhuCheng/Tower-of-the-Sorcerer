@@ -8,6 +8,7 @@ import {
   DEMO20_SPATIAL_TOPOLOGY,
   validateDemoTwentyFloorSpatialTopology
 } from './demo-20-floor-spatial-topology.js';
+import { getAllianceBondByItem } from './alliance-bonds.js';
 
 export const DEMO20_CONTENT_ID = 'demo-20f-magic-act2-runtime-v2-council';
 export const DEMO20_NUMERIC_BASELINE_ID = 'demo-20f-replayed-numeric-baseline-v2';
@@ -102,14 +103,16 @@ function installActTwoItems(items) {
   for (const [id, relic] of Object.entries(ACT2_RELIC_CATALOG)) {
     if (items[id]) continue;
     const effect = DEMO20_MAGIC_RELIC_EFFECTS[id];
+    const bond = getAllianceBondByItem(id);
     items[id] = {
       name: relic.effectRole === 'restoreMp' ? '魔力回响器' : '以太容量遗物',
       kind: 'stat',
       relic: id,
+      allyBond: bond?.allyId,
       ...cloneEffect(effect),
       description: relic.effectRole === 'restoreMp'
-        ? '恢复魔力；具体数值由第二章数值收敛配置统一管理。'
-        : '提升魔力容量或恢复魔力；具体数值由第二章数值收敛配置统一管理。'
+        ? `恢复魔力；具体数值由第二章数值收敛配置统一管理。${bond ? ` 同时完成「${bond.title}」。` : ''}`
+        : `提升魔力容量或恢复魔力；具体数值由第二章数值收敛配置统一管理。${bond ? ` 同时完成「${bond.title}」。` : ''}`
     };
   }
 }
@@ -194,6 +197,22 @@ function installActTwoDialogues(dialogues) {
       dialogueTurn('绫星·璃', 'hero', '也有人从此失去被询问的资格。你把紧急权力做成王座，再把所有恐惧当成它永不归还的理由。'),
       dialogueTurn('奥术主权者', 'arcane_sovereign', '那你准备拿什么替代命令？别把“自由”当成逃避后果的好听名字。'),
       dialogueTurn('绫星·璃', 'hero', '公开的规则、能被拒绝的同意、共同承担的后果。它不完美，但没有任何人可以躲在完美的命令后面。')
+    ]),
+    bondMilu: dialogueSequence('月镜复写', [
+      dialogueTurn('猫卫长·米露', 'cat_boss', '这枚棱镜保存的不是命令，是每一次有人替同伴挡下攻击的记录。让我把它带回王座前。'),
+      dialogueTurn('绫星·璃', 'hero', '可以。但不是替谁牺牲的命令；你愿意守护时，我会让所有人都知道代价。')
+    ]),
+    bondLanin: dialogueSequence('潮汐导管', [
+      dialogueTurn('深蓝歌姬·澜音', 'whale_boss', '导管能在敌人起咏前听见潮流的反向回声。一次就够，让我们少承受一次不必承受的伤害。'),
+      dialogueTurn('绫星·璃', 'hero', '那就提前说出来。情报不是特权，是让每个人都能决定要不要继续前进。')
+    ]),
+    bondYanli: dialogueSequence('赤焰蓄能', [
+      dialogueTurn('龙姬·焰璃', 'dragon_boss', '蓄能书库没替我保存火焰，它保存了我还想烧穿哪一道枷锁。主权者的核心归我。'),
+      dialogueTurn('绫星·璃', 'hero', '去撕开它。裂口不是胜利本身，但会让后面的人有机会把话说完。')
+    ]),
+    bondYayu: dialogueSequence('影线校准', [
+      dialogueTurn('影织姬·鸦羽', 'shadow_boss', '镜泉会把重复的攻击折回原位。起源核心靠二连击维持节奏；我可以替它织出一次空拍。'),
+      dialogueTurn('绫星·璃', 'hero', '不是偷袭，是公开的反制。它先写死了所有人的节奏，我们只把选择拿回来。')
     ]),
     warCouncil: dialogueSequence('王座前：共鸣会战', [
       dialogueTurn('影织姬·鸦羽', 'shadow_boss', '主权者已把三名随从的出战顺序与魔力配额写死。她相信只要先替所有人决定，结果就会正确。'),

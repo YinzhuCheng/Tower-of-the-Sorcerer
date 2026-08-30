@@ -16,6 +16,17 @@ import {
   setMagicTier,
   teleportToFloor
 } from './game/engine.js';
+import {
+  getChallengeContractBriefing,
+  getSelectedChallengeContract,
+  previewChallengeContract,
+  selectChallengeContract
+} from './game/challenge-contracts.js';
+import {
+  getRouteDoctrineBriefing,
+  getSelectedRouteDoctrine,
+  selectRouteDoctrine
+} from './game/route-doctrines.js';
 import { describeMagicTier, getMagicTierCapacity, getMagicTierCost } from './game/magic-blade.js';
 import {
   getWarCouncilAllies,
@@ -25,6 +36,8 @@ import {
   WAR_COUNCIL_MP_POOL,
   WAR_COUNCIL_MP_STEP
 } from './game/war-council.js';
+import { getFreeRouteIntel } from './game/free-route-intel.js';
+import { getEndingDebrief } from './game/ending-debrief.js';
 import { createMagicTowerScene } from './game/scene.js';
 import { createCanvasTowerScene } from './game/canvas-scene.js';
 import { hydratePortraits, portraitUrl } from './game/portraits.js';
@@ -52,6 +65,9 @@ const elements = {
   relicList: $('#relic-list'),
   preview: $('#battle-preview'),
   logList: $('#log-list'),
+  routeIntelButton: $('#btn-route-intel'),
+  doctrineButton: $('#btn-doctrine'),
+  challengeButton: $('#btn-challenges'),
   codexButton: $('#btn-codex'),
   teleportButton: $('#btn-teleport'),
   magicButton: $('#btn-magic'),
@@ -249,6 +265,8 @@ function updateHud() {
     : `魔力回收率 ${getProgressPercent(state)}%`;
   elements.magicTierButton.disabled = !magic.unlocked;
   elements.magicButton.disabled = !magic.unlocked;
+  elements.challengeButton.disabled = FLOORS[state.floor].number < 11;
+  elements.doctrineButton.disabled = FLOORS[state.floor].number < 11;
 
   const relics = getRelicLabels(state);
   elements.relicList.innerHTML = relics.length
@@ -302,10 +320,12 @@ function showHelp() {
       <p><strong>战斗没有随机数。</strong>主角先攻击；若攻击不高于敌人防御，则无法交战。普通敌人的总损伤为：</p>
       <p><code>(需要攻击回合数 - 1) × max(敌方攻击 - 主角防御, 0)</code></p>
       <p>先制敌人会额外攻击一次；二连击每次反击造成两段伤害；魔法攻击无视防御，但可被“静谧耳坠”削减。</p>
-      <p>日曜、月辉、星蚀卡分别解除对应颜色的魔力结界。钥匙资源可能决定路线，开启结界前应先查看后方收益。</p>
+      <p>日曜、月辉、星蚀卡分别解除对应颜色的魔力结界。钥匙资源可能决定路线；按 I 或点击“路线情报”可免费、反复查看当前与后两层的精确门槛、奖励、敌人及终局公开配置。</p>
       <p>魔眼图鉴与层间罗盘为初始持有物：E 打开图鉴，T 打开楼层罗盘。方向键或 WASD 移动；点击相邻格也可行动。</p>
       <p>商店每十层只设置一处：第 5 阵用于第一章的属性转换，第 15 阵额外提供补魔与扩容。商店不是例行补给站；金币、卡片与 MP 都需要为后续门槛保留。</p>
       <p><strong>第二章魔力附刃。</strong>击败第十阵的黯星核心后，魔力恢复为 100 / 100。可在任意非战斗时设置档位；每一档在一场战斗开始时支付 10 MP，并令该场每次主角攻击额外造成 10 点伤害。附刃不能替代物理破防。</p>
+      <p><strong>路线盟约。</strong>离开第十一阵前必须从赤焰、潮汐、影线中公开选择一条专家路线；另外两条专家宝库将保持封印。选择不扣资源，但会决定卡片投资、MP 曲线、可投靠盟友和最终会战目标。按 R 或点击“路线盟约”可随时复核。</p>
+      <p><strong>见证契约。</strong>从第十一阵起，按 C 或点击“见证契约”可签署一份可选高难目标。规则、所需信物路线、会战胜利窗口都会公开；契约不提供数值奖励，也不会因失败阻断通关。</p>
     `,
     actions: [{ label: '返回游戏', className: 'primary' }]
   });
@@ -373,13 +393,15 @@ function showWarCouncil() {
     const report = simulateWarCouncil(state, plan);
     const allocated = plan.order.reduce((sum, id) => sum + (Number(plan.allocations[id]) || 0), 0);
     const validPlan = report.ok && allocated === WAR_COUNCIL_MP_POOL;
+    const challengeForecast = previewChallengeContract(state, report);
     const forecast = report.ok
       ? `
         <div class="war-council-forecast ${report.won ? 'safe' : 'danger'}">
           <strong>${report.won ? '预演结果：可击破全部忠诚随从' : '预演结果：我方会战失败'}</strong>
           <p>${report.records.map((duel, index) => `${index + 1}. ${escapeHtml(duel.left.name)} vs ${escapeHtml(duel.right.name)} → ${escapeHtml(duel.leftWon ? duel.left.name : duel.right.name)}胜（${duel.exchanges} 次交锋）`).join('<br>')}</p>
           ${report.won ? `<p>可支援终局：${report.survivors.map((unit) => `${escapeHtml(unit.name)} ${formatNumber(unit.hp)}/${formatNumber(unit.maxHp)}`).join('；')}。</p>
-          <p>${report.modifiers.labels.map(escapeHtml).join('<br>')}</p>` : '<p>调整出战顺序或 MP 配额后再试。敌方配置不会变化。</p>'}
+          <p>${report.modifiers.labels.map(escapeHtml).join('<br>')}</p>
+          ${challengeForecast ? `<p class="challenge-result ${challengeForecast.status === 'would-complete' ? 'safe' : 'danger'}"><strong>见证契约「${escapeHtml(challengeForecast.contract.title)}」：</strong>${challengeForecast.status === 'would-complete' ? '此配置会达成。' : `此配置不会达成：${escapeHtml(challengeForecast.missing.join('；'))}。`}</p>` : ''}` : `<p>调整出战顺序或 MP 配额后再试。敌方配置不会变化。</p>${challengeForecast ? `<p class="challenge-result danger"><strong>见证契约「${escapeHtml(challengeForecast.contract.title)}」：</strong>会战未胜，无法达成。</p>` : ''}`}
         </div>`
       : `<div class="war-council-forecast danger"><strong>配置无效</strong><p>${escapeHtml(report.reason)}</p></div>`;
 
@@ -388,7 +410,7 @@ function showWarCouncil() {
       title: `共鸣 MP：${allocated} / ${WAR_COUNCIL_MP_POOL}`,
       body: `
         <div class="dialogue-copy war-council-intro">
-          <p>敌方顺序和魔力配额已经公开；我方必须派出三名盟友并分配全部共鸣 MP。胜者带着剩余战意进入下一轮，所有数值均可预演。</p>
+          <p>敌方顺序和魔力配额已经公开；我方必须派出三名盟友并分配全部共鸣 MP。胜者带着剩余战意进入下一轮，所有数值均可预演。带有“信物共鸣”的盟友若存活，会在终局触发已公开的额外规则。</p>
         </div>
         <section class="war-council-enemy-list">
           <h3>敌方既定阵列</h3>
@@ -400,7 +422,7 @@ function showWarCouncil() {
             <article class="war-council-slot">
               <label>第 ${index + 1} 位
                 <select data-council-slot="${index}">
-                  ${allies.map((ally) => `<option value="${ally.id}" ${ally.id === id ? 'selected' : ''}>${escapeHtml(ally.name)} · ${escapeHtml(ally.role)}</option>`).join('')}
+                  ${allies.map((ally) => `<option value="${ally.id}" ${ally.id === id ? 'selected' : ''}>${escapeHtml(ally.name)} · ${escapeHtml(ally.role)}${ally.bonded ? ' · 信物共鸣' : ''}</option>`).join('')}
                 </select>
               </label>
               <label>分配 MP
@@ -409,6 +431,7 @@ function showWarCouncil() {
                     .map((mp) => `<option value="${mp}" ${mp === plan.allocations[id] ? 'selected' : ''}>${mp} MP</option>`).join('')}
                 </select>
               </label>
+              ${allies.find((ally) => ally.id === id)?.bonded ? `<p class="war-council-bond">${escapeHtml(allies.find((ally) => ally.id === id).bondEffect)}</p>` : ''}
             </article>`).join('')}
         </section>
         ${forecast}
@@ -532,6 +555,192 @@ function showCodex() {
   });
 }
 
+function formatIntelSpecial(threat) {
+  if (threat.special === 'magic') return `魔法伤害 ${formatNumber(threat.magicPower)}/次`;
+  if (threat.special === 'firstStrike') return '先制攻击';
+  if (threat.special === 'doubleHit') return '二连击';
+  return '普通攻击';
+}
+
+function renderRouteIntelFloor(brief, { current = false } = {}) {
+  const gates = brief.gates.length
+    ? `<ul>${brief.gates.map((gate) => {
+      if (gate.type === 'cards') {
+        return `<li><strong>${escapeHtml(gate.name)}</strong>：消耗 ${escapeHtml(gate.requirement)}${gate.target ? ` → ${escapeHtml(gate.target)}` : ''}</li>`;
+      }
+      const guardians = gate.guardians.map((guardian) => `${escapeHtml(guardian.name)}${guardian.defeated ? '（已击败）' : ''}`).join('、');
+      return `<li><strong>${escapeHtml(gate.name)}</strong>：击败 ${guardians}${gate.target ? ` → ${escapeHtml(gate.target)}` : ''}</li>`;
+    }).join('')}</ul>`
+    : '<p class="muted">本层没有额外结界消耗。</p>';
+  const mandatory = brief.mandatory.length
+    ? `<p><strong>上行强制目标：</strong>${brief.mandatory.map((entry) => `${escapeHtml(entry.name)}${entry.defeated ? '（已击败）' : ''}`).join('、')}</p>`
+    : '';
+  const rewards = brief.rewards.length
+    ? `<p><strong>可见奖励：</strong>${brief.rewards.map((entry) => escapeHtml(entry.name)).join('、')}</p>`
+    : '';
+  const threats = brief.threats.length
+    ? `<details class="route-intel-threats" ${current ? 'open' : ''}>
+        <summary>固定威胁与数值（${brief.threats.length}）</summary>
+        <ul>${brief.threats.map((threat) => `<li><strong>${escapeHtml(threat.name)}</strong>：HP ${formatNumber(threat.hp)} · ATK ${formatNumber(threat.atk)} · DEF ${formatNumber(threat.def)} · ${formatIntelSpecial(threat)}${threat.boss ? ' · 守卫单位' : ''}</li>`).join('')}</ul>
+      </details>`
+    : '<p class="muted">当前没有未清除的敌方单位。</p>';
+  return `
+    <article class="route-intel-floor ${current ? 'current-route-intel' : ''}">
+      <h3>F${brief.number} · ${escapeHtml(brief.title)}${current ? ' · 当前' : ''}</h3>
+      <p>${escapeHtml(brief.objective)}</p>
+      <p class="route-intel-note"><strong>路线提示：</strong>${escapeHtml(brief.routeNote)}</p>
+      ${mandatory}
+      <h4>不可逆门槛</h4>
+      ${gates}
+      ${rewards}
+      ${threats}
+    </article>`;
+}
+
+function showRouteIntel() {
+  const intel = getFreeRouteIntel(state);
+  const routeBody = [
+    intel.current ? renderRouteIntelFloor(intel.current, { current: true }) : '',
+    ...intel.upcoming.map((brief) => renderRouteIntelFloor(brief))
+  ].join('');
+  const finale = intel.finale
+    ? `
+      <section class="route-intel-finale">
+        <h3>${escapeHtml(intel.finale.title)}</h3>
+        <p>${escapeHtml(intel.finale.premise)}</p>
+        <p><strong>敌方会战顺序：</strong>${intel.finale.loyalists.map((unit) => `${unit.order}. ${escapeHtml(unit.name)}（${escapeHtml(unit.role)}，固定 ${unit.mp} MP）`).join('；')}</p>
+        <p><strong>可投靠守护者：</strong>${intel.finale.allies.map((unit) => `${escapeHtml(unit.name)}：${escapeHtml(unit.condition)}${unit.bonded ? `；已完成${escapeHtml(unit.bondTitle)}（${unit.bondActivation === 'deployed' ? '出战即触发' : '存活时触发'}：${escapeHtml(unit.bondEffect)}）` : unit.bondTitle ? `；信物路线：${escapeHtml(unit.bondRoute)}（${unit.bondActivation === 'deployed' ? '出战即触发' : '存活时触发'}：${escapeHtml(unit.bondEffect)}）` : ''}`).join('；')}</p>
+        <details class="route-intel-threats"><summary>可选见证契约（不消耗资源）</summary>
+          <ul>${intel.finale.contracts.entries.map((contract) => `<li><strong>${escapeHtml(contract.title)}</strong>：${escapeHtml(contract.summary)} · 基线会战 ${contract.matchingPlanCount}/${contract.totalWinningPlanCount || 0} 套胜利方案符合；信物路线 ${escapeHtml(contract.bondRoute ?? '无')}</li>`).join('')}</ul>
+        </details>
+        <details class="route-intel-threats"><summary>地图级 Boss 规则（公开）</summary>
+          <ul>${intel.finale.bossProtocols.map((protocol) => `<li><strong>${escapeHtml(protocol.title)}</strong>：${escapeHtml(protocol.trigger)} → ${escapeHtml(protocol.reward)}${protocol.active ? ' · 已完成' : ''}</li>`).join('')}</ul>
+        </details>
+        <details class="route-intel-threats"><summary>最终两相基础数值</summary>
+          <ul>${intel.finale.finalEnemies.map((threat) => `<li><strong>${escapeHtml(threat.name)}</strong>：HP ${formatNumber(threat.hp)} · ATK ${formatNumber(threat.atk)} · DEF ${formatNumber(threat.def)} · ${formatIntelSpecial(threat)}</li>`).join('')}</ul>
+        </details>
+      </section>`
+    : '';
+  const doctrines = intel.doctrines
+    ? `<section class="route-intel-finale doctrine-intel">
+        <h3>第二章路线盟约${intel.doctrines.selectedId ? ` · 已签署${escapeHtml(getSelectedRouteDoctrine(state)?.title ?? '')}` : ''}</h3>
+        <p>离开 F11 前必须选择一条；专家路线彼此互斥，信息与门槛完全公开。</p>
+        <ul>${intel.doctrines.entries.map((doctrine) => `<li><strong>${escapeHtml(doctrine.title)}</strong>：${escapeHtml(doctrine.route)} · ${escapeHtml(doctrine.cardPressure)} · ${escapeHtml(doctrine.risk)}${doctrine.selected ? ' · 本轮已签署' : doctrine.locked ? ' · 本轮封印' : ''}</li>`).join('')}</ul>
+      </section>`
+    : '';
+  openModal({
+    kicker: 'FREE ROUTE INTEL · 零资源',
+    title: intel.title,
+    body: `<div class="dialogue-copy route-intel-intro"><p>${escapeHtml(intel.notice)}</p></div><div class="route-intel-list">${routeBody}</div>${doctrines}${finale}`,
+    actions: [{ label: '返回路线', className: 'primary' }]
+  });
+}
+
+function showRouteDoctrine() {
+  if (FLOORS[state.floor].number < 11) {
+    showToast('路线盟约会在第十一阵开放。');
+    return;
+  }
+  const briefing = getRouteDoctrineBriefing(state);
+  const selected = getSelectedRouteDoctrine(state);
+  openModal({
+    kicker: 'ACT II ROUTE DOCTRINE · 全公开',
+    title: selected ? `路线盟约 · ${selected.title}` : '签署第二章路线盟约',
+    closable: Boolean(selected || state.doctrine?.legacyOpen),
+    body: `
+      <div class="dialogue-copy doctrine-intro">
+        <p>这不是买情报，也不扣除任何资源。它是一次公开的战役承诺：三条专家路线会互相封锁，普通上行、F12 月镜宝库与核心通关始终保留。</p>
+        <p>${selected ? '本轮路线已经锁定；下方仍可用于核对投入与会战目标。' : state.doctrine?.legacyOpen ? '这是旧版本存档：专家路线保持原有开放状态。' : '离开 F11 前必须签署一条；选择后不可更换。'}</p>
+      </div>
+      <section class="doctrine-list">
+        ${briefing.entries.map((doctrine) => `
+          <article class="doctrine-card ${doctrine.selected ? 'selected-doctrine' : doctrine.locked ? 'locked-doctrine' : ''}">
+            <div class="doctrine-heading"><h3>${escapeHtml(doctrine.title)}</h3><span>${escapeHtml(doctrine.difficulty)}</span></div>
+            <p><strong>投入：</strong>${escapeHtml(doctrine.route)} · ${escapeHtml(doctrine.cardPressure)}</p>
+            <p><strong>代价：</strong>${escapeHtml(doctrine.risk)}</p>
+            ${doctrine.midgameSupport ? `<p><strong>中段支持：</strong>${escapeHtml(doctrine.midgameSupport)}</p>` : ''}
+            <p><strong>终局回报：</strong>${escapeHtml(doctrine.payoff)}</p>
+            <p><strong>会战目标：</strong>${escapeHtml(doctrine.councilGoal)}</p>
+            ${doctrine.completed ? `<p class="doctrine-complete">已完成信物「${escapeHtml(doctrine.bondTitle ?? '')}」。</p>` : ''}
+            ${!selected && !state.doctrine?.legacyOpen ? `<button data-route-doctrine="${escapeHtml(doctrine.id)}">签署此路线</button>` : doctrine.selected ? '<p class="doctrine-selected-label">本轮已签署</p>' : doctrine.locked ? '<p class="doctrine-locked-label">本轮已封印</p>' : ''}
+          </article>
+        `).join('')}
+      </section>
+    `,
+    actions: selected || state.doctrine?.legacyOpen ? [{ label: '返回游戏', className: 'primary' }] : [],
+    afterOpen: () => {
+      elements.modalBody.querySelectorAll('[data-route-doctrine]').forEach((button) => {
+        button.addEventListener('click', () => {
+          const result = selectRouteDoctrine(state, button.dataset.routeDoctrine);
+          if (!result.ok) {
+            showToast(result.reason);
+            return;
+          }
+          updateHud();
+          autoSave();
+          modalClosable = true;
+          closeModal();
+          showToast(`已签署「${result.doctrine.title}」。其他专家路线本轮封印。`, 2600);
+        });
+      });
+    }
+  });
+}
+
+function renderChallengeResult(entry) {
+  if (!entry.result) return '';
+  if (entry.result.status === 'completed') return '<p class="challenge-result safe">本轮已达成：将写入通关记录。</p>';
+  return `<p class="challenge-result danger">本轮未达成：${escapeHtml(entry.result.missing.join('；'))}。普通通关不受影响。</p>`;
+}
+
+function showWitnessContracts() {
+  if (FLOORS[state.floor].number < 11) {
+    showToast('见证契约在第十一阵进入第二章后开放。');
+    return;
+  }
+  const briefing = getChallengeContractBriefing(state);
+  const selected = getSelectedChallengeContract(state);
+  const councilDone = Boolean(state.council?.completed);
+  openModal({
+    kicker: 'WITNESS CONTRACTS · 零资源',
+    title: selected ? `见证契约 · ${selected.title}` : '签署一份见证契约',
+    body: `
+      <div class="dialogue-copy challenge-intro">
+        <p>这是额外的高难记录，不是资源交易：签署、查看与预演都不会消耗卡片、金币、HP、MP 或回合；即使未达成，主线仍可正常通关。</p>
+        <p>${selected ? '本轮已签署，王座前会战结束后自动结算。' : councilDone ? '会战已经结算，本轮未签署见证契约。' : '每轮只能签署一份，签署后不可更换。下方胜利窗口来自当前公开会战配置。'}</p>
+      </div>
+      <section class="challenge-contract-list">
+        ${briefing.entries.map((entry) => `
+          <article class="challenge-contract ${entry.selected ? 'selected-challenge' : ''}">
+            <div class="challenge-contract-heading"><h3>${escapeHtml(entry.title)}</h3><span>${escapeHtml(entry.difficulty)}</span></div>
+            <p>${escapeHtml(entry.summary)}</p>
+            <p class="challenge-detail">${escapeHtml(entry.detail)}</p>
+            <p><strong>信物路线：</strong>${escapeHtml(entry.bondRoute ?? '无')} · ${entry.bondComplete ? '已完成' : '尚未完成'}</p>
+            ${councilDone ? '' : `<p><strong>公开会战窗口：</strong>${entry.matchingPlanCount} / ${entry.totalWinningPlanCount} 套现有胜利方案会留下该盟友。</p>`}
+            ${renderChallengeResult(entry)}
+            ${!selected && !councilDone ? `<button data-challenge-contract="${escapeHtml(entry.id)}">签署此契约</button>` : entry.selected ? '<p class="challenge-selected-label">本轮已签署</p>' : ''}
+          </article>
+        `).join('')}
+      </section>
+    `,
+    actions: [{ label: '返回游戏', className: 'primary' }],
+    afterOpen: () => {
+      elements.modalBody.querySelectorAll('[data-challenge-contract]').forEach((button) => {
+        button.addEventListener('click', () => {
+          const result = selectChallengeContract(state, button.dataset.challengeContract);
+          if (!result.ok) {
+            showToast(result.reason);
+            return;
+          }
+          updateHud();
+          autoSave();
+          showWitnessContracts();
+        });
+      });
+    }
+  });
+}
+
 function showTeleport() {
   if (!state.relics.compass) {
     showToast('尚未获得层间罗盘。');
@@ -571,16 +780,22 @@ function showTeleport() {
 }
 
 function showVictory() {
+  const ending = getEndingDebrief(state);
   openModal({
     kicker: 'CLEAR',
-    title: '七重魔法阵解除',
+    title: '起源魔源解除',
     body: `
-      <h3 class="victory-title">魔法重新被选择</h3>
+      <h3 class="victory-title">${escapeHtml(ending.title)}</h3>
+      <p class="ending-debrief">${escapeHtml(ending.text)}</p>
+      ${ending.bondTitle ? `<p><strong>触发信物：</strong>${escapeHtml(ending.bondTitle)}${ending.survivorName ? ` · ${escapeHtml(ending.survivorName)}存活` : ''}</p>` : ''}
+      ${ending.activatedRules.length ? `<p><strong>终局支援：</strong>${ending.activatedRules.map(escapeHtml).join('；')}</p>` : ''}
+      ${state.challenge?.selectedId ? `<p><strong>见证契约：</strong>${escapeHtml(getSelectedChallengeContract(state)?.title ?? '未知')} · ${state.challenge.result?.status === 'completed' ? '已达成' : `未达成${state.challenge.result?.missing?.length ? `（${escapeHtml(state.challenge.result.missing.join('；'))}）` : ''}`}</p>` : ''}
+      <p><strong>已完成盟友支线：</strong>${ending.completedBondCount} / 4</p>
       <p>通关生命：<strong>${formatNumber(state.stats.hp)} / ${formatNumber(state.stats.maxHp)}</strong></p>
       <p>最终攻击 / 防御：<strong>${formatNumber(state.stats.atk)} / ${formatNumber(state.stats.def)}</strong></p>
       <p>战斗次数：<strong>${state.battles}</strong>　行动次数：<strong>${state.turns}</strong></p>
-      <p>已回收魔力核心：<strong>${state.cores} / 7</strong></p>
-      <p class="muted">可读取旧存档探索其他资源路线，或重开挑战更少商店购买的通关方式。</p>
+      <p>已回收第一章核心：<strong>${state.cores} / 7</strong></p>
+      <p class="muted">不同盟友支线、会战幸存者与部署方案会导向不同的战后叙事；它们不是高低排序。</p>
     `,
     actions: [
       { label: '保留结算', className: 'primary' },
@@ -617,6 +832,10 @@ function confirmReset() {
 function handleSceneResult(result) {
   updateHud();
   if (result.blocked) showToast(result.reason ?? '无法行动。');
+  if (result.openDoctrine) {
+    showRouteDoctrine();
+    return;
+  }
   if (result.openCouncil) {
     if (result.dialogue) showDialogue(result.dialogue, showWarCouncil);
     else showWarCouncil();
@@ -677,6 +896,9 @@ function bindControls() {
   $('#btn-load').addEventListener('click', loadGame);
   $('#btn-reset').addEventListener('click', confirmReset);
   elements.codexButton.addEventListener('click', showCodex);
+  elements.routeIntelButton.addEventListener('click', showRouteIntel);
+  elements.doctrineButton.addEventListener('click', showRouteDoctrine);
+  elements.challengeButton.addEventListener('click', showWitnessContracts);
   elements.teleportButton.addEventListener('click', showTeleport);
   elements.magicButton.addEventListener('click', showMagicBlade);
   elements.magicTierButton.addEventListener('click', showMagicBlade);
@@ -693,6 +915,9 @@ function bindControls() {
   window.addEventListener('keydown', (event) => {
     if (!elements.modalRoot.classList.contains('hidden')) return;
     if (event.key.toLowerCase() === 'e') showCodex();
+    if (event.key.toLowerCase() === 'i') showRouteIntel();
+    if (event.key.toLowerCase() === 'r') showRouteDoctrine();
+    if (event.key.toLowerCase() === 'c') showWitnessContracts();
     if (event.key.toLowerCase() === 't') showTeleport();
     if (event.key.toLowerCase() === 'm') showMagicBlade();
   });

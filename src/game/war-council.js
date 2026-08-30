@@ -8,6 +8,8 @@
  * the UI preview, engine, solver and balance tooling agree exactly.
  */
 
+import { getAllianceBond, isAllianceBonded } from './alliance-bonds.js';
+
 export const WAR_COUNCIL_ID = 'throne-resonance-council-v1';
 export const WAR_COUNCIL_MP_STEP = 20;
 export const WAR_COUNCIL_MP_POOL = 120;
@@ -100,7 +102,10 @@ function empowered(unit, mp = 0, { loyalist = false } = {}) {
     def: base.def + finiteWhole(growth.def) * tiers,
     arcane: base.arcane + finiteWhole(growth.arcane) * tiers,
     firstStrike: Boolean(unit.firstStrike),
-    finale: unit.finale ? { ...unit.finale } : null
+    finale: unit.finale ? { ...unit.finale } : null,
+    bonded: unit.bonded === true,
+    bondFinale: unit.bondFinale ? { ...unit.bondFinale } : null,
+    bondActivation: unit.bondActivation ?? 'survive'
   };
 }
 
@@ -148,7 +153,21 @@ function defeatedBosses(state) {
 
 export function getWarCouncilAllies(state) {
   const defeated = defeatedBosses(state);
-  return WAR_COUNCIL_ALLIES.filter((ally) => defeated.has(ally.enemyId));
+  return WAR_COUNCIL_ALLIES
+    .filter((ally) => defeated.has(ally.enemyId))
+    .map((ally) => {
+      const bond = getAllianceBond(ally.id);
+      const bonded = isAllianceBonded(state, ally.id);
+      return Object.freeze({
+        ...ally,
+        bonded,
+        bondTitle: bond?.title ?? null,
+        bondRoute: bond?.route ?? null,
+        bondEffect: bonded ? bond?.finale?.label ?? null : null,
+        bondActivation: bond?.activation ?? 'survive',
+        bondFinale: bonded && bond?.finale ? { ...bond.finale } : null
+      });
+    });
 }
 
 export function createWarCouncilState() {
@@ -189,11 +208,14 @@ export function validateWarCouncilPlan(state, plan) {
   return { ok: true, order: [...order], allocations, totalMp, available };
 }
 
-function finaleModifiers(survivors) {
+function finaleModifiers(survivors, deployed) {
   let hpMultiplier = 1;
   let atkPenalty = 0;
   let defPenalty = 0;
   let magicPenalty = 0;
+  let counterattackGuard = 0;
+  let magicCounterattackGuard = 0;
+  let disableDoubleHit = false;
   const labels = [];
   for (const survivor of survivors) {
     const effect = survivor.finale;
@@ -202,9 +224,38 @@ function finaleModifiers(survivors) {
     atkPenalty += effect.atkPenalty ?? 0;
     defPenalty += effect.defPenalty ?? 0;
     magicPenalty += effect.magicPenalty ?? 0;
-    labels.push(effect.label);
+    counterattackGuard += effect.counterattackGuard ?? 0;
+    magicCounterattackGuard += effect.magicCounterattackGuard ?? 0;
+    disableDoubleHit ||= effect.disableDoubleHit === true;
+    if (effect.label) labels.push(effect.label);
   }
-  return Object.freeze({ hpMultiplier, atkPenalty, defPenalty, magicPenalty, labels: Object.freeze(labels) });
+  const activatedBonds = [
+    ...deployed.filter((ally) => ally.bonded && ally.bondActivation === 'deployed'),
+    ...survivors.filter((ally) => ally.bonded && ally.bondActivation !== 'deployed')
+  ];
+  for (const ally of activatedBonds) {
+    const effect = ally.bondFinale;
+    if (effect) {
+      hpMultiplier *= effect.hpMultiplier ?? 1;
+      atkPenalty += effect.atkPenalty ?? 0;
+      defPenalty += effect.defPenalty ?? 0;
+      magicPenalty += effect.magicPenalty ?? 0;
+      counterattackGuard += effect.counterattackGuard ?? 0;
+      magicCounterattackGuard += effect.magicCounterattackGuard ?? 0;
+      disableDoubleHit ||= effect.disableDoubleHit === true;
+      if (effect.label) labels.push(effect.label);
+    }
+  }
+  return Object.freeze({
+    hpMultiplier,
+    atkPenalty,
+    defPenalty,
+    magicPenalty,
+    counterattackGuard,
+    magicCounterattackGuard,
+    disableDoubleHit,
+    labels: Object.freeze(labels)
+  });
 }
 
 /** Simulate all three ordered fights.  The winning combatant keeps remaining
@@ -213,7 +264,8 @@ function finaleModifiers(survivors) {
 export function simulateWarCouncil(state, plan) {
   const validation = validateWarCouncilPlan({ ...state, council: { completed: false } }, plan);
   if (!validation.ok) return Object.freeze(validation);
-  const allies = validation.order.map((id) => empowered(ALLY_BY_ID.get(id), validation.allocations[id]));
+  const availableById = new Map(validation.available.map((ally) => [ally.id, ally]));
+  const allies = validation.order.map((id) => empowered(availableById.get(id) ?? ALLY_BY_ID.get(id), validation.allocations[id]));
   const loyalists = WAR_COUNCIL_LOYALISTS.map((unit) => empowered(unit, unit.mp, { loyalist: true }));
   const records = [];
   const remainingHpByAlly = new Map(allies.map((ally) => [ally.id, 0]));
@@ -243,11 +295,13 @@ export function simulateWarCouncil(state, plan) {
     ? allies.map((ally) => ({ ...ally, hp: remainingHpByAlly.get(ally.id) ?? 0 }))
       .filter((ally) => ally.hp > 0)
     : [];
-  const modifiers = finaleModifiers(survivors);
+  const modifiers = finaleModifiers(survivors, allies);
   const remainingAllyHp = survivors.reduce((sum, unit) => sum + unit.hp, 0);
   const score = (won ? 1_000_000 : 0) + survivors.length * 10_000 + remainingAllyHp
     + modifiers.atkPenalty * 60 + modifiers.defPenalty * 80 + modifiers.magicPenalty * 70
-    + Math.round((1 - modifiers.hpMultiplier) * 100_000);
+    + Math.round((1 - modifiers.hpMultiplier) * 100_000)
+    + modifiers.counterattackGuard * 2_000 + modifiers.magicCounterattackGuard * 1_500
+    + (modifiers.disableDoubleHit ? 3_000 : 0);
   return Object.freeze({
     ok: true,
     won,
@@ -316,6 +370,10 @@ export function getWarCouncilBalanceReport(state) {
 export function applyWarCouncilFinaleModifier(enemy, council) {
   if (!council?.completed || !council?.outcome?.modifiers) return enemy;
   const modifiers = council.outcome.modifiers;
+  const counterattackGuard = finiteWhole(modifiers.counterattackGuard);
+  const magicCounterattackGuard = finiteWhole(modifiers.magicCounterattackGuard);
+  const disableDoubleHit = modifiers.disableDoubleHit === true;
+  const special = disableDoubleHit && enemy.special === 'doubleHit' ? undefined : enemy.special;
   return {
     ...enemy,
     hp: Math.max(1, Math.ceil(enemy.hp * (modifiers.hpMultiplier ?? 1))),
@@ -324,6 +382,8 @@ export function applyWarCouncilFinaleModifier(enemy, council) {
     magicPower: Number.isFinite(enemy.magicPower)
       ? Math.max(0, enemy.magicPower - (modifiers.magicPenalty ?? 0))
       : enemy.magicPower,
+    special,
+    councilRules: Object.freeze({ counterattackGuard, magicCounterattackGuard, disableDoubleHit }),
     councilModified: true
   };
 }

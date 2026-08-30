@@ -106,6 +106,35 @@ test('v2 saves receive an untouched war-council state', () => {
   assert.deepEqual(restored.council, { completed: false, plan: null, outcome: null });
 });
 
+test('v3 saves receive empty optional ally-bond progress without changing council history', () => {
+  const state = createInitialState();
+  const legacy = { ...state, version: 3 };
+  delete legacy.alliance;
+  const restored = deserializeState(JSON.stringify(legacy));
+  assert.deepEqual(restored.alliance, { bonds: { milu: false, lanin: false, yanli: false, yayu: false } });
+  assert.deepEqual(restored.council, state.council);
+});
+
+test('v4 saves receive an empty optional witness-contract record without changing bonds', () => {
+  const state = createInitialState();
+  state.alliance.bonds.yayu = true;
+  const legacy = { ...state, version: 4 };
+  delete legacy.challenge;
+  const restored = deserializeState(JSON.stringify(legacy));
+  assert.deepEqual(restored.challenge, { selectedId: null, result: null });
+  assert.deepEqual(restored.alliance, state.alliance);
+});
+
+test('v5 saves retain completed contracts and receive a legacy-open route doctrine', () => {
+  const state = createInitialState();
+  state.challenge = { selectedId: 'red-witness', result: null };
+  const legacy = { ...state, version: 5 };
+  delete legacy.doctrine;
+  const restored = deserializeState(JSON.stringify(legacy));
+  assert.deepEqual(restored.challenge, state.challenge);
+  assert.deepEqual(restored.doctrine, { selectedId: null, legacyOpen: true });
+});
+
 test('battle is blocked when attack cannot pierce defense or damage is exactly lethal', () => {
   const noPierce = calculateBattle({ hp: 100, atk: 10, def: 10 }, { hp: 20, atk: 10, def: 10 });
   assert.equal(noPierce.winnable, false);

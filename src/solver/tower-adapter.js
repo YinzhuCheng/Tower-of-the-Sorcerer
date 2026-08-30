@@ -16,6 +16,13 @@ import {
   tryMove
 } from '../game/engine.js';
 import { enumerateWarCouncilPlans } from '../game/war-council.js';
+import {
+  ROUTE_DOCTRINES,
+  canSelectRouteDoctrine,
+  routeDoctrineGateAccess,
+  selectRouteDoctrine
+} from '../game/route-doctrines.js';
+import { getRouteDoctrineExitBlocker } from '../game/route-doctrine-effects.js';
 import { automaticItemRank, isSafeAutomaticItem } from './normalization-policy.js';
 import { hashValue, stableStringify } from './state.js';
 import { createTowerStateCodec } from './tower-codec.js';
@@ -148,6 +155,15 @@ function summarizeState(state) {
       modifiers: { ...(state.council.outcome?.modifiers ?? {}) },
       survivors: (state.council.outcome?.survivors ?? []).map((unit) => unit.id).sort()
     } : { completed: false },
+    alliance: { bonds: { ...(state.alliance?.bonds ?? {}) } },
+    challenge: {
+      selectedId: state.challenge?.selectedId ?? null,
+      result: state.challenge?.result ? { ...state.challenge.result, missing: [...(state.challenge.result.missing ?? [])] } : null
+    },
+    doctrine: {
+      selectedId: state.doctrine?.selectedId ?? null,
+      legacyOpen: state.doctrine?.legacyOpen === true
+    },
     relics: { ...state.relics },
     cores: state.cores,
     shopPurchases: state.shopPurchases,
@@ -184,6 +200,15 @@ function structuralKeyObject(state) {
       modifiers: compact.council.outcome?.modifiers ?? {},
       survivors: (compact.council.outcome?.survivors ?? []).map((unit) => unit.id).sort()
     } : null,
+    alliance: { ...(compact.alliance?.bonds ?? {}) },
+    challenge: {
+      selectedId: compact.challenge?.selectedId ?? null,
+      result: compact.challenge?.result ?? null
+    },
+    doctrine: {
+      selectedId: compact.doctrine?.selectedId ?? null,
+      legacyOpen: compact.doctrine?.legacyOpen === true
+    },
     shopPurchases: compact.shopPurchases,
     visitedMask: bitMask(FLOORS.map((_, index) => index), (index) => compact.visitedFloors.includes(index)),
     victory: compact.victory
@@ -239,6 +264,8 @@ function makeStep({ stateBefore, stateAfter, action, result = null, automatic = 
         ? { targetFloor: action.targetFloor }
         : action.kind === 'council'
           ? { order: [...action.plan.order], allocations: { ...action.plan.allocations } }
+          : action.kind === 'doctrine'
+            ? { doctrineId: action.doctrineId }
         : { token: action.token, magicTier: action.magicTier ?? 0 },
     resourcesBefore: stateResources(stateBefore),
     resourcesAfter: stateResources(stateAfter),
@@ -279,6 +306,7 @@ function enumerateTileActionsEngine(state) {
       if (token === 'council') continue;
       const parsed = parseToken(token);
       if (parsed.type === 'rune' && floorSequence) continue;
+      if (token === 'U' && getRouteDoctrineExitBlocker(state)) continue;
       const path = pathToAdjacent(state, x, y, {
         completedRunes: completedRunesForState(state)
       });
@@ -292,6 +320,7 @@ function enumerateTileActionsEngine(state) {
         // action graph.  New authored gates are still checked here before
         // expansion so a blocked action does not inflate the frontier.
         const floor = FLOORS[state.floor];
+        if (!routeDoctrineGateAccess(state, parsed.id).ok) continue;
         const cardRequirements = getCardGateRequirements(floor, parsed.id);
         const guardianRequirements = getGuardianGateRequirements(floor, parsed.id);
         if (cardRequirements && getMissingCards(state.cards, cardRequirements).length > 0) continue;
@@ -352,6 +381,16 @@ function enumerateCouncilActionsEngine(state) {
     token: 'council',
     path,
     plan: report.plan
+  }));
+}
+
+function enumerateDoctrineActionsEngine(state) {
+  if (!canSelectRouteDoctrine(state)) return [];
+  return ROUTE_DOCTRINES.map((doctrine) => ({
+    kind: 'doctrine',
+    eventId: `f11:doctrine:${doctrine.id}`,
+    doctrineId: doctrine.id,
+    token: 'doctrine'
   }));
 }
 
@@ -513,6 +552,17 @@ function applyTeleportActionEngine(state, action) {
   };
 }
 
+function applyDoctrineActionEngine(state, action) {
+  const before = cloneEngineState(state);
+  const result = selectRouteDoctrine(state, action.doctrineId);
+  if (!result.ok) return { ok: false, reason: result.reason, state };
+  return {
+    ok: true,
+    state,
+    steps: [makeStep({ stateBefore: before, stateAfter: state, action, result: null })]
+  };
+}
+
 function applyCouncilActionEngine(state, action) {
   const before = cloneEngineState(state);
   const transit = executePath(state, action.path);
@@ -562,6 +612,7 @@ function normalize(state) {
 
 function actionPriority(action) {
   if (action.kind === 'council') return 900;
+  if (action.kind === 'doctrine') return 850;
   if (action.kind === 'sequence') return 750;
   if (action.kind === 'shop') return 600;
   if (action.kind === 'teleport') return 50;
@@ -578,6 +629,7 @@ function enumerateActions(state) {
   const actions = [
     ...enumerateTileActionsEngine(engineState),
     ...enumerateCouncilActionsEngine(engineState),
+    ...enumerateDoctrineActionsEngine(engineState),
     ...(sequenceAction ? [sequenceAction] : []),
     ...enumerateShopActionsEngine(engineState),
     ...enumerateTeleportActionsEngine(engineState)
@@ -592,6 +644,7 @@ function applyAction(state, action) {
   else if (action.kind === 'sequence') applied = applySequenceActionEngine(engineState, action);
   else if (action.kind === 'shop') applied = applyShopActionEngine(engineState, action);
   else if (action.kind === 'teleport') applied = applyTeleportActionEngine(engineState, action);
+  else if (action.kind === 'doctrine') applied = applyDoctrineActionEngine(engineState, action);
   else if (action.kind === 'council') applied = applyCouncilActionEngine(engineState, action);
   else return { ok: false, reason: `Unknown macro action kind: ${action.kind}`, state };
   if (!applied.ok) return { ...applied, state };

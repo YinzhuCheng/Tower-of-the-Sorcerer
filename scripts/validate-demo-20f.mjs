@@ -31,6 +31,14 @@ const { createDemoTwentyFloorForwardWitnessAdapter } = await import('../src/tune
 const { runDemoTwentyFloorMilestones } = await import('../src/tuner/demo-20-floor-milestone-solver.js');
 const { replayTowerStepSkeletonToState } = await import('../src/solver/replay.js');
 const { evaluateWarCouncilBalance } = await import('../src/tuner/war-council-balance.js');
+const {
+  evaluateDoctrineRoutePortfolio,
+  evaluateDoctrineRoutePortfolioCandidate
+} = await import('../src/tuner/demo-20-route-portfolio.js');
+const {
+  createDemoTwentyFloorMutationCatalog,
+  withDemoTwentyFloorCandidate
+} = await import('../src/tuner/demo-20-floor-mutations.js');
 
 const baseAdapter = createTowerAdapter();
 const adapter = createDemoTwentyFloorForwardWitnessAdapter(baseAdapter);
@@ -45,8 +53,33 @@ const replay = result.completed
   ? replayTowerStepSkeletonToState(result.routeSteps, { adapter: baseAdapter, requireGoal: true })
   : { ok: false, final: null };
 const council = evaluateWarCouncilBalance();
+const portfolio = evaluateDoctrineRoutePortfolio({
+  adapter,
+  routeSteps: f10Witness.routeSteps,
+  maxExpanded: 6_000,
+  maxGenerated: 110_000
+});
+const mutationCatalog = createDemoTwentyFloorMutationCatalog();
+const councilHardening = mutationCatalog.find((entry) => entry.id === 'council-loyalists-harden10');
+const hardRouteProbe = councilHardening
+  ? evaluateDoctrineRoutePortfolioCandidate({
+    candidate: { mutationIds: [councilHardening.id] },
+    catalog: mutationCatalog,
+    adapter,
+    routeSteps: f10Witness.routeSteps,
+    maxExpanded: 3_500,
+    maxGenerated: 70_000
+  })
+  : null;
+const hardCouncilProbe = councilHardening
+  ? withDemoTwentyFloorCandidate(
+    { mutationIds: [councilHardening.id] },
+    mutationCatalog,
+    () => evaluateWarCouncilBalance()
+  )
+  : null;
 const report = {
-  publishable: Boolean(result.completed && replay.ok && council.publishable),
+  publishable: Boolean(result.completed && replay.ok && council.publishable && portfolio.publishable),
   contentId: DEMO20_CONTENT_ID,
   floors: FLOORS.length,
   f10WitnessSteps: f10Witness.routeSteps.length,
@@ -64,6 +97,24 @@ const report = {
     winRate: council.winRate,
     loyalistScale: council.tuning.loyalistScale
   },
+  doctrinePortfolio: {
+    id: portfolio.id,
+    publishable: portfolio.publishable,
+    entries: portfolio.entries.map((entry) => ({
+      id: entry.id,
+      completed: entry.completed,
+      minNormalizedHpMargin: entry.minNormalizedHpMargin,
+      insights: entry.insights
+    }))
+  },
+  hardeningProbe: hardRouteProbe ? {
+    mutationId: councilHardening.id,
+    allRoutesRemainPlayable: hardRouteProbe.publishable,
+    councilWindowRemainsPlayable: hardCouncilProbe?.publishable === true,
+    acceptedForRelease: hardRouteProbe.publishable && hardCouncilProbe?.publishable === true,
+    councilWinningPlans: hardCouncilProbe?.winningPlans ?? null,
+    entries: hardRouteProbe.entries.map((entry) => ({ id: entry.id, completed: entry.completed }))
+  } : null,
   final: replay.final
 };
 console.log(JSON.stringify(report, null, 2));

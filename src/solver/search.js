@@ -10,6 +10,15 @@ function defaultPriority(state, adapter) {
   return adapter.priority ? adapter.priority(state) : defaultObjective(state, adapter);
 }
 
+function heuristicPriority(state, adapter, heuristic) {
+  const candidate = heuristic ?? adapter.searchHeuristic;
+  if (typeof candidate !== 'function') return 0;
+  const value = candidate(state, adapter);
+  // Heuristics may reorder work but must never become a proof bound.  An
+  // invalid hint therefore degrades to zero rather than corrupting a search.
+  return Number.isFinite(value) ? value : 0;
+}
+
 function defaultFrontierKey(state, adapter) {
   return adapter.frontierKey ? adapter.frontierKey(state) : adapter.structuralKey(state);
 }
@@ -82,6 +91,7 @@ export function solve({
   maxGenerated = 1_000_000,
   incumbentLowerBound = null,
   incumbentWitness = null,
+  heuristic = null,
   solverVersion = 'macro-pareto-v0.4'
 } = {}) {
   if (!adapter) throw new Error('solve() requires an adapter.');
@@ -227,7 +237,7 @@ export function solve({
   const initialInsertion = frontier.insert(initialLabel.key, initialLabel);
   recordAcceptedStage(initialLabel.state, initialInsertion);
   recordAcceptedKey(initialKey);
-  queue.push(initialLabel, defaultPriority(initialLabel.state, adapter));
+  queue.push(initialLabel, defaultPriority(initialLabel.state, adapter) + heuristicPriority(initialLabel.state, adapter, heuristic));
   queuePeak = Math.max(queuePeak, queue.size);
 
   while (queue.size > 0) {
@@ -324,7 +334,7 @@ export function solve({
       prunedDominated += insertion.removed.length;
       recordAcceptedStage(nextState, insertion);
       recordAcceptedKey(key);
-      queue.push(nextLabel, defaultPriority(nextState, adapter));
+      queue.push(nextLabel, defaultPriority(nextState, adapter) + heuristicPriority(nextState, adapter, heuristic));
       queuePeak = Math.max(queuePeak, queue.size);
     }
   }
@@ -393,6 +403,10 @@ export function solve({
       expandedByStage,
       generatedByAction,
       stageTelemetry: compactStageTelemetry()
+    },
+    heuristic: {
+      enabled: typeof (heuristic ?? adapter.searchHeuristic) === 'function',
+      proofRole: 'ordering-only'
     }
   };
 }

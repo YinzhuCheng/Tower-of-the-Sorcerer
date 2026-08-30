@@ -146,8 +146,8 @@ const FLOOR_MAPS = Object.freeze({
     number: 16,
     map: parseMap(`
       # # # # # # # # # # #
-      # item:mirrorReservoir . enemy:mirrorCantor # . . . . U #
-      # . enemy:mirrorDuelist . gate:mirrorReservoirVault . . . . . #
+      # item:mirrorReservoir gate:mirrorReservoirVault enemy:mirrorCantor # . . . . U #
+      # # enemy:mirrorDuelist . . . . . . . #
       # . . . # . # # # . #
       # # # # # . # . # . #
       # item:moon . . # . # . # . #

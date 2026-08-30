@@ -10,9 +10,15 @@ export const DEMO20_MILESTONES = Object.freeze([
 function stageAdapter(baseAdapter, milestone) {
   return {
     ...baseAdapter,
-    // Arrival stages are proof-of-reachability checkpoints. The final stage
-    // retains the real engine victory predicate.
+    // A milestone may provide a semantic predicate (for example, "the tide
+    // relic was actually claimed") instead of only a floor number.  This
+    // lets the route portfolio prove the irreversible decisions in short,
+    // replayed segments instead of asking one blind search to rediscover all
+    // of them at the final boss.
     isGoal(state) {
+      if (typeof milestone.isGoal === 'function') return milestone.isGoal(state, baseAdapter);
+      // Arrival stages are proof-of-reachability checkpoints. The final stage
+      // retains the real engine victory predicate.
       return milestone.floorIndex == null
         ? baseAdapter.isGoal(state)
         : state.floor >= milestone.floorIndex;

@@ -131,9 +131,55 @@ async function applyMainProductionPatch() {
   if (result.moved || result.battle || result.floorChanged || result.bossEncounter) autoSave();
 }
 `;
-  source = source.includes(oldCouncilResult)
-    ? replaceRequired(source, oldCouncilResult, newCouncilResult, 'Boss dialogue result flow with council')
-    : replaceRequired(source, oldResult, newResult, 'Boss dialogue result flow');
+  const oldDoctrineCouncilResult = `function handleSceneResult(result) {
+  updateHud();
+  if (result.blocked) showToast(result.reason ?? '无法行动。');
+  if (result.openDoctrine) {
+    showRouteDoctrine();
+    return;
+  }
+  if (result.openCouncil) {
+    if (result.dialogue) showDialogue(result.dialogue, showWarCouncil);
+    else showWarCouncil();
+    return;
+  }
+  if (result.openShop) showShop();
+  if (result.dialogue) {
+    showDialogue(result.dialogue, result.victory ? showVictory : null);
+  } else if (result.victory) {
+    showVictory();
+  }
+  if (result.moved || result.battle || result.floorChanged) autoSave();
+}
+`;
+  const newDoctrineCouncilResult = `function handleSceneResult(result) {
+  updateHud();
+  if (result.blocked) showToast(result.reason ?? '无法行动。');
+  if (result.openDoctrine) {
+    showRouteDoctrine();
+    return;
+  }
+  if (result.openCouncil) {
+    if (result.dialogue) showDialogue(result.dialogue, showWarCouncil);
+    else showWarCouncil();
+    return;
+  }
+  if (result.openShop) showShop();
+  if (result.bossEncounter && result.dialogue) {
+    showDialogue(result.dialogue, () => scene?.move(result.resumeDirection), { finalLabel: '开战' });
+  } else if (result.dialogue) {
+    showDialogue(result.dialogue, result.victory ? showVictory : null);
+  } else if (result.victory) {
+    showVictory();
+  }
+  if (result.moved || result.battle || result.floorChanged || result.bossEncounter) autoSave();
+}
+`;
+  source = source.includes(oldDoctrineCouncilResult)
+    ? replaceRequired(source, oldDoctrineCouncilResult, newDoctrineCouncilResult, 'Boss dialogue result flow with doctrine and council')
+    : source.includes(oldCouncilResult)
+      ? replaceRequired(source, oldCouncilResult, newCouncilResult, 'Boss dialogue result flow with council')
+      : replaceRequired(source, oldResult, newResult, 'Boss dialogue result flow');
 
   await writeFile(mainPath, source);
 }

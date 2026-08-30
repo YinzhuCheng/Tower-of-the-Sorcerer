@@ -1,4 +1,5 @@
 import { buyShopUpgrade, createInitialState, DIRECTIONS, getTile, resolveWarCouncil, setMagicTier, teleportToFloor, tryMove } from '../game/engine.js';
+import { selectRouteDoctrine } from '../game/route-doctrines.js';
 import { hashValue } from './state.js';
 import { createTowerAdapter } from './tower-adapter.js';
 
@@ -80,7 +81,10 @@ function applyCertificateSteps(state, certificate, { battleLog = null } = {}) {
       break;
     }
 
-    if (step.kind === 'teleport') {
+    if (step.kind === 'doctrine') {
+      const result = selectRouteDoctrine(state, step.action?.doctrineId);
+      if (!result.ok) failures.push({ index, eventId: step.eventId, reason: result.reason });
+    } else if (step.kind === 'teleport') {
       const result = teleportToFloor(state, step.action.targetFloor);
       if (!result.ok) failures.push({ index, eventId: step.eventId, reason: result.reason });
     } else {

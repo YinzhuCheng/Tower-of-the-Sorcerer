@@ -34,6 +34,29 @@ import {
   normalizeWarCouncilState,
   simulateWarCouncil
 } from './war-council.js';
+import {
+  completeAllianceBond,
+  createAllianceState,
+  normalizeAllianceState
+} from './alliance-bonds.js';
+import {
+  createChallengeState,
+  normalizeChallengeState,
+  settleChallengeContract
+} from './challenge-contracts.js';
+import {
+  createLegacyRouteDoctrineState,
+  createRouteDoctrineState,
+  canCompleteAllianceBondForDoctrine,
+  normalizeRouteDoctrineState,
+  routeDoctrineGateAccess
+} from './route-doctrines.js';
+import {
+  applyRouteDoctrineEnemyDefeatEffect,
+  applyRouteDoctrineGateEffect,
+  getRouteDoctrineExitBlocker
+} from './route-doctrine-effects.js';
+import { applyBossProtocolModifier, getProtocolDefeatLog } from './boss-protocols.js';
 
 export const DIRECTIONS = {
   up: { dx: 0, dy: -1 },
@@ -87,6 +110,9 @@ export function createInitialState() {
     cards: { sun: 0, moon: 0, star: 0 },
     magic: createDormantMagicState(),
     council: createWarCouncilState(),
+    alliance: createAllianceState(),
+    challenge: createChallengeState(),
+    doctrine: createRouteDoctrineState(),
     relics: {
       codex: initialRelics.has('codex'),
       compass: initialRelics.has('compass'),
@@ -116,9 +142,24 @@ export function validateStateShape(state) {
   if (!state || state.version !== GAME_VERSION) return false;
   if (!Number.isInteger(state.floor) || state.floor < 0 || state.floor >= FLOORS.length) return false;
   if (!Array.isArray(state.floorStates) || state.floorStates.length !== FLOORS.length) return false;
-  if (!state.stats || !state.cards || !state.relics || !state.magic || !state.council) return false;
+  if (!state.stats || !state.cards || !state.relics || !state.magic || !state.council || !state.alliance || !state.challenge || !state.doctrine) return false;
   if (!Number.isFinite(state.magic.mp) || !Number.isFinite(state.magic.maxMp)) return false;
   return true;
+}
+
+// V7 corrects the F16 mirror-vault topology: the guardian gate belongs
+// between the two guardians and the relic, not between the player and those
+// guardians. Preserve every other mutable tile so an in-progress save keeps
+// its actual cards, battles, and opened barriers.
+function migrateMirrorVaultGatePosition(state) {
+  const map = state?.floorStates?.[15]?.map;
+  if (!Array.isArray(map) || map.length <= 2 || !Array.isArray(map[1]) || !Array.isArray(map[2])) return state;
+  if (map[2][4] === 'gate:mirrorReservoirVault') {
+    map[2][4] = '.';
+    map[2][1] = '#';
+    map[1][2] = 'gate:mirrorReservoirVault';
+  }
+  return state;
 }
 
 export function serializeState(state) {
@@ -132,7 +173,13 @@ export function deserializeState(serialized) {
 }
 
 /**
- * V1 saves predate player magic; V2 predates the deterministic F20 council.
+ * V1 saves predate player magic; V2 predates the deterministic F20 council;
+ * V3 predates optional Act II ally bonds; V4 predates optional witness
+ * contracts; V5 predates the mutually-exclusive Act II route doctrine; V6
+ * predates the repaired F16 mirror-vault topology and its explicit route
+ * expedition support.
+ * Older saves receive a legacy-open doctrine so an in-progress campaign never
+ * discovers that a formerly legal specialist gate is suddenly sealed.
  * Their map shape is still checked against the active content after this
  * narrow, deterministic data migration.
  */
@@ -141,15 +188,25 @@ export function migrateState(state) {
   if (state.version === GAME_VERSION) {
     state.magic = normalizeMagicState(state.magic);
     state.council = normalizeWarCouncilState(state.council);
+    state.alliance = normalizeAllianceState(state.alliance);
+    state.challenge = normalizeChallengeState(state.challenge);
+    state.doctrine = normalizeRouteDoctrineState(state.doctrine);
     return state;
   }
-  if (state.version === 1 || state.version === 2) {
-    return {
+  if (state.version === 1 || state.version === 2 || state.version === 3 || state.version === 4 || state.version === 5 || state.version === 6) {
+    return migrateMirrorVaultGatePosition({
       ...state,
       version: GAME_VERSION,
       magic: state.version === 1 ? createDormantMagicState() : normalizeMagicState(state.magic),
-      council: createWarCouncilState()
-    };
+      council: state.version === 1 || state.version === 2 ? createWarCouncilState() : normalizeWarCouncilState(state.council),
+      alliance: state.version === 1 || state.version === 2 || state.version === 3
+        ? createAllianceState()
+        : normalizeAllianceState(state.alliance),
+      challenge: state.version >= 5 ? normalizeChallengeState(state.challenge) : createChallengeState(),
+      doctrine: state.version === 6
+        ? normalizeRouteDoctrineState(state.doctrine)
+        : createLegacyRouteDoctrineState()
+    });
   }
   return state;
 }
@@ -188,7 +245,8 @@ export function getEffectiveEnemy(state, enemyId) {
   if (!enemy) return null;
   const isFinalePhase = FLOORS[state?.floor]?.number === 20
     && (enemyId === 'arcaneSovereign' || enemyId === 'originCore');
-  return isFinalePhase ? applyWarCouncilFinaleModifier(enemy, state?.council) : enemy;
+  const protocolAdjusted = applyBossProtocolModifier(state, enemyId, enemy);
+  return isFinalePhase ? applyWarCouncilFinaleModifier(protocolAdjusted, state?.council) : protocolAdjusted;
 }
 
 /** Resolve a previously previewed plan through the authoritative state. */
@@ -214,9 +272,15 @@ export function resolveWarCouncil(state, plan) {
     }
   };
   const cleared = clearCouncilTiles(state);
+  const challenge = settleChallengeContract(state);
   addLog(state, `共鸣会战获胜：${report.survivors.map((unit) => unit.name).join('、')}仍可支援最终战。`);
   for (const label of report.modifiers.labels) addLog(state, label);
-  return { ok: true, report, cleared };
+  if (challenge) {
+    addLog(state, challenge.result.status === 'completed'
+      ? `完成见证契约「${challenge.contract.title}」。`
+      : `见证契约「${challenge.contract.title}」未达成：${challenge.result.missing.join('；')}。`);
+  }
+  return { ok: true, report, cleared, challenge };
 }
 
 export function parseToken(token) {
@@ -274,6 +338,15 @@ export function calculateBattle(stats, enemy, relics = {}, magic = {}) {
   const rounds = Math.ceil(enemy.hp / heroDamage);
   let counterAttacks = Math.max(0, rounds - 1);
   if (enemy.special === 'firstStrike') counterAttacks += 1;
+
+  // Bonded council survivors can alter a final battle's authored rule rather
+  // than only shaving numbers.  These guards are deterministic and visible in
+  // the same preview that calculates all other fixed damage.
+  const councilRules = enemy.councilRules ?? {};
+  counterAttacks = Math.max(0, counterAttacks - Math.max(0, Math.floor(councilRules.counterattackGuard ?? 0)));
+  if (enemy.special === 'magic') {
+    counterAttacks = Math.max(0, counterAttacks - Math.max(0, Math.floor(councilRules.magicCounterattackGuard ?? 0)));
+  }
 
   let enemyDamage;
   if (enemy.special === 'magic') {
@@ -344,8 +417,17 @@ export function collectItem(state, itemId) {
       }
     }
   }
+  let allianceBond = null;
+  if (item.allyBond) {
+    allianceBond = canCompleteAllianceBondForDoctrine(state, item.allyBond)
+      ? completeAllianceBond(state, item.allyBond)
+      : { ok: false, skipped: true, reason: '这件专家信物属于本轮未签署的路线。' };
+    if (allianceBond.ok && allianceBond.completed) {
+      addLog(state, `完成盟友信物「${allianceBond.bond.title}」：${allianceBond.bond.route} 的选择将带入终局。`);
+    }
+  }
   addLog(state, `获得「${item.name}」：${item.description}`);
-  return item;
+  return { ...item, allianceBond };
 }
 
 function openGateTiles(state, gateId) {
@@ -506,6 +588,18 @@ export function tryMove(state, dx, dy) {
       return result;
     }
     const floor = FLOORS[state.floor];
+    if (floor.number === 11 && !state.doctrine?.selectedId && state.doctrine?.legacyOpen !== true) {
+      result.blocked = true;
+      result.openDoctrine = true;
+      result.reason = '离开复苏环廊前，必须公开签署一条第二章路线盟约。';
+      return result;
+    }
+    const doctrineExitBlocker = getRouteDoctrineExitBlocker(state);
+    if (doctrineExitBlocker) {
+      result.blocked = true;
+      result.reason = doctrineExitBlocker;
+      return result;
+    }
     const remainingGuardians = getRemainingExitGuardianIds(getFloorState(state), floor);
     if (remainingGuardians.length > 0) {
       result.blocked = true;
@@ -546,6 +640,11 @@ export function tryMove(state, dx, dy) {
     moveTo(state, x, y);
     result.moved = true;
     result.item = item;
+    if (item.allianceBond?.completed) {
+      result.allianceBond = item.allianceBond.bond.allyId;
+      result.dialogue = item.allianceBond.bond.dialogue;
+      if (result.dialogue && !state.storySeen.includes(result.dialogue)) state.storySeen.push(result.dialogue);
+    }
     result.events.push({ type: 'item', itemId: parsed.id, item });
     return result;
   }
@@ -586,6 +685,12 @@ export function tryMove(state, dx, dy) {
 
   if (parsed.type === 'gate') {
     const floor = FLOORS[state.floor];
+    const doctrineAccess = routeDoctrineGateAccess(state, parsed.id);
+    if (!doctrineAccess.ok) {
+      result.blocked = true;
+      result.reason = doctrineAccess.reason;
+      return result;
+    }
     const cardRequirements = getCardGateRequirements(floor, parsed.id);
     if (cardRequirements) {
       const missing = getMissingCards(state.cards, cardRequirements);
@@ -601,6 +706,11 @@ export function tryMove(state, dx, dy) {
       addLog(state, `卡片共鸣：消耗 ${formatCardRequirement(cardRequirements)}。`);
       result.moved = true;
       result.events.push({ type: 'cardGate', gateId: parsed.id, requirements: cardRequirements, opened });
+      const doctrineEffect = applyRouteDoctrineGateEffect(state, parsed.id);
+      if (doctrineEffect) {
+        addLog(state, doctrineEffect.label);
+        result.events.push({ type: 'routeDoctrineEffect', effect: doctrineEffect });
+      }
       return result;
     }
 
@@ -647,6 +757,13 @@ export function tryMove(state, dx, dy) {
     const earnedGold = enemy.gold * (state.relics.lucky ? 2 : 1);
     state.stats.gold += earnedGold;
     addLog(state, `击败「${enemy.name}」，损失 ${battle.totalDamage} 生命，获得 ${earnedGold} 金币。`);
+    const protocolLog = getProtocolDefeatLog(FLOORS[state.floor]?.number, parsed.id);
+    if (protocolLog) addLog(state, protocolLog);
+    const doctrineDefeatEffect = applyRouteDoctrineEnemyDefeatEffect(state, parsed.id);
+    if (doctrineDefeatEffect) {
+      addLog(state, doctrineDefeatEffect.label);
+      result.events.push({ type: 'routeDoctrineEffect', effect: doctrineDefeatEffect });
+    }
 
     if (enemy.phaseNext) {
       setTile(state, x, y, `enemy:${enemy.phaseNext}`);
