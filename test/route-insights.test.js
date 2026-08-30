@@ -19,3 +19,28 @@ test('route insights explain a real commitment, a resource fork, council plan, a
   assert.match(insights.at(-1).text, /F17/);
   assert.match(insights.find((entry) => entry.kind === 'council').text, /milu → yanli → yayu/);
 });
+
+test('route insights call out the Act III charter and its explicit card fork', async () => {
+  const { deriveRouteInsights } = await import('../src/solver/route-insights.js');
+  const insights = deriveRouteInsights({
+    charter: { title: '灯塔接力章程' },
+    steps: [
+      { kind: 'charter', action: { charterId: 'relay' } },
+      { kind: 'tile', action: { token: 'gate:f24RelayAnnex' } }
+    ]
+  });
+  assert.ok(insights.some((entry) => entry.id === 'charter:relay'));
+  assert.ok(insights.some((entry) => entry.id === 'gate:f24RelayAnnex'));
+});
+
+test('route insights explain the two-phase MP split rather than only the final HP total', () => {
+  const insights = deriveRouteInsights({
+    battleLog: [
+      { floor: 30, enemyId: 'archiveWarden', battle: { magicCost: 60, totalDamage: 18_000 }, normalizedHpMargin: 0.4 },
+      { floor: 30, enemyId: 'errataCore', battle: { magicCost: 200, totalDamage: 14_000 }, normalizedHpMargin: 0.2 }
+    ]
+  });
+  const budget = insights.find((entry) => entry.id === 'finale-magic-budget');
+  assert.deepEqual(budget.magicCosts, [60, 200]);
+  assert.match(budget.text, /60 MP.*200 MP/);
+});

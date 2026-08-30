@@ -27,6 +27,11 @@ import {
   getSelectedRouteDoctrine,
   selectRouteDoctrine
 } from './game/route-doctrines.js';
+import {
+  getAct3CharterBriefing,
+  getSelectedAct3Charter,
+  selectAct3Charter
+} from './game/act3-charters.js';
 import { describeMagicTier, getMagicTierCapacity, getMagicTierCost } from './game/magic-blade.js';
 import {
   getWarCouncilAllies,
@@ -267,6 +272,7 @@ function updateHud() {
   elements.magicButton.disabled = !magic.unlocked;
   elements.challengeButton.disabled = FLOORS[state.floor].number < 11;
   elements.doctrineButton.disabled = FLOORS[state.floor].number < 11;
+  elements.doctrineButton.textContent = FLOORS[state.floor].number >= 21 ? '修复章程' : '路线盟约';
 
   const relics = getRelicLabels(state);
   elements.relicList.innerHTML = relics.length
@@ -326,6 +332,7 @@ function showHelp() {
       <p><strong>第二章魔力附刃。</strong>击败第十阵的黯星核心后，魔力恢复为 100 / 100。可在任意非战斗时设置档位；每一档在一场战斗开始时支付 10 MP，并令该场每次主角攻击额外造成 10 点伤害。附刃不能替代物理破防。</p>
       <p><strong>路线盟约。</strong>离开第十一阵前必须从赤焰、潮汐、影线中公开选择一条专家路线；另外两条专家宝库将保持封印。选择不扣资源，但会决定卡片投资、MP 曲线、可投靠盟友和最终会战目标。按 R 或点击“路线盟约”可随时复核。</p>
       <p><strong>见证契约。</strong>从第十一阵起，按 C 或点击“见证契约”可签署一份可选高难目标。规则、所需信物路线、会战胜利窗口都会公开；契约不提供数值奖励，也不会因失败阻断通关。</p>
+      <p><strong>第三幕修复章程。</strong>击败起源核心后，F21 的上行阶梯会要求从夜航、校验、接力中公开选择一条。它们各自锁定一座侧库，卡片价格、敌人、回报和最终影响都可免费查看；没有购买情报的环节。</p>
     `,
     actions: [{ label: '返回游戏', className: 'primary' }]
   });
@@ -628,15 +635,68 @@ function showRouteIntel() {
         <ul>${intel.doctrines.entries.map((doctrine) => `<li><strong>${escapeHtml(doctrine.title)}</strong>：${escapeHtml(doctrine.route)} · ${escapeHtml(doctrine.cardPressure)} · ${escapeHtml(doctrine.risk)}${doctrine.selected ? ' · 本轮已签署' : doctrine.locked ? ' · 本轮封印' : ''}</li>`).join('')}</ul>
       </section>`
     : '';
+  const charters = intel.charters
+    ? `<section class="route-intel-finale doctrine-intel">
+        <h3>第三幕修复章程${intel.charters.selectedId ? ` · 已签署${escapeHtml(getSelectedAct3Charter(state)?.title ?? '')}` : ''}</h3>
+        <p>离开 F21 前必须选择一份；三座侧库互斥，信息、卡片价格、敌人与终局效果均完全公开。</p>
+        <ul>${intel.charters.entries.map((charter) => `<li><strong>${escapeHtml(charter.title)}</strong>：${escapeHtml(charter.route)} · ${escapeHtml(charter.cost)} · ${escapeHtml(charter.payoff)}${charter.selected ? charter.completed ? ' · 本轮已完成' : ' · 本轮已签署' : charter.locked ? ' · 本轮封印' : ''}</li>`).join('')}</ul>
+      </section>`
+    : '';
   openModal({
     kicker: 'FREE ROUTE INTEL · 零资源',
     title: intel.title,
-    body: `<div class="dialogue-copy route-intel-intro"><p>${escapeHtml(intel.notice)}</p></div><div class="route-intel-list">${routeBody}</div>${doctrines}${finale}`,
+    body: `<div class="dialogue-copy route-intel-intro"><p>${escapeHtml(intel.notice)}</p></div><div class="route-intel-list">${routeBody}</div>${doctrines}${charters}${finale}`,
     actions: [{ label: '返回路线', className: 'primary' }]
   });
 }
 
+function showAct3Charter() {
+  const briefing = getAct3CharterBriefing(state);
+  const selected = getSelectedAct3Charter(state);
+  openModal({
+    kicker: 'ACT III CHARTER · 全公开',
+    title: selected ? `修复章程 · ${selected.title}` : '签署第三幕修复章程',
+    closable: Boolean(selected || state.charter?.legacyOpen),
+    body: `
+      <div class="dialogue-copy doctrine-intro">
+        <p>这不是购买情报，也不扣资源。它是一份公开的修复优先级：只保留一座侧库，其余两座在本轮封存。真正的卡片与战斗代价仍在相应楼层结算。</p>
+        <p>${selected ? (briefing.completedId ? '本轮的章程支线已经完成；下方保留最终规则与错失路线，供你复盘。' : '本轮章程已经锁定；仍可查看其侧库的价格、敌人与最终回报。') : state.charter?.legacyOpen ? '这是旧版本存档：第三幕章程不追溯强制。' : '离开 F21 前必须签署一份；选择后不可更换。'}</p>
+      </div>
+      <section class="doctrine-list">
+        ${briefing.entries.map((charter) => `
+          <article class="doctrine-card ${charter.selected ? 'selected-doctrine' : charter.locked ? 'locked-doctrine' : ''}">
+            <div class="doctrine-heading"><h3>${escapeHtml(charter.title)}</h3><span>${escapeHtml(charter.difficulty)}</span></div>
+            <p><strong>路线：</strong>${escapeHtml(charter.route)}</p>
+            <p><strong>投入：</strong>${escapeHtml(charter.cost)}</p>
+            <p><strong>取舍：</strong>${escapeHtml(charter.risk)}</p>
+            <p><strong>兑现：</strong>${escapeHtml(charter.payoff)}</p>
+            ${charter.completed ? '<p class="doctrine-complete">本轮已完成此章程。</p>' : ''}
+            ${!selected && !state.charter?.legacyOpen ? `<button data-act3-charter="${escapeHtml(charter.id)}">签署此章程</button>` : charter.selected ? '<p class="doctrine-selected-label">本轮已签署</p>' : charter.locked ? '<p class="doctrine-locked-label">本轮封存</p>' : ''}
+          </article>`).join('')}
+      </section>
+    `,
+    actions: selected || state.charter?.legacyOpen ? [{ label: '返回游戏', className: 'primary' }] : [],
+    afterOpen: () => {
+      elements.modalBody.querySelectorAll('[data-act3-charter]').forEach((button) => {
+        button.addEventListener('click', () => {
+          const result = selectAct3Charter(state, button.dataset.act3Charter);
+          if (!result.ok) { showToast(result.reason); return; }
+          updateHud();
+          autoSave();
+          modalClosable = true;
+          closeModal();
+          showToast(`已签署「${result.charter.title}」。另外两座侧库本轮封存。`, 2600);
+        });
+      });
+    }
+  });
+}
+
 function showRouteDoctrine() {
+  if (FLOORS[state.floor].number >= 21) {
+    showAct3Charter();
+    return;
+  }
   if (FLOORS[state.floor].number < 11) {
     showToast('路线盟约会在第十一阵开放。');
     return;
@@ -783,11 +843,12 @@ function showVictory() {
   const ending = getEndingDebrief(state);
   openModal({
     kicker: 'CLEAR',
-    title: '起源魔源解除',
+    title: '余烬灯塔解除',
     body: `
       <h3 class="victory-title">${escapeHtml(ending.title)}</h3>
       <p class="ending-debrief">${escapeHtml(ending.text)}</p>
       ${ending.bondTitle ? `<p><strong>触发信物：</strong>${escapeHtml(ending.bondTitle)}${ending.survivorName ? ` · ${escapeHtml(ending.survivorName)}存活` : ''}</p>` : ''}
+      ${ending.completedCharter ? `<p><strong>完成章程：</strong>${escapeHtml(ending.completedCharter)}</p>` : ''}
       ${ending.activatedRules.length ? `<p><strong>终局支援：</strong>${ending.activatedRules.map(escapeHtml).join('；')}</p>` : ''}
       ${state.challenge?.selectedId ? `<p><strong>见证契约：</strong>${escapeHtml(getSelectedChallengeContract(state)?.title ?? '未知')} · ${state.challenge.result?.status === 'completed' ? '已达成' : `未达成${state.challenge.result?.missing?.length ? `（${escapeHtml(state.challenge.result.missing.join('；'))}）` : ''}`}</p>` : ''}
       <p><strong>已完成盟友支线：</strong>${ending.completedBondCount} / 4</p>
@@ -834,6 +895,10 @@ function handleSceneResult(result) {
   if (result.blocked) showToast(result.reason ?? '无法行动。');
   if (result.openDoctrine) {
     showRouteDoctrine();
+    return;
+  }
+  if (result.openCharter) {
+    showAct3Charter();
     return;
   }
   if (result.openCouncil) {

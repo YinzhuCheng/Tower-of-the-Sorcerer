@@ -11,6 +11,7 @@
     "test": "node --test",
     "validate": "node scripts/validate-game.mjs",
     "validate:demo20": "node scripts/validate-demo-20f.mjs",
+    "validate:demo30": "node scripts/validate-demo-30f.mjs",
     "validate:demo10": "node scripts/validate-demo-10f.mjs",
     "prove:demo10": "node scripts/witness-demo-10f-route.mjs --require",
     "certify:demo10:routes": "node scripts/certify-demo-10f-route-families.mjs --require",
@@ -25,6 +26,6 @@
     "search:demo10:topology": "node scripts/search-demo-10f-topology.mjs",
     "scan:demo20:feasibility": "node scripts/scan-demo-20f-feasibility.mjs",
     "analyze:topology": "node scripts/analyze-semantic-topology.mjs",
-    "check": "npm run validate && npm run validate:demo20 && npm run build"
+    "check": "npm run validate && npm run validate:demo20 && npm run validate:demo30 && npm run build"
   }
 }

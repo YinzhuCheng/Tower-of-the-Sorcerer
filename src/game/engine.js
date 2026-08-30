@@ -56,6 +56,15 @@ import {
   applyRouteDoctrineGateEffect,
   getRouteDoctrineExitBlocker
 } from './route-doctrine-effects.js';
+import {
+  act3CharterGateAccess,
+  applyAct3CharterEnemyDefeatEffect,
+  applyAct3CharterFinaleModifier,
+  completeAct3CharterForItem,
+  createAct3CharterState,
+  createLegacyAct3CharterState,
+  normalizeAct3CharterState
+} from './act3-charters.js';
 import { applyBossProtocolModifier, getProtocolDefeatLog } from './boss-protocols.js';
 
 export const DIRECTIONS = {
@@ -113,6 +122,7 @@ export function createInitialState() {
     alliance: createAllianceState(),
     challenge: createChallengeState(),
     doctrine: createRouteDoctrineState(),
+    charter: createAct3CharterState(),
     relics: {
       codex: initialRelics.has('codex'),
       compass: initialRelics.has('compass'),
@@ -142,7 +152,7 @@ export function validateStateShape(state) {
   if (!state || state.version !== GAME_VERSION) return false;
   if (!Number.isInteger(state.floor) || state.floor < 0 || state.floor >= FLOORS.length) return false;
   if (!Array.isArray(state.floorStates) || state.floorStates.length !== FLOORS.length) return false;
-  if (!state.stats || !state.cards || !state.relics || !state.magic || !state.council || !state.alliance || !state.challenge || !state.doctrine) return false;
+  if (!state.stats || !state.cards || !state.relics || !state.magic || !state.council || !state.alliance || !state.challenge || !state.doctrine || !state.charter) return false;
   if (!Number.isFinite(state.magic.mp) || !Number.isFinite(state.magic.maxMp)) return false;
   return true;
 }
@@ -158,6 +168,21 @@ function migrateMirrorVaultGatePosition(state) {
     map[2][4] = '.';
     map[2][1] = '#';
     map[1][2] = 'gate:mirrorReservoirVault';
+  }
+  return state;
+}
+
+function appendMissingFloorStates(state) {
+  if (!Array.isArray(state?.floorStates)) return state;
+  while (state.floorStates.length < FLOORS.length) {
+    const floor = FLOORS[state.floorStates.length];
+    state.floorStates.push({
+      map: cloneMap(floor.map),
+      switches: [],
+      sequenceProgress: 0,
+      defeatedBossIds: [],
+      bossDefeated: false
+    });
   }
   return state;
 }
@@ -191,10 +216,11 @@ export function migrateState(state) {
     state.alliance = normalizeAllianceState(state.alliance);
     state.challenge = normalizeChallengeState(state.challenge);
     state.doctrine = normalizeRouteDoctrineState(state.doctrine);
+    state.charter = normalizeAct3CharterState(state.charter);
     return state;
   }
-  if (state.version === 1 || state.version === 2 || state.version === 3 || state.version === 4 || state.version === 5 || state.version === 6) {
-    return migrateMirrorVaultGatePosition({
+  if (state.version === 1 || state.version === 2 || state.version === 3 || state.version === 4 || state.version === 5 || state.version === 6 || state.version === 7) {
+    return appendMissingFloorStates(migrateMirrorVaultGatePosition({
       ...state,
       version: GAME_VERSION,
       magic: state.version === 1 ? createDormantMagicState() : normalizeMagicState(state.magic),
@@ -203,10 +229,14 @@ export function migrateState(state) {
         ? createAllianceState()
         : normalizeAllianceState(state.alliance),
       challenge: state.version >= 5 ? normalizeChallengeState(state.challenge) : createChallengeState(),
-      doctrine: state.version === 6
+      doctrine: state.version === 6 || state.version === 7
         ? normalizeRouteDoctrineState(state.doctrine)
-        : createLegacyRouteDoctrineState()
-    });
+        : createLegacyRouteDoctrineState(),
+      // A save made before the third act must never discover a new mandatory
+      // commitment halfway through a completed campaign.  Legacy mode keeps
+      // its existing world accessible while fresh runs get the full charter.
+      charter: createLegacyAct3CharterState()
+    }));
   }
   return state;
 }
@@ -246,7 +276,8 @@ export function getEffectiveEnemy(state, enemyId) {
   const isFinalePhase = FLOORS[state?.floor]?.number === 20
     && (enemyId === 'arcaneSovereign' || enemyId === 'originCore');
   const protocolAdjusted = applyBossProtocolModifier(state, enemyId, enemy);
-  return isFinalePhase ? applyWarCouncilFinaleModifier(protocolAdjusted, state?.council) : protocolAdjusted;
+  const councilAdjusted = isFinalePhase ? applyWarCouncilFinaleModifier(protocolAdjusted, state?.council) : protocolAdjusted;
+  return applyAct3CharterFinaleModifier(state, enemyId, councilAdjusted);
 }
 
 /** Resolve a previously previewed plan through the authoritative state. */
@@ -426,8 +457,12 @@ export function collectItem(state, itemId) {
       addLog(state, `完成盟友信物「${allianceBond.bond.title}」：${allianceBond.bond.route} 的选择将带入终局。`);
     }
   }
+  const charterCompletion = completeAct3CharterForItem(state, itemId);
+  if (charterCompletion?.completed) {
+    addLog(state, `完成修复章程「${charterCompletion.charter.title}」：其公开回报将带入后续残局。`);
+  }
   addLog(state, `获得「${item.name}」：${item.description}`);
-  return { ...item, allianceBond };
+  return { ...item, allianceBond, charterCompletion };
 }
 
 function openGateTiles(state, gateId) {
@@ -594,6 +629,12 @@ export function tryMove(state, dx, dy) {
       result.reason = '离开复苏环廊前，必须公开签署一条第二章路线盟约。';
       return result;
     }
+    if (floor.number === 21 && !state.charter?.selectedId && state.charter?.legacyOpen !== true) {
+      result.blocked = true;
+      result.openCharter = true;
+      result.reason = '离开余烬登记库前，必须公开签署一份第三幕修复章程。';
+      return result;
+    }
     const doctrineExitBlocker = getRouteDoctrineExitBlocker(state);
     if (doctrineExitBlocker) {
       result.blocked = true;
@@ -691,6 +732,12 @@ export function tryMove(state, dx, dy) {
       result.reason = doctrineAccess.reason;
       return result;
     }
+    const charterAccess = act3CharterGateAccess(state, parsed.id);
+    if (!charterAccess.ok) {
+      result.blocked = true;
+      result.reason = charterAccess.reason;
+      return result;
+    }
     const cardRequirements = getCardGateRequirements(floor, parsed.id);
     if (cardRequirements) {
       const missing = getMissingCards(state.cards, cardRequirements);
@@ -763,6 +810,11 @@ export function tryMove(state, dx, dy) {
     if (doctrineDefeatEffect) {
       addLog(state, doctrineDefeatEffect.label);
       result.events.push({ type: 'routeDoctrineEffect', effect: doctrineDefeatEffect });
+    }
+    const charterDefeatEffect = applyAct3CharterEnemyDefeatEffect(state, parsed.id);
+    if (charterDefeatEffect) {
+      addLog(state, charterDefeatEffect.label);
+      result.events.push({ type: 'act3CharterEffect', effect: charterDefeatEffect });
     }
 
     if (enemy.phaseNext) {

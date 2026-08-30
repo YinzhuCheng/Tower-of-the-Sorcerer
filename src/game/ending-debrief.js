@@ -3,6 +3,7 @@
  * carried the council through. No score, stat or replay state is changed. */
 
 import { getAllianceBond, isAllianceBonded } from './alliance-bonds.js';
+import { getSelectedAct3Charter, isAct3CharterCompleted } from './act3-charters.js';
 
 const SURVIVOR_ENDINGS = Object.freeze({
   milu: Object.freeze({
@@ -34,6 +35,36 @@ export function getEndingDebrief(state) {
     .map(([id]) => getAllianceBond(id))
     .filter(Boolean);
   const activatedRules = [...(state?.council?.outcome?.modifiers?.labels ?? [])];
+  const charter = getSelectedAct3Charter(state);
+  const charterCompleted = charter ? isAct3CharterCompleted(state, charter.id) : false;
+
+  const charterEpilogue = charterCompleted ? {
+    shelter: {
+      title: '夜航仍亮着',
+      text: '米露把夜航护送印挂回灯塔入口。它不再决定谁有资格通过，只把每一段危险路程和愿意同行的人写在同一盏灯下。'
+    },
+    audit: {
+      title: '每一页都能被改正',
+      text: '校验簿留在开放的工作台上。错误没有被掩成“必要损失”，也没有人再能把改正它的钥匙锁进抽屉。'
+    },
+    relay: {
+      title: '灯塔接力',
+      text: '接力电容被拆成许多小灯，交到夜班、巡路人和信使手里。求援不必等一位英雄醒来，回应也不必只来自一个人。'
+    }
+  }[charter.id] : null;
+
+  if (charterEpilogue) {
+    return Object.freeze({
+      kind: `act3-${charter.id}`,
+      title: charterEpilogue.title,
+      text: charterEpilogue.text,
+      survivorName: survivor?.name ?? null,
+      bondTitle: charter.title,
+      completedBondCount: completedBonds.length,
+      completedCharter: charter.title,
+      activatedRules: Object.freeze([...activatedRules, charter.finale?.label].filter(Boolean))
+    });
+  }
 
   if (bondedSurvivor && SURVIVOR_ENDINGS[survivorId]) {
     const variant = SURVIVOR_ENDINGS[survivorId];
@@ -44,6 +75,7 @@ export function getEndingDebrief(state) {
       survivorName: survivor.name,
       bondTitle: bond?.title ?? null,
       completedBondCount: completedBonds.length,
+      completedCharter: null,
       activatedRules: Object.freeze(activatedRules)
     });
   }
@@ -57,6 +89,7 @@ export function getEndingDebrief(state) {
     survivorName: survivor?.name ?? null,
     bondTitle: null,
     completedBondCount: completedBonds.length,
+    completedCharter: null,
     activatedRules: Object.freeze(activatedRules)
   });
 }

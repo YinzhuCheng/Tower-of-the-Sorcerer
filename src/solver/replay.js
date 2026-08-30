@@ -1,5 +1,6 @@
 import { buyShopUpgrade, createInitialState, DIRECTIONS, getTile, resolveWarCouncil, setMagicTier, teleportToFloor, tryMove } from '../game/engine.js';
 import { selectRouteDoctrine } from '../game/route-doctrines.js';
+import { selectAct3Charter } from '../game/act3-charters.js';
 import { hashValue } from './state.js';
 import { createTowerAdapter } from './tower-adapter.js';
 
@@ -60,6 +61,7 @@ function battleTraceEntry(step, result, statsBefore, statsAfter) {
     statsAfter: { ...statsAfter },
     battle: {
       winnable: battle.winnable,
+      magicCost: battle.magicCost,
       heroDamage: battle.heroDamage,
       enemyDamage: battle.enemyDamage,
       rounds: battle.rounds,
@@ -83,6 +85,9 @@ function applyCertificateSteps(state, certificate, { battleLog = null } = {}) {
 
     if (step.kind === 'doctrine') {
       const result = selectRouteDoctrine(state, step.action?.doctrineId);
+      if (!result.ok) failures.push({ index, eventId: step.eventId, reason: result.reason });
+    } else if (step.kind === 'charter') {
+      const result = selectAct3Charter(state, step.action?.charterId);
       if (!result.ok) failures.push({ index, eventId: step.eventId, reason: result.reason });
     } else if (step.kind === 'teleport') {
       const result = teleportToFloor(state, step.action.targetFloor);

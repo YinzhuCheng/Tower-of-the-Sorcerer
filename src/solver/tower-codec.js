@@ -180,6 +180,12 @@ export function createTowerStateCodec({ baseState, floors, enemies }) {
         selectedId: engineState.doctrine?.selectedId ?? null,
         legacyOpen: engineState.doctrine?.legacyOpen === true
       },
+      charter: {
+        selectedId: engineState.charter?.selectedId ?? null,
+        completedId: engineState.charter?.completedId ?? null,
+        relayRefilled: engineState.charter?.relayRefilled === true,
+        legacyOpen: engineState.charter?.legacyOpen === true
+      },
       relics: { ...engineState.relics },
       cores: engineState.cores,
       shopPurchases: engineState.shopPurchases,
@@ -224,6 +230,12 @@ export function createTowerStateCodec({ baseState, floors, enemies }) {
       doctrine: {
         selectedId: compactState.doctrine?.selectedId ?? null,
         legacyOpen: compactState.doctrine?.legacyOpen === true
+      },
+      charter: {
+        selectedId: compactState.charter?.selectedId ?? null,
+        completedId: compactState.charter?.completedId ?? null,
+        relayRefilled: compactState.charter?.relayRefilled === true,
+        legacyOpen: compactState.charter?.legacyOpen === true
       },
       relics: { ...compactState.relics },
       eventStates: [...compactState.eventStates],
@@ -271,6 +283,12 @@ export function createTowerStateCodec({ baseState, floors, enemies }) {
       doctrine: {
         selectedId: state.doctrine?.selectedId ?? null,
         legacyOpen: state.doctrine?.legacyOpen === true
+      },
+      charter: {
+        selectedId: state.charter?.selectedId ?? null,
+        completedId: state.charter?.completedId ?? null,
+        relayRefilled: state.charter?.relayRefilled === true,
+        legacyOpen: state.charter?.legacyOpen === true
       },
       relics: { ...state.relics },
       relicNames: [],

@@ -23,6 +23,12 @@ import {
   selectRouteDoctrine
 } from '../game/route-doctrines.js';
 import { getRouteDoctrineExitBlocker } from '../game/route-doctrine-effects.js';
+import {
+  ACT3_CHARTERS,
+  act3CharterGateAccess,
+  canSelectAct3Charter,
+  selectAct3Charter
+} from '../game/act3-charters.js';
 import { automaticItemRank, isSafeAutomaticItem } from './normalization-policy.js';
 import { hashValue, stableStringify } from './state.js';
 import { createTowerStateCodec } from './tower-codec.js';
@@ -164,6 +170,12 @@ function summarizeState(state) {
       selectedId: state.doctrine?.selectedId ?? null,
       legacyOpen: state.doctrine?.legacyOpen === true
     },
+    charter: {
+      selectedId: state.charter?.selectedId ?? null,
+      completedId: state.charter?.completedId ?? null,
+      relayRefilled: state.charter?.relayRefilled === true,
+      legacyOpen: state.charter?.legacyOpen === true
+    },
     relics: { ...state.relics },
     cores: state.cores,
     shopPurchases: state.shopPurchases,
@@ -208,6 +220,12 @@ function structuralKeyObject(state) {
     doctrine: {
       selectedId: compact.doctrine?.selectedId ?? null,
       legacyOpen: compact.doctrine?.legacyOpen === true
+    },
+    charter: {
+      selectedId: compact.charter?.selectedId ?? null,
+      completedId: compact.charter?.completedId ?? null,
+      relayRefilled: compact.charter?.relayRefilled === true,
+      legacyOpen: compact.charter?.legacyOpen === true
     },
     shopPurchases: compact.shopPurchases,
     visitedMask: bitMask(FLOORS.map((_, index) => index), (index) => compact.visitedFloors.includes(index)),
@@ -265,7 +283,9 @@ function makeStep({ stateBefore, stateAfter, action, result = null, automatic = 
         : action.kind === 'council'
           ? { order: [...action.plan.order], allocations: { ...action.plan.allocations } }
           : action.kind === 'doctrine'
-            ? { doctrineId: action.doctrineId }
+          ? { doctrineId: action.doctrineId }
+          : action.kind === 'charter'
+            ? { charterId: action.charterId }
         : { token: action.token, magicTier: action.magicTier ?? 0 },
     resourcesBefore: stateResources(stateBefore),
     resourcesAfter: stateResources(stateAfter),
@@ -321,6 +341,7 @@ function enumerateTileActionsEngine(state) {
         // expansion so a blocked action does not inflate the frontier.
         const floor = FLOORS[state.floor];
         if (!routeDoctrineGateAccess(state, parsed.id).ok) continue;
+        if (!act3CharterGateAccess(state, parsed.id).ok) continue;
         const cardRequirements = getCardGateRequirements(floor, parsed.id);
         const guardianRequirements = getGuardianGateRequirements(floor, parsed.id);
         if (cardRequirements && getMissingCards(state.cards, cardRequirements).length > 0) continue;
@@ -391,6 +412,16 @@ function enumerateDoctrineActionsEngine(state) {
     eventId: `f11:doctrine:${doctrine.id}`,
     doctrineId: doctrine.id,
     token: 'doctrine'
+  }));
+}
+
+function enumerateCharterActionsEngine(state) {
+  if (!canSelectAct3Charter(state)) return [];
+  return ACT3_CHARTERS.map((charter) => ({
+    kind: 'charter',
+    eventId: `f21:charter:${charter.id}`,
+    charterId: charter.id,
+    token: 'charter'
   }));
 }
 
@@ -563,6 +594,17 @@ function applyDoctrineActionEngine(state, action) {
   };
 }
 
+function applyCharterActionEngine(state, action) {
+  const before = cloneEngineState(state);
+  const result = selectAct3Charter(state, action.charterId);
+  if (!result.ok) return { ok: false, reason: result.reason, state };
+  return {
+    ok: true,
+    state,
+    steps: [makeStep({ stateBefore: before, stateAfter: state, action, result: null })]
+  };
+}
+
 function applyCouncilActionEngine(state, action) {
   const before = cloneEngineState(state);
   const transit = executePath(state, action.path);
@@ -612,6 +654,7 @@ function normalize(state) {
 
 function actionPriority(action) {
   if (action.kind === 'council') return 900;
+  if (action.kind === 'charter') return 875;
   if (action.kind === 'doctrine') return 850;
   if (action.kind === 'sequence') return 750;
   if (action.kind === 'shop') return 600;
@@ -630,6 +673,7 @@ function enumerateActions(state) {
     ...enumerateTileActionsEngine(engineState),
     ...enumerateCouncilActionsEngine(engineState),
     ...enumerateDoctrineActionsEngine(engineState),
+    ...enumerateCharterActionsEngine(engineState),
     ...(sequenceAction ? [sequenceAction] : []),
     ...enumerateShopActionsEngine(engineState),
     ...enumerateTeleportActionsEngine(engineState)
@@ -645,6 +689,7 @@ function applyAction(state, action) {
   else if (action.kind === 'shop') applied = applyShopActionEngine(engineState, action);
   else if (action.kind === 'teleport') applied = applyTeleportActionEngine(engineState, action);
   else if (action.kind === 'doctrine') applied = applyDoctrineActionEngine(engineState, action);
+  else if (action.kind === 'charter') applied = applyCharterActionEngine(engineState, action);
   else if (action.kind === 'council') applied = applyCouncilActionEngine(engineState, action);
   else return { ok: false, reason: `Unknown macro action kind: ${action.kind}`, state };
   if (!applied.ok) return { ...applied, state };

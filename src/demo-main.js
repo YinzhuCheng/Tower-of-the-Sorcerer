@@ -1,5 +1,6 @@
 import { DIALOGUES, ENEMIES, FLOORS, GRID_SIZE, ITEMS } from './game/data.js';
 import { applyDemoTwentyFloorContent, DEMO20_CONTENT_ID } from './game/demo-20-floor-content.js';
+import { applyDemoThirtyFloorContent, DEMO30_CONTENT_ID } from './game/demo-30-floor-content.js';
 import { applyDemoTenFloorContent } from './game/demo-10-floor-content.js';
 import { applyDemoTenFloorHardMode, DEMO10_HARD_MODE_ID } from './game/demo-10-floor-hard-mode.js';
 import { applyDemoTenFloorProgressionGrammar } from './game/demo-10-floor-progression.js';
@@ -29,11 +30,17 @@ applyDemoTwentyFloorContent({
   items: ITEMS,
   dialogues: DIALOGUES
 });
+applyDemoThirtyFloorContent({
+  enemies: ENEMIES,
+  floors: FLOORS,
+  items: ITEMS,
+  dialogues: DIALOGUES
+});
 
-installContentStorageScope({ contentId: DEMO20_CONTENT_ID });
+installContentStorageScope({ contentId: DEMO30_CONTENT_ID });
 
 globalThis.__TOWER_DEMO_CONTENT__ = Object.freeze({
-  id: DEMO20_CONTENT_ID,
+  id: DEMO30_CONTENT_ID,
   mode: DEMO10_HARD_MODE_ID,
   floors: FLOORS.length,
   progression: progressionGrammar

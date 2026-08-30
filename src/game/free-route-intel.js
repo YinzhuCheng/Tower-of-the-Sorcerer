@@ -9,6 +9,7 @@
  */
 
 import { CARD_LABELS, ENEMIES, FLOORS, ITEMS } from './data.js';
+import { getEffectiveEnemy } from './engine.js';
 import {
   getCardGateRequirements,
   getDefeatedBossIds,
@@ -19,6 +20,7 @@ import { WAR_COUNCIL_ALLIES, WAR_COUNCIL_LOYALISTS } from './war-council.js';
 import { getAllianceBond, isAllianceBonded } from './alliance-bonds.js';
 import { getChallengeContractBriefing } from './challenge-contracts.js';
 import { getRouteDoctrineBriefing } from './route-doctrines.js';
+import { getAct3CharterBriefing } from './act3-charters.js';
 import { getBossProtocolBriefing } from './boss-protocols.js';
 
 export const FREE_ROUTE_INTEL_ID = 'free-route-intel-v1';
@@ -39,6 +41,12 @@ const GATE_NAMES = Object.freeze({
   f19ThroneLicense: '王座执照',
   f19RegentSeal: '摄政封印',
   f20SovereignSeal: '主权者封印',
+  f22ShelterAnnex: '夜航侧库',
+  f23AuditAnnex: '逐页校验室',
+  f24RelayAnnex: '灯塔接力室',
+  f25MissingSeal: '缺页封条',
+  f27RelaySeal: '接力校场封锁',
+  f29IndexSeal: '最后索引封锁',
   tri: '三相结界'
 });
 
@@ -55,6 +63,16 @@ const ROUTE_NOTES = Object.freeze({
   18: '日桥（日卡 ×1）是唯一上行门槛。星渠（星卡 ×2）仅通向虚空先驱与可选收益。',
   19: '王座执照必须消耗月卡 ×2，之后还要击败回声摄政官才能上 F20；不要把这两张月卡误投到无关支路。',
   20: '会战与两阶段终局均为固定数值。可在确认前无限次预演，不消耗主角 MP 或任何探索资源。'
+  ,21: '在上行阶梯前必须选一份免费公开的修复章程。选择不扣资源，但只会让其中一座侧库保持开放。'
+  ,22: '夜航章程消耗月卡 ×2，换取生命/防御与 F30 每阶段三次反击减免；非夜航路线无法开启。'
+  ,23: '校验章程消耗星卡 ×2 并要打持簿执行官，换取对 F30 两阶段的公开削弱。'
+  ,24: '接力章程消耗日卡 ×1、月卡 ×1，换取容量、立即补魔与 F27 后的第二次满额回充。'
+  ,25: '缺页封条强制消耗日、月、星各一张。不要在 F21–24 的选择中把颜色账本用空。'
+  ,26: '本幕唯一高阶商店已公开标价；可以把 F21–25 的战利品转成生命、攻防或 MP 容量。'
+  ,27: '三名校场守卫都是上行强制目标。接力路线要规划总管前后的 MP 使用，才能兑现第二次回充。'
+  ,28: '两场高压战守着不同补给；主路并不强迫全拿，决定是否绕行本身就是终局资源取舍。'
+  ,29: '最后索引由两名守卫维持。上楼前的卡片与 MP 都应按 F30 的公开双相数值预留。'
+  ,30: '档案守望者 → 勘误核心为固定两相战。完成的章程效果、会战幸存者效果与敌方数值全部可查看。'
 });
 
 function positiveInteger(value) {
@@ -184,11 +202,27 @@ function floorFacts(state, floorIndex) {
 }
 
 function finaleFacts(state) {
-  const finalEnemies = ['arcaneSovereign', 'originCore'].map(enemyFacts).filter(Boolean);
+  const atActThree = FLOORS[state?.floor]?.number >= 21;
+  const finalEnemyIds = atActThree ? ['archiveWarden', 'errataCore'] : ['arcaneSovereign', 'originCore'];
+  const finalEnemies = finalEnemyIds.map((id) => {
+    const base = enemyFacts(id);
+    const effective = state ? getEffectiveEnemy(state, id) : null;
+    return base ? {
+      ...base,
+      hp: effective?.hp ?? base.hp,
+      atk: effective?.atk ?? base.atk,
+      def: effective?.def ?? base.def,
+      magicPower: effective?.magicPower ?? base.magicPower,
+      rules: effective?.councilRules ?? null,
+      modifierLabels: effective?.charterLabels ?? []
+    } : null;
+  }).filter(Boolean);
   const contracts = getChallengeContractBriefing(state);
   return Object.freeze({
-    title: '终局公开情报',
-    premise: '敌方顺序、配额与两阶段基础数值均为公开信息；会战可以无限预演，且不会扣除探索资源。',
+    title: atActThree ? '余烬灯塔公开情报' : '终局公开情报',
+    premise: atActThree
+      ? '三份章程、F30 两阶段基础数值与全部卡片门槛均为公开信息；章程选择不会购买或隐藏任何情报。'
+      : '敌方顺序、配额与两阶段基础数值均为公开信息；会战可以无限预演，且不会扣除探索资源。',
     loyalists: Object.freeze(WAR_COUNCIL_LOYALISTS.map((unit, index) => Object.freeze({
       order: index + 1,
       id: unit.id,
@@ -238,6 +272,7 @@ export function getFreeRouteIntel(state, { lookahead = FREE_ROUTE_INTEL_LOOKAHEA
     title: '免费路线情报',
     notice: '查看不会消耗卡片、金币、HP、MP 或回合；情报只提前公开固定规则，路线代价仍由你承担。',
     doctrines: currentNumber >= 11 ? getRouteDoctrineBriefing(state) : null,
+    charters: currentNumber >= 21 ? getAct3CharterBriefing(state) : null,
     current,
     upcoming: Object.freeze(upcoming),
     finale: currentNumber >= 11 ? finaleFacts(state) : null

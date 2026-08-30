@@ -83,6 +83,30 @@ function buildCertificate(goalLabel, initialSteps, adapter, metadata) {
   return { ...payload, certificateHash: hashValue(payload) };
 }
 
+// A search that has not found a goal still needs to explain *where* the
+// authored route became tight.  This is deliberately diagnostic only: unlike
+// a certificate it never asserts solvability or optimality.  It gives tower
+// authors a replayable prefix to inspect instead of a bare ``maxExpanded``.
+function buildProgressWitness(label, initialSteps, adapter, metadata) {
+  if (!label) return null;
+  const edgeGroups = [];
+  let cursor = label;
+  while (cursor?.parent) {
+    edgeGroups.push(cursor.edgeSteps ?? []);
+    cursor = cursor.parent;
+  }
+  edgeGroups.reverse();
+  return Object.freeze({
+    schemaVersion: 1,
+    kind: 'search-progress-witness',
+    solverVersion: metadata.solverVersion,
+    steps: Object.freeze([...initialSteps, ...edgeGroups.flat()]),
+    depth: label.depth ?? 0,
+    final: adapter.summarizeState ? adapter.summarizeState(label.state) : null,
+    finalStructuralKeyHash: structuralKeyHash(adapter.structuralKey(label.state))
+  });
+}
+
 export function solve({
   adapter,
   initialState = null,
@@ -143,6 +167,8 @@ export function solve({
   let prunedBound = 0;
   let stalePops = 0;
   let bestGoal = null;
+  let furthestLabel = null;
+  let furthestScore = Number.NEGATIVE_INFINITY;
   let stoppedReason = null;
 
   let queuePeak = 0;
@@ -156,6 +182,7 @@ export function solve({
   let keyCharsMax = 0;
   const expandedByStage = {};
   const generatedByAction = {};
+  const rejectedByAction = {};
   const stageTelemetry = {};
 
   function stageKeyOf(state) {
@@ -240,6 +267,20 @@ export function solve({
   queue.push(initialLabel, defaultPriority(initialLabel.state, adapter) + heuristicPriority(initialLabel.state, adapter, heuristic));
   queuePeak = Math.max(queuePeak, queue.size);
 
+  function considerProgress(label) {
+    // Adapter heuristics are allowed to be subjective ordering hints, which
+    // makes them ideal for pointing an author toward the most advanced
+    // attempted route.  The score has no effect on correctness or pruning.
+    const score = defaultPriority(label.state, adapter)
+      + heuristicPriority(label.state, adapter, heuristic)
+      + (label.depth ?? 0) / 1_000_000;
+    if (score > furthestScore) {
+      furthestScore = score;
+      furthestLabel = label;
+    }
+  }
+  considerProgress(initialLabel);
+
   while (queue.size > 0) {
     if (expandedStates >= maxExpanded) {
       stoppedReason = 'maxExpanded';
@@ -295,7 +336,11 @@ export function solve({
       incrementCounter(generatedByAction, actionClass);
 
       const applied = adapter.applyAction(adapter.cloneState(label.state), action);
-      if (!applied?.ok) continue;
+      if (!applied?.ok) {
+        const reason = String(applied?.reason ?? 'rejected').replace(/\s+/gu, ' ').slice(0, 96);
+        incrementCounter(rejectedByAction, `${actionClass}:${reason}`);
+        continue;
+      }
 
       const normalized = normalizeWith(adapter, applied.state);
       normalizedSteps += normalized.steps.length;
@@ -334,6 +379,7 @@ export function solve({
       prunedDominated += insertion.removed.length;
       recordAcceptedStage(nextState, insertion);
       recordAcceptedKey(key);
+      considerProgress(nextLabel);
       queue.push(nextLabel, defaultPriority(nextState, adapter) + heuristicPriority(nextState, adapter, heuristic));
       queuePeak = Math.max(queuePeak, queue.size);
     }
@@ -385,6 +431,12 @@ export function solve({
     activeLabels: frontier.activeCount(),
     frontierPeak: frontier.peakWidth,
     certificate,
+    diagnostics: {
+      // This witness is expressly non-authoritative and exists to make a
+      // failed bounded search debuggable.  A release verifier must still
+      // require `certificate` plus authoritative replay.
+      progressWitness: buildProgressWitness(furthestLabel, initialNormalized.steps, adapter, { solverVersion })
+    },
     profile: {
       maxDepth,
       goalDepth: bestGoal?.depth ?? null,
@@ -402,6 +454,7 @@ export function solve({
       },
       expandedByStage,
       generatedByAction,
+      rejectedByAction,
       stageTelemetry: compactStageTelemetry()
     },
     heuristic: {
