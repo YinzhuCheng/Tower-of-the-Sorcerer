@@ -89,6 +89,33 @@ function reachableCells(floor) {
   return visited;
 }
 
+function isNonCombatTransit(token) {
+  return token === 'S'
+    || token === 'D'
+    || token === '.'
+    || token === 'shop'
+    || String(token).startsWith('item:');
+}
+
+function nonCombatReachableCells(floor) {
+  const start = entryPoint(floor);
+  const visited = new Set([`${start.x},${start.y}`]);
+  const queue = [[start.x, start.y]];
+  while (queue.length) {
+    const [x, y] = queue.shift();
+    for (const [dx, dy] of DIRECTIONS) {
+      const nextX = x + dx;
+      const nextY = y + dy;
+      const token = floor.map[nextY]?.[nextX];
+      const key = `${nextX},${nextY}`;
+      if (!isNonCombatTransit(token) || visited.has(key)) continue;
+      visited.add(key);
+      queue.push([nextX, nextY]);
+    }
+  }
+  return visited;
+}
+
 function barrierNeighborComponents(floor) {
   const labels = new Map();
   let label = 0;
@@ -185,4 +212,14 @@ test('critical rooms, card costs and finale remain unreachable until their named
       `F${number} must make ${target} reachable when ${barrier} opens.`
     );
   }
+});
+
+test('the sole Act I shop is reachable from F5 entry without paying a combat or gate tax', () => {
+  const { floors } = createFixture();
+  const floor = findFloor(floors, 5);
+  const shop = findToken(floor, 'shop');
+  assert.ok(
+    nonCombatReachableCells(floor).has(`${shop.x},${shop.y}`),
+    'F5 shop must be a genuine conversion checkpoint, not an enemy-gated rescue loop.'
+  );
 });

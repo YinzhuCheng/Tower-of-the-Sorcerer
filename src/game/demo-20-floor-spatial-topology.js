@@ -68,8 +68,8 @@ const FLOOR_MAPS = Object.freeze({
     map: parseMap(`
       # # # # # # # # # # #
       # item:aetherPrism gate:twinChordVault . # item:moon . . . U #
-      # # enemy:resonanceBlade # # . # . # . #
-      # . . enemy:resonanceCantor . # . # . . #
+      # # enemy:resonanceBlade . # . # . # . #
+      # . . enemy:resonanceCantor . . . # . . #
       # . # # # . # . # . #
       # . . . # . . . # . #
       # . # . # # # # # . #
@@ -351,6 +351,14 @@ function hasReachableTarget(floor, target, options) {
   return point != null && reachable(floor, options).has(`${point.x},${point.y}`);
 }
 
+function allBarrierTokens(floor) {
+  return [...new Set(floor.map.flat().filter(isBarrier))];
+}
+
+function walkableCellCount(floor) {
+  return floor.map.flat().filter((token) => token !== '#').length;
+}
+
 /**
  * Static-only acceptance gate for the topology phase. It proves all visual
  * gates are cuts and checks each card spend has a viable, non-empty protected
@@ -372,6 +380,11 @@ export function validateDemoTwentyFloorSpatialTopology(topology = DEMO20_SPATIAL
     if (floor.number === 20 && hasToken(floor.map, 'U')) violations.push('F20:must-not-have-upper-stair');
     if ((floor.roomPlan?.length ?? 0) < 5) violations.push(`F${floor.number}:room-plan`);
     plans.add(floor.roomPlan?.join('|'));
+    // A room may be intentionally closed at the beginning, but it must join
+    // the traversable floor once all of its own declared permissions are
+    // satisfied. Otherwise a visual "room" is merely unreachable scenery.
+    const fullyOpened = reachable(floor, { alsoOpen: allBarrierTokens(floor) });
+    if (fullyOpened.size !== walkableCellCount(floor)) violations.push(`F${floor.number}:unreachable-room-after-open`);
     for (const barrier of barrierComponents(floor)) {
       if (barrier.componentCount < 2) violations.push(`F${floor.number}:${barrier.token}:not-a-cut`);
     }

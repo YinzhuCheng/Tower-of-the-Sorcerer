@@ -58,13 +58,16 @@ export function describeDemoTenFloorRouteFamily(route, replay) {
     // This is the actual complete shop mix, classified after play.  It is not
     // the input cycle used to discover the route.
     shopStyle: shopStyle(route.purchaseCounts),
-    f9Shop: tokens.has('f9:shop') || (route.purchaseLog ?? []).some((entry) => entry.floor === 9)
+    // F5 is the sole Act I conversion checkpoint.  This is retained in the
+    // family fingerprint as a proof that an otherwise viable route actually
+    // engages with the authored economy rather than relying on a hidden path.
+    f5Shop: tokens.has('f5:shop') || (route.purchaseLog ?? []).some((entry) => entry.floor === 5)
   };
   const fingerprint = [
     `vault:${decisions.f8Vault ? 'take' : 'skip'}`,
     `holy:${decisions.holyTiming}`,
     `shop:${decisions.shopStyle}`,
-    `f9shop:${decisions.f9Shop ? 'use' : 'skip'}`
+    `f5shop:${decisions.f5Shop ? 'use' : 'skip'}`
   ].join('|');
   return {
     fingerprint,

@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import {
   applyDemoTenFloorHardMode,
   DEMO10_HARD_MODE_PRESSURE,
+  DEMO10_SINGLE_SHOP_EARLY_RAMP,
   DEMO10_HIGH_FLOOR_SCALING
 } from '../src/game/demo-10-floor-hard-mode.js';
 import { buildExpertNoHpShopPlan, EXPERT_NO_HP_STRATEGY_ID } from '../src/solver/expert-strategy.js';
@@ -21,6 +22,22 @@ test('hard-mode pressure restores sharper late boss thresholds including final c
   assert.equal(result.pressure.blackSealKeeperMagicPower, 220);
   assert.equal(result.pressure.blackSealKeeperDef, 96);
   assert.equal(result.pressure.voidCoreMagicPower, 420);
+});
+
+test('single-shop numeric rebase changes only the F3–F4 ordinary bridge roster', () => {
+  const enemies = Object.fromEntries(Object.entries(DEMO10_SINGLE_SHOP_EARLY_RAMP).map(([id]) => [id, {
+    hp: 999, atk: 999, def: 999, magicPower: 999
+  }]));
+  Object.assign(enemies, {
+    palaceWarden: { magicPower: 160 },
+    blackSealKeeper: { magicPower: 160, def: 95 }
+  });
+
+  const result = applyDemoTenFloorHardMode({ enemies });
+  for (const [enemyId, values] of Object.entries(DEMO10_SINGLE_SHOP_EARLY_RAMP)) {
+    for (const [field, value] of Object.entries(values)) assert.equal(enemies[enemyId][field], value);
+  }
+  assert.deepEqual(result.earlyRamp, DEMO10_SINGLE_SHOP_EARLY_RAMP);
 });
 
 test('tiered-shop hard mode ramps F6-F10 HP/ATK pressure without generic DEF cliffs', () => {

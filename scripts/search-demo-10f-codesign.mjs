@@ -141,7 +141,7 @@ function compactExpertDiagnostic(report) {
     failure: report.failure,
     minNormalizedHpMargin: report.minNormalizedHpMargin,
     purchaseCounts: report.purchaseCounts,
-    f9Purchases: report.purchaseLog.filter((entry) => entry.floor === 9).length
+    f5Purchases: report.purchaseLog.filter((entry) => entry.floor === 5).length
   };
 }
 
@@ -161,7 +161,7 @@ function evaluateCandidate(candidate) {
         compact: {
           qualityViolations: quality.violations,
           solvableBuilds: quality.solvableBuilds,
-          f9ShopCoverage: quality.f9ShopCoverage
+          shopCheckpointCoverage: quality.shopCheckpointCoverage
         }
       };
     }
@@ -187,7 +187,7 @@ function evaluateCandidate(candidate) {
         terminalHpSpread: quality.terminalHpSpread,
         winnerLateMinMargin: quality.winnerLateMinMargin,
         weakestWinningLateMargin: quality.weakestWinningLateMargin,
-        f9ShopCoverage: quality.f9ShopCoverage,
+        shopCheckpointCoverage: quality.shopCheckpointCoverage,
         expertDiagnostic: compactExpertDiagnostic(expertReport),
         checkpointChoiceLoss: checkpoints.choiceLoss,
         maxParetoWidth: checkpoints.maxParetoWidth,

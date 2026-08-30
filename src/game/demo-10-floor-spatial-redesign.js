@@ -78,7 +78,7 @@ const ROOM_MAPS = Object.freeze({
     # . # # . . . # # # #
     # item:moon . . # item:star item:moon # item:star . #
     # # # # # . # # # . #
-    # D . . enemy:flameCaster shop item:def . item:hp . #
+    # D . . . shop item:def . item:hp enemy:flameCaster #
     # # # # # # # # # # #
   `),
   6: parseMap(`

@@ -40,7 +40,7 @@ function summarizeReport(report) {
     purchases: report.purchases,
     purchaseCounts: report.purchaseCounts,
     purchaseFloors: [...new Set((report.purchaseLog ?? []).map((entry) => entry.floor))],
-    f9Purchases: (report.purchaseLog ?? []).filter((entry) => entry.floor === 9).length,
+    f5Purchases: (report.purchaseLog ?? []).filter((entry) => entry.floor === 5).length,
     minNormalizedHpMargin: report.minNormalizedHpMargin,
     failure: report.failure
   };
@@ -93,7 +93,7 @@ const result = {
     valid: strategicBoundary.violations.length === 0,
     solvableBuilds: strategicBoundary.solvableBuilds,
     allowedSolvableBuilds: [DEMO10_QUALITY_TARGETS.minSolvableBuilds, DEMO10_QUALITY_TARGETS.maxSolvableBuilds],
-    f9ShopCoverage: strategicBoundary.f9ShopCoverage,
+    shopCheckpointCoverage: strategicBoundary.shopCheckpointCoverage,
     terminalHpSpread: strategicBoundary.terminalHpSpread,
     winnerLateMinMargin: strategicBoundary.winnerLateMinMargin,
     weakestWinningLateMargin: strategicBoundary.weakestWinningLateMargin,

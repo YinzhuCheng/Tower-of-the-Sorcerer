@@ -15,7 +15,7 @@ export const DEMO10_QUALITY_TARGETS = Object.freeze({
   weakestWinningMarginMin: 0.05,
   minTerminalHpSpread: 900,
   lateFloors: Object.freeze([8, 9, 10]),
-  f9ShopCoverageMin: 0.75,
+  shopCheckpointCoverageMin: 0.75,
   lateFloorPressureMax: 0.60
 });
 
@@ -27,7 +27,7 @@ export const DEMO10_PLAYABILITY_TARGETS = Object.freeze({
   weakestWinningMarginMin: 0.01,
   minTerminalHpSpread: 0,
   lateFloors: Object.freeze([8, 9, 10]),
-  f9ShopCoverageMin: 0.75,
+  shopCheckpointCoverageMin: 0.75,
   lateFloorPressureMax: 0.85
 });
 
@@ -39,7 +39,7 @@ export const DEMO10_EXPERT_TARGETS = Object.freeze({
   weakestWinningMarginMin: 0.04,
   minTerminalHpSpread: 0,
   lateFloors: Object.freeze([8, 9, 10]),
-  f9ShopCoverageMin: 1,
+  shopCheckpointCoverageMin: 1,
   lateFloorPressureMax: 0.75
 });
 
@@ -142,8 +142,11 @@ export function summarizeDemoTenFloorPortfolio(reports, targets = DEMO10_QUALITY
   const lateFloors = Object.fromEntries(
     targets.lateFloors.map((floor) => [floor, aggregateFloor(floor, winningReports)])
   );
-  const f9ShopCoverage = winningReports.length
-    ? lateFloors[9].buildsWithPurchases / winningReports.length
+  // Act I now has exactly one conversion checkpoint, F5.  Measuring F9 shop
+  // coverage after the shop was deliberately removed from that floor would
+  // turn a topology success into bogus numerical debt.
+  const shopCheckpointCoverage = winningReports.length
+    ? winningReports.filter((report) => report.purchaseLog.some((entry) => entry.floor === 5)).length / winningReports.length
     : 0;
 
   const violations = [];
@@ -161,7 +164,9 @@ export function summarizeDemoTenFloorPortfolio(reports, targets = DEMO10_QUALITY
     violations.push(`weakest-win-too-brittle:${round(weakestWinningLateMargin)}`);
   }
   if (!Number.isFinite(terminalHpSpread) || terminalHpSpread < targets.minTerminalHpSpread) violations.push(`terminal-hp-spread-too-small:${terminalHpSpread ?? 'null'}`);
-  if (f9ShopCoverage < targets.f9ShopCoverageMin) violations.push(`f9-shop-coverage-too-low:${round(f9ShopCoverage)}`);
+  if (shopCheckpointCoverage < targets.shopCheckpointCoverageMin) {
+    violations.push(`f5-shop-coverage-too-low:${round(shopCheckpointCoverage)}`);
+  }
 
   for (const floor of targets.lateFloors) {
     const profile = lateFloors[floor];
@@ -181,7 +186,7 @@ export function summarizeDemoTenFloorPortfolio(reports, targets = DEMO10_QUALITY
     weakestWinningLateMargin: round(weakestWinningLateMargin),
     weakestTerminalReport,
     terminalHpSpread,
-    f9ShopCoverage: round(f9ShopCoverage),
+    shopCheckpointCoverage: round(shopCheckpointCoverage),
     lateFloors,
     violations,
     reports
@@ -211,7 +216,7 @@ export function demoTenFloorPlayabilityLoss(summary, targets = DEMO10_PLAYABILIT
   return hardPenalty
     + missingBuilds * 10_000
     + (Number.isFinite(weakestMargin) ? Math.abs(weakestMargin - 0.08) * 100 : 500)
-    + Math.max(0, targets.f9ShopCoverageMin - (summary.f9ShopCoverage ?? 0)) * 500;
+    + Math.max(0, targets.shopCheckpointCoverageMin - (summary.shopCheckpointCoverage ?? 0)) * 500;
 }
 
 export function demoTenFloorExpertLoss(summary, targets = DEMO10_EXPERT_TARGETS) {
@@ -228,5 +233,5 @@ export function demoTenFloorExpertLoss(summary, targets = DEMO10_EXPERT_TARGETS)
     + (Number.isFinite(f8Boss) ? Math.abs(f8Boss - 0.30) * 10 : 250)
     + (Number.isFinite(f9Boss) ? Math.abs(f9Boss - 0.18) * 18 : 250)
     + (Number.isFinite(f10Boss) ? Math.abs(f10Boss - 0.30) * 8 : 250)
-    + Math.max(0, targets.f9ShopCoverageMin - (summary.f9ShopCoverage ?? 0)) * 1_000;
+    + Math.max(0, targets.shopCheckpointCoverageMin - (summary.shopCheckpointCoverage ?? 0)) * 1_000;
 }

@@ -156,7 +156,7 @@ function compactExpertDiagnostic(report) {
     failure: report.failure,
     minNormalizedHpMargin: report.minNormalizedHpMargin,
     purchaseCounts: report.purchaseCounts,
-    f9Purchases: report.purchaseLog.filter((entry) => entry.floor === 9).length
+    f5Purchases: report.purchaseLog.filter((entry) => entry.floor === 5).length
   };
 }
 
@@ -239,7 +239,7 @@ for (const mutation of catalog) {
       ...compact,
       violations: result.quality.violations,
       solvableBuilds: result.quality.solvableBuilds,
-      f9ShopCoverage: result.quality.f9ShopCoverage
+      shopCheckpointCoverage: result.quality.shopCheckpointCoverage
     });
   } else if (result.stage === 'checkpoint') {
     rejectedCheckpoint.push({
@@ -262,7 +262,7 @@ for (const mutation of catalog) {
       structuralLoss: result.structuralLoss,
       checkpointGain: result.checkpointGain,
       solvableBuilds: result.quality.solvableBuilds,
-      f9ShopCoverage: result.quality.f9ShopCoverage,
+      shopCheckpointCoverage: result.quality.shopCheckpointCoverage,
       terminalHpSpread: result.quality.terminalHpSpread,
       winnerLateMinMargin: result.quality.winnerLateMinMargin,
       weakestWinningLateMargin: result.quality.weakestWinningLateMargin,
@@ -303,7 +303,7 @@ console.log(JSON.stringify({
   baseline: {
     qualityViolations: baselineQuality.quality.violations,
     solvableBuilds: baselineQuality.quality.solvableBuilds,
-    f9ShopCoverage: baselineQuality.quality.f9ShopCoverage,
+    shopCheckpointCoverage: baselineQuality.quality.shopCheckpointCoverage,
     terminalHpSpread: baselineQuality.quality.terminalHpSpread,
     winnerLateMinMargin: baselineQuality.quality.winnerLateMinMargin,
     weakestWinningLateMargin: baselineQuality.quality.weakestWinningLateMargin,

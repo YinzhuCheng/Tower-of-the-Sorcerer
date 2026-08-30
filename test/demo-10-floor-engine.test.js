@@ -6,12 +6,14 @@ import { applyDemoTenFloorProgressionTopology } from '../src/game/demo-10-floor-
 import { applyDemoTenFloorSpatialRedesign } from '../src/game/demo-10-floor-spatial-redesign.js';
 import { applyDemoTenFloorProgressionGrammar } from '../src/game/demo-10-floor-progression.js';
 import { applyDemoTenFloorPalaceSpatialRedesign } from '../src/game/demo-10-floor-palace-spatial-redesign.js';
+import { applyDemoTenFloorHardMode } from '../src/game/demo-10-floor-hard-mode.js';
 
 applyDemoTenFloorContent({ enemies: ENEMIES, floors: FLOORS, dialogues: DIALOGUES, gridSize: GRID_SIZE });
 applyDemoTenFloorProgressionTopology({ enemies: ENEMIES, floors: FLOORS });
 applyDemoTenFloorSpatialRedesign({ floors: FLOORS, gridSize: GRID_SIZE });
 applyDemoTenFloorProgressionGrammar({ enemies: ENEMIES, floors: FLOORS, dialogues: DIALOGUES });
 applyDemoTenFloorPalaceSpatialRedesign({ floors: FLOORS, gridSize: GRID_SIZE });
+applyDemoTenFloorHardMode({ enemies: ENEMIES });
 
 const {
   cloneState,
@@ -143,4 +145,25 @@ test('an activated rune stays inert when the authored F9 sequence revisits it', 
   assert.equal(floorState.sequenceProgress, 2, 'walking across lit B must not reset B → A progress');
 });
 
-test.skip('single-shop Act I receives a new route witness only after topology freeze and visual review', () => {});
+test('single-shop Act I has a replayed authoritative route witness', async () => {
+  const { runGreedyShopStrategy } = await import('../src/solver/greedy-strategy.js');
+  const { createTowerAdapter } = await import('../src/solver/tower-adapter.js');
+  const { replayTowerStepSkeleton } = await import('../src/solver/replay.js');
+  const route = runGreedyShopStrategy({
+    shopCycle: ['atk', 'def', 'hp'],
+    holyPolicy: 'immediate',
+    progressionPriority: 'guardian-first',
+    traceActions: true,
+    maxIterations: 8_000
+  });
+  const replay = replayTowerStepSkeleton(route.routeSteps, {
+    adapter: createTowerAdapter(),
+    requireGoal: true
+  });
+  assert.equal(route.solvable, true);
+  assert.equal(replay.ok, true);
+  assert.ok(route.purchaseLog.length > 0);
+  assert.ok(route.purchaseLog.every((entry) => entry.floor === 5));
+  assert.ok(replay.minNormalizedHpMargin >= 0.04);
+  assert.ok(replay.minNormalizedHpMargin <= 0.20);
+});

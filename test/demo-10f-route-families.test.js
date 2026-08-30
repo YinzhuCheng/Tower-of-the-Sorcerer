@@ -42,20 +42,21 @@ test('10F route-family discovery explores policies without equating policies to 
   assert.ok(policies.every((policy) => policy.shopCycle.length >= 2));
 });
 
-test.skip('single-shop Act I certifies route families only after topology freeze and numeric rebaseline', async () => {
+test('single-shop Act I certifies replayed route families after numeric rebaseline', async () => {
   installFrozenDemo();
   const { createTowerAdapter } = await import('../src/solver/tower-adapter.js');
   const { replayTowerStepSkeleton } = await import('../src/solver/replay.js');
   const tools = { createTowerAdapter, replayTowerStepSkeleton };
   const attempts = [
-    attempt({ shopCycle: ['atk', 'hp', 'hp'], holyPolicy: 'immediate', progressionPriority: 'guardian-first' }, tools),
-    attempt({ shopCycle: ['atk', 'hp', 'atk'], holyPolicy: 'after-core-7', progressionPriority: 'legacy-clear' }, tools),
-    attempt({ shopCycle: ['hp', 'atk'], holyPolicy: 'before-final', progressionPriority: 'guardian-first' }, tools)
+    attempt({ shopCycle: ['atk', 'hp', 'atk'], holyPolicy: 'after-core-6', progressionPriority: 'legacy-clear' }, tools),
+    attempt({ shopCycle: ['hp', 'hp', 'atk'], holyPolicy: 'before-final', progressionPriority: 'guardian-first' }, tools),
+    attempt({ shopCycle: ['hp', 'atk', 'def'], holyPolicy: 'after-core-6', progressionPriority: 'guardian-first' }, tools)
   ];
   assert.ok(attempts.every((entry) => entry.route.solvable && entry.replay.ok));
-  assert.deepEqual(attempts.map((entry) => entry.family.decisions.f8Vault), [false, true, false]);
-  assert.deepEqual(attempts.map((entry) => entry.family.decisions.holyTiming), ['early', 'late', 'late']);
-  assert.deepEqual(attempts.map((entry) => entry.family.decisions.shopStyle), ['vitality', 'assault', 'hybrid']);
+  assert.deepEqual(attempts.map((entry) => entry.family.decisions.f8Vault), [true, false, false]);
+  assert.deepEqual(attempts.map((entry) => entry.family.decisions.holyTiming), ['mid', 'late', 'mid']);
+  assert.deepEqual(attempts.map((entry) => entry.family.decisions.shopStyle), ['assault', 'vitality', 'balanced']);
+  assert.ok(attempts.every((entry) => entry.family.decisions.f5Shop));
   assert.ok(demoTenFloorRouteFamilyDistance(attempts[0].family, attempts[1].family) >= 3);
   assert.ok(demoTenFloorRouteFamilyDistance(attempts[1].family, attempts[2].family) >= 2);
 

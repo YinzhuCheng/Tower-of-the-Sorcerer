@@ -29,7 +29,7 @@ function report({ lateMargins = [0.20, 0.18, 0.25] } = {}) {
       battle(9, lateMargins[1]),
       battle(10, lateMargins[2])
     ],
-    purchaseLog: [{ floor: 9, optionId: 'def' }]
+    purchaseLog: [{ floor: 5, optionId: 'def' }]
   };
 }
 

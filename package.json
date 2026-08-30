@@ -16,6 +16,7 @@
     "verify:demo10:pressure": "node scripts/verify-demo-10f-pressure-profile.mjs",
     "profile:demo10:compass-merge": "node scripts/profile-demo-10f-compass-merge.mjs --require",
     "solve:demo10": "node scripts/solve-demo-10f-existence.mjs",
+    "rebase:demo10:single-shop": "node scripts/rebase-demo-10f-single-shop.mjs",
     "tune:demo10:tiers": "node scripts/search-demo-10f-shop-tiers.mjs",
     "tune:demo10:late": "node scripts/tune-demo-10f-late-game.mjs",
     "tune:demo10:portfolio": "node scripts/search-demo-10f-codesign.mjs",
