@@ -12,6 +12,7 @@ function parseArgs(argv) {
     maxGenerated: 1_000_000,
     multipliers: {},
     cycle: null,
+    teleportMemo: false,
     json: false,
     require: false
   };
@@ -33,6 +34,7 @@ function parseArgs(argv) {
       }
       config.cycle = cycle;
     }
+    else if (arg === '--teleport-memo') config.teleportMemo = true;
     else if (arg === '--require') config.require = true;
     else if (arg.startsWith('--max-expanded=')) config.maxExpanded = Number(arg.slice('--max-expanded='.length));
     else if (arg.startsWith('--max-generated=')) config.maxGenerated = Number(arg.slice('--max-generated='.length));
@@ -78,7 +80,7 @@ function compactReport(report) {
 
 const config = parseArgs(process.argv.slice(2));
 if (config.help) {
-  console.log(`Usage: node scripts/solve-demo-10f-existence.mjs [options]\n\nOptions:\n  --max-expanded=N\n  --max-generated=N\n  --multiplier=F:V   Apply a temporary 10F shop-tier candidate\n  --cycle=a,b,c      Solve the exact movement/event subproblem for one discovered shop policy\n  --json             Print the full replayable certificate\n  --require          Return non-zero unless one certificate is found and replays\n`);
+  console.log(`Usage: node scripts/solve-demo-10f-existence.mjs [options]\n\nOptions:\n  --max-expanded=N\n  --max-generated=N\n  --multiplier=F:V   Apply a temporary 10F shop-tier candidate\n  --cycle=a,b,c      Solve the exact movement/event subproblem for one discovered shop policy\n  --teleport-memo    Exactly merge identical Compass teleport successors\n  --json             Print the full replayable certificate\n  --require          Return non-zero unless one certificate is found and replays\n`);
   process.exit(0);
 }
 
@@ -89,16 +91,20 @@ installFrozenDemo();
 for (const [floorNumber, multiplier] of Object.entries(config.multipliers)) {
   FLOORS[Number(floorNumber) - 1].shopEffectMultiplier = multiplier;
 }
-const [{ solve }, { createTowerAdapter }, { replayTowerCertificate }, { createFixedPurchasePolicyTowerAdapter }] = await Promise.all([
+const [{ solve }, { createTowerAdapter }, { replayTowerCertificate }, { createFixedPurchasePolicyTowerAdapter }, { createTowerTeleportTransitionMemoAdapter }] = await Promise.all([
   import('../src/solver/search.js'),
   import('../src/solver/tower-adapter.js'),
   import('../src/solver/replay.js'),
-  import('../src/solver/fixed-purchase-policy-adapter.js')
+  import('../src/solver/fixed-purchase-policy-adapter.js'),
+  import('../src/solver/tower-teleport-transition-memo-adapter.js')
 ]);
 
-const adapter = config.cycle
+const baseAdapter = config.cycle
   ? createFixedPurchasePolicyTowerAdapter({ shopCycle: config.cycle })
   : createTowerAdapter();
+const adapter = config.teleportMemo
+  ? createTowerTeleportTransitionMemoAdapter({ baseAdapter, minCores: 0 })
+  : baseAdapter;
 const report = solve({
   adapter,
   mode: 'existence',
@@ -117,6 +123,10 @@ if (config.json) {
   console.log(`10F frozen-topology existence: solvable=${summary.solvable} exact=${summary.exact} stop=${summary.stoppedReason ?? 'exhausted'}`);
   if (Object.keys(config.multipliers).length) console.log(`temporary-shop-tiers=${JSON.stringify(config.multipliers)}`);
   if (config.cycle) console.log(`fixed-discovery-policy=${config.cycle.join('-')}`);
+  if (config.teleportMemo) {
+    const memo = adapter.teleportTransitionMemoStats();
+    console.log(`exact-teleport-merge=on omitted=${memo.omittedEquivalentTeleports} classes=${memo.memoSize}`);
+  }
   console.log(`expanded=${summary.expandedStates} generated=${summary.generatedStates} structural=${summary.structuralStates} frontierPeak=${summary.frontierPeak}`);
   if (summary.certificate) {
     console.log(`certificate=${summary.certificate.hash} steps=${summary.certificate.stepCount} replay=${summary.certificate.replay.ok ? 'PASS' : 'FAIL'}`);

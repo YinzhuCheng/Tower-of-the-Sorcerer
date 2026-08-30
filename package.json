@@ -14,6 +14,7 @@
     "prove:demo10": "node scripts/witness-demo-10f-route.mjs --require",
     "certify:demo10:routes": "node scripts/certify-demo-10f-route-families.mjs --require",
     "verify:demo10:pressure": "node scripts/verify-demo-10f-pressure-profile.mjs",
+    "profile:demo10:compass-merge": "node scripts/profile-demo-10f-compass-merge.mjs --require",
     "solve:demo10": "node scripts/solve-demo-10f-existence.mjs",
     "tune:demo10:tiers": "node scripts/search-demo-10f-shop-tiers.mjs",
     "tune:demo10:late": "node scripts/tune-demo-10f-late-game.mjs",
