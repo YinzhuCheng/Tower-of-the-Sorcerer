@@ -10,34 +10,34 @@ import {
 } from './demo-20-floor-spatial-topology.js';
 
 export const DEMO20_CONTENT_ID = 'demo-20f-magic-act2-runtime-v1';
-export const DEMO20_NUMERIC_BASELINE_ID = 'demo-20f-bootstrap-numeric-baseline-v1';
+export const DEMO20_NUMERIC_BASELINE_ID = 'demo-20f-replayed-numeric-baseline-v2';
 
-// These are deliberately a playable bootstrap, not a balance certificate.
-// The topology/key-unit/card lock is already accepted; the next bounded solver
-// pass is the only authority allowed to tune this table.  Keeping every new
+// This is the first full engine-replayed playable baseline. The
+// topology/key-unit/card lock remains accepted; later balance work may only
+// tune this table through a bounded, replay-verified pass. Keeping every new
 // combat number here gives that pass one small, auditable mutation surface.
 export const DEMO20_NUMERIC_BASELINE = Object.freeze({
-  manaWisp: Object.freeze({ hp: 1400, atk: 260, def: 200, gold: 210 }),
-  aetherWarden: Object.freeze({ hp: 2200, atk: 278, def: 224, gold: 250 }),
-  runeCantor: Object.freeze({ hp: 1650, atk: 250, def: 210, gold: 230, special: 'magic', magicPower: 150 }),
-  spellbladeDuelist: Object.freeze({ hp: 1800, atk: 280, def: 218, gold: 260, special: 'firstStrike' }),
-  manaSentinel: Object.freeze({ hp: 2800, atk: 300, def: 230, gold: 310 }),
-  prismArchivist: Object.freeze({ hp: 2000, atk: 275, def: 220, gold: 285, special: 'magic', magicPower: 170 }),
-  mirrorHuntress: Object.freeze({ hp: 2300, atk: 295, def: 225, gold: 300, special: 'firstStrike' }),
-  voidHerald: Object.freeze({ hp: 2900, atk: 315, def: 234, gold: 340, special: 'magic', magicPower: 210 }),
+  manaWisp: Object.freeze({ hp: 1288, atk: 251, def: 193, gold: 210 }),
+  aetherWarden: Object.freeze({ hp: 1990, atk: 269, def: 216, gold: 250 }),
+  runeCantor: Object.freeze({ hp: 1508, atk: 244, def: 203, gold: 230, special: 'magic', magicPower: 138 }),
+  spellbladeDuelist: Object.freeze({ hp: 1650, atk: 271, def: 211, gold: 260, special: 'firstStrike' }),
+  manaSentinel: Object.freeze({ hp: 2530, atk: 290, def: 223, gold: 310 }),
+  prismArchivist: Object.freeze({ hp: 1820, atk: 265, def: 211, gold: 285, special: 'magic', magicPower: 155 }),
+  mirrorHuntress: Object.freeze({ hp: 2090, atk: 284, def: 217, gold: 300, special: 'firstStrike' }),
+  voidHerald: Object.freeze({ hp: 2630, atk: 302, def: 226, gold: 340, special: 'magic', magicPower: 191 }),
   resonanceBlade: Object.freeze({ hp: 4600, atk: 305, def: 228, gold: 600, special: 'firstStrike' }),
   resonanceCantor: Object.freeze({ hp: 4300, atk: 292, def: 222, gold: 600, special: 'magic', magicPower: 220 }),
-  arcaneGatekeeper: Object.freeze({ hp: 5800, atk: 320, def: 236, gold: 750, special: 'firstStrike' }),
-  spectrumMarshal: Object.freeze({ hp: 5500, atk: 312, def: 234, gold: 750, special: 'magic', magicPower: 250 }),
-  triuneArbiter: Object.freeze({ hp: 6400, atk: 328, def: 240, gold: 850, special: 'doubleHit' }),
+  arcaneGatekeeper: Object.freeze({ hp: 3016, atk: 272, def: 215, gold: 750, special: 'firstStrike' }),
+  spectrumMarshal: Object.freeze({ hp: 2860, atk: 265, def: 213, gold: 750, special: 'magic', magicPower: 130 }),
+  triuneArbiter: Object.freeze({ hp: 3328, atk: 279, def: 218, gold: 850, special: 'doubleHit' }),
   mirrorDuelist: Object.freeze({ hp: 6800, atk: 340, def: 244, gold: 900, special: 'firstStrike' }),
   mirrorCantor: Object.freeze({ hp: 6400, atk: 326, def: 240, gold: 900, special: 'magic', magicPower: 290 }),
-  crownBlade: Object.freeze({ hp: 7900, atk: 355, def: 248, gold: 1050, special: 'firstStrike' }),
-  crownCantor: Object.freeze({ hp: 7500, atk: 340, def: 246, gold: 1050, special: 'magic', magicPower: 320 }),
-  crownMagus: Object.freeze({ hp: 8200, atk: 350, def: 250, gold: 1100, special: 'doubleHit' }),
-  echoRegent: Object.freeze({ hp: 9800, atk: 368, def: 254, gold: 1400, special: 'magic', magicPower: 360 }),
-  arcaneSovereign: Object.freeze({ hp: 12600, atk: 384, def: 258, gold: 0, special: 'magic', magicPower: 400 }),
-  originCore: Object.freeze({ hp: 14600, atk: 398, def: 262, gold: 0, special: 'doubleHit' })
+  crownBlade: Object.freeze({ hp: 3180, atk: 284, def: 218, gold: 1050, special: 'firstStrike' }),
+  crownCantor: Object.freeze({ hp: 3020, atk: 272, def: 216, gold: 1050, special: 'magic', magicPower: 160 }),
+  crownMagus: Object.freeze({ hp: 3280, atk: 280, def: 220, gold: 1100, special: 'doubleHit' }),
+  echoRegent: Object.freeze({ hp: 4130, atk: 316, def: 223, gold: 1400, special: 'magic', magicPower: 180 }),
+  arcaneSovereign: Object.freeze({ hp: 2880, atk: 272, def: 197, gold: 0, special: 'magic', magicPower: 85 }),
+  originCore: Object.freeze({ hp: 3440, atk: 278, def: 202, gold: 0, special: 'doubleHit' })
 });
 
 // MP valuables are separate from combat numbers.  They are the authored

@@ -21,6 +21,11 @@ function stageAdapter(baseAdapter, milestone) {
 }
 
 function compactStageReport(report, milestone) {
+  const stageTelemetry = report.profile?.stageTelemetry ?? {};
+  const deepestFloor = Object.keys(stageTelemetry).reduce((maximum, key) => {
+    const match = /^f(\d+)\/c\d+$/u.exec(key);
+    return Math.max(maximum, Number(match?.[1] ?? 0));
+  }, 0);
   return Object.freeze({
     milestone: milestone.id,
     label: milestone.label,
@@ -30,7 +35,13 @@ function compactStageReport(report, milestone) {
     generatedStates: report.generatedStates,
     prunedDominated: report.prunedDominated,
     frontierPeak: report.frontierPeak,
-    certificate: report.certificate
+    certificate: report.certificate,
+    // A bounded failure is not an impossibility claim.  These diagnostics
+    // identify the furthest authored floor and the actual branching pressure
+    // before the next *numeric-only* feasibility ray is chosen.
+    deepestFloor,
+    stageTelemetry,
+    generatedByAction: report.profile?.generatedByAction ?? {}
   });
 }
 
