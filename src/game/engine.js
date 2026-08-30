@@ -588,9 +588,19 @@ export function tryMove(state, dx, dy) {
       return result;
     }
 
-    setTile(state, x, y, '.');
+    // A transition boss may turn its own arena tile into an upward stair.
+    // This keeps the map contract honest: the stair cannot exist before the
+    // required boss is defeated, and it is never a decorative bypass.
+    const revealsStair = enemy.revealStair === true;
+    setTile(state, x, y, revealsStair ? 'U' : '.');
     moveTo(state, x, y);
     result.moved = true;
+
+    if (revealsStair) {
+      result.stairRevealed = true;
+      result.events.push({ type: 'stairRevealed', floor: FLOORS[state.floor]?.number ?? state.floor + 1 });
+      addLog(state, '终局核心崩解，上行阶梯在原地显现。');
+    }
 
     if (enemy.reward) {
       applyEffect(state, enemy.reward);
@@ -645,12 +655,19 @@ function describeScaledShopOption(option, effect) {
   if (option.id === 'hp') return `生命上限与当前生命 +${effect.maxHp ?? effect.hp ?? 0}`;
   if (option.id === 'atk') return `攻击永久 +${effect.atk ?? 0}`;
   if (option.id === 'def') return `防御永久 +${effect.def ?? 0}`;
+  if (effect.maxMp && effect.mp) return `魔力上限 +${effect.maxMp}，并恢复 ${effect.mp} MP`;
+  if (effect.maxMp) return `魔力上限 +${effect.maxMp}`;
+  if (effect.mp) return `恢复 ${effect.mp} MP`;
   return option.description;
 }
 
 export function getShopOptions(state) {
   const multiplier = getShopEffectMultiplier(state);
-  return SHOP_OPTIONS.map((option) => {
+  const permittedIds = FLOORS[state?.floor]?.shopOptionIds;
+  const options = Array.isArray(permittedIds)
+    ? SHOP_OPTIONS.filter((option) => permittedIds.includes(option.id))
+    : SHOP_OPTIONS.filter((option) => !option.magicOnly);
+  return options.map((option) => {
     const effect = Object.fromEntries(Object.entries(option.effect).map(([key, value]) => [
       key,
       Number.isFinite(value) ? Math.ceil(value * multiplier) : value

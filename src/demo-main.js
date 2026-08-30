@@ -1,5 +1,6 @@
-import { DIALOGUES, ENEMIES, FLOORS, GRID_SIZE } from './game/data.js';
-import { applyDemoTenFloorContent, DEMO_TEN_FLOOR_ID } from './game/demo-10-floor-content.js';
+import { DIALOGUES, ENEMIES, FLOORS, GRID_SIZE, ITEMS } from './game/data.js';
+import { applyDemoTwentyFloorContent, DEMO20_CONTENT_ID } from './game/demo-20-floor-content.js';
+import { applyDemoTenFloorContent } from './game/demo-10-floor-content.js';
 import { applyDemoTenFloorHardMode, DEMO10_HARD_MODE_ID } from './game/demo-10-floor-hard-mode.js';
 import { applyDemoTenFloorProgressionGrammar } from './game/demo-10-floor-progression.js';
 import { applyDemoTenFloorProgressionTopology } from './game/demo-10-floor-progression-topology.js';
@@ -22,11 +23,17 @@ const progressionGrammar = applyDemoTenFloorProgressionGrammar({
 });
 applyDemoTenFloorPalaceSpatialRedesign({ floors: FLOORS, gridSize: GRID_SIZE });
 applyDemoTenFloorHardMode({ enemies: ENEMIES });
+applyDemoTwentyFloorContent({
+  enemies: ENEMIES,
+  floors: FLOORS,
+  items: ITEMS,
+  dialogues: DIALOGUES
+});
 
-installContentStorageScope({ contentId: DEMO_TEN_FLOOR_ID });
+installContentStorageScope({ contentId: DEMO20_CONTENT_ID });
 
 globalThis.__TOWER_DEMO_CONTENT__ = Object.freeze({
-  id: DEMO_TEN_FLOOR_ID,
+  id: DEMO20_CONTENT_ID,
   mode: DEMO10_HARD_MODE_ID,
   floors: FLOORS.length,
   progression: progressionGrammar

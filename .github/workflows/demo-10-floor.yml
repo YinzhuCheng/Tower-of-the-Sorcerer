@@ -11,6 +11,9 @@ on:
       - 'src/game/demo-10-floor-progression-topology.js'
       - 'src/game/demo-10-floor-spatial-redesign.js'
       - 'src/game/demo-10-floor-hard-mode.js'
+      - 'src/game/demo-20-floor-content.js'
+      - 'src/game/demo-20-floor-progression-topology.js'
+      - 'src/game/demo-20-floor-spatial-topology.js'
       - 'src/game/demo-10-floor-quality.js'
       - 'src/game/content-storage-scope.js'
       - 'src/game/anime-assets.js'
@@ -27,6 +30,7 @@ on:
       - 'scripts/tune-demo-10f-late-game.mjs'
       - 'test/demo-10-floor-content.test.js'
       - 'test/demo-10-floor-engine.test.js'
+      - 'test/demo-20-floor-content.test.js'
       - 'test/demo-10-floor-progression.test.js'
       - 'test/demo-10-floor-mutations.test.js'
       - 'test/demo-10-floor-solver-profile.test.js'
@@ -50,6 +54,9 @@ on:
       - 'src/game/demo-10-floor-progression-topology.js'
       - 'src/game/demo-10-floor-spatial-redesign.js'
       - 'src/game/demo-10-floor-hard-mode.js'
+      - 'src/game/demo-20-floor-content.js'
+      - 'src/game/demo-20-floor-progression-topology.js'
+      - 'src/game/demo-20-floor-spatial-topology.js'
       - 'src/game/demo-10-floor-quality.js'
       - 'src/game/content-storage-scope.js'
       - 'src/game/anime-assets.js'
@@ -66,6 +73,7 @@ on:
       - 'scripts/tune-demo-10f-late-game.mjs'
       - 'test/demo-10-floor-content.test.js'
       - 'test/demo-10-floor-engine.test.js'
+      - 'test/demo-20-floor-content.test.js'
       - 'test/demo-10-floor-progression.test.js'
       - 'test/demo-10-floor-mutations.test.js'
       - 'test/demo-10-floor-solver-profile.test.js'
@@ -153,7 +161,7 @@ jobs:
           server_path = Path('/tmp/tower-demo-server.log')
           dom = dom_path.read_text(errors='replace') if dom_path.exists() else ''
           checks = {
-              'demo_header': '10F VERTICAL SLICE' in dom,
+              'demo_header': '20F TWO-ACT CAMPAIGN' in dom,
               'game_container': 'id="game-container"' in dom,
               'hud_floor_number': '第 1 阵' in dom,
               'hud_floor_title': '月白门廊' in dom,

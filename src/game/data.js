@@ -479,7 +479,9 @@ export const RELIC_LABELS = {
 export const SHOP_OPTIONS = [
   { id: 'hp', label: '生命咏唱', description: '生命上限与当前生命 +900', effect: { hp: 900, maxHp: 900 } },
   { id: 'atk', label: '锋芒咏唱', description: '攻击永久 +5', effect: { atk: 5 } },
-  { id: 'def', label: '守护咏唱', description: '防御永久 +5', effect: { def: 5 } }
+  { id: 'def', label: '守护咏唱', description: '防御永久 +5', effect: { def: 5 } },
+  { id: 'mpRestore', label: '回响补魔', description: '恢复 100 MP', effect: { mp: 100 }, magicOnly: true },
+  { id: 'maxMp', label: '以太扩容', description: '魔力上限 +20，并恢复 20 MP', effect: { maxMp: 20, mp: 20 }, magicOnly: true }
 ];
 
 export function getShopCost(state) {
