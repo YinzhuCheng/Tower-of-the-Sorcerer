@@ -6,6 +6,7 @@ import {
   cloneState as cloneEngineState,
   createInitialState as createEngineInitialState,
   getFloorState,
+  getShopOptions,
   getTile,
   parseToken,
   setMagicTier,
@@ -16,6 +17,12 @@ import { automaticItemRank, isSafeAutomaticItem } from './normalization-policy.j
 import { hashValue, stableStringify } from './state.js';
 import { createTowerStateCodec } from './tower-codec.js';
 import { getMagicTierCapacity, getMagicTierCost } from '../game/magic-blade.js';
+import {
+  getCardGateRequirements,
+  getGuardianGateRequirements,
+  getMissingCards,
+  getMissingGuardianIds
+} from '../game/progression-rules.js';
 
 const DIR_LIST = Object.entries(DIRECTIONS).map(([name, vector]) => ({ name, ...vector }));
 const RESOURCE_FIELDS = ['hp', 'maxHp', 'atk', 'def', 'gold', 'mp', 'maxMp', 'sun', 'moon', 'star'];
@@ -264,9 +271,17 @@ function enumerateTileActionsEngine(state) {
 
       if (parsed.type === 'door' && state.cards[parsed.id] <= 0) continue;
       if (parsed.type === 'gate') {
-        const triGateId = FLOORS[state.floor].puzzles?.triGate;
-        if (parsed.id !== triGateId) continue;
-        if (state.cards.sun <= 0 || state.cards.moon <= 0 || state.cards.star <= 0) continue;
+        // Keep solver reachability exactly aligned with engine.js.  The old
+        // branch only recognised the historical F7 three-card gate, which
+        // silently removed every named Act II card/guardian gate from the
+        // action graph.  New authored gates are still checked here before
+        // expansion so a blocked action does not inflate the frontier.
+        const floor = FLOORS[state.floor];
+        const cardRequirements = getCardGateRequirements(floor, parsed.id);
+        const guardianRequirements = getGuardianGateRequirements(floor, parsed.id);
+        if (cardRequirements && getMissingCards(state.cards, cardRequirements).length > 0) continue;
+        if (guardianRequirements && getMissingGuardianIds(getFloorState(state), floor, parsed.id).length > 0) continue;
+        if (!cardRequirements && !guardianRequirements) continue;
       }
       if (parsed.type === 'enemy') {
         const enemy = ENEMIES[parsed.id];
@@ -374,7 +389,7 @@ function enumerateShopActionsEngine(state) {
         completedRunes: completedRunesForState(state)
       });
       if (!path) continue;
-      return SHOP_OPTIONS.map((option) => ({
+      return getShopOptions(state).map((option) => ({
         kind: 'shop',
         eventId: `f${FLOORS[state.floor].number}:shop:p${state.shopPurchases}:${option.id}`,
         x,
@@ -525,10 +540,32 @@ function applyAction(state, action) {
   return { ok: true, state: CODEC.compact(applied.state), steps: applied.steps };
 }
 
+function encodedBossCount(floorMeta = []) {
+  let count = 0;
+  for (const meta of floorMeta) {
+    let mask = 0n;
+    for (const character of String(meta?.defeatedBossMask ?? '0').toLowerCase()) {
+      const digit = '0123456789abcdefghijklmnopqrstuvwxyz'.indexOf(character);
+      if (digit >= 0) mask = mask * 36n + BigInt(digit);
+    }
+    while (mask > 0n) {
+      count += Number(mask & 1n);
+      mask >>= 1n;
+    }
+  }
+  return count;
+}
+
 function priority(state) {
   // Search ordering only; never used as a proof bound.
   return state.cores * 1e12
     + state.floor * 1e10
+    // Guardian clusters are deliberately an authored commitment, not optional
+    // loot. Without this tie-break, a best-first frontier repeatedly prefers
+    // a pristine pre-Boss label over the legal "spent HP, opened progress"
+    // label and can starve F14/F17 completions under a bounded scout. The
+    // count comes from compact boss masks, so it cannot invent progress.
+    + encodedBossCount(state.floorMeta) * 1e8
     + state.stats.atk * 1e6
     + state.stats.def * 1e4
     + Math.min(state.stats.hp, 9999)

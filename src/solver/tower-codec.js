@@ -1,4 +1,9 @@
 const DYNAMIC_TYPES = new Set(['item', 'door', 'switch', 'gate', 'enemy']);
+// A defeated transition guardian can reveal an up stair in the same slot that
+// originally held its enemy token (F10's void core is the first example).
+// The slot itself is still discovered from that original enemy, but its later
+// value has to be part of the compact-state vocabulary as well.
+const REVEALED_TRANSITION_TOKENS = ['U'];
 
 function parseTokenLocal(token) {
   const separator = token.indexOf(':');
@@ -91,6 +96,7 @@ export function createTowerStateCodec({ baseState, floors, enemies }) {
     return code;
   };
   registerToken('.');
+  for (const token of REVEALED_TRANSITION_TOKENS) registerToken(token);
   for (const slot of slots) registerToken(slot.initialToken);
   for (const enemyId of Object.keys(enemies)) registerToken(`enemy:${enemyId}`);
 

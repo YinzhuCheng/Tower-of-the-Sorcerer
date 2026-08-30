@@ -6,7 +6,7 @@ import { applyDemoTenFloorProgressionTopology } from '../src/game/demo-10-floor-
 import { applyDemoTenFloorSpatialRedesign } from '../src/game/demo-10-floor-spatial-redesign.js';
 import { applyDemoTenFloorProgressionGrammar } from '../src/game/demo-10-floor-progression.js';
 import { applyDemoTenFloorPalaceSpatialRedesign } from '../src/game/demo-10-floor-palace-spatial-redesign.js';
-import { applyDemoTenFloorHardMode } from '../src/game/demo-10-floor-hard-mode.js';
+import { applyDemoTenFloorHardMode, DEMO10_HARD_ROUTE_PROOF } from '../src/game/demo-10-floor-hard-mode.js';
 import {
   applyDemoTwentyFloorContent,
   DEMO20_CONTENT_ID,
@@ -20,6 +20,20 @@ applyDemoTenFloorSpatialRedesign({ floors: FLOORS, gridSize: GRID_SIZE });
 applyDemoTenFloorProgressionGrammar({ enemies: ENEMIES, floors: FLOORS, dialogues: DIALOGUES });
 applyDemoTenFloorPalaceSpatialRedesign({ floors: FLOORS, gridSize: GRID_SIZE });
 applyDemoTenFloorHardMode({ enemies: ENEMIES });
+
+// Build the accepted Act I witness before installing the Act II transition.
+// It is intentionally replayed only after the transition is present below:
+// that regression exercises the phase-changing Queen -> Core -> revealed-U
+// state that an actual 20-floor continuation must compact correctly.
+const { runGreedyShopStrategy } = await import('../src/solver/greedy-strategy.js');
+const F10_ROUTE_WITNESS = runGreedyShopStrategy({
+  ...DEMO10_HARD_ROUTE_PROOF,
+  traceActions: true,
+  maxIterations: 8_000
+});
+assert.equal(F10_ROUTE_WITNESS.failure, null);
+assert.ok(F10_ROUTE_WITNESS.routeSteps.length > 0);
+
 applyDemoTwentyFloorContent({ enemies: ENEMIES, floors: FLOORS, items: ITEMS, dialogues: DIALOGUES });
 
 const {
@@ -30,6 +44,8 @@ const {
   tryMove,
   validateStateShape
 } = await import('../src/game/engine.js');
+const { createTowerAdapter } = await import('../src/solver/tower-adapter.js');
+const { replayTowerStepSkeletonToState } = await import('../src/solver/replay.js');
 
 test('Act II turns the frozen 11–20 topology into a complete runtime campaign', () => {
   const state = createInitialState();
@@ -82,6 +98,35 @@ test('F10 core restores 100 MP, reveals a real stair, and transfers into F11 wit
   assert.equal(ascent.floorChanged, true);
   assert.equal(state.floor, 10);
   assert.equal(FLOORS[state.floor].number, 11);
+});
+
+test('the Act I witness compacts through the revealed F10 stair and exposes an Act II continuation', () => {
+  const adapter = createTowerAdapter();
+  const bridge = replayTowerStepSkeletonToState(F10_ROUTE_WITNESS.routeSteps, {
+    adapter,
+    requireGoal: false
+  });
+
+  assert.equal(bridge.ok, true);
+  assert.equal(bridge.goal, false);
+  assert.equal(bridge.final.floor, 9);
+  assert.deepEqual(bridge.final.magic, { unlocked: true, mp: 100, maxMp: 100, tier: 0 });
+
+  const engineState = adapter.materializeState(bridge.state);
+  assert.equal(getTile(engineState, 5, 1, 9), 'U');
+  const stair = adapter.enumerateActions(bridge.state).find((action) => action.token === 'U');
+  assert.ok(stair, 'the dynamic U must remain a legal solver action');
+  const ascent = adapter.applyAction(bridge.state, stair);
+  assert.equal(ascent.ok, true);
+  assert.equal(adapter.summarizeState(ascent.state).floor, 10);
+
+  const landed = adapter.normalize(ascent.state);
+  const lunarGate = adapter.enumerateActions(landed.state)
+    .find((action) => action.token === 'gate:f11LunarTrace');
+  assert.ok(lunarGate, 'named Act II card gates must be visible to the solver');
+  const openedGate = adapter.applyAction(adapter.cloneState(landed.state), lunarGate);
+  assert.equal(openedGate.ok, true);
+  assert.equal(getTile(adapter.materializeState(openedGate.state), 9, 2, 10), '.');
 });
 
 test('F15 is the only Act II shop and exposes explicit MP actions alongside the normal conversion choices', () => {
