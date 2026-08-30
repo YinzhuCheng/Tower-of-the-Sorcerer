@@ -1,9 +1,10 @@
 # 10F progression topology lock
 
-Status: **v2 single-shop topology is under renewed visual review.** Static
-topology and card-state checks are green. The former F1/F5/F9 shop placement
-has been replaced by one F5 conversion node, so the next screenshot run must
-review the revised F1 and F9 rooms before any solver/mutator numeric pass.
+Status: **v2 single-shop topology is frozen on 2026-08-30.** Static topology
+and card-state checks are green; `10F Screenshot Gallery` run 26 verified the
+revised F1, F5 and F9 rooms in real Chrome. Future solver/mutator work may
+change only ordinary encounter placement and numbers; it must not rewrite this
+lock without an explicit topology revision.
 
 This document supersedes the old assumption that every core floor must contain
 one boss who individually seals its upward stair. It locks the progression
@@ -12,8 +13,8 @@ before any further room layout or numerical tuning. Numeric values are
 intentionally out of scope until this topology is implemented and replayable.
 
 The canonical eight-floor dataset remains a research baseline. Everything in
-this document is implemented only through the ten-floor demo overlay. Numeric
-rebaselining begins only after this revised map state is visually re-locked.
+this document is implemented only through the ten-floor demo overlay. The
+single-shop numeric rebaseline may now begin, but remains a separate pass.
 
 ## Design rules
 
