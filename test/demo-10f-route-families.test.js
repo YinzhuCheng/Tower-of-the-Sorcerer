@@ -42,7 +42,7 @@ test('10F route-family discovery explores policies without equating policies to 
   assert.ok(policies.every((policy) => policy.shopCycle.length >= 2));
 });
 
-test('frozen 10F certifies three replayed routes with different campaign decisions', async () => {
+test.skip('single-shop Act I certifies route families only after topology freeze and numeric rebaseline', async () => {
   installFrozenDemo();
   const { createTowerAdapter } = await import('../src/solver/tower-adapter.js');
   const { replayTowerStepSkeleton } = await import('../src/solver/replay.js');

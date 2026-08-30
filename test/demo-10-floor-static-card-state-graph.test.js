@@ -46,7 +46,14 @@ test('late palace card graph names the rooms and permissions each card unlocks',
   assert.ok(hasAnchor(barrier(report, 'F8:door:star'), 'switch:hushB'));
   assert.ok(hasAnchor(barrier(report, 'F8:door:moon'), 'switch:hushA'));
   assert.ok(hasAnchor(barrier(report, 'F9:door:star'), 'rune:C'));
-  assert.ok(hasAnchor(barrier(report, 'F9:door:moon'), 'shop'));
+  assert.ok(hasAnchor(barrier(report, 'F9:door:moon'), 'rune:B'));
   assert.ok(hasAnchor(barrier(report, 'F10:door:moon'), 'item:dual'));
   assert.ok(hasAnchor(barrier(report, 'F10:gate:throneSeal'), 'enemy:finalQueen'));
+});
+
+test('the fully assembled first act exposes exactly one shop', () => {
+  const shopFloors = createFixture()
+    .filter((floor) => floor.map.some((row) => row.includes('shop')))
+    .map((floor) => floor.number);
+  assert.deepEqual(shopFloors, [5]);
 });

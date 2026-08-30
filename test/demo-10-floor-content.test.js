@@ -49,22 +49,22 @@ test('inserted demo maps are 11x11 and provide boss-locked upward stairs on F8/F
   }
 });
 
-test('production demo keeps shops only on F1/F5/F9 with stronger late conversion', () => {
+test('production demo keeps one Act I shop on F5 before the guardian cluster', () => {
   const fixture = baseFixture();
   applyDemoTenFloorContent(fixture);
   const shopFloors = fixture.floors
     .filter((floor) => floor.map.some((row) => row.includes('shop')))
     .map((floor) => floor.number);
 
-  assert.deepEqual(shopFloors, [1, 5, 9]);
+  assert.deepEqual(shopFloors, [5]);
   assert.deepEqual(fixture.floors[0].initialRelics, ['codex', 'compass']);
-  assert.equal(fixture.floors[0].shopEffectMultiplier, 1.7);
   assert.equal(fixture.floors[4].shopEffectMultiplier, 2.25);
-  assert.equal(fixture.floors[8].shopEffectMultiplier, 2.25);
+  assert.equal(fixture.floors[0].shopEffectMultiplier, undefined);
+  assert.equal(fixture.floors[8].shopEffectMultiplier, undefined);
   assert.ok(!fixture.floors[9].map.some((row) => row.includes('shop')));
 });
 
-test('F8/F9 expose distinct checkpoint mechanics and F9 converts late Gold before the throne', () => {
+test('F8/F9 expose distinct checkpoint mechanics without reintroducing a late shop', () => {
   const fixture = baseFixture();
   applyDemoTenFloorContent(fixture);
   const floor8 = fixture.floors[7];
@@ -72,7 +72,7 @@ test('F8/F9 expose distinct checkpoint mechanics and F9 converts late Gold befor
 
   assert.deepEqual(floor8.puzzles?.switches?.hush, ['hushA', 'hushB']);
   assert.deepEqual(floor9.puzzles?.sequence?.order, ['B', 'A', 'C']);
-  assert.ok(floor9.map.some((row) => row.includes('shop')), 'F9 must keep a pre-throne resource-conversion checkpoint.');
+  assert.ok(!floor9.map.some((row) => row.includes('shop')), 'F9 must remain a permission puzzle, not a late conversion checkpoint.');
 
   const lateEnemyIds = [
     'muteGuard', 'hushCantor', 'outerCrown', 'palaceWarden',

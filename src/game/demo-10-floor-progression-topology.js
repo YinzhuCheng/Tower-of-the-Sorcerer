@@ -8,6 +8,11 @@ const CORE_BEARERS = Object.freeze([
   Object.freeze({ floor: 7, enemyId: 'shadowBoss', core: '虚影核心' })
 ]);
 
+// A shop is a major act-level conversion decision, not an every-floor service.
+// Its floor belongs to the topology contract because moving or duplicating it
+// changes the player decision graph and the solver's action space.
+export const DEMO10_ACT_I_SHOP_FLOORS = Object.freeze([5]);
+
 const FLOORS = Object.freeze({
   1: Object.freeze({ exitGuardians: Object.freeze([]) }),
   2: Object.freeze({
@@ -42,6 +47,7 @@ export const DEMO10_PROGRESSION_TOPOLOGY_ID = 'demo-10f-progression-topology-v1'
 export const DEMO10_PROGRESSION_TOPOLOGY = Object.freeze({
   id: DEMO10_PROGRESSION_TOPOLOGY_ID,
   coreBearers: CORE_BEARERS,
+  shopFloors: DEMO10_ACT_I_SHOP_FLOORS,
   floors: FLOORS,
   newGuardianIds: Object.freeze(['shadowWardBlade', 'shadowWardCantor']),
   bosslessFloors: Object.freeze([1, 3, 4, 6]),
@@ -91,6 +97,9 @@ export function validateDemoTenFloorProgressionTopology(topology = DEMO10_PROGRE
     }
   }
   if (!idsAreUnique(bossless) || bossless.length !== 4) violations.push('bossless-floor-set');
+  if ((topology?.shopFloors ?? []).join(',') !== DEMO10_ACT_I_SHOP_FLOORS.join(',')) {
+    violations.push('act-i-shop-floor-set');
+  }
 
   const expectedExitGroups = {
     5: ['whaleBoss', 'swordBoss', 'dragonBoss'],
@@ -195,7 +204,7 @@ export function applyDemoTenFloorProgressionTopology({ floors, enemies } = {}) {
 
   configureFloor(floorByNumber(floors, 1), {
     title: '月白门廊',
-    objective: '在入口房与第一座商店之间学习伤害、卡片与资源取舍；本层不设 Boss 税。',
+    objective: '在入口房、资源侧室与两条卡门之间学习伤害、卡片与资源取舍；本层不设 Boss 税。',
     exitGuardians: []
   });
   configureFloor(floorByNumber(floors, 2), {
@@ -216,7 +225,7 @@ export function applyDemoTenFloorProgressionTopology({ floors, enemies } = {}) {
   });
   configureFloor(floorByNumber(floors, 5), {
     title: '赤焰熔心',
-    objective: '在中层商店完成配装后，击败潮汐、锋刃与赤焰三名核心守卫；三人全部落败才会打开上楼结界。',
+    objective: '在这一幕唯一的中层商店完成配装后，击败潮汐、锋刃与赤焰三名核心守卫；三人全部落败才会打开上楼结界。',
     exitGuardians: ['whaleBoss', 'swordBoss', 'dragonBoss'],
     primaryBoss: 'dragonBoss'
   });

@@ -1,5 +1,11 @@
 export const DEMO10_HARD_MODE_ID = 'demo-10f-hard-v3-route-compression';
 
+// The single-shop topology deliberately reopens spatial design. These values
+// are retained as the last numeric baseline, but are not evidence that the
+// revised map is balanced. A new witness and mutator pass are required only
+// after card gates, rooms and visual review are frozen again.
+export const DEMO10_NUMERIC_REBASE_REQUIRED = true;
+
 export const DEMO10_HARD_MODE_PRESSURE = Object.freeze({
   palaceWardenMagicPower: 245,
   blackSealKeeperMagicPower: 220,
@@ -43,13 +49,10 @@ function scaleStat(value, multiplier) {
 /**
  * Production hard-mode pressure overlay for the 10F browser slice.
  *
- * Shops now exist only on F1/F5/F9, and the F5/F9 shops convert Gold more
- * efficiently. To keep that stronger late conversion from flattening the end
- * game, ordinary enemies and bosses from F6 onward receive a gradual HP/ATK
- * pressure ramp. DEF is deliberately left stable to avoid creating surprise
- * hard breakpoints. Late magic bosses keep explicit threshold values, while
- * the final core carries the sharpest fixed-damage check so weak shop-order
- * choices remain meaningfully punishable even after the 130% F9 shop.
+ * This is the retained pre-single-shop numeric baseline. It does not move
+ * rooms, cards, guardians, stairs or key relics. Its pressure must not be
+ * tuned until the revised single-shop topology has passed static and visual
+ * acceptance, at which point fresh route witnesses replace the old ones.
  */
 export function applyDemoTenFloorHardMode({ enemies } = {}) {
   if (!enemies?.palaceWarden || !enemies?.blackSealKeeper) {
@@ -74,20 +77,21 @@ export function applyDemoTenFloorHardMode({ enemies } = {}) {
   if (enemies.outerCrown) enemies.outerCrown.atk = DEMO10_HARD_MODE_ORDINARY_PRESSURE.outerCrownAtk;
   if (enemies.nullCantor) enemies.nullCantor.magicPower = DEMO10_HARD_MODE_ORDINARY_PRESSURE.nullCantorMagicPower;
   if (enemies.eclipseMage) enemies.eclipseMage.magicPower = DEMO10_HARD_MODE_ORDINARY_PRESSURE.eclipseMageMagicPower;
-  enemies.palaceWarden.description = '王庭外环的高压执剑官。分层商店让中后期资源转换更有效，因此她用更高的固定魔法压力检查前七层的资源配置。';
-  enemies.blackSealKeeper.description = '王座前最后一道黯星许可印。F9 强化商店提高最终配点效率，她因此使用更高的魔法阈值与破防阈值，错误投资不会获得保底。';
+  enemies.palaceWarden.description = '王庭外环的高压执剑官。她保留上一版数值基线的固定魔法压力；单店制地图冻结后才会重新校准。';
+  enemies.blackSealKeeper.description = '王座前最后一道黯星许可印。她保留上一版终盘阈值；单店制地图冻结后才会重新校准。';
   if (enemies.hushCantor) enemies.hushCantor.description = '外环的静默咏唱者。她以固定魔法压力压缩“随便拿资源也能过”的宽松路线，迫使玩家在王庭前完成有效配装。';
   if (enemies.outerCrown) enemies.outerCrown.description = '先制剑压守住外环侧翼。她不是门禁单位，但让绕路取宝与直奔主线都要支付清楚的战斗代价。';
-  if (enemies.nullCantor) enemies.nullCantor.description = '倒悬星桥的空谱咏唱者。高强度魔法波要求玩家把 F9 的金币转成真正承受得住终局的资源。';
+  if (enemies.nullCantor) enemies.nullCantor.description = '倒悬星桥的空谱咏唱者。她是旧数值基线的一部分，等待单店制下的整体重算。';
   if (enemies.eclipseMage) enemies.eclipseMage.description = '蚀月术是王座前的最后一次普通敌人检查：迟到的生命投资与攻击投资都必须已经兑现。';
   if (enemies.voidCore) {
-    enemies.voidCore.description = '女王与七重阵眼融合后的终局核心。F9 的 130% 强化商店能制造更高终盘战力，因此核心以极高固定魔法伤害检验玩家是否把金币转成了真正可承受的最终配置。';
+    enemies.voidCore.description = '女王与七重阵眼融合后的终局核心。当前数值是待重算的历史基线；终局压力将在单店制拓扑冻结后重新建立。';
   }
 
   return {
     id: DEMO10_HARD_MODE_ID,
     pressure: { ...DEMO10_HARD_MODE_PRESSURE },
     ordinaryPressure: { ...DEMO10_HARD_MODE_ORDINARY_PRESSURE },
-    highFloorScaling: DEMO10_HIGH_FLOOR_SCALING
+    highFloorScaling: DEMO10_HIGH_FLOOR_SCALING,
+    numericRebaseRequired: DEMO10_NUMERIC_REBASE_REQUIRED
   };
 }

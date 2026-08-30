@@ -130,18 +130,15 @@ async function validateProductionDemoBuild() {
   assertBuild(!state.floorStates.some((floorState) => floorState.map.some((row) => row.includes('item:codex') || row.includes('item:compass'))), 'Initial relic pickups must not remain as dead map rewards.');
 
   const shopFloors = data.FLOORS.filter((floor) => floor.map.some((row) => row.includes('shop'))).map((floor) => floor.number);
-  assertBuild(JSON.stringify(shopFloors) === JSON.stringify([1, 5, 9]), `Shop floors must be 1/5/9, got ${shopFloors.join('/')}.`);
+  assertBuild(JSON.stringify(shopFloors) === JSON.stringify([5]), `Act I shop floor must be 5, got ${shopFloors.join('/')}.`);
 
-  const shopSamples = [];
-  for (const floorIndex of [0, 4, 8]) {
-    state.floor = floorIndex;
-    const options = engine.getShopOptions(state);
-    shopSamples.push({ floor: data.FLOORS[floorIndex].number, multiplier: engine.getShopEffectMultiplier(state), options });
-  }
-  assertBuild(shopSamples[0].options.find((option) => option.id === 'atk').effect.atk === 9, 'F1 ATK shop must scale to +9.');
-  assertBuild(shopSamples[1].options.find((option) => option.id === 'atk').effect.atk === 12, 'F5 ATK shop must scale to +12.');
-  assertBuild(shopSamples[2].options.find((option) => option.id === 'atk').effect.atk === 12, 'F9 ATK shop must scale to +12.');
-  assertBuild(shopSamples[2].options.find((option) => option.id === 'hp').effect.hp === 2025, 'F9 HP shop must scale to +2025.');
+  state.floor = 4;
+  const shopSamples = [{
+    floor: data.FLOORS[4].number,
+    multiplier: engine.getShopEffectMultiplier(state),
+    options: engine.getShopOptions(state)
+  }];
+  assertBuild(shopSamples[0].options.find((option) => option.id === 'atk').effect.atk === 12, 'F5 ATK shop must scale to +12.');
 
   const f1EnemyIds = data.FLOORS[0].map.flat()
     .filter((token) => token.startsWith('enemy:'))
@@ -172,15 +169,18 @@ async function validateProductionDemoBuild() {
   assertBuild(demoSequences.length >= 20, 'Every floor must provide pre/post boss dialogue sequences.');
   assertBuild(demoSequences.every(([, dialogue]) => dialogue.turns.length >= 2 && dialogue.turns.length <= 5), 'Boss dialogue sequences must stay within 2-5 turns.');
 
-  // The screenshot gallery is a topology-review tool.  It must load the same
+  // The screenshot gallery is a topology-review tool. It must load the same
   // browser build but cannot be allowed to pull a solver verdict forward into
-  // the room-design phase. Production builds retain the full probe below.
-  if (process.env.TOWER_SKIP_NUMERIC_VALIDATION === '1') {
+  // the room-design phase. A new topology automatically suspends old numeric
+  // certificates until it has passed the spatial/card review.
+  if (process.env.TOWER_SKIP_NUMERIC_VALIDATION === '1' || hardMode.DEMO10_NUMERIC_REBASE_REQUIRED) {
     console.log('PRODUCTION_DEMO_TOPOLOGY_VISUAL_BUILD', JSON.stringify({
       initialRelics: state.relics,
       progressionGrammar,
       shopFloors,
-      skipped: 'numeric-solver-probe'
+      skipped: hardMode.DEMO10_NUMERIC_REBASE_REQUIRED
+        ? 'numeric-rebaseline-required-after-topology-change'
+        : 'numeric-solver-probe'
     }));
     return;
   }

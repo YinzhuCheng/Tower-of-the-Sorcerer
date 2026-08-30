@@ -1,6 +1,6 @@
 const GRID_SIZE = 11;
 
-export const DEMO10_PALACE_SPATIAL_REDESIGN_ID = 'demo-10f-palace-spatial-redesign-v1-topology-lock';
+export const DEMO10_PALACE_SPATIAL_REDESIGN_ID = 'demo-10f-palace-spatial-redesign-v2-single-shop-topology';
 
 function parseMap(text) {
   const rows = text.trim().split('\n').map((row) => row.trim().split(/\s+/));
@@ -36,7 +36,7 @@ const PALACE_ROOM_MAPS = Object.freeze({
     # # # # gate:blackstar gate:blackstar gate:blackstar # # # #
     # enemy:starSentinel . item:atk rune:A . . enemy:nullCantor enemy:crownShade . #
     # . . # . # . # # # #
-    # . door:star rune:C # item:sun rune:B door:moon shop item:hp #
+    # . door:star rune:C # item:sun . door:moon rune:B item:hp #
     # . # # . . . # # # #
     # D item:moon . enemy:starSentinel item:atk item:def . item:star . #
     # # # # # # # # # # #
@@ -69,7 +69,7 @@ const PALACE_ROOM_PLANS = Object.freeze({
     '倒悬桥入口厅',
     '星卡封锁的星落观测室',
     '晨辉与月蚀校准台',
-    '月卡封锁的最终商店',
+    '月卡封锁的月蚀校准台',
     '黑印桥闸与观测官庭',
     '王座上行桥'
   ]),
@@ -129,7 +129,7 @@ function assertSameInventory(floor, nextMap) {
 function assertLateFloorAnchors(floorNumber, map) {
   const required = {
     8: ['D', 'U', 'switch:hushA', 'switch:hushB', 'gate:hush', 'gate:hushVault', 'enemy:palaceWarden'],
-    9: ['D', 'U', 'rune:A', 'rune:B', 'rune:C', 'gate:blackstar', 'enemy:blackSealKeeper', 'shop'],
+    9: ['D', 'U', 'rune:A', 'rune:B', 'rune:C', 'gate:blackstar', 'enemy:blackSealKeeper'],
     10: ['D', 'door:moon', 'gate:throneSeal', 'enemy:finalQueen']
   }[floorNumber] ?? [];
   for (const token of required) {

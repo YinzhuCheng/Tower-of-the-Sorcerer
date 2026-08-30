@@ -73,7 +73,7 @@ const AUTHORED_SLOT_SPECS = Object.freeze({
     enemySentinelMid: Object.freeze({ x: 1, y: 5, expected: 'enemy:starSentinel' }),
     runeC: Object.freeze({ x: 3, y: 7, expected: 'rune:C' }),
     runeA: Object.freeze({ x: 4, y: 5, expected: 'rune:A' }),
-    runeB: Object.freeze({ x: 6, y: 7, expected: 'rune:B' })
+    runeB: Object.freeze({ x: 8, y: 7, expected: 'rune:B' })
   })
 });
 

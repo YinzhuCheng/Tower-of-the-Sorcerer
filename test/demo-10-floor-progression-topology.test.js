@@ -5,6 +5,7 @@ import {
   applyDemoTenFloorProgressionTopology,
   DEMO10_PROGRESSION_TOPOLOGY,
   DEMO10_PROGRESSION_TOPOLOGY_ID,
+  DEMO10_ACT_I_SHOP_FLOORS,
   coreBearerIdsByFloor,
   validateDemoTenFloorProgressionTopology
 } from '../src/game/demo-10-floor-progression-topology.js';
@@ -30,6 +31,7 @@ test('10F topology lock clusters cores and reserves true bossless floors', () =>
     7: ['astralBoss', 'shadowBoss']
   });
   assert.deepEqual(DEMO10_PROGRESSION_TOPOLOGY.bosslessFloors, [1, 3, 4, 6]);
+  assert.deepEqual(DEMO10_ACT_I_SHOP_FLOORS, [5]);
 });
 
 test('10F topology lock distinguishes reward groups from stair groups', () => {
@@ -50,6 +52,15 @@ test('topology validator rejects a changed guardian group before map or numeric 
   const report = validateDemoTenFloorProgressionTopology(changed);
   assert.equal(report.ok, false);
   assert.ok(report.violations.includes('exit-guardian-group-f7'));
+});
+
+test('topology validator rejects any extra Act I conversion node', () => {
+  const changed = structuredClone(DEMO10_PROGRESSION_TOPOLOGY);
+  changed.shopFloors.push(9);
+
+  const report = validateDemoTenFloorProgressionTopology(changed);
+  assert.equal(report.ok, false);
+  assert.ok(report.violations.includes('act-i-shop-floor-set'));
 });
 
 test('demo topology overlay assigns multi-guardian stair groups without touching the 8F baseline', () => {

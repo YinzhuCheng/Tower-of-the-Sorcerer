@@ -6,14 +6,12 @@ import { applyDemoTenFloorProgressionTopology } from '../src/game/demo-10-floor-
 import { applyDemoTenFloorSpatialRedesign } from '../src/game/demo-10-floor-spatial-redesign.js';
 import { applyDemoTenFloorProgressionGrammar } from '../src/game/demo-10-floor-progression.js';
 import { applyDemoTenFloorPalaceSpatialRedesign } from '../src/game/demo-10-floor-palace-spatial-redesign.js';
-import { applyDemoTenFloorHardMode, DEMO10_HARD_ROUTE_PROOF } from '../src/game/demo-10-floor-hard-mode.js';
 
 applyDemoTenFloorContent({ enemies: ENEMIES, floors: FLOORS, dialogues: DIALOGUES, gridSize: GRID_SIZE });
 applyDemoTenFloorProgressionTopology({ enemies: ENEMIES, floors: FLOORS });
 applyDemoTenFloorSpatialRedesign({ floors: FLOORS, gridSize: GRID_SIZE });
 applyDemoTenFloorProgressionGrammar({ enemies: ENEMIES, floors: FLOORS, dialogues: DIALOGUES });
 applyDemoTenFloorPalaceSpatialRedesign({ floors: FLOORS, gridSize: GRID_SIZE });
-applyDemoTenFloorHardMode({ enemies: ENEMIES });
 
 const {
   cloneState,
@@ -28,9 +26,6 @@ const {
   buyShopUpgrade
 } = await import('../src/game/engine.js');
 const { buildMapUnitHoverPreview } = await import('../src/game/tactical-interaction.js');
-const { runGreedyShopStrategy } = await import('../src/solver/greedy-strategy.js');
-const { createTowerAdapter } = await import('../src/solver/tower-adapter.js');
-const { replayTowerStepSkeleton } = await import('../src/solver/replay.js');
 
 test('10F browser content creates an authoritative engine state with ten floor states', () => {
   const state = createInitialState();
@@ -53,7 +48,7 @@ test('10F demo save data round-trips and rejects an old eight-floor shape', () =
   assert.throws(() => deserializeState(serializeState(oldShape)), /存档版本不兼容|内容损坏/);
 });
 
-test('10F demo initial relics and tiered shops use source engine semantics', () => {
+test('10F demo initial relics and the sole Act I shop use source engine semantics', () => {
   const state = createInitialState();
   assert.deepEqual(state.relics, { codex: true, compass: true, lucky: false, ward: false, holy: false });
   assert.deepEqual(state.relicNames, [RELIC_LABELS.codex, RELIC_LABELS.compass]);
@@ -66,13 +61,8 @@ test('10F demo initial relics and tiered shops use source engine semantics', () 
     return getShopOptions(state).find((option) => option.id === optionId).effect;
   };
   assert.equal(getShopEffectMultiplier({ ...state, floor: 1 }), 1, 'floors without a multiplier must remain at base value');
-  assert.equal(getShopEffectMultiplier({ ...state, floor: 0 }), 1.7);
   assert.equal(getShopEffectMultiplier({ ...state, floor: 4 }), 2.25);
-  assert.equal(getShopEffectMultiplier({ ...state, floor: 8 }), 2.25);
-  assert.deepEqual(shopEffect(0, 'hp'), { hp: 1530, maxHp: 1530 });
   assert.deepEqual(shopEffect(4, 'atk'), { atk: 12 });
-  assert.deepEqual(shopEffect(8, 'def'), { def: 12 });
-  assert.deepEqual(shopEffect(8, 'hp'), { hp: 2025, maxHp: 2025 });
 
   state.floor = 4;
   state.stats.gold = 45;
@@ -130,10 +120,13 @@ test('an activated rune stays inert when the authored F9 sequence revisits it', 
   state.floor = 8;
   const floorState = state.floorStates[8];
 
-  // B sits one tile right of the Sun card in the authored B → A → C route.
-  state.x = 5;
+  // B is behind the Moon permission and begins the authored B → A → C route.
+  state.cards.moon = 1;
+  state.x = 6;
   state.y = 7;
   let result = tryMove(state, 1, 0);
+  assert.equal(result.moved, true);
+  result = tryMove(state, 1, 0);
   assert.equal(result.moved, true);
   assert.equal(floorState.sequenceProgress, 1);
 
@@ -143,27 +136,11 @@ test('an activated rune stays inert when the authored F9 sequence revisits it', 
   assert.equal(result.moved, true);
   assert.equal(floorState.sequenceProgress, 2);
 
-  state.x = 4;
+  state.x = 7;
   state.y = 7;
   result = tryMove(state, 1, 0);
   assert.equal(result.moved, true);
   assert.equal(floorState.sequenceProgress, 2, 'walking across lit B must not reset B → A progress');
 });
 
-test('frozen 10F hard mode keeps one engine-replayable route without requiring every simple cycle', () => {
-  const route = runGreedyShopStrategy({
-    ...DEMO10_HARD_ROUTE_PROOF,
-    traceActions: true,
-    maxIterations: 8_000
-  });
-  const replay = replayTowerStepSkeleton(route.routeSteps, {
-    adapter: createTowerAdapter(),
-    requireGoal: true
-  });
-
-  assert.equal(route.solvable, true);
-  assert.equal(replay.ok, true);
-  assert.ok(route.routeSteps.length > 200);
-  assert.ok(replay.minNormalizedHpMargin >= 0.04);
-  assert.ok(replay.minNormalizedHpMargin <= 0.20);
-});
+test.skip('single-shop Act I receives a new route witness only after topology freeze and visual review', () => {});

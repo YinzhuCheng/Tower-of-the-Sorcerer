@@ -1,10 +1,9 @@
 # 10F progression topology lock
 
-Status: **frozen in the 10F demo overlay on 2026-08-29.** Static topology and
-card-state checks are green, and GitHub Actions `10F Screenshot Gallery` run
-24 verified the authored maps in real Chrome. Future solver/mutator work may
-change only ordinary encounter placement and numbers; it must not rewrite this
-lock without an explicit topology revision.
+Status: **v2 single-shop topology is under renewed visual review.** Static
+topology and card-state checks are green. The former F1/F5/F9 shop placement
+has been replaced by one F5 conversion node, so the next screenshot run must
+review the revised F1 and F9 rooms before any solver/mutator numeric pass.
 
 This document supersedes the old assumption that every core floor must contain
 one boss who individually seals its upward stair. It locks the progression
@@ -14,7 +13,7 @@ intentionally out of scope until this topology is implemented and replayable.
 
 The canonical eight-floor dataset remains a research baseline. Everything in
 this document is implemented only through the ten-floor demo overlay. Numeric
-rebaselining begins only after this locked map state.
+rebaselining begins only after this revised map state is visually re-locked.
 
 ## Design rules
 
@@ -36,15 +35,15 @@ rebaselining begins only after this locked map state.
 
 | Floor | Role | Boss / guardian structure | Locked result |
 | --- | --- | --- | --- |
-| F1 月白门廊 | Tutorial and first shop | No boss and no core; stairs are free once the introductory route is traversed | Teach damage reading, cards and the shop without ending in a mandatory boss tax |
+| F1 月白门廊 | Tutorial and card rooms | No boss and no core; stairs are free once the introductory route is traversed | Teach damage reading and card permissions without ending in a mandatory boss tax or early purchase loop |
 | F2 森罗双钥 | First optional power spike | `catBoss` + `foxBoss` guard the **双钥秘库**; they are not stair guardians | Defeat both to open the vault containing `lucky`; recover the first two cores. The player may climb first and return with the initial Compass, but cannot complete the game without the cores |
 | F3 深蓝航道 | Magic-damage lesson | No boss; tide mechanism is the main threshold | Make HP and magic damage legible before the first mandatory boss cluster |
 | F4 锋刃锻炉 | Physical-breakpoint preparation | No boss; forge gate protects `weapon` | Make attack/defence breakpoints and the forge reward matter without a boss finale |
-| F5 赤焰熔心 | Mid-game milestone | `whaleBoss` + `swordBoss` + `dragonBoss` are all `exitGuardians` | All three must fall to unlock the stairs; recover cores 3–5 after choosing at the F5 shop |
+| F5 赤焰熔心 | Mid-game milestone and only Act I shop | `whaleBoss` + `swordBoss` + `dragonBoss` are all `exitGuardians` | All three must fall to unlock the stairs; the only Act I build conversion happens before the three-guardian cluster |
 | F6 星镜书库 | Puzzle and final preparation | No boss; mirror sequence controls progression and `holy` remains a key preparation relic | Give the player a deliberate planning floor between major combat spikes |
 | F7 虚影合鸣 | Four-guardian ascent | `astralBoss` + `shadowBoss` + `shadowWardBlade` + `shadowWardCantor` are all `exitGuardians` | All four must fall to unlock the palace; Astral and Shadow bosses recover cores 6–7, while the two new wardens supply pressure only |
 | F8 静默前庭 | Palace outer ring | `palaceWarden` seals the stair; `hushVaultBlade` + `hushVaultCantor` remain a separate optional vault group | Preserve the existing high-value optional vault without turning it into a hidden mandatory tax |
-| F9 倒悬星桥 | Final build conversion | `blackSealKeeper` seals the stair; F9 shop remains the final conversion point | Require a final build decision before the throne without adding another wide boss cluster |
+| F9 倒悬星桥 | Final permission puzzle | `blackSealKeeper` seals the stair; the Moon door protects the required B rune | Require a final card decision before the throne without adding a late purchase loop |
 | F10 无声王座 | Terminal ordeal | `finalQueen -> voidCore` is a single mandatory two-phase finale | No shop or later recovery; this is the highest pressure point, not another generic floor boss |
 
 The regular-core cadence is therefore **2 + 3 + 2 = 7**. Visible Boss
@@ -68,7 +67,7 @@ specified in [10F room-card topology](10f-room-card-topology.md).
 | F6 | Star door, `mirror`, Moon door | Final rune / Holy / mandatory upper stair |
 | F7 | Star / Moon doors, `tri` | Two ritual guardians / Ward branch; all four guardians still lock the stair |
 | F8 | Star / Moon doors, `hush`, `hushVault` | Hush B / Hush A outer-ring routes; Dual cache and Warden ante-room; optional guardian vault |
-| F9 | Star / Moon doors, `blackstar` | Final rune / last-shop conversion room / Black Seal Keeper ante-room |
+| F9 | Star / Moon doors, `blackstar` | Starfall rune / Moon-eclipse rune / Black Seal Keeper ante-room |
 | F10 | Moon door, `throneSeal` | Final side-room preparation / Final Queen and Core phase |
 
 All remaining card doors now protect a declared room or permission. Card
@@ -127,8 +126,8 @@ merely valid:
 - F8: the optional dual-guardian vault remains separate from the main warden
   route; Star / Moon doorways visibly lead to the two independent hush
   switches before the Warden gate.
-- F9: the star-locked final rune, the free A/B bridge calibrators and the
-  moon-locked final shop each read as separate rooms before the Black Seal
+- F9: the star-locked final rune, the moon-locked B calibrator and the free A
+  bridge calibrator each read as separate rooms before the Black Seal
   Keeper forecourt.
 - F10: the throne seal, Queen and Core phase retain a single unambiguous final
   route with no post-seal recovery; the Moon side-room is visibly optional.
@@ -163,7 +162,8 @@ merely valid:
 - F5 stair stays closed until all three named guardians are defeated.
 - F7 stair stays closed until all four named guardians are defeated.
 - F8 vault remains optional and does not alter the `palaceWarden` stair rule.
-- F9 remains the last shop; the F10 throne seal consumes exactly one Sun card.
+- F5 remains the only Act I shop; F9's Moon door protects the required B rune,
+  and the F10 throne seal consumes exactly one Sun card.
 - UI stair and gate previews list all remaining guardians, not a legacy
   singular “Boss defeated” boolean.
 - The barrier-topology regression rejects any non-separating `door:` or

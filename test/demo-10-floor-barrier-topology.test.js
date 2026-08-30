@@ -163,7 +163,7 @@ test('critical rooms, card costs and finale remain unreachable until their named
     [8, 'gate:hushVault', 'item:dual', 9, 9],
     [9, 'gate:blackstar', 'item:dual', 3, 1],
     [9, 'door:star', 'rune:C', 3, 7],
-    [9, 'door:moon', 'shop', 8, 7],
+    [9, 'door:moon', 'rune:B', 8, 7],
     [9, 'gate:blackstar', 'enemy:blackSealKeeper', 8, 1],
     [10, 'door:moon', 'item:dual', 4, 7],
     [10, 'gate:throneSeal', 'enemy:finalQueen', 5, 1]

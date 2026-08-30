@@ -2,7 +2,7 @@ import { DEMO10_PROGRESSION_TOPOLOGY_ID } from './demo-10-floor-progression-topo
 
 const GRID_SIZE = 11;
 
-export const DEMO10_SPATIAL_REDESIGN_ID = 'demo-10f-spatial-redesign-v4-topology-locked';
+export const DEMO10_SPATIAL_REDESIGN_ID = 'demo-10f-spatial-redesign-v5-single-shop-topology';
 
 function parseMap(text) {
   const rows = text.trim().split('\n').map((row) => row.trim().split(/\s+/));
@@ -22,7 +22,7 @@ const ROOM_MAPS = Object.freeze({
     # item:hp . . # # # enemy:catMage # door:moon #
     # . . . # # # . # . #
     # item:hp # . enemy:catScout . item:def . # . #
-    # enemy:mote . # enemy:mote shop . # . . #
+    # enemy:mote . # enemy:mote . . # . . #
     # . . # . . . item:moon enemy:catScout . #
     # item:hp item:sun enemy:mote . # # # . . #
     # . item:codex . # # # # item:sun . #
@@ -110,7 +110,7 @@ const ROOM_MAPS = Object.freeze({
 });
 
 const ROOM_PLANS = Object.freeze({
-  1: Object.freeze(['入口补给室', '月影资源密室', '中央商店枢纽', '侧藏宝间', '上行门廊']),
+  1: Object.freeze(['入口补给室', '月影资源密室', '中央观测枢纽', '侧藏宝间', '上行门廊']),
   2: Object.freeze(['下行入口室', '猫卫长翼室', '藤蔓继电枢纽', '狐祝翼室', '双钥秘库']),
   3: Object.freeze(['港厅入口室', '星卡封锁的西潮圣所', '东潮圣所', '双潮汇流前庭', '上行航道']),
   4: Object.freeze(['下行锻炉庭院', '月卡控制室', '中央熔炉回路', '辉月魔刃封存室', '上行剑廊']),

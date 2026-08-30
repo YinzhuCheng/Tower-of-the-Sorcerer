@@ -39,7 +39,7 @@ function dialogueSequence(title, turns) {
 
 // A topology revision needs an isolated save scope: older v1 saves contain
 // their own mutable map copies, including the former decorative barriers.
-export const DEMO_TEN_FLOOR_ID = 'demo-10f-v2-barrier-topology';
+export const DEMO_TEN_FLOOR_ID = 'demo-10f-v3-single-shop-topology';
 
 /**
  * Browser/demo content overlay.
@@ -63,23 +63,17 @@ export function applyDemoTenFloorContent({ enemies, floors, dialogues, gridSize 
 
   const finalFloor = floors[7];
 
-  // Production demo economy: only F1 / F5 / F9 contain shops. Later shops
-  // expose stronger conversion multipliers while the eight-floor research
+  // Act I deliberately has one resource-conversion node. F5 is placed before
+  // its clustered guardian challenge; F1 and F9 are navigation / permission
+  // rooms rather than free extra purchase loops. The eight-floor research
   // baseline remains untouched unless this overlay is explicitly installed.
   for (const floor of floors.slice(0, 7)) {
-    if (![1, 5].includes(floor.number)) removeShops(floor.map);
+    if (floor.number !== 5) removeShops(floor.map);
   }
-  ensureShop(floors[0].map, { x: 6, y: 7 });
   ensureShop(floors[4].map, { x: 5, y: 7 });
   Object.assign(floors[0], {
     objective: '使用初始魔眼图鉴判断损伤，击败猫卫长米露并回收月影核心。',
-    initialRelics: Object.freeze(['codex', 'compass']),
-    // With shops concentrated at F1/F5/F9, each visit is a deliberate
-    // conversion decision rather than a disposable refill. These tiers were
-    // selected only after the frozen map had a replayable hard-mode witness;
-    // they do not alter doors, cards, bosses, relics, or room topology.
-    shopEffectMultiplier: 1.7,
-    shopTierLabel: '基础咏唱'
+    initialRelics: Object.freeze(['codex', 'compass'])
   });
   Object.assign(floors[4], {
     shopEffectMultiplier: 2.25,
@@ -125,7 +119,7 @@ export function applyDemoTenFloorContent({ enemies, floors, dialogues, gridSize 
     blackSealKeeper: {
       name: '黯印观测官·塞芙', portrait: 'astral_boss', faction: '王座前厅', floor: 9,
       hp: 2700, atk: 215, def: 95, gold: 600, boss: true, special: 'magic', magicPower: 160,
-      description: '掌管王座前最后一道黯星许可印。王座前强化商店允许更高效的最终资源转换，因此她承担更高的终盘压力。'
+      description: '掌管王座前最后一道黯星许可印。她守住的是不可替代的校准权限，而不是另一处可反复购买的补救点。'
     },
     silenceGuard: { ...enemies.silenceGuard, floor: 10 },
     eclipseMage: { ...enemies.eclipseMage, floor: 10 },
@@ -145,7 +139,7 @@ export function applyDemoTenFloorContent({ enemies, floors, dialogues, gridSize 
     },
     floor9: {
       speaker: '绫星·璃', portrait: 'hero', title: '第九阵：倒悬星桥',
-      text: '王座就在上方。这里的星序不是力量测试，而是路线测试：依次踏过“月蚀、晨辉、星落”，才能打开黯星门。这里也是最后一座强化商店。'
+      text: '王座就在上方。这里的星序不是力量测试，而是路线测试：月卡守住月蚀校准台，随后依次踏过“月蚀、晨辉、星落”，才能打开黯星门。'
     },
     floor10: {
       speaker: '无声女王·诺克缇娅', portrait: 'final_queen', title: '第十阵：无声王座',
@@ -185,7 +179,7 @@ export function applyDemoTenFloorContent({ enemies, floors, dialogues, gridSize 
       dialogueTurn('绫星·璃', 'hero', '数值只是规则。选择才是玩家真正留下的痕迹。')
     ]),
     bossDragonPreDemo: dialogueSequence('第五阵守护者：龙姬·焰璃', [
-      dialogueTurn('龙姬·焰璃', 'dragon_boss', '这里有第二座商店，也有更重的龙火。把金币换成什么，就是你接下来几层要背负的答案。'),
+      dialogueTurn('龙姬·焰璃', 'dragon_boss', '这里有这一幕唯一的商店，也有更重的龙火。把金币换成什么，就是你接下来几层要背负的答案。'),
       dialogueTurn('绫星·璃', 'hero', '我不会为了眼前轻松，把后面的路卖掉。来吧。')
     ]),
     bossDragonPostDemo: dialogueSequence('赤焰核心回收', [
@@ -217,11 +211,11 @@ export function applyDemoTenFloorContent({ enemies, floors, dialogues, gridSize 
       dialogueTurn('绫星·璃', 'hero', '下一道门也一样。')
     ]),
     bossBlackSealPreDemo: dialogueSequence('第九阵守护者：黯印观测官·塞芙', [
-      dialogueTurn('黯印观测官·塞芙', 'astral_boss', '最后一座商店的咏唱效率更高。你可以把积攒的金币一次性转成战力——但我的阈值也因此更高。'),
-      dialogueTurn('绫星·璃', 'hero', '高收益对应高门槛。公平。现在检查我的最终配置吧。')
+      dialogueTurn('黯印观测官·塞芙', 'astral_boss', '你已经越过了唯一的资源转换节点。这里剩下的只有校准权限与此前每一次取舍。'),
+      dialogueTurn('绫星·璃', 'hero', '没有临时补救，才更能看清前面的选择是否成立。现在检查我的最终配置吧。')
     ]),
     bossBlackSealPostDemo: dialogueSequence('黯星通行印解除', [
-      dialogueTurn('黯印观测官·塞芙', 'astral_boss', '许可印解除。王座已无中间层，也没有下一家商店。'),
+      dialogueTurn('黯印观测官·塞芙', 'astral_boss', '许可印解除。王座已无中间层，也没有临时补救。'),
       dialogueTurn('绫星·璃', 'hero', '足够了。剩下的数值就是我自己的答案。')
     ]),
     bossQueenPreDemo: dialogueSequence('第十阵：无声女王', [
@@ -306,12 +300,10 @@ export function applyDemoTenFloorContent({ enemies, floors, dialogues, gridSize 
     id: 8,
     number: 9,
     title: '倒悬星桥',
-    objective: '按月蚀、晨辉、星落的顺序校准星桥，在王座前强化商店完成最后资源转换并击败塞芙。',
+    objective: '用月卡进入月蚀校准台，按月蚀、晨辉、星落的顺序校准星桥并击败塞芙。',
     intro: 'floor9',
     boss: 'blackSealKeeper',
     demoContentId: DEMO_TEN_FLOOR_ID,
-    shopEffectMultiplier: 2.25,
-    shopTierLabel: '王座强化',
     theme: { floor: 0x1a1838, floorAlt: 0x292151, wall: 0x62528f, glow: 0xc5a3ff, fog: 0x0f0c23 },
     map: parseDemoMap(`
       # # # # # # # # # # #
@@ -323,7 +315,7 @@ export function applyDemoTenFloorContent({ enemies, floors, dialogues, gridSize 
       # # # . # . # # . # #
       # item:sun . . enemy:crownShade . # rune:B item:def . #
       # . # # # # # door:moon # # #
-      # D . item:moon . enemy:starSentinel # shop item:hp item:atk #
+      # D . item:moon . enemy:starSentinel # . item:hp item:atk #
       # # # # # # # # # # #
     `, gridSize),
     puzzles: {

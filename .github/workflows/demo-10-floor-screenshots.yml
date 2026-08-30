@@ -14,7 +14,7 @@ on:
       - 'scripts/capture-demo-10f-screenshots.mjs'
       - '.github/workflows/demo-10-floor-screenshots.yml'
   push:
-    branches: [semantic-topology-v2]
+    branches: [main, semantic-topology-v2]
     paths:
       - 'index.html'
       - 'styles.css'

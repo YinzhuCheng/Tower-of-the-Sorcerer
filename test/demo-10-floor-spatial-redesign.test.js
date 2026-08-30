@@ -43,7 +43,7 @@ test('room redesign materializes the locked boss cadence across F1–F7', () => 
   const f1 = floor(fixture.floors, 1);
   assert.deepEqual(f1.exitGuardians, []);
   assert.equal(hasToken(f1, 'enemy:catBoss'), false);
-  assert.ok(hasToken(f1, 'shop'));
+  assert.equal(hasToken(f1, 'shop'), false);
 
   const f2 = floor(fixture.floors, 2);
   assert.deepEqual(f2.exitGuardians, []);
