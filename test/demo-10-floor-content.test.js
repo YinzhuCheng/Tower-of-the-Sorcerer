@@ -58,9 +58,9 @@ test('production demo keeps shops only on F1/F5/F9 with stronger late conversion
 
   assert.deepEqual(shopFloors, [1, 5, 9]);
   assert.deepEqual(fixture.floors[0].initialRelics, ['codex', 'compass']);
-  assert.equal(fixture.floors[0].shopEffectMultiplier, 1);
-  assert.equal(fixture.floors[4].shopEffectMultiplier, 1.15);
-  assert.equal(fixture.floors[8].shopEffectMultiplier, 1.3);
+  assert.equal(fixture.floors[0].shopEffectMultiplier, 1.7);
+  assert.equal(fixture.floors[4].shopEffectMultiplier, 2.25);
+  assert.equal(fixture.floors[8].shopEffectMultiplier, 2.25);
   assert.ok(!fixture.floors[9].map.some((row) => row.includes('shop')));
 });
 

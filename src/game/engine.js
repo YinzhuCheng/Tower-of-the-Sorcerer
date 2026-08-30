@@ -261,6 +261,18 @@ function handleRune(state, runeId) {
   const floorState = getFloorState(state);
   const expected = sequence.order[floorState.sequenceProgress];
 
+  // A rune that has already been activated is a lit floor tile, not a new
+  // input.  Treating it as a failed input made authored layouts that require
+  // crossing back over B after activating B → A impossible to finish.  Keep
+  // the token on the map for rendering while making revisiting it inert.
+  if (sequence.order.slice(0, floorState.sequenceProgress).includes(runeId)) {
+    return {
+      completed: floorState.sequenceProgress >= sequence.order.length,
+      progress: floorState.sequenceProgress,
+      expected: sequence.order[floorState.sequenceProgress] ?? null
+    };
+  }
+
   if (runeId === expected) {
     floorState.sequenceProgress += 1;
     const completed = floorState.sequenceProgress >= sequence.order.length;

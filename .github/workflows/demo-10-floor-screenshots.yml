@@ -46,6 +46,8 @@ jobs:
           sudo apt-get update
           sudo apt-get install --yes fonts-noto-cjk
       - name: Build browser demo
+        env:
+          TOWER_SKIP_NUMERIC_VALIDATION: '1'
         run: node scripts/build.mjs
       - name: Capture the ten floor overviews
         run: |

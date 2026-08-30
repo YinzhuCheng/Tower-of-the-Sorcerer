@@ -21,8 +21,10 @@ const BASE_ENGINE_STATE = createEngineInitialState();
 const CODEC = createTowerStateCodec({ baseState: BASE_ENGINE_STATE, floors: FLOORS, enemies: ENEMIES });
 const RELIC_KEYS = Object.keys(BASE_ENGINE_STATE.relics).sort();
 
-function transitToken(token) {
-  return token === '.' || token === 'S' || token === 'shop';
+function transitToken(token, { completedRunes = [] } = {}) {
+  if (token === '.' || token === 'S' || token === 'shop') return true;
+  const parsed = parseToken(token);
+  return parsed.type === 'rune' && completedRunes.includes(parsed.id);
 }
 
 function dimensions(state) {
@@ -40,7 +42,7 @@ function reconstructPath(previous, previousDir, endKey) {
   return path.reverse();
 }
 
-function pathToAdjacent(state, targetX, targetY) {
+function pathToAdjacent(state, targetX, targetY, options = {}) {
   const { width, height } = dimensions(state);
   const startKey = `${state.x},${state.y}`;
   const queue = [{ x: state.x, y: state.y }];
@@ -59,7 +61,7 @@ function pathToAdjacent(state, targetX, targetY) {
       if (x < 0 || y < 0 || x >= width || y >= height) continue;
       const key = `${x},${y}`;
       if (previous.has(key)) continue;
-      if (!transitToken(getTile(state, x, y))) continue;
+      if (!transitToken(getTile(state, x, y), options)) continue;
       previous.set(key, `${current.x},${current.y}`);
       previousDir.set(key, dir.name);
       queue.push({ x, y });
@@ -68,7 +70,7 @@ function pathToAdjacent(state, targetX, targetY) {
   return null;
 }
 
-function pathToExactTransit(state, targetX, targetY) {
+function pathToExactTransit(state, targetX, targetY, options = {}) {
   if (state.x === targetX && state.y === targetY) return [];
   const { width, height } = dimensions(state);
   const startKey = `${state.x},${state.y}`;
@@ -85,7 +87,7 @@ function pathToExactTransit(state, targetX, targetY) {
       if (x < 0 || y < 0 || x >= width || y >= height) continue;
       const key = `${x},${y}`;
       if (previous.has(key)) continue;
-      if (!transitToken(getTile(state, x, y))) continue;
+      if (!transitToken(getTile(state, x, y), options)) continue;
       previous.set(key, `${current.x},${current.y}`);
       previousDir.set(key, dir.name);
       if (x === targetX && y === targetY) return reconstructPath(previous, previousDir, key);
@@ -218,6 +220,12 @@ function sequenceGatePresent(state, sequence) {
   return getFloorState(state).map.some((row) => row.includes(`gate:${sequence.gate}`));
 }
 
+function completedRunesForState(state) {
+  const sequence = FLOORS[state.floor]?.puzzles?.sequence;
+  if (!sequence) return [];
+  return sequence.order.slice(0, getFloorState(state).sequenceProgress);
+}
+
 function findTokenOnCurrentFloor(state, token) {
   const map = getFloorState(state).map;
   for (let y = 0; y < map.length; y += 1) {
@@ -238,7 +246,9 @@ function enumerateTileActionsEngine(state) {
       if (token === '#' || transitToken(token)) continue;
       const parsed = parseToken(token);
       if (parsed.type === 'rune' && floorSequence) continue;
-      const path = pathToAdjacent(state, x, y);
+      const path = pathToAdjacent(state, x, y, {
+        completedRunes: completedRunesForState(state)
+      });
       if (!path) continue;
 
       if (parsed.type === 'door' && state.cards[parsed.id] <= 0) continue;
@@ -277,7 +287,9 @@ function buildSequenceActionEngine(state) {
     const runeId = sequence.order[index];
     const rune = findTokenOnCurrentFloor(working, `rune:${runeId}`);
     if (!rune) return null;
-    const path = pathToAdjacent(working, rune.x, rune.y);
+    const path = pathToAdjacent(working, rune.x, rune.y, {
+      completedRunes: sequence.order.slice(0, index)
+    });
     if (!path) return null;
     const transit = executePath(working, path);
     if (!transit.ok) return null;
@@ -309,7 +321,9 @@ function enumerateShopActionsEngine(state) {
   for (let y = 0; y < map.length; y += 1) {
     for (let x = 0; x < map[y].length; x += 1) {
       if (map[y][x] !== 'shop') continue;
-      const path = pathToExactTransit(state, x, y);
+      const path = pathToExactTransit(state, x, y, {
+        completedRunes: completedRunesForState(state)
+      });
       if (!path) continue;
       return SHOP_OPTIONS.map((option) => ({
         kind: 'shop',

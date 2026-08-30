@@ -6,6 +6,7 @@ import { applyDemoTenFloorHardMode } from '../src/game/demo-10-floor-hard-mode.j
 import { applyDemoTenFloorProgressionGrammar } from '../src/game/demo-10-floor-progression.js';
 import { applyDemoTenFloorProgressionTopology } from '../src/game/demo-10-floor-progression-topology.js';
 import { applyDemoTenFloorSpatialRedesign } from '../src/game/demo-10-floor-spatial-redesign.js';
+import { applyDemoTenFloorPalaceSpatialRedesign } from '../src/game/demo-10-floor-palace-spatial-redesign.js';
 import {
   assertDemoTenFloorSolverLocks,
   captureDemoTenFloorSolverLocks,
@@ -21,6 +22,7 @@ applyDemoTenFloorContent({ enemies: ENEMIES, floors: FLOORS, dialogues: DIALOGUE
 applyDemoTenFloorProgressionTopology({ enemies: ENEMIES, floors: FLOORS });
 applyDemoTenFloorSpatialRedesign({ floors: FLOORS, gridSize: GRID_SIZE });
 applyDemoTenFloorProgressionGrammar({ enemies: ENEMIES, floors: FLOORS, dialogues: DIALOGUES });
+applyDemoTenFloorPalaceSpatialRedesign({ floors: FLOORS, gridSize: GRID_SIZE });
 applyDemoTenFloorHardMode({ enemies: ENEMIES });
 
 const fullCatalog = createDemoTenFloorMutationCatalog();

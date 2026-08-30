@@ -4,10 +4,16 @@ import { DIALOGUES, ENEMIES, FLOORS, GRID_SIZE, RELIC_LABELS } from '../src/game
 import { applyDemoTenFloorContent } from '../src/game/demo-10-floor-content.js';
 import { applyDemoTenFloorProgressionTopology } from '../src/game/demo-10-floor-progression-topology.js';
 import { applyDemoTenFloorSpatialRedesign } from '../src/game/demo-10-floor-spatial-redesign.js';
+import { applyDemoTenFloorProgressionGrammar } from '../src/game/demo-10-floor-progression.js';
+import { applyDemoTenFloorPalaceSpatialRedesign } from '../src/game/demo-10-floor-palace-spatial-redesign.js';
+import { applyDemoTenFloorHardMode } from '../src/game/demo-10-floor-hard-mode.js';
 
 applyDemoTenFloorContent({ enemies: ENEMIES, floors: FLOORS, dialogues: DIALOGUES, gridSize: GRID_SIZE });
 applyDemoTenFloorProgressionTopology({ enemies: ENEMIES, floors: FLOORS });
 applyDemoTenFloorSpatialRedesign({ floors: FLOORS, gridSize: GRID_SIZE });
+applyDemoTenFloorProgressionGrammar({ enemies: ENEMIES, floors: FLOORS, dialogues: DIALOGUES });
+applyDemoTenFloorPalaceSpatialRedesign({ floors: FLOORS, gridSize: GRID_SIZE });
+applyDemoTenFloorHardMode({ enemies: ENEMIES });
 
 const {
   cloneState,
@@ -22,6 +28,9 @@ const {
   buyShopUpgrade
 } = await import('../src/game/engine.js');
 const { buildMapUnitHoverPreview } = await import('../src/game/tactical-interaction.js');
+const { runGreedyShopStrategy } = await import('../src/solver/greedy-strategy.js');
+const { createTowerAdapter } = await import('../src/solver/tower-adapter.js');
+const { replayTowerStepSkeleton } = await import('../src/solver/replay.js');
 
 test('10F browser content creates an authoritative engine state with ten floor states', () => {
   const state = createInitialState();
@@ -57,26 +66,26 @@ test('10F demo initial relics and tiered shops use source engine semantics', () 
     return getShopOptions(state).find((option) => option.id === optionId).effect;
   };
   assert.equal(getShopEffectMultiplier({ ...state, floor: 1 }), 1, 'floors without a multiplier must remain at base value');
-  assert.equal(getShopEffectMultiplier({ ...state, floor: 0 }), 1);
-  assert.equal(getShopEffectMultiplier({ ...state, floor: 4 }), 1.15);
-  assert.equal(getShopEffectMultiplier({ ...state, floor: 8 }), 1.3);
-  assert.deepEqual(shopEffect(0, 'hp'), { hp: 900, maxHp: 900 });
-  assert.deepEqual(shopEffect(4, 'atk'), { atk: 6 });
-  assert.deepEqual(shopEffect(8, 'def'), { def: 7 });
-  assert.deepEqual(shopEffect(8, 'hp'), { hp: 1170, maxHp: 1170 });
+  assert.equal(getShopEffectMultiplier({ ...state, floor: 0 }), 1.7);
+  assert.equal(getShopEffectMultiplier({ ...state, floor: 4 }), 2.25);
+  assert.equal(getShopEffectMultiplier({ ...state, floor: 8 }), 2.25);
+  assert.deepEqual(shopEffect(0, 'hp'), { hp: 1530, maxHp: 1530 });
+  assert.deepEqual(shopEffect(4, 'atk'), { atk: 12 });
+  assert.deepEqual(shopEffect(8, 'def'), { def: 12 });
+  assert.deepEqual(shopEffect(8, 'hp'), { hp: 2025, maxHp: 2025 });
 
   state.floor = 4;
   state.stats.gold = 45;
   const purchase = buyShopUpgrade(state, 'atk');
   assert.equal(purchase.ok, true);
-  assert.equal(state.stats.atk, 20, 'F5 purchase must apply the source-authoritative +6 effect');
+  assert.equal(state.stats.atk, 26, 'F5 purchase must apply the source-authoritative +12 effect');
 
   const shopY = state.floorStates[4].map.findIndex((row) => row.includes('shop'));
   const shopX = state.floorStates[4].map[shopY].indexOf('shop');
   const hover = buildMapUnitHoverPreview({ ...state, floor: 4 }, shopX, shopY);
   assert.equal(hover.kind, 'shop');
-  assert.equal(hover.badge, '效率 +15%');
-  assert.ok(hover.details.some((detail) => detail.value === '攻击永久 +6'));
+  assert.equal(hover.badge, '效率 +125%');
+  assert.ok(hover.details.some((detail) => detail.value === '攻击永久 +12'));
 });
 
 test('10F topology applies distinct reward and stair guardian groups through the authoritative engine', () => {
@@ -84,18 +93,18 @@ test('10F topology applies distinct reward and stair guardian groups through the
 
   state.floor = 1;
   state.x = 1;
-  state.y = 1;
-  let result = tryMove(state, 1, 0);
+  state.y = 3;
+  let result = tryMove(state, 0, -1);
   assert.equal(result.blocked, true);
   assert.deepEqual(result.missingGuardians, ['catBoss', 'foxBoss']);
 
   state.floorStates[1].defeatedBossIds = ['catBoss', 'foxBoss'];
-  result = tryMove(state, 1, 0);
+  result = tryMove(state, 0, -1);
   assert.equal(result.moved, true);
   assert.ok(result.events.some((event) => event.type === 'guardianGate'));
 
   state.floor = 4;
-  state.x = 8;
+  state.x = 4;
   state.y = 1;
   state.floorStates[4].defeatedBossIds = ['whaleBoss'];
   result = tryMove(state, 1, 0);
@@ -108,10 +117,55 @@ test('10F topology applies distinct reward and stair guardian groups through the
   assert.equal(state.floor, 5);
 
   state.floor = 6;
-  state.x = 8;
+  state.x = 4;
   state.y = 1;
   state.floorStates[6].defeatedBossIds = ['astralBoss', 'shadowBoss', 'shadowWardBlade'];
   result = tryMove(state, 1, 0);
   assert.equal(result.blocked, true);
   assert.deepEqual(result.remainingExitGuardians, ['shadowWardCantor']);
+});
+
+test('an activated rune stays inert when the authored F9 sequence revisits it', () => {
+  const state = createInitialState();
+  state.floor = 8;
+  const floorState = state.floorStates[8];
+
+  // B sits one tile right of the Sun card in the authored B → A → C route.
+  state.x = 5;
+  state.y = 7;
+  let result = tryMove(state, 1, 0);
+  assert.equal(result.moved, true);
+  assert.equal(floorState.sequenceProgress, 1);
+
+  state.x = 5;
+  state.y = 5;
+  result = tryMove(state, -1, 0);
+  assert.equal(result.moved, true);
+  assert.equal(floorState.sequenceProgress, 2);
+
+  state.x = 4;
+  state.y = 7;
+  result = tryMove(state, 1, 0);
+  assert.equal(result.moved, true);
+  assert.equal(floorState.sequenceProgress, 2, 'walking across lit B must not reset B → A progress');
+});
+
+test('frozen 10F hard mode keeps one engine-replayable route without requiring every simple cycle', () => {
+  const route = runGreedyShopStrategy({
+    shopCycle: ['def', 'atk', 'hp'],
+    holyPolicy: 'immediate',
+    progressionPriority: 'legacy-clear',
+    traceActions: true,
+    maxIterations: 8_000
+  });
+  const replay = replayTowerStepSkeleton(route.routeSteps, {
+    adapter: createTowerAdapter(),
+    requireGoal: true
+  });
+
+  assert.equal(route.solvable, true);
+  assert.equal(replay.ok, true);
+  assert.ok(route.routeSteps.length > 200);
+  assert.ok(replay.minNormalizedHpMargin >= 0.04);
+  assert.ok(replay.minNormalizedHpMargin <= 0.20);
 });

@@ -37,7 +37,9 @@ function dialogueSequence(title, turns) {
   return Object.freeze({ title, turns: Object.freeze(turns) });
 }
 
-export const DEMO_TEN_FLOOR_ID = 'demo-10f-v1';
+// A topology revision needs an isolated save scope: older v1 saves contain
+// their own mutable map copies, including the former decorative barriers.
+export const DEMO_TEN_FLOOR_ID = 'demo-10f-v2-barrier-topology';
 
 /**
  * Browser/demo content overlay.
@@ -72,11 +74,15 @@ export function applyDemoTenFloorContent({ enemies, floors, dialogues, gridSize 
   Object.assign(floors[0], {
     objective: '使用初始魔眼图鉴判断损伤，击败猫卫长米露并回收月影核心。',
     initialRelics: Object.freeze(['codex', 'compass']),
-    shopEffectMultiplier: 1,
+    // With shops concentrated at F1/F5/F9, each visit is a deliberate
+    // conversion decision rather than a disposable refill. These tiers were
+    // selected only after the frozen map had a replayable hard-mode witness;
+    // they do not alter doors, cards, bosses, relics, or room topology.
+    shopEffectMultiplier: 1.7,
     shopTierLabel: '基础咏唱'
   });
   Object.assign(floors[4], {
-    shopEffectMultiplier: 1.15,
+    shopEffectMultiplier: 2.25,
     shopTierLabel: '中层强化'
   });
 
@@ -265,12 +271,12 @@ export function applyDemoTenFloorContent({ enemies, floors, dialogues, gridSize 
     theme: { floor: 0x1e2636, floorAlt: 0x283449, wall: 0x52627a, glow: 0x8ec9ff, fog: 0x111826 },
     map: parseDemoMap(`
       # # # # # # # # # # #
-      # item:dual enemy:outerCrown . . # item:hpLarge enemy:hushCantor enemy:palaceWarden U #
-      # . # # gate:hush # . # # . #
+      # . enemy:outerCrown # item:dual # item:hpLarge enemy:hushCantor enemy:palaceWarden U #
+      # . # # gate:hush # gate:hush # # gate:hush #
       # switch:hushB # enemy:muteGuard . item:atk . # item:star enemy:hushCantor #
-      # . # . # # # # . # #
+      # door:star # . # # # # . # #
       # item:hpLarge enemy:hushCantor . # item:def . enemy:outerCrown . # #
-      # # # door:moon # . # # . # #
+      # # # . # . # # . # #
       # item:moon . . enemy:muteGuard . # switch:hushA item:sun . #
       # . # # # # # . # door:sun #
       # D . item:moon door:moon enemy:outerCrown item:def . item:hp . #
@@ -278,7 +284,7 @@ export function applyDemoTenFloorContent({ enemies, floors, dialogues, gridSize 
     `, gridSize),
     puzzles: { switches: { hush: ['hushA', 'hushB'] } },
     codesignSlots: Object.freeze({
-      rewardNorthwest: slot(1, 1, 'item:dual'),
+      rewardNorthwest: slot(4, 1, 'item:dual'),
       rewardNortheast: slot(6, 1, 'item:hpLarge'),
       rewardMidAtk: slot(5, 3, 'item:atk'),
       rewardMidDef: slot(5, 5, 'item:def'),
@@ -291,7 +297,6 @@ export function applyDemoTenFloorContent({ enemies, floors, dialogues, gridSize 
       enemyHushNorth: slot(7, 1, 'enemy:hushCantor'),
       enemyMuteWest: slot(4, 7, 'enemy:muteGuard'),
       enemyOuterSouth: slot(5, 9, 'enemy:outerCrown'),
-      doorMoonUpper: slot(3, 6, 'door:moon'),
       doorSunEast: slot(9, 8, 'door:sun'),
       doorMoonSouth: slot(4, 9, 'door:moon')
     })
@@ -305,20 +310,20 @@ export function applyDemoTenFloorContent({ enemies, floors, dialogues, gridSize 
     intro: 'floor9',
     boss: 'blackSealKeeper',
     demoContentId: DEMO_TEN_FLOOR_ID,
-    shopEffectMultiplier: 1.3,
+    shopEffectMultiplier: 2.25,
     shopTierLabel: '王座强化',
     theme: { floor: 0x1a1838, floorAlt: 0x292151, wall: 0x62528f, glow: 0xc5a3ff, fog: 0x0f0c23 },
     map: parseDemoMap(`
       # # # # # # # # # # #
-      # item:dual enemy:starSentinel . . # item:hpLarge enemy:nullCantor enemy:blackSealKeeper U #
-      # . # # gate:blackstar # . # # . #
+      # . enemy:starSentinel # item:dual # item:hpLarge enemy:nullCantor enemy:blackSealKeeper U #
+      # . # # gate:blackstar # gate:blackstar # # gate:blackstar #
       # rune:C # enemy:crownShade . item:def . # item:star enemy:nullCantor #
-      # . # . # # # # . # #
+      # door:star # . # # # # . # #
       # item:hpLarge enemy:nullCantor . rune:A item:atk . enemy:starSentinel . # #
-      # # # door:star # . # # . # #
+      # # # . # . # # . # #
       # item:sun . . enemy:crownShade . # rune:B item:def . #
-      # . # # # # # . # door:moon #
-      # D . item:moon door:sun enemy:starSentinel item:atk shop item:hp . #
+      # . # # # # # door:moon # # #
+      # D . item:moon . enemy:starSentinel # shop item:hp item:atk #
       # # # # # # # # # # #
     `, gridSize),
     puzzles: {
@@ -329,7 +334,7 @@ export function applyDemoTenFloorContent({ enemies, floors, dialogues, gridSize 
       }
     },
     codesignSlots: Object.freeze({
-      rewardNorthwest: slot(1, 1, 'item:dual'),
+      rewardNorthwest: slot(4, 1, 'item:dual'),
       rewardNortheast: slot(6, 1, 'item:hpLarge'),
       rewardMidDef: slot(5, 3, 'item:def'),
       rewardMidAtk: slot(5, 5, 'item:atk'),
@@ -342,9 +347,6 @@ export function applyDemoTenFloorContent({ enemies, floors, dialogues, gridSize 
       enemyNullNorth: slot(7, 1, 'enemy:nullCantor'),
       enemyCrownMid: slot(3, 3, 'enemy:crownShade'),
       enemySentinelMid: slot(7, 5, 'enemy:starSentinel'),
-      doorStarUpper: slot(3, 6, 'door:star'),
-      doorMoonEast: slot(9, 8, 'door:moon'),
-      doorSunSouth: slot(4, 9, 'door:sun'),
       runeC: slot(1, 3, 'rune:C'),
       runeA: slot(4, 5, 'rune:A'),
       runeB: slot(7, 7, 'rune:B')
@@ -352,6 +354,10 @@ export function applyDemoTenFloorContent({ enemies, floors, dialogues, gridSize 
   };
 
   const floor10Map = finalFloor.map.map((row) => [...row]);
+  // The canonical 8F source retains its historical decorative doors. The 10F
+  // overlay removes the three that do not separate any region, so visual
+  // barriers never promise a route lock they fail to provide.
+  for (const [x, y] of [[4, 2], [9, 8], [4, 9]]) floor10Map[y][x] = '.';
   removeShops(floor10Map);
   const floor10 = {
     ...finalFloor,

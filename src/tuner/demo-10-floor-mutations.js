@@ -29,19 +29,52 @@ const NUMERIC_SPECS = Object.freeze([
   ['f10-crown-knight-atk-up5', 'f10-crown-knight-atk', 'crownKnight', 'atk', 5]
 ]);
 
-// F7 predates the 10F overlay's named codesignSlots. Keep these anchors small,
-// local and drift-checked until stable semantic event IDs replace coordinate
-// anchors. None of them touches tri-gate cards, the boss/core, stairs or gates.
-const F7_LOCAL_SLOT_SPECS = Object.freeze({
-  rewardMidDef: Object.freeze({ x: 5, y: 3, expected: 'item:def' }),
-  rewardMidAtk: Object.freeze({ x: 5, y: 5, expected: 'item:atk' }),
-  enemyVoidWest: Object.freeze({ x: 2, y: 5, expected: 'enemy:voidPriestess' }),
-  enemyDuskMid: Object.freeze({ x: 7, y: 5, expected: 'enemy:duskDragon' })
+// The spatial redesign deliberately owns these local, ordinary-content slots.
+// They are captured here rather than inherited from the older content overlay:
+// after rooms were frozen, its coordinate-only codesignSlots no longer named
+// the tiles actually visible to the player.  None of these slots is a card
+// gate, a core bearer, a key relic, a guardian, or a stair.
+const AUTHORED_SLOT_SPECS = Object.freeze({
+  7: Object.freeze({
+    rewardMidAtk: Object.freeze({ x: 6, y: 9, expected: 'item:atk' }),
+    rewardMidDef: Object.freeze({ x: 9, y: 9, expected: 'item:def' })
+  }),
+  8: Object.freeze({
+    rewardNorthwest: Object.freeze({ x: 3, y: 1, expected: 'item:hp' }),
+    rewardNortheast: Object.freeze({ x: 5, y: 1, expected: 'item:hpLarge' }),
+    rewardMidAtk: Object.freeze({ x: 3, y: 3, expected: 'item:atk' }),
+    rewardMidDef: Object.freeze({ x: 7, y: 3, expected: 'item:def' }),
+    rewardHpWest: Object.freeze({ x: 1, y: 5, expected: 'item:hpLarge' }),
+    cardStarEast: Object.freeze({ x: 3, y: 8, expected: 'item:star' }),
+    cardMoonWest: Object.freeze({ x: 2, y: 9, expected: 'item:moon' }),
+    cardMoonSouth: Object.freeze({ x: 4, y: 9, expected: 'item:moon' }),
+    enemyOuterNorthwest: Object.freeze({ x: 1, y: 1, expected: 'enemy:outerCrown' }),
+    enemyHushNorth: Object.freeze({ x: 6, y: 1, expected: 'enemy:hushCantor' }),
+    enemyMuteWest: Object.freeze({ x: 8, y: 5, expected: 'enemy:muteGuard' }),
+    enemyOuterSouth: Object.freeze({ x: 7, y: 5, expected: 'enemy:outerCrown' })
+  }),
+  9: Object.freeze({
+    rewardNorthwest: Object.freeze({ x: 3, y: 1, expected: 'item:dual' }),
+    rewardNortheast: Object.freeze({ x: 5, y: 1, expected: 'item:hpLarge' }),
+    rewardMidAtk: Object.freeze({ x: 3, y: 5, expected: 'item:atk' }),
+    rewardMidDef: Object.freeze({ x: 5, y: 3, expected: 'item:def' }),
+    rewardDefSouth: Object.freeze({ x: 6, y: 9, expected: 'item:def' }),
+    rewardHpWest: Object.freeze({ x: 1, y: 3, expected: 'item:hpLarge' }),
+    cardStarEast: Object.freeze({ x: 8, y: 9, expected: 'item:star' }),
+    cardSunWest: Object.freeze({ x: 5, y: 7, expected: 'item:sun' }),
+    cardMoonSouth: Object.freeze({ x: 2, y: 9, expected: 'item:moon' }),
+    enemySentinelNorthwest: Object.freeze({ x: 1, y: 1, expected: 'enemy:starSentinel' }),
+    enemyNullNorth: Object.freeze({ x: 6, y: 1, expected: 'enemy:nullCantor' }),
+    enemyCrownMid: Object.freeze({ x: 8, y: 3, expected: 'enemy:crownShade' }),
+    enemySentinelMid: Object.freeze({ x: 1, y: 5, expected: 'enemy:starSentinel' }),
+    runeC: Object.freeze({ x: 3, y: 7, expected: 'rune:C' }),
+    runeA: Object.freeze({ x: 4, y: 5, expected: 'rune:A' }),
+    runeB: Object.freeze({ x: 6, y: 7, expected: 'rune:B' })
+  })
 });
 
 const SWAP_SPECS = Object.freeze([
   ['f7-reward-mid-stat-swap', 'f7-reward-mid-stat', 7, 'rewardMidDef', 'rewardMidAtk'],
-  ['f7-enemy-mid-swap', 'f7-enemy-mid', 7, 'enemyVoidWest', 'enemyDuskMid'],
   ['f8-reward-side-cache-swap', 'f8-reward-side-cache', 8, 'rewardNorthwest', 'rewardNortheast'],
   ['f8-reward-mid-stat-swap', 'f8-reward-mid-stat', 8, 'rewardMidAtk', 'rewardMidDef'],
   ['f8-card-route-swap', 'f8-card-route', 8, 'cardStarEast', 'cardMoonWest'],
@@ -55,9 +88,6 @@ const SWAP_SPECS = Object.freeze([
   ['f9-card-sun-moon-swap', 'f9-card-route', 9, 'cardSunWest', 'cardMoonSouth'],
   ['f9-enemy-upper-swap', 'f9-enemy-upper', 9, 'enemySentinelNorthwest', 'enemyNullNorth'],
   ['f9-enemy-mid-swap', 'f9-enemy-mid', 9, 'enemyCrownMid', 'enemySentinelMid'],
-  ['f9-door-star-moon-swap', 'f9-door-colors', 9, 'doorStarUpper', 'doorMoonEast'],
-  ['f9-door-star-sun-swap', 'f9-door-colors', 9, 'doorStarUpper', 'doorSunSouth'],
-  ['f9-door-moon-sun-swap', 'f9-door-colors', 9, 'doorMoonEast', 'doorSunSouth'],
   ['f9-rune-c-a-swap', 'f9-rune-placement', 9, 'runeC', 'runeA'],
   ['f9-rune-c-b-swap', 'f9-rune-placement', 9, 'runeC', 'runeB'],
   ['f9-rune-a-b-swap', 'f9-rune-placement', 9, 'runeA', 'runeB']
@@ -78,8 +108,7 @@ function floorByNumber(number) {
 
 function resolveSemanticSlot(floorNumber, slotId) {
   const floor = floorByNumber(floorNumber);
-  const slot = floor.codesignSlots?.[slotId]
-    ?? (floorNumber === 7 ? F7_LOCAL_SLOT_SPECS[slotId] : null);
+  const slot = AUTHORED_SLOT_SPECS[floorNumber]?.[slotId] ?? floor.codesignSlots?.[slotId];
   if (!slot) throw new Error(`10F semantic slot unavailable: f${floorNumber}.${slotId}`);
   const actual = floor.map[slot.y]?.[slot.x];
   if (actual !== slot.expected) {

@@ -18,93 +18,93 @@ function parseMap(text) {
 const ROOM_MAPS = Object.freeze({
   1: parseMap(`
     # # # # # # # # # # #
-    # item:sun door:sun enemy:mote # # # item:atk enemy:catScout U #
-    # item:hp . . # # # enemy:catMage item:moon . #
+    # item:sun . enemy:mote # # # item:atk # U #
+    # item:hp . . # # # enemy:catMage # door:moon #
     # . . . # # # . # . #
     # item:hp # . enemy:catScout . item:def . # . #
     # enemy:mote . # enemy:mote shop . # . . #
-    # . door:sun # . . . . enemy:catScout . #
+    # . . # . . . item:moon enemy:catScout . #
     # item:hp item:sun enemy:mote . # # # . . #
-    # . item:codex . # # # # item:sun item:def #
-    # S item:sun door:sun . # # # # # #
+    # . item:codex . # # # # item:sun . #
+    # S item:sun door:sun item:def # # # # # #
     # # # # # # # # # # #
   `),
   2: parseMap(`
     # # # # # # # # # # #
-    # item:lucky gate:dualKeyVault # # # item:atk . . U #
-    # enemy:catBoss . . # # # item:hp . enemy:foxBoss #
+    # item:lucky # # # # item:atk . . U #
+    # gate:dualKeyVault enemy:catBoss . # # # item:hp . enemy:foxBoss #
     # . . . # # # enemy:foxAcolyte gate:vine # #
     # item:hp # . enemy:foxAcolyte switch:vine item:def # enemy:foxArcher # #
     # enemy:vineDruid . # enemy:foxArcher . . # . # #
-    # . door:moon # . . . . enemy:foxAcolyte . #
+    # . . # . . . . enemy:foxAcolyte . #
     # item:moon item:sun enemy:foxAcolyte . # # # item:sun item:atk #
-    # . . . # # # # door:sun . #
+    # . . . # # # # . . #
     # D . . . # # # # # #
     # # # # # # # # # # #
   `),
   3: parseMap(`
     # # # # # # # # # # #
-    # # # # . enemy:whaleSinger . U # # #
-    # # # # . enemy:whaleSinger # # # # #
+    # # # # # U # # # # #
     # # # # # gate:tide # # # # #
-    # item:atk enemy:shellGuard . door:moon . door:moon . enemy:shellGuard item:hp #
-    # item:moon . enemy:tideLancer switch:tideB . switch:tideA enemy:tideLancer . item:moon #
-    # item:compass . . # . # item:hpLarge . # #
-    # . door:sun enemy:whaleSinger . . . enemy:whaleSinger . . #
-    # item:def . . # . # . . item:def #
-    # . item:sun . enemy:whaleSinger D item:atk . item:hp . #
+    # # # # . . . # # # #
+    # item:hp . . # . # enemy:tideLancer . item:atk #
+    # . switch:tideA door:star . . . door:moon switch:tideB . #
+    # item:moon . # # . . # # # #
+    # . . # # . # . enemy:shellGuard . #
+    # # # . # . # . # # #
+    # item:compass . . enemy:whaleSinger D enemy:whaleSinger . item:star . #
     # # # # # # # # # # #
   `),
   4: parseMap(`
     # # # # # # # # # # #
-    # item:hp enemy:swordKnight . . # item:weapon enemy:bladePriestess . U #
-    # . # # gate:forge # . # # . #
-    # item:moon # enemy:swordApprentice . . switch:forge # item:star enemy:swordKnight #
-    # . # . # # # # . # #
-    # item:hp enemy:bladePriestess . # item:def . enemy:swordKnight . # #
-    # # # door:moon # . # # . # #
-    # item:sun . . enemy:swordApprentice . # item:atk item:sun item:hpLarge #
-    # . # # # # # . # door:star #
-    # D . item:moon door:sun enemy:swordApprentice item:def . item:hp . #
+    # . . . # item:weapon # . door:star U #
+    # . # . # gate:forge # . # . #
+    # item:moon # . # . item:star . # . #
+    # . # # # . . . # . #
+    # . # switch:forge # enemy:swordKnight # enemy:bladePriestess # . #
+    # . # door:moon # . # . # . #
+    # . . . # . . . # . #
+    # # # . # . # . # # #
+    # D . enemy:swordApprentice . item:def . . item:hp . #
     # # # # # # # # # # #
   `),
   5: parseMap(`
     # # # # # # # # # # #
-    # item:dual enemy:whaleBoss . . # item:shield enemy:swordBoss . U #
-    # . # # gate:ember # . # # . #
-    # switch:emberB # enemy:flameCaster . . switch:emberA # item:star enemy:dragonGuard #
-    # . # . # # # # . # #
-    # item:hpLarge enemy:dragonGuard . # item:def . enemy:dragonBoss . # #
-    # # # door:moon # . # # . # #
-    # item:moon . . enemy:flameCaster . # item:atk item:moon item:hpLarge #
-    # . # # # # # . # door:star #
-    # D . item:moon door:moon enemy:flameCaster item:def shop item:hp item:star #
+    # # item:shield # . U . # . . #
+    # # gate:ember # . enemy:dragonBoss . # . . #
+    # . . . . . . # . enemy:swordBoss #
+    # # # # # # . # . . #
+    # enemy:whaleBoss . door:star . . . door:moon . . #
+    # . # # . . . # # # #
+    # item:moon . . # item:star item:moon # item:star . #
+    # # # # # . # # # . #
+    # D . . enemy:flameCaster shop item:def . item:hp . #
     # # # # # # # # # # #
   `),
   6: parseMap(`
     # # # # # # # # # # #
-    # item:dual enemy:mirrorDoll . . # item:holy enemy:starWitch enemy:starWitch U #
-    # . # # gate:mirror # . # # . #
-    # rune:C # enemy:cometArcher . item:def . # item:star enemy:starWitch #
-    # . # . # # # # . # #
-    # item:hpLarge enemy:starWitch . rune:B item:atk . enemy:mirrorDoll . # #
-    # # # door:star # . # # . # #
-    # item:moon . . enemy:cometArcher . # rune:A item:def . #
-    # . # # # # # . # door:moon #
-    # D . item:star door:star enemy:mirrorDoll item:atk . item:hp . #
+    # # item:holy # . . door:moon U # # #
+    # # gate:mirror # . # . # # . #
+    # . . item:star . rune:B # . # . #
+    # # . # . . . . . . #
+    # rune:A . item:moon # enemy:mirrorDoll # # door:star # #
+    # . # . # . # # . rune:C #
+    # . # . . . # . # # #
+    # . # # # . # # # . #
+    # D . . enemy:cometArcher . item:def . enemy:starWitch . #
     # # # # # # # # # # #
   `),
   7: parseMap(`
     # # # # # # # # # # #
-    # item:ward enemy:astralBoss . . # item:dual enemy:shadowWardBlade enemy:shadowBoss U #
-    # . # # gate:tri # . # # . #
-    # item:sun # enemy:shadowNinja . item:def . # item:star enemy:shadowWardCantor #
-    # . # . # # # # . # #
-    # item:hpLarge enemy:voidPriestess . # item:atk . enemy:duskDragon . # #
-    # # # door:moon # . # # . # #
-    # item:moon . . enemy:shadowNinja . # item:star item:moon item:hpLarge #
-    # . # # # # # . # door:star #
-    # D . item:moon door:moon enemy:duskDragon item:atk . item:hp . #
+    # . . enemy:astralBoss . U . enemy:shadowBoss . . #
+    # # # # . . . # # # #
+    # # # . . . . . # # #
+    # enemy:shadowWardBlade # . # gate:tri # . # enemy:shadowWardCantor #
+    # door:star # . # item:ward # . # door:moon #
+    # . # . # # # . # . #
+    # item:moon . item:star # . # item:moon . item:star #
+    # . # # # . # # # . #
+    # D . item:hp enemy:duskDragon . item:atk . . item:def #
     # # # # # # # # # # #
   `)
 });
@@ -112,11 +112,11 @@ const ROOM_MAPS = Object.freeze({
 const ROOM_PLANS = Object.freeze({
   1: Object.freeze(['入口补给室', '月影资源密室', '中央商店枢纽', '侧藏宝间', '上行门廊']),
   2: Object.freeze(['下行入口室', '猫卫长翼室', '藤蔓继电枢纽', '狐祝翼室', '双钥秘库']),
-  3: Object.freeze(['港厅入口室', '西潮圣所', '东潮圣所', '中轴潮门前庭', '上行航道']),
-  4: Object.freeze(['下行庭院', '左侧锻炉翼', '中央锻炉室', '右侧资源翼', '上行剑廊']),
-  5: Object.freeze(['下行熔炉入口', '潮汐核心室', '锋刃核心室', '赤焰核心室', '封印上行台']),
-  6: Object.freeze(['下行书库前厅', '镜序准备室', '星镜仪式室', '圣辉侧室', '上行藏书廊']),
-  7: Object.freeze(['下行影廊', '天穹守卫室', '双相结界厅', '影仪双卫室', '王庭上行台'])
+  3: Object.freeze(['港厅入口室', '星卡封锁的西潮圣所', '东潮圣所', '双潮汇流前庭', '上行航道']),
+  4: Object.freeze(['下行锻炉庭院', '月卡控制室', '中央熔炉回路', '辉月魔刃封存室', '上行剑廊']),
+  5: Object.freeze(['下行熔炉入口', '潮汐核心翼', '锋刃核心翼', '赤焰核心炉心', '封印上行台']),
+  6: Object.freeze(['下行书库前厅', '新月镜序室', '半月回廊', '星卡封锁的满月室', '圣辉侧室']),
+  7: Object.freeze(['下行影廊', '天穹守卫室', '中央双相结界室', '影仪双卫室', '王庭上行台'])
 });
 
 function copyMap(map) {
@@ -169,7 +169,7 @@ function assertTopologyAnchors(floorNumber, map) {
     2: ['enemy:catBoss', 'enemy:foxBoss', 'gate:dualKeyVault', 'item:lucky'],
     3: ['switch:tideA', 'switch:tideB', 'gate:tide'],
     4: ['switch:forge', 'gate:forge', 'item:weapon'],
-    5: ['enemy:whaleBoss', 'enemy:swordBoss', 'enemy:dragonBoss'],
+    5: ['enemy:whaleBoss', 'enemy:swordBoss', 'enemy:dragonBoss', 'gate:ember', 'item:shield'],
     6: ['rune:A', 'rune:B', 'rune:C', 'gate:mirror', 'item:holy'],
     7: ['enemy:astralBoss', 'enemy:shadowBoss', 'enemy:shadowWardBlade', 'enemy:shadowWardCantor', 'gate:tri', 'item:ward']
   }[floorNumber] ?? [];

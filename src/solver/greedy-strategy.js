@@ -30,10 +30,10 @@ function defaultShopTravelPolicy() {
   return shopCount <= 3 && initialCompass ? 'stall-recovery' : 'current-only';
 }
 
-function tileIsTransit(token, { allowRunes = false } = {}) {
+function tileIsTransit(token, { allowRunes = false, completedRunes = [] } = {}) {
   if (token === '.' || token === 'shop') return true;
   const parsed = parseToken(token);
-  return allowRunes && parsed.type === 'rune';
+  return parsed.type === 'rune' && (allowRunes || completedRunes.includes(parsed.id));
 }
 
 function reconstructPath(previous, previousDir, endKey) {
@@ -98,6 +98,13 @@ function pathToExactTransit(state, targetX, targetY, options = {}) {
   return null;
 }
 
+function completedRunesForState(state) {
+  const sequence = FLOORS[state.floor]?.puzzles?.sequence;
+  if (!sequence) return [];
+  const progress = getFloorState(state).sequenceProgress;
+  return sequence.order.slice(0, progress);
+}
+
 function executePath(state, path) {
   for (const name of path) {
     const dir = DIRECTIONS[name];
@@ -116,7 +123,9 @@ function reachableActions(state) {
     for (let x = 0; x < GRID_SIZE; x += 1) {
       const token = floorState.map[y][x];
       if (token === '#' || token === '.' || token === 'shop' || token === 'D') continue;
-      const path = pathToAdjacent(state, x, y, { allowRunes: false });
+      const path = pathToAdjacent(state, x, y, {
+        completedRunes: completedRunesForState(state)
+      });
       if (!path) continue;
       actions.push({ x, y, token, parsed: parseToken(token), path });
     }
@@ -124,14 +133,24 @@ function reachableActions(state) {
   return actions;
 }
 
-function actOn(state, action) {
+function actOn(state, action, routeSteps = null) {
+  const floorBefore = state.floor;
+  const step = routeSteps ? {
+    kind: 'tile',
+    floorBefore,
+    path: [...action.path],
+    location: [action.x, action.y],
+    action: { token: action.token }
+  } : null;
   const transit = executePath(state, action.path);
   if (!transit.ok) return transit;
   const dx = action.x - state.x;
   const dy = action.y - state.y;
   if (Math.abs(dx) + Math.abs(dy) !== 1) return { ok: false, reason: 'Target is no longer adjacent.' };
   const result = tryMove(state, dx, dy);
-  return result.blocked ? { ok: false, reason: result.reason } : { ok: true, result };
+  if (result.blocked) return { ok: false, reason: result.reason };
+  if (step) routeSteps.push(step);
+  return { ok: true, result };
 }
 
 function reachableShop(state) {
@@ -139,16 +158,23 @@ function reachableShop(state) {
   for (let y = 0; y < GRID_SIZE; y += 1) {
     for (let x = 0; x < GRID_SIZE; x += 1) {
       if (map[y][x] !== 'shop') continue;
-      const path = pathToExactTransit(state, x, y);
+      const path = pathToExactTransit(state, x, y, {
+        completedRunes: completedRunesForState(state)
+      });
       if (path) return { x, y, path };
     }
   }
   return null;
 }
 
-function buyAvailableUpgrades(state, shopCycle, shopPlan, purchaseCounts, purchaseLog) {
+function buyAvailableUpgrades(state, shopCycle, shopPlan, purchaseCounts, purchaseLog, routeSteps = null) {
+  // A failed purchase must not silently reposition the player at a remote shop:
+  // that makes a policy route non-replayable and smuggles free navigation into
+  // the heuristic. Wait until the player can actually spend gold.
+  if (state.stats.gold < getShopCost(state)) return { ok: true, count: 0 };
   const shop = reachableShop(state);
   if (!shop) return { ok: true, count: 0 };
+  const floorBefore = state.floor;
   const transit = executePath(state, shop.path);
   if (!transit.ok) return transit;
 
@@ -170,6 +196,14 @@ function buyAvailableUpgrades(state, shopCycle, shopPlan, purchaseCounts, purcha
       before,
       after: { ...state.stats }
     });
+    if (routeSteps) {
+      routeSteps.push({
+        kind: 'shop',
+        floorBefore,
+        path: count === 0 ? [...shop.path] : [],
+        action: { optionId }
+      });
+    }
     count += 1;
   }
   return { ok: true, count };
@@ -179,7 +213,7 @@ function floorContainsShop(state, floorIndex) {
   return getFloorState(state, floorIndex).map.some((row) => row.includes('shop'));
 }
 
-function buyVisitedShopRecovery(state, shopCycle, shopPlan, purchaseCounts, purchaseLog, shopTravelPolicy) {
+function buyVisitedShopRecovery(state, shopCycle, shopPlan, purchaseCounts, purchaseLog, shopTravelPolicy, routeSteps = null) {
   if (shopTravelPolicy !== 'stall-recovery') return { ok: true, count: 0, visitedFloor: null };
   if (!state.relics.compass || state.stats.gold < getShopCost(state)) {
     return { ok: true, count: 0, visitedFloor: null };
@@ -191,23 +225,29 @@ function buyVisitedShopRecovery(state, shopCycle, shopPlan, purchaseCounts, purc
     .sort((a, b) => b - a);
 
   for (const floorIndex of candidates) {
+    const floorBeforeTravel = state.floor;
     const travel = teleportToFloor(state, floorIndex);
     if (!travel.ok) continue;
-    const bought = buyAvailableUpgrades(state, shopCycle, shopPlan, purchaseCounts, purchaseLog);
+    if (routeSteps) routeSteps.push({ kind: 'teleport', floorBefore: floorBeforeTravel, action: { targetFloor: floorIndex } });
+    const bought = buyAvailableUpgrades(state, shopCycle, shopPlan, purchaseCounts, purchaseLog, routeSteps);
+    const floorBeforeReturn = state.floor;
     const returnTrip = teleportToFloor(state, originFloor);
     if (!returnTrip.ok) return { ok: false, reason: returnTrip.reason };
+    if (routeSteps) routeSteps.push({ kind: 'teleport', floorBefore: floorBeforeReturn, action: { targetFloor: originFloor } });
     if (!bought.ok) return bought;
     if (bought.count > 0) return { ok: true, count: bought.count, visitedFloor: floorIndex + 1 };
   }
 
   if (state.floor !== originFloor) {
+    const floorBeforeReturn = state.floor;
     const returnTrip = teleportToFloor(state, originFloor);
     if (!returnTrip.ok) return { ok: false, reason: returnTrip.reason };
+    if (routeSteps) routeSteps.push({ kind: 'teleport', floorBefore: floorBeforeReturn, action: { targetFloor: originFloor } });
   }
   return { ok: true, count: 0, visitedFloor: null };
 }
 
-function solveSequenceIfPossible(state) {
+function solveSequenceIfPossible(state, routeSteps = null) {
   const sequence = FLOORS[state.floor].puzzles?.sequence;
   if (!sequence) return { ok: true, changed: false };
   const floorState = getFloorState(state);
@@ -231,12 +271,19 @@ function solveSequenceIfPossible(state) {
       }
     }
     if (!rune) return deferred();
-    const path = pathToAdjacent(state, rune.x, rune.y, { allowRunes: false });
+    const path = pathToAdjacent(state, rune.x, rune.y, {
+      // Do not walk across an unlit rune: that would be a real sequence
+      // input. Previously lit runes are inert and safe to use as floor tiles.
+      completedRunes: sequence.order.slice(0, index)
+    });
     if (!path) return deferred();
-    const transit = executePath(state, path);
-    if (!transit.ok) return deferred();
-    const result = tryMove(state, rune.x - state.x, rune.y - state.y);
-    if (result.blocked) return deferred();
+    const applied = actOn(state, {
+      x: rune.x,
+      y: rune.y,
+      token: `rune:${runeId}`,
+      path
+    }, routeSteps);
+    if (!applied.ok) return deferred();
   }
   return { ok: true, changed: floorState.sequenceProgress !== originalProgress, deferred: false };
 }
@@ -339,15 +386,17 @@ function holyTriggerReached(state, holyPolicy, actions = []) {
   return false;
 }
 
-function collectDeferredHoly(state) {
+function collectDeferredHoly(state, routeSteps = null) {
   if (state.relics.holy) return { ok: true, collected: false };
   if (!state.relics.compass) return { ok: false, reason: 'Deferred Holy policy requires the floor compass.' };
   if (!state.visitedFloors.includes(5)) return { ok: false, reason: 'Holy floor has not been visited yet.' };
 
   const returnFloor = state.floor;
   if (state.floor !== 5) {
+    const floorBeforeTravel = state.floor;
     const travel = teleportToFloor(state, 5);
     if (!travel.ok) return { ok: false, reason: travel.reason };
+    if (routeSteps) routeSteps.push({ kind: 'teleport', floorBefore: floorBeforeTravel, action: { targetFloor: 5 } });
   }
 
   const holy = reachableActions(state).find((action) =>
@@ -358,7 +407,7 @@ function collectDeferredHoly(state) {
     return { ok: false, reason: 'Deferred Holy is no longer reachable from the floor anchor.' };
   }
 
-  const applied = actOn(state, holy);
+  const applied = actOn(state, holy, routeSteps);
   if (!applied.ok) return applied;
   const acquisition = {
     floor: 6,
@@ -368,8 +417,10 @@ function collectDeferredHoly(state) {
   };
 
   if (returnFloor !== 5) {
+    const floorBeforeReturn = state.floor;
     const travelBack = teleportToFloor(state, returnFloor);
     if (!travelBack.ok) return { ok: false, reason: travelBack.reason };
+    if (routeSteps) routeSteps.push({ kind: 'teleport', floorBefore: floorBeforeReturn, action: { targetFloor: returnFloor } });
   }
 
   return { ok: true, collected: true, acquisition };
@@ -453,6 +504,7 @@ export function runGreedyShopStrategy({
   holyPolicy = 'immediate',
   shopTravelPolicy = defaultShopTravelPolicy(),
   progressionPriority = 'legacy-clear',
+  traceActions = false,
   maxIterations = 5_000
 } = {}) {
   if (!Array.isArray(shopCycle) || shopCycle.length === 0) throw new Error('shopCycle must not be empty.');
@@ -475,6 +527,8 @@ export function runGreedyShopStrategy({
   const purchaseCounts = { atk: 0, def: 0, hp: 0 };
   const purchaseLog = [];
   const battleLog = [];
+  const actionTrace = [];
+  const routeSteps = [];
   let holyAcquisition = null;
   let iterations = 0;
   let failure = null;
@@ -482,14 +536,14 @@ export function runGreedyShopStrategy({
   while (!state.victory && iterations < maxIterations) {
     iterations += 1;
 
-    const bought = buyAvailableUpgrades(state, shopCycle, shopPlan, purchaseCounts, purchaseLog);
+    const bought = buyAvailableUpgrades(state, shopCycle, shopPlan, purchaseCounts, purchaseLog, traceActions ? routeSteps : null);
     if (!bought.ok) {
       failure = bought.reason;
       break;
     }
 
     if (holyPolicy !== 'before-final' && holyTriggerReached(state, holyPolicy)) {
-      const holy = collectDeferredHoly(state);
+      const holy = collectDeferredHoly(state, traceActions ? routeSteps : null);
       if (!holy.ok) {
         failure = holy.reason;
         break;
@@ -497,7 +551,17 @@ export function runGreedyShopStrategy({
       if (holy.collected) holyAcquisition = holy.acquisition;
     }
 
-    const sequence = solveSequenceIfPossible(state);
+    const sequence = solveSequenceIfPossible(state, traceActions ? routeSteps : null);
+    if (traceActions && (sequence.changed || state.floor + 1 >= 9)) {
+      actionTrace.push({
+        iteration: iterations,
+        kind: 'sequence',
+        floor: state.floor + 1,
+        progress: getFloorState(state).sequenceProgress,
+        changed: sequence.changed,
+        deferred: Boolean(sequence.deferred)
+      });
+    }
     if (!sequence.ok) {
       failure = sequence.reason;
       break;
@@ -505,7 +569,7 @@ export function runGreedyShopStrategy({
 
     const actions = reachableActions(state);
     if (holyPolicy === 'before-final' && holyTriggerReached(state, holyPolicy, actions)) {
-      const holy = collectDeferredHoly(state);
+      const holy = collectDeferredHoly(state, traceActions ? routeSteps : null);
       if (!holy.ok) {
         failure = holy.reason;
         break;
@@ -524,7 +588,8 @@ export function runGreedyShopStrategy({
         shopPlan,
         purchaseCounts,
         purchaseLog,
-        shopTravelPolicy
+        shopTravelPolicy,
+        traceActions ? routeSteps : null
       );
       if (!recovery.ok) {
         failure = recovery.reason;
@@ -539,7 +604,7 @@ export function runGreedyShopStrategy({
     }
 
     if (!action) {
-      const retry = buyAvailableUpgrades(state, shopCycle, shopPlan, purchaseCounts, purchaseLog);
+      const retry = buyAvailableUpgrades(state, shopCycle, shopPlan, purchaseCounts, purchaseLog, traceActions ? routeSteps : null);
       if (!retry.ok) {
         failure = retry.reason;
         break;
@@ -550,13 +615,24 @@ export function runGreedyShopStrategy({
     }
 
     const checkpoint = battleCheckpoint(state, action);
-    const applied = actOn(state, action);
+    const applied = actOn(state, action, traceActions ? routeSteps : null);
     if (!applied.ok) {
       failure = applied.reason;
       break;
     }
     const completedBattle = finishBattleCheckpoint(checkpoint, state);
     if (completedBattle) battleLog.push(completedBattle);
+    if (traceActions) {
+      actionTrace.push({
+        iteration: iterations,
+        kind: 'action',
+        floor: state.floor + 1,
+        token: action.token,
+        location: { x: action.x, y: action.y },
+        cards: { ...state.cards },
+        sequenceProgress: getFloorState(state).sequenceProgress
+      });
+    }
 
     if (action.parsed?.type === 'item' && action.parsed.id === 'holy' && !holyAcquisition) {
       holyAcquisition = {
@@ -592,6 +668,8 @@ export function runGreedyShopStrategy({
     cards: { ...state.cards },
     relics: { ...state.relics },
     battles: state.battles,
-    turns: state.turns
+    turns: state.turns,
+    actionTrace: traceActions ? actionTrace : null,
+    routeSteps: traceActions ? routeSteps : null
   };
 }

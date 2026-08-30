@@ -33,7 +33,7 @@ const ALLOWED_MUTATION_IDS = Object.freeze([
   'f9-crown-atk-down6', 'f9-crown-atk-up6',
   'f10-eclipse-mage-magic-down6', 'f10-eclipse-mage-magic-up6',
   'f10-crown-knight-atk-down5', 'f10-crown-knight-atk-up5',
-  'f7-reward-mid-stat-swap', 'f7-enemy-mid-swap',
+  'f7-reward-mid-stat-swap',
   'f8-reward-mid-stat-swap',
   'f8-enemy-upper-swap', 'f8-enemy-lower-swap',
   'f9-reward-mid-stat-swap',

@@ -1,6 +1,10 @@
 # 10F progression topology lock
 
-Status: **implemented in the 10F demo overlay; room maps and critical anchors are frozen.**
+Status: **frozen in the 10F demo overlay on 2026-08-29.** Static topology and
+card-state checks are green, and GitHub Actions `10F Screenshot Gallery` run
+24 verified the authored maps in real Chrome. Future solver/mutator work may
+change only ordinary encounter placement and numbers; it must not rewrite this
+lock without an explicit topology revision.
 
 This document supersedes the old assumption that every core floor must contain
 one boss who individually seals its upward stair. It locks the progression
@@ -24,6 +28,9 @@ rebaselining begins only after this locked map state.
 5. Critical boss identity, core ownership, key-relic ownership, card gates and
    mandatory encounter order are frozen before roomization. Ordinary encounter
    slots and every numeric value remain available to the later solver/tuner.
+6. Every rendered `door:` or `gate:` must separate two otherwise disconnected
+   regions while closed. A gate that can be walked around, or only opens onto
+   an empty dead end, is removed rather than kept as visual decoration.
 
 ## Locked campaign cadence
 
@@ -43,6 +50,31 @@ rebaselining begins only after this locked map state.
 The regular-core cadence is therefore **2 + 3 + 2 = 7**. Visible Boss
 pressure is intentionally clustered at F2, F5, F7, F8 and F10; F1, F3, F4 and
 F6 exist to create contrast, preparation and meaningful route decisions.
+
+## Physical barrier contract
+
+The map may not rely on a label in `puzzles` alone: the named reward or goal
+must be physically unreachable until its gate is opened. The current authored
+locks are deliberately narrow and readable. The room-level card flow is
+specified in [10F room-card topology](10f-room-card-topology.md).
+
+| Floor | Real barrier | Protected outcome |
+| --- | --- | --- |
+| F1 | Star / Moon doors | Optional DEF tutorial alcove / mandatory upper stair |
+| F2 | `vine`, `dualKeyVault` | Main-route mechanism / Lucky Coin after both early guardians |
+| F3 | Star / Moon doors, `tide` | West / east tide switches / upper stair |
+| F4 | Moon door, `forge`, Star door | Forge switch / Weapon / mandatory upper stair |
+| F5 | Star / Moon doors, `ember` | Whale / Sword guardian wings / Shield side cache; all three guardians still lock the stair |
+| F6 | Star door, `mirror`, Moon door | Final rune / Holy / mandatory upper stair |
+| F7 | Star / Moon doors, `tri` | Two ritual guardians / Ward branch; all four guardians still lock the stair |
+| F8 | Star / Moon doors, `hush`, `hushVault` | Hush B / Hush A outer-ring routes; Dual cache and Warden ante-room; optional guardian vault |
+| F9 | Star / Moon doors, `blackstar` | Final rune / last-shop conversion room / Black Seal Keeper ante-room |
+| F10 | Moon door, `throneSeal` | Final side-room preparation / Final Queen and Core phase |
+
+All remaining card doors now protect a declared room or permission. Card
+amounts are topology resources and are verified independently of combat
+numbers; enemy records, shop effects and reward values remain untouched until
+the later numeric pass.
 
 ## Locked critical ownership
 
@@ -93,9 +125,16 @@ merely valid:
 - F7: four separate guardian approaches make remaining progress obvious; the
   stairs visually open only after all four are defeated.
 - F8: the optional dual-guardian vault remains separate from the main warden
-  route.
+  route; Star / Moon doorways visibly lead to the two independent hush
+  switches before the Warden gate.
+- F9: the star-locked final rune, the free A/B bridge calibrators and the
+  moon-locked final shop each read as separate rooms before the Black Seal
+  Keeper forecourt.
 - F10: the throne seal, Queen and Core phase retain a single unambiguous final
-  route with no post-seal recovery.
+  route with no post-seal recovery; the Moon side-room is visibly optional.
+- Every remaining visual barrier has two neighbors in distinct open regions,
+  and every key reward listed above is unreachable before its named barrier
+  opens.
 
 ## Acceptance order
 
@@ -127,6 +166,12 @@ merely valid:
 - F9 remains the last shop; the F10 throne seal consumes exactly one Sun card.
 - UI stair and gate previews list all remaining guardians, not a legacy
   singular “Boss defeated” boolean.
+- The barrier-topology regression rejects any non-separating `door:` or
+  `gate:` tile and verifies the protected rewards/finale are actually behind
+  their corresponding locks.
+- The static card-state graph verifies the campaign card ledger never turns
+  negative and that every card spend has a protected room, puzzle permission,
+  key reward, shop or final encounter on its far side.
 
 No numerical target belongs in this document. Those targets are created only
 after the topology and authored rooms are stable enough for the solver to
