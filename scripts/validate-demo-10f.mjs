@@ -28,6 +28,7 @@ const { runGreedyShopStrategy } = await import('../src/solver/greedy-strategy.js
 const { runExpertNoHpStrategy, EXPERT_NO_HP_STRATEGY_ID } = await import('../src/solver/expert-strategy.js');
 const { createTowerAdapter } = await import('../src/solver/tower-adapter.js');
 const { replayTowerStepSkeleton } = await import('../src/solver/replay.js');
+const { certifyDemoTenFloorRouteFamilies } = await import('../src/solver/demo-10f-route-family-certification.js');
 
 // Fixed purchase cycles are retained as difficulty telemetry only. The release
 // proof is instead a fully replayed engine route; a hard tower may legitimately
@@ -119,6 +120,18 @@ const existenceProof = {
   marginTarget: PROOF_MARGIN
 };
 
+// This is a blocking diversity certificate. The small policy grid merely
+// discovers routes; acceptance is based on replayed F8 vault choice, Holy
+// timing, and actual shop mix. It deliberately replaces any fixed-cycle count.
+const routeFamilyProof = certifyDemoTenFloorRouteFamilies({ targetFamilies: 3 });
+assert.equal(routeFamilyProof.complete, true, '10F must retain three independent replayed route families.');
+const independentRoutes = routeFamilyProof.selected.map((attempt) => ({
+  discoverySeed: attempt.id,
+  decisions: attempt.family.decisions,
+  minNormalizedHpMargin: attempt.family.minNormalizedHpMargin,
+  final: attempt.family.final
+}));
+
 const guardianStressReports = DEMO10_SIMPLE_BUILD_PORTFOLIO.map((shopCycle) => runGreedyShopStrategy({
   shopCycle,
   holyPolicy: 'immediate',
@@ -156,6 +169,15 @@ console.log(JSON.stringify({
   progressionGrammar,
   pressure: DEMO10_HARD_MODE_PRESSURE,
   existenceProof,
+  routeFamilyProof: {
+    blocking: true,
+    discoverySeeds: routeFamilyProof.discoverySeeds,
+    replayableWins: routeFamilyProof.replayableWins,
+    hardCandidates: routeFamilyProof.hardCandidates,
+    discoveredFamilies: routeFamilyProof.discoveredFamilies,
+    minimumDecisionDistance: routeFamilyProof.minDistance,
+    routes: independentRoutes
+  },
   expertDiagnostic,
   guardianStress,
   strategyDiagnostics: {

@@ -12,6 +12,7 @@
     "validate": "node scripts/validate-game.mjs",
     "validate:demo10": "node scripts/validate-demo-10f.mjs",
     "prove:demo10": "node scripts/witness-demo-10f-route.mjs --require --cycle=def,atk,hp",
+    "certify:demo10:routes": "node scripts/certify-demo-10f-route-families.mjs --require",
     "solve:demo10": "node scripts/solve-demo-10f-existence.mjs",
     "tune:demo10:tiers": "node scripts/search-demo-10f-shop-tiers.mjs",
     "tune:demo10:late": "node scripts/tune-demo-10f-late-game.mjs",

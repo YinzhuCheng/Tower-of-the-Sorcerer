@@ -193,6 +193,7 @@ async function validateProductionDemoBuild() {
   const strategy = await import(moduleUrl('src/solver/greedy-strategy.js'));
   const replay = await import(moduleUrl('src/solver/replay.js'));
   const towerAdapter = await import(moduleUrl('src/solver/tower-adapter.js'));
+  const routeCertification = await import(moduleUrl('src/solver/demo-10f-route-family-certification.js'));
   const reports = quality.DEMO10_SIMPLE_BUILD_PORTFOLIO.map((shopCycle) => strategy.runGreedyShopStrategy({
     shopCycle,
     holyPolicy: 'immediate',
@@ -226,6 +227,8 @@ async function validateProductionDemoBuild() {
   assertBuild(proofReplay.ok, 'Production winning route must replay through authoritative engine actions.');
   assertBuild(proofReplay.minNormalizedHpMargin >= 0.04, 'Production proof route is too brittle.');
   assertBuild(proofReplay.minNormalizedHpMargin <= 0.20, 'Production proof route is too forgiving.');
+  const routeFamilyProof = routeCertification.certifyDemoTenFloorRouteFamilies({ targetFamilies: 3 });
+  assertBuild(routeFamilyProof.complete, 'Production demo must retain three independent replayed route families.');
 
   console.log('PRODUCTION_DEMO_BUILD', JSON.stringify({
     initialRelics: state.relics,
@@ -243,6 +246,18 @@ async function validateProductionDemoBuild() {
       steps: proofRoute.routeSteps.length,
       final: proofReplay.final,
       minNormalizedHpMargin: proofReplay.minNormalizedHpMargin
+    },
+    routeFamilyProof: {
+      discoverySeeds: routeFamilyProof.discoverySeeds,
+      replayableWins: routeFamilyProof.replayableWins,
+      hardCandidates: routeFamilyProof.hardCandidates,
+      discoveredFamilies: routeFamilyProof.discoveredFamilies,
+      minimumDecisionDistance: routeFamilyProof.minDistance,
+      routes: routeFamilyProof.selected.map((attempt) => ({
+        discoverySeed: attempt.id,
+        decisions: attempt.family.decisions,
+        minNormalizedHpMargin: attempt.family.minNormalizedHpMargin
+      }))
     },
     simpleBuilds: reports.map((report) => ({
       cycle: report.shopCycle.join('-'),
