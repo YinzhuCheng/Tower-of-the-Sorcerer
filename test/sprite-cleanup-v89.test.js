@@ -22,5 +22,5 @@ test('V10 keeps legacy cleanup conservative and gives Mote a native-alpha asset'
   assert.match(patch, /scene\.canvas\.dataset\.spriteCleanup = 'native-alpha-first-v10'/);
 
   assert.match(enemyManifest, /"mote"/);
-  assert.match(enemyManifest, /mote-v10\.b64/);
+  assert.match(enemyManifest, /mote-map-128\.webp/);
 });
