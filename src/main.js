@@ -120,12 +120,59 @@ function openModal({ kicker = '', title, body = '', actions = [], closable = tru
   afterOpen?.();
 }
 
-function showDialogue(dialogueId, after = null) {
+function showDialogue(dialogueId, after = null, { finalLabel = null } = {}) {
   const dialogue = getDialogue(dialogueId);
   if (!dialogue) return;
+
+  // Boss dialogue is authored as a short exchange rather than a block of
+  // exposition.  Older screens only knew the single-speaker format, which
+  // silently rendered sequence records as empty content.  Keep both formats
+  // valid so existing floor narration remains lightweight while confrontations
+  // can reveal competing motives one line at a time.
+  if (Array.isArray(dialogue.turns) && dialogue.turns.length > 0) {
+    let index = 0;
+    const renderTurn = () => {
+      const turn = dialogue.turns[index];
+      const finalTurn = index === dialogue.turns.length - 1;
+      openModal({
+        kicker: `${turn.speaker} · ${index + 1}/${dialogue.turns.length}`,
+        title: dialogue.title,
+        closable: finalLabel ? false : true,
+        body: `
+          <div class="dialogue-grid">
+            <img src="${portraitUrl(turn.portrait)}" alt="${escapeHtml(turn.speaker)}" />
+            <div class="dialogue-copy">
+              <strong>${escapeHtml(turn.speaker)}</strong>
+              <p>${escapeHtml(turn.text).replaceAll('\n', '<br>')}</p>
+            </div>
+          </div>
+        `,
+        actions: [
+          ...(index > 0 ? [{
+            label: '上一句',
+            close: false,
+            onClick: () => { index -= 1; renderTurn(); }
+          }] : []),
+          {
+            label: finalTurn ? (finalLabel ?? (state.victory ? '查看通关结算' : '继续')) : '下一句',
+            className: 'primary',
+            close: finalTurn,
+            onClick: () => {
+              if (finalTurn) after?.();
+              else { index += 1; renderTurn(); }
+            }
+          }
+        ]
+      });
+    };
+    renderTurn();
+    return;
+  }
+
   openModal({
     kicker: dialogue.speaker,
     title: dialogue.title,
+    closable: finalLabel ? false : true,
     body: `
       <div class="dialogue-grid">
         <img src="${portraitUrl(dialogue.portrait)}" alt="${escapeHtml(dialogue.speaker)}" />
@@ -135,7 +182,7 @@ function showDialogue(dialogueId, after = null) {
         </div>
       </div>
     `,
-    actions: [{ label: state.victory && dialogueId === 'ending' ? '查看通关结算' : '继续', className: 'primary', onClick: after }]
+    actions: [{ label: finalLabel ?? (state.victory && dialogueId === 'ending' ? '查看通关结算' : '继续'), className: 'primary', onClick: after }]
   });
 }
 

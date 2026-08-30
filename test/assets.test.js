@@ -6,6 +6,13 @@ import { dirname, join } from 'node:path';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const manifestPath = join(root, 'public/assets/anime/enemies/manifest.json');
+const runtimeCharacters = [
+  'liyue-runtime.webp',
+  'shawu-runtime.webp',
+  'noctia-runtime.webp',
+  'echo-regent-runtime.webp',
+  'arcane-sovereign-runtime.webp'
+];
 
 function runtimePath(basePath, relativePath) {
   const base = basePath.replace(/^\//, '');
@@ -49,5 +56,13 @@ test('enemy art manifest resolves all 21 HD enemy entries including Mote V10', a
     const payload = bundleCache.get(bundlePath);
     assert.equal(typeof payload[meta.key], 'string', `${portrait} bundle key must exist`);
     assertWebP(payload[meta.key], portrait);
+  }
+});
+
+test('runtime dialogue portraits are compact standalone WebP files', async () => {
+  for (const filename of runtimeCharacters) {
+    const data = await readFile(join(root, 'public/assets/anime/characters', filename));
+    assertWebP(data.toString('base64'), filename);
+    assert.ok(data.length < 80_000, `${filename} should remain suitable for ordinary Git and first load`);
   }
 });

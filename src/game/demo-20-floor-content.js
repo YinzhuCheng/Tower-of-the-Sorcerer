@@ -133,25 +133,82 @@ function installActTwoEnemies(enemies) {
 
   // F20's two authored arenas are a strict two-phase encounter: the first
   // Boss opens the core seal; only the core claims the final victory.
+  enemies.echoRegent.defeatDialogue = 'bossEchoRegentPost';
   enemies.arcaneSovereign.defeatDialogue = 'bossArcaneSovereignPost';
   enemies.originCore.finalBoss = true;
   enemies.originCore.defeatDialogue = 'bossOriginCorePost';
 }
 
+function dialogueTurn(speaker, portrait, text) {
+  return Object.freeze({ speaker, portrait, text });
+}
+
+function dialogueSequence(title, turns) {
+  return Object.freeze({ title, turns: Object.freeze(turns) });
+}
+
 function installActTwoDialogues(dialogues) {
   Object.assign(dialogues, {
-    floor11: { speaker: '残响精灵·纱雾', portrait: 'guide', title: '第十一阵：复苏环廊', text: '黯星核心已经解除，璃的魔力以 100/100 的状态归来。\n\n附刃只能在战前调整：每档消耗 10 MP，并在每次命中时附加同等伤害。它不会穿透敌人的防御阈值。' },
-    floor12: { speaker: '绫星·璃', portrait: 'hero', title: '第十二阵：双谱温室', text: '主路已经开放，但双谱宝库仍被两名守卫维持。是否投入生命与魔力，换取更高的魔力上限，由我自己决定。' },
-    floor13: { speaker: '残响精灵·纱雾', portrait: 'guide', title: '第十三阵：脉冲锻炉', text: '卡片不是单纯的钥匙。星导管和月相旁路分别锁住不同收益与风险，花错一张，后续的附刃容量也会失去。' },
-    floor14: { speaker: '三矢裁定者', portrait: 'triune_arbiter', title: '第十四阵：三矢竞技场', text: '三座战场共同供能。击败其中一人不会打开上楼结界；所有守卫都必须解除。' },
-    floor15: { speaker: '档案馆主机', portrait: 'guide', title: '第十五阵：折页档案馆', text: '本章唯一一次转换机会：属性、补魔与扩容不能全部购买。留下什么资源，决定你面对后半程时有多少种解法。' },
-    floor16: { speaker: '绫星·璃', portrait: 'hero', title: '第十六阵：镜轮双殿', text: '镜泉宝库不是主线必经。它把风险、魔力容量与未来的容错放在同一笔交易中。' },
-    floor17: { speaker: '残响精灵·纱雾', portrait: 'guide', title: '第十七阵：三冠阶庭', text: '刃、咏、法三冠共同维持上行封印。这里没有单点捷径。' },
-    floor18: { speaker: '绫星·璃', portrait: 'hero', title: '第十八阵：澄空航渠', text: '日桥通向上行，星渠则通向虚空先驱。保留卡片与保留 MP 一样，都是终局前的主动选择。' },
-    floor19: { speaker: '回声摄政官', portrait: 'echo_regent', title: '第十九阵：回响王庭', text: '王座执照、摄政官与上行封印依次锁住通路。终局不会因为你看见楼梯就允许你通过。' },
-    floor20: { speaker: '奥术主权者', portrait: 'arcane_sovereign', title: '第二十阵：起源魔源', text: '你夺回了魔法，但并未学会支配它。来吧，让每一次附刃和每一张卡片证明你的选择。' },
-    bossArcaneSovereignPost: { speaker: '奥术主权者', portrait: 'arcane_sovereign', title: '主权封印解除', text: '主权并非力量本身，而是把选择从别人手中夺走。你已经证明它不该属于我。' },
-    bossOriginCorePost: { speaker: '绫星·璃', portrait: 'hero', title: '终章：魔源再临', text: '起源核心安静下来。魔法不再是任何王座的命令，而是每个人可以承担后果的选择。' }
+    floor11: dialogueSequence('第十一阵：复苏环廊', [
+      dialogueTurn('残响精灵·纱雾', 'guide', '璃，黯星阵的十重封印已经解除；但它曾连接过一座更老的应急登记库。起源魔源正在替失去主人的阵列继续发号施令。'),
+      dialogueTurn('绫星·璃', 'hero', '所以魔力回来了，选择却还没有。你一直知道这件事？'),
+      dialogueTurn('残响精灵·纱雾', 'guide', '我写过“紧急登记”——灾难时把结界与治疗先分给最需要的人，三日后必须撤销。诺克缇娅把它变成永久剥夺；而我选择了沉默。'),
+      dialogueTurn('绫星·璃', 'hero', '那就别再替别人决定。附刃由我在战前自己设定，风险也由我自己承担。')
+    ]),
+    floor12: dialogueSequence('第十二阵：双谱温室', [
+      dialogueTurn('绫星·璃', 'hero', '这两扇门不问我有没有资格，只问我愿意为哪条路付出资源。'),
+      dialogueTurn('残响精灵·纱雾', 'guide', '双谱宝库能扩充魔力上限，但不是通行税。保留生命、卡片与 MP，都不是怯懦，而是你在决定未来还能保留多少选择。')
+    ]),
+    floor13: dialogueSequence('第十三阵：脉冲锻炉', [
+      dialogueTurn('残响精灵·纱雾', 'guide', '起源系统把卡片当成许可额度：谁握着卡，谁就有权决定哪一条回路能活。'),
+      dialogueTurn('绫星·璃', 'hero', '卡片可以是门钥匙，不该是替别人盖章的权力。这里的每一张，我都要看清自己放弃了什么。')
+    ]),
+    floor14: dialogueSequence('第十四阵：三矢竞技场', [
+      dialogueTurn('残响精灵·纱雾', 'guide', '三名裁定者把旧城的灾难复刻成考试：护盾、武器、药剂，三者只能先救一个。'),
+      dialogueTurn('绫星·璃', 'hero', '排序救援并不等于拥有永远排序人的资格。我要打碎的是那份不必解释、也不能反驳的授权。')
+    ]),
+    floor15: dialogueSequence('第十五阵：折页档案馆', [
+      dialogueTurn('残响精灵·纱雾', 'guide', '档案里不是抽象的“损失”。每一笔延期治疗、每一道拒绝通行，都有人的名字。'),
+      dialogueTurn('绫星·璃', 'hero', '我不会假装魔法没有风险。但规则应当公开，执行规则的人也必须面对自己留下的后果。')
+    ]),
+    floor16: dialogueSequence('第十六阵：镜轮双殿', [
+      dialogueTurn('绫星·璃', 'hero', '镜泉给出两种未来：把魔力全留给自己，或带着更少的把握继续前进。'),
+      dialogueTurn('残响精灵·纱雾', 'guide', '自由不是保证每次都选对；是允许你看见代价，再由你作出选择。')
+    ]),
+    floor17: dialogueSequence('第十七阵：三冠阶庭', [
+      dialogueTurn('残响精灵·纱雾', 'guide', '刃、咏、法三冠各自握有一段总授权。单独击败任何一个都无济于事。'),
+      dialogueTurn('绫星·璃', 'hero', '这倒像一条正确的规则：没有一个人能独自关掉世界。区别只在于，它也不能独自把世界关起来。')
+    ]),
+    floor18: dialogueSequence('第十八阵：澄空航渠', [
+      dialogueTurn('绫星·璃', 'hero', '日桥直通上行，星渠藏着更危险的回报。终局前保留卡片和保留 MP 一样，都是主动的选择。'),
+      dialogueTurn('残响精灵·纱雾', 'guide', '你开始明白了：不把所有资源押进最快的路，也是一种承担。')
+    ]),
+    floor19: dialogueSequence('第十九阵：回响王庭', [
+      dialogueTurn('回声摄政官', 'echo_regent', '我签过避难城的死亡名簿。没有执照，强者优先；有了执照，至少孩子先得到结界。你把这叫控制，我把它叫责任。'),
+      dialogueTurn('绫星·璃', 'hero', '责任不是把所有人变成记录。账本可以公开，决定必须能被质问、被更正。'),
+      dialogueTurn('残响精灵·纱雾', 'guide', '这套系统最初的谎言由我写下：我承诺它只是临时措施，然后允许它不再归还。'),
+      dialogueTurn('回声摄政官', 'echo_regent', '灾难没有结束前，“临时”就是必要。若你废除主权，谁为下一场火负责？')
+    ]),
+    floor20: dialogueSequence('第二十阵：起源魔源', [
+      dialogueTurn('奥术主权者', 'arcane_sovereign', '我见过一座城因无节制的术式而消失。于是我建立授权、配给与强制停机；每一步都有人得救。'),
+      dialogueTurn('绫星·璃', 'hero', '也有人从此失去被询问的资格。你把紧急权力做成王座，再把所有恐惧当成它永不归还的理由。'),
+      dialogueTurn('奥术主权者', 'arcane_sovereign', '那你准备拿什么替代命令？别把“自由”当成逃避后果的好听名字。'),
+      dialogueTurn('绫星·璃', 'hero', '公开的规则、能被拒绝的同意、共同承担的后果。它不完美，但没有任何人可以躲在完美的命令后面。')
+    ]),
+    bossEchoRegentPost: dialogueSequence('回响王庭：执照碎裂', [
+      dialogueTurn('回声摄政官', 'echo_regent', '你没有消灭危险，只是让权力也暴露在危险之下。'),
+      dialogueTurn('绫星·璃', 'hero', '对。没有人能免于风险；包括替别人作决定的人。')
+    ]),
+    bossArcaneSovereignPost: dialogueSequence('主权封印解除', [
+      dialogueTurn('奥术主权者', 'arcane_sovereign', '主权并非力量本身，而是把选择从别人手中夺走。我曾以为只有我能承担那份重量。'),
+      dialogueTurn('残响精灵·纱雾', 'guide', '承担不是独占。我们都曾把恐惧交给一座看似不会犯错的王座。'),
+      dialogueTurn('绫星·璃', 'hero', '那就让起源核心留下记录，不再留下命令。')
+    ]),
+    bossOriginCorePost: dialogueSequence('终章：魔源再临', [
+      dialogueTurn('绫星·璃', 'hero', '起源核心安静下来。它保存灾难的记录，却不再替任何人下达命令。'),
+      dialogueTurn('奥术主权者', 'arcane_sovereign', '若下一场灾难再来，别让自由成为拒绝伸手的借口。'),
+      dialogueTurn('绫星·璃', 'hero', '也别让保护成为夺走选择的借口。魔法会有代价，但承担它的人应该有名字、有声音。')
+    ])
   });
 }
 

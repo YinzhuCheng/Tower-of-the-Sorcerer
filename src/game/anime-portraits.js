@@ -20,11 +20,24 @@ const PORTRAITS = {
   shadow_ninja: ['影缝忍姬', 'shadow_assassin'], void_priestess: ['虚空祭司', 'moon_priestess'], shadow_boss: ['影织姬·鸦羽', 'shadow_assassin'],
   silence_guard: ['寂静近卫', 'swordswoman'], eclipse_mage: ['蚀月法师', 'moon_priestess'],
   final_queen: ['无声女王·诺克缇娅', 'final_boss'], void_core: ['黯星魔阵核心', 'final_boss'],
-  merchant: ['阵间商人·珂珂', 'merchant'], guide: ['残响精灵·纱雾', 'moon_priestess']
+  merchant: ['阵间商人·珂珂', 'merchant'], guide: ['残响精灵·纱雾', 'moon_priestess'],
+  echo_regent: ['回声摄政官', 'final_boss'],
+  arcane_sovereign: ['奥术主权者', 'final_boss']
 };
 
 const urlCache = new Map();
 const cardUiAssets = Object.freeze({ sun: 'card-sun-v10', moon: 'card-moon-v10', star: 'card-star-v10' });
+// Dialogue art is intentionally served as ordinary WebP files instead of
+// Base64 text blobs.  The high-resolution masters stay outside the gameplay
+// repository; these 256×384 WebPs are only used by dialogue, codex, and HUD
+// portraits.  Map pieces keep their dedicated transparent sprite pipeline.
+const RUNTIME_PORTRAITS = Object.freeze({
+  hero: '/assets/anime/characters/liyue-runtime.webp',
+  guide: '/assets/anime/characters/shawu-runtime.webp',
+  final_queen: '/assets/anime/characters/noctia-runtime.webp',
+  echo_regent: '/assets/anime/characters/echo-regent-runtime.webp',
+  arcane_sovereign: '/assets/anime/characters/arcane-sovereign-runtime.webp'
+});
 
 function archetype(id) { return PORTRAITS[id]?.[1] ?? 'hero'; }
 
@@ -35,6 +48,8 @@ function canvasUrl(canvas) {
 }
 
 export function portraitUrl(id) {
+  const runtime = RUNTIME_PORTRAITS[id];
+  if (runtime) return runtime;
   const key = archetype(id);
   if (urlCache.has(key)) return urlCache.get(key);
   if (key === 'hero') {

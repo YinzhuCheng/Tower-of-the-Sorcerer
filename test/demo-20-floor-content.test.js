@@ -58,6 +58,8 @@ test('Act II turns the frozen 11–20 topology into a complete runtime campaign'
   assert.deepEqual(FLOORS[19].puzzles.guardianGates.f20SovereignSeal, ['arcaneSovereign']);
   assert.equal(ENEMIES.originCore.finalBoss, true);
   assert.equal(ENEMIES.arcaneSovereign.finalBoss, undefined);
+  assert.equal(ENEMIES.echoRegent.defeatDialogue, 'bossEchoRegentPost');
+  assert.equal(ENEMIES.arcaneSovereign.defeatDialogue, 'bossArcaneSovereignPost');
 
   for (const [id, values] of Object.entries(DEMO20_NUMERIC_BASELINE)) {
     assert.equal(ENEMIES[id].hp, values.hp, `${id} must use the isolated Act II baseline`);
@@ -70,6 +72,24 @@ test('Act II turns the frozen 11–20 topology into a complete runtime campaign'
       `${id} must retain its frozen magic role`
     );
   }
+});
+
+test('Act II story scenes expose complete, bounded exchanges for the gameplay UI', () => {
+  const sequenceIds = [
+    'floor11', 'floor12', 'floor13', 'floor14', 'floor15', 'floor16', 'floor17', 'floor18', 'floor19', 'floor20',
+    'bossEchoRegentPost', 'bossArcaneSovereignPost', 'bossOriginCorePost'
+  ];
+
+  for (const id of sequenceIds) {
+    const dialogue = DIALOGUES[id];
+    assert.ok(Array.isArray(dialogue?.turns), `${id} must be an interactive dialogue sequence`);
+    assert.ok(dialogue.turns.length >= 2 && dialogue.turns.length <= 5, `${id} must stay concise and readable`);
+    assert.ok(dialogue.turns.every((turn) => turn.speaker && turn.portrait && turn.text), `${id} turns must be complete`);
+  }
+
+  assert.match(DIALOGUES.floor11.turns.map((turn) => turn.text).join('\n'), /三日后必须撤销/);
+  assert.match(DIALOGUES.floor19.turns.map((turn) => turn.text).join('\n'), /死亡名簿/);
+  assert.match(DIALOGUES.bossOriginCorePost.turns.map((turn) => turn.text).join('\n'), /保存灾难的记录/);
 });
 
 test('F10 core restores 100 MP, reveals a real stair, and transfers into F11 without declaring victory', () => {
