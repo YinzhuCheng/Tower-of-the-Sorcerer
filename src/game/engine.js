@@ -19,6 +19,15 @@ import {
   getRemainingExitGuardianIds,
   recordDefeatedBoss
 } from './progression-rules.js';
+import {
+  applyMagicEffect,
+  awakenMagic,
+  canAffordMagicTier,
+  createDormantMagicState,
+  describeMagicTier,
+  normalizeMagicState,
+  setMagicTier as setMagicTierState
+} from './magic-blade.js';
 
 export const DIRECTIONS = {
   up: { dx: 0, dy: -1 },
@@ -70,6 +79,7 @@ export function createInitialState() {
       gold: 0
     },
     cards: { sun: 0, moon: 0, star: 0 },
+    magic: createDormantMagicState(),
     relics: {
       codex: initialRelics.has('codex'),
       compass: initialRelics.has('compass'),
@@ -99,7 +109,8 @@ export function validateStateShape(state) {
   if (!state || state.version !== GAME_VERSION) return false;
   if (!Number.isInteger(state.floor) || state.floor < 0 || state.floor >= FLOORS.length) return false;
   if (!Array.isArray(state.floorStates) || state.floorStates.length !== FLOORS.length) return false;
-  if (!state.stats || !state.cards || !state.relics) return false;
+  if (!state.stats || !state.cards || !state.relics || !state.magic) return false;
+  if (!Number.isFinite(state.magic.mp) || !Number.isFinite(state.magic.maxMp)) return false;
   return true;
 }
 
@@ -108,8 +119,30 @@ export function serializeState(state) {
 }
 
 export function deserializeState(serialized) {
-  const state = JSON.parse(serialized);
+  const state = migrateState(JSON.parse(serialized));
   if (!validateStateShape(state)) throw new Error('存档版本不兼容或内容损坏。');
+  return state;
+}
+
+/**
+ * V1 saves predate player magic. Their map shape is still checked against the
+ * active content after this narrow, deterministic data migration. A later
+ * 10F→20F content migration can extend this function without weakening the
+ * validation contract.
+ */
+export function migrateState(state) {
+  if (!state || typeof state !== 'object') return state;
+  if (state.version === GAME_VERSION) {
+    state.magic = normalizeMagicState(state.magic);
+    return state;
+  }
+  if (state.version === 1) {
+    return {
+      ...state,
+      version: GAME_VERSION,
+      magic: createDormantMagicState()
+    };
+  }
   return state;
 }
 
@@ -132,13 +165,25 @@ export function parseToken(token) {
   return { type: token.slice(0, separator), id: token.slice(separator + 1) };
 }
 
-export function calculateBattle(stats, enemy, relics = {}) {
-  const heroDamage = stats.atk - enemy.def;
-  if (heroDamage <= 0) {
+export function calculateBattle(stats, enemy, relics = {}, magic = {}) {
+  // Magical damage augments a physical hit; it never opens an otherwise
+  // impossible defense breakpoint. This preserves the fundamental 魔塔
+  // attack/defense puzzle and leaves "magic pierce" available for an explicit
+  // future relic rather than smuggling it into the base system.
+  const physicalDamage = stats.atk - enemy.def;
+  const magicStatus = describeMagicTier(magic);
+  const magicTier = magicStatus.tier;
+  const magicCost = magicStatus.cost;
+  if (physicalDamage <= 0) {
     return {
       winnable: false,
       reason: '攻击不足，无法破防',
       heroDamage: 0,
+      physicalDamage: 0,
+      magicTier,
+      magicCost,
+      magicBonusPerHit: 0,
+      magicAffordable: magicStatus.affordable,
       enemyDamage: 0,
       rounds: Infinity,
       counterAttacks: Infinity,
@@ -147,6 +192,25 @@ export function calculateBattle(stats, enemy, relics = {}) {
     };
   }
 
+  if (!magicStatus.affordable) {
+    return {
+      winnable: false,
+      reason: `当前魔力不足以维持 ${magicTier} 档魔力附刃`,
+      heroDamage: physicalDamage,
+      physicalDamage,
+      magicTier,
+      magicCost,
+      magicBonusPerHit: magicCost,
+      magicAffordable: false,
+      enemyDamage: 0,
+      rounds: Infinity,
+      counterAttacks: Infinity,
+      totalDamage: Infinity,
+      remainingHp: stats.hp
+    };
+  }
+
+  const heroDamage = physicalDamage + magicCost;
   const rounds = Math.ceil(enemy.hp / heroDamage);
   let counterAttacks = Math.max(0, rounds - 1);
   if (enemy.special === 'firstStrike') counterAttacks += 1;
@@ -165,6 +229,11 @@ export function calculateBattle(stats, enemy, relics = {}) {
     winnable: totalDamage < stats.hp,
     reason: totalDamage < stats.hp ? null : '预计损伤会使生命归零',
     heroDamage,
+    physicalDamage,
+    magicTier,
+    magicCost,
+    magicBonusPerHit: magicCost,
+    magicAffordable: true,
     enemyDamage,
     rounds,
     counterAttacks,
@@ -185,6 +254,15 @@ export function applyEffect(state, effect = {}) {
   if (effect.def) state.stats.def += effect.def;
   if (effect.gold) state.stats.gold += effect.gold;
   if (effect.core) state.cores += effect.core;
+  applyMagicEffect(state, effect);
+}
+
+export function setMagicTier(state, tier) {
+  const result = setMagicTierState(state, tier);
+  if (result.ok) addLog(state, result.tier > 0
+    ? `魔力附刃调整为 ${result.tier} 档：下一场战斗将消耗 ${result.cost} MP。`
+    : '魔力附刃已关闭。');
+  return result;
 }
 
 export function collectItem(state, itemId) {
@@ -482,7 +560,7 @@ export function tryMove(state, dx, dy) {
     const enemy = ENEMIES[parsed.id];
     if (!enemy) throw new Error(`Unknown enemy: ${parsed.id}`);
     markSeenEnemy(state, parsed.id);
-    const battle = calculateBattle(state.stats, enemy, state.relics);
+    const battle = calculateBattle(state.stats, enemy, state.relics, state.magic);
     result.battle = { enemyId: parsed.id, enemy, ...battle };
     if (!battle.winnable) {
       result.blocked = true;
@@ -492,6 +570,10 @@ export function tryMove(state, dx, dy) {
     }
 
     state.stats.hp -= battle.totalDamage;
+    if (battle.magicCost > 0) {
+      state.magic.mp -= battle.magicCost;
+      addLog(state, `魔力附刃消耗 ${battle.magicCost} MP（${battle.magicTier} 档）。`);
+    }
     state.battles += 1;
     const earnedGold = enemy.gold * (state.relics.lucky ? 2 : 1);
     state.stats.gold += earnedGold;
@@ -513,6 +595,13 @@ export function tryMove(state, dx, dy) {
     if (enemy.reward) {
       applyEffect(state, enemy.reward);
       addLog(state, `回收「${enemy.core}」：生命、攻击与防御得到强化。`);
+    }
+
+    if (enemy.awakenMagic) {
+      const awakened = awakenMagic(state, enemy.awakenMagic === true ? {} : enemy.awakenMagic);
+      result.magicAwakened = true;
+      result.events.push({ type: 'magicAwakened', mp: awakened.mp, maxMp: awakened.maxMp });
+      addLog(state, `沉睡的魔力苏醒：MP 恢复至 ${awakened.mp}/${awakened.maxMp}，可在战前调整魔力附刃档位。`);
     }
 
     if (enemy.boss) {
@@ -610,7 +699,7 @@ export function getAdjacentEnemyPreviews(state) {
     if (parsed.type !== 'enemy') continue;
     const enemy = ENEMIES[parsed.id];
     markSeenEnemy(state, parsed.id);
-    previews.push({ enemyId: parsed.id, enemy, x, y, ...calculateBattle(state.stats, enemy, state.relics) });
+    previews.push({ enemyId: parsed.id, enemy, x, y, ...calculateBattle(state.stats, enemy, state.relics, state.magic) });
   }
   return previews;
 }
@@ -621,7 +710,7 @@ export function getCodexEntries(state) {
     const enemy = ENEMIES[id];
     return state.seenEnemies.includes(id) || enemy.floor <= currentFloor;
   });
-  return ids.map((enemyId) => ({ enemyId, enemy: ENEMIES[enemyId], ...calculateBattle(state.stats, ENEMIES[enemyId], state.relics) }));
+  return ids.map((enemyId) => ({ enemyId, enemy: ENEMIES[enemyId], ...calculateBattle(state.stats, ENEMIES[enemyId], state.relics, state.magic) }));
 }
 
 export function getRelicLabels(state) {

@@ -1,4 +1,4 @@
-import { buyShopUpgrade, createInitialState, DIRECTIONS, teleportToFloor, tryMove } from '../game/engine.js';
+import { buyShopUpgrade, createInitialState, DIRECTIONS, setMagicTier, teleportToFloor, tryMove } from '../game/engine.js';
 import { hashValue } from './state.js';
 import { createTowerAdapter } from './tower-adapter.js';
 
@@ -102,6 +102,13 @@ function applyCertificateSteps(state, certificate, { battleLog = null } = {}) {
           break;
         }
         const statsBefore = { ...state.stats };
+        if (step.action?.magicTier != null && (state.magic?.unlocked || step.action.magicTier > 0)) {
+          const tierResult = setMagicTier(state, step.action.magicTier);
+          if (!tierResult.ok) {
+            failures.push({ index, eventId: step.eventId, reason: tierResult.reason });
+            break;
+          }
+        }
         const result = tryMove(state, dx, dy);
         if (result.blocked) {
           failures.push({ index, eventId: step.eventId, reason: result.reason });

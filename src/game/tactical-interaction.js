@@ -69,7 +69,7 @@ export function guardianMarkerLabel(enemy) {
 export function buildEnemyHoverPreview(state, enemyId) {
   const enemy = ENEMIES[enemyId];
   if (!state || !enemy) return null;
-  const battle = calculateBattle(state.stats, enemy, state.relics);
+  const battle = calculateBattle(state.stats, enemy, state.relics, state.magic);
   const tone = battle.heroDamage <= 0 || !battle.winnable ? 'danger' : battle.totalDamage === 0 ? 'perfect' : 'safe';
   const damageText = battle.heroDamage <= 0 ? '无法破防' : `${formatNumber(battle.totalDamage)} HP`;
   const remainingText = battle.heroDamage <= 0
@@ -105,6 +105,7 @@ function buildHeroHoverPreview(state) {
     details: [
       detail('攻击 / 防御', `${formatNumber(state.stats.atk)} / ${formatNumber(state.stats.def)}`),
       detail('金币', formatNumber(state.stats.gold)),
+      detail('魔力', state.magic?.unlocked ? `${state.magic.mp} / ${state.magic.maxMp} · 附刃 ${state.magic.tier} 档` : '尚未苏醒'),
       detail('结界卡', `日 ${state.cards.sun} · 月 ${state.cards.moon} · 星 ${state.cards.star}`)
     ]
   };

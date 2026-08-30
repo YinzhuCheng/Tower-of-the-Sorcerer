@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { createTowerAdapter } from '../src/solver/tower-adapter.js';
+import { createTowerAdapter, enumerateUsefulMagicTiers } from '../src/solver/tower-adapter.js';
 
 test('Tower adapter stores labels as compact event-vector states', () => {
   const adapter = createTowerAdapter();
@@ -59,4 +59,28 @@ test('Tower event catalog uses coordinate-free certificate identifiers', () => {
   assert.ok(catalog.events.every((event) => !event.eventId.includes(`${event.x},${event.y}`)));
   assert.ok(catalog.counts.enemy > 0);
   assert.ok(catalog.counts.item > 0);
+});
+
+test('Tower codec preserves partial multi-guardian progress and separates it structurally', () => {
+  const adapter = createTowerAdapter();
+  const state = adapter.materializeState(adapter.createInitialState());
+  state.floorStates[0].defeatedBossIds = ['catBoss'];
+  const compact = adapter.compactState(state);
+  const restored = adapter.materializeState(compact);
+  assert.deepEqual(restored.floorStates[0].defeatedBossIds, ['catBoss']);
+
+  const withoutProgress = adapter.cloneState(compact);
+  withoutProgress.floorMeta[0].defeatedBossMask = '0';
+  assert.notEqual(adapter.structuralKey(compact), adapter.structuralKey(withoutProgress));
+});
+
+test('magic action frontier keeps only the least affordable tier per improved round count', () => {
+  const adapter = createTowerAdapter();
+  const state = adapter.materializeState(adapter.createInitialState());
+  state.magic = { unlocked: true, mp: 100, maxMp: 100, tier: 0 };
+  state.stats.atk = 20;
+  const enemy = { hp: 150, atk: 1, def: 10 };
+  const tiers = enumerateUsefulMagicTiers(state, enemy);
+  assert.deepEqual(tiers, [0, 1, 2, 3, 4, 7]);
+  assert.ok(tiers.length < 11, 'do not branch over every UI tier');
 });

@@ -12,8 +12,10 @@ import {
   getShopOptions,
   initialDialogue,
   serializeState,
+  setMagicTier,
   teleportToFloor
 } from './game/engine.js';
+import { describeMagicTier, getMagicTierCapacity, getMagicTierCost } from './game/magic-blade.js';
 import { createMagicTowerScene } from './game/scene.js';
 import { createCanvasTowerScene } from './game/canvas-scene.js';
 import { hydratePortraits, portraitUrl } from './game/portraits.js';
@@ -37,11 +39,13 @@ const elements = {
   moon: $('#card-moon'),
   star: $('#card-star'),
   magicTitle: $('#magic-title'),
+  magicTierButton: $('#btn-magic-tier'),
   relicList: $('#relic-list'),
   preview: $('#battle-preview'),
   logList: $('#log-list'),
   codexButton: $('#btn-codex'),
   teleportButton: $('#btn-teleport'),
+  magicButton: $('#btn-magic'),
   modalRoot: $('#modal-root'),
   modalKicker: $('#modal-kicker'),
   modalTitle: $('#modal-title'),
@@ -151,6 +155,9 @@ function updateBattlePreview() {
   const { enemy } = preview;
   const lossClass = preview.winnable ? 'safe' : 'danger';
   const lossText = preview.heroDamage <= 0 ? '无法破防' : `${formatNumber(preview.totalDamage)} HP`;
+  const magicText = preview.magicTier > 0
+    ? ` · 附刃 ${preview.magicTier} 档（每击 +${preview.magicBonusPerHit}，本战 -${preview.magicCost} MP）`
+    : '';
   elements.preview.className = 'battle-preview';
   elements.preview.innerHTML = `
     <div class="preview-enemy">
@@ -158,7 +165,7 @@ function updateBattlePreview() {
       <div>
         <h4>${escapeHtml(enemy.name)}</h4>
         <p>HP ${formatNumber(enemy.hp)} · ATK ${formatNumber(enemy.atk)} · DEF ${formatNumber(enemy.def)}</p>
-        <p>${escapeHtml(specialLabel(enemy))}${previews.length > 1 ? ` · 邻格共 ${previews.length} 名敌人` : ''}</p>
+        <p>${escapeHtml(specialLabel(enemy))}${magicText}${previews.length > 1 ? ` · 邻格共 ${previews.length} 名敌人` : ''}</p>
       </div>
     </div>
     <div class="preview-damage">
@@ -180,7 +187,12 @@ function updateHud() {
   elements.sun.textContent = state.cards.sun;
   elements.moon.textContent = state.cards.moon;
   elements.star.textContent = state.cards.star;
-  elements.magicTitle.textContent = `魔力回收率 ${getProgressPercent(state)}%`;
+  const magic = describeMagicTier(state.magic);
+  elements.magicTitle.textContent = magic.unlocked
+    ? `魔力 ${magic.mp} / ${magic.maxMp} · 附刃 ${magic.tier} 档`
+    : `魔力回收率 ${getProgressPercent(state)}%`;
+  elements.magicTierButton.disabled = !magic.unlocked;
+  elements.magicButton.disabled = !magic.unlocked;
 
   const relics = getRelicLabels(state);
   elements.relicList.innerHTML = relics.length
@@ -237,8 +249,55 @@ function showHelp() {
       <p>日曜、月辉、星蚀卡分别解除对应颜色的魔力结界。钥匙资源可能决定路线，开启结界前应先查看后方收益。</p>
       <p>魔眼图鉴与层间罗盘为初始持有物：E 打开图鉴，T 打开楼层罗盘。方向键或 WASD 移动；点击相邻格也可行动。</p>
       <p>商店只设置在第 1、5、9 阵。越靠后的商店永久成长效率越高，因此可以选择早买保命，或保存金币换取后期更高收益。</p>
+      <p><strong>第二章魔力附刃。</strong>击败第十阵的黯星核心后，魔力恢复为 100 / 100。可在任意非战斗时设置档位；每一档在一场战斗开始时支付 10 MP，并令该场每次主角攻击额外造成 10 点伤害。附刃不能替代物理破防。</p>
     `,
     actions: [{ label: '返回游戏', className: 'primary' }]
+  });
+}
+
+function showMagicBlade() {
+  const magic = describeMagicTier(state.magic);
+  if (!magic.unlocked) {
+    showToast('第十阵黯星核心尚未解除，魔力附刃仍处于封印状态。');
+    return;
+  }
+  const capacity = getMagicTierCapacity(state.magic);
+  openModal({
+    kicker: 'ARCANE BLADE',
+    title: `魔力附刃 · 当前 MP ${magic.mp} / ${magic.maxMp}`,
+    body: `
+      <div class="dialogue-copy shop-intro" style="margin-bottom:16px">
+        <p>档位只在<strong>下一场战斗开始时</strong>支付一次。每档消耗 10 MP，并使这一场中每次主角攻击额外造成 10 点伤害；仍须先以普通攻击破防。</p>
+      </div>
+      <div class="shop-grid magic-tier-grid">
+        ${Array.from({ length: capacity + 1 }, (_, tier) => {
+          const cost = getMagicTierCost(tier);
+          const selected = tier === magic.tier;
+          const affordable = cost <= magic.mp;
+          return `
+            <article class="shop-option ${selected ? 'selected-magic-tier' : ''}">
+              <h3>${tier === 0 ? '关闭附刃' : `${tier} 档附刃`}</h3>
+              <p>${tier === 0 ? '不消耗 MP，以基础攻击结算。' : `本战支付 ${cost} MP · 每次攻击额外 +${cost} 伤害。`}</p>
+              <button data-magic-tier="${tier}" ${affordable ? '' : 'disabled'}>${selected ? '当前选择' : affordable ? '设为此档' : 'MP 不足'}</button>
+            </article>`;
+        }).join('')}
+      </div>
+    `,
+    actions: [{ label: '返回游戏' }],
+    afterOpen: () => {
+      elements.modalBody.querySelectorAll('[data-magic-tier]').forEach((button) => {
+        button.addEventListener('click', () => {
+          const result = setMagicTier(state, Number(button.dataset.magicTier));
+          if (!result.ok) {
+            showToast(result.reason);
+            return;
+          }
+          updateHud();
+          autoSave();
+          showMagicBlade();
+        });
+      });
+    }
   });
 }
 
@@ -294,14 +353,14 @@ function showCodex() {
     title: '敌人图鉴与当前损伤',
     body: `
       <div class="codex-grid">
-        ${entries.map(({ enemy, winnable, totalDamage, heroDamage }) => `
+        ${entries.map(({ enemy, winnable, totalDamage, heroDamage, magicTier, magicCost, magicBonusPerHit }) => `
           <article class="codex-entry">
             <img src="${portraitUrl(enemy.portrait)}" alt="${escapeHtml(enemy.name)}" />
             <div>
               <h3>${escapeHtml(enemy.name)}</h3>
               <p>HP ${formatNumber(enemy.hp)} · ATK ${formatNumber(enemy.atk)} · DEF ${formatNumber(enemy.def)} · 金币 ${enemy.gold}</p>
               <p>${escapeHtml(specialLabel(enemy))}</p>
-              <p class="loss">${heroDamage <= 0 ? '当前无法破防' : `预计损伤 ${formatNumber(totalDamage)} · ${winnable ? '可胜' : '会战败'}`}</p>
+              <p class="loss">${heroDamage <= 0 ? '当前无法破防' : `预计损伤 ${formatNumber(totalDamage)} · ${winnable ? '可胜' : '会战败'}`}${magicTier > 0 ? ` · 附刃 ${magicTier} 档：每击 +${magicBonusPerHit}，本战 -${magicCost} MP` : ''}</p>
             </div>
           </article>
         `).join('')}
@@ -452,6 +511,8 @@ function bindControls() {
   $('#btn-reset').addEventListener('click', confirmReset);
   elements.codexButton.addEventListener('click', showCodex);
   elements.teleportButton.addEventListener('click', showTeleport);
+  elements.magicButton.addEventListener('click', showMagicBlade);
+  elements.magicTierButton.addEventListener('click', showMagicBlade);
   elements.modalClose.addEventListener('click', closeModal);
   elements.modalRoot.querySelector('.modal-backdrop').addEventListener('click', closeModal);
 
@@ -466,6 +527,7 @@ function bindControls() {
     if (!elements.modalRoot.classList.contains('hidden')) return;
     if (event.key.toLowerCase() === 'e') showCodex();
     if (event.key.toLowerCase() === 't') showTeleport();
+    if (event.key.toLowerCase() === 'm') showMagicBlade();
   });
 }
 

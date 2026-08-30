@@ -166,7 +166,7 @@ function compactFrontierKey(baseAdapter, state) {
   const events = compact.eventStates.map((code) => Number(code).toString(36)).join('.');
   const floorMeta = compact.floorMeta.map((meta) => {
     const switches = [...meta.switches].sort().join(',');
-    return `${switches}/${meta.sequenceProgress}/${meta.bossDefeated ? 1 : 0}`;
+    return `${switches}/${meta.sequenceProgress}/${meta.bossDefeated ? 1 : 0}/${meta.defeatedBossMask ?? '0'}`;
   }).join('|');
 
   return [

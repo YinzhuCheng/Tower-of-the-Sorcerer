@@ -8,15 +8,17 @@ import {
   getFloorState,
   getTile,
   parseToken,
+  setMagicTier,
   teleportToFloor,
   tryMove
 } from '../game/engine.js';
 import { automaticItemRank, isSafeAutomaticItem } from './normalization-policy.js';
 import { hashValue, stableStringify } from './state.js';
 import { createTowerStateCodec } from './tower-codec.js';
+import { getMagicTierCapacity, getMagicTierCost } from '../game/magic-blade.js';
 
 const DIR_LIST = Object.entries(DIRECTIONS).map(([name, vector]) => ({ name, ...vector }));
-const RESOURCE_FIELDS = ['hp', 'maxHp', 'atk', 'def', 'gold', 'sun', 'moon', 'star'];
+const RESOURCE_FIELDS = ['hp', 'maxHp', 'atk', 'def', 'gold', 'mp', 'maxMp', 'sun', 'moon', 'star'];
 const BASE_ENGINE_STATE = createEngineInitialState();
 const CODEC = createTowerStateCodec({ baseState: BASE_ENGINE_STATE, floors: FLOORS, enemies: ENEMIES });
 const RELIC_KEYS = Object.keys(BASE_ENGINE_STATE.relics).sort();
@@ -116,6 +118,8 @@ function stateResources(state) {
     atk: state.stats.atk,
     def: state.stats.def,
     gold: state.stats.gold,
+    mp: state.magic?.mp ?? 0,
+    maxMp: state.magic?.maxMp ?? 0,
     sun: state.cards.sun,
     moon: state.cards.moon,
     star: state.cards.star
@@ -128,6 +132,7 @@ function summarizeState(state) {
     position: [state.x, state.y],
     stats: { ...state.stats },
     cards: { ...state.cards },
+    magic: { ...state.magic },
     relics: { ...state.relics },
     cores: state.cores,
     shopPurchases: state.shopPurchases,
@@ -150,12 +155,16 @@ function structuralKeyObject(state) {
     floor: compact.floor,
     component: compact.componentAnchor,
     events: CODEC.changedEventSignature(compact),
-    floorMeta: compact.floorMeta.map((meta) => ({
-      switches: meta.switches,
-      sequenceProgress: meta.sequenceProgress,
-      bossDefeated: meta.bossDefeated
-    })),
+    // This sits on every frontier label. A positional tuple preserves all
+    // world axes exactly while avoiding repeated JSON property names.
+    floorMeta: compact.floorMeta.map((meta) => [
+      meta.switches,
+      meta.sequenceProgress,
+      meta.bossDefeated ? 1 : 0,
+      meta.defeatedBossMask ?? '0'
+    ]),
     relicMask: bitMask(RELIC_KEYS, (key) => compact.relics[key]),
+    magicUnlocked: Boolean(compact.magic?.unlocked),
     shopPurchases: compact.shopPurchases,
     visitedMask: bitMask(FLOORS.map((_, index) => index), (index) => compact.visitedFloors.includes(index)),
     victory: compact.victory
@@ -190,7 +199,9 @@ function compactEngineResult(result) {
       rounds: result.battle.rounds,
       counterAttacks: result.battle.counterAttacks,
       totalDamage: result.battle.totalDamage,
-      remainingHp: result.battle.remainingHp
+      remainingHp: result.battle.remainingHp,
+      magicTier: result.battle.magicTier ?? 0,
+      magicCost: result.battle.magicCost ?? 0
     } : null
   };
 }
@@ -207,7 +218,7 @@ function makeStep({ stateBefore, stateAfter, action, result = null, automatic = 
       ? { optionId: action.optionId }
       : action.kind === 'teleport'
         ? { targetFloor: action.targetFloor }
-        : { token: action.token },
+        : { token: action.token, magicTier: action.magicTier ?? 0 },
     resourcesBefore: stateResources(stateBefore),
     resourcesAfter: stateResources(stateAfter),
     structuralBefore: structuralHash(stateBefore),
@@ -259,7 +270,23 @@ function enumerateTileActionsEngine(state) {
       }
       if (parsed.type === 'enemy') {
         const enemy = ENEMIES[parsed.id];
-        if (!enemy || !calculateBattle(state.stats, enemy, state.relics).winnable) continue;
+        if (!enemy) continue;
+        const tiers = enumerateUsefulMagicTiers(state, enemy);
+        for (const magicTier of tiers) {
+          const battle = calculateBattle(state.stats, enemy, state.relics, { ...state.magic, tier: magicTier });
+          if (!battle.winnable) continue;
+          actions.push({
+            kind: 'tile',
+            eventId: `${eventIdForTile(state, x, y, token)}:m${magicTier}`,
+            x,
+            y,
+            token,
+            parsed,
+            path,
+            magicTier
+          });
+        }
+        continue;
       }
 
       actions.push({
@@ -274,6 +301,28 @@ function enumerateTileActionsEngine(state) {
     }
   }
   return actions;
+}
+
+/**
+ * A selected tier is a free pre-battle action.  For one enemy, any higher
+ * tier producing the same number of hero hits costs more MP with no benefit,
+ * so only the least tier at every newly reduced round count is generated.
+ * This keeps a max-MP increase from multiplying the search tree linearly.
+ */
+export function enumerateUsefulMagicTiers(state, enemy) {
+  const magic = state?.magic;
+  if (!magic?.unlocked) return [0];
+  const maximumTier = Math.min(getMagicTierCapacity(magic), Math.floor((magic.mp ?? 0) / getMagicTierCost(1)));
+  const tiers = [];
+  const roundsSeen = new Set();
+  for (let tier = 0; tier <= maximumTier; tier += 1) {
+    const battle = calculateBattle(state.stats, enemy, state.relics, { ...magic, tier });
+    if (battle.heroDamage <= 0 || !battle.magicAffordable) continue;
+    if (roundsSeen.has(battle.rounds)) continue;
+    roundsSeen.add(battle.rounds);
+    tiers.push(tier);
+  }
+  return tiers;
 }
 
 function buildSequenceActionEngine(state) {
@@ -358,6 +407,13 @@ function applyTileActionEngine(state, action, automatic = false) {
   const dy = action.y - state.y;
   if (Math.abs(dx) + Math.abs(dy) !== 1) {
     return { ok: false, reason: 'Action target is no longer adjacent.', state };
+  }
+  // Tier zero is also emitted for pre-awakening battles so one action format
+  // can replay the whole campaign.  A dormant state does not need (and must
+  // not be asked) to select a magic tier.
+  if (action.magicTier != null && (state.magic?.unlocked || action.magicTier > 0)) {
+    const tierResult = setMagicTier(state, action.magicTier);
+    if (!tierResult.ok) return { ok: false, reason: tierResult.reason, state };
   }
   const result = tryMove(state, dx, dy);
   if (result.blocked) return { ok: false, reason: result.reason, state };
@@ -475,7 +531,9 @@ function priority(state) {
     + state.floor * 1e10
     + state.stats.atk * 1e6
     + state.stats.def * 1e4
-    + Math.min(state.stats.hp, 9999);
+    + Math.min(state.stats.hp, 9999)
+    + (state.magic?.mp ?? 0) * 10
+    + (state.magic?.maxMp ?? 0);
 }
 
 function actionClass(action) {

@@ -10,6 +10,7 @@ import {
   deserializeState,
   getTile,
   serializeState,
+  setMagicTier,
   setTile,
   tryMove
 } from '../src/game/engine.js';
@@ -52,6 +53,49 @@ test('magic damage ignores defense and ward reduces each hit by 20 percent', () 
   assert.equal(withoutWard.totalDamage, 38);
   assert.equal(withWard.enemyDamage, 16);
   assert.equal(withWard.totalDamage, 32);
+});
+
+test('player magic blade pays once, improves every hero hit, and never breaks physical immunity', () => {
+  const stats = { hp: 100, atk: 20, def: 10 };
+  const enemy = { hp: 35, atk: 16, def: 10 };
+  const mundane = calculateBattle(stats, enemy);
+  const empowered = calculateBattle(stats, enemy, {}, { unlocked: true, mp: 100, maxMp: 100, tier: 2 });
+  assert.equal(mundane.rounds, 4);
+  assert.equal(empowered.heroDamage, 30);
+  assert.equal(empowered.rounds, 2);
+  assert.equal(empowered.magicCost, 20);
+  assert.equal(empowered.totalDamage, 6, 'MP is paid once; it is not added to enemy damage every round');
+
+  const sealed = calculateBattle(
+    { hp: 100, atk: 10, def: 0 },
+    { hp: 20, atk: 10, def: 10 },
+    {},
+    { unlocked: true, mp: 100, maxMp: 100, tier: 10 }
+  );
+  assert.equal(sealed.winnable, false);
+  assert.equal(sealed.reason, '攻击不足，无法破防');
+});
+
+test('selected magic tier is spent only after a legal battle and becomes an explicit save field', () => {
+  const state = createInitialState();
+  state.magic = { unlocked: true, mp: 100, maxMp: 100, tier: 0 };
+  const selection = setMagicTier(state, 2);
+  assert.equal(selection.ok, true);
+  setTile(state, state.x + 1, state.y, 'enemy:catScout');
+  const beforeMp = state.magic.mp;
+  const result = tryMove(state, 1, 0);
+  assert.equal(result.moved, true);
+  assert.equal(result.battle.magicCost, 20);
+  assert.equal(state.magic.mp, beforeMp - 20);
+  assert.deepEqual(deserializeState(serializeState(state)).magic, state.magic);
+});
+
+test('v1 saves receive a dormant magic field without changing their map contract', () => {
+  const state = createInitialState();
+  const legacy = { ...state, version: 1 };
+  delete legacy.magic;
+  const restored = deserializeState(JSON.stringify(legacy));
+  assert.deepEqual(restored.magic, { unlocked: false, mp: 0, maxMp: 0, tier: 0 });
 });
 
 test('battle is blocked when attack cannot pierce defense or damage is exactly lethal', () => {

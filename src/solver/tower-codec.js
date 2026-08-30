@@ -97,6 +97,45 @@ export function createTowerStateCodec({ baseState, floors, enemies }) {
   const initialEventStates = slots.map((slot) => registerToken(slot.initialToken));
   const baseMaps = baseState.floorStates.map((floorState) => cloneMap(floorState.map));
   const baseStart = { ...baseState.start };
+  const bossIdsByFloor = baseState.floorStates.map((_, floorIndex) => {
+    const floorNumber = floors[floorIndex]?.number ?? floorIndex + 1;
+    const ids = Object.entries(enemies)
+      .filter(([, enemy]) => enemy?.boss && enemy.floor === floorNumber)
+      .map(([id]) => id);
+    for (const slot of slots) {
+      if (slot.floor !== floorIndex || slot.type !== 'enemy') continue;
+      if (enemies[slot.semanticId]?.boss) ids.push(slot.semanticId);
+    }
+    return [...new Set(ids)].sort();
+  });
+  const bossIndexByFloor = bossIdsByFloor.map((ids) => new Map(ids.map((id, index) => [id, index])));
+
+  function encodeDefeatedBossMask(floorIndex, ids = []) {
+    let mask = 0n;
+    for (const id of ids) {
+      const index = bossIndexByFloor[floorIndex]?.get(id);
+      if (index == null) {
+        throw new Error(`Tower codec cannot encode unknown boss progress '${id}' on floor ${floorIndex + 1}.`);
+      }
+      mask |= 1n << BigInt(index);
+    }
+    return mask.toString(36);
+  }
+
+  function decodeDefeatedBossMask(floorIndex, encoded = '0') {
+    let mask = 0n;
+    for (const character of String(encoded).toLowerCase()) {
+      const digit = '0123456789abcdefghijklmnopqrstuvwxyz'.indexOf(character);
+      if (digit < 0) throw new Error(`Tower codec encountered invalid boss-progress mask '${encoded}'.`);
+      mask = mask * 36n + BigInt(digit);
+    }
+    const ids = [];
+    for (let index = 0; mask > 0n; index += 1) {
+      if ((mask & 1n) === 1n && bossIdsByFloor[floorIndex]?.[index]) ids.push(bossIdsByFloor[floorIndex][index]);
+      mask >>= 1n;
+    }
+    return ids;
+  }
 
   function encodeToken(token) {
     const code = tokenToCode.get(token);
@@ -120,14 +159,19 @@ export function createTowerStateCodec({ baseState, floors, enemies }) {
       start: { ...engineState.start },
       stats: { ...engineState.stats },
       cards: { ...engineState.cards },
+      magic: { ...engineState.magic },
       relics: { ...engineState.relics },
       cores: engineState.cores,
       shopPurchases: engineState.shopPurchases,
       eventStates,
-      floorMeta: engineState.floorStates.map((floorState) => ({
+      floorMeta: engineState.floorStates.map((floorState, floorIndex) => ({
         switches: [...floorState.switches].sort(),
         sequenceProgress: floorState.sequenceProgress,
-        bossDefeated: floorState.bossDefeated
+        bossDefeated: floorState.bossDefeated,
+        // A boolean is insufficient for a multi-guardian exit: each defeated
+        // ID changes the future gate state. Losing this list made a compact
+        // solver state forget partial boss progress after materialization.
+        defeatedBossMask: encodeDefeatedBossMask(floorIndex, floorState.defeatedBossIds ?? [])
       })),
       visitedFloors: [...engineState.visitedFloors].sort((a, b) => a - b),
       victory: Boolean(engineState.victory),
@@ -146,12 +190,14 @@ export function createTowerStateCodec({ baseState, floors, enemies }) {
       start: { ...compactState.start },
       stats: { ...compactState.stats },
       cards: { ...compactState.cards },
+      magic: { ...compactState.magic },
       relics: { ...compactState.relics },
       eventStates: [...compactState.eventStates],
       floorMeta: compactState.floorMeta.map((meta) => ({
         switches: [...meta.switches],
         sequenceProgress: meta.sequenceProgress,
-        bossDefeated: meta.bossDefeated
+        bossDefeated: meta.bossDefeated,
+        defeatedBossMask: meta.defeatedBossMask ?? '0'
       })),
       visitedFloors: [...compactState.visitedFloors]
     };
@@ -163,7 +209,8 @@ export function createTowerStateCodec({ baseState, floors, enemies }) {
       map: cloneMap(map),
       switches: [...state.floorMeta[floorIndex].switches],
       sequenceProgress: state.floorMeta[floorIndex].sequenceProgress,
-      bossDefeated: state.floorMeta[floorIndex].bossDefeated
+      bossDefeated: state.floorMeta[floorIndex].bossDefeated,
+      defeatedBossIds: decodeDefeatedBossMask(floorIndex, state.floorMeta[floorIndex].defeatedBossMask)
     }));
     for (const slot of slots) {
       floorStates[slot.floor].map[slot.y][slot.x] = codeToToken[state.eventStates[slot.index]];
@@ -176,6 +223,7 @@ export function createTowerStateCodec({ baseState, floors, enemies }) {
       start: { ...state.start },
       stats: { ...state.stats },
       cards: { ...state.cards },
+      magic: { ...state.magic },
       relics: { ...state.relics },
       relicNames: [],
       cores: state.cores,
