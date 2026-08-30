@@ -35,11 +35,12 @@ const catalog = createDemoTwentyFloorMutationCatalog(dependencies);
 test('Act II mutation profile exposes numbers and MP effects but never map or placement edits', () => {
   assert.equal(DEMO20_SOLVER_TUNING_PROFILE.productionWriteAllowed, false);
   assert.ok(catalog.length > 30);
-  assert.ok(catalog.every((entry) => ['enemy-scale', 'enemy-delta', 'enemy-profile', 'relic-delta', 'shop-delta'].includes(entry.kind)));
+  assert.ok(catalog.every((entry) => ['enemy-scale', 'enemy-delta', 'enemy-profile', 'relic-delta', 'shop-delta', 'council-scale'].includes(entry.kind)));
   assert.ok(catalog.every((entry) => !('x' in entry) && !('y' in entry) && !('map' in entry)));
   assert.ok(catalog.some((entry) => entry.id === 'f11to13-hp-harden6'));
   assert.ok(catalog.some((entry) => entry.id === 'f15-maxMp-maxMp-boost10'));
   assert.ok(catalog.some((entry) => entry.id === 'f14-guardians-feasibility-soften'));
+  assert.ok(catalog.some((entry) => entry.id === 'council-loyalists-harden10'));
 });
 
 test('numeric hardening is reversible and preserves all topology/key-unit locks', () => {

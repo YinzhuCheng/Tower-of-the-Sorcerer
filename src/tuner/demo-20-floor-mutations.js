@@ -1,6 +1,7 @@
 import { ENEMIES, ITEMS, SHOP_OPTIONS } from '../game/data.js';
 import { ACT2_UNIT_CATALOG } from '../game/demo-20-floor-progression-topology.js';
 import { DEMO20_MAGIC_RELIC_EFFECTS, DEMO20_NUMERIC_BASELINE } from '../game/demo-20-floor-content.js';
+import { WAR_COUNCIL_TUNING } from '../game/war-council.js';
 import {
   assertDemoTwentyFloorSolverLocks,
   DEMO20_SOLVER_TUNING_PROFILE,
@@ -25,6 +26,10 @@ function touchRelic(id, field) {
 
 function touchShop(id, field) {
   return `shop:${id}.${field}`;
+}
+
+function touchCouncil(field) {
+  return `council:${field}`;
 }
 
 function unique(values) {
@@ -116,6 +121,19 @@ export function createDemoTwentyFloorMutationCatalog({ enemies = ENEMIES, items 
       }
     }
   }
+  // The final pre-Boss council is a fixed-numeric puzzle in its own right.
+  // Keep its tuning surface narrow and reversible; maps, roster identities,
+  // enemy order and published enemy MP allocations remain immutable.
+  for (const value of [WAR_COUNCIL_TUNING.loyalistScale - 0.01, WAR_COUNCIL_TUNING.loyalistScale + 0.01]) {
+    const rounded = Number(value.toFixed(3));
+    catalog.push(mutation(
+      `council-loyalists-${rounded < WAR_COUNCIL_TUNING.loyalistScale ? 'soften' : 'harden'}10`,
+      'council-loyalists',
+      'council-scale',
+      { value: rounded },
+      [touchCouncil('loyalistScale')]
+    ));
+  }
   return Object.freeze(catalog);
 }
 
@@ -141,7 +159,7 @@ export function expandDemoTwentyFloorCandidate(candidate = {}, catalog = [], { m
     .map((entry) => ({ mutationIds: [...selectedIds, entry.id].sort() }));
 }
 
-function applyMutation(entry, undo, { enemies, items, shopOptions }) {
+function applyMutation(entry, undo, { enemies, items, shopOptions, councilTuning = WAR_COUNCIL_TUNING }) {
   if (entry.kind === 'enemy-scale') {
     for (const enemyId of entry.enemyIds) {
       const enemy = enemies[enemyId];
@@ -190,13 +208,19 @@ function applyMutation(entry, undo, { enemies, items, shopOptions }) {
     option.effect[entry.field] = Math.max(0, before + entry.delta);
     return;
   }
+  if (entry.kind === 'council-scale') {
+    const before = councilTuning.loyalistScale;
+    undo.push(() => { councilTuning.loyalistScale = before; });
+    councilTuning.loyalistScale = entry.value;
+    return;
+  }
   throw new Error(`Unknown Act II mutation kind: ${entry.kind}`);
 }
 
 /** Apply one numeric-only candidate and always restore it before returning. */
 export function withDemoTwentyFloorCandidate(candidate, catalog, evaluate, dependencies = {}) {
   if (typeof evaluate !== 'function') throw new Error('20F candidate evaluation callback is required.');
-  const source = { enemies: ENEMIES, items: ITEMS, shopOptions: SHOP_OPTIONS, ...dependencies };
+  const source = { enemies: ENEMIES, items: ITEMS, shopOptions: SHOP_OPTIONS, councilTuning: WAR_COUNCIL_TUNING, ...dependencies };
   const byId = new Map(catalog.map((entry) => [entry.id, entry]));
   const selected = [...(candidate?.mutationIds ?? [])].map((id) => {
     const entry = byId.get(id);

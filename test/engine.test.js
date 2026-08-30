@@ -98,6 +98,14 @@ test('v1 saves receive a dormant magic field without changing their map contract
   assert.deepEqual(restored.magic, { unlocked: false, mp: 0, maxMp: 0, tier: 0 });
 });
 
+test('v2 saves receive an untouched war-council state', () => {
+  const state = createInitialState();
+  const legacy = { ...state, version: 2 };
+  delete legacy.council;
+  const restored = deserializeState(JSON.stringify(legacy));
+  assert.deepEqual(restored.council, { completed: false, plan: null, outcome: null });
+});
+
 test('battle is blocked when attack cannot pierce defense or damage is exactly lethal', () => {
   const noPierce = calculateBattle({ hp: 100, atk: 10, def: 10 }, { hp: 20, atk: 10, def: 10 });
   assert.equal(noPierce.winnable, false);

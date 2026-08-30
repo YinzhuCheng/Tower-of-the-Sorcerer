@@ -406,6 +406,31 @@ class AnimeCanvasTowerScene {
       this.drawTileIcon(TILE_INDEX.shop, x, y, 0.9);
       return;
     }
+    if (token === 'council') {
+      const cx = this.center(x);
+      const cy = this.center(y);
+      this.drawSoftShadow(cx, cy + TILE_SIZE * 0.27, TILE_SIZE * 0.5, 0.24);
+      this.ctx.save();
+      this.ctx.strokeStyle = '#e8d7ff';
+      this.ctx.lineWidth = 2.5;
+      this.ctx.shadowColor = '#ba8dff';
+      this.ctx.shadowBlur = 12;
+      this.ctx.beginPath();
+      this.ctx.arc(cx, cy, TILE_SIZE * 0.31, 0, Math.PI * 2);
+      this.ctx.stroke();
+      this.ctx.fillStyle = 'rgba(38,20,62,.84)';
+      this.ctx.beginPath();
+      this.ctx.arc(cx, cy, TILE_SIZE * 0.2, 0, Math.PI * 2);
+      this.ctx.fill();
+      this.ctx.shadowBlur = 0;
+      this.ctx.fillStyle = '#ffffff';
+      this.ctx.font = '700 15px system-ui';
+      this.ctx.textAlign = 'center';
+      this.ctx.textBaseline = 'middle';
+      this.ctx.fillText('盟', cx, cy + 1);
+      this.ctx.restore();
+      return;
+    }
 
     const parsed = parseToken(token);
     if (parsed.type === 'enemy') {

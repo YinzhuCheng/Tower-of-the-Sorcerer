@@ -28,6 +28,12 @@ import {
   normalizeMagicState,
   setMagicTier as setMagicTierState
 } from './magic-blade.js';
+import {
+  applyWarCouncilFinaleModifier,
+  createWarCouncilState,
+  normalizeWarCouncilState,
+  simulateWarCouncil
+} from './war-council.js';
 
 export const DIRECTIONS = {
   up: { dx: 0, dy: -1 },
@@ -80,6 +86,7 @@ export function createInitialState() {
     },
     cards: { sun: 0, moon: 0, star: 0 },
     magic: createDormantMagicState(),
+    council: createWarCouncilState(),
     relics: {
       codex: initialRelics.has('codex'),
       compass: initialRelics.has('compass'),
@@ -109,7 +116,7 @@ export function validateStateShape(state) {
   if (!state || state.version !== GAME_VERSION) return false;
   if (!Number.isInteger(state.floor) || state.floor < 0 || state.floor >= FLOORS.length) return false;
   if (!Array.isArray(state.floorStates) || state.floorStates.length !== FLOORS.length) return false;
-  if (!state.stats || !state.cards || !state.relics || !state.magic) return false;
+  if (!state.stats || !state.cards || !state.relics || !state.magic || !state.council) return false;
   if (!Number.isFinite(state.magic.mp) || !Number.isFinite(state.magic.maxMp)) return false;
   return true;
 }
@@ -125,22 +132,23 @@ export function deserializeState(serialized) {
 }
 
 /**
- * V1 saves predate player magic. Their map shape is still checked against the
- * active content after this narrow, deterministic data migration. A later
- * 10F→20F content migration can extend this function without weakening the
- * validation contract.
+ * V1 saves predate player magic; V2 predates the deterministic F20 council.
+ * Their map shape is still checked against the active content after this
+ * narrow, deterministic data migration.
  */
 export function migrateState(state) {
   if (!state || typeof state !== 'object') return state;
   if (state.version === GAME_VERSION) {
     state.magic = normalizeMagicState(state.magic);
+    state.council = normalizeWarCouncilState(state.council);
     return state;
   }
-  if (state.version === 1) {
+  if (state.version === 1 || state.version === 2) {
     return {
       ...state,
       version: GAME_VERSION,
-      magic: createDormantMagicState()
+      magic: state.version === 1 ? createDormantMagicState() : normalizeMagicState(state.magic),
+      council: createWarCouncilState()
     };
   }
   return state;
@@ -157,6 +165,58 @@ export function getTile(state, x, y, floorId = state.floor) {
 
 export function setTile(state, x, y, token, floorId = state.floor) {
   getFloorState(state, floorId).map[y][x] = token;
+}
+
+function clearCouncilTiles(state) {
+  let cleared = 0;
+  for (const floorState of state.floorStates) {
+    for (let y = 0; y < floorState.map.length; y += 1) {
+      for (let x = 0; x < floorState.map[y].length; x += 1) {
+        if (floorState.map[y][x] === 'council') {
+          floorState.map[y][x] = '.';
+          cleared += 1;
+        }
+      }
+    }
+  }
+  return cleared;
+}
+
+/** The council only affects the two authored F20 final phases. */
+export function getEffectiveEnemy(state, enemyId) {
+  const enemy = ENEMIES[enemyId];
+  if (!enemy) return null;
+  const isFinalePhase = FLOORS[state?.floor]?.number === 20
+    && (enemyId === 'arcaneSovereign' || enemyId === 'originCore');
+  return isFinalePhase ? applyWarCouncilFinaleModifier(enemy, state?.council) : enemy;
+}
+
+/** Resolve a previously previewed plan through the authoritative state. */
+export function resolveWarCouncil(state, plan) {
+  const isAtCouncil = FLOORS[state?.floor]?.number === 20
+    && Object.values(DIRECTIONS).some(({ dx, dy }) => getTile(state, state.x + dx, state.y + dy) === 'council');
+  if (!isAtCouncil) {
+    return { ok: false, reason: '只能在 F20 王座前的共鸣标记旁启动会战。' };
+  }
+  const report = simulateWarCouncil(state, plan);
+  if (!report.ok) return report;
+  if (!report.won) {
+    return { ok: false, reason: '这套出战顺序无法击破全部忠诚随从；请重新分配共鸣 MP。', report };
+  }
+  state.council = {
+    completed: true,
+    plan: { order: [...report.plan.order], allocations: { ...report.plan.allocations } },
+    outcome: {
+      survivors: report.survivors.map((unit) => ({ id: unit.id, name: unit.name, hp: unit.hp, maxHp: unit.maxHp })),
+      modifiers: { ...report.modifiers, labels: [...report.modifiers.labels] },
+      remainingAllyHp: report.remainingAllyHp,
+      score: report.score
+    }
+  };
+  const cleared = clearCouncilTiles(state);
+  addLog(state, `共鸣会战获胜：${report.survivors.map((unit) => unit.name).join('、')}仍可支援最终战。`);
+  for (const label of report.modifiers.labels) addLog(state, label);
+  return { ok: true, report, cleared };
 }
 
 export function parseToken(token) {
@@ -430,6 +490,15 @@ export function tryMove(state, dx, dy) {
     return result;
   }
 
+  if (token === 'council') {
+    result.openCouncil = true;
+    result.councilReady = true;
+    result.dialogue = state.storySeen.includes('warCouncil') ? null : 'warCouncil';
+    if (result.dialogue) state.storySeen.push(result.dialogue);
+    result.reason = '王座前的共鸣会战需要先完成出战与 MP 分配。';
+    return result;
+  }
+
   if (token === 'U') {
     if (state.floor >= FLOORS.length - 1) {
       result.blocked = true;
@@ -557,7 +626,7 @@ export function tryMove(state, dx, dy) {
   }
 
   if (parsed.type === 'enemy') {
-    const enemy = ENEMIES[parsed.id];
+    const enemy = getEffectiveEnemy(state, parsed.id);
     if (!enemy) throw new Error(`Unknown enemy: ${parsed.id}`);
     markSeenEnemy(state, parsed.id);
     const battle = calculateBattle(state.stats, enemy, state.relics, state.magic);
@@ -714,7 +783,7 @@ export function getAdjacentEnemyPreviews(state) {
     const y = state.y + dy;
     const parsed = parseToken(getTile(state, x, y));
     if (parsed.type !== 'enemy') continue;
-    const enemy = ENEMIES[parsed.id];
+    const enemy = getEffectiveEnemy(state, parsed.id);
     markSeenEnemy(state, parsed.id);
     previews.push({ enemyId: parsed.id, enemy, x, y, ...calculateBattle(state.stats, enemy, state.relics, state.magic) });
   }
@@ -727,7 +796,10 @@ export function getCodexEntries(state) {
     const enemy = ENEMIES[id];
     return state.seenEnemies.includes(id) || enemy.floor <= currentFloor;
   });
-  return ids.map((enemyId) => ({ enemyId, enemy: ENEMIES[enemyId], ...calculateBattle(state.stats, ENEMIES[enemyId], state.relics, state.magic) }));
+  return ids.map((enemyId) => {
+    const enemy = getEffectiveEnemy(state, enemyId) ?? ENEMIES[enemyId];
+    return { enemyId, enemy, ...calculateBattle(state.stats, enemy, state.relics, state.magic) };
+  });
 }
 
 export function getRelicLabels(state) {

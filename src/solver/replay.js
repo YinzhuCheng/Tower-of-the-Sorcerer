@@ -1,4 +1,4 @@
-import { buyShopUpgrade, createInitialState, DIRECTIONS, setMagicTier, teleportToFloor, tryMove } from '../game/engine.js';
+import { buyShopUpgrade, createInitialState, DIRECTIONS, getTile, resolveWarCouncil, setMagicTier, teleportToFloor, tryMove } from '../game/engine.js';
 import { hashValue } from './state.js';
 import { createTowerAdapter } from './tower-adapter.js';
 
@@ -92,6 +92,16 @@ function applyCertificateSteps(state, certificate, { battleLog = null } = {}) {
 
       if (step.kind === 'shop') {
         const result = buyShopUpgrade(state, step.action.optionId);
+        if (!result.ok) failures.push({ index, eventId: step.eventId, reason: result.reason });
+      } else if (step.kind === 'council') {
+        const [x, y] = step.location ?? [];
+        const dx = x - state.x;
+        const dy = y - state.y;
+        if (Math.abs(dx) + Math.abs(dy) !== 1 || getTile(state, x, y) !== 'council') {
+          failures.push({ index, eventId: step.eventId, reason: 'Council event is not adjacent after replay path.' });
+          break;
+        }
+        const result = resolveWarCouncil(state, step.action);
         if (!result.ok) failures.push({ index, eventId: step.eventId, reason: result.reason });
       } else {
         const [x, y] = step.location;

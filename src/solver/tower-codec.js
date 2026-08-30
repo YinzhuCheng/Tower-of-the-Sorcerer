@@ -1,4 +1,4 @@
-const DYNAMIC_TYPES = new Set(['item', 'door', 'switch', 'gate', 'enemy']);
+const DYNAMIC_TYPES = new Set(['item', 'door', 'switch', 'gate', 'enemy', 'council']);
 // A defeated transition guardian can reveal an up stair in the same slot that
 // originally held its enemy token (F10's void core is the first example).
 // The slot itself is still discovered from that original enemy, but its later
@@ -166,6 +166,11 @@ export function createTowerStateCodec({ baseState, floors, enemies }) {
       stats: { ...engineState.stats },
       cards: { ...engineState.cards },
       magic: { ...engineState.magic },
+      council: {
+        completed: Boolean(engineState.council?.completed),
+        plan: engineState.council?.plan ? JSON.parse(JSON.stringify(engineState.council.plan)) : null,
+        outcome: engineState.council?.outcome ? JSON.parse(JSON.stringify(engineState.council.outcome)) : null
+      },
       relics: { ...engineState.relics },
       cores: engineState.cores,
       shopPurchases: engineState.shopPurchases,
@@ -197,6 +202,11 @@ export function createTowerStateCodec({ baseState, floors, enemies }) {
       stats: { ...compactState.stats },
       cards: { ...compactState.cards },
       magic: { ...compactState.magic },
+      council: {
+        completed: Boolean(compactState.council?.completed),
+        plan: compactState.council?.plan ? JSON.parse(JSON.stringify(compactState.council.plan)) : null,
+        outcome: compactState.council?.outcome ? JSON.parse(JSON.stringify(compactState.council.outcome)) : null
+      },
       relics: { ...compactState.relics },
       eventStates: [...compactState.eventStates],
       floorMeta: compactState.floorMeta.map((meta) => ({
@@ -230,6 +240,11 @@ export function createTowerStateCodec({ baseState, floors, enemies }) {
       stats: { ...state.stats },
       cards: { ...state.cards },
       magic: { ...state.magic },
+      council: {
+        completed: Boolean(state.council?.completed),
+        plan: state.council?.plan ? JSON.parse(JSON.stringify(state.council.plan)) : null,
+        outcome: state.council?.outcome ? JSON.parse(JSON.stringify(state.council.outcome)) : null
+      },
       relics: { ...state.relics },
       relicNames: [],
       cores: state.cores,

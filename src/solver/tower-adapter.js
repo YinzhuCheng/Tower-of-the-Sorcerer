@@ -5,14 +5,17 @@ import {
   calculateBattle,
   cloneState as cloneEngineState,
   createInitialState as createEngineInitialState,
+  getEffectiveEnemy,
   getFloorState,
   getShopOptions,
   getTile,
   parseToken,
+  resolveWarCouncil,
   setMagicTier,
   teleportToFloor,
   tryMove
 } from '../game/engine.js';
+import { enumerateWarCouncilPlans } from '../game/war-council.js';
 import { automaticItemRank, isSafeAutomaticItem } from './normalization-policy.js';
 import { hashValue, stableStringify } from './state.js';
 import { createTowerStateCodec } from './tower-codec.js';
@@ -140,6 +143,11 @@ function summarizeState(state) {
     stats: { ...state.stats },
     cards: { ...state.cards },
     magic: { ...state.magic },
+    council: state.council?.completed ? {
+      completed: true,
+      modifiers: { ...(state.council.outcome?.modifiers ?? {}) },
+      survivors: (state.council.outcome?.survivors ?? []).map((unit) => unit.id).sort()
+    } : { completed: false },
     relics: { ...state.relics },
     cores: state.cores,
     shopPurchases: state.shopPurchases,
@@ -172,6 +180,10 @@ function structuralKeyObject(state) {
     ]),
     relicMask: bitMask(RELIC_KEYS, (key) => compact.relics[key]),
     magicUnlocked: Boolean(compact.magic?.unlocked),
+    council: compact.council?.completed ? {
+      modifiers: compact.council.outcome?.modifiers ?? {},
+      survivors: (compact.council.outcome?.survivors ?? []).map((unit) => unit.id).sort()
+    } : null,
     shopPurchases: compact.shopPurchases,
     visitedMask: bitMask(FLOORS.map((_, index) => index), (index) => compact.visitedFloors.includes(index)),
     victory: compact.victory
@@ -225,6 +237,8 @@ function makeStep({ stateBefore, stateAfter, action, result = null, automatic = 
       ? { optionId: action.optionId }
       : action.kind === 'teleport'
         ? { targetFloor: action.targetFloor }
+        : action.kind === 'council'
+          ? { order: [...action.plan.order], allocations: { ...action.plan.allocations } }
         : { token: action.token, magicTier: action.magicTier ?? 0 },
     resourcesBefore: stateResources(stateBefore),
     resourcesAfter: stateResources(stateAfter),
@@ -262,6 +276,7 @@ function enumerateTileActionsEngine(state) {
     for (let x = 0; x < map[y].length; x += 1) {
       const token = map[y][x];
       if (token === '#' || transitToken(token)) continue;
+      if (token === 'council') continue;
       const parsed = parseToken(token);
       if (parsed.type === 'rune' && floorSequence) continue;
       const path = pathToAdjacent(state, x, y, {
@@ -284,7 +299,7 @@ function enumerateTileActionsEngine(state) {
         if (!cardRequirements && !guardianRequirements) continue;
       }
       if (parsed.type === 'enemy') {
-        const enemy = ENEMIES[parsed.id];
+        const enemy = getEffectiveEnemy(state, parsed.id);
         if (!enemy) continue;
         const tiers = enumerateUsefulMagicTiers(state, enemy);
         for (const magicTier of tiers) {
@@ -316,6 +331,28 @@ function enumerateTileActionsEngine(state) {
     }
   }
   return actions;
+}
+
+function enumerateCouncilActionsEngine(state) {
+  if (state.council?.completed) return [];
+  const council = findTokenOnCurrentFloor(state, 'council');
+  if (!council) return [];
+  const path = pathToAdjacent(state, council.x, council.y, {
+    completedRunes: completedRunesForState(state)
+  });
+  if (!path) return [];
+  // The game UI exposes every legal allocation.  Solver expansion keeps the
+  // best 24 deterministic winning plans, which preserves distinct final-boss
+  // modifier outcomes without turning one F20 event into an unbounded branch.
+  return enumerateWarCouncilPlans(state, { winningOnly: true, limit: 24 }).map((report, index) => ({
+    kind: 'council',
+    eventId: `${eventIdForTile(state, council.x, council.y, 'council')}:plan${index + 1}:${report.plan.order.join('-')}`,
+    x: council.x,
+    y: council.y,
+    token: 'council',
+    path,
+    plan: report.plan
+  }));
 }
 
 /**
@@ -476,6 +513,24 @@ function applyTeleportActionEngine(state, action) {
   };
 }
 
+function applyCouncilActionEngine(state, action) {
+  const before = cloneEngineState(state);
+  const transit = executePath(state, action.path);
+  if (!transit.ok) return { ok: false, reason: transit.reason, state };
+  const dx = action.x - state.x;
+  const dy = action.y - state.y;
+  if (Math.abs(dx) + Math.abs(dy) !== 1 || getTile(state, action.x, action.y) !== 'council') {
+    return { ok: false, reason: 'Council location is no longer available.', state };
+  }
+  const result = resolveWarCouncil(state, action.plan);
+  if (!result.ok) return { ok: false, reason: result.reason, state };
+  return {
+    ok: true,
+    state,
+    steps: [makeStep({ stateBefore: before, stateAfter: state, action, result })]
+  };
+}
+
 function safeAutomaticActionsEngine(state) {
   const tileActions = enumerateTileActionsEngine(state);
   const switches = tileActions.filter((action) => action.parsed.type === 'switch');
@@ -506,6 +561,7 @@ function normalize(state) {
 }
 
 function actionPriority(action) {
+  if (action.kind === 'council') return 900;
   if (action.kind === 'sequence') return 750;
   if (action.kind === 'shop') return 600;
   if (action.kind === 'teleport') return 50;
@@ -521,6 +577,7 @@ function enumerateActions(state) {
   const sequenceAction = buildSequenceActionEngine(engineState);
   const actions = [
     ...enumerateTileActionsEngine(engineState),
+    ...enumerateCouncilActionsEngine(engineState),
     ...(sequenceAction ? [sequenceAction] : []),
     ...enumerateShopActionsEngine(engineState),
     ...enumerateTeleportActionsEngine(engineState)
@@ -535,6 +592,7 @@ function applyAction(state, action) {
   else if (action.kind === 'sequence') applied = applySequenceActionEngine(engineState, action);
   else if (action.kind === 'shop') applied = applyShopActionEngine(engineState, action);
   else if (action.kind === 'teleport') applied = applyTeleportActionEngine(engineState, action);
+  else if (action.kind === 'council') applied = applyCouncilActionEngine(engineState, action);
   else return { ok: false, reason: `Unknown macro action kind: ${action.kind}`, state };
   if (!applied.ok) return { ...applied, state };
   return { ok: true, state: CODEC.compact(applied.state), steps: applied.steps };

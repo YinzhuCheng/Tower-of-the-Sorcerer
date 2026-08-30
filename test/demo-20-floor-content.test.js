@@ -77,7 +77,7 @@ test('Act II turns the frozen 11–20 topology into a complete runtime campaign'
 test('Act II story scenes expose complete, bounded exchanges for the gameplay UI', () => {
   const sequenceIds = [
     'floor11', 'floor12', 'floor13', 'floor14', 'floor15', 'floor16', 'floor17', 'floor18', 'floor19', 'floor20',
-    'bossEchoRegentPost', 'bossArcaneSovereignPost', 'bossOriginCorePost'
+    'warCouncil', 'bossEchoRegentPost', 'bossArcaneSovereignPost', 'bossOriginCorePost'
   ];
 
   for (const id of sequenceIds) {

@@ -73,9 +73,10 @@ const FLOOR_CONTRACTS = Object.freeze({
     protectedOutcome: '回声摄政官是 F20 的唯一楼梯守卫；终局前不再提供无代价转换'
   }),
   20: Object.freeze({
-    roomGrammar: '起源魔源：门厅、相位前庭、双相终局室',
+    roomGrammar: '起源魔源：门厅、共鸣会战前庭、双相终局室',
     finalPhases: Object.freeze(['arcaneSovereign', 'originCore']),
-    protectedOutcome: '唯一最终 Boss 两阶段战；只有 originCore 触发胜利'
+    preFinaleEncounter: 'warCouncil',
+    protectedOutcome: '已解放的旧敌可组成三人车轮战；敌方顺序和 MP 公开、我方分配 120 MP，胜利后才进入唯一最终 Boss 两阶段战；只有 originCore 触发胜利'
   })
 });
 
@@ -179,6 +180,7 @@ export function validateDemoTwentyFloorProgressionTopology(topology = DEMO20_PRO
     if (actual.join(',') !== ids.join(',')) violations.push(`optional-guardian-vault-f${floor}`);
   }
   if (floors[20]?.finalPhases?.join(',') !== 'arcaneSovereign,originCore') violations.push('f20-final-phases');
+  if (floors[20]?.preFinaleEncounter !== 'warCouncil') violations.push('f20-war-council');
   if (floors[10]?.transition !== 'awakenMagic' || floors[10]?.transitionBoss !== 'voidCore') violations.push('f10-magic-transition');
   if (topology?.mpShopFloors?.join(',') !== '15') violations.push('mp-shop-cadence');
   for (const floor of topology?.mpShopFloors ?? []) {

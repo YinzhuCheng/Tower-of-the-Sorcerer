@@ -237,7 +237,7 @@ const FLOOR_MAPS = Object.freeze({
       # . # . # gate:f20SovereignSeal # . # . #
       # . # . # . # . # . #
       # . # . # enemy:arcaneSovereign # . # . #
-      # . # . # . # . # . #
+      # . # . # council # . # . #
       # . item:hpLarge . # . # . enemy:voidHerald . #
       # . # . # . # . # . #
       # . # . # . # . # . #
@@ -439,6 +439,8 @@ export function validateDemoTwentyFloorSpatialTopology(topology = DEMO20_SPATIAL
   }
   if (f20?.phaseBarrier !== 'gate:f20SovereignSeal') violations.push('F20:phase-barrier');
   if (f20 && (!hasToken(f20.map, 'enemy:arcaneSovereign') || !hasToken(f20.map, 'enemy:originCore'))) violations.push('F20:final-phase-units');
+  if (f20 && tokenCount(f20.map, 'council') !== 1) violations.push('F20:council-count');
+  if (f20 && !hasReachableTarget(f20, 'council')) violations.push('F20:council-unreachable');
 
   return Object.freeze({
     id: topology?.id,

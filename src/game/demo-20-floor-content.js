@@ -9,7 +9,7 @@ import {
   validateDemoTwentyFloorSpatialTopology
 } from './demo-20-floor-spatial-topology.js';
 
-export const DEMO20_CONTENT_ID = 'demo-20f-magic-act2-runtime-v1';
+export const DEMO20_CONTENT_ID = 'demo-20f-magic-act2-runtime-v2-council';
 export const DEMO20_NUMERIC_BASELINE_ID = 'demo-20f-replayed-numeric-baseline-v2';
 
 // This is the first full engine-replayed playable baseline. The
@@ -82,7 +82,7 @@ const ACT2_OBJECTIVES = Object.freeze({
   17: '三冠守卫共同维持上行封印，必须全部击败。',
   18: '在日桥与星渠之间分配卡片，保留终局前的魔力资源。',
   19: '先取得王座执照、击败回声摄政官，才可进入起源魔源。',
-  20: '穿过主权者封印，依次击败奥术主权者与起源核心。'
+  20: '公开敌方定额配置，完成王座前共鸣会战，再依次击败奥术主权者与起源核心。'
 });
 
 function copyMap(map) {
@@ -194,6 +194,11 @@ function installActTwoDialogues(dialogues) {
       dialogueTurn('绫星·璃', 'hero', '也有人从此失去被询问的资格。你把紧急权力做成王座，再把所有恐惧当成它永不归还的理由。'),
       dialogueTurn('奥术主权者', 'arcane_sovereign', '那你准备拿什么替代命令？别把“自由”当成逃避后果的好听名字。'),
       dialogueTurn('绫星·璃', 'hero', '公开的规则、能被拒绝的同意、共同承担的后果。它不完美，但没有任何人可以躲在完美的命令后面。')
+    ]),
+    warCouncil: dialogueSequence('王座前：共鸣会战', [
+      dialogueTurn('影织姬·鸦羽', 'shadow_boss', '主权者已把三名随从的出战顺序与魔力配额写死。她相信只要先替所有人决定，结果就会正确。'),
+      dialogueTurn('绫星·璃', 'hero', '那就把配置公开。魔力有限，但我不会把谁该承担多少风险写成命令。我们一起决定，也一起承担。'),
+      dialogueTurn('龙姬·焰璃', 'dragon_boss', '让我先上，还是把魔力留给后手？这次没有唯一正确的命令，只有你愿意负责的方案。')
     ]),
     bossEchoRegentPost: dialogueSequence('回响王庭：执照碎裂', [
       dialogueTurn('回声摄政官', 'echo_regent', '你没有消灭危险，只是让权力也暴露在危险之下。'),

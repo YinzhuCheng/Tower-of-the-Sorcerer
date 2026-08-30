@@ -95,7 +95,45 @@ async function applyMainProductionPatch() {
 
   const oldResult = `function handleSceneResult(result) {\n  updateHud();\n  if (result.blocked) showToast(result.reason ?? '无法行动。');\n  if (result.openShop) showShop();\n  if (result.dialogue) {\n    showDialogue(result.dialogue, result.victory ? showVictory : null);\n  } else if (result.victory) {\n    showVictory();\n  }\n  if (result.moved || result.battle || result.floorChanged) autoSave();\n}\n`;
   const newResult = `function handleSceneResult(result) {\n  updateHud();\n  if (result.blocked) showToast(result.reason ?? '无法行动。');\n  if (result.openShop) showShop();\n  if (result.bossEncounter && result.dialogue) {\n    showDialogue(result.dialogue, () => scene?.move(result.resumeDirection), { finalLabel: '开战' });\n  } else if (result.dialogue) {\n    showDialogue(result.dialogue, result.victory ? showVictory : null);\n  } else if (result.victory) {\n    showVictory();\n  }\n  if (result.moved || result.battle || result.floorChanged || result.bossEncounter) autoSave();\n}\n`;
-  source = replaceRequired(source, oldResult, newResult, 'Boss dialogue result flow');
+  const oldCouncilResult = `function handleSceneResult(result) {
+  updateHud();
+  if (result.blocked) showToast(result.reason ?? '无法行动。');
+  if (result.openCouncil) {
+    if (result.dialogue) showDialogue(result.dialogue, showWarCouncil);
+    else showWarCouncil();
+    return;
+  }
+  if (result.openShop) showShop();
+  if (result.dialogue) {
+    showDialogue(result.dialogue, result.victory ? showVictory : null);
+  } else if (result.victory) {
+    showVictory();
+  }
+  if (result.moved || result.battle || result.floorChanged) autoSave();
+}
+`;
+  const newCouncilResult = `function handleSceneResult(result) {
+  updateHud();
+  if (result.blocked) showToast(result.reason ?? '无法行动。');
+  if (result.openCouncil) {
+    if (result.dialogue) showDialogue(result.dialogue, showWarCouncil);
+    else showWarCouncil();
+    return;
+  }
+  if (result.openShop) showShop();
+  if (result.bossEncounter && result.dialogue) {
+    showDialogue(result.dialogue, () => scene?.move(result.resumeDirection), { finalLabel: '开战' });
+  } else if (result.dialogue) {
+    showDialogue(result.dialogue, result.victory ? showVictory : null);
+  } else if (result.victory) {
+    showVictory();
+  }
+  if (result.moved || result.battle || result.floorChanged || result.bossEncounter) autoSave();
+}
+`;
+  source = source.includes(oldCouncilResult)
+    ? replaceRequired(source, oldCouncilResult, newCouncilResult, 'Boss dialogue result flow with council')
+    : replaceRequired(source, oldResult, newResult, 'Boss dialogue result flow');
 
   await writeFile(mainPath, source);
 }

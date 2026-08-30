@@ -11,11 +11,20 @@ import {
   getShopEffectMultiplier,
   getShopOptions,
   initialDialogue,
+  resolveWarCouncil,
   serializeState,
   setMagicTier,
   teleportToFloor
 } from './game/engine.js';
 import { describeMagicTier, getMagicTierCapacity, getMagicTierCost } from './game/magic-blade.js';
+import {
+  getWarCouncilAllies,
+  simulateWarCouncil,
+  WAR_COUNCIL_LOYALISTS,
+  WAR_COUNCIL_MAX_MP_PER_ALLY,
+  WAR_COUNCIL_MP_POOL,
+  WAR_COUNCIL_MP_STEP
+} from './game/war-council.js';
 import { createMagicTowerScene } from './game/scene.js';
 import { createCanvasTowerScene } from './game/canvas-scene.js';
 import { hydratePortraits, portraitUrl } from './game/portraits.js';
@@ -348,6 +357,112 @@ function showMagicBlade() {
   });
 }
 
+function showWarCouncil() {
+  const allies = getWarCouncilAllies(state);
+  if (allies.length < 3) {
+    showToast('可共鸣的守护者不足，无法启动王座前会战。');
+    return;
+  }
+
+  let plan = {
+    order: allies.slice(0, 3).map((ally) => ally.id),
+    allocations: Object.fromEntries(allies.slice(0, 3).map((ally) => [ally.id, WAR_COUNCIL_MP_POOL / 3]))
+  };
+
+  const render = () => {
+    const report = simulateWarCouncil(state, plan);
+    const allocated = plan.order.reduce((sum, id) => sum + (Number(plan.allocations[id]) || 0), 0);
+    const validPlan = report.ok && allocated === WAR_COUNCIL_MP_POOL;
+    const forecast = report.ok
+      ? `
+        <div class="war-council-forecast ${report.won ? 'safe' : 'danger'}">
+          <strong>${report.won ? '预演结果：可击破全部忠诚随从' : '预演结果：我方会战失败'}</strong>
+          <p>${report.records.map((duel, index) => `${index + 1}. ${escapeHtml(duel.left.name)} vs ${escapeHtml(duel.right.name)} → ${escapeHtml(duel.leftWon ? duel.left.name : duel.right.name)}胜（${duel.exchanges} 次交锋）`).join('<br>')}</p>
+          ${report.won ? `<p>可支援终局：${report.survivors.map((unit) => `${escapeHtml(unit.name)} ${formatNumber(unit.hp)}/${formatNumber(unit.maxHp)}`).join('；')}。</p>
+          <p>${report.modifiers.labels.map(escapeHtml).join('<br>')}</p>` : '<p>调整出战顺序或 MP 配额后再试。敌方配置不会变化。</p>'}
+        </div>`
+      : `<div class="war-council-forecast danger"><strong>配置无效</strong><p>${escapeHtml(report.reason)}</p></div>`;
+
+    openModal({
+      kicker: 'WAR COUNCIL · 全信息固定数值',
+      title: `共鸣 MP：${allocated} / ${WAR_COUNCIL_MP_POOL}`,
+      body: `
+        <div class="dialogue-copy war-council-intro">
+          <p>敌方顺序和魔力配额已经公开；我方必须派出三名盟友并分配全部共鸣 MP。胜者带着剩余战意进入下一轮，所有数值均可预演。</p>
+        </div>
+        <section class="war-council-enemy-list">
+          <h3>敌方既定阵列</h3>
+          ${WAR_COUNCIL_LOYALISTS.map((unit, index) => `<p>${index + 1}. <strong>${escapeHtml(unit.name)}</strong> · ${escapeHtml(unit.role)} · 固定 ${unit.mp} MP</p>`).join('')}
+        </section>
+        <section class="war-council-plan">
+          <h3>我方部署</h3>
+          ${plan.order.map((id, index) => `
+            <article class="war-council-slot">
+              <label>第 ${index + 1} 位
+                <select data-council-slot="${index}">
+                  ${allies.map((ally) => `<option value="${ally.id}" ${ally.id === id ? 'selected' : ''}>${escapeHtml(ally.name)} · ${escapeHtml(ally.role)}</option>`).join('')}
+                </select>
+              </label>
+              <label>分配 MP
+                <select data-council-mp="${id}">
+                  ${Array.from({ length: WAR_COUNCIL_MAX_MP_PER_ALLY / WAR_COUNCIL_MP_STEP + 1 }, (_, step) => step * WAR_COUNCIL_MP_STEP)
+                    .map((mp) => `<option value="${mp}" ${mp === plan.allocations[id] ? 'selected' : ''}>${mp} MP</option>`).join('')}
+                </select>
+              </label>
+            </article>`).join('')}
+        </section>
+        ${forecast}
+      `,
+      actions: [
+        { label: '稍后决定' },
+        {
+          label: '确认会战',
+          className: 'primary',
+          disabled: !validPlan || !report.won,
+          close: false,
+          onClick: () => {
+            const result = resolveWarCouncil(state, plan);
+            if (!result.ok) {
+              showToast(result.reason);
+              return;
+            }
+            modalClosable = true;
+            closeModal();
+            scene?.refresh();
+            updateHud();
+            autoSave();
+            showToast('共鸣会战获胜：主权者的定额授权已被瓦解。', 2600);
+          }
+        }
+      ],
+      afterOpen: () => {
+        elements.modalBody.querySelectorAll('[data-council-slot]').forEach((select) => {
+          select.addEventListener('change', () => {
+            const index = Number(select.dataset.councilSlot);
+            const next = select.value;
+            const previous = plan.order[index];
+            const occupied = plan.order.indexOf(next);
+            if (occupied >= 0) [plan.order[index], plan.order[occupied]] = [plan.order[occupied], plan.order[index]];
+            else {
+              plan.order[index] = next;
+              plan.allocations[next] = plan.allocations[previous] ?? 0;
+              delete plan.allocations[previous];
+            }
+            render();
+          });
+        });
+        elements.modalBody.querySelectorAll('[data-council-mp]').forEach((select) => {
+          select.addEventListener('change', () => {
+            plan.allocations[select.dataset.councilMp] = Number(select.value);
+            render();
+          });
+        });
+      }
+    });
+  };
+  render();
+}
+
 function showShop() {
   const cost = getShopCost(state);
   const multiplier = getShopEffectMultiplier(state);
@@ -502,6 +617,11 @@ function confirmReset() {
 function handleSceneResult(result) {
   updateHud();
   if (result.blocked) showToast(result.reason ?? '无法行动。');
+  if (result.openCouncil) {
+    if (result.dialogue) showDialogue(result.dialogue, showWarCouncil);
+    else showWarCouncil();
+    return;
+  }
   if (result.openShop) showShop();
   if (result.dialogue) {
     showDialogue(result.dialogue, result.victory ? showVictory : null);

@@ -253,6 +253,15 @@ export function createMagicTowerScene(Phaser, bridge) {
       this.addText(cx + 19, cy + 18, '店', { fontSize: '9px', color: '#231a12' });
     }
 
+    renderCouncil(x, y, glow) {
+      const cx = this.tileCenter(x);
+      const cy = this.tileCenter(y);
+      const ring = this.addRendered(this.add.circle(cx, cy, 23, glow, 0.16));
+      ring.setStrokeStyle(3, 0xffffff, 0.88);
+      this.addRendered(this.add.circle(cx, cy, 13, 0x20142f, 0.82).setStrokeStyle(2, glow, 0.9));
+      this.addText(cx, cy, '盟', { fontSize: '16px', color: '#ffffff' });
+    }
+
     renderToken(x, y, token, floor) {
       if (token === '#' || token === '.' || token === 'S' || token === 'D' || token === 'U') {
         if (token === 'U') this.renderPortal(x, y, 'up', floor.theme.glow);
@@ -261,6 +270,10 @@ export function createMagicTowerScene(Phaser, bridge) {
       }
       if (token === 'shop') {
         this.renderShop(x, y);
+        return;
+      }
+      if (token === 'council') {
+        this.renderCouncil(x, y, floor.theme.glow);
         return;
       }
       const parsed = parseToken(token);
