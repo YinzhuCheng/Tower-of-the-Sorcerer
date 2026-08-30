@@ -1,6 +1,6 @@
 import { DIALOGUES, ENEMIES, FLOORS, GRID_SIZE } from '../src/game/data.js';
 import { applyDemoTenFloorContent } from '../src/game/demo-10-floor-content.js';
-import { applyDemoTenFloorHardMode } from '../src/game/demo-10-floor-hard-mode.js';
+import { applyDemoTenFloorHardMode, DEMO10_HARD_ROUTE_PROOF } from '../src/game/demo-10-floor-hard-mode.js';
 import { applyDemoTenFloorSpatialRedesign } from '../src/game/demo-10-floor-spatial-redesign.js';
 import { applyDemoTenFloorProgressionTopology } from '../src/game/demo-10-floor-progression-topology.js';
 import { applyDemoTenFloorPalaceSpatialRedesign } from '../src/game/demo-10-floor-palace-spatial-redesign.js';
@@ -8,7 +8,14 @@ import { applyDemoTenFloorProgressionGrammar } from '../src/game/demo-10-floor-p
 import { hashValue } from '../src/solver/state.js';
 
 function parseArgs(argv) {
-  const config = { multipliers: {}, cycle: ['def', 'atk', 'hp'], json: false, require: false };
+  const config = {
+    multipliers: {},
+    cycle: [...DEMO10_HARD_ROUTE_PROOF.shopCycle],
+    holyPolicy: DEMO10_HARD_ROUTE_PROOF.holyPolicy,
+    progressionPriority: DEMO10_HARD_ROUTE_PROOF.progressionPriority,
+    json: false,
+    require: false
+  };
   for (const arg of argv) {
     if (arg === '--json') config.json = true;
     else if (arg === '--require') config.require = true;
@@ -26,6 +33,10 @@ function parseArgs(argv) {
         throw new Error('--multiplier must use FLOOR:POSITIVE_NUMBER, e.g. --multiplier=5:1.4.');
       }
       config.multipliers[floor] = multiplier;
+    } else if (arg.startsWith('--holy-policy=')) {
+      config.holyPolicy = arg.slice('--holy-policy='.length);
+    } else if (arg.startsWith('--progression-priority=')) {
+      config.progressionPriority = arg.slice('--progression-priority='.length);
     } else if (arg === '--help') config.help = true;
     else throw new Error(`Unknown argument: ${arg}`);
   }
@@ -43,7 +54,7 @@ function installFrozenDemo() {
 
 const config = parseArgs(process.argv.slice(2));
 if (config.help) {
-  console.log('Usage: node scripts/witness-demo-10f-route.mjs [--cycle=def,atk,hp] [--multiplier=5:1.4] [--json] [--require]');
+  console.log('Usage: node scripts/witness-demo-10f-route.mjs [--cycle=atk,hp,hp] [--holy-policy=immediate] [--progression-priority=guardian-first] [--multiplier=5:1.4] [--json] [--require]');
   process.exit(0);
 }
 
@@ -59,8 +70,8 @@ const [{ runGreedyShopStrategy }, { createTowerAdapter }, { replayTowerStepSkele
 ]);
 const route = runGreedyShopStrategy({
   shopCycle: config.cycle,
-  holyPolicy: 'immediate',
-  progressionPriority: 'legacy-clear',
+  holyPolicy: config.holyPolicy,
+  progressionPriority: config.progressionPriority,
   traceActions: true,
   maxIterations: 8_000
 });
@@ -71,6 +82,8 @@ const certificate = {
   rulesVersion: adapter.rulesVersion(),
   contentHash: adapter.contentHash(),
   shopCycle: [...config.cycle],
+  holyPolicy: config.holyPolicy,
+  progressionPriority: config.progressionPriority,
   temporaryShopTiers: Object.fromEntries(Object.entries(config.multipliers).map(([floor, multiplier]) => [`f${floor}`, multiplier])),
   steps: route.routeSteps ?? [],
   expectedFinal: route.solvable ? { ...route.final } : null

@@ -1,7 +1,13 @@
 import assert from 'node:assert/strict';
 import { DIALOGUES, ENEMIES, FLOORS, GRID_SIZE } from '../src/game/data.js';
 import { applyDemoTenFloorContent, DEMO_TEN_FLOOR_ID } from '../src/game/demo-10-floor-content.js';
-import { applyDemoTenFloorHardMode, DEMO10_HARD_MODE_ID, DEMO10_HARD_MODE_PRESSURE } from '../src/game/demo-10-floor-hard-mode.js';
+import {
+  applyDemoTenFloorHardMode,
+  DEMO10_HARD_MODE_ID,
+  DEMO10_HARD_MODE_PRESSURE,
+  DEMO10_HARD_MODE_ORDINARY_PRESSURE,
+  DEMO10_HARD_ROUTE_PROOF
+} from '../src/game/demo-10-floor-hard-mode.js';
 import { applyDemoTenFloorSpatialRedesign, DEMO10_SPATIAL_REDESIGN_ID } from '../src/game/demo-10-floor-spatial-redesign.js';
 import { applyDemoTenFloorProgressionTopology } from '../src/game/demo-10-floor-progression-topology.js';
 import { applyDemoTenFloorPalaceSpatialRedesign } from '../src/game/demo-10-floor-palace-spatial-redesign.js';
@@ -35,7 +41,7 @@ const { certifyDemoTenFloorRouteFamilies } = await import('../src/solver/demo-10
 // have most simple cycles fail.
 const releaseProgressionPriority = 'legacy-clear';
 const guardianStressPriority = 'guardian-first';
-const proofShopCycle = Object.freeze(['def', 'atk', 'hp']);
+const hardRouteProof = DEMO10_HARD_ROUTE_PROOF;
 const PROOF_MARGIN = Object.freeze({ min: 0.04, max: 0.20 });
 
 assert.equal(FLOORS.length, 10);
@@ -54,6 +60,10 @@ assert.equal(FLOORS[7].boss, 'palaceWarden', 'optional vault guardians must rema
 assert.equal(ENEMIES.palaceWarden.magicPower, DEMO10_HARD_MODE_PRESSURE.palaceWardenMagicPower);
 assert.equal(ENEMIES.blackSealKeeper.magicPower, DEMO10_HARD_MODE_PRESSURE.blackSealKeeperMagicPower);
 assert.equal(ENEMIES.blackSealKeeper.def, DEMO10_HARD_MODE_PRESSURE.blackSealKeeperDef);
+assert.equal(ENEMIES.hushCantor.magicPower, DEMO10_HARD_MODE_ORDINARY_PRESSURE.hushCantorMagicPower);
+assert.equal(ENEMIES.outerCrown.atk, DEMO10_HARD_MODE_ORDINARY_PRESSURE.outerCrownAtk);
+assert.equal(ENEMIES.nullCantor.magicPower, DEMO10_HARD_MODE_ORDINARY_PRESSURE.nullCantorMagicPower);
+assert.equal(ENEMIES.eclipseMage.magicPower, DEMO10_HARD_MODE_ORDINARY_PRESSURE.eclipseMageMagicPower);
 assert.equal(Object.values(ENEMIES).reduce((sum, enemy) => sum + Number(enemy?.reward?.core ?? 0), 0), 7);
 
 // Keep the legacy no-HP expert as a diagnostic player model while the map is
@@ -96,9 +106,7 @@ const simpleReports = DEMO10_SIMPLE_BUILD_PORTFOLIO.map((shopCycle) => runGreedy
 const strategyDiagnostics = summarizeDemoTenFloorPortfolio(simpleReports);
 
 const proofRoute = runGreedyShopStrategy({
-  shopCycle: proofShopCycle,
-  holyPolicy: 'immediate',
-  progressionPriority: releaseProgressionPriority,
+  ...hardRouteProof,
   traceActions: true,
   maxIterations: 8_000
 });
@@ -112,7 +120,7 @@ assert.ok(proofReplay.minNormalizedHpMargin >= PROOF_MARGIN.min, 'The proof rout
 assert.ok(proofReplay.minNormalizedHpMargin <= PROOF_MARGIN.max, 'The proof route is too forgiving.');
 const existenceProof = {
   blocking: true,
-  shopCycle: [...proofShopCycle],
+  route: { ...hardRouteProof, shopCycle: [...hardRouteProof.shopCycle] },
   routeSteps: proofRoute.routeSteps.length,
   replayOk: proofReplay.ok,
   final: proofReplay.final,
@@ -153,9 +161,12 @@ const guardianStress = {
 };
 
 assert.ok(simpleReports.filter((report) => report.shopCycle[0] === 'hp').some((report) => !report.solvable));
-const bossIds = new Set(simpleReports.flatMap((report) =>
-  report.battleLog.filter((entry) => entry.boss || entry.finalBoss).map((entry) => entry.enemyId)
-));
+// Simple cycles are intentionally non-blocking telemetry: a hard tower may
+// reject all of them.  Boss coverage belongs to the engine-replayed release
+// route, not to a convenient heuristic portfolio.
+const bossIds = new Set(proofRoute.battleLog
+  .filter((entry) => entry.boss || entry.finalBoss)
+  .map((entry) => entry.enemyId));
 for (const bossId of ['palaceWarden', 'blackSealKeeper', 'voidCore']) assert.ok(bossIds.has(bossId));
 assert.ok(simpleReports.filter((report) => report.solvable).every((report) =>
   report.purchaseLog.some((entry) => entry.floor === 9)

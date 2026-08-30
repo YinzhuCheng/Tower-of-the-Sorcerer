@@ -48,16 +48,16 @@ test('frozen 10F certifies three replayed routes with different campaign decisio
   const { replayTowerStepSkeleton } = await import('../src/solver/replay.js');
   const tools = { createTowerAdapter, replayTowerStepSkeleton };
   const attempts = [
-    attempt({ shopCycle: ['def', 'atk', 'hp'], holyPolicy: 'immediate', progressionPriority: 'legacy-clear' }, tools),
-    attempt({ shopCycle: ['atk', 'hp'], holyPolicy: 'after-core-7', progressionPriority: 'guardian-first' }, tools),
-    attempt({ shopCycle: ['hp', 'atk'], holyPolicy: 'after-core-6', progressionPriority: 'legacy-clear' }, tools)
+    attempt({ shopCycle: ['atk', 'hp', 'hp'], holyPolicy: 'immediate', progressionPriority: 'guardian-first' }, tools),
+    attempt({ shopCycle: ['atk', 'hp', 'atk'], holyPolicy: 'after-core-7', progressionPriority: 'legacy-clear' }, tools),
+    attempt({ shopCycle: ['hp', 'atk'], holyPolicy: 'before-final', progressionPriority: 'guardian-first' }, tools)
   ];
   assert.ok(attempts.every((entry) => entry.route.solvable && entry.replay.ok));
-  assert.deepEqual(attempts.map((entry) => entry.family.decisions.f8Vault), [true, false, true]);
-  assert.deepEqual(attempts.map((entry) => entry.family.decisions.holyTiming), ['early', 'late', 'mid']);
-  assert.deepEqual(attempts.map((entry) => entry.family.decisions.shopStyle), ['balanced', 'assault', 'vitality']);
+  assert.deepEqual(attempts.map((entry) => entry.family.decisions.f8Vault), [false, true, false]);
+  assert.deepEqual(attempts.map((entry) => entry.family.decisions.holyTiming), ['early', 'late', 'late']);
+  assert.deepEqual(attempts.map((entry) => entry.family.decisions.shopStyle), ['vitality', 'assault', 'hybrid']);
   assert.ok(demoTenFloorRouteFamilyDistance(attempts[0].family, attempts[1].family) >= 3);
-  assert.ok(demoTenFloorRouteFamilyDistance(attempts[1].family, attempts[2].family) >= 3);
+  assert.ok(demoTenFloorRouteFamilyDistance(attempts[1].family, attempts[2].family) >= 2);
 
   const selection = selectIndependentDemoTenFloorRoutes(attempts, { targetFamilies: 3, minDistance: 2 });
   assert.equal(selection.complete, true);

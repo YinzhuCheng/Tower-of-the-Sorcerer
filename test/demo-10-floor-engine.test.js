@@ -6,7 +6,7 @@ import { applyDemoTenFloorProgressionTopology } from '../src/game/demo-10-floor-
 import { applyDemoTenFloorSpatialRedesign } from '../src/game/demo-10-floor-spatial-redesign.js';
 import { applyDemoTenFloorProgressionGrammar } from '../src/game/demo-10-floor-progression.js';
 import { applyDemoTenFloorPalaceSpatialRedesign } from '../src/game/demo-10-floor-palace-spatial-redesign.js';
-import { applyDemoTenFloorHardMode } from '../src/game/demo-10-floor-hard-mode.js';
+import { applyDemoTenFloorHardMode, DEMO10_HARD_ROUTE_PROOF } from '../src/game/demo-10-floor-hard-mode.js';
 
 applyDemoTenFloorContent({ enemies: ENEMIES, floors: FLOORS, dialogues: DIALOGUES, gridSize: GRID_SIZE });
 applyDemoTenFloorProgressionTopology({ enemies: ENEMIES, floors: FLOORS });
@@ -152,9 +152,7 @@ test('an activated rune stays inert when the authored F9 sequence revisits it', 
 
 test('frozen 10F hard mode keeps one engine-replayable route without requiring every simple cycle', () => {
   const route = runGreedyShopStrategy({
-    shopCycle: ['def', 'atk', 'hp'],
-    holyPolicy: 'immediate',
-    progressionPriority: 'legacy-clear',
+    ...DEMO10_HARD_ROUTE_PROOF,
     traceActions: true,
     maxIterations: 8_000
   });

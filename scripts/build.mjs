@@ -201,9 +201,7 @@ async function validateProductionDemoBuild() {
   }));
   const winners = reports.filter((report) => report.solvable);
   const proofRoute = strategy.runGreedyShopStrategy({
-    shopCycle: ['def', 'atk', 'hp'],
-    holyPolicy: 'immediate',
-    progressionPriority: 'legacy-clear',
+    ...hardMode.DEMO10_HARD_ROUTE_PROOF,
     traceActions: true,
     maxIterations: 10_000
   });
@@ -240,8 +238,12 @@ async function validateProductionDemoBuild() {
       effects: Object.fromEntries(sample.options.map((option) => [option.id, option.effect]))
     })),
     hardPressure: hardMode.DEMO10_HARD_MODE_PRESSURE,
+    ordinaryPressure: hardMode.DEMO10_HARD_MODE_ORDINARY_PRESSURE,
     existenceProof: {
-      shopCycle: ['def', 'atk', 'hp'],
+      route: {
+        ...hardMode.DEMO10_HARD_ROUTE_PROOF,
+        shopCycle: [...hardMode.DEMO10_HARD_ROUTE_PROOF.shopCycle]
+      },
       replayOk: proofReplay.ok,
       steps: proofRoute.routeSteps.length,
       final: proofReplay.final,
