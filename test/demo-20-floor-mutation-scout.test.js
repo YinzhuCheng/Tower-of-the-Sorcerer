@@ -42,6 +42,12 @@ const {
   runDemoTwentyFloorMutationScout
 } = await import('../src/tuner/demo-20-floor-mutation-scout.js');
 const { runDemoTwentyFloorMilestones } = await import('../src/tuner/demo-20-floor-milestone-solver.js');
+const {
+  DEMO20_F14_GUARDIAN_FEASIBILITY_ENDPOINT,
+  materializeDemoTwentyFloorF14GuardianRay,
+  scanDemoTwentyFloorF14GuardianRay,
+  withDemoTwentyFloorF14GuardianRay
+} = await import('../src/tuner/demo-20-floor-f14-ray.js');
 const dependencies = { floors: FLOORS, enemies: ENEMIES, items: ITEMS, shopOptions: SHOP_OPTIONS };
 const locks = captureDemoTwentyFloorSolverLocks(dependencies);
 const catalog = createDemoTwentyFloorMutationCatalog(dependencies);
@@ -114,5 +120,31 @@ test('a temporary numeric feasibility probe can produce a replayable F15 milesto
   assert.equal(result.milestones[0].reached, true);
   assert.ok(result.milestones[0].certificate);
   assert.ok(result.routeSteps.length > F10_WITNESS.routeSteps.length);
+  assertDemoTwentyFloorSolverLocks(locks, dependencies);
+});
+
+test('F14 guardian ray preserves locks, restores values, and labels its F15 sample as non-publishable', { timeout: 30_000 }, () => {
+  const baseline = ENEMIES.arcaneGatekeeper.hp;
+  const endpoint = materializeDemoTwentyFloorF14GuardianRay(1, dependencies);
+  assert.equal(
+    endpoint.find((change) => change.enemyId === 'arcaneGatekeeper' && change.field === 'hp').value,
+    DEMO20_F14_GUARDIAN_FEASIBILITY_ENDPOINT.arcaneGatekeeper.hp
+  );
+  withDemoTwentyFloorF14GuardianRay(1, () => {
+    assert.equal(ENEMIES.arcaneGatekeeper.hp, DEMO20_F14_GUARDIAN_FEASIBILITY_ENDPOINT.arcaneGatekeeper.hp);
+  }, { ...dependencies, locks });
+  assert.equal(ENEMIES.arcaneGatekeeper.hp, baseline);
+
+  const report = scanDemoTwentyFloorF14GuardianRay({
+    adapter: createDemoTwentyFloorContinuationAdapter(createTowerAdapter()),
+    routeSteps: F10_WITNESS.routeSteps,
+    strengths: [1],
+    dependencies: { ...dependencies, locks },
+    maxExpanded: 3_000,
+    maxGenerated: 45_000
+  });
+  assert.equal(report.publishable, false);
+  assert.equal(report.samples[0].reachedF15, true);
+  assert.equal(report.leastSoftenedSuccessfulSample.strength, 1);
   assertDemoTwentyFloorSolverLocks(locks, dependencies);
 });
