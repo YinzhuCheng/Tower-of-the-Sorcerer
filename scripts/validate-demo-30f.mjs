@@ -25,7 +25,7 @@ applyDemoThirtyFloorContent({ enemies: ENEMIES, floors: FLOORS, items: ITEMS, di
 const { createTowerAdapter } = await import('../src/solver/tower-adapter.js');
 const { createDemoThirtyFloorExpertWitnessAdapter } = await import('../src/tuner/demo-30-floor-expert-witness-adapter.js');
 const { createDoctrineRouteAdapter } = await import('../src/tuner/demo-20-route-portfolio.js');
-const { evaluateAct3CharterPortfolio, evaluateAct3HandoffPortfolio } = await import('../src/tuner/demo-30-route-portfolio.js');
+const { evaluateAct3CharterPortfolio, evaluateAct3HandoffPortfolio, evaluateAct3HandoffDecisionMatrix } = await import('../src/tuner/demo-30-route-portfolio.js');
 const { createDemoThirtyFloorMutationCatalog, withDemoThirtyFloorCandidate } = await import('../src/tuner/demo-30-floor-mutations.js');
 const baseAdapter = createTowerAdapter();
 // Ember is a deliberately high-pressure Act II witness; the Act III portfolio
@@ -34,6 +34,7 @@ const baseAdapter = createTowerAdapter();
 const adapter = createDemoThirtyFloorExpertWitnessAdapter(createDoctrineRouteAdapter(baseAdapter, 'ember'));
 const requestedCharter = process.env.CHARTER ?? null;
 const charterIds = requestedCharter ? [requestedCharter] : undefined;
+const includeDecisionMatrix = process.env.DECISION_MATRIX === '1';
 const requestedMutationIds = (process.env.MUTATION ?? '')
   .split(',').map((id) => id.trim()).filter(Boolean);
 const mutationCatalog = createDemoThirtyFloorMutationCatalog();
@@ -68,6 +69,15 @@ const evaluatePortfolio = () => {
 const portfolio = requestedMutationIds.length
   ? withDemoThirtyFloorCandidate({ mutationIds: requestedMutationIds }, mutationCatalog, evaluatePortfolio)
   : evaluatePortfolio();
+const decisionMatrix = includeDecisionMatrix
+  ? evaluateAct3HandoffDecisionMatrix({
+      adapter,
+      routeSteps: f10Witness.routeSteps,
+      maxExpanded: 4_000,
+      maxGenerated: 70_000,
+      onStage: (id, stage) => console.error(`[matrix:${id}] ${stage.milestone}: ${stage.reached ? 'reached' : stage.stoppedReason} (${stage.expandedStates} expanded; ${JSON.stringify(stage.generatedByAction)})`)
+    })
+  : null;
 const structure = validateDemoThirtyFloorContent({ floors: FLOORS, enemies: ENEMIES, items: ITEMS });
 const report = {
   publishable: structure.ok
@@ -109,7 +119,27 @@ const report = {
     minNormalizedHpMargin: entry.minNormalizedHpMargin,
     insights: entry.insights,
     strategicDecisions: process.env.DEBUG_DEMO30 === '1' ? entry.strategicDecisions : undefined
-  }))
+  })),
+  decisionMatrix: decisionMatrix
+    ? {
+        expectedCells: decisionMatrix.expectedCells,
+        evaluatedCells: decisionMatrix.evaluatedCells,
+        coverageComplete: decisionMatrix.coverageComplete,
+        completedCells: decisionMatrix.completedCells,
+        blockedCells: decisionMatrix.blockedCells,
+        minCompletedMargin: decisionMatrix.minCompletedMargin,
+        maxCompletedMargin: decisionMatrix.maxCompletedMargin,
+        byCharter: decisionMatrix.byCharter,
+        byHandoff: decisionMatrix.byHandoff,
+        entries: decisionMatrix.entries.map((entry) => ({
+          id: entry.id,
+          charterId: entry.charterId,
+          handoffId: entry.handoffId,
+          completed: entry.completed,
+          minNormalizedHpMargin: entry.minNormalizedHpMargin
+        }))
+      }
+    : undefined
 };
 console.log(JSON.stringify(report, null, 2));
 if (!report.publishable) process.exitCode = 1;
