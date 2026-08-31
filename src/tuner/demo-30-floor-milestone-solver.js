@@ -40,7 +40,8 @@ function reportStage(report, milestone, initialState) {
     initialState,
     generatedByAction: report.profile?.generatedByAction ?? {},
     rejectedByAction: report.profile?.rejectedByAction ?? {},
-    stageTelemetry: report.profile?.stageTelemetry ?? {}
+    stageTelemetry: report.profile?.stageTelemetry ?? {},
+    actionOrdering: report.actionOrdering ?? null
   });
 }
 
@@ -50,6 +51,8 @@ export function runDemoThirtyFloorMilestones({
   milestones = DEMO30_MILESTONES,
   maxExpanded = 18_000,
   maxGenerated = 360_000,
+  actionOrdering = 'strategic-intuition',
+  actionPreviewLimit = 18,
   onStage = null
 } = {}) {
   if (!adapter) throw new Error('30F milestone solver requires an adapter.');
@@ -66,6 +69,8 @@ export function runDemoThirtyFloorMilestones({
       maxExpanded,
       maxGenerated,
       heuristic: adapter.searchHeuristic,
+      actionOrdering,
+      actionPreviewLimit,
       solverVersion: `demo30-milestone-${milestone.id}-v1`
     });
     const stage = reportStage(report, milestone, bridge.state);

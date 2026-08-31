@@ -12,9 +12,26 @@ const GATE_INSIGHTS = Object.freeze({
   f19ThroneLicense: '保留两张月辉卡作为王座执照，不能把它们误投到可选支线。',
   f22ShelterAnnex: '把两张月辉卡投入夜航侧库，换取 F30 的稳定反击减免。',
   f23AuditAnnex: '把两张星蚀卡投入逐页校验，换取终局两相的公开弱点。',
-  f24RelayAnnex: '把日曜与月辉卡投入灯塔接力，换取一次现在和一次 F27 后的 MP 回充。',
-  f25MissingSeal: '为缺页封条保留三种颜色各一张，不能只按眼前收益花卡。'
+  f24RelayAnnex: '把日曜与月辉卡投入灯塔接力，换取一次现在和一次 F27 后的 MP 回充。'
 });
+
+const CARD_NAMES = Object.freeze({ sun: '日曜', moon: '月辉', star: '星蚀' });
+
+function cardBudgetText(requirements = {}) {
+  return Object.entries(requirements)
+    .filter(([, amount]) => Number(amount) > 0)
+    .map(([card, amount]) => `${CARD_NAMES[card] ?? card} ×${Number(amount)}`)
+    .join('、');
+}
+
+function gateInsightText(gateId, step) {
+  if (gateId === 'f25MissingSeal') {
+    const cardGate = step.engine?.events?.find((event) => event.type === 'cardGate' && event.gateId === gateId);
+    const budget = cardBudgetText(cardGate?.requirements ?? {});
+    return `为缺页封条保留${budget || '公开卡片预算'}，不能只按眼前收益花卡。`;
+  }
+  return GATE_INSIGHTS[gateId] ?? null;
+}
 
 function uniqueById(entries) {
   const seen = new Set();
@@ -53,7 +70,7 @@ export function deriveRouteInsights({ steps = [], battleLog = [], doctrine = nul
   for (const step of steps) {
     if (step.kind !== 'tile' || !String(step.action?.token ?? '').startsWith('gate:')) continue;
     const gateId = String(step.action.token).slice('gate:'.length);
-    const text = GATE_INSIGHTS[gateId];
+    const text = gateInsightText(gateId, step);
     if (!text) continue;
     insights.push({ id: `gate:${gateId}`, kind: 'resource', title: '资源分流', text });
   }

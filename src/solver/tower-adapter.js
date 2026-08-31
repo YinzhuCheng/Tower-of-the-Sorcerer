@@ -43,8 +43,27 @@ import {
 const DIR_LIST = Object.entries(DIRECTIONS).map(([name, vector]) => ({ name, ...vector }));
 const RESOURCE_FIELDS = ['hp', 'maxHp', 'atk', 'def', 'gold', 'mp', 'maxMp', 'sun', 'moon', 'star'];
 const BASE_ENGINE_STATE = createEngineInitialState();
-const CODEC = createTowerStateCodec({ baseState: BASE_ENGINE_STATE, floors: FLOORS, enemies: ENEMIES });
+// The tuner can temporarily mutate authored maps while it evaluates a
+// candidate.  Keep this binding refreshable: the compact codec owns event
+// slots, so retaining an old instance after a layout edit would make a replay
+// certify the wrong map.
+let CODEC = createTowerStateCodec({ baseState: BASE_ENGINE_STATE, floors: FLOORS, enemies: ENEMIES });
 const RELIC_KEYS = Object.keys(BASE_ENGINE_STATE.relics).sort();
+
+/** Rebuild compact-state slots after a reversible map or encounter-layout
+ * mutation. Existing adapters intentionally read the live binding above, so
+ * callers do not need to recreate route wrappers or certificates. */
+export function refreshTowerAdapterCodec() {
+  CODEC = createTowerStateCodec({
+    baseState: createEngineInitialState(),
+    floors: FLOORS,
+    enemies: ENEMIES
+  });
+  return Object.freeze({
+    stateEncoding: CODEC.stateEncoding,
+    eventCatalog: CODEC.eventCatalogSummary()
+  });
+}
 
 function transitToken(token, { completedRunes = [] } = {}) {
   if (token === '.' || token === 'S' || token === 'shop') return true;
@@ -120,6 +139,84 @@ function pathToExactTransit(state, targetX, targetY, options = {}) {
     }
   }
   return null;
+}
+
+function findMapTile(map, target) {
+  for (let y = 0; y < (map?.length ?? 0); y += 1) {
+    for (let x = 0; x < (map[y]?.length ?? 0); x += 1) {
+      if (map[y][x] === target) return { x, y };
+    }
+  }
+  return null;
+}
+
+// Gates are treated as passable for this topology check.  We only want to
+// know whether *this one* gate lies on every physical route to the stair;
+// resource ownership and gate effects stay with the engine.
+function mapRouteExists(map, start, target, blocked = null) {
+  if (!map?.length || !start || !target) return false;
+  const width = Math.max(...map.map((row) => row.length));
+  const queue = [start];
+  const seen = new Set([`${start.x},${start.y}`]);
+  for (let head = 0; head < queue.length; head += 1) {
+    const point = queue[head];
+    if (point.x === target.x && point.y === target.y) return true;
+    for (const [dx, dy] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) {
+      const x = point.x + dx;
+      const y = point.y + dy;
+      const key = `${x},${y}`;
+      if (x < 0 || y < 0 || x >= width || y >= map.length || seen.has(key) || key === blocked || map[y]?.[x] === '#') continue;
+      seen.add(key);
+      queue.push({ x, y });
+    }
+  }
+  return false;
+}
+
+function remainingCardSupply(engineState) {
+  const supply = { sun: Number(engineState.cards?.sun ?? 0), moon: Number(engineState.cards?.moon ?? 0), star: Number(engineState.cards?.star ?? 0) };
+  for (const floorState of engineState.floorStates ?? []) {
+    for (const row of floorState.map ?? []) {
+      for (const token of row) {
+        const parsed = parseToken(token);
+        if (parsed.type === 'item' && Object.hasOwn(supply, parsed.id)) supply[parsed.id] += 1;
+      }
+    }
+  }
+  return supply;
+}
+
+/** A one-sided resource feasibility check. It may miss an impossible route,
+ * but it never rejects one unless an unopened card gate is physically
+ * unavoidable and even *all remaining card pickups* cannot meet its cost.
+ * This keeps the pruning rule proof-safe while removing obvious dead card
+ * branches before the later search stages multiply them. */
+export function hasUnavoidableCardDeficit(state) {
+  const engineState = CODEC.materialize(state);
+  const supply = remainingCardSupply(engineState);
+  for (let floorIndex = engineState.floor; floorIndex < engineState.floorStates.length; floorIndex += 1) {
+    const floorState = engineState.floorStates[floorIndex];
+    const floor = FLOORS[floorIndex];
+    const map = floorState?.map;
+    const stair = findMapTile(map, 'U');
+    if (!floor || !stair) continue;
+    const start = floorIndex === engineState.floor
+      ? { x: engineState.x, y: engineState.y }
+      : findMapTile(map, 'D');
+    if (!start) continue;
+    for (let y = 0; y < map.length; y += 1) {
+      for (let x = 0; x < map[y].length; x += 1) {
+        const parsed = parseToken(map[y][x]);
+        if (parsed.type !== 'gate') continue;
+        const requirements = getCardGateRequirements(floor, parsed.id);
+        if (!requirements) continue;
+        const blocked = `${x},${y}`;
+        if (!mapRouteExists(map, start, stair) || mapRouteExists(map, start, stair, blocked)) continue;
+        if (Object.entries(requirements).some(([card, amount]) => Number(supply[card] ?? 0) < Number(amount))) return true;
+      }
+    }
+  }
+  return false;
 }
 
 function executePath(state, path) {
@@ -749,17 +846,21 @@ export function createTowerAdapter() {
   return {
     objectiveType: 'terminal_hp',
     resourceFields: RESOURCE_FIELDS,
-    stateEncoding: CODEC.stateEncoding,
+    get stateEncoding() { return CODEC.stateEncoding; },
     createInitialState: () => CODEC.compact(createEngineInitialState()),
-    cloneState: CODEC.cloneCompact,
-    compactState: CODEC.compact,
-    materializeState: CODEC.materialize,
+    // Do not hand out methods from a particular codec instance. A candidate
+    // map mutation rebuilds its slots, and every existing route wrapper must
+    // immediately follow the refreshed instance.
+    cloneState: (state) => CODEC.cloneCompact(state),
+    compactState: (state) => CODEC.compact(state),
+    materializeState: (state) => CODEC.materialize(state),
     resources: stateResources,
     structuralKey,
     summarizeState,
     normalize,
     enumerateActions,
     applyAction,
+    provenDeadEnd: hasUnavoidableCardDeficit,
     actionClass,
     stageKey: (state) => `f${state.floor + 1}/c${state.cores}`,
     isGoal: (state) => state.victory === true,

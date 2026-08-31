@@ -15,6 +15,21 @@ export const DEMO30_HANDOFF_ROUTE_SPECS = Object.freeze([
 
 const CHARTER_DEADLINE_FLOOR = Object.freeze({ shelter: 21, audit: 22, relay: 23 });
 
+function strategicDecisionsFrom(result) {
+  const seen = new Set();
+  return Object.freeze((result?.milestones ?? [])
+    .flatMap((stage) => stage.actionOrdering?.strategicDecisionSamples ?? [])
+    .filter((note) => note.critical === true)
+    .filter((note) => {
+      const key = `${note.stage}:${note.selectedEventId}`;
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    })
+    .slice(0, 8)
+    .map((note) => Object.freeze(note)));
+}
+
 function mapPathExists(map, start, target, blockedKey = null) {
   if (!map?.length || !start || !target) return false;
   const width = map[0]?.length ?? 0;
@@ -240,6 +255,7 @@ export function evaluateAct3CharterPortfolio({
       replay,
       minNormalizedHpMargin: replay.minNormalizedHpMargin,
       insights: deriveRouteInsights({ steps: result.routeSteps, battleLog: replay.battleLog, charter }),
+      strategicDecisions: strategicDecisionsFrom(result),
       diagnostics: includeDiagnostics ? Object.freeze({
         progressReplayOk: stalledReplay?.ok ?? null,
         progressReplayFailure: stalledReplay?.failures?.[0] ?? null,
@@ -296,7 +312,8 @@ export function evaluateAct3HandoffPortfolio({
       result,
       replay,
       minNormalizedHpMargin: replay.minNormalizedHpMargin,
-      insights: deriveRouteInsights({ steps: result.routeSteps, battleLog: replay.battleLog, charter, handoff: selected })
+      insights: deriveRouteInsights({ steps: result.routeSteps, battleLog: replay.battleLog, charter, handoff: selected }),
+      strategicDecisions: strategicDecisionsFrom(result)
     });
   });
   return Object.freeze({

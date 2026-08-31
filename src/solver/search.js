@@ -1,6 +1,7 @@
 import { FrontierIndex } from './frontier.js';
 import { MaxPriorityQueue } from './priority-queue.js';
 import { hashValue } from './state.js';
+import { rankActionsByStrategicIntuition, summarizeStrategicDecision } from './decision-intuition.js';
 
 function defaultObjective(state, adapter) {
   return adapter.objectiveValue ? adapter.objectiveValue(state) : 0;
@@ -116,6 +117,8 @@ export function solve({
   incumbentLowerBound = null,
   incumbentWitness = null,
   heuristic = null,
+  actionOrdering = 'adapter',
+  actionPreviewLimit = 18,
   solverVersion = 'macro-pareto-v0.4'
 } = {}) {
   if (!adapter) throw new Error('solve() requires an adapter.');
@@ -184,6 +187,9 @@ export function solve({
   const generatedByAction = {};
   const rejectedByAction = {};
   const stageTelemetry = {};
+  let intuitionPreviewedActions = 0;
+  let intuitionReorderedBranches = 0;
+  const strategicDecisionSamples = [];
 
   function stageKeyOf(state) {
     return adapter.stageKey ? adapter.stageKey(state) : 'all';
@@ -225,6 +231,32 @@ export function solve({
         max: profile.branchMax
       }
     }]));
+  }
+
+  function orderActions(state, actions) {
+    if (actionOrdering !== 'strategic-intuition') return actions;
+    const ranked = rankActionsByStrategicIntuition({
+      adapter,
+      state,
+      actions,
+      previewLimit: actionPreviewLimit
+    });
+    intuitionPreviewedActions += ranked.filter((entry) => entry.previewed).length;
+    if (ranked.some((entry, index) => entry.index !== index)) intuitionReorderedBranches += 1;
+    if (strategicDecisionSamples.length < 12) {
+      const note = summarizeStrategicDecision(ranked);
+      // These notes are for authors and testers, not proof data.  Capture
+      // genuine trade-offs first; a few early non-critical notes remain as
+      // context only when a small stage has not exposed a hard fork yet.
+      if (note?.critical || strategicDecisionSamples.length < 3) {
+        strategicDecisionSamples.push(Object.freeze({
+          stage: stageKeyOf(state),
+          resources: Object.freeze({ ...adapter.resources(state) }),
+          ...note
+        }));
+      }
+    }
+    return ranked.map((entry) => entry.action);
   }
 
   function currentObjectiveLowerBound() {
@@ -320,7 +352,7 @@ export function solve({
       continue;
     }
 
-    const actions = adapter.enumerateActions(label.state);
+    const actions = orderActions(label.state, adapter.enumerateActions(label.state));
     branchSamples += 1;
     branchTotal += actions.length;
     branchMax = Math.max(branchMax, actions.length);
@@ -460,6 +492,14 @@ export function solve({
     heuristic: {
       enabled: typeof (heuristic ?? adapter.searchHeuristic) === 'function',
       proofRole: 'ordering-only'
+    },
+    actionOrdering: {
+      mode: actionOrdering,
+      proofRole: 'ordering-only',
+      previewLimit: actionPreviewLimit,
+      previewedActions: intuitionPreviewedActions,
+      reorderedBranches: intuitionReorderedBranches,
+      strategicDecisionSamples: Object.freeze(strategicDecisionSamples)
     }
   };
 }

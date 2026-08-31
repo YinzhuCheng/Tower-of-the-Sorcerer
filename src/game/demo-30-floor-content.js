@@ -151,10 +151,10 @@ const ACT3_FLOORS = Object.freeze([
   }),
   floor({
     number: 25, title: '缺页庭', intro: 'floor25',
-    objective: '把一组日、月、星卡留给缺页封条；这是所有路线共享的第一次账本检查。',
+    objective: '把日曜、两张月辉与星蚀卡留给缺页封条；这是所有路线共享的第一次账本检查。',
     roomPlan: ['缺页入口', '三色索引廊', '药剂夹层', '封条门庭', '上行缝隙'],
     theme: THEMES[4],
-    puzzles: { cardGates: { f25MissingSeal: { sun: 1, moon: 1, star: 1 } } },
+    puzzles: { cardGates: { f25MissingSeal: { sun: 1, moon: 2, star: 1 } } },
     map: `
       # # # # # # # # # # #
       # . . . # U # . . . #
@@ -173,7 +173,7 @@ const ACT3_FLOORS = Object.freeze([
     number: 26, title: '折角集市', intro: 'floor26',
     objective: '利用本幕唯一的高阶商店；金币换的是明确属性或 MP，不是一次性答案。',
     roomPlan: ['集市入口', '折角柜台', '高阶咏唱架', '余烬补给线', '上行账台'],
-    theme: THEMES[5], shopOptionIds: ['hp', 'atk', 'def', 'mpRestore', 'maxMp'], shopEffectMultiplier: 3,
+    theme: THEMES[5], shopOptionIds: ['hp', 'atk', 'def', 'mpRestore', 'maxMp'], shopEffectMultiplier: 2.85,
     map: `
       # # # # # # # # # # #
       # item:act3Def . . # . . . . U #
@@ -235,13 +235,13 @@ const ACT3_FLOORS = Object.freeze([
     puzzles: { guardianGates: { f29IndexSeal: ['lastCustodian', 'archiveMarshal'] } },
     map: `
       # # # # # # # # # # #
-      # . . . # U # . . . #
+      # # . . # U # . . . #
       # . # . # gate:f29IndexSeal # . # . #
-      # . # . . . . . # . #
+      # . # . . enemy:indexBeast . . # . #
       # . # # # . # # # . #
       # . enemy:lastCustodian . # . # . enemy:archiveMarshal . #
-      # . # . # . # . # . #
-      # . # . . enemy:indexBeast . . # . #
+      # . # . # . # . . . #
+      # . # . . enemy:ledgerMage . . # . #
       # . # # # . # # # . #
       # D . item:act3Hp enemy:triageKnight . item:act3Mana . item:star . #
       # # # # # # # # # # #
@@ -274,10 +274,10 @@ const ACT3_ITEMS = Object.freeze({
   act3Atk: { name: '校订刃签', kind: 'stat', atk: 13, relic: '校订刃签', description: '攻击 +13。' },
   act3Def: { name: '护页封蜡', kind: 'stat', def: 13, relic: '护页封蜡', description: '防御 +13。' },
   act3Dual: { name: '双栏校样', kind: 'stat', atk: 10, def: 10, relic: '双栏校样', description: '攻击、防御各 +10。' },
-  act3Mana: { name: '灯塔余能', kind: 'stat', mp: 110, relic: '灯塔余能', description: '恢复 110 MP。' },
+  act3Mana: { name: '灯塔余能', kind: 'stat', mp: 100, relic: '灯塔余能', description: '恢复 100 MP。' },
   shelterAegis: { name: '夜航护送印', kind: 'stat', hp: 13_000, maxHp: 13_000, def: 16, relic: '夜航护送印', description: '生命上限与当前生命 +13000，防御 +16；F30 每阶段少结算 3 次反击。' },
   auditLedger: { name: '逐页校验簿', kind: 'stat', atk: 20, def: 8, relic: '逐页校验簿', description: '攻击 +20，防御 +8；F30 两阶段的公开弱点生效。' },
-  relayCapacitor: { name: '灯塔接力电容', kind: 'stat', maxMp: 60, mp: 180, relic: '灯塔接力电容', description: '最大 MP +60 并恢复 180 MP；F27 总管落败后再次补满。' }
+  relayCapacitor: { name: '灯塔接力电容', kind: 'stat', maxMp: 60, mp: 160, relic: '灯塔接力电容', description: '最大 MP +60 并恢复 160 MP；F27 总管落败后再次补满。' }
 });
 
 function installItems(items) {
@@ -344,7 +344,7 @@ function installDialogues(dialogues) {
       turn('绫星·璃', 'hero', '我会留给真正需要它的那一页。')
     ]),
     floor25: sequence('第二十五阵：缺页庭', [
-      turn('绫星·璃', 'hero', '这一页被撕走了，封条却还要日、月、星三种卡。'),
+      turn('绫星·璃', 'hero', '这一页被撕走了，封条却还要一张日卡、两张月卡和一张星卡。'),
       turn('残响精灵·纱雾', 'guide', '旧系统不在乎你为什么缺卡。新的路至少该让人提前看见：打开它，会失去哪一条支线。')
     ]),
     floor26: sequence('第二十六阵：折角集市', [

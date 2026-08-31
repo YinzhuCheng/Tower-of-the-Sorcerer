@@ -33,6 +33,18 @@ test('route insights call out the Act III charter and its explicit card fork', a
   assert.ok(insights.some((entry) => entry.id === 'gate:f24RelayAnnex'));
 });
 
+test('route insights read the authoritative missing-seal card budget from replay', () => {
+  const insights = deriveRouteInsights({
+    steps: [{
+      kind: 'tile',
+      action: { token: 'gate:f25MissingSeal' },
+      engine: { events: [{ type: 'cardGate', gateId: 'f25MissingSeal', requirements: { sun: 1, moon: 2, star: 1 } }] }
+    }]
+  });
+  const budget = insights.find((entry) => entry.id === 'gate:f25MissingSeal');
+  assert.match(budget.text, /日曜 ×1、月辉 ×2、星蚀 ×1/);
+});
+
 test('route insights explain the two-phase MP split rather than only the final HP total', () => {
   const insights = deriveRouteInsights({
     battleLog: [

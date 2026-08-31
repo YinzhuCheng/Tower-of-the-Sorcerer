@@ -34,10 +34,13 @@ const baseAdapter = createTowerAdapter();
 const adapter = createDemoThirtyFloorExpertWitnessAdapter(createDoctrineRouteAdapter(baseAdapter, 'ember'));
 const requestedCharter = process.env.CHARTER ?? null;
 const charterIds = requestedCharter ? [requestedCharter] : undefined;
-const requestedMutation = process.env.MUTATION ?? null;
+const requestedMutationIds = (process.env.MUTATION ?? '')
+  .split(',').map((id) => id.trim()).filter(Boolean);
 const mutationCatalog = createDemoThirtyFloorMutationCatalog();
-if (requestedMutation && !mutationCatalog.some((mutation) => mutation.id === requestedMutation)) {
-  throw new Error(`Unknown Act III numeric mutation '${requestedMutation}'.`);
+for (const mutationId of requestedMutationIds) {
+  if (!mutationCatalog.some((mutation) => mutation.id === mutationId)) {
+    throw new Error(`Unknown Act III mutation '${mutationId}'.`);
+  }
 }
 const evaluatePortfolio = () => {
   const charters = evaluateAct3CharterPortfolio({
@@ -62,8 +65,8 @@ const evaluatePortfolio = () => {
     publishable: charters.publishable && handoffs.publishable
   });
 };
-const portfolio = requestedMutation
-  ? withDemoThirtyFloorCandidate({ mutationIds: [requestedMutation] }, mutationCatalog, evaluatePortfolio)
+const portfolio = requestedMutationIds.length
+  ? withDemoThirtyFloorCandidate({ mutationIds: requestedMutationIds }, mutationCatalog, evaluatePortfolio)
   : evaluatePortfolio();
 const structure = validateDemoThirtyFloorContent({ floors: FLOORS, enemies: ENEMIES, items: ITEMS });
 const report = {
@@ -71,7 +74,7 @@ const report = {
     && (requestedCharter ? portfolio.entries.every((entry) => entry.completed) : portfolio.publishable)
     && portfolio.handoffPortfolio.entries.every((entry) => entry.completed),
   contentId: DEMO30_CONTENT_ID,
-  mutation: requestedMutation,
+  mutation: requestedMutationIds,
   floors: FLOORS.length,
   structure,
   entries: portfolio.entries.map((entry) => ({
@@ -80,6 +83,7 @@ const report = {
     minNormalizedHpMargin: entry.minNormalizedHpMargin,
     milestones: entry.result.milestones.map((stage) => ({ id: stage.milestone, reached: stage.reached, expanded: stage.expandedStates, generated: stage.generatedStates })),
     insights: entry.insights,
+    strategicDecisions: process.env.DEBUG_DEMO30 === '1' ? entry.strategicDecisions : undefined,
     diagnostics: process.env.DEBUG_DEMO30 === '1'
       ? {
         stages: entry.result.milestones.map((stage) => ({
@@ -103,7 +107,8 @@ const report = {
     handoffId: entry.handoffId,
     completed: entry.completed,
     minNormalizedHpMargin: entry.minNormalizedHpMargin,
-    insights: entry.insights
+    insights: entry.insights,
+    strategicDecisions: process.env.DEBUG_DEMO30 === '1' ? entry.strategicDecisions : undefined
   }))
 };
 console.log(JSON.stringify(report, null, 2));
