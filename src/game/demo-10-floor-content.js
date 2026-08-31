@@ -72,7 +72,7 @@ export function applyDemoTenFloorContent({ enemies, floors, dialogues, gridSize 
   }
   ensureShop(floors[4].map, { x: 5, y: 7 });
   Object.assign(floors[0], {
-    objective: '使用初始魔眼图鉴判断损伤，击败猫卫长米露并回收月影核心。',
+    objective: '查看敌人耗血，击败猫卫长米露并回收月影核心。',
     initialRelics: Object.freeze(['codex', 'compass'])
   });
   Object.assign(floors[4], {

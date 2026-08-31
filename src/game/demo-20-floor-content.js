@@ -130,7 +130,7 @@ function installActTwoEnemies(enemies) {
       floor,
       ...numeric,
       boss: semantic.kind === 'boss',
-      description: `${semantic.role}。战斗规则和当前数值均可在图鉴中查看。`
+      description: `${semantic.role}。悬停即可查看战斗规则、当前数值和预计耗血。`
     };
   }
 

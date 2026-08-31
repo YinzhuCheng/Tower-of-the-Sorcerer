@@ -219,11 +219,6 @@ function showDialogue(dialogueId, after = null, { finalLabel = null } = {}) {
 }
 
 function updateBattlePreview() {
-  if (!state.relics.codex) {
-    elements.preview.className = 'battle-preview muted';
-    elements.preview.textContent = '魔眼图鉴尚未取得。第一阵中藏有这件宝物。';
-    return;
-  }
   const previews = getAdjacentEnemyPreviews(state);
   if (previews.length === 0) {
     elements.preview.className = 'battle-preview muted';
@@ -539,7 +534,7 @@ function showShop() {
 
 function showCodex() {
   if (!state.relics.codex) {
-    showToast('尚未获得魔眼图鉴。');
+    showToast('尚未获得魔眼图鉴；敌人仍可直接悬停查看数值和预计耗血。');
     return;
   }
   const entries = getCodexEntries(state);

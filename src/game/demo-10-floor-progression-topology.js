@@ -204,7 +204,7 @@ export function applyDemoTenFloorProgressionTopology({ floors, enemies } = {}) {
 
   configureFloor(floorByNumber(floors, 1), {
     title: '月白门廊',
-    objective: '拿图鉴，查看敌人耗血；卡门会消耗对应卡。',
+    objective: '悬停敌人可看耗血；卡门会立刻消耗对应卡。',
     exitGuardians: []
   });
   configureFloor(floorByNumber(floors, 2), {

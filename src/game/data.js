@@ -19,7 +19,7 @@ export const ITEMS = {
   hpLarge: { name: '星泉药剂', kind: 'stat', hp: 850, maxHp: 850, description: '生命上限与当前生命 +850。' },
   weapon: { name: '辉月魔刃', kind: 'stat', atk: 12, relic: '辉月魔刃', description: '攻击永久 +12。' },
   shield: { name: '龙鳞护符', kind: 'stat', def: 12, relic: '龙鳞护符', description: '防御永久 +12。' },
-  codex: { name: '魔眼图鉴', kind: 'relic', relicKey: 'codex', relic: '魔眼图鉴', description: '显示相邻敌人的固定损伤，并解锁敌人图鉴。' },
+  codex: { name: '魔眼图鉴', kind: 'relic', relicKey: 'codex', relic: '魔眼图鉴', description: '解锁完整敌人图鉴；敌人的数值和预计耗血始终可直接悬停查看。' },
   compass: { name: '层间罗盘', kind: 'relic', relicKey: 'compass', relic: '层间罗盘', description: '可在已到达且上下通路开放的楼层间传送。' },
   lucky: { name: '招财星币', kind: 'relic', relicKey: 'lucky', relic: '招财星币', description: '此后击败敌人获得的金币翻倍。' },
   ward: { name: '静谧耳坠', kind: 'relic', relicKey: 'ward', relic: '静谧耳坠', description: '受到的无视防御魔法伤害降低 20%。' },
@@ -206,7 +206,7 @@ export const DIALOGUES = {
   prologue: {
     speaker: '残响精灵·纱雾', portrait: 'guide',
     title: '序章：被夺去的咏唱',
-    text: '无声女王夺走了璃的魔力，并把七枚核心锁进高塔。守卫被术式操控，但仍有清醒的一面。\n\n先拿魔眼图鉴：它会直接显示每场战斗的固定耗血。'
+    text: '无声女王夺走了璃的魔力，并把七枚核心锁进高塔。守卫被术式操控，但仍有清醒的一面。\n\n所有战斗都是固定数值。靠近或悬停敌人，就能先看到预计耗血。'
   },
   floor2: {
     speaker: '绫星·璃', portrait: 'hero', title: '第二阵：森罗回廊',
@@ -234,7 +234,7 @@ export const DIALOGUES = {
   },
   floor8: {
     speaker: '无声女王·诺克缇娅', portrait: 'final_queen', title: '终阵：无声王座',
-    text: '“你拿回了核心，但王座不会因此打开。”\n\n先清掉近卫与封印；终局战的数值可在图鉴和路线情报中查看。'
+    text: '“你拿回了核心，但王座不会因此打开。”\n\n先清掉近卫与封印；悬停守卫可看数值与耗血，终局条件看路线情报。'
   },
   bossCat: {
     speaker: '猫卫长·米露', portrait: 'cat_boss', title: '月影核心回收',
@@ -288,7 +288,7 @@ export const FLOORS = [
     id: 0,
     number: 1,
     title: '月白门廊',
-    objective: '取得魔眼图鉴，击败猫卫长米露并回收月影核心。',
+    objective: '查看敌人耗血，击败猫卫长米露并回收月影核心。',
     intro: 'prologue',
     boss: 'catBoss',
     theme: { floor: 0x20203b, floorAlt: 0x29264a, wall: 0x504873, glow: 0xb9a8ff, fog: 0x171528 },

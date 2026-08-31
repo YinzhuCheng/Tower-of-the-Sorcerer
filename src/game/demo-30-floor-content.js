@@ -314,7 +314,7 @@ function installEnemies(enemies) {
     enemies[id] = {
       name: names[id], portrait: portraits[id], faction: '余烬登记库', floor: floorByEnemy[id],
       ...numeric,
-      description: '余烬登记库的守卫。战斗规则和当前数值可在图鉴中查看。'
+      description: '余烬登记库的守卫。悬停即可查看战斗规则、当前数值和预计耗血。'
     };
   }
   enemies.archiveWarden.defeatDialogue = 'bossArchiveWardenPost';

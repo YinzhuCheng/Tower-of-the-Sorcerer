@@ -63,3 +63,33 @@ test('assembled 30F campaign keeps automatic story and objectives scannable', ()
     .map((turn) => String(turn.text ?? '').replaceAll('\n', ''));
   assert.ok(automaticLines.every((line) => [...line].length <= 70));
 });
+
+test('production copy does not present the starting codex as a combat-intel gate', async () => {
+  const { createInitialState } = await import('../src/game/engine.js');
+  const { buildMapUnitHoverPreview } = await import('../src/game/tactical-interaction.js');
+  const state = createInitialState();
+  assert.equal(state.relics.codex, true);
+  assert.ok(!state.floorStates.some((floorState) => floorState.map.some((row) => row.includes('item:codex'))));
+  assert.doesNotMatch(FLOORS[0].objective, /拿图鉴|取得魔眼图鉴/);
+
+  const enemyRow = state.floorStates[0].map.findIndex((row) => row.some((token) => token.startsWith('enemy:')));
+  const enemyColumn = state.floorStates[0].map[enemyRow].findIndex((token) => token.startsWith('enemy:'));
+  state.relics.codex = false;
+  const directEnemyIntel = buildMapUnitHoverPreview(state, enemyColumn, enemyRow);
+  assert.equal(directEnemyIntel?.kind, 'enemy');
+  assert.match(directEnemyIntel?.damageText ?? '', /HP|无法破防/);
+
+  const activeCopy = [
+    ...FLOORS.map((floor) => floor.objective),
+    ...Object.values(DIALOGUES).flatMap((dialogue) => [
+      dialogue.text,
+      ...(dialogue.turns ?? []).map((turn) => turn.text)
+    ]),
+    ...Object.values(ENEMIES).map((enemy) => enemy.description)
+  ].filter(Boolean).join('\n');
+  assert.doesNotMatch(activeCopy, /先拿.*图鉴|取得.*图鉴.*耗血|图鉴中查看/);
+
+  const mainSource = await readFile(join(root, 'src/main.js'), 'utf8');
+  assert.doesNotMatch(mainSource, /function updateBattlePreview\(\) \{\s*if \(!state\.relics\.codex\)/);
+  assert.match(mainSource, /const previews = getAdjacentEnemyPreviews\(state\);/);
+});
