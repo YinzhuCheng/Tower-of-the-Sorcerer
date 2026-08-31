@@ -175,12 +175,12 @@ function configureFloor(floor, { title, objective, exitGuardians, guardianGates,
 function installShadowWardens(enemies) {
   Object.assign(enemies, {
     shadowWardBlade: {
-      name: '影仪近卫·断棱', portrait: 'sword_boss', faction: '虚影织界·四相仪式', floor: 7,
+      name: '影仪近卫·断棱', portrait: 'shadow_ward_blade', faction: '虚影织界·四相仪式', floor: 7,
       hp: 1180, atk: 174, def: 82, gold: 260, boss: true, special: 'firstStrike',
       description: '四相仪式的执刃近卫。她不持有核心，但与其余守卫共同维持通往王庭的上楼结界。'
     },
     shadowWardCantor: {
-      name: '影仪近卫·残歌', portrait: 'void_priestess', faction: '虚影织界·四相仪式', floor: 7,
+      name: '影仪近卫·残歌', portrait: 'shadow_ward_cantor', faction: '虚影织界·四相仪式', floor: 7,
       hp: 1120, atk: 168, def: 78, gold: 260, boss: true, special: 'magic', magicPower: 118,
       description: '四相仪式的咏唱近卫。她的固定魔法伤害迫使玩家在进入王庭前确认防护与生命储备。'
     }

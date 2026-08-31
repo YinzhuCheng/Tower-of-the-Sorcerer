@@ -137,12 +137,12 @@ function installFloor8GuardianVault(floors, enemies) {
 
   Object.assign(enemies, {
     hushVaultBlade: {
-      name: '寂光双卫·刃', portrait: 'sword_boss', faction: '静默前庭·宝库', floor: 8,
+      name: '寂光双卫·刃', portrait: 'hush_vault_blade', faction: '静默前庭·宝库', floor: 8,
       hp: 1500, atk: 214, def: 88, gold: 280, boss: true, special: 'firstStrike',
       description: '不负责封锁上楼，而是与另一名守卫共同守住王庭侧翼宝库。击败两人后宝库结界才会解除。'
     },
     hushVaultCantor: {
-      name: '寂光双卫·咏', portrait: 'eclipse_mage', faction: '静默前庭·宝库', floor: 8,
+      name: '寂光双卫·咏', portrait: 'hush_vault_cantor', faction: '静默前庭·宝库', floor: 8,
       hp: 1450, atk: 198, def: 84, gold: 280, boss: true, special: 'magic', magicPower: 132,
       description: '双卫中的术式守门人。她的存在让宝库成为高价值可选战，而不是每层都要缴纳的 Boss 税。'
     }

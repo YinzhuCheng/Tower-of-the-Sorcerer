@@ -44,7 +44,10 @@ test('enemy art manifest resolves all generated enemy and NPC entries, including
 
   for (const key of [
     'vine_druid', 'shell_guard', 'blade_priestess', 'crown_knight',
-    'dragon_guard', 'dusk_dragon', 'comet_archer'
+    'dragon_guard', 'dusk_dragon', 'comet_archer', 'outer_crown',
+    'shadow_ward_blade', 'hush_vault_blade', 'star_sentinel', 'crown_shade',
+    'null_cantor', 'shadow_ward_cantor', 'mute_guard', 'hush_cantor',
+    'hush_vault_cantor'
   ]) assert.match(manifest.assets[key]?.file ?? '', /^enemies\/v3\/.*-map-384\.webp$/, `${key} must have a dedicated identity sprite`);
 
   const bundleCache = new Map();

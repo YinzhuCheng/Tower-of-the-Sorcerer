@@ -82,17 +82,17 @@ export function applyDemoTenFloorContent({ enemies, floors, dialogues, gridSize 
 
   Object.assign(enemies, {
     muteGuard: {
-      name: '缄默近卫', portrait: 'silence_guard', faction: '无声王庭·外环', floor: 8,
+      name: '缄默近卫', portrait: 'mute_guard', faction: '无声王庭·外环', floor: 8,
       hp: 1000, atk: 205, def: 82, gold: 155,
       description: '王庭外环的实体防线，专门惩罚只堆生命、不补防御的战法。'
     },
     hushCantor: {
-      name: '止声咏唱者', portrait: 'eclipse_mage', faction: '无声王庭·外环', floor: 8,
+      name: '止声咏唱者', portrait: 'hush_cantor', faction: '无声王庭·外环', floor: 8,
       hp: 900, atk: 198, def: 76, gold: 170, special: 'magic', magicPower: 145,
       description: '以静默波绕过普通防御，让后期生命储备仍然具有真实价值。'
     },
     outerCrown: {
-      name: '外环冠剑姬', portrait: 'sword_boss', faction: '无声王庭·外环', floor: 8,
+      name: '外环冠剑姬', portrait: 'outer_crown', faction: '无声王庭·外环', floor: 8,
       hp: 1180, atk: 212, def: 90, gold: 190, special: 'firstStrike',
       description: '先制剑压守住侧翼资源，制造是否绕路取宝的真实成本。'
     },
@@ -102,17 +102,17 @@ export function applyDemoTenFloorContent({ enemies, floors, dialogues, gridSize 
       description: '守在王庭外环的执剑官。她不持有魔力核心，以高压静默剑域检验七核回收后的资源配置。'
     },
     starSentinel: {
-      name: '逆星守望者', portrait: 'mirror_doll', faction: '倒悬星桥', floor: 9,
+      name: '逆星守望者', portrait: 'star_sentinel', faction: '倒悬星桥', floor: 9,
       hp: 1200, atk: 220, def: 92, gold: 185,
       description: '以倒悬星轨校准来客的进退，迫使防御取舍真正兑现价值。'
     },
     nullCantor: {
-      name: '空谱咏唱者', portrait: 'void_priestess', faction: '倒悬星桥', floor: 9,
+      name: '空谱咏唱者', portrait: 'null_cantor', faction: '倒悬星桥', floor: 9,
       hp: 1000, atk: 205, def: 82, gold: 180, special: 'magic', magicPower: 170,
       description: '将咏唱压缩成高强度空谱波，限制无成本回收整层资源。'
     },
     crownShade: {
-      name: '冠影巡猎姬', portrait: 'shadow_ninja', faction: '倒悬星桥', floor: 9,
+      name: '冠影巡猎姬', portrait: 'crown_shade', faction: '倒悬星桥', floor: 9,
       hp: 1100, atk: 225, def: 88, gold: 195, special: 'firstStrike',
       description: '在星桥阴影中先制截击，逼迫入侵者为选择付出成本。'
     },

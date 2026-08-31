@@ -1,85 +1,328 @@
 {
-  "version": 7,
+  "version": 8,
   "basePath": "/assets/anime/",
   "assets": {
-    "mana_wisp": { "file": "enemies/v1/mana-wisp-map-128.webp" },
-    "aether_warden": { "file": "enemies/v1/aether-warden-map-128.webp" },
-    "rune_cantor": { "file": "enemies/v1/rune-cantor-map-128.webp" },
-    "spellblade_duelist": { "file": "enemies/v1/spellblade-duelist-map-128.webp" },
-    "mana_sentinel": { "file": "enemies/v1/mana-sentinel-map-128.webp" },
-    "prism_archivist": { "file": "enemies/v1/prism-archivist-map-128.webp" },
-    "mirror_huntress": { "file": "enemies/v1/mirror-huntress-map-128.webp" },
-    "void_herald": { "file": "enemies/v1/void-herald-map-128.webp" },
-    "liyue_awakened": { "file": "enemies/v1/liyue-awakened-map-128.webp" },
-    "origin_core": { "file": "enemies/v1/origin-core-map-128.webp", "scale": 1.10 },
-    "resonance_blade": { "file": "enemies/v1/resonance-blade-map-128.webp", "scale": 1.08 },
-    "resonance_cantor": { "file": "enemies/v1/resonance-cantor-map-128.webp", "scale": 1.08 },
-    "arcane_gatekeeper": { "file": "enemies/v1/arcane-gatekeeper-map-128.webp", "scale": 1.10 },
-    "spectrum_marshal": { "file": "enemies/v1/spectrum-marshal-map-128.webp", "scale": 1.08 },
-    "triune_arbiter": { "file": "enemies/v1/triune-arbiter-map-128.webp", "scale": 1.10 },
-    "mirror_duelist": { "file": "enemies/v1/mirror-duelist-map-128.webp", "scale": 1.08 },
-    "mirror_cantor": { "file": "enemies/v1/mirror-cantor-map-128.webp", "scale": 1.08 },
-    "crown_blade": { "file": "enemies/v1/crown-blade-map-128.webp", "scale": 1.08 },
-    "crown_cantor": { "file": "enemies/v1/crown-cantor-map-128.webp", "scale": 1.08 },
-    "crown_magus": { "file": "enemies/v1/crown-magus-map-128.webp", "scale": 1.10 },
-    "mote": { "file": "enemies/v1/mote-map-128.webp", "scale": 1.04 },
-    "cat_scout": { "file": "enemies/v1/cat-scout-map-128.webp" },
-    "cat_mage": { "file": "enemies/v1/cat-mage-map-128.webp" },
-    "cat_boss": { "file": "enemies/v1/cat-boss-map-128.webp", "scale": 1.08 },
-    "fox_acolyte": { "file": "enemies/v1/fox-acolyte-map-128.webp" },
-    "fox_archer": { "file": "enemies/v1/fox-archer-map-128.webp" },
-    "fox_boss": { "file": "enemies/v1/fox-boss-map-128.webp", "scale": 1.10 },
-    "whale_singer": { "file": "enemies/v1/whale-singer-map-128.webp" },
-    "tide_lancer": { "file": "enemies/v1/tide-lancer-map-128.webp" },
-    "whale_boss": { "file": "enemies/v1/whale-boss-map-128.webp", "scale": 1.10 },
-    "sword_apprentice": { "file": "enemies/v1/sword-apprentice-map-128.webp" },
-    "sword_knight": { "file": "enemies/v1/sword-knight-map-128.webp" },
-    "sword_boss": { "file": "enemies/v1/sword-boss-map-128.webp", "scale": 1.10 },
-    "dragon_whelp": { "file": "enemies/v1/dragon-whelp-map-128.webp" },
-    "flame_caster": { "file": "enemies/v1/flame-caster-map-128.webp" },
-    "dragon_boss": { "file": "enemies/v1/dragon-boss-map-128.webp", "scale": 1.12 },
-    "star_witch": { "file": "enemies/v1/star-witch-map-128.webp" },
-    "mirror_doll": { "file": "enemies/v1/mirror-doll-map-128.webp" },
-    "shadow_ninja": { "file": "enemies/v1/shadow-ninja-map-128.webp" },
-    "void_priestess": { "file": "enemies/v1/void-priestess-map-128.webp" },
-    "silence_guard": { "file": "enemies/v1/silence-guard-map-128.webp" },
-    "eclipse_mage": { "file": "enemies/v1/eclipse-mage-map-128.webp" },
-    "hush_cantor": { "file": "enemies/v1/hush-cantor-map-128.webp" },
-    "outer_crown": { "file": "enemies/v1/outer-crown-map-128.webp" },
-    "palace_warden": { "file": "enemies/v1/palace-warden-map-128.webp", "scale": 1.12 },
-    "black_seal_keeper": { "file": "enemies/v1/black-seal-keeper-map-128.webp", "scale": 1.10 },
-    "palace_warden_v2": { "file": "enemies/v2/palace-warden-map-384.webp", "scale": 1.12 },
-    "black_seal_keeper_v2": { "file": "enemies/v2/black-seal-keeper-map-384.webp", "scale": 1.10 },
-    "vine_druid": { "file": "enemies/v3/vine-druid-map-384.webp", "scale": 1.08 },
-    "shell_guard": { "file": "enemies/v3/shell-guard-map-384.webp", "scale": 1.06 },
-    "blade_priestess": { "file": "enemies/v3/blade-priestess-map-384.webp", "scale": 1.08 },
-    "crown_knight": { "file": "enemies/v3/crown-knight-map-384.webp", "scale": 1.10 },
-    "dragon_guard": { "file": "enemies/v3/dragon-guard-map-384.webp", "scale": 1.10 },
-    "dusk_dragon": { "file": "enemies/v3/dusk-dragon-map-384.webp", "scale": 1.08 },
-    "comet_archer": { "file": "enemies/v3/comet-archer-map-384.webp", "scale": 1.08 },
-    "void_core": { "file": "enemies/v2/void-core-map-384.webp", "scale": 1.16 },
-    "echo_regent": { "file": "enemies/v2/echo-regent-map-384.webp", "scale": 1.12 },
-    "arcane_sovereign": { "file": "enemies/v2/arcane-sovereign-map-384.webp", "scale": 1.12 },
-    "astral_boss": { "file": "enemies/v1/astral-boss-map-128.webp", "scale": 1.08 },
-    "shadow_boss": { "file": "enemies/v1/shadow-boss-map-128.webp", "scale": 1.08 },
-    "final_queen": { "file": "enemies/v1/final-queen-combat-map-128.webp", "scale": 1.12 },
-    "merchant": { "file": "enemies/v1/merchant-keke-map-128.webp" },
-    "act3_cinder_scribe": { "file": "enemies/act3/cinder-scribe-map-384.webp", "scale": 1.14 },
-    "act3_ash_custodian": { "file": "enemies/act3/ash-custodian-map-384.webp", "scale": 1.12 },
-    "act3_shelter_warden": { "file": "enemies/act3/shelter-warden-map-384.webp", "scale": 1.15 },
-    "act3_audit_bailiff": { "file": "enemies/act3/audit-bailiff-map-384.webp", "scale": 1.13 },
-    "act3_relay_runner": { "file": "enemies/act3/relay-runner-map-384.webp", "scale": 1.12 },
-    "act3_relay_conductor": { "file": "enemies/act3/relay-conductor-map-384.webp", "scale": 1.14 },
-    "act3_ledger_mage": { "file": "enemies/act3/ledger-mage-map-384.webp", "scale": 1.14 },
-    "act3_archive_lancer": { "file": "enemies/act3/archive-lancer-map-384.webp", "scale": 1.12 },
-    "act3_shelf_warden": { "file": "enemies/act3/shelf-warden-map-384.webp", "scale": 1.16 },
-    "act3_triage_knight": { "file": "enemies/act3/triage-knight-map-384.webp", "scale": 1.14 },
-    "act3_margin_duelist": { "file": "enemies/act3/margin-duelist-map-384.webp", "scale": 1.12 },
-    "act3_errata_cantor": { "file": "enemies/act3/errata-cantor-map-384.webp", "scale": 1.10 },
-    "act3_archive_marshal": { "file": "enemies/act3/archive-marshal-map-384.webp", "scale": 1.12 },
-    "act3_index_beast": { "file": "enemies/act3/index-beast-map-384.webp", "scale": 1.16 },
-    "act3_last_custodian": { "file": "enemies/act3/last-custodian-map-384.webp", "scale": 1.18 },
-    "act3_archive_warden": { "file": "enemies/act3/archive-warden-map-384.webp", "scale": 1.15 },
-    "act3_errata_core": { "file": "enemies/act3/errata-core-map-384.webp", "scale": 1.18 }
+    "mana_wisp": {
+      "file": "enemies/v1/mana-wisp-map-128.webp"
+    },
+    "aether_warden": {
+      "file": "enemies/v1/aether-warden-map-128.webp"
+    },
+    "rune_cantor": {
+      "file": "enemies/v1/rune-cantor-map-128.webp"
+    },
+    "spellblade_duelist": {
+      "file": "enemies/v1/spellblade-duelist-map-128.webp"
+    },
+    "mana_sentinel": {
+      "file": "enemies/v1/mana-sentinel-map-128.webp"
+    },
+    "prism_archivist": {
+      "file": "enemies/v1/prism-archivist-map-128.webp"
+    },
+    "mirror_huntress": {
+      "file": "enemies/v1/mirror-huntress-map-128.webp"
+    },
+    "void_herald": {
+      "file": "enemies/v1/void-herald-map-128.webp"
+    },
+    "liyue_awakened": {
+      "file": "enemies/v1/liyue-awakened-map-128.webp"
+    },
+    "origin_core": {
+      "file": "enemies/v1/origin-core-map-128.webp",
+      "scale": 1.1
+    },
+    "resonance_blade": {
+      "file": "enemies/v1/resonance-blade-map-128.webp",
+      "scale": 1.08
+    },
+    "resonance_cantor": {
+      "file": "enemies/v1/resonance-cantor-map-128.webp",
+      "scale": 1.08
+    },
+    "arcane_gatekeeper": {
+      "file": "enemies/v1/arcane-gatekeeper-map-128.webp",
+      "scale": 1.1
+    },
+    "spectrum_marshal": {
+      "file": "enemies/v1/spectrum-marshal-map-128.webp",
+      "scale": 1.08
+    },
+    "triune_arbiter": {
+      "file": "enemies/v1/triune-arbiter-map-128.webp",
+      "scale": 1.1
+    },
+    "mirror_duelist": {
+      "file": "enemies/v1/mirror-duelist-map-128.webp",
+      "scale": 1.08
+    },
+    "mirror_cantor": {
+      "file": "enemies/v1/mirror-cantor-map-128.webp",
+      "scale": 1.08
+    },
+    "crown_blade": {
+      "file": "enemies/v1/crown-blade-map-128.webp",
+      "scale": 1.08
+    },
+    "crown_cantor": {
+      "file": "enemies/v1/crown-cantor-map-128.webp",
+      "scale": 1.08
+    },
+    "crown_magus": {
+      "file": "enemies/v1/crown-magus-map-128.webp",
+      "scale": 1.1
+    },
+    "mote": {
+      "file": "enemies/v1/mote-map-128.webp",
+      "scale": 1.04
+    },
+    "cat_scout": {
+      "file": "enemies/v1/cat-scout-map-128.webp"
+    },
+    "cat_mage": {
+      "file": "enemies/v1/cat-mage-map-128.webp"
+    },
+    "cat_boss": {
+      "file": "enemies/v1/cat-boss-map-128.webp",
+      "scale": 1.08
+    },
+    "fox_acolyte": {
+      "file": "enemies/v1/fox-acolyte-map-128.webp"
+    },
+    "fox_archer": {
+      "file": "enemies/v1/fox-archer-map-128.webp"
+    },
+    "fox_boss": {
+      "file": "enemies/v1/fox-boss-map-128.webp",
+      "scale": 1.1
+    },
+    "whale_singer": {
+      "file": "enemies/v1/whale-singer-map-128.webp"
+    },
+    "tide_lancer": {
+      "file": "enemies/v1/tide-lancer-map-128.webp"
+    },
+    "whale_boss": {
+      "file": "enemies/v1/whale-boss-map-128.webp",
+      "scale": 1.1
+    },
+    "sword_apprentice": {
+      "file": "enemies/v1/sword-apprentice-map-128.webp"
+    },
+    "sword_knight": {
+      "file": "enemies/v1/sword-knight-map-128.webp"
+    },
+    "sword_boss": {
+      "file": "enemies/v1/sword-boss-map-128.webp",
+      "scale": 1.1
+    },
+    "dragon_whelp": {
+      "file": "enemies/v1/dragon-whelp-map-128.webp"
+    },
+    "flame_caster": {
+      "file": "enemies/v1/flame-caster-map-128.webp"
+    },
+    "dragon_boss": {
+      "file": "enemies/v1/dragon-boss-map-128.webp",
+      "scale": 1.12
+    },
+    "star_witch": {
+      "file": "enemies/v1/star-witch-map-128.webp"
+    },
+    "mirror_doll": {
+      "file": "enemies/v1/mirror-doll-map-128.webp"
+    },
+    "shadow_ninja": {
+      "file": "enemies/v1/shadow-ninja-map-128.webp"
+    },
+    "void_priestess": {
+      "file": "enemies/v1/void-priestess-map-128.webp"
+    },
+    "silence_guard": {
+      "file": "enemies/v1/silence-guard-map-128.webp"
+    },
+    "eclipse_mage": {
+      "file": "enemies/v1/eclipse-mage-map-128.webp"
+    },
+    "hush_cantor": {
+      "file": "enemies/v3/hush-cantor-map-384.webp",
+      "scale": 1.08
+    },
+    "outer_crown": {
+      "file": "enemies/v3/outer-crown-map-384.webp",
+      "scale": 1.1
+    },
+    "palace_warden": {
+      "file": "enemies/v1/palace-warden-map-128.webp",
+      "scale": 1.12
+    },
+    "black_seal_keeper": {
+      "file": "enemies/v1/black-seal-keeper-map-128.webp",
+      "scale": 1.1
+    },
+    "palace_warden_v2": {
+      "file": "enemies/v2/palace-warden-map-384.webp",
+      "scale": 1.12
+    },
+    "black_seal_keeper_v2": {
+      "file": "enemies/v2/black-seal-keeper-map-384.webp",
+      "scale": 1.1
+    },
+    "vine_druid": {
+      "file": "enemies/v3/vine-druid-map-384.webp",
+      "scale": 1.08
+    },
+    "shell_guard": {
+      "file": "enemies/v3/shell-guard-map-384.webp",
+      "scale": 1.06
+    },
+    "blade_priestess": {
+      "file": "enemies/v3/blade-priestess-map-384.webp",
+      "scale": 1.08
+    },
+    "crown_knight": {
+      "file": "enemies/v3/crown-knight-map-384.webp",
+      "scale": 1.1
+    },
+    "dragon_guard": {
+      "file": "enemies/v3/dragon-guard-map-384.webp",
+      "scale": 1.1
+    },
+    "dusk_dragon": {
+      "file": "enemies/v3/dusk-dragon-map-384.webp",
+      "scale": 1.08
+    },
+    "comet_archer": {
+      "file": "enemies/v3/comet-archer-map-384.webp",
+      "scale": 1.08
+    },
+    "void_core": {
+      "file": "enemies/v2/void-core-map-384.webp",
+      "scale": 1.16
+    },
+    "echo_regent": {
+      "file": "enemies/v2/echo-regent-map-384.webp",
+      "scale": 1.12
+    },
+    "arcane_sovereign": {
+      "file": "enemies/v2/arcane-sovereign-map-384.webp",
+      "scale": 1.12
+    },
+    "astral_boss": {
+      "file": "enemies/v1/astral-boss-map-128.webp",
+      "scale": 1.08
+    },
+    "shadow_boss": {
+      "file": "enemies/v1/shadow-boss-map-128.webp",
+      "scale": 1.08
+    },
+    "final_queen": {
+      "file": "enemies/v1/final-queen-combat-map-128.webp",
+      "scale": 1.12
+    },
+    "merchant": {
+      "file": "enemies/v1/merchant-keke-map-128.webp"
+    },
+    "act3_cinder_scribe": {
+      "file": "enemies/act3/cinder-scribe-map-384.webp",
+      "scale": 1.14
+    },
+    "act3_ash_custodian": {
+      "file": "enemies/act3/ash-custodian-map-384.webp",
+      "scale": 1.12
+    },
+    "act3_shelter_warden": {
+      "file": "enemies/act3/shelter-warden-map-384.webp",
+      "scale": 1.15
+    },
+    "act3_audit_bailiff": {
+      "file": "enemies/act3/audit-bailiff-map-384.webp",
+      "scale": 1.13
+    },
+    "act3_relay_runner": {
+      "file": "enemies/act3/relay-runner-map-384.webp",
+      "scale": 1.12
+    },
+    "act3_relay_conductor": {
+      "file": "enemies/act3/relay-conductor-map-384.webp",
+      "scale": 1.14
+    },
+    "act3_ledger_mage": {
+      "file": "enemies/act3/ledger-mage-map-384.webp",
+      "scale": 1.14
+    },
+    "act3_archive_lancer": {
+      "file": "enemies/act3/archive-lancer-map-384.webp",
+      "scale": 1.12
+    },
+    "act3_shelf_warden": {
+      "file": "enemies/act3/shelf-warden-map-384.webp",
+      "scale": 1.16
+    },
+    "act3_triage_knight": {
+      "file": "enemies/act3/triage-knight-map-384.webp",
+      "scale": 1.14
+    },
+    "act3_margin_duelist": {
+      "file": "enemies/act3/margin-duelist-map-384.webp",
+      "scale": 1.12
+    },
+    "act3_errata_cantor": {
+      "file": "enemies/act3/errata-cantor-map-384.webp",
+      "scale": 1.1
+    },
+    "act3_archive_marshal": {
+      "file": "enemies/act3/archive-marshal-map-384.webp",
+      "scale": 1.12
+    },
+    "act3_index_beast": {
+      "file": "enemies/act3/index-beast-map-384.webp",
+      "scale": 1.16
+    },
+    "act3_last_custodian": {
+      "file": "enemies/act3/last-custodian-map-384.webp",
+      "scale": 1.18
+    },
+    "act3_archive_warden": {
+      "file": "enemies/act3/archive-warden-map-384.webp",
+      "scale": 1.15
+    },
+    "act3_errata_core": {
+      "file": "enemies/act3/errata-core-map-384.webp",
+      "scale": 1.18
+    },
+    "shadow_ward_blade": {
+      "file": "enemies/v3/shadow-ward-blade-map-384.webp",
+      "scale": 1.1
+    },
+    "hush_vault_blade": {
+      "file": "enemies/v3/hush-vault-blade-map-384.webp",
+      "scale": 1.1
+    },
+    "star_sentinel": {
+      "file": "enemies/v3/star-sentinel-map-384.webp",
+      "scale": 1.12
+    },
+    "crown_shade": {
+      "file": "enemies/v3/crown-shade-map-384.webp",
+      "scale": 1.1
+    },
+    "null_cantor": {
+      "file": "enemies/v3/null-cantor-map-384.webp",
+      "scale": 1.08
+    },
+    "shadow_ward_cantor": {
+      "file": "enemies/v3/shadow-ward-cantor-map-384.webp",
+      "scale": 1.1
+    },
+    "mute_guard": {
+      "file": "enemies/v3/mute-guard-map-384.webp",
+      "scale": 1.1
+    },
+    "hush_vault_cantor": {
+      "file": "enemies/v3/hush-vault-cantor-map-384.webp",
+      "scale": 1.1
+    }
   }
 }
