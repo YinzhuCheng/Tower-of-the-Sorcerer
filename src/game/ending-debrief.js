@@ -7,20 +7,20 @@ import { getSelectedAct3Charter, isAct3CharterCompleted } from './act3-charters.
 
 const SURVIVOR_ENDINGS = Object.freeze({
   milu: Object.freeze({
-    title: '月镜议席',
-    text: '米露把曾用来记录牺牲的月镜改成公开议席：任何守护术启动前，承担风险的人都能看见并提出异议。'
+    title: '月镜仍亮着',
+    text: '米露把月镜留在入口。新的守护术会先写明风险，再由同行者决定是否启用。'
   }),
   lanin: Object.freeze({
-    title: '潮汐预唱法案',
-    text: '澜音让每一道高压术式先响起预告。危险没有被抹去，但再也不会以“来不及说明”为理由降临。'
+    title: '潮汐先响起',
+    text: '澜音让高压术式先发出预告。危险仍在，但不再毫无提示。'
   }),
   yanli: Object.freeze({
-    title: '赤焰裂印协议',
-    text: '焰璃留下的裂印成为第一条新规则：再紧急的封印也必须允许被记录、复核与撤销。'
+    title: '赤焰留下裂口',
+    text: '焰璃留下的裂印让封印可以被记录、检查，也可以被撤销。'
   }),
   yayu: Object.freeze({
     title: '影线公开准则',
-    text: '鸦羽把所有隐藏授权的影线接到公开档案。反制不再依赖某个英雄的秘密，而成为每个人都能查验的权利。'
+    text: '鸦羽把影线接进公开档案。以后谁能改写规则，一眼就能查到。'
   })
 });
 
@@ -41,15 +41,15 @@ export function getEndingDebrief(state) {
   const charterEpilogue = charterCompleted ? {
     shelter: {
       title: '夜航仍亮着',
-      text: '米露把夜航护送印挂回灯塔入口。它不再决定谁有资格通过，只把每一段危险路程和愿意同行的人写在同一盏灯下。'
+      text: '米露把夜航护送印挂回灯塔入口。每段危险路程和同行者都被清楚写下。'
     },
     audit: {
       title: '每一页都能被改正',
-      text: '校验簿留在开放的工作台上。错误没有被掩成“必要损失”，也没有人再能把改正它的钥匙锁进抽屉。'
+      text: '校验簿留在工作台上。错误能被看见，也能被改正。'
     },
     relay: {
       title: '灯塔接力',
-      text: '接力电容被拆成许多小灯，交到夜班、巡路人和信使手里。求援不必等一位英雄醒来，回应也不必只来自一个人。'
+      text: '接力电容拆成许多小灯，交给夜班、巡路人和信使。求援不再只能等一个人回应。'
     }
   }[charter.id] : null;
 
@@ -84,8 +84,8 @@ export function getEndingDebrief(state) {
     kind: 'open-future',
     title: '仍在练习的自由',
     text: survivor
-      ? `${survivor.name}带着会战留下的伤势离开王座。新的规则尚未成熟，但它们会从公开、质问与一次次被修正中生长出来。`
-      : '王座崩解后，璃没有留下新的命令。新的规则尚未成熟，但它们会从公开、质问与一次次被修正中生长出来。',
+      ? `${survivor.name}带着会战留下的伤势离开王座。新的规则还在被一条条写下。`
+      : '王座崩解后，璃没有留下新的命令。新的规则还在被一条条写下。',
     survivorName: survivor?.name ?? null,
     bondTitle: null,
     completedBondCount: completedBonds.length,

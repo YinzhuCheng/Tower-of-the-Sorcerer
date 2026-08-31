@@ -16,6 +16,7 @@ import {
   parseToken
 } from './engine.js';
 import { getRemainingExitGuardianIds } from './progression-rules.js';
+import { combatRuleCopy } from './player-copy.js';
 
 const AUTO_SAVE_KEY = 'lost-magic-tower:auto:v1';
 const MANUAL_SAVE_KEY = 'lost-magic-tower:manual:v1';
@@ -25,10 +26,7 @@ function formatNumber(value) {
 }
 
 function specialLabel(enemy) {
-  if (enemy.special === 'magic') return `魔法伤害 ${enemy.magicPower ?? enemy.atk}/次`;
-  if (enemy.special === 'firstStrike') return '先制攻击';
-  if (enemy.special === 'doubleHit') return '二连击';
-  return '普通攻击';
+  return combatRuleCopy(enemy, { compact: true });
 }
 
 function detail(label, value) {
@@ -99,7 +97,7 @@ function buildHeroHoverPreview(state) {
     title: '绫星·璃',
     badge: '主角',
     tone: 'info',
-    description: '当前角色状态。固定数值战斗不会出现随机伤害。',
+    description: '固定数值战斗：先看敌人的预计耗血，再决定是否开战。',
     primaryLabel: '生命',
     primaryValue: `${formatNumber(state.stats.hp)} / ${formatNumber(state.stats.maxHp)} HP`,
     details: [
@@ -118,7 +116,7 @@ function buildItemHoverPreview(state, itemId) {
   const details = [];
   if (item.kind === 'card') {
     details.push(detail('当前持有', `${state.cards[item.card] ?? 0} 张`));
-    details.push(detail('用途', '通过对应颜色结界时消耗 1 张'));
+    details.push(detail('用途', '穿过对应颜色结界时立刻消耗 1 张'));
   } else if (item.kind === 'relic') {
     const owned = Boolean(state.relics[item.relicKey]);
     details.push(detail('状态', owned ? '已经获得' : '拾取后永久生效'));
@@ -150,8 +148,8 @@ function buildShopHoverPreview(state) {
     badge: bonus > 0 ? `效率 +${bonus}%` : '商店',
     tone: affordable ? 'safe' : 'warning',
     description: bonus > 0
-      ? `本层商店的永久成长效率提高约 ${bonus}%；每次购买后价格仍会全局上升。`
-      : '把敌人掉落的金币转换为永久成长；每次购买后价格会上升。',
+      ? `本层购买效果额外 +${bonus}%；每次购买后下一次价格会上升。`
+      : '购买后立刻永久成长；每次购买后下一次价格会上升。',
     primaryLabel: '下一次购买',
     primaryValue: `${formatNumber(cost)} 金币`,
     details: [
@@ -170,7 +168,7 @@ function buildDoorHoverPreview(state, cardId) {
     title: `${name}结界`,
     badge: '卡牌结界',
     tone: canOpen ? 'safe' : 'warning',
-    description: '通过时固定消耗 1 张对应结界卡。',
+    description: '穿过时立刻消耗 1 张对应结界卡。',
     primaryLabel: '开启条件',
     primaryValue: `1 张${name}`,
     details: [detail('当前持有', `${count} 张 · ${canOpen ? '可以开启' : '暂时无法开启'}`)]
@@ -200,7 +198,7 @@ function buildSwitchHoverPreview(state, switchId) {
     title: '魔力机关开关',
     badge: '机关',
     tone: activated ? 'safe' : 'info',
-    description: `本组共有 ${puzzle.requirements.length} 枚开关，全部激活后解除关联封锁。`,
+    description: `本组共有 ${puzzle.requirements.length} 枚开关；全部踩亮后，关联封锁会解除。`,
     primaryLabel: '机关进度',
     primaryValue: `${activeCount} / ${puzzle.requirements.length}`,
     details: [detail('本开关', activated ? '已经激活' : '踏上后激活')]
@@ -217,7 +215,7 @@ function buildGateHoverPreview(state, gateId) {
       title: '三相结界',
       badge: '复合结界',
       tone: ready ? 'safe' : 'warning',
-      description: '同时消耗日曜、月辉、星蚀卡各 1 张才能通过。',
+      description: '穿过时同时消耗日曜、月辉、星蚀卡各 1 张。',
       primaryLabel: '开启条件',
       primaryValue: '日 / 月 / 星各 1 张',
       details: [detail('当前持有', `日 ${state.cards.sun} · 月 ${state.cards.moon} · 星 ${state.cards.star}`)]
@@ -232,7 +230,7 @@ function buildGateHoverPreview(state, gateId) {
       title: '机关封锁结界',
       badge: '机关结界',
       tone: 'warning',
-      description: '必须先激活全部关联开关，结界才会从地图上解除。',
+      description: '先踩亮全部关联开关，结界才会解除。',
       primaryLabel: '机关进度',
       primaryValue: `${activeCount} / ${switchRequirements.length}`,
       details: [detail('剩余', `${Math.max(0, switchRequirements.length - activeCount)} 枚开关`)]
@@ -248,7 +246,7 @@ function buildGateHoverPreview(state, gateId) {
       title: '星序封锁结界',
       badge: '顺序结界',
       tone: 'warning',
-      description: `按固定顺序踏过符文：${order}。`,
+      description: `按固定顺序踩符文：${order}。`,
       primaryLabel: '当前进度',
       primaryValue: `${sequence.progress} / ${sequence.order.length}`,
       details: [detail('下一步', next)]
@@ -290,7 +288,7 @@ function buildRuneHoverPreview(state, runeId) {
     title: `${label}符文`,
     badge: '顺序机关',
     tone: isExpected ? 'safe' : sequence.expected ? 'warning' : 'perfect',
-    description: `完整顺序：${sequence.order.map((id) => sequence.labelFor(id)).join(' → ')}。踏错会按规则重置序列。`,
+    description: `顺序：${sequence.order.map((id) => sequence.labelFor(id)).join(' → ')}。踩错会重置进度，不消耗资源。`,
     primaryLabel: '序列位置',
     primaryValue: index >= 0 ? `第 ${index + 1} / ${sequence.order.length} 步` : '特殊符文',
     details: [
@@ -317,7 +315,7 @@ function buildStairHoverPreview(state, direction) {
     title: direction === 'up' ? '上行楼层传送阵' : '下行楼层传送阵',
     badge: '楼层传送',
     tone: locked ? 'warning' : 'safe',
-    description: direction === 'up' ? '进入上一层魔法阵。' : '返回已经到达的下一层魔法阵。',
+    description: direction === 'up' ? '通往下一层。' : '返回已经到达的上一层。',
     primaryLabel: '目标',
     primaryValue: `第 ${target.number} 阵 · ${target.title}`,
     details: [
@@ -460,7 +458,7 @@ function renderEnemyTooltip(card, preview) {
   detailText.className = 'enemy-hover-detail';
   detailText.textContent = preview.heroDamage <= 0
     ? preview.reason ?? preview.specialText
-    : `${preview.rounds} 回合 · 敌方每次反击 ${formatNumber(preview.enemyDamage)} · ${preview.specialText}`;
+    : `${preview.rounds} 回合 · 每次反击 ${formatNumber(preview.enemyDamage)} · ${combatRuleCopy(preview.enemy)}`;
 
   card.append(stats, damage, result, detailText);
 }

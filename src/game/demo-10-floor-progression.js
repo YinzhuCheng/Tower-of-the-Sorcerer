@@ -90,11 +90,11 @@ function rewriteLegacyTriGate(floors, dialogues) {
   const puzzles = { ...floor7.puzzles, cardGates };
   delete puzzles.triGate;
   floor7.puzzles = puzzles;
-  floor7.objective = '集齐月卡与星卡解除双相结界，击败鸦羽并回收最后一枚魔力核心。日卡留给王座最深处的唯一封印。';
+  floor7.objective = '月、星卡各 1 张开启结界；四名守卫全部落败后上行。';
   if (dialogues?.floor7 && !Array.isArray(dialogues.floor7.turns)) {
     dialogues.floor7 = {
       ...dialogues.floor7,
-      text: '“把月卡和星卡带来。双相结界会检查你是否懂得保留真正稀有的权限。”\n\n这是最后一道核心阵。日卡不会在这里消耗——王座深处只有一处封印配得上它。'
+      text: '“双相结界需要月卡和星卡。”\n\n日曜卡不要在这里用；王座里还有最后一道封印。'
     };
   }
   return Object.freeze({ floor: 7, gateId, requirements: Object.freeze({ moon: 1, star: 1 }) });
@@ -165,7 +165,7 @@ function installFloor8GuardianVault(floors, enemies) {
       [F8_VAULT_ID]: [...F8_VAULT_GUARDIANS]
     }
   };
-  floor.objective = '激活两枚静默开关并击败执剑官维拉即可上楼；侧翼寂光双卫只守宝库，击败两人可开启月卡与高价值资源房。';
+  floor.objective = '踩亮两枚开关并击败维拉即可上行；双卫宝库为可选。';
 
   return Object.freeze({
     floor: 8,
@@ -256,7 +256,7 @@ function installFinalThroneSeal(floor, enemies) {
       [FINAL_SEAL_ID]: { sun: 1 }
     }
   };
-  floor.objective = '突破王座近卫，保留唯一一张日卡解除王座见面结界，再击败无声女王及其黯星核心。结界之后没有商店，也没有补救。';
+  floor.objective = '保留日曜卡开启王座结界；击败女王与核心。';
 
   return Object.freeze({
     encounter: Object.freeze({ x: encounter.x, y: encounter.y, enemyId: encounter.enemyId }),
@@ -316,7 +316,7 @@ export function applyDemoTenFloorProgressionGrammar({ floors, enemies, dialogues
   if (dialogues?.floor10 && !Array.isArray(dialogues.floor10.turns)) {
     dialogues.floor10 = {
       ...dialogues.floor10,
-      text: '“你一路把最普通的星卡当作消耗品，把月卡留给真正值得的分支。现在，把唯一的日卡拿出来。”\n\n日辉照亮整面王座结界。最后一次权限选择之后，只剩女王本人。'
+      text: '“现在拿出最后一张日曜卡。”\n\n结界解除后，只剩女王与核心。'
     };
   }
 

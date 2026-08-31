@@ -131,106 +131,106 @@ export function applyDemoTenFloorContent({ enemies, floors, dialogues, gridSize 
   Object.assign(dialogues, {
     floor7: {
       speaker: '影织姬·鸦羽', portrait: 'shadow_boss', title: '第七阵：虚影织界',
-      text: '“把日、月、星三张卡都带来。三相结界只认完整的魔力光谱。”\n\n这是最后一道核心阵。穿过它之后，七枚核心会全部回到你体内，但王庭本身还有两道防线。'
+      text: '“三相结界需要日、月、星各一张。”\n\n穿过后是王庭；最后一张日曜卡还要留给王座。'
     },
     floor8: {
       speaker: '残响精灵·纱雾', portrait: 'guide', title: '第八阵：静默前庭',
-      text: '七枚核心已经齐全。接下来不再有核心奖励，只有王庭为了筛掉错误路线设置的静默防线。两枚静默开关共同控制外环闸门。'
+      text: '七枚核心已经齐全。两枚静默开关共同控制外环闸门。\n\n双卫宝库可选；执剑官才是上行条件。'
     },
     floor9: {
       speaker: '绫星·璃', portrait: 'hero', title: '第九阵：倒悬星桥',
-      text: '王座就在上方。这里的星序不是力量测试，而是路线测试：月卡守住月蚀校准台，随后依次踏过“月蚀、晨辉、星落”，才能打开黯星门。'
+      text: '月辉卡打开月蚀校准台。\n\n之后按月蚀 → 晨辉 → 星落的顺序踩符文，才能打开黯星门。'
     },
     floor10: {
       speaker: '无声女王·诺克缇娅', portrait: 'final_queen', title: '第十阵：无声王座',
-      text: '“你已经证明自己能把无数选择收束成答案。但我仍认为，最安全的世界是不允许任何人选择。”\n\n七枚核心同时回应。璃踏入最后的王座。'
+      text: '“王座门后没有商店，也没有补救。”\n\n璃握紧最后一张日曜卡，走向女王。'
     },
 
     bossCatPreDemo: dialogueSequence('第一阵守护者：猫卫长·米露', [
-      dialogueTurn('猫卫长·米露', 'cat_boss', '停下。强制术式要求我守住月影核心——哪怕我知道这命令并不属于我。'),
-      dialogueTurn('绫星·璃', 'hero', '那我就把命令和核心一起斩开。先说好，我只取回属于我的魔力。')
+      dialogueTurn('猫卫长·米露', 'cat_boss', '术式要我守住核心。可我知道，这不是我的命令。'),
+      dialogueTurn('绫星·璃', 'hero', '那我会斩断术式，只取回自己的魔力。')
     ]),
     bossCatPostDemo: dialogueSequence('月影核心回收', [
-      dialogueTurn('猫卫长·米露', 'cat_boss', '结界命令解除了……原来输掉这一战，反而能让我重新听见自己的想法。'),
-      dialogueTurn('绫星·璃', 'hero', '休息吧。下一层的强制术式，我会继续拆掉。')
+      dialogueTurn('猫卫长·米露', 'cat_boss', '结界解除了。我终于能自己开口。'),
+      dialogueTurn('绫星·璃', 'hero', '休息吧。我会继续往上。')
     ]),
     bossFoxPreDemo: dialogueSequence('第二阵守护者：狐祝·绯叶', [
-      dialogueTurn('狐祝·绯叶', 'fox_boss', '森罗结界会记录你的每一张卡、每一次取舍。让我看看你是不是只会凭力量往前撞。'),
-      dialogueTurn('绫星·璃', 'hero', '固定数值已经把代价写清楚了。我来这里就是为了对自己的选择负责。')
+      dialogueTurn('狐祝·绯叶', 'fox_boss', '森罗结界会记下你花掉的每一张卡。'),
+      dialogueTurn('绫星·璃', 'hero', '那就让它记下我做过的选择。')
     ]),
     bossFoxPostDemo: dialogueSequence('森罗核心回收', [
-      dialogueTurn('狐祝·绯叶', 'fox_boss', '判断合格。你没有把钥匙和生命当成可以随便浪费的东西。'),
-      dialogueTurn('绫星·璃', 'hero', '因为真正的魔法不是“能不能做”，而是“值不值得做”。')
+      dialogueTurn('狐祝·绯叶', 'fox_boss', '你没有把钥匙和生命随手花掉。'),
+      dialogueTurn('绫星·璃', 'hero', '因为后面的门还在等着。')
     ]),
     bossWhalePreDemo: dialogueSequence('第三阵守护者：深蓝歌姬·澜音', [
-      dialogueTurn('深蓝歌姬·澜音', 'whale_boss', '鲸歌会直接穿过防御。若你的生命储备只是表面漂亮，现在就会被它揭穿。'),
-      dialogueTurn('绫星·璃', 'hero', '那就让伤害结算说话。我的路线能不能撑住，不需要运气回答。')
+      dialogueTurn('深蓝歌姬·澜音', 'whale_boss', '鲸歌的反击无视防御。你看清耗血了吗？'),
+      dialogueTurn('绫星·璃', 'hero', '看清了。来吧。')
     ]),
     bossWhalePostDemo: dialogueSequence('潮汐核心回收', [
-      dialogueTurn('深蓝歌姬·澜音', 'whale_boss', '鲸歌停下了……谢谢你没有把我的失控当成罪。'),
-      dialogueTurn('绫星·璃', 'hero', '控制你的人才该为这场战斗负责。')
+      dialogueTurn('深蓝歌姬·澜音', 'whale_boss', '鲸歌停下了。谢谢你。'),
+      dialogueTurn('绫星·璃', 'hero', '把你困在这里的人才该负责。')
     ]),
     bossSwordPreDemo: dialogueSequence('第四阵守护者：剑圣·塞蕾娜', [
-      dialogueTurn('剑圣·塞蕾娜', 'sword_boss', '不破防，就没有侥幸；防得住，就没有额外伤害。这一阵只承认计算与执行。'),
-      dialogueTurn('绫星·璃', 'hero', '正合我意。让每一点攻击和防御都承担它该承担的结果。')
+      dialogueTurn('剑圣·塞蕾娜', 'sword_boss', '不破防就无法赢；防得住就不掉血。'),
+      dialogueTurn('绫星·璃', 'hero', '规则清楚，正好。')
     ]),
     bossSwordPostDemo: dialogueSequence('锋刃核心回收', [
-      dialogueTurn('剑圣·塞蕾娜', 'sword_boss', '你赢的不是数值本身，而是对数值的理解。'),
-      dialogueTurn('绫星·璃', 'hero', '数值只是规则。选择才是玩家真正留下的痕迹。')
+      dialogueTurn('剑圣·塞蕾娜', 'sword_boss', '你看懂了数值。'),
+      dialogueTurn('绫星·璃', 'hero', '也看懂了下一步。')
     ]),
     bossDragonPreDemo: dialogueSequence('第五阵守护者：龙姬·焰璃', [
-      dialogueTurn('龙姬·焰璃', 'dragon_boss', '这里有这一幕唯一的商店，也有更重的龙火。把金币换成什么，就是你接下来几层要背负的答案。'),
-      dialogueTurn('绫星·璃', 'hero', '我不会为了眼前轻松，把后面的路卖掉。来吧。')
+      dialogueTurn('龙姬·焰璃', 'dragon_boss', '商店在这里，龙火也在这里。别把金币花空。'),
+      dialogueTurn('绫星·璃', 'hero', '我会给后面的路留余地。')
     ]),
     bossDragonPostDemo: dialogueSequence('赤焰核心回收', [
-      dialogueTurn('龙姬·焰璃', 'dragon_boss', '强制契约断了。再往上，敌人不会因为你走到高层就手下留情。'),
-      dialogueTurn('绫星·璃', 'hero', '最好如此。太轻的胜利证明不了任何东西。')
+      dialogueTurn('龙姬·焰璃', 'dragon_boss', '强制契约断了。上层只会更难。'),
+      dialogueTurn('绫星·璃', 'hero', '那就继续算，继续走。')
     ]),
     bossAstralPreDemo: dialogueSequence('第六阵守护者：天穹魔女·露米', [
-      dialogueTurn('天穹魔女·露米', 'astral_boss', '星图给出的结果很简单：错误顺序会归零，错误配点会留下永久代价。'),
-      dialogueTurn('绫星·璃', 'hero', '所以我先解序列，再解你。把不可逆的风险留到最后。')
+      dialogueTurn('天穹魔女·露米', 'astral_boss', '符文顺序错了会重置；数值不够就会输。'),
+      dialogueTurn('绫星·璃', 'hero', '那我先把顺序走对。')
     ]),
     bossAstralPostDemo: dialogueSequence('天穹核心回收', [
-      dialogueTurn('天穹魔女·露米', 'astral_boss', '演算更新：你的胜率已经从异常值变成主分支。'),
-      dialogueTurn('绫星·璃', 'hero', '那就继续观察。我还没走到结论。')
+      dialogueTurn('天穹魔女·露米', 'astral_boss', '演算更新：你有胜算。'),
+      dialogueTurn('绫星·璃', 'hero', '那就继续。')
     ]),
     bossShadowPreDemo: dialogueSequence('第七阵守护者：影织姬·鸦羽', [
-      dialogueTurn('影织姬·鸦羽', 'shadow_boss', '三相结界之后就是王庭。到那里，不会再有核心奖励替你修正错误。'),
-      dialogueTurn('绫星·璃', 'hero', '所以这一战之后，我只靠之前做过的选择。很好。')
+      dialogueTurn('影织姬·鸦羽', 'shadow_boss', '三相结界后就是王庭。再没有核心奖励。'),
+      dialogueTurn('绫星·璃', 'hero', '那就靠已经准备好的路线。')
     ]),
     bossShadowPostDemo: dialogueSequence('虚影核心回收', [
-      dialogueTurn('影织姬·鸦羽', 'shadow_boss', '七枚核心齐了。女王真正害怕的不是你的力量，是你证明力量可以被选择。'),
-      dialogueTurn('绫星·璃', 'hero', '那我就把这个答案带到她面前。')
+      dialogueTurn('影织姬·鸦羽', 'shadow_boss', '七枚核心齐了。'),
+      dialogueTurn('绫星·璃', 'hero', '王庭就在前面。')
     ]),
     bossPalacePreDemo: dialogueSequence('第八阵守护者：静默执剑官·维拉', [
-      dialogueTurn('静默执剑官·维拉', 'sword_boss', '七核齐全不代表合格。王庭外环只检查一件事：你的资源配置能不能承受真实压力。'),
-      dialogueTurn('绫星·璃', 'hero', '不用给我保底。让我看看前七层的选择到底值多少。')
+      dialogueTurn('静默执剑官·维拉', 'sword_boss', '核心齐全不代表能过王庭。'),
+      dialogueTurn('绫星·璃', 'hero', '那就检验我的配置。')
     ]),
     bossPalacePostDemo: dialogueSequence('王庭外环解除', [
-      dialogueTurn('静默执剑官·维拉', 'sword_boss', '固定数值已经给出了答案。你不是靠偶然性站在这里。'),
-      dialogueTurn('绫星·璃', 'hero', '下一道门也一样。')
+      dialogueTurn('静默执剑官·维拉', 'sword_boss', '你的路线撑住了。'),
+      dialogueTurn('绫星·璃', 'hero', '下一道门也是。')
     ]),
     bossBlackSealPreDemo: dialogueSequence('第九阵守护者：黯印观测官·塞芙', [
-      dialogueTurn('黯印观测官·塞芙', 'astral_boss', '你已经越过了唯一的资源转换节点。这里剩下的只有校准权限与此前每一次取舍。'),
-      dialogueTurn('绫星·璃', 'hero', '没有临时补救，才更能看清前面的选择是否成立。现在检查我的最终配置吧。')
+      dialogueTurn('黯印观测官·塞芙', 'astral_boss', '后面没有商店。现在只剩最终配置。'),
+      dialogueTurn('绫星·璃', 'hero', '那就开始。')
     ]),
     bossBlackSealPostDemo: dialogueSequence('黯星通行印解除', [
-      dialogueTurn('黯印观测官·塞芙', 'astral_boss', '许可印解除。王座已无中间层，也没有临时补救。'),
-      dialogueTurn('绫星·璃', 'hero', '足够了。剩下的数值就是我自己的答案。')
+      dialogueTurn('黯印观测官·塞芙', 'astral_boss', '许可印解除。王座就在上面。'),
+      dialogueTurn('绫星·璃', 'hero', '足够了。')
     ]),
     bossQueenPreDemo: dialogueSequence('第十阵：无声女王', [
-      dialogueTurn('无声女王·诺克缇娅', 'final_queen', '你把钥匙、金币和生命都变成了选择，却仍然把这种不确定性称为自由？'),
-      dialogueTurn('绫星·璃', 'hero', '自由不是没有代价。自由是代价写清楚以后，仍然由自己决定。'),
-      dialogueTurn('无声女王·诺克缇娅', 'final_queen', '那就用最后一战证明，你愿意承担这个答案。')
+      dialogueTurn('无声女王·诺克缇娅', 'final_queen', '你带着最后一张日曜卡来了。'),
+      dialogueTurn('绫星·璃', 'hero', '因为我知道它该用在哪里。'),
+      dialogueTurn('无声女王·诺克缇娅', 'final_queen', '那就来。')
     ]),
     queenPhaseDemo: dialogueSequence('最终术式展开', [
-      dialogueTurn('无声女王·诺克缇娅', 'final_queen', '人形只是最后一层限制。现在，七层魔阵会一起向你结算。'),
-      dialogueTurn('绫星·璃', 'hero', '那就一起算。这里没有随机数，也没有借口。')
+      dialogueTurn('无声女王·诺克缇娅', 'final_queen', '现在轮到黯星核心。'),
+      dialogueTurn('绫星·璃', 'hero', '数值都在眼前。继续。')
     ]),
     bossQueenPostDemo: dialogueSequence('终章：魔法重新被选择', [
-      dialogueTurn('绫星·璃', 'hero', '黯星核心破碎了。你已经不能再替所有人决定要不要拥有魔法。'),
-      dialogueTurn('无声女王·诺克缇娅', 'final_queen', '也许我真正害怕的，从来不是魔法失控……而是别人做出我无法控制的选择。'),
-      dialogueTurn('残响精灵·纱雾', 'guide', '十重阵列解除。咏唱是否响起，再次回到每个人自己手中。')
+      dialogueTurn('绫星·璃', 'hero', '黯星核心碎了。高塔的命令结束了。'),
+      dialogueTurn('无声女王·诺克缇娅', 'final_queen', '原来我怕的是失去控制。'),
+      dialogueTurn('残响精灵·纱雾', 'guide', '十重阵列解除。')
     ])
   });
 

@@ -43,6 +43,7 @@ import {
 } from './game/war-council.js';
 import { getFreeRouteIntel } from './game/free-route-intel.js';
 import { getEndingDebrief } from './game/ending-debrief.js';
+import { combatRuleCopy, HELP_SECTIONS, irreversibleLabel } from './game/player-copy.js';
 import { createMagicTowerScene } from './game/scene.js';
 import { createCanvasTowerScene } from './game/canvas-scene.js';
 import { hydratePortraits, portraitUrl } from './game/portraits.js';
@@ -103,10 +104,7 @@ function formatNumber(value) {
 }
 
 function specialLabel(enemy) {
-  if (enemy.special === 'magic') return `魔法伤害 ${enemy.magicPower}/次`;
-  if (enemy.special === 'firstStrike') return '先制攻击';
-  if (enemy.special === 'doubleHit') return '二连击';
-  return '普通攻击';
+  return combatRuleCopy(enemy, { compact: true });
 }
 
 function showToast(message, duration = 1700) {
@@ -183,6 +181,7 @@ function showDialogue(dialogueId, after = null, { finalLabel = null } = {}) {
             close: false,
             onClick: () => { index -= 1; renderTurn(); }
           }] : []),
+          ...(!finalLabel ? [{ label: '跳过叙事', close: true }] : []),
           {
             label: finalTurn ? (finalLabel ?? (state.victory ? '查看通关结算' : '继续')) : '下一句',
             className: 'primary',
@@ -212,7 +211,10 @@ function showDialogue(dialogueId, after = null, { finalLabel = null } = {}) {
         </div>
       </div>
     `,
-    actions: [{ label: finalLabel ?? (state.victory && dialogueId === 'ending' ? '查看通关结算' : '继续'), className: 'primary', onClick: after }]
+    actions: [
+      ...(!finalLabel ? [{ label: '跳过叙事' }] : []),
+      { label: finalLabel ?? (state.victory && dialogueId === 'ending' ? '查看通关结算' : '继续'), className: 'primary', onClick: after }
+    ]
   });
 }
 
@@ -242,11 +244,11 @@ function updateBattlePreview() {
       <div>
         <h4>${escapeHtml(enemy.name)}</h4>
         <p>HP ${formatNumber(enemy.hp)} · ATK ${formatNumber(enemy.atk)} · DEF ${formatNumber(enemy.def)}</p>
-        <p>${escapeHtml(specialLabel(enemy))}${magicText}${previews.length > 1 ? ` · 邻格共 ${previews.length} 名敌人` : ''}</p>
+        <p>${escapeHtml(specialLabel(enemy))}${magicText}${previews.length > 1 ? ` · 相邻还有 ${previews.length - 1} 名敌人` : ''}</p>
       </div>
     </div>
     <div class="preview-damage">
-      <span>预计损伤</span>
+      <span>这场会损失</span>
       <strong class="${lossClass}">${lossText}</strong>
     </div>
   `;
@@ -320,19 +322,19 @@ function loadGame() {
 
 function showHelp() {
   openModal({
-    kicker: 'RULES',
-    title: '固定数值魔塔规则',
+    kicker: 'HOW TO PLAY',
+    title: '先做决定，再看细节',
     body: `
-      <p><strong>战斗没有随机数。</strong>主角先攻击；若攻击不高于敌人防御，则无法交战。普通敌人的总损伤为：</p>
-      <p><code>(需要攻击回合数 - 1) × max(敌方攻击 - 主角防御, 0)</code></p>
-      <p>先制敌人会额外攻击一次；二连击每次反击造成两段伤害；魔法攻击无视防御，但可被“静谧耳坠”削减。</p>
-      <p>日曜、月辉、星蚀卡分别解除对应颜色的魔力结界。钥匙资源可能决定路线；按 I 或点击“路线情报”可免费、反复查看当前与后两层的精确门槛、奖励、敌人及终局公开配置。</p>
-      <p>魔眼图鉴与层间罗盘为初始持有物：E 打开图鉴，T 打开楼层罗盘。方向键或 WASD 移动；点击相邻格也可行动。</p>
-      <p>商店每十层只设置一处：第 5 阵用于第一章的属性转换，第 15 阵额外提供补魔与扩容。商店不是例行补给站；金币、卡片与 MP 都需要为后续门槛保留。</p>
-      <p><strong>第二章魔力附刃。</strong>击败第十阵的黯星核心后，魔力恢复为 100 / 100。可在任意非战斗时设置档位；每一档在一场战斗开始时支付 10 MP，并令该场每次主角攻击额外造成 10 点伤害。附刃不能替代物理破防。</p>
-      <p><strong>路线盟约。</strong>离开第十一阵前必须从赤焰、潮汐、影线中公开选择一条专家路线；另外两条专家宝库将保持封印。选择不扣资源，但会决定卡片投资、MP 曲线、可投靠盟友和最终会战目标。按 R 或点击“路线盟约”可随时复核。</p>
-      <p><strong>见证契约。</strong>从第十一阵起，按 C 或点击“见证契约”可签署一份可选高难目标。规则、所需信物路线、会战胜利窗口都会公开；契约不提供数值奖励，也不会因失败阻断通关。</p>
-      <p><strong>第三幕修复章程。</strong>击败起源核心后，F21 的上行阶梯会要求从夜航、校验、接力中公开选择一条。它们各自锁定一座侧库，卡片价格、敌人、回报和最终影响都可免费查看；没有购买情报的环节。</p>
+      <div class="copy-principles">
+        ${HELP_SECTIONS.map((section) => `<section><h3>${escapeHtml(section.title)}</h3><ul>${section.lines.map((line) => `<li>${escapeHtml(line)}</li>`).join('')}</ul></section>`).join('')}
+      </div>
+      <details class="route-intel-threats">
+        <summary>查看完整规则与快捷键</summary>
+        <p><strong>伤害公式：</strong><code>(攻击所需回合 - 1) × max(敌方攻击 - 我方防御, 0)</code>。静谧耳坠会降低无视防御的魔法伤害。</p>
+        <p><strong>附刃：</strong>第十阵后解锁。每档在下一场战斗开始时消耗 10 MP；该战每次主角攻击额外 +10 伤害，仍需先物理破防。</p>
+        <p><strong>路线选择：</strong>F11 的路线盟约与 F21 的修复章程都会锁定其余专家支线；选择本身不扣资源，卡片与战斗代价会在对应楼层结算。</p>
+        <p><strong>快捷键：</strong>方向键 / WASD 移动；I 路线情报；R 路线盟约或修复章程；C 见证契约；E 图鉴；T 楼层罗盘。地图单位支持悬停或触摸查看。</p>
+      </details>
     `,
     actions: [{ label: '返回游戏', className: 'primary' }]
   });
@@ -417,7 +419,8 @@ function showWarCouncil() {
       title: `共鸣 MP：${allocated} / ${WAR_COUNCIL_MP_POOL}`,
       body: `
         <div class="dialogue-copy war-council-intro">
-          <p>敌方顺序和魔力配额已经公开；我方必须派出三名盟友并分配全部共鸣 MP。胜者带着剩余战意进入下一轮，所有数值均可预演。带有“信物共鸣”的盟友若存活，会在终局触发已公开的额外规则。</p>
+          <p><strong>这里不会消耗主角 MP。</strong>选择 3 名盟友、决定出场顺序，并分完全部 ${WAR_COUNCIL_MP_POOL} 点共鸣 MP；下方预演会立刻显示结果。</p>
+          <p>会战胜者会进入终局。带“信物共鸣”的盟友若存活，会触发卡片上已经写明的终局效果。</p>
         </div>
         <section class="war-council-enemy-list">
           <h3>敌方既定阵列</h3>
@@ -504,7 +507,7 @@ function showShop() {
     title: `下一次咏唱需要 ${cost} 金币`,
     body: `
       <div class="dialogue-copy shop-intro" style="margin-bottom:16px">
-        <p>金币是敌方术式崩解后的残余魔力。本层永久成长效率为 <strong>${Math.round(multiplier * 100)}%</strong>${bonus > 0 ? `（比底层约高 ${bonus}%）` : ''}。</p>
+        <p>每次购买都会立刻获得下列永久效果，并让<strong>下一次价格上升</strong>。本层效果为基础值的 <strong>${Math.round(multiplier * 100)}%</strong>${bonus > 0 ? `（额外 +${bonus}%）` : ''}。</p>
       </div>
       <div class="shop-grid">
         ${options.map((option) => `
@@ -563,31 +566,32 @@ function showCodex() {
 }
 
 function formatIntelSpecial(threat) {
-  if (threat.special === 'magic') return `魔法伤害 ${formatNumber(threat.magicPower)}/次`;
-  if (threat.special === 'firstStrike') return '先制攻击';
-  if (threat.special === 'doubleHit') return '二连击';
-  return '普通攻击';
+  return combatRuleCopy(threat, { compact: true });
 }
 
 function renderRouteIntelFloor(brief, { current = false } = {}) {
   const gates = brief.gates.length
     ? `<ul>${brief.gates.map((gate) => {
+      const intent = irreversibleLabel({
+        required: gate.target === '上行阶梯',
+        optional: Boolean(gate.target && gate.target !== '上行阶梯')
+      });
       if (gate.type === 'cards') {
-        return `<li><strong>${escapeHtml(gate.name)}</strong>：消耗 ${escapeHtml(gate.requirement)}${gate.target ? ` → ${escapeHtml(gate.target)}` : ''}</li>`;
+        return `<li><strong>${escapeHtml(gate.name)}</strong> · ${intent}：消耗 ${escapeHtml(gate.requirement)}${gate.target ? `，通向${escapeHtml(gate.target)}` : ''}</li>`;
       }
       const guardians = gate.guardians.map((guardian) => `${escapeHtml(guardian.name)}${guardian.defeated ? '（已击败）' : ''}`).join('、');
-      return `<li><strong>${escapeHtml(gate.name)}</strong>：击败 ${guardians}${gate.target ? ` → ${escapeHtml(gate.target)}` : ''}</li>`;
+      return `<li><strong>${escapeHtml(gate.name)}</strong> · ${intent}：击败 ${guardians}${gate.target ? `，通向${escapeHtml(gate.target)}` : ''}</li>`;
     }).join('')}</ul>`
-    : '<p class="muted">本层没有额外结界消耗。</p>';
+    : '<p class="muted">没有需要预留卡牌的结界。</p>';
   const mandatory = brief.mandatory.length
-    ? `<p><strong>上行强制目标：</strong>${brief.mandatory.map((entry) => `${escapeHtml(entry.name)}${entry.defeated ? '（已击败）' : ''}`).join('、')}</p>`
+    ? `<p><strong>离开本层前：</strong>击败 ${brief.mandatory.map((entry) => `${escapeHtml(entry.name)}${entry.defeated ? '（已击败）' : ''}`).join('、')}</p>`
     : '';
   const rewards = brief.rewards.length
-    ? `<p><strong>可见奖励：</strong>${brief.rewards.map((entry) => escapeHtml(entry.name)).join('、')}</p>`
+    ? `<p><strong>可选拿取：</strong>${brief.rewards.map((entry) => escapeHtml(entry.name)).join('、')}</p>`
     : '';
   const threats = brief.threats.length
     ? `<details class="route-intel-threats" ${current ? 'open' : ''}>
-        <summary>固定威胁与数值（${brief.threats.length}）</summary>
+        <summary>敌人数值与战斗规则（${brief.threats.length}）</summary>
         <ul>${brief.threats.map((threat) => `<li><strong>${escapeHtml(threat.name)}</strong>：HP ${formatNumber(threat.hp)} · ATK ${formatNumber(threat.atk)} · DEF ${formatNumber(threat.def)} · ${formatIntelSpecial(threat)}${threat.boss ? ' · 守卫单位' : ''}</li>`).join('')}</ul>
       </details>`
     : '<p class="muted">当前没有未清除的敌方单位。</p>';
@@ -595,9 +599,9 @@ function renderRouteIntelFloor(brief, { current = false } = {}) {
     <article class="route-intel-floor ${current ? 'current-route-intel' : ''}">
       <h3>F${brief.number} · ${escapeHtml(brief.title)}${current ? ' · 当前' : ''}</h3>
       <p>${escapeHtml(brief.objective)}</p>
-      <p class="route-intel-note"><strong>路线提示：</strong>${escapeHtml(brief.routeNote)}</p>
+      <p class="route-intel-note"><strong>这一层要记住：</strong>${escapeHtml(brief.routeNote)}</p>
       ${mandatory}
-      <h4>不可逆门槛</h4>
+      <h4>门与守卫</h4>
       ${gates}
       ${rewards}
       ${threats}
@@ -631,29 +635,29 @@ function showRouteIntel() {
   const doctrines = intel.doctrines
     ? `<section class="route-intel-finale doctrine-intel">
         <h3>第二章路线盟约${intel.doctrines.selectedId ? ` · 已签署${escapeHtml(getSelectedRouteDoctrine(state)?.title ?? '')}` : ''}</h3>
-        <p>离开 F11 前必须选择一条；专家路线彼此互斥，信息与门槛完全公开。</p>
+        <p>F11 上行前必须选择一条；其它专家路线本轮不可进入。</p>
         <ul>${intel.doctrines.entries.map((doctrine) => `<li><strong>${escapeHtml(doctrine.title)}</strong>：${escapeHtml(doctrine.route)} · ${escapeHtml(doctrine.cardPressure)} · ${escapeHtml(doctrine.risk)}${doctrine.selected ? ' · 本轮已签署' : doctrine.locked ? ' · 本轮封印' : ''}</li>`).join('')}</ul>
       </section>`
     : '';
   const charters = intel.charters
     ? `<section class="route-intel-finale doctrine-intel">
         <h3>第三幕修复章程${intel.charters.selectedId ? ` · 已签署${escapeHtml(getSelectedAct3Charter(state)?.title ?? '')}` : ''}</h3>
-        <p>离开 F21 前必须选择一份；三座侧库互斥，信息、卡片价格、敌人与终局效果均完全公开。</p>
+        <p>F21 上行前必须选择一份；其它两座侧库本轮不可进入。</p>
         <ul>${intel.charters.entries.map((charter) => `<li><strong>${escapeHtml(charter.title)}</strong>：${escapeHtml(charter.route)} · ${escapeHtml(charter.cost)} · ${escapeHtml(charter.payoff)}${charter.selected ? charter.completed ? ' · 本轮已完成' : ' · 本轮已签署' : charter.locked ? ' · 本轮封印' : ''}</li>`).join('')}</ul>
       </section>`
     : '';
   const handoffs = intel.handoffs
     ? `<section class="route-intel-finale doctrine-intel">
         <h3>F27 接力校场优先级${intel.handoffs.selectedId ? ` · 已锁定${escapeHtml(intel.handoffs.entries.find((entry) => entry.selected)?.title ?? '')}` : ''}</h3>
-        <p>第一名被击败的校场守卫决定优先程序；不消耗资源，但另外两种程序会永久错失。</p>
+        <p>第一个击败的校场守卫决定终局支援；另外两项本轮失去。</p>
         <ul>${intel.handoffs.entries.map((handoff) => `<li><strong>${escapeHtml(handoff.title)}</strong>：${escapeHtml(handoff.route)} · ${escapeHtml(handoff.cost)} · ${escapeHtml(handoff.payoff)}${handoff.selected ? ' · 本轮已锁定' : handoff.locked ? ' · 本轮错失' : ''}</li>`).join('')}</ul>
       </section>`
     : '';
   openModal({
-    kicker: 'FREE ROUTE INTEL · 零资源',
+    kicker: 'ROUTE INTEL · 不消耗资源',
     title: intel.title,
-    body: `<div class="dialogue-copy route-intel-intro"><p>${escapeHtml(intel.notice)}</p></div><div class="route-intel-list">${routeBody}</div>${doctrines}${charters}${handoffs}${finale}`,
-    actions: [{ label: '返回路线', className: 'primary' }]
+    body: `<div class="dialogue-copy route-intel-intro"><p>${escapeHtml(intel.notice)}</p><p><strong>当前账本：</strong>日曜 ${state.cards.sun} · 月辉 ${state.cards.moon} · 星蚀 ${state.cards.star}${state.magic?.unlocked ? ` · MP ${state.magic.mp}/${state.magic.maxMp}` : ''} · 金币 ${formatNumber(state.stats.gold)}</p></div><div class="route-intel-list">${routeBody}</div>${doctrines}${charters}${handoffs}${finale}`,
+    actions: [{ label: '继续探索', className: 'primary' }]
   });
 }
 
@@ -666,19 +670,19 @@ function showAct3Charter() {
     closable: Boolean(selected || state.charter?.legacyOpen),
     body: `
       <div class="dialogue-copy doctrine-intro">
-        <p>这不是购买情报，也不扣资源。它是一份公开的修复优先级：只保留一座侧库，其余两座在本轮封存。真正的卡片与战斗代价仍在相应楼层结算。</p>
-        <p>${selected ? (briefing.completedId ? '本轮的章程支线已经完成；下方保留最终规则与错失路线，供你复盘。' : '本轮章程已经锁定；仍可查看其侧库的价格、敌人与最终回报。') : state.charter?.legacyOpen ? '这是旧版本存档：第三幕章程不追溯强制。' : '离开 F21 前必须签署一份；选择后不可更换。'}</p>
+        <p><strong>选择本身不消耗资源。</strong>但本轮只会开启一座侧库；其它两座将封存。</p>
+        <p>${selected ? (briefing.completedId ? '已完成。下方保留终局效果，方便复核。' : '已锁定。卡牌和战斗代价会在对应侧库结算。') : state.charter?.legacyOpen ? '旧存档保留原有开放状态。' : '离开 F21 前必须选择一次，之后不能更换。'}</p>
       </div>
       <section class="doctrine-list">
         ${briefing.entries.map((charter) => `
           <article class="doctrine-card ${charter.selected ? 'selected-doctrine' : charter.locked ? 'locked-doctrine' : ''}">
             <div class="doctrine-heading"><h3>${escapeHtml(charter.title)}</h3><span>${escapeHtml(charter.difficulty)}</span></div>
-            <p><strong>路线：</strong>${escapeHtml(charter.route)}</p>
-            <p><strong>投入：</strong>${escapeHtml(charter.cost)}</p>
-            <p><strong>取舍：</strong>${escapeHtml(charter.risk)}</p>
-            <p><strong>兑现：</strong>${escapeHtml(charter.payoff)}</p>
+            <p><strong>去哪里：</strong>${escapeHtml(charter.route)}</p>
+            <p><strong>需要付出：</strong>${escapeHtml(charter.cost)}</p>
+            <p><strong>你会失去：</strong>${escapeHtml(charter.risk)}</p>
+            <p><strong>终局得到：</strong>${escapeHtml(charter.payoff)}</p>
             ${charter.completed ? '<p class="doctrine-complete">本轮已完成此章程。</p>' : ''}
-            ${!selected && !state.charter?.legacyOpen ? `<button data-act3-charter="${escapeHtml(charter.id)}">签署此章程</button>` : charter.selected ? '<p class="doctrine-selected-label">本轮已签署</p>' : charter.locked ? '<p class="doctrine-locked-label">本轮封存</p>' : ''}
+            ${!selected && !state.charter?.legacyOpen ? `<button data-act3-charter="${escapeHtml(charter.id)}">选择这一条</button>` : charter.selected ? '<p class="doctrine-selected-label">本轮已选择</p>' : charter.locked ? '<p class="doctrine-locked-label">本轮不可进入</p>' : ''}
           </article>`).join('')}
       </section>
     `,
@@ -692,7 +696,7 @@ function showAct3Charter() {
           autoSave();
           modalClosable = true;
           closeModal();
-          showToast(`已签署「${result.charter.title}」。另外两座侧库本轮封存。`, 2600);
+          showToast(`已选择「${result.charter.title}」。另外两座侧库本轮不可进入。`, 2600);
         });
       });
     }
@@ -716,20 +720,20 @@ function showRouteDoctrine() {
     closable: Boolean(selected || state.doctrine?.legacyOpen),
     body: `
       <div class="dialogue-copy doctrine-intro">
-        <p>这不是买情报，也不扣除任何资源。它是一次公开的战役承诺：三条专家路线会互相封锁，普通上行、F12 月镜宝库与核心通关始终保留。</p>
-        <p>${selected ? '本轮路线已经锁定；下方仍可用于核对投入与会战目标。' : state.doctrine?.legacyOpen ? '这是旧版本存档：专家路线保持原有开放状态。' : '离开 F11 前必须签署一条；选择后不可更换。'}</p>
+        <p><strong>选择不扣资源。</strong>它只决定哪一条专家支线可进入；主路和 F12 月镜宝库始终可走。</p>
+        <p>${selected ? '已锁定。下方保留成本和终局效果，方便复核。' : state.doctrine?.legacyOpen ? '旧存档保留原有开放状态。' : '离开 F11 前必须选择一次，之后不能更换。'}</p>
       </div>
       <section class="doctrine-list">
         ${briefing.entries.map((doctrine) => `
           <article class="doctrine-card ${doctrine.selected ? 'selected-doctrine' : doctrine.locked ? 'locked-doctrine' : ''}">
             <div class="doctrine-heading"><h3>${escapeHtml(doctrine.title)}</h3><span>${escapeHtml(doctrine.difficulty)}</span></div>
-            <p><strong>投入：</strong>${escapeHtml(doctrine.route)} · ${escapeHtml(doctrine.cardPressure)}</p>
-            <p><strong>代价：</strong>${escapeHtml(doctrine.risk)}</p>
-            ${doctrine.midgameSupport ? `<p><strong>中段支持：</strong>${escapeHtml(doctrine.midgameSupport)}</p>` : ''}
-            <p><strong>终局回报：</strong>${escapeHtml(doctrine.payoff)}</p>
+            <p><strong>去哪里 / 卡牌：</strong>${escapeHtml(doctrine.route)} · ${escapeHtml(doctrine.cardPressure)}</p>
+            <p><strong>路线压力：</strong>${escapeHtml(doctrine.risk)}</p>
+            ${doctrine.midgameSupport ? `<p><strong>中途得到：</strong>${escapeHtml(doctrine.midgameSupport)}</p>` : ''}
+            <p><strong>终局效果：</strong>${escapeHtml(doctrine.payoff)}</p>
             <p><strong>会战目标：</strong>${escapeHtml(doctrine.councilGoal)}</p>
             ${doctrine.completed ? `<p class="doctrine-complete">已完成信物「${escapeHtml(doctrine.bondTitle ?? '')}」。</p>` : ''}
-            ${!selected && !state.doctrine?.legacyOpen ? `<button data-route-doctrine="${escapeHtml(doctrine.id)}">签署此路线</button>` : doctrine.selected ? '<p class="doctrine-selected-label">本轮已签署</p>' : doctrine.locked ? '<p class="doctrine-locked-label">本轮已封印</p>' : ''}
+            ${!selected && !state.doctrine?.legacyOpen ? `<button data-route-doctrine="${escapeHtml(doctrine.id)}">选择这一条</button>` : doctrine.selected ? '<p class="doctrine-selected-label">本轮已选择</p>' : doctrine.locked ? '<p class="doctrine-locked-label">本轮不可进入</p>' : ''}
           </article>
         `).join('')}
       </section>
@@ -747,7 +751,7 @@ function showRouteDoctrine() {
           autoSave();
           modalClosable = true;
           closeModal();
-          showToast(`已签署「${result.doctrine.title}」。其他专家路线本轮封印。`, 2600);
+          showToast(`已选择「${result.doctrine.title}」。其他专家路线本轮不可进入。`, 2600);
         });
       });
     }
@@ -756,7 +760,7 @@ function showRouteDoctrine() {
 
 function renderChallengeResult(entry) {
   if (!entry.result) return '';
-  if (entry.result.status === 'completed') return '<p class="challenge-result safe">本轮已达成：将写入通关记录。</p>';
+  if (entry.result.status === 'completed') return '<p class="challenge-result safe">本轮已完成挑战。</p>';
   return `<p class="challenge-result danger">本轮未达成：${escapeHtml(entry.result.missing.join('；'))}。普通通关不受影响。</p>`;
 }
 
@@ -773,8 +777,8 @@ function showWitnessContracts() {
     title: selected ? `见证契约 · ${selected.title}` : '签署一份见证契约',
     body: `
       <div class="dialogue-copy challenge-intro">
-        <p>这是额外的高难记录，不是资源交易：签署、查看与预演都不会消耗卡片、金币、HP、MP 或回合；即使未达成，主线仍可正常通关。</p>
-        <p>${selected ? '本轮已签署，王座前会战结束后自动结算。' : councilDone ? '会战已经结算，本轮未签署见证契约。' : '每轮只能签署一份，签署后不可更换。下方胜利窗口来自当前公开会战配置。'}</p>
+        <p><strong>这是可选挑战，不是资源交易。</strong>签署、查看和预演都不消耗资源；未完成也不影响普通通关。</p>
+        <p>${selected ? '已选择；王座前会战结束后自动判定。' : councilDone ? '会战已结算，本轮没有选择挑战。' : '每轮只能选一项，之后不能更换。下方数字表示现有胜利方案中能完成它的数量。'}</p>
       </div>
       <section class="challenge-contract-list">
         ${briefing.entries.map((entry) => `

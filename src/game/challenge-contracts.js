@@ -21,7 +21,7 @@ export const CHALLENGE_CONTRACTS = Object.freeze([
     allyId: 'yanli',
     difficulty: '严苛',
     summary: '完成「赤焰蓄能」，并让龙姬·焰璃成为会战幸存者。',
-    detail: 'F15 档案封卷后的蓄能书库是可选路线；会战必须在公开 MP 题中留下焰璃。'
+    detail: '先走 F15 蓄能书库，再在会战预演中保住焰璃。'
   }),
   Object.freeze({
     id: 'tide-witness',
@@ -29,7 +29,7 @@ export const CHALLENGE_CONTRACTS = Object.freeze([
     allyId: 'lanin',
     difficulty: '极严苛',
     summary: '完成「潮汐导管」，并让深蓝歌姬·澜音成为会战幸存者。',
-    detail: 'F13 星导管需要预先保留星蚀卡；会战中的澜音残局窗口比常规胜利更窄。'
+    detail: '先为 F13 星导管留星蚀卡；会战预演中保住澜音。'
   }),
   Object.freeze({
     id: 'shadow-witness',
@@ -37,7 +37,7 @@ export const CHALLENGE_CONTRACTS = Object.freeze([
     allyId: 'yayu',
     difficulty: '极严苛',
     summary: '完成「影线校准」，并让影织姬·鸦羽成为会战幸存者。',
-    detail: '签署影线路线后，F16 镜泉宝库会成为必须完成的高压远征；会战必须把鸦羽保留到最后的支援位。'
+    detail: '选择影线路线后完成 F16 双镜宝库，再在会战预演中保住鸦羽。'
   })
 ]);
 

@@ -19,11 +19,11 @@ export const ACT3_CHARTERS = Object.freeze([
     title: '夜航护送章程',
     gateId: 'f22ShelterAnnex',
     itemId: 'shelterAegis',
-    difficulty: '生命账本 / 稳定残局',
+    difficulty: '生命型终局',
     route: 'F22 夜航侧库（消耗月辉卡 ×2）',
     cost: '月辉卡 ×2，并击败夜航守柜人。',
     payoff: '获得大幅生命与防御；F30 的每个阶段少结算 3 次反击。',
-    risk: '放弃星蚀审计的终局拆解与接力回路的 MP 两次补给。',
+    risk: '本轮无法获得校验削弱或接力补魔。',
     finale: Object.freeze({ counterattackGuard: 3, label: '夜航护送：最终每阶段少结算 3 次反击' })
   }),
   Object.freeze({
@@ -31,11 +31,11 @@ export const ACT3_CHARTERS = Object.freeze([
     title: '逐页校验章程',
     gateId: 'f23AuditAnnex',
     itemId: 'auditLedger',
-    difficulty: '星卡投资 / 高压拆解',
+    difficulty: '削弱型终局',
     route: 'F23 逐页校验室（消耗星蚀卡 ×2）',
     cost: '星蚀卡 ×2，并击败持簿执行官。',
     payoff: '提高攻防；F30 两阶段生命 -21%、防御 -15、魔法伤害 -55。',
-    risk: '中段要承受额外魔法战，且没有夜航的残局减击或接力补魔。',
+    risk: '要打魔法执行官；本轮没有夜航减击或接力补魔。',
     finale: Object.freeze({ hpMultiplier: 0.79, defPenalty: 15, magicPenalty: 55, label: '逐页校验：最终生命 -21%、防御 -15、魔法伤害 -55' })
   }),
   Object.freeze({
@@ -43,13 +43,13 @@ export const ACT3_CHARTERS = Object.freeze([
     title: '灯塔接力章程',
     gateId: 'f24RelayAnnex',
     itemId: 'relayCapacitor',
-    difficulty: 'MP 曲线 / 爆发收束',
+    difficulty: 'MP 型终局',
     route: 'F24 灯塔接力室（消耗日曜卡 ×1、月辉卡 ×1）',
-    cost: '日曜卡 ×1、月辉卡 ×1；取得接力电容后必须把 MP 预算留到 F27。',
+    cost: '日曜卡 ×1、月辉卡 ×1；第二次回充在 F27 后触发。',
     payoff: '最大 MP +60、立即补满；击败 F27 接力总管后再补满一次。',
-    risk: '没有终局减益；若把接力 MP 花在错误的普通战上，F30 会缺少破局档位。',
+    risk: '不直接削弱终局；F27 后的 MP 要留给 F30。',
     relayEnemyId: 'archiveMarshal',
-    finale: Object.freeze({ label: '灯塔接力：在 F27 与 F30 之间保留一次公开的 MP 回充窗口' })
+    finale: Object.freeze({ label: '灯塔接力：F27 后 MP 补满一次' })
   })
 ]);
 

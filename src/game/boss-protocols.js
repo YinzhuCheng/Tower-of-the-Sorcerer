@@ -58,7 +58,7 @@ export function applyBossProtocolModifier(state, enemyId, enemy) {
 
 export function getProtocolDefeatLog(floorNumber, enemyId) {
   if (floorNumber === 18 && enemyId === 'voidHerald') {
-    return '虚空审计完成：回声摄政官的账本护盾已被公开拆解。';
+    return '虚空审计完成：回声摄政官生命 -18%，魔法伤害 -45。';
   }
   return null;
 }

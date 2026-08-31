@@ -149,7 +149,7 @@ export function createInitialState() {
     turns: 0,
     battles: 0,
     victory: false,
-    logs: ['进入第一重魔法阵。固定数值不会因随机数改变。']
+    logs: ['进入第一层：战斗没有随机数。先查看敌人的预计耗血。']
   };
 }
 
@@ -466,14 +466,14 @@ export function collectItem(state, itemId) {
   if (item.allyBond) {
     allianceBond = canCompleteAllianceBondForDoctrine(state, item.allyBond)
       ? completeAllianceBond(state, item.allyBond)
-      : { ok: false, skipped: true, reason: '这件专家信物属于本轮未签署的路线。' };
+      : { ok: false, skipped: true, reason: '这件信物属于本轮未选择的路线。' };
     if (allianceBond.ok && allianceBond.completed) {
-      addLog(state, `完成盟友信物「${allianceBond.bond.title}」：${allianceBond.bond.route} 的选择将带入终局。`);
+      addLog(state, `完成「${allianceBond.bond.title}」：终局效果已启用，盟友需在会战中存活。`);
     }
   }
   const charterCompletion = completeAct3CharterForItem(state, itemId);
   if (charterCompletion?.completed) {
-    addLog(state, `完成修复章程「${charterCompletion.charter.title}」：其公开回报将带入后续残局。`);
+    addLog(state, `完成「${charterCompletion.charter.title}」：终局效果已启用。`);
   }
   addLog(state, `获得「${item.name}」：${item.description}`);
   return { ...item, allianceBond, charterCompletion };
@@ -640,13 +640,13 @@ export function tryMove(state, dx, dy) {
     if (floor.number === 11 && !state.doctrine?.selectedId && state.doctrine?.legacyOpen !== true) {
       result.blocked = true;
       result.openDoctrine = true;
-      result.reason = '离开复苏环廊前，必须公开签署一条第二章路线盟约。';
+      result.reason = '离开 F11 前，必须选择一条第二章路线盟约。';
       return result;
     }
     if (floor.number === 21 && !state.charter?.selectedId && state.charter?.legacyOpen !== true) {
       result.blocked = true;
       result.openCharter = true;
-      result.reason = '离开余烬登记库前，必须公开签署一份第三幕修复章程。';
+      result.reason = '离开 F21 前，必须选择一份第三幕章程。';
       return result;
     }
     const doctrineExitBlocker = getRouteDoctrineExitBlocker(state);

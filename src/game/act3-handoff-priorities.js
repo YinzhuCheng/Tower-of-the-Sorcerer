@@ -15,9 +15,9 @@ export const ACT3_HANDOFFS = Object.freeze([
     triggerEnemyId: 'marginDuelist',
     title: '护送优先',
     route: 'F27 首先击败边注决斗者（先制）',
-    cost: '先承受边注决斗者的先制残局，并放弃校验/接力优先程序。',
+    cost: '第一战打先制决斗者；本轮放弃校验与接力支援。',
     payoff: 'F30 两个阶段各少结算 2 次反击。',
-    risk: '它不补 MP，也不拆除勘误核心的二连击。',
+    risk: '不补 MP，也不会移除勘误核心的二连击。',
     finale: Object.freeze({ counterattackGuard: 2, label: '护送优先：最终每阶段少结算 2 次反击' })
   }),
   Object.freeze({
@@ -25,9 +25,9 @@ export const ACT3_HANDOFFS = Object.freeze([
     triggerEnemyId: 'errataCantor',
     title: '校验优先',
     route: 'F27 首先击败勘误咏唱者（魔法）',
-    cost: '先通过无视防御的咏唱战，并放弃护送/接力优先程序。',
+    cost: '第一战打无视防御的魔法敌人；本轮放弃护送与接力支援。',
     payoff: '档案守望者魔法伤害 -95；勘误核心失去二连击。',
-    risk: '它不给任何额外反击减免或 MP 回充。',
+    risk: '不提供反击减免或 MP 回充。',
     finale: Object.freeze({ magicPenalty: 95, disableDoubleHit: true, label: '校验优先：守望者魔法 -95，勘误核心失去二连击' })
   }),
   Object.freeze({
@@ -35,9 +35,9 @@ export const ACT3_HANDOFFS = Object.freeze([
     triggerEnemyId: 'archiveMarshal',
     title: '接力优先',
     route: 'F27 首先击败接力总管（高生命）',
-    cost: '先处理校场中生命最高的总管，并放弃护送/校验优先程序。',
+    cost: '第一战打生命最高的总管；本轮放弃护送与校验支援。',
     payoff: '三名守卫全部清除后，MP 恢复至当前上限。',
-    risk: '它不削弱 F30 数值；回充前仍要打完另外两名守卫。',
+    risk: '不削弱 F30；必须清完另外两名守卫才回充。',
     finale: Object.freeze({ label: '接力优先：F27 清场后 MP 恢复至上限' })
   })
 ]);

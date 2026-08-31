@@ -72,7 +72,7 @@ export const DEMO30_NUMERIC_BASELINE = Object.freeze({
 const ACT3_FLOORS = Object.freeze([
   floor({
     number: 21, title: '余烬登记库', intro: 'floor21',
-    objective: '在楼梯前公开签署夜航、校验或接力章程；情报与代价全部免费可见。',
+    objective: '上行前选择一份章程；本轮只会开启一座侧库。',
     roomPlan: ['余烬入口', '未投递信箱', '三份章程台', '补给回廊', '上行记录门'],
     theme: THEMES[0],
     map: `
@@ -91,7 +91,7 @@ const ACT3_FLOORS = Object.freeze([
   }),
   floor({
     number: 22, title: '夜航侧库', intro: 'floor22',
-    objective: '主路击败灰烬保管人；若签署夜航章程，可用两张月卡进入护送侧库。',
+    objective: '击败灰烬保管人上行；夜航侧库需要月辉卡 ×2。',
     roomPlan: ['夜航落点', '主书架回廊', '护送侧库', '月卡前室', '上行灯桥'],
     theme: THEMES[1], exitGuardians: ['ashCustodian'], boss: 'ashCustodian',
     puzzles: { cardGates: { f22ShelterAnnex: { moon: 2 } } },
@@ -111,7 +111,7 @@ const ACT3_FLOORS = Object.freeze([
   }),
   floor({
     number: 23, title: '逐页校验室', intro: 'floor23',
-    objective: '击败持簿执行官开启上行；校验章程可用两张星卡拆取终局索引。',
+    objective: '击败持簿执行官上行；校验侧库需要星蚀卡 ×2。',
     roomPlan: ['校验落点', '错误边注廊', '逐页内室', '星卡前台', '上行装订桥'],
     theme: THEMES[2], exitGuardians: ['auditBailiff'], boss: 'auditBailiff',
     puzzles: { cardGates: { f23AuditAnnex: { star: 2 } } },
@@ -131,7 +131,7 @@ const ACT3_FLOORS = Object.freeze([
   }),
   floor({
     number: 24, title: '灯塔接力室', intro: 'floor24',
-    objective: '击败接力导体；接力章程把日/月卡换成一次现在与一次 F27 的 MP 回充。',
+    objective: '击败接力导体上行；接力侧库需要日、月卡各 1 张。',
     roomPlan: ['接力落点', '信号折返线', '灯塔内室', '双色门槛', '上行发报台'],
     theme: THEMES[3], exitGuardians: ['relayConductor'], boss: 'relayConductor',
     puzzles: { cardGates: { f24RelayAnnex: { sun: 1, moon: 1 } } },
@@ -151,7 +151,7 @@ const ACT3_FLOORS = Object.freeze([
   }),
   floor({
     number: 25, title: '缺页庭', intro: 'floor25',
-    objective: '把日曜、两张月辉与星蚀卡留给缺页封条；这是所有路线共享的第一次账本检查。',
+    objective: '缺页封条需要日曜 ×1、月辉 ×2、星蚀 ×1。',
     roomPlan: ['缺页入口', '三色索引廊', '药剂夹层', '封条门庭', '上行缝隙'],
     theme: THEMES[4],
     puzzles: { cardGates: { f25MissingSeal: { sun: 1, moon: 2, star: 1 } } },
@@ -171,7 +171,7 @@ const ACT3_FLOORS = Object.freeze([
   }),
   floor({
     number: 26, title: '折角集市', intro: 'floor26',
-    objective: '利用本幕唯一的高阶商店；金币换的是明确属性或 MP，不是一次性答案。',
+    objective: '本幕唯一商店；购买效果与价格都写在柜台上。',
     roomPlan: ['集市入口', '折角柜台', '高阶咏唱架', '余烬补给线', '上行账台'],
     theme: THEMES[5], shopOptionIds: ['hp', 'atk', 'def', 'mpRestore', 'maxMp'], shopEffectMultiplier: 2.85,
     map: `
@@ -190,7 +190,7 @@ const ACT3_FLOORS = Object.freeze([
   }),
   floor({
     number: 27, title: '接力校场', intro: 'floor27',
-    objective: '三名校场守卫共同维持上行封锁；接力路线会在总管倒下后触发公开的第二次补魔。',
+    objective: '三名校场守卫全部落败后上行；首战决定终局支援。',
     roomPlan: ['校场落点', '刃线跑道', '咏线跑道', '总管中央台', '上行鸣钟'],
     theme: THEMES[6], exitGuardians: ['marginDuelist', 'errataCantor', 'archiveMarshal'], boss: 'archiveMarshal',
     puzzles: { guardianGates: { f27RelaySeal: ['marginDuelist', 'errataCantor', 'archiveMarshal'] } },
@@ -210,7 +210,7 @@ const ACT3_FLOORS = Object.freeze([
   }),
   floor({
     number: 28, title: '归档风暴', intro: 'floor28',
-    objective: '穿过自行重排的书架；可选高压战提供最后的生命或 MP 缓冲，但会消耗终局时间。',
+    objective: '主路可上行；侧路提供生命或 MP 的可选补给。',
     roomPlan: ['风暴入口', '重排书架', '生命夹层', '魔力夹层', '上行静室'],
     theme: THEMES[7],
     map: `
@@ -229,7 +229,7 @@ const ACT3_FLOORS = Object.freeze([
   }),
   floor({
     number: 29, title: '最后索引', intro: 'floor29',
-    objective: '击败两名索引守卫才能看到终局楼梯；不要误把最后的卡片投到非必要战斗。',
+    objective: '击败两名索引守卫后上行；为 F30 预留资源。',
     roomPlan: ['索引落点', '左页守卫廊', '右页守卫廊', '封底门庭', '终局上行阶'],
     theme: THEMES[8], exitGuardians: ['lastCustodian', 'archiveMarshal'], boss: 'lastCustodian',
     puzzles: { guardianGates: { f29IndexSeal: ['lastCustodian', 'archiveMarshal'] } },
@@ -249,7 +249,7 @@ const ACT3_FLOORS = Object.freeze([
   }),
   floor({
     number: 30, title: '余烬灯塔', intro: 'floor30',
-    objective: '击败档案守望者与勘误核心。你选择保留的路线，会以不同的方式承受这最后两页。',
+    objective: '依次击败档案守望者与勘误核心。',
     roomPlan: ['灯塔落点', '余烬补给环', '守望者前庭', '勘误封印桥', '双相终局台'],
     theme: THEMES[9], boss: 'errataCore',
     map: `
@@ -276,7 +276,7 @@ const ACT3_ITEMS = Object.freeze({
   act3Dual: { name: '双栏校样', kind: 'stat', atk: 10, def: 10, relic: '双栏校样', description: '攻击、防御各 +10。' },
   act3Mana: { name: '灯塔余能', kind: 'stat', mp: 100, relic: '灯塔余能', description: '恢复 100 MP。' },
   shelterAegis: { name: '夜航护送印', kind: 'stat', hp: 13_000, maxHp: 13_000, def: 16, relic: '夜航护送印', description: '生命上限与当前生命 +13000，防御 +16；F30 每阶段少结算 3 次反击。' },
-  auditLedger: { name: '逐页校验簿', kind: 'stat', atk: 20, def: 8, relic: '逐页校验簿', description: '攻击 +20，防御 +8；F30 两阶段的公开弱点生效。' },
+  auditLedger: { name: '逐页校验簿', kind: 'stat', atk: 20, def: 8, relic: '逐页校验簿', description: '攻击 +20，防御 +8；F30 两相均获得校验削弱。' },
   relayCapacitor: { name: '灯塔接力电容', kind: 'stat', maxMp: 60, mp: 160, relic: '灯塔接力电容', description: '最大 MP +60 并恢复 160 MP；F27 总管落败后再次补满。' }
 });
 
@@ -314,7 +314,7 @@ function installEnemies(enemies) {
     enemies[id] = {
       name: names[id], portrait: portraits[id], faction: '余烬登记库', floor: floorByEnemy[id],
       ...numeric,
-      description: '登记库在无人维护后继续执行的固定流程。所有数值均可在情报与图鉴中预览。'
+      description: '余烬登记库的守卫。战斗规则和当前数值可在图鉴中查看。'
     };
   }
   enemies.archiveWarden.defeatDialogue = 'bossArchiveWardenPost';
@@ -327,53 +327,52 @@ function sequence(title, turns) { return Object.freeze({ title, turns: Object.fr
 function installDialogues(dialogues) {
   Object.assign(dialogues, {
     floor21: sequence('第二十一阵：余烬登记库', [
-      turn('残响精灵·纱雾', 'guide', '别急着离开。上面不是王座的残骸，是一座仍在值夜的登记库。它把没来得及送出的求援，按旧规则一遍遍重放。'),
-      turn('绫星·璃', 'hero', '那就先读规则，再决定修哪一条线。夜航、校验、接力——只能带走一套工具，对吧？'),
-      turn('残响精灵·纱雾', 'guide', '对。没有一条是“正确答案”。我会把门、卡片、敌人与回报全写清楚。')
+      turn('残响精灵·纱雾', 'guide', '上面是仍在运转的余烬登记库。它只允许带走一套修复工具。'),
+      turn('绫星·璃', 'hero', '夜航、校验、接力：成本和效果都写在章程面板里。')
     ]),
     floor22: sequence('第二十二阵：夜航侧库', [
-      turn('猫卫长·米露', 'cat_boss', '这里存的是夜里护送人穿过封锁线的路线。拿到护送印，你能少挨几次最后的重击；代价是两张月卡和一场硬仗。'),
-      turn('绫星·璃', 'hero', '我会把这份代价记进自己的路线，不让它变成别人替我承担的空话。')
+      turn('猫卫长·米露', 'cat_boss', '夜航侧库要两张月辉卡和一场战斗。完成后，终局每阶段少三次反击。'),
+      turn('绫星·璃', 'hero', '代价明确，就看它值不值。')
     ]),
     floor23: sequence('第二十三阵：逐页校验室', [
-      turn('深蓝歌姬·澜音', 'whale_boss', '校验簿能找出勘误核心篡改过的行。它会让最终战变短，却得先穿过执行官的法术。'),
-      turn('绫星·璃', 'hero', '那就把它当成一场明确的交换，不当成藏起来的捷径。')
+      turn('深蓝歌姬·澜音', 'whale_boss', '校验侧库要两张星蚀卡。完成后会削弱 F30 两个阶段。'),
+      turn('绫星·璃', 'hero', '先看执行官的魔法耗血。')
     ]),
     floor24: sequence('第二十四阵：灯塔接力室', [
-      turn('龙姬·焰璃', 'dragon_boss', '接力电容能让你在校场后再亮一次刃。可它不会替你决定那一口 MP该花在哪儿。'),
-      turn('绫星·璃', 'hero', '我会留给真正需要它的那一页。')
+      turn('龙姬·焰璃', 'dragon_boss', '接力侧库要日、月卡各一张；拿到后现在补满 MP，F27 后再补一次。'),
+      turn('绫星·璃', 'hero', '那次补魔要留给终局。')
     ]),
     floor25: sequence('第二十五阵：缺页庭', [
-      turn('绫星·璃', 'hero', '这一页被撕走了，封条却还要一张日卡、两张月卡和一张星卡。'),
-      turn('残响精灵·纱雾', 'guide', '旧系统不在乎你为什么缺卡。新的路至少该让人提前看见：打开它，会失去哪一条支线。')
+      turn('绫星·璃', 'hero', '缺页封条要日曜一张、月辉两张、星蚀一张。'),
+      turn('残响精灵·纱雾', 'guide', '这是所有路线都绕不过的支出。')
     ]),
     floor26: sequence('第二十六阵：折角集市', [
-      turn('阵间商人·珂珂', 'merchant', '我不卖情报，墙上全贴着呢。我只卖能带进最后四层的成长：血、刃、甲和魔力。买错了可别说我没写价签。'),
-      turn('绫星·璃', 'hero', '正好。我需要的是一笔能算清的账。')
+      turn('阵间商人·珂珂', 'merchant', '价签都写着：血、刃、甲、补 MP、扩 MP。买一次，下一次就涨价。'),
+      turn('绫星·璃', 'hero', '先算清哪一项能撑到 F30。')
     ]),
     floor27: sequence('第二十七阵：接力校场', [
-      turn('影织姬·鸦羽', 'shadow_boss', '三条跑道不是陷阱，是旧档案留下的交接演练。谁先倒、哪条线先清，都会改变你剩下的 MP。'),
-      turn('绫星·璃', 'hero', '顺序由我定，后果也由我背。')
+      turn('影织姬·鸦羽', 'shadow_boss', '先击败哪名守卫，就锁定哪一项终局支援。三人仍都要打。'),
+      turn('绫星·璃', 'hero', '先看三场战斗，再定顺序。')
     ]),
     floor28: sequence('第二十八阵：归档风暴', [
-      turn('残响精灵·纱雾', 'guide', '风暴把书架排成了最省力的形状，却把求援信全压在底下。'),
-      turn('绫星·璃', 'hero', '省力不等于合适。我要先算清能带多少补给，再决定救不救那几页。')
+      turn('残响精灵·纱雾', 'guide', '主路已经通；侧路是生命和 MP 补给。'),
+      turn('绫星·璃', 'hero', '拿不拿，要看终局还缺什么。')
     ]),
     floor29: sequence('第二十九阵：最后索引', [
-      turn('最后保管人', 'crown_magus', '索引不是命令。它只是告诉你，所有被遗漏的名字最后都会来到这里。'),
-      turn('绫星·璃', 'hero', '那我会把它带到灯塔。不是为了替他们决定，而是不让他们再被擦掉。')
+      turn('最后保管人', 'crown_magus', '两名索引守卫都倒下，灯塔楼梯才会显现。'),
+      turn('绫星·璃', 'hero', '最后的卡片和 MP，都留给上面。')
     ]),
     floor30: sequence('第三十阵：余烬灯塔', [
-      turn('档案守望者', 'act3_archive_warden', '我只会修正错误。请交出不合格式的选择。'),
-      turn('绫星·璃', 'hero', '选择会犯错，所以才要留记录、留同伴、留能改正的余地。今天我不交出去。')
+      turn('档案守望者', 'act3_archive_warden', '先过我，再过勘误核心。两相连续，没有补给。'),
+      turn('绫星·璃', 'hero', '所有终局支援都已经写明。开始吧。')
     ]),
     bossArchiveWardenPost: sequence('灯塔：守望者停机', [
-      turn('档案守望者', 'act3_archive_warden', '修正请求……缺少唯一答案。'),
-      turn('绫星·璃', 'hero', '那就别再找唯一答案。把勘误核心交给我。')
+      turn('档案守望者', 'act3_archive_warden', '守望协议结束。勘误核心接管。'),
+      turn('绫星·璃', 'hero', '第二阶段。')
     ]),
     ending: sequence('终章：未投递的信', [
-      turn('残响精灵·纱雾', 'guide', '灯塔熄下来了。那些求援不会再被流程重放。'),
-      turn('绫星·璃', 'hero', '记录留下，门也留下。下次有人需要帮助时，别让她只能等一座机器替她决定。')
+      turn('残响精灵·纱雾', 'guide', '灯塔熄下来了。未投递的信终于不会再被重放。'),
+      turn('绫星·璃', 'hero', '记录留下，命令结束。')
     ])
   });
 }
@@ -451,7 +450,7 @@ export function applyDemoThirtyFloorContent({ enemies, floors, items, dialogues 
   enemies.originCore.reward = { hp: 36_000, maxHp: 4_000, maxMp: 40, mp: 160 };
   enemies.originCore.defeatDialogue = 'bossOriginCorePost';
   const f20 = floors[19];
-  f20.objective = '完成共鸣会战、击败奥术主权者与起源核心；核心会显现通往余烬登记库的楼梯。';
+  f20.objective = '完成会战并击败主权者与起源核心，前往第三幕。';
   f20.boss = 'originCore';
 
   floors.push(...ACT3_FLOORS.map((entry) => ({ ...entry, map: entry.map.map((row) => [...row]) })));
