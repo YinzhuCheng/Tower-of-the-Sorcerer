@@ -6,8 +6,10 @@ import {
   buildEnemyHoverPreview,
   buildMapUnitHoverPreview,
   guardianMarkerLabel,
-  listGuardianMarkers
+  listGuardianMarkers,
+  listInteractionMarkers
 } from '../src/game/tactical-interaction.js';
+import { FLOORS } from '../src/game/data.js';
 
 test('enemy hover preview reuses authoritative battle calculation', () => {
   const state = createInitialState();
@@ -74,8 +76,8 @@ test('map hover exposes switch progress, rune order and composite gate requireme
   state.floor = 6;
   const triGate = buildMapUnitHoverPreview(state, 4, 2);
   assert.equal(triGate.kind, 'gate');
-  assert.equal(triGate.title, '三相结界');
-  assert.match(triGate.primaryValue, /日 \/ 月 \/ 星/);
+  assert.equal(triGate.title, '卡牌封锁结界');
+  assert.match(triGate.primaryValue, /日曜卡/);
 });
 
 test('guardian labels distinguish ordinary bosses from the final guardian', () => {
@@ -93,4 +95,38 @@ test('current floor guardian marker follows the live mutable map', () => {
 
   state.floorStates[state.floor].map[catBoss.y][catBoss.x] = '.';
   assert.equal(listGuardianMarkers(state).some((marker) => marker.enemyId === 'catBoss'), false);
+});
+
+test('shared map markers bind a guardian vault, its reward and a switch seal with short codes', () => {
+  const state = createInitialState();
+  state.floor = 1;
+  const floor = FLOORS[state.floor];
+  const originalPuzzles = floor.puzzles;
+  const originalMap = state.floorStates[state.floor].map;
+  const map = Array.from({ length: 11 }, () => Array(11).fill('.'));
+  map[1][1] = 'enemy:catBoss';
+  map[1][3] = 'enemy:foxBoss';
+  map[2][1] = 'gate:dualKeyVault';
+  map[0][1] = 'item:lucky';
+  map[4][4] = 'switch:vine';
+  map[3][4] = 'gate:vine';
+
+  floor.puzzles = {
+    switches: { vine: ['vine'] },
+    guardianGates: { dualKeyVault: ['catBoss', 'foxBoss'] },
+    visualLinks: { guardianRewards: { dualKeyVault: ['lucky'] } }
+  };
+  state.floorStates[state.floor].map = map;
+  try {
+    const markers = listInteractionMarkers(state);
+    assert.ok(markers.some((marker) => marker.enemyId === 'catBoss' && marker.label === 'Ⅰ'));
+    assert.ok(markers.some((marker) => marker.enemyId === 'foxBoss' && marker.label === 'Ⅰ'));
+    assert.ok(markers.some((marker) => marker.kind === 'guardian-gate' && marker.label === 'Ⅰ · 0/2'));
+    assert.ok(markers.some((marker) => marker.kind === 'guardian-reward' && marker.label === 'Ⅰ · 奖'));
+    assert.ok(markers.some((marker) => marker.kind === 'switch' && marker.label === 'A'));
+    assert.ok(markers.some((marker) => marker.kind === 'switch-gate' && marker.label === 'A · 0/1'));
+  } finally {
+    floor.puzzles = originalPuzzles;
+    state.floorStates[state.floor].map = originalMap;
+  }
 });

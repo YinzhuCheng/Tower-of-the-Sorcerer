@@ -15,7 +15,12 @@ import {
   getTile,
   parseToken
 } from './engine.js';
-import { getRemainingExitGuardianIds } from './progression-rules.js';
+import {
+  getCardGateRequirements,
+  getMissingCards,
+  getMissingGuardianIds,
+  getRemainingExitGuardianIds
+} from './progression-rules.js';
 import { combatRuleCopy } from './player-copy.js';
 
 const AUTO_SAVE_KEY = 'lost-magic-tower:auto:v1';
@@ -31,6 +36,15 @@ function specialLabel(enemy) {
 
 function detail(label, value) {
   return { label, value };
+}
+
+const ROMAN_LINKS = Object.freeze(['Ⅰ', 'Ⅱ', 'Ⅲ', 'Ⅳ', 'Ⅴ', 'Ⅵ']);
+const LETTER_LINKS = Object.freeze(['A', 'B', 'C', 'D', 'E', 'F']);
+
+function formatCardRequirement(requirements) {
+  return Object.entries(requirements ?? {})
+    .map(([card, amount]) => `${CARD_LABELS[card] ?? card} ×${amount}`)
+    .join('、');
 }
 
 function currentFloor(state) {
@@ -193,6 +207,8 @@ function buildSwitchHoverPreview(state, switchId) {
     };
   }
   const activeCount = puzzle.requirements.filter((id) => floorState.switches.includes(id)).length;
+  const linkIndex = Object.keys(floor?.puzzles?.switches ?? {}).indexOf(puzzle.gateId);
+  const linkCode = LETTER_LINKS[linkIndex] ?? `M${linkIndex + 1}`;
   return {
     kind: 'switch',
     title: '魔力机关开关',
@@ -201,24 +217,32 @@ function buildSwitchHoverPreview(state, switchId) {
     description: `本组共有 ${puzzle.requirements.length} 枚开关；全部踩亮后，关联封锁会解除。`,
     primaryLabel: '机关进度',
     primaryValue: `${activeCount} / ${puzzle.requirements.length}`,
-    details: [detail('本开关', activated ? '已经激活' : '踏上后激活')]
+    details: [
+      detail('关联标记', `${linkCode} → 机关结界`),
+      detail('本开关', activated ? '已经激活' : '踏上后激活')
+    ]
   };
 }
 
 function buildGateHoverPreview(state, gateId) {
   const floor = currentFloor(state);
   const floorState = getFloorState(state);
-  if (floor?.puzzles?.triGate === gateId) {
-    const ready = state.cards.sun > 0 && state.cards.moon > 0 && state.cards.star > 0;
+  const cardRequirements = getCardGateRequirements(floor, gateId);
+  if (cardRequirements) {
+    const missing = getMissingCards(state.cards, cardRequirements);
+    const ready = missing.length === 0;
     return {
       kind: 'gate',
-      title: '三相结界',
-      badge: '复合结界',
+      title: '卡牌封锁结界',
+      badge: '卡牌结界',
       tone: ready ? 'safe' : 'warning',
-      description: '穿过时同时消耗日曜、月辉、星蚀卡各 1 张。',
+      description: '穿过时按下列条件一次性消耗对应结界卡。',
       primaryLabel: '开启条件',
-      primaryValue: '日 / 月 / 星各 1 张',
-      details: [detail('当前持有', `日 ${state.cards.sun} · 月 ${state.cards.moon} · 星 ${state.cards.star}`)]
+      primaryValue: formatCardRequirement(cardRequirements),
+      details: [
+        detail('当前持有', `日 ${state.cards.sun} · 月 ${state.cards.moon} · 星 ${state.cards.star}`),
+        detail('状态', ready ? '可以开启' : `还缺 ${formatCardRequirement(Object.fromEntries(missing.map(({ card, missing: amount }) => [card, amount])))}`)
+      ]
     };
   }
 
@@ -250,6 +274,30 @@ function buildGateHoverPreview(state, gateId) {
       primaryLabel: '当前进度',
       primaryValue: `${sequence.progress} / ${sequence.order.length}`,
       details: [detail('下一步', next)]
+    };
+  }
+
+  const guardianRequirements = floor?.puzzles?.guardianGates?.[gateId];
+  if (guardianRequirements) {
+    const missing = getMissingGuardianIds(floorState, floor, gateId);
+    const complete = guardianRequirements.length - missing.length;
+    const linkIndex = Object.keys(floor?.puzzles?.guardianGates ?? {}).indexOf(gateId);
+    const linkCode = ROMAN_LINKS[linkIndex] ?? `G${linkIndex + 1}`;
+    const rewardIds = floor?.puzzles?.visualLinks?.guardianRewards?.[gateId] ?? [];
+    return {
+      kind: 'gate',
+      title: rewardIds.length > 0 ? '守护宝库封印' : '守护封锁结界',
+      badge: `关联 ${linkCode}`,
+      tone: missing.length === 0 ? 'safe' : 'warning',
+      description: rewardIds.length > 0
+        ? '击败同编号守护者后解除封印，领取同编号奖励。'
+        : '击败同编号守护者后，封印会自动解除。',
+      primaryLabel: '守护进度',
+      primaryValue: `${complete} / ${guardianRequirements.length}`,
+      details: [
+        detail('剩余守卫', missing.length ? missing.map((id) => ENEMIES[id]?.name ?? id).join('、') : '全部已击败'),
+        ...(rewardIds.length ? [detail('关联奖励', rewardIds.map((id) => ITEMS[id]?.name ?? id).join('、'))] : [])
+      ]
     };
   }
 
@@ -381,6 +429,65 @@ export function listGuardianMarkers(state) {
       if (!label) continue;
       markers.push({ x, y, enemyId: parsed.id, enemy, label });
     }
+  }
+  return markers;
+}
+
+function tilesMatching(state, token) {
+  const matches = [];
+  for (let y = 0; y < GRID_SIZE; y += 1) {
+    for (let x = 0; x < GRID_SIZE; x += 1) {
+      if (getTile(state, x, y) === token) matches.push({ x, y });
+    }
+  }
+  return matches;
+}
+
+/**
+ * Map labels are deliberately short identifiers, not lines crossing the maze.
+ * The same identifier on a guardian, switch, seal and reward is the durable
+ * spatial explanation; the hover card supplies the detailed rule on demand.
+ */
+export function listInteractionMarkers(state) {
+  if (!state) return [];
+  const floor = currentFloor(state);
+  const floorState = getFloorState(state);
+  const guardianCodes = new Map();
+  const markers = [];
+
+  for (const [index, [gateId, guardianIds]] of Object.entries(floor?.puzzles?.guardianGates ?? {}).entries()) {
+    const code = ROMAN_LINKS[index] ?? `G${index + 1}`;
+    const missing = getMissingGuardianIds(floorState, floor, gateId);
+    for (const enemyId of guardianIds) guardianCodes.set(enemyId, code);
+    for (const { x, y } of tilesMatching(state, `gate:${gateId}`)) {
+      markers.push({ x, y, label: `${code} · ${guardianIds.length - missing.length}/${guardianIds.length}`, kind: 'guardian-gate' });
+    }
+    for (const itemId of floor?.puzzles?.visualLinks?.guardianRewards?.[gateId] ?? []) {
+      for (const { x, y } of tilesMatching(state, `item:${itemId}`)) {
+        markers.push({ x, y, label: `${code} · 奖`, kind: 'guardian-reward' });
+      }
+    }
+  }
+
+  for (const [index, [gateId, switchIds]] of Object.entries(floor?.puzzles?.switches ?? {}).entries()) {
+    const code = LETTER_LINKS[index] ?? `M${index + 1}`;
+    const active = switchIds.filter((id) => floorState.switches.includes(id)).length;
+    for (const switchId of switchIds) {
+      for (const { x, y } of tilesMatching(state, `switch:${switchId}`)) {
+        markers.push({ x, y, label: code, kind: 'switch' });
+      }
+    }
+    for (const { x, y } of tilesMatching(state, `gate:${gateId}`)) {
+      markers.push({ x, y, label: `${code} · ${active}/${switchIds.length}`, kind: 'switch-gate' });
+    }
+  }
+
+  for (const marker of listGuardianMarkers(state)) {
+    markers.push({
+      ...marker,
+      label: guardianCodes.get(marker.enemyId) ?? marker.label,
+      kind: guardianCodes.has(marker.enemyId) ? 'guardian' : 'guardian-default'
+    });
   }
   return markers;
 }
@@ -540,10 +647,10 @@ function renderGuardianMarkers(layer, canvas, state) {
     return;
   }
   const rect = canvas.getBoundingClientRect();
-  const markers = listGuardianMarkers(state);
+  const markers = listInteractionMarkers(state);
   const nodes = markers.map((marker) => {
     const node = document.createElement('div');
-    node.className = 'guardian-map-marker';
+    node.className = `guardian-map-marker interaction-marker interaction-marker-${marker.kind ?? 'guardian-default'}`;
     node.dataset.enemyId = marker.enemyId;
     node.textContent = marker.label;
     node.style.left = `${rect.left + ((marker.x + 0.5) / GRID_SIZE) * rect.width}px`;

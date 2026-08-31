@@ -101,7 +101,9 @@ async function loadManifest() {
       basePath = normalizeBasePath(manifest?.basePath);
       for (const [name, meta] of Object.entries(manifest?.atlases ?? {})) atlases.set(name, Object.freeze({ ...meta }));
       for (const [name, meta] of Object.entries(manifest?.assets ?? {})) {
-        if (!meta?.atlas || !Number.isInteger(meta.index)) continue;
+        const isDirectImage = typeof meta?.file === 'string' && meta.file.length > 0;
+        const isAtlasCell = Boolean(meta?.atlas) && Number.isInteger(meta.index);
+        if (!isDirectImage && !isAtlasCell) continue;
         entries.set(name, Object.freeze({ ...meta }));
       }
       return manifest;
@@ -128,12 +130,18 @@ export async function preloadMapAssets() {
       }
     }));
 
-    for (const [name, meta] of entries) {
+    await Promise.all([...entries].map(async ([name, meta]) => {
+      if (meta.file) {
+        const image = await loadImage(resolvePath(meta.file));
+        if (image) images.set(name, image);
+        else console.warn(`地图直连素材 ${name} 解码失败，将使用渲染回退。`);
+        return;
+      }
       const atlasMeta = atlases.get(meta.atlas);
       const atlasImage = loadedAtlases.get(meta.atlas);
-      if (!atlasMeta || !atlasImage) continue;
+      if (!atlasMeta || !atlasImage) return;
       images.set(name, cropAtlasCell(atlasImage, atlasMeta.cols, atlasMeta.rows, meta.index));
-    }
+    }));
     return images;
   })();
   return preloadPromise;

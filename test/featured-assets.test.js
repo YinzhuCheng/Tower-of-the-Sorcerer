@@ -58,8 +58,9 @@ test('canvas entrypoint preserves transparent legacy cleanup and featured overri
   assert.match(source, /buildTransparentCell/);
   assert.match(source, /FEATURED_ENEMY_ASSET/);
   assert.match(source, /featured-codex-shrine/);
-  assert.match(source, /featured-switch-dual/);
-  assert.match(source, /featured-rune-sequence/);
+  assert.match(source, /seal-switch-dual/);
+  assert.match(source, /seal-rune-sequence/);
+  assert.match(source, /INTERACTABLE_ITEM_ASSET/);
   assert.match(source, /drawLegacySprite/);
   assert.match(source, /moonlit-v4/);
 });

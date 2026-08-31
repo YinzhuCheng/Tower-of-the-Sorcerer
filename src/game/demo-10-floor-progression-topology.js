@@ -144,7 +144,7 @@ function floorByNumber(floors, number) {
   return floors.find((floor) => floor.number === number) ?? null;
 }
 
-function configureFloor(floor, { title, objective, exitGuardians, guardianGates, primaryBoss } = {}) {
+function configureFloor(floor, { title, objective, exitGuardians, guardianGates, visualLinks, primaryBoss } = {}) {
   if (!floor) throw new Error('10F progression topology could not find a required floor.');
   if (title) floor.title = title;
   if (objective) floor.objective = objective;
@@ -155,6 +155,15 @@ function configureFloor(floor, { title, objective, exitGuardians, guardianGates,
       guardianGates: {
         ...(floor.puzzles?.guardianGates ?? {}),
         ...Object.fromEntries(Object.entries(guardianGates).map(([gateId, ids]) => [gateId, [...ids]]))
+      }
+    };
+  }
+  if (visualLinks) {
+    floor.puzzles = {
+      ...(floor.puzzles ?? {}),
+      visualLinks: {
+        ...(floor.puzzles?.visualLinks ?? {}),
+        ...structuredClone(visualLinks)
       }
     };
   }
@@ -209,9 +218,10 @@ export function applyDemoTenFloorProgressionTopology({ floors, enemies } = {}) {
   });
   configureFloor(floorByNumber(floors, 2), {
     title: '森罗双钥',
-    objective: '主路可直接上行；双钥宝库为可选奖励。',
+    objective: '踩藤蔓机关开上行路；可选击败两名守卫，拿招财星币（金币 ×2）。',
     exitGuardians: [],
-    guardianGates: { dualKeyVault: ['catBoss', 'foxBoss'] }
+    guardianGates: { dualKeyVault: ['catBoss', 'foxBoss'] },
+    visualLinks: { guardianRewards: { dualKeyVault: ['lucky'] } }
   });
   configureFloor(floorByNumber(floors, 3), {
     title: '深蓝航道',

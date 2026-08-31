@@ -24,47 +24,21 @@ async function applyEngineProductionPatch() {
   await writeFile(enginePath, source);
 }
 
-async function applyVisualReplacementPatch() {
+async function applyProductionCanvasPatch() {
   const scenePath = join(outDir, 'src', 'game', 'anime-canvas-scene.js');
   let source = await readFile(scenePath, 'utf8');
-  const replacements = [
-    [
-      "import { DIRECTIONS, getTile, parseToken, tryMove } from './engine.js';\n",
-      "import { DIRECTIONS, getTile, parseToken, prepareBossEncounter, tryMove } from './engine.js';\n"
-    ],
-    [
-      "import { getMapAsset, preloadMapAssets } from './map-assets.js';\n",
-      "import { getMapAsset, preloadMapAssets } from './map-assets.js';\nimport { getReplacementAsset, getReplacementAssetMeta, preloadReplacementAssets } from './replacement-assets.js';\n"
-    ],
-    [
-      "      preloadEnemyAssets(),\n      preloadMapAssets()\n",
-      "      preloadEnemyAssets(),\n      preloadMapAssets(),\n      preloadReplacementAssets()\n"
-    ],
-    [
-      "    // Facing changes even when movement is blocked, matching classic tile RPGs.\n    this.direction = direction;\n    const result = tryMove(this.bridge.getState(), vector.dx, vector.dy);\n",
-      "    // Facing changes even when movement is blocked, matching classic tile RPGs.\n    this.direction = direction;\n    const prelude = prepareBossEncounter(this.bridge.getState(), vector.dx, vector.dy);\n    if (prelude) {\n      const result = { ...prelude, resumeDirection: direction };\n      this.bridge.onResult(result);\n      return result;\n    }\n    const result = tryMove(this.bridge.getState(), vector.dx, vector.dy);\n"
-    ],
-    [
-      "  drawMapAsset(name, x, y, scale = 1, rotation = 0, alpha = 1, offsetY = 0) {\n    const image = getMapAsset(name);\n    if (!image) return false;\n    const size = TILE_SIZE * scale;\n    return this.drawMapImage(image, this.center(x), this.center(y) + offsetY * TILE_SIZE, size, size, rotation, alpha);\n  }\n\n",
-      "  drawMapAsset(name, x, y, scale = 1, rotation = 0, alpha = 1, offsetY = 0) {\n    const image = getMapAsset(name);\n    if (!image) return false;\n    const size = TILE_SIZE * scale;\n    return this.drawMapImage(image, this.center(x), this.center(y) + offsetY * TILE_SIZE, size, size, rotation, alpha);\n  }\n\n  drawReplacementAsset(key, x, y, scale = 1) {\n    const image = getReplacementAsset(key);\n    if (!image) return false;\n    const meta = getReplacementAssetMeta(key) ?? {};\n    const resolvedScale = scale * (Number.isFinite(meta.scale) ? meta.scale : 1);\n    const size = TILE_SIZE * resolvedScale;\n    return this.drawMapImage(image, this.center(x), this.center(y), size, size);\n  }\n\n  drawVineGate(x, y) {\n    const cx = this.center(x);\n    const cy = this.center(y);\n    const left = cx - TILE_SIZE * 0.28;\n    const right = cx + TILE_SIZE * 0.28;\n    const top = cy - TILE_SIZE * 0.31;\n    const bottom = cy + TILE_SIZE * 0.35;\n    this.ctx.save();\n    this.ctx.lineCap = 'round';\n    this.ctx.lineJoin = 'round';\n    this.ctx.shadowColor = 'rgba(116,255,166,.55)';\n    this.ctx.shadowBlur = 6;\n    this.ctx.strokeStyle = '#245c3b';\n    this.ctx.lineWidth = 6;\n    this.ctx.beginPath();\n    this.ctx.moveTo(left, bottom);\n    this.ctx.bezierCurveTo(left - 2, cy + 4, left + 2, top + 8, cx, top);\n    this.ctx.bezierCurveTo(right - 2, top + 8, right + 2, cy + 4, right, bottom);\n    this.ctx.stroke();\n    this.ctx.shadowBlur = 0;\n    this.ctx.strokeStyle = '#78d98b';\n    this.ctx.lineWidth = 1.7;\n    this.ctx.beginPath();\n    this.ctx.moveTo(left, bottom);\n    this.ctx.quadraticCurveTo(left + 4, cy - 6, cx, top + 2);\n    this.ctx.quadraticCurveTo(right - 4, cy - 6, right, bottom);\n    this.ctx.stroke();\n    const leaves = [\n      [left - 4, cy + 10, -0.7], [left + 4, cy - 4, 0.6], [left + 2, top + 11, -0.4],\n      [right + 4, cy + 10, 0.7], [right - 4, cy - 4, -0.6], [right - 2, top + 11, 0.4],\n      [cx - 8, top + 2, -0.2], [cx + 8, top + 2, 0.2]\n    ];\n    for (const [lx, ly, rotation] of leaves) {\n      this.ctx.save();\n      this.ctx.translate(lx, ly);\n      this.ctx.rotate(rotation);\n      this.ctx.beginPath();\n      this.ctx.ellipse(0, 0, 5.3, 2.7, 0, 0, Math.PI * 2);\n      this.ctx.fillStyle = '#53b96c';\n      this.ctx.fill();\n      this.ctx.restore();\n    }\n    this.ctx.restore();\n    return true;\n  }\n\n"
-    ],
-    [
-      "    const image = getEnemyAsset(enemy.portrait);\n    const meta = getEnemyAssetMeta(enemy.portrait) ?? {};\n",
-      "    const replacementKey = `enemy:${enemy.portrait}`;\n    const replacementImage = getReplacementAsset(replacementKey);\n    const image = replacementImage ?? getEnemyAsset(enemy.portrait);\n    const meta = replacementImage\n      ? (getReplacementAssetMeta(replacementKey) ?? {})\n      : (getEnemyAssetMeta(enemy.portrait) ?? {});\n"
-    ],
-    [
-      "    if (parsed.type === 'gate') {\n      if (!this.drawMapAsset('portal-transfer', x, y, 0.9)) {\n        this.drawTileIcon(parsed.id === 'tri' ? TILE_INDEX.sequenceSwitch : TILE_INDEX.panel, x, y, 0.86);\n      }\n      return;\n    }\n",
-      "    if (parsed.type === 'gate') {\n      if (parsed.id === 'vine') {\n        this.drawVineGate(x, y);\n        return;\n      }\n      if (this.drawReplacementAsset(`gate:${parsed.id}`, x, y)) return;\n      if (!this.drawMapAsset('portal-transfer', x, y, 0.9)) {\n        this.drawTileIcon(parsed.id === 'tri' ? TILE_INDEX.sequenceSwitch : TILE_INDEX.panel, x, y, 0.86);\n      }\n      return;\n    }\n"
-    ],
-    [
-      "    if (parsed.type === 'item') {\n      const item = ITEMS[parsed.id];\n      if (item?.kind === 'card') {\n        this.drawItem(ITEM_INDEX[item.card], x, y, 0.68);\n        return;\n      }\n      const index = ITEM_INDEX[parsed.id];\n",
-      "    if (parsed.type === 'item') {\n      const item = ITEMS[parsed.id];\n      if (item?.kind === 'card') {\n        this.drawItem(ITEM_INDEX[item.card], x, y, 0.68);\n        return;\n      }\n      if (this.drawReplacementAsset(`item:${parsed.id}`, x, y)) return;\n      const index = ITEM_INDEX[parsed.id];\n"
-    ]
-  ];
-
-  for (const [before, after] of replacements) {
-    source = replaceRequired(source, before, after, 'Visual production');
-  }
+  source = replaceRequired(
+    source,
+    "import { DIRECTIONS, getTile, parseToken, tryMove } from './engine.js';\n",
+    "import { DIRECTIONS, getTile, parseToken, prepareBossEncounter, tryMove } from './engine.js';\n",
+    'Production boss prelude import'
+  );
+  source = replaceRequired(
+    source,
+    "    // Facing changes even when movement is blocked, matching classic tile RPGs.\n    this.direction = direction;\n    const result = tryMove(this.bridge.getState(), vector.dx, vector.dy);\n",
+    "    // Facing changes even when movement is blocked, matching classic tile RPGs.\n    this.direction = direction;\n    const prelude = prepareBossEncounter(this.bridge.getState(), vector.dx, vector.dy);\n    if (prelude) {\n      const result = { ...prelude, resumeDirection: direction };\n      this.bridge.onResult(result);\n      return result;\n    }\n    const result = tryMove(this.bridge.getState(), vector.dx, vector.dy);\n",
+    'Production boss prelude'
+  );
   await writeFile(scenePath, source);
 }
 
@@ -431,7 +405,7 @@ await copyFile(join(root, 'ui-v8-5.css'), join(root, 'dist/ui-v8-5.css'));
 await cp(join(root, 'src'), join(outDir, 'src'), { recursive: true });
 await cp(join(root, 'public'), outDir, { recursive: true });
 await applyEngineProductionPatch();
-await applyVisualReplacementPatch();
+await applyProductionCanvasPatch();
 await applyTacticalInteractionPatch();
 await applyMainProductionPatch();
 await validateProductionDemoBuild();
