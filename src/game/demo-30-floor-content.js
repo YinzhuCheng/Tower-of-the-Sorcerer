@@ -1,8 +1,9 @@
+
 import { ACT3_CHARTERS, getAct3CharterForGate } from './act3-charters.js';
 import { DEMO20_CONTENT_ID } from './demo-20-floor-content.js';
 
 export const DEMO30_CONTENT_ID = 'demo-30f-afterlight-registry-v1';
-export const DEMO30_NUMERIC_BASELINE_ID = 'demo-30f-afterlight-route-baseline-v1';
+export const DEMO30_NUMERIC_BASELINE_ID = 'demo-30f-afterlight-route-baseline-v2';
 
 const GRID_SIZE = 11;
 
@@ -57,13 +58,16 @@ export const DEMO30_NUMERIC_BASELINE = Object.freeze({
   archiveLancer: { hp: 8300, atk: 362, def: 278, gold: 2800, boss: true, special: 'firstStrike' },
   shelfWarden: { hp: 6100, atk: 350, def: 272, gold: 1900 },
   triageKnight: { hp: 6500, atk: 366, def: 280, gold: 2000, special: 'doubleHit' },
-  marginDuelist: { hp: 7100, atk: 370, def: 282, gold: 2250, boss: true, special: 'firstStrike' },
-  errataCantor: { hp: 6800, atk: 354, def: 276, gold: 2200, boss: true, special: 'magic', magicPower: 285 },
-  archiveMarshal: { hp: 9000, atk: 374, def: 286, gold: 3100, boss: true },
+  // F27's commitment is now expensive in the fight where it is made: a
+  // player cannot take the finale benefit without paying a real first-battle
+  // cost on that guardian.
+  marginDuelist: { hp: 7100, atk: 381, def: 282, gold: 2250, boss: true, special: 'firstStrike' },
+  errataCantor: { hp: 6800, atk: 354, def: 276, gold: 2200, boss: true, special: 'magic', magicPower: 294 },
+  archiveMarshal: { hp: 9000, atk: 385, def: 286, gold: 3100, boss: true },
   indexBeast: { hp: 8000, atk: 378, def: 288, gold: 2600, special: 'doubleHit' },
   lastCustodian: { hp: 9400, atk: 384, def: 292, gold: 3300, boss: true, special: 'firstStrike' },
-  archiveWarden: { hp: 13_200, atk: 388, def: 310, gold: 0, boss: true, special: 'magic', magicPower: 430, phaseNext: 'errataCore' },
-  errataCore: { hp: 15_400, atk: 500, def: 310, gold: 0, boss: true, finalBoss: true, special: 'doubleHit' }
+  archiveWarden: { hp: 13_728, atk: 400, def: 310, gold: 0, boss: true, special: 'magic', magicPower: 443, phaseNext: 'errataCore' },
+  errataCore: { hp: 16_016, atk: 515, def: 310, gold: 0, boss: true, finalBoss: true, special: 'doubleHit' }
 });
 
 const ACT3_FLOORS = Object.freeze([
