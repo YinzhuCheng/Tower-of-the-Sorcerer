@@ -1,4 +1,3 @@
-
 import { ACT3_CHARTERS, getAct3CharterForGate } from './act3-charters.js';
 import { DEMO20_CONTENT_ID } from './demo-20-floor-content.js';
 
