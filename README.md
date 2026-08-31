@@ -14,6 +14,7 @@
 - **王座前共鸣会战**：四名曾经的 Boss 中选择三名出战，分配总计 120 MP；敌方三名忠诚随从的顺序与 MP 均公开。胜者保留剩余生命进入下一轮，并为最终两相 Boss 施加对应削弱。
 - **高难但非唯一解**：会战共 240 个合法部署，当前有 22 个胜利方案；数值回归门槛要求保留 12–36 个胜利方案，避免单解陷阱或无脑碾压。
 - **第三幕互斥章程**：夜航护送用月卡换残局减击；逐页校验用星卡换双相弱点；灯塔接力用日/月卡换两次定时 MP 回充。三条侧库互斥，价格、敌人与回报都免费公开。
+- **校场先后手**：F27 三名守卫都必须击败，但最先处理的一人会永久锁定护送减击、校验拆解或清场补魔之一；不是免费奖励菜单，而是以首战伤害和错失另外两项支援换来的终局准备。
 - **路线复盘**：求解器会输出已签路线、关键卡门、会战部署与最低容错战，帮助玩家复盘，而非靠反复读档试错。
 - **桌面与移动端**：方向键 / WASD、相邻格点击、屏幕方向键；布局自适应手机与桌面。
 - **双渲染器容错**：优先使用开源 Phaser 3；CDN 不可用时自动切换到本地 Canvas 2D 渲染器。
@@ -64,12 +65,12 @@ npm run check
 1. `node --test`：战斗公式、卡片门、宝物、机关、符文、商店、存档、终局 Boss 与会战测试。
 2. `scripts/validate-game.mjs`：自动求解基础战役，要求回收七枚核心、击败最终 Boss 且剩余生命大于 0。
 3. `scripts/validate-demo-20f.mjs`：从 F10 已验证路线继续求解 F11–F20，重放完整证书，并检查车轮战胜利窗口。
-4. `scripts/validate-demo-30f.mjs`：以高压第二幕证书为前缀，分别重放夜航、校验、接力三条 F21–F30 路线。
+4. `scripts/validate-demo-30f.mjs`：以高压第二幕证书为前缀，重放三条 F21–F30 章程路线，并额外证明三条「章程＋F27 先后手」高难路线均可由权威回放通关。
 5. 静态生产构建。
 
 地图或数值调整后应始终重新运行该命令。自动求解器不是唯一通关路线，只用于证明当前版本至少存在一条合法通关路径。
 
-要测试更高压的数值候选而不改动地图、卡门或剧情，可运行 `MUTATION=act3-final-pressure-plus3 npm run validate:demo30`。候选只有在三条互斥章程都能由权威回放通关时才可保留。
+要测试更高压的数值候选而不改动地图、卡门、先后手或剧情，可运行 `MUTATION=act3-handoff-frontline-plus3 npm run validate:demo30`。候选只有在三条互斥章程和三条校场优先路线都能由权威回放通关时才可保留。
 
 ## 项目结构
 
@@ -78,13 +79,14 @@ src/game/data.js             楼层、敌人、物品、剧情与商店数据
 src/game/engine.js           与渲染无关的固定数值规则引擎
 src/game/war-council.js      王座前车轮战、MP 分配与最终战削弱规则
 src/game/act3-charters.js    F21 互斥章程、终局规则与接力 MP 回充
+src/game/act3-handoff-priorities.js F27 首击优先、终局规则与清场 MP 回充
 src/game/demo-30-floor-content.js F21–F30 地图、敌人、物品与剧情
 src/game/scene.js            Phaser 渲染器
 src/game/canvas-scene.js     离线 Canvas 2D 回退渲染器
 src/main.js                  UI、弹窗、存档与启动流程
 scripts/validate-game.mjs    自动通关求解与数值回归验证
 scripts/validate-demo-20f.mjs F10–F20 通关、会战与最终战验证
-scripts/validate-demo-30f.mjs F10–F30 三条章程路线的回放验证
+scripts/validate-demo-30f.mjs F10–F30 章程与 F27 优先路线的回放验证
 scripts/generate_portraits.py 原创 SVG 头像生成器
 test/engine.test.js          规则单元测试
 ```

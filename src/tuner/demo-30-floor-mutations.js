@@ -9,7 +9,7 @@ import { DEMO30_NUMERIC_BASELINE } from '../game/demo-30-floor-content.js';
  */
 export const DEMO30_MUTATION_SCOPE = Object.freeze({
   editable: Object.freeze(['enemy.hp', 'enemy.atk', 'enemy.def', 'enemy.magicPower']),
-  locked: Object.freeze(['maps', 'charter-gates', 'charter-items', 'card-prices', 'enemy-order', 'final-phase-order'])
+  locked: Object.freeze(['maps', 'charter-gates', 'charter-items', 'handoff-order', 'card-prices', 'enemy-order', 'final-phase-order'])
 });
 
 function scale(value, factor) {
@@ -33,6 +33,11 @@ export function createDemoThirtyFloorMutationCatalog() {
     Object.freeze({ id: 'act3-checkpoint-guard-plus4', title: 'F27/F29 强制守卫 +4%', patches: Object.freeze([
       enemyPatch('archiveMarshal', { hp: scale(DEMO30_NUMERIC_BASELINE.archiveMarshal.hp, 1.04), atk: scale(DEMO30_NUMERIC_BASELINE.archiveMarshal.atk, 1.04) }),
       enemyPatch('lastCustodian', { hp: scale(DEMO30_NUMERIC_BASELINE.lastCustodian.hp, 1.04), atk: scale(DEMO30_NUMERIC_BASELINE.lastCustodian.atk, 1.04) })
+    ]) }),
+    Object.freeze({ id: 'act3-handoff-frontline-plus3', title: 'F27 三条优先线攻击 +3%', patches: Object.freeze([
+      enemyPatch('marginDuelist', { atk: scale(DEMO30_NUMERIC_BASELINE.marginDuelist.atk, 1.03) }),
+      enemyPatch('errataCantor', { magicPower: scale(DEMO30_NUMERIC_BASELINE.errataCantor.magicPower, 1.03) }),
+      enemyPatch('archiveMarshal', { atk: scale(DEMO30_NUMERIC_BASELINE.archiveMarshal.atk, 1.03) })
     ]) })
   ]);
 }
@@ -77,10 +82,12 @@ export function evaluateDemoThirtyFloorMutationCandidate({ candidate, catalog, e
   const ids = new Set(entries.map((entry) => entry.id));
   const complete = ACT3_CHARTERS.every((charter) => ids.has(charter.id)
     && entries.find((entry) => entry.id === charter.id)?.completed === true);
+  const handoffComplete = !portfolio?.handoffPortfolio
+    || portfolio.handoffPortfolio.entries.every((entry) => entry.completed === true);
   return Object.freeze({
     candidate: Object.freeze({ mutationIds: [...(candidate?.mutationIds ?? [])] }),
     portfolio,
-    publishable: Boolean(portfolio?.publishable && complete),
+    publishable: Boolean(portfolio?.publishable && complete && handoffComplete),
     scope: DEMO30_MUTATION_SCOPE
   });
 }

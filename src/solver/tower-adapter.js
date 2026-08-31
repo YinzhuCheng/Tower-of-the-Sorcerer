@@ -176,6 +176,11 @@ function summarizeState(state) {
       relayRefilled: state.charter?.relayRefilled === true,
       legacyOpen: state.charter?.legacyOpen === true
     },
+    handoff: {
+      selectedId: state.handoff?.selectedId ?? null,
+      beaconRefilled: state.handoff?.beaconRefilled === true,
+      legacyOpen: state.handoff?.legacyOpen === true
+    },
     relics: { ...state.relics },
     cores: state.cores,
     shopPurchases: state.shopPurchases,
@@ -226,6 +231,11 @@ function structuralKeyObject(state) {
       completedId: compact.charter?.completedId ?? null,
       relayRefilled: compact.charter?.relayRefilled === true,
       legacyOpen: compact.charter?.legacyOpen === true
+    },
+    handoff: {
+      selectedId: compact.handoff?.selectedId ?? null,
+      beaconRefilled: compact.handoff?.beaconRefilled === true,
+      legacyOpen: compact.handoff?.legacyOpen === true
     },
     shopPurchases: compact.shopPurchases,
     visitedMask: bitMask(FLOORS.map((_, index) => index), (index) => compact.visitedFloors.includes(index)),

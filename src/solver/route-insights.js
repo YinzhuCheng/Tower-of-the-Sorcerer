@@ -21,7 +21,7 @@ function uniqueById(entries) {
   return entries.filter((entry) => !seen.has(entry.id) && seen.add(entry.id));
 }
 
-export function deriveRouteInsights({ steps = [], battleLog = [], doctrine = null, charter = null } = {}) {
+export function deriveRouteInsights({ steps = [], battleLog = [], doctrine = null, charter = null, handoff = null } = {}) {
   const insights = [];
   const doctrineStep = steps.find((step) => step.kind === 'doctrine');
   if (doctrineStep) {
@@ -39,6 +39,14 @@ export function deriveRouteInsights({ steps = [], battleLog = [], doctrine = nul
       kind: 'route',
       title: '第三幕章程',
       text: charter ? `签署「${charter.title}」，其余两座侧库从此互斥。` : '在 F21 签署修复章程，三座第三幕侧库从此互斥。'
+    }));
+  }
+  if (handoff) {
+    insights.push(Object.freeze({
+      id: `handoff:${handoff.id}`,
+      kind: 'route',
+      title: '校场先后手',
+      text: `F27 先击败${handoff.triggerEnemyId === 'marginDuelist' ? '边注决斗者' : handoff.triggerEnemyId === 'errataCantor' ? '勘误咏唱者' : '接力总管'}，锁定「${handoff.title}」；另外两种校场支援从此错失。`
     }));
   }
 

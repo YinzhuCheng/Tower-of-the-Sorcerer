@@ -186,6 +186,11 @@ export function createTowerStateCodec({ baseState, floors, enemies }) {
         relayRefilled: engineState.charter?.relayRefilled === true,
         legacyOpen: engineState.charter?.legacyOpen === true
       },
+      handoff: {
+        selectedId: engineState.handoff?.selectedId ?? null,
+        beaconRefilled: engineState.handoff?.beaconRefilled === true,
+        legacyOpen: engineState.handoff?.legacyOpen === true
+      },
       relics: { ...engineState.relics },
       cores: engineState.cores,
       shopPurchases: engineState.shopPurchases,
@@ -236,6 +241,11 @@ export function createTowerStateCodec({ baseState, floors, enemies }) {
         completedId: compactState.charter?.completedId ?? null,
         relayRefilled: compactState.charter?.relayRefilled === true,
         legacyOpen: compactState.charter?.legacyOpen === true
+      },
+      handoff: {
+        selectedId: compactState.handoff?.selectedId ?? null,
+        beaconRefilled: compactState.handoff?.beaconRefilled === true,
+        legacyOpen: compactState.handoff?.legacyOpen === true
       },
       relics: { ...compactState.relics },
       eventStates: [...compactState.eventStates],
@@ -289,6 +299,11 @@ export function createTowerStateCodec({ baseState, floors, enemies }) {
         completedId: state.charter?.completedId ?? null,
         relayRefilled: state.charter?.relayRefilled === true,
         legacyOpen: state.charter?.legacyOpen === true
+      },
+      handoff: {
+        selectedId: state.handoff?.selectedId ?? null,
+        beaconRefilled: state.handoff?.beaconRefilled === true,
+        legacyOpen: state.handoff?.legacyOpen === true
       },
       relics: { ...state.relics },
       relicNames: [],

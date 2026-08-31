@@ -1,10 +1,17 @@
 import { getAct3Charter, isAct3CharterCompleted } from '../game/act3-charters.js';
+import { ACT3_HANDOFFS, getAct3Handoff, getSelectedAct3Handoff } from '../game/act3-handoff-priorities.js';
 import { FLOORS } from '../game/data.js';
 import { replayTowerStepSkeletonToState } from '../solver/replay.js';
 import { deriveRouteInsights } from '../solver/route-insights.js';
 import { runDemoThirtyFloorMilestones } from './demo-30-floor-milestone-solver.js';
 
 export const DEMO30_CHARTER_IDS = Object.freeze(['shelter', 'audit', 'relay']);
+export const DEMO30_HANDOFF_IDS = Object.freeze(ACT3_HANDOFFS.map((handoff) => handoff.id));
+export const DEMO30_HANDOFF_ROUTE_SPECS = Object.freeze([
+  Object.freeze({ id: 'shelter-proofread', charterId: 'shelter', handoffId: 'proofread' }),
+  Object.freeze({ id: 'audit-beacon', charterId: 'audit', handoffId: 'beacon' }),
+  Object.freeze({ id: 'relay-escort', charterId: 'relay', handoffId: 'escort' })
+]);
 
 const CHARTER_DEADLINE_FLOOR = Object.freeze({ shelter: 21, audit: 22, relay: 23 });
 
@@ -148,6 +155,33 @@ export function createCharterRouteAdapter(baseAdapter, charterId) {
   };
 }
 
+/** The player chooses this axis by combat order, not through a solver-only
+ * switch.  This adapter merely asks the proof to demonstrate one named first
+ * guardian; tile travel, damage and every remaining fight stay authoritative. */
+export function createHandoffRouteAdapter(baseAdapter, handoffId) {
+  const handoff = getAct3Handoff(handoffId);
+  if (!handoff) throw new Error(`Unknown Act III handoff '${handoffId}'.`);
+  const priorityEnemyIds = new Set(ACT3_HANDOFFS.map((entry) => entry.triggerEnemyId));
+  return {
+    ...baseAdapter,
+    enumerateActions(state) {
+      const engineState = baseAdapter.materializeState(state);
+      const actions = baseAdapter.enumerateActions(state);
+      if (engineState.floor !== 26 || engineState.handoff?.selectedId || engineState.handoff?.legacyOpen) return actions;
+      return actions.filter((action) => action.kind !== 'tile' || action.parsed?.type !== 'enemy'
+        || !priorityEnemyIds.has(action.parsed.id) || action.parsed.id === handoff.triggerEnemyId);
+    },
+    stageKey(state) {
+      return `${baseAdapter.stageKey?.(state) ?? 'all'}/handoff:${handoffId}`;
+    },
+    searchHeuristic(state) {
+      const engineState = baseAdapter.materializeState(state);
+      return (baseAdapter.searchHeuristic?.(state) ?? 0)
+        + (getSelectedAct3Handoff(engineState)?.id === handoffId ? 7e10 : 0);
+    }
+  };
+}
+
 export function evaluateAct3CharterPortfolio({
   adapter,
   routeSteps,
@@ -226,5 +260,48 @@ export function evaluateAct3CharterPortfolio({
     id: 'demo30-act3-charter-portfolio-v1',
     entries: Object.freeze(entries),
     publishable: entries.length === 3 && entries.every((entry) => entry.completed)
+  });
+}
+
+export function evaluateAct3HandoffPortfolio({
+  adapter,
+  routeSteps,
+  routeSpecs = DEMO30_HANDOFF_ROUTE_SPECS,
+  maxExpanded = 18_000,
+  maxGenerated = 360_000,
+  onStage = null
+} = {}) {
+  if (!adapter) throw new Error('Act III handoff portfolio requires an adapter.');
+  const entries = routeSpecs.map((spec) => {
+    const charter = getAct3Charter(spec.charterId);
+    const handoff = getAct3Handoff(spec.handoffId);
+    if (!charter || !handoff) throw new Error(`Invalid Act III handoff route '${spec.id}'.`);
+    const routeAdapter = createHandoffRouteAdapter(createCharterRouteAdapter(adapter, charter.id), handoff.id);
+    const result = runDemoThirtyFloorMilestones({
+      adapter: routeAdapter,
+      routeSteps,
+      maxExpanded,
+      maxGenerated,
+      onStage: (stage) => onStage?.(spec.id, stage)
+    });
+    const replay = result.completed
+      ? replayTowerStepSkeletonToState(result.routeSteps, { adapter: routeAdapter, requireGoal: true })
+      : { ok: false, final: null, battleLog: [] };
+    const selected = replay.ok ? getSelectedAct3Handoff(replay.final) : null;
+    return Object.freeze({
+      ...spec,
+      charter,
+      handoff,
+      completed: result.completed && replay.ok && selected?.id === handoff.id,
+      result,
+      replay,
+      minNormalizedHpMargin: replay.minNormalizedHpMargin,
+      insights: deriveRouteInsights({ steps: result.routeSteps, battleLog: replay.battleLog, charter, handoff: selected })
+    });
+  });
+  return Object.freeze({
+    id: 'demo30-act3-handoff-portfolio-v1',
+    entries: Object.freeze(entries),
+    publishable: entries.length === DEMO30_HANDOFF_ROUTE_SPECS.length && entries.every((entry) => entry.completed)
   });
 }

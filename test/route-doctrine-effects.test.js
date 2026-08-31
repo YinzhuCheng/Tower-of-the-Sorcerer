@@ -68,7 +68,7 @@ test('v6 saves move the impossible mirror gate without resetting route progress'
   map[2][4] = 'gate:mirrorReservoirVault';
 
   const migrated = deserializeState(serializeState(state));
-  assert.equal(migrated.version, 8);
+  assert.equal(migrated.version, 9);
   assert.equal(migrated.doctrine.selectedId, 'shadow');
   assert.equal(migrated.floorStates[15].map[1][2], 'gate:mirrorReservoirVault');
   assert.equal(migrated.floorStates[15].map[2][1], '#');

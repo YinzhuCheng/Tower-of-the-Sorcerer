@@ -31,7 +31,7 @@ test('Act III mutator is numeric-only and restores authoritative values', () => 
   const observed = withDemoThirtyFloorCandidate({ mutationIds: ['act3-final-hp-plus4'] }, catalog, () => ENEMIES.errataCore.hp);
   assert.ok(observed > baseline);
   assert.equal(ENEMIES.errataCore.hp, baseline);
-  assert.deepEqual(DEMO30_MUTATION_SCOPE.locked, ['maps', 'charter-gates', 'charter-items', 'card-prices', 'enemy-order', 'final-phase-order']);
+  assert.deepEqual(DEMO30_MUTATION_SCOPE.locked, ['maps', 'charter-gates', 'charter-items', 'handoff-order', 'card-prices', 'enemy-order', 'final-phase-order']);
 });
 
 test('Act III hardening refuses a portfolio that loses any charter route', () => {

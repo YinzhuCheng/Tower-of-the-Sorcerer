@@ -21,6 +21,7 @@ import { getAllianceBond, isAllianceBonded } from './alliance-bonds.js';
 import { getChallengeContractBriefing } from './challenge-contracts.js';
 import { getRouteDoctrineBriefing } from './route-doctrines.js';
 import { getAct3CharterBriefing } from './act3-charters.js';
+import { getAct3HandoffBriefing } from './act3-handoff-priorities.js';
 import { getBossProtocolBriefing } from './boss-protocols.js';
 
 export const FREE_ROUTE_INTEL_ID = 'free-route-intel-v1';
@@ -69,7 +70,7 @@ const ROUTE_NOTES = Object.freeze({
   ,24: '接力章程消耗日卡 ×1、月卡 ×1，换取容量、立即补魔与 F27 后的第二次满额回充。'
   ,25: '缺页封条强制消耗日、月、星各一张。不要在 F21–24 的选择中把颜色账本用空。'
   ,26: '本幕唯一高阶商店已公开标价；可以把 F21–25 的战利品转成生命、攻防或 MP 容量。'
-  ,27: '三名校场守卫都是上行强制目标。接力路线要规划总管前后的 MP 使用，才能兑现第二次回充。'
+  ,27: '三名校场守卫都是上行强制目标；最先击败的一人会永久锁定护送、校验或接力优先程序。先后顺序本身就是公开的终局取舍。'
   ,28: '两场高压战守着不同补给；主路并不强迫全拿，决定是否绕行本身就是终局资源取舍。'
   ,29: '最后索引由两名守卫维持。上楼前的卡片与 MP 都应按 F30 的公开双相数值预留。'
   ,30: '档案守望者 → 勘误核心为固定两相战。完成的章程效果、会战幸存者效果与敌方数值全部可查看。'
@@ -213,8 +214,12 @@ function finaleFacts(state) {
       atk: effective?.atk ?? base.atk,
       def: effective?.def ?? base.def,
       magicPower: effective?.magicPower ?? base.magicPower,
+      special: effective && Object.hasOwn(effective, 'special') ? (effective.special ?? 'normal') : base.special,
       rules: effective?.councilRules ?? null,
-      modifierLabels: effective?.charterLabels ?? []
+      modifierLabels: [
+        ...(effective?.charterLabels ?? []),
+        ...(effective?.handoffLabels ?? [])
+      ]
     } : null;
   }).filter(Boolean);
   const contracts = getChallengeContractBriefing(state);
@@ -273,6 +278,7 @@ export function getFreeRouteIntel(state, { lookahead = FREE_ROUTE_INTEL_LOOKAHEA
     notice: '查看不会消耗卡片、金币、HP、MP 或回合；情报只提前公开固定规则，路线代价仍由你承担。',
     doctrines: currentNumber >= 11 ? getRouteDoctrineBriefing(state) : null,
     charters: currentNumber >= 21 ? getAct3CharterBriefing(state) : null,
+    handoffs: currentNumber >= 21 ? getAct3HandoffBriefing(state) : null,
     current,
     upcoming: Object.freeze(upcoming),
     finale: currentNumber >= 11 ? finaleFacts(state) : null

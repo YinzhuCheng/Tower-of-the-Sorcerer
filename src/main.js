@@ -642,10 +642,17 @@ function showRouteIntel() {
         <ul>${intel.charters.entries.map((charter) => `<li><strong>${escapeHtml(charter.title)}</strong>：${escapeHtml(charter.route)} · ${escapeHtml(charter.cost)} · ${escapeHtml(charter.payoff)}${charter.selected ? charter.completed ? ' · 本轮已完成' : ' · 本轮已签署' : charter.locked ? ' · 本轮封印' : ''}</li>`).join('')}</ul>
       </section>`
     : '';
+  const handoffs = intel.handoffs
+    ? `<section class="route-intel-finale doctrine-intel">
+        <h3>F27 接力校场优先级${intel.handoffs.selectedId ? ` · 已锁定${escapeHtml(intel.handoffs.entries.find((entry) => entry.selected)?.title ?? '')}` : ''}</h3>
+        <p>第一名被击败的校场守卫决定优先程序；不消耗资源，但另外两种程序会永久错失。</p>
+        <ul>${intel.handoffs.entries.map((handoff) => `<li><strong>${escapeHtml(handoff.title)}</strong>：${escapeHtml(handoff.route)} · ${escapeHtml(handoff.cost)} · ${escapeHtml(handoff.payoff)}${handoff.selected ? ' · 本轮已锁定' : handoff.locked ? ' · 本轮错失' : ''}</li>`).join('')}</ul>
+      </section>`
+    : '';
   openModal({
     kicker: 'FREE ROUTE INTEL · 零资源',
     title: intel.title,
-    body: `<div class="dialogue-copy route-intel-intro"><p>${escapeHtml(intel.notice)}</p></div><div class="route-intel-list">${routeBody}</div>${doctrines}${charters}${finale}`,
+    body: `<div class="dialogue-copy route-intel-intro"><p>${escapeHtml(intel.notice)}</p></div><div class="route-intel-list">${routeBody}</div>${doctrines}${charters}${handoffs}${finale}`,
     actions: [{ label: '返回路线', className: 'primary' }]
   });
 }

@@ -65,6 +65,14 @@ import {
   createLegacyAct3CharterState,
   normalizeAct3CharterState
 } from './act3-charters.js';
+import {
+  applyAct3HandoffFinaleModifier,
+  createAct3HandoffState,
+  createLegacyAct3HandoffState,
+  normalizeAct3HandoffState,
+  selectAct3HandoffForEnemy,
+  settleAct3HandoffAfterGuardians
+} from './act3-handoff-priorities.js';
 import { applyBossProtocolModifier, getProtocolDefeatLog } from './boss-protocols.js';
 
 export const DIRECTIONS = {
@@ -123,6 +131,7 @@ export function createInitialState() {
     challenge: createChallengeState(),
     doctrine: createRouteDoctrineState(),
     charter: createAct3CharterState(),
+    handoff: createAct3HandoffState(),
     relics: {
       codex: initialRelics.has('codex'),
       compass: initialRelics.has('compass'),
@@ -152,7 +161,7 @@ export function validateStateShape(state) {
   if (!state || state.version !== GAME_VERSION) return false;
   if (!Number.isInteger(state.floor) || state.floor < 0 || state.floor >= FLOORS.length) return false;
   if (!Array.isArray(state.floorStates) || state.floorStates.length !== FLOORS.length) return false;
-  if (!state.stats || !state.cards || !state.relics || !state.magic || !state.council || !state.alliance || !state.challenge || !state.doctrine || !state.charter) return false;
+  if (!state.stats || !state.cards || !state.relics || !state.magic || !state.council || !state.alliance || !state.challenge || !state.doctrine || !state.charter || !state.handoff) return false;
   if (!Number.isFinite(state.magic.mp) || !Number.isFinite(state.magic.maxMp)) return false;
   return true;
 }
@@ -217,9 +226,10 @@ export function migrateState(state) {
     state.challenge = normalizeChallengeState(state.challenge);
     state.doctrine = normalizeRouteDoctrineState(state.doctrine);
     state.charter = normalizeAct3CharterState(state.charter);
+    state.handoff = normalizeAct3HandoffState(state.handoff);
     return state;
   }
-  if (state.version === 1 || state.version === 2 || state.version === 3 || state.version === 4 || state.version === 5 || state.version === 6 || state.version === 7) {
+  if (state.version === 1 || state.version === 2 || state.version === 3 || state.version === 4 || state.version === 5 || state.version === 6 || state.version === 7 || state.version === 8) {
     return appendMissingFloorStates(migrateMirrorVaultGatePosition({
       ...state,
       version: GAME_VERSION,
@@ -235,7 +245,11 @@ export function migrateState(state) {
       // A save made before the third act must never discover a new mandatory
       // commitment halfway through a completed campaign.  Legacy mode keeps
       // its existing world accessible while fresh runs get the full charter.
-      charter: createLegacyAct3CharterState()
+      charter: createLegacyAct3CharterState(),
+      // F27's first-guardian priority is additive content. Existing saves
+      // keep their pre-update final numbers rather than gaining a retroactive
+      // reward after a guardian was already defeated.
+      handoff: createLegacyAct3HandoffState()
     }));
   }
   return state;
@@ -277,7 +291,7 @@ export function getEffectiveEnemy(state, enemyId) {
     && (enemyId === 'arcaneSovereign' || enemyId === 'originCore');
   const protocolAdjusted = applyBossProtocolModifier(state, enemyId, enemy);
   const councilAdjusted = isFinalePhase ? applyWarCouncilFinaleModifier(protocolAdjusted, state?.council) : protocolAdjusted;
-  return applyAct3CharterFinaleModifier(state, enemyId, councilAdjusted);
+  return applyAct3HandoffFinaleModifier(state, enemyId, applyAct3CharterFinaleModifier(state, enemyId, councilAdjusted));
 }
 
 /** Resolve a previously previewed plan through the authoritative state. */
@@ -816,6 +830,11 @@ export function tryMove(state, dx, dy) {
       addLog(state, charterDefeatEffect.label);
       result.events.push({ type: 'act3CharterEffect', effect: charterDefeatEffect });
     }
+    const handoffSelection = selectAct3HandoffForEnemy(state, parsed.id);
+    if (handoffSelection) {
+      addLog(state, handoffSelection.label);
+      result.events.push({ type: 'act3HandoffSelected', handoff: handoffSelection.handoff });
+    }
 
     if (enemy.phaseNext) {
       setTile(state, x, y, `enemy:${enemy.phaseNext}`);
@@ -857,6 +876,7 @@ export function tryMove(state, dx, dy) {
       const floorState = getFloorState(state);
       const remainingExitGuardians = recordDefeatedBoss(floorState, floor, parsed.id);
       const guardianGateResult = openSatisfiedGuardianGates(state);
+      const handoffEffect = settleAct3HandoffAfterGuardians(state, remainingExitGuardians);
       result.bossDefeated = true;
       result.defeatedBossId = parsed.id;
       result.remainingExitGuardians = remainingExitGuardians;
@@ -867,6 +887,10 @@ export function tryMove(state, dx, dy) {
           gateIds: guardianGateResult.gateIds,
           opened: guardianGateResult.opened
         });
+      }
+      if (handoffEffect) {
+        addLog(state, handoffEffect.label);
+        result.events.push({ type: 'act3HandoffEffect', effect: handoffEffect });
       }
       result.dialogue = enemy.defeatDialogue ?? null;
       if (result.dialogue && !state.storySeen.includes(result.dialogue)) state.storySeen.push(result.dialogue);

@@ -25,7 +25,7 @@ applyDemoThirtyFloorContent({ enemies: ENEMIES, floors: FLOORS, items: ITEMS, di
 const { createTowerAdapter } = await import('../src/solver/tower-adapter.js');
 const { createDemoThirtyFloorExpertWitnessAdapter } = await import('../src/tuner/demo-30-floor-expert-witness-adapter.js');
 const { createDoctrineRouteAdapter } = await import('../src/tuner/demo-20-route-portfolio.js');
-const { evaluateAct3CharterPortfolio } = await import('../src/tuner/demo-30-route-portfolio.js');
+const { evaluateAct3CharterPortfolio, evaluateAct3HandoffPortfolio } = await import('../src/tuner/demo-30-route-portfolio.js');
 const { createDemoThirtyFloorMutationCatalog, withDemoThirtyFloorCandidate } = await import('../src/tuner/demo-30-floor-mutations.js');
 const baseAdapter = createTowerAdapter();
 // Ember is a deliberately high-pressure Act II witness; the Act III portfolio
@@ -39,21 +39,37 @@ const mutationCatalog = createDemoThirtyFloorMutationCatalog();
 if (requestedMutation && !mutationCatalog.some((mutation) => mutation.id === requestedMutation)) {
   throw new Error(`Unknown Act III numeric mutation '${requestedMutation}'.`);
 }
-const evaluatePortfolio = () => evaluateAct3CharterPortfolio({
-  adapter,
-  routeSteps: f10Witness.routeSteps,
-  charterIds,
-  maxExpanded: 4_000,
-  maxGenerated: 70_000,
-  includeDiagnostics: process.env.DEBUG_DEMO30 === '1',
-  onStage: (id, stage) => console.error(`[${id}] ${stage.milestone}: ${stage.reached ? 'reached' : stage.stoppedReason} (${stage.expandedStates} expanded; ${JSON.stringify(stage.generatedByAction)})`)
-});
+const evaluatePortfolio = () => {
+  const charters = evaluateAct3CharterPortfolio({
+    adapter,
+    routeSteps: f10Witness.routeSteps,
+    charterIds,
+    maxExpanded: 4_000,
+    maxGenerated: 70_000,
+    includeDiagnostics: process.env.DEBUG_DEMO30 === '1',
+    onStage: (id, stage) => console.error(`[${id}] ${stage.milestone}: ${stage.reached ? 'reached' : stage.stoppedReason} (${stage.expandedStates} expanded; ${JSON.stringify(stage.generatedByAction)})`)
+  });
+  const handoffs = evaluateAct3HandoffPortfolio({
+    adapter,
+    routeSteps: f10Witness.routeSteps,
+    maxExpanded: 4_000,
+    maxGenerated: 70_000,
+    onStage: (id, stage) => console.error(`[${id}] ${stage.milestone}: ${stage.reached ? 'reached' : stage.stoppedReason} (${stage.expandedStates} expanded; ${JSON.stringify(stage.generatedByAction)})`)
+  });
+  return Object.freeze({
+    ...charters,
+    handoffPortfolio: handoffs,
+    publishable: charters.publishable && handoffs.publishable
+  });
+};
 const portfolio = requestedMutation
   ? withDemoThirtyFloorCandidate({ mutationIds: [requestedMutation] }, mutationCatalog, evaluatePortfolio)
   : evaluatePortfolio();
 const structure = validateDemoThirtyFloorContent({ floors: FLOORS, enemies: ENEMIES, items: ITEMS });
 const report = {
-  publishable: structure.ok && (requestedCharter ? portfolio.entries.every((entry) => entry.completed) : portfolio.publishable),
+  publishable: structure.ok
+    && (requestedCharter ? portfolio.entries.every((entry) => entry.completed) : portfolio.publishable)
+    && portfolio.handoffPortfolio.entries.every((entry) => entry.completed),
   contentId: DEMO30_CONTENT_ID,
   mutation: requestedMutation,
   floors: FLOORS.length,
@@ -80,6 +96,14 @@ const report = {
       ? entry.replay.battleLog.filter((battle) => battle.floor >= 21)
       : undefined,
     final: process.env.DEBUG_DEMO30 === '1' ? entry.replay.final : undefined
+  })),
+  handoffEntries: portfolio.handoffPortfolio.entries.map((entry) => ({
+    id: entry.id,
+    charterId: entry.charterId,
+    handoffId: entry.handoffId,
+    completed: entry.completed,
+    minNormalizedHpMargin: entry.minNormalizedHpMargin,
+    insights: entry.insights
   }))
 };
 console.log(JSON.stringify(report, null, 2));
