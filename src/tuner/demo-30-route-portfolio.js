@@ -13,6 +13,18 @@ export const DEMO30_HANDOFF_ROUTE_SPECS = Object.freeze([
   Object.freeze({ id: 'relay-escort', charterId: 'relay', handoffId: 'escort' })
 ]);
 
+// The release portfolio intentionally proves three authored high-pressure
+// combinations.  The full matrix is a diagnostic, not a release gate: some
+// combinations are allowed to be harsher or even fail, as long as the result
+// is visible to authors rather than being mistaken for an untested route.
+export const DEMO30_HANDOFF_DECISION_MATRIX_SPECS = Object.freeze(
+  DEMO30_CHARTER_IDS.flatMap((charterId) => DEMO30_HANDOFF_IDS.map((handoffId) => Object.freeze({
+    id: `${charterId}-${handoffId}`,
+    charterId,
+    handoffId
+  })))
+);
+
 const CHARTER_DEADLINE_FLOOR = Object.freeze({ shelter: 21, audit: 22, relay: 23 });
 
 function strategicDecisionsFrom(result) {
@@ -320,5 +332,77 @@ export function evaluateAct3HandoffPortfolio({
     id: 'demo30-act3-handoff-portfolio-v1',
     entries: Object.freeze(entries),
     publishable: entries.length === DEMO30_HANDOFF_ROUTE_SPECS.length && entries.every((entry) => entry.completed)
+  });
+}
+
+function summarizeDecisionAxis(entries, axis, ids) {
+  return Object.freeze(ids.map((id) => {
+    const cells = entries.filter((entry) => entry[axis] === id);
+    const completed = cells.filter((entry) => entry.completed);
+    const margins = completed.map((entry) => entry.minNormalizedHpMargin).filter(Number.isFinite);
+    return Object.freeze({
+      id,
+      total: cells.length,
+      completed: completed.length,
+      blocked: cells.length - completed.length,
+      minCompletedMargin: margins.length ? Math.min(...margins) : null,
+      maxCompletedMargin: margins.length ? Math.max(...margins) : null
+    });
+  }));
+}
+
+/**
+ * Convert a full charter × first-guardian sweep into compact author-facing
+ * evidence.  It deliberately distinguishes a failed cell from an untested
+ * one: callers must pass every expected matrix entry before a row/column can
+ * claim coverage.
+ */
+export function summarizeAct3HandoffDecisionMatrix({
+  entries = [],
+  charterIds = DEMO30_CHARTER_IDS,
+  handoffIds = DEMO30_HANDOFF_IDS
+} = {}) {
+  const expectedCells = charterIds.length * handoffIds.length;
+  const coveredEntries = entries.filter((entry) => charterIds.includes(entry.charterId)
+    && handoffIds.includes(entry.handoffId));
+  const completedEntries = coveredEntries.filter((entry) => entry.completed);
+  const margins = completedEntries.map((entry) => entry.minNormalizedHpMargin).filter(Number.isFinite);
+  return Object.freeze({
+    expectedCells,
+    evaluatedCells: coveredEntries.length,
+    coverageComplete: coveredEntries.length === expectedCells,
+    completedCells: completedEntries.length,
+    blockedCells: coveredEntries.length - completedEntries.length,
+    minCompletedMargin: margins.length ? Math.min(...margins) : null,
+    maxCompletedMargin: margins.length ? Math.max(...margins) : null,
+    byCharter: summarizeDecisionAxis(coveredEntries, 'charterId', charterIds),
+    byHandoff: summarizeDecisionAxis(coveredEntries, 'handoffId', handoffIds)
+  });
+}
+
+/**
+ * Run all nine irreversible Act III commitments with the same authoritative
+ * milestones used by the release portfolio.  This is intentionally opt-in in
+ * the CLI because it is a design diagnostic, not a cheap smoke test.
+ */
+export function evaluateAct3HandoffDecisionMatrix({
+  adapter,
+  routeSteps,
+  maxExpanded = 18_000,
+  maxGenerated = 360_000,
+  onStage = null
+} = {}) {
+  const portfolio = evaluateAct3HandoffPortfolio({
+    adapter,
+    routeSteps,
+    routeSpecs: DEMO30_HANDOFF_DECISION_MATRIX_SPECS,
+    maxExpanded,
+    maxGenerated,
+    onStage
+  });
+  return Object.freeze({
+    id: 'demo30-act3-handoff-decision-matrix-v1',
+    entries: portfolio.entries,
+    ...summarizeAct3HandoffDecisionMatrix({ entries: portfolio.entries })
   });
 }
