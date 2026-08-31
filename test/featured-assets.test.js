@@ -53,11 +53,12 @@ test('featured v2 atlas reconstructs the verified transparent WebP', async () =>
   });
 });
 
-test('canvas entrypoint preserves transparent legacy cleanup and featured overrides in v4', async () => {
+test('canvas entrypoint preserves transparent legacy cleanup and avoids generic featured art for migrated relics', async () => {
   const source = await readFile(join(root, 'src/game/canvas-scene.js'), 'utf8');
   assert.match(source, /buildTransparentCell/);
   assert.match(source, /FEATURED_ENEMY_ASSET/);
-  assert.match(source, /featured-codex-shrine/);
+  assert.doesNotMatch(source, /featured-codex-shrine|featured-treasure/);
+  assert.match(source, /ITEM_PIPELINE_ASSET/);
   assert.match(source, /seal-switch-dual/);
   assert.match(source, /seal-rune-sequence/);
   assert.match(source, /INTERACTABLE_ITEM_ASSET/);

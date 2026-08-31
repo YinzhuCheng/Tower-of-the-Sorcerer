@@ -36,6 +36,10 @@ test('dedicated enemy identities and visual semantics cannot silently fall back 
   assert.match(scene, /function cardCostForGate/);
   assert.match(scene, /seal-charter-archive/);
   assert.match(scene, /seal-protocol/);
-  assert.match(scene, /relic-mana-flask/);
+  assert.match(scene, /ITEM_PIPELINE_ASSET/);
+  assert.match(scene, /manaFlask: \{ asset: 'mana-flask'/);
+  assert.match(scene, /compass: \{ asset: 'moon-compass'/);
+  assert.match(scene, /codex: \{ asset: 'astral-codex'/);
+  assert.match(scene, /holy: \{ asset: 'holy-elixir'/);
   assert.match(scene, /drawDualResource/);
 });

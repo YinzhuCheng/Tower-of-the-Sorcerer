@@ -1,7 +1,12 @@
 {
-  "version": 2,
-  "status": "staged",
+  "version": 3,
+  "status": "ready",
   "basePath": "/assets/anime/items/",
-  "assets": {},
-  "note": "Individual item WebP files have not yet been committed. The game currently uses the transparent-cleaned legacy item sheet plus V4 card art. source-map.json is retained for future binary item uploads."
+  "assets": {
+    "mana-flask": {"file": "mana-flask.webp", "role": "resource", "semantic": "restore-mana"},
+    "moon-compass": {"file": "moon-compass.webp", "role": "relic", "semantic": "floor-teleport"},
+    "astral-codex": {"file": "astral-codex.webp", "role": "relic", "semantic": "enemy-intel"},
+    "holy-elixir": {"file": "holy-elixir.webp", "role": "relic", "semantic": "double-life"}
+  },
+  "note": "Dedicated transparent WebP relics used by the runtime item pipeline. Legacy item-sheet cells remain only for unmigrated low-priority pickups."
 }

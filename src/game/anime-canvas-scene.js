@@ -3,6 +3,7 @@ import { DIRECTIONS, getTile, parseToken, tryMove } from './engine.js';
 import { getAnimeAsset, preloadAnimeAssets } from './anime-assets.js';
 import { portraitIndex } from './anime-portraits.js';
 import { getEnemyAsset, getEnemyAssetMeta, preloadEnemyAssets } from './enemy-assets.js';
+import { preloadItemAssets } from './item-assets.js';
 import { getMapAsset, preloadMapAssets } from './map-assets.js';
 import { WALL_BITS, selectWallVisual } from './autotile.js';
 
@@ -82,6 +83,7 @@ class AnimeCanvasTowerScene {
     await Promise.all([
       preloadAnimeAssets(),
       preloadEnemyAssets(),
+      preloadItemAssets(),
       preloadMapAssets()
     ]);
 

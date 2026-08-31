@@ -2,6 +2,7 @@ import { createCanvasTowerScene as createBaseCanvasTowerScene } from './anime-ca
 import { ENEMIES, FLOORS, ITEMS, TILE_SIZE } from './data.js';
 import { parseToken } from './engine.js';
 import { portraitIndex } from './anime-portraits.js';
+import { getItemAsset } from './item-assets.js';
 import { getMapAsset } from './map-assets.js';
 import { applyWallMaterialV6 } from './wall-material-v6.js';
 
@@ -62,9 +63,18 @@ const ACCEPTED_RESOURCE_ASSET = Object.freeze({
   act3Atk: 'gem-atk-v10',
   act3Def: 'gem-def-v10',
   act3Hp: 'potion-red-v10',
-  act3Restorative: 'potion-red-v10',
-  act3Mana: 'relic-mana-flask',
-  manaFlask: 'relic-mana-flask'
+  act3Restorative: 'potion-red-v10'
+});
+
+// These high-salience items have their own transparent files and must never
+// collapse back into the legacy 6×4 item sheet. The semantic name keeps map
+// rendering honest even when gameplay IDs evolve.
+const ITEM_PIPELINE_ASSET = Object.freeze({
+  manaFlask: { asset: 'mana-flask', scale: 0.76, shadow: 0.44 },
+  act3Mana: { asset: 'mana-flask', scale: 0.76, shadow: 0.44 },
+  compass: { asset: 'moon-compass', scale: 0.84, shadow: 0.48 },
+  codex: { asset: 'astral-codex', scale: 0.9, shadow: 0.5 },
+  holy: { asset: 'holy-elixir', scale: 0.82, shadow: 0.46 }
 });
 
 function cardCostForGate(floor, gateId) {
@@ -328,6 +338,16 @@ function drawFeaturedProp(scene, assetName, x, y, scale, shadowWidth = 0.5, alph
   return true;
 }
 
+function drawItemProp(scene, assetName, x, y, scale, shadowWidth = 0.5, alpha = 1) {
+  const image = getItemAsset(assetName);
+  if (!image) return false;
+  const cx = scene.center(x);
+  const cy = scene.center(y);
+  scene.drawSoftShadow(cx, cy + TILE_SIZE * 0.29, TILE_SIZE * shadowWidth, 0.2);
+  scene.drawMapImage(image, cx, cy, TILE_SIZE * scale, TILE_SIZE * scale, 0, alpha);
+  return true;
+}
+
 function wallAssetForMask(mask) {
   const count = countBits(mask);
 
@@ -482,11 +502,11 @@ export function createCanvasTowerScene(bridge, parent = document.getElementById(
       }
       const asset = INTERACTABLE_ITEM_ASSET[parsed.id];
       if (asset && drawFeaturedProp(scene, asset, x, y, 0.78, 0.44)) return;
+      const itemAsset = ITEM_PIPELINE_ASSET[parsed.id];
+      if (itemAsset && drawItemProp(scene, itemAsset.asset, x, y, itemAsset.scale, itemAsset.shadow)) return;
       if (parsed.id === 'act3Dual' && drawDualResource(scene, x, y)) return;
       const acceptedAsset = ACCEPTED_RESOURCE_ASSET[parsed.id];
       if (acceptedAsset && drawFeaturedProp(scene, acceptedAsset, x, y, 0.72, 0.4)) return;
-      if (parsed.id === 'codex' && drawFeaturedProp(scene, 'featured-codex-shrine', x, y, 0.9, 0.48)) return;
-      if (parsed.id === 'holy' && drawFeaturedProp(scene, 'featured-treasure', x, y, 0.88, 0.52)) return;
     }
     if (parsed.type === 'switch') {
       const asset = SWITCH_ASSET_BY_ID[parsed.id] ?? 'switch-vine';

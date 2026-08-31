@@ -11,7 +11,7 @@ const runtimeRoot = join(root, 'public/assets/anime/map');
 const INTERACTABLE_ASSETS = [
   'seal-guardian-vault', 'switch-vine', 'switch-tide', 'switch-forge', 'switch-ember', 'switch-hush',
   'seal-vine', 'seal-switch-single', 'seal-switch-dual', 'seal-rune-sequence', 'seal-archive-index',
-  'seal-charter-archive', 'seal-protocol', 'relic-mana-flask', 'relic-lucky-coin', 'relic-moon-blade',
+  'seal-charter-archive', 'seal-protocol', 'relic-lucky-coin', 'relic-moon-blade',
   'relic-dragon-scale-talisman', 'relic-silent-ward-earring', 'relic-aether-prism',
   'relic-conduit-codex', 'relic-arcane-battery', 'relic-mirror-reservoir',
   'relic-crown-capacitor', 'relic-origin-focus', 'relic-shelter-aegis',

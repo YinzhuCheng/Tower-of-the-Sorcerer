@@ -138,7 +138,6 @@
     "seal-archive-index": {"file":"interactables/archive-index-seal.webp","role":"archive-seal"},
     "seal-charter-archive": {"file":"interactables/seal-charter-archive.webp","role":"charter-seal"},
     "seal-protocol": {"file":"interactables/seal-protocol.webp","role":"protocol-seal"},
-    "relic-mana-flask": {"file":"interactables/mana-flask.webp","role":"mana"},
     "relic-lucky-coin": {"file":"interactables/lucky-coin.webp","role":"relic"},
     "relic-moon-blade": {"file":"interactables/moon-blade.webp","role":"relic"},
     "relic-dragon-scale-talisman": {"file":"interactables/dragon-scale-talisman.webp","role":"relic"},

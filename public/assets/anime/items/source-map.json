@@ -1,22 +1,10 @@
 {
-  "health-potion-crimson.webp": "ornate_crimson_health_potion.png",
-  "sapphire-potion.webp": "sapphire_crystal_potion_flask.png",
-  "attack-gem-fire.webp": "fiery_golden_gem_medallion.png",
-  "defense-emblem-azure.webp": "azure_crystal_guardian_emblem.png",
-  "vitality-gem-emerald.webp": "emerald_leaf_rune_crystal.png",
-  "astral-codex.webp": "enchanted_celestial_spellbook.png",
-  "moon-compass.webp": "celestial_moonlit_compass_icon.png",
-  "starlight-pendant.webp": "celestial_golden_star_pendant.png",
-  "sun-card.webp": "radiant_golden_sun_relic_card.png",
-  "moon-card.webp": "lunar_crescent_crystal_card.png",
-  "starlight-chest.webp": "celestial_sapphire_starlight_chest.png",
-  "amethyst-potion.webp": "celestial_amethyst_potion_bottle.png",
-  "phoenix-elixir.webp": "phoenix_flame_elixir_bottle.png",
-  "sunfire-gem.webp": "radiant_sunfire_crystal_medallion.png",
-  "ice-shield.webp": "luminous_icy_crystal_shield_emblem.png",
-  "nature-amulet.webp": "ornate_emerald_nature_amulet.png",
-  "teleport-sigil.webp": "glowing_blue_arcane_summoning_circle.png",
-  "seal-sigil.webp": "紫晶星辉封印魔法阵.png",
-  "star-card.webp": "celestial_crystal_tarot_card.png",
-  "eclipse-card.webp": "ornate_eclipse_tarot_card.png"
+  "version": 1,
+  "note": "Runtime files are generated from high-resolution transparent masters. Masters stay outside the deploy bundle; this map records the active provenance rather than a speculative upload list.",
+  "runtimeSources": {
+    "mana-flask.webp": "item-relic-masters/mana-flask-master.png",
+    "moon-compass.webp": "item-relic-masters/moon-compass-master.png",
+    "astral-codex.webp": "item-relic-masters/astral-codex-master.png",
+    "holy-elixir.webp": "item-relic-masters/holy-elixir-master.png"
+  }
 }
