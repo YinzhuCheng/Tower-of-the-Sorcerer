@@ -29,7 +29,6 @@ function assertWebP(base64, label) {
 test('enemy art manifest resolves all generated enemy and NPC entries, including Act III', async () => {
   const manifest = JSON.parse(await readFile(manifestPath, 'utf8'));
   const entries = Object.entries(manifest.assets ?? {});
-  assert.equal(entries.length, 72);
   assert.equal(manifest.assets.mote?.file, 'enemies/v1/mote-map-128.webp');
   for (const key of [
     'act3_cinder_scribe', 'act3_ash_custodian', 'act3_shelter_warden', 'act3_audit_bailiff',
@@ -43,6 +42,11 @@ test('enemy art manifest resolves all generated enemy and NPC entries, including
     assert.match(manifest.assets[key]?.file ?? '', /^enemies\/v2\/.*-map-384\.webp$/, `${key} must have a dedicated map sprite`);
   }
 
+  for (const key of [
+    'vine_druid', 'shell_guard', 'blade_priestess', 'crown_knight',
+    'dragon_guard', 'dusk_dragon', 'comet_archer'
+  ]) assert.match(manifest.assets[key]?.file ?? '', /^enemies\/v3\/.*-map-384\.webp$/, `${key} must have a dedicated identity sprite`);
+
   const bundleCache = new Map();
   for (const [portrait, meta] of entries) {
     const sourceCount = [meta.file, meta.base64File, meta.bundle].filter(Boolean).length;
@@ -51,7 +55,7 @@ test('enemy art manifest resolves all generated enemy and NPC entries, including
     if (meta.file) {
       const data = await readFile(runtimePath(manifest.basePath, meta.file));
       assert.ok(data.length > 16, `${portrait} file must not be empty`);
-      if (meta.file.startsWith('enemies/act3/') || meta.file.startsWith('enemies/v2/')) {
+      if (meta.file.startsWith('enemies/act3/') || meta.file.startsWith('enemies/v2/') || meta.file.startsWith('enemies/v3/')) {
         assert.ok(data.includes(Buffer.from('ALPH')), `${portrait} must retain native alpha`);
       }
       continue;

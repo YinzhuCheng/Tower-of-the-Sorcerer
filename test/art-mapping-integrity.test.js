@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { ENEMIES } from '../src/game/data.js';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 
@@ -42,4 +43,31 @@ test('dedicated enemy identities and visual semantics cannot silently fall back 
   assert.match(scene, /codex: \{ asset: 'astral-codex'/);
   assert.match(scene, /holy: \{ asset: 'holy-elixir'/);
   assert.match(scene, /drawDualResource/);
+});
+
+test('every logical enemy owns a distinct runtime portrait', async () => {
+  const [manifestText, portraitSource] = await Promise.all([
+    readFile(join(root, 'public/assets/anime/enemies/manifest.json'), 'utf8'),
+    readFile(join(root, 'src/game/anime-portraits.js'), 'utf8')
+  ]);
+  const manifest = JSON.parse(manifestText);
+  const ownersByPortrait = new Map();
+
+  for (const [id, enemy] of Object.entries(ENEMIES)) {
+    assert.ok(manifest.assets[enemy.portrait], `${id} must resolve through the enemy asset manifest`);
+    ownersByPortrait.set(enemy.portrait, [...(ownersByPortrait.get(enemy.portrait) ?? []), id]);
+  }
+
+  const reused = [...ownersByPortrait.entries()].filter(([, owners]) => owners.length > 1);
+  assert.deepEqual(reused, [], `different logical enemies may not silently reuse art: ${JSON.stringify(reused)}`);
+
+  const v3 = Object.freeze({
+    vineDruid: 'vine_druid', shellGuard: 'shell_guard', bladePriestess: 'blade_priestess',
+    crownKnight: 'crown_knight', dragonGuard: 'dragon_guard', duskDragon: 'dusk_dragon',
+    cometArcher: 'comet_archer'
+  });
+  for (const [enemyId, portrait] of Object.entries(v3)) {
+    assert.equal(ENEMIES[enemyId].portrait, portrait, `${enemyId} must keep its dedicated v3 portrait`);
+    assert.match(portraitSource, new RegExp(`${portrait}: '/assets/anime/enemies/v3/`), `${portrait} must power the codex/HUD portrait`);
+  }
 });

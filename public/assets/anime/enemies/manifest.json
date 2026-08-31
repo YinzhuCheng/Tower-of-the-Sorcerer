@@ -1,5 +1,5 @@
 {
-  "version": 6,
+  "version": 7,
   "basePath": "/assets/anime/",
   "assets": {
     "mana_wisp": { "file": "enemies/v1/mana-wisp-map-128.webp" },
@@ -50,6 +50,13 @@
     "black_seal_keeper": { "file": "enemies/v1/black-seal-keeper-map-128.webp", "scale": 1.10 },
     "palace_warden_v2": { "file": "enemies/v2/palace-warden-map-384.webp", "scale": 1.12 },
     "black_seal_keeper_v2": { "file": "enemies/v2/black-seal-keeper-map-384.webp", "scale": 1.10 },
+    "vine_druid": { "file": "enemies/v3/vine-druid-map-384.webp", "scale": 1.08 },
+    "shell_guard": { "file": "enemies/v3/shell-guard-map-384.webp", "scale": 1.06 },
+    "blade_priestess": { "file": "enemies/v3/blade-priestess-map-384.webp", "scale": 1.08 },
+    "crown_knight": { "file": "enemies/v3/crown-knight-map-384.webp", "scale": 1.10 },
+    "dragon_guard": { "file": "enemies/v3/dragon-guard-map-384.webp", "scale": 1.10 },
+    "dusk_dragon": { "file": "enemies/v3/dusk-dragon-map-384.webp", "scale": 1.08 },
+    "comet_archer": { "file": "enemies/v3/comet-archer-map-384.webp", "scale": 1.08 },
     "void_core": { "file": "enemies/v2/void-core-map-384.webp", "scale": 1.16 },
     "echo_regent": { "file": "enemies/v2/echo-regent-map-384.webp", "scale": 1.12 },
     "arcane_sovereign": { "file": "enemies/v2/arcane-sovereign-map-384.webp", "scale": 1.12 },

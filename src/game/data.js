@@ -59,7 +59,7 @@ export const ENEMIES = {
     description: '先制射击：战斗开始前先攻击一次。'
   },
   vineDruid: {
-    name: '藤冠祭司', portrait: 'fox_acolyte', faction: '森罗术派', floor: 2,
+    name: '藤冠祭司', portrait: 'vine_druid', faction: '森罗术派', floor: 2,
     hp: 185, atk: 40, def: 15, gold: 23, special: 'magic', magicPower: 28,
     description: '藤咒造成无视防御的固定魔法伤害。'
   },
@@ -80,7 +80,7 @@ export const ENEMIES = {
     description: '攻守均衡的潮汐近卫。'
   },
   shellGuard: {
-    name: '贝甲鲸娘', portrait: 'whale_singer', faction: '潮汐学派', floor: 3,
+    name: '贝甲鲸娘', portrait: 'shell_guard', faction: '潮汐学派', floor: 3,
     hp: 330, atk: 56, def: 33, gold: 39,
     description: '高防御单位，适合在提升攻击后处理。'
   },
@@ -101,7 +101,7 @@ export const ENEMIES = {
     description: '以居合获得先制攻击。'
   },
   bladePriestess: {
-    name: '双刃祷姬', portrait: 'sword_knight', faction: '锋刃庭院', floor: 4,
+    name: '双刃祷姬', portrait: 'blade_priestess', faction: '锋刃庭院', floor: 4,
     hp: 370, atk: 72, def: 32, gold: 56, special: 'doubleHit',
     description: '每次反击会连续造成两段伤害。'
   },
@@ -122,7 +122,7 @@ export const ENEMIES = {
     description: '火咒造成无视防御的固定伤害。'
   },
   dragonGuard: {
-    name: '熔甲龙卫', portrait: 'dragon_whelp', faction: '赤焰龙脉', floor: 5,
+    name: '熔甲龙卫', portrait: 'dragon_guard', faction: '赤焰龙脉', floor: 5,
     hp: 560, atk: 101, def: 49, gold: 76,
     description: '高生命、高防御的阵线守卫。'
   },
@@ -143,7 +143,7 @@ export const ENEMIES = {
     description: '镜面装甲拥有较高防御。'
   },
   cometArcher: {
-    name: '彗矢术姬', portrait: 'star_witch', faction: '天穹术派', floor: 6,
+    name: '彗矢术姬', portrait: 'comet_archer', faction: '天穹术派', floor: 6,
     hp: 520, atk: 128, def: 48, gold: 96, special: 'firstStrike',
     description: '彗矢会在正式交锋前命中。'
   },
@@ -164,7 +164,7 @@ export const ENEMIES = {
     description: '虚空咏唱无视普通防御。'
   },
   duskDragon: {
-    name: '暮色龙娘', portrait: 'dragon_whelp', faction: '虚影术派', floor: 7,
+    name: '暮色龙娘', portrait: 'dusk_dragon', faction: '虚影术派', floor: 7,
     hp: 850, atk: 148, def: 73, gold: 132,
     description: '被影术侵染的高防御龙娘。'
   },
@@ -185,7 +185,7 @@ export const ENEMIES = {
     description: '蚀月术造成高额固定魔法伤害。'
   },
   crownKnight: {
-    name: '王冠剑姬', portrait: 'sword_boss', faction: '无声王庭', floor: 8,
+    name: '王冠剑姬', portrait: 'crown_knight', faction: '无声王庭', floor: 8,
     hp: 1080, atk: 181, def: 84, gold: 185, special: 'firstStrike',
     description: '最后的近卫剑姬，拥有先制攻击。'
   },
