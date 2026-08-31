@@ -74,6 +74,8 @@ npm run check
 
 要测试更高压候选可运行 `MUTATION=act3-mana-cache-minus10,act3-f29-ledger-forward npm run validate:demo30`。候选最多两项，覆盖敌人数值、MP/商店/卡片资源、语义迷宫交换和可选敌人布置；楼梯、剧情、章程合同与强制守卫身份始终锁定。候选只有在三条互斥章程和三条校场优先路线都能由权威回放通关时才可保留。
 
+要查看完整的「章程 × F27 首战守卫」决策面，可运行 `DECISION_MATRIX=1 npm run validate:demo30`。它会回放全部 9 种不可逆组合，报告每格是否可通、最低生命裕量与每条章程/守卫轴的覆盖情况；这是平衡诊断，不会把九种组合误设为发行门槛。
+
 ## 项目结构
 
 ```text
