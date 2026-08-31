@@ -22,7 +22,17 @@ const PORTRAITS = {
   final_queen: ['无声女王·诺克缇娅', 'final_boss'], void_core: ['黯星魔阵核心', 'final_boss'],
   merchant: ['阵间商人·珂珂', 'merchant'], guide: ['残响精灵·纱雾', 'moon_priestess'],
   echo_regent: ['回声摄政官', 'final_boss'],
-  arcane_sovereign: ['奥术主权者', 'final_boss']
+  arcane_sovereign: ['奥术主权者', 'final_boss'],
+  act3_cinder_scribe: ['余烬抄写员', 'puppet_master'],
+  act3_ash_custodian: ['灰烬保管人', 'final_boss'],
+  act3_audit_bailiff: ['持簿执行官', 'moon_priestess'],
+  act3_relay_conductor: ['接力导体', 'star_witch'],
+  act3_archive_lancer: ['折页枪卫', 'swordswoman'],
+  act3_margin_duelist: ['边注决斗者', 'swordswoman'],
+  act3_errata_cantor: ['勘误咏唱者', 'moon_priestess'],
+  act3_archive_marshal: ['接力总管', 'final_boss'],
+  act3_archive_warden: ['档案守望者', 'final_boss'],
+  act3_errata_core: ['勘误核心', 'final_boss']
 };
 
 const urlCache = new Map();
@@ -37,6 +47,16 @@ const RUNTIME_PORTRAITS = Object.freeze({
   final_queen: '/assets/anime/portraits/v1/final-queen-combat-portrait-runtime.webp',
   echo_regent: '/assets/anime/characters/echo-regent-runtime.webp',
   arcane_sovereign: '/assets/anime/characters/arcane-sovereign-runtime.webp',
+  act3_cinder_scribe: '/assets/anime/enemies/act3/cinder-scribe-map-384.webp',
+  act3_ash_custodian: '/assets/anime/enemies/act3/ash-custodian-map-384.webp',
+  act3_audit_bailiff: '/assets/anime/enemies/act3/audit-bailiff-map-384.webp',
+  act3_relay_conductor: '/assets/anime/enemies/act3/relay-conductor-map-384.webp',
+  act3_archive_lancer: '/assets/anime/enemies/act3/archive-lancer-map-384.webp',
+  act3_margin_duelist: '/assets/anime/enemies/act3/margin-duelist-map-384.webp',
+  act3_errata_cantor: '/assets/anime/enemies/act3/errata-cantor-map-384.webp',
+  act3_archive_marshal: '/assets/anime/enemies/act3/archive-marshal-map-384.webp',
+  act3_archive_warden: '/assets/anime/enemies/act3/archive-warden-map-384.webp',
+  act3_errata_core: '/assets/anime/enemies/act3/errata-core-map-384.webp',
   mana_wisp: '/assets/anime/portraits/v1/mana-wisp-portrait-runtime.webp',
   aether_warden: '/assets/anime/portraits/v1/aether-warden-portrait-runtime.webp',
   rune_cantor: '/assets/anime/portraits/v1/rune-cantor-portrait-runtime.webp',

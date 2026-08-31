@@ -288,12 +288,12 @@ function installItems(items) {
 
 function installEnemies(enemies) {
   const portraits = {
-    cinderScribe: 'prism_archivist', ashCustodian: 'mana_sentinel', shelterWarden: 'crown_blade',
-    auditBailiff: 'rune_cantor', relayRunner: 'mirror_huntress', relayConductor: 'resonance_blade',
-    ledgerMage: 'resonance_cantor', archiveLancer: 'arcane_gatekeeper', shelfWarden: 'spectrum_marshal',
-    triageKnight: 'mirror_duelist', marginDuelist: 'spellblade_duelist', errataCantor: 'mirror_cantor',
-    archiveMarshal: 'triune_arbiter', indexBeast: 'void_herald', lastCustodian: 'crown_magus',
-    archiveWarden: 'prism_archivist', errataCore: 'origin_core'
+    cinderScribe: 'act3_cinder_scribe', ashCustodian: 'act3_ash_custodian', shelterWarden: 'crown_blade',
+    auditBailiff: 'act3_audit_bailiff', relayRunner: 'mirror_huntress', relayConductor: 'act3_relay_conductor',
+    ledgerMage: 'resonance_cantor', archiveLancer: 'act3_archive_lancer', shelfWarden: 'spectrum_marshal',
+    triageKnight: 'mirror_duelist', marginDuelist: 'act3_margin_duelist', errataCantor: 'act3_errata_cantor',
+    archiveMarshal: 'act3_archive_marshal', indexBeast: 'void_herald', lastCustodian: 'crown_magus',
+    archiveWarden: 'act3_archive_warden', errataCore: 'act3_errata_core'
   };
   const names = {
     cinderScribe: '余烬抄写员', ashCustodian: '灰烬保管人', shelterWarden: '夜航守柜人',
@@ -364,11 +364,11 @@ function installDialogues(dialogues) {
       turn('绫星·璃', 'hero', '那我会把它带到灯塔。不是为了替他们决定，而是不让他们再被擦掉。')
     ]),
     floor30: sequence('第三十阵：余烬灯塔', [
-      turn('档案守望者', 'prism_archivist', '我只会修正错误。请交出不合格式的选择。'),
+      turn('档案守望者', 'act3_archive_warden', '我只会修正错误。请交出不合格式的选择。'),
       turn('绫星·璃', 'hero', '选择会犯错，所以才要留记录、留同伴、留能改正的余地。今天我不交出去。')
     ]),
     bossArchiveWardenPost: sequence('灯塔：守望者停机', [
-      turn('档案守望者', 'prism_archivist', '修正请求……缺少唯一答案。'),
+      turn('档案守望者', 'act3_archive_warden', '修正请求……缺少唯一答案。'),
       turn('绫星·璃', 'hero', '那就别再找唯一答案。把勘误核心交给我。')
     ]),
     ending: sequence('终章：未投递的信', [

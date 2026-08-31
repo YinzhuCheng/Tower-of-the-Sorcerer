@@ -1,5 +1,5 @@
 {
-  "version": 5,
+  "version": 6,
   "basePath": "/assets/anime/",
   "assets": {
     "mana_wisp": { "file": "enemies/v1/mana-wisp-map-128.webp" },
@@ -51,6 +51,16 @@
     "astral_boss": { "file": "enemies/v1/astral-boss-map-128.webp", "scale": 1.08 },
     "shadow_boss": { "file": "enemies/v1/shadow-boss-map-128.webp", "scale": 1.08 },
     "final_queen": { "file": "enemies/v1/final-queen-combat-map-128.webp", "scale": 1.12 },
-    "merchant": { "file": "enemies/v1/merchant-keke-map-128.webp" }
+    "merchant": { "file": "enemies/v1/merchant-keke-map-128.webp" },
+    "act3_cinder_scribe": { "file": "enemies/act3/cinder-scribe-map-384.webp", "scale": 1.14 },
+    "act3_ash_custodian": { "file": "enemies/act3/ash-custodian-map-384.webp", "scale": 1.12 },
+    "act3_audit_bailiff": { "file": "enemies/act3/audit-bailiff-map-384.webp", "scale": 1.13 },
+    "act3_relay_conductor": { "file": "enemies/act3/relay-conductor-map-384.webp", "scale": 1.14 },
+    "act3_archive_lancer": { "file": "enemies/act3/archive-lancer-map-384.webp", "scale": 1.12 },
+    "act3_margin_duelist": { "file": "enemies/act3/margin-duelist-map-384.webp", "scale": 1.12 },
+    "act3_errata_cantor": { "file": "enemies/act3/errata-cantor-map-384.webp", "scale": 1.10 },
+    "act3_archive_marshal": { "file": "enemies/act3/archive-marshal-map-384.webp", "scale": 1.12 },
+    "act3_archive_warden": { "file": "enemies/act3/archive-warden-map-384.webp", "scale": 1.15 },
+    "act3_errata_core": { "file": "enemies/act3/errata-core-map-384.webp", "scale": 1.18 }
   }
 }
