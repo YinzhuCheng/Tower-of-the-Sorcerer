@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self'; font-src 'self' data:; object-src 'none'; base-uri 'self'" />
     <meta name="theme-color" content="#07101c" />
-    <meta name="description" content="30 层三章节魔塔：以固定数值、钥匙门、互斥路线、会战部署与可调魔力附刃构成的日系二次元策略 RPG。" />
+    <meta name="description" content="30 层三章节魔塔：以固定数值、钥匙门、互斥选择、会战部署与可调魔力附刃构成的日系二次元策略 RPG。" />
     <meta name="robots" content="index,follow" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <title>失落魔法阵：少女魔塔 · 30F 三章节</title>
@@ -106,7 +106,7 @@
             <span></span><button data-move="up" aria-label="向上">▲</button><span></span>
             <button data-move="left" aria-label="向左">◀</button><button data-move="down" aria-label="向下">▼</button><button data-move="right" aria-label="向右">▶</button>
           </div>
-          <p class="control-hint">方向键 / WASD 移动 · 点击相邻格行动 · 悬停或触摸地图单位查看效果与代价 · I 路线情报 · R 路线选择 · C 挑战 · E 图鉴 · T 罗盘</p>
+          <p class="control-hint">方向键 / WASD 移动 · 点击相邻格行动 · 悬停查看地图单位；触摸一次查看、再点同格行动 · V 邻近单位 · R 专家盟约 / 修复章程 · C 挑战 · E 图鉴 · T 罗盘 · M 魔力附刃</p>
         </section>
 
         <aside class="panel intel-panel" aria-label="战术情报">
@@ -115,16 +115,12 @@
             <div id="battle-preview" class="battle-preview muted">靠近敌人后显示固定损伤。</div>
           </section>
           <section>
-            <h3>阵内目标</h3>
-            <p id="floor-objective">寻找被封印的魔力核心。</p>
-          </section>
-          <section>
-            <h3>行动记录</h3>
+            <h3>最近 12 条行动记录</h3>
             <ol id="log-list" class="log-list"></ol>
           </section>
           <section class="intel-actions">
-            <button id="btn-route-intel">路线情报</button>
-            <button id="btn-doctrine" disabled>路线盟约</button>
+            <button id="btn-nearby">邻近单位</button>
+            <button id="btn-doctrine" disabled>专家盟约</button>
             <button id="btn-challenges" disabled>见证契约</button>
             <button id="btn-codex">敌人图鉴</button>
             <button id="btn-teleport">楼层罗盘</button>

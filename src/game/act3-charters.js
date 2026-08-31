@@ -46,7 +46,7 @@ export const ACT3_CHARTERS = Object.freeze([
     difficulty: 'MP 型终局',
     route: 'F24 灯塔接力室（消耗日曜卡 ×1、月辉卡 ×1）',
     cost: '日曜卡 ×1、月辉卡 ×1；第二次回充在 F27 后触发。',
-    payoff: '最大 MP +60、立即补满；击败 F27 接力总管后再补满一次。',
+    payoff: '最大 MP +60、恢复 160 MP（不超过当前上限）；击败 F27 接力总管后再补满一次。',
     risk: '不直接削弱终局；F27 后的 MP 要留给 F30。',
     relayEnemyId: 'archiveMarshal',
     finale: Object.freeze({ label: '灯塔接力：F27 后 MP 补满一次' })

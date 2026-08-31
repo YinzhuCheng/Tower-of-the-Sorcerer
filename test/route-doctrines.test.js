@@ -40,7 +40,7 @@ test('F11 requires a public doctrine before ascent, with no resource price', () 
   const before = serializeState(state);
   const blocked = tryMove(state, 0, -1);
   assert.equal(blocked.openDoctrine, true);
-  assert.match(blocked.reason, /路线盟约/);
+  assert.match(blocked.reason, /专家宝库/);
   assert.equal(serializeState(state), before, 'the blocked prompt must not mutate a save or charge scouting resources');
 
   const signed = selectRouteDoctrine(state, 'ember');
@@ -76,7 +76,7 @@ test('specialist gates are mutually exclusive while the selected route keeps its
   locked.cards.star = 2;
   const denied = tryMove(locked, 1, 0);
   assert.equal(denied.blocked, true);
-  assert.match(denied.reason, /影线公开路线/);
+  assert.match(denied.reason, /影线公开/);
 });
 
 test('only the selected specialist relic can create a doctrine bond, while legacy saves retain their former access', () => {

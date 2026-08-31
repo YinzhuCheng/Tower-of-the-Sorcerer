@@ -9,6 +9,7 @@ import {
 import {
   calculateBattle,
   deserializeState,
+  getEffectiveEnemy,
   getFloorState,
   getShopEffectMultiplier,
   getShopOptions,
@@ -22,6 +23,9 @@ import {
   getRemainingExitGuardianIds
 } from './progression-rules.js';
 import { combatRuleCopy } from './player-copy.js';
+import { getBossProtocolBriefing } from './boss-protocols.js';
+import { getAct3HandoffForEnemy, getSelectedAct3Handoff } from './act3-handoff-priorities.js';
+import { getRouteDoctrineExitBlocker } from './route-doctrine-effects.js';
 
 const AUTO_SAVE_KEY = 'lost-magic-tower:auto:v1';
 const MANUAL_SAVE_KEY = 'lost-magic-tower:manual:v1';
@@ -40,6 +44,31 @@ function detail(label, value) {
 
 const ROMAN_LINKS = Object.freeze(['Ⅰ', 'Ⅱ', 'Ⅲ', 'Ⅳ', 'Ⅴ', 'Ⅵ']);
 const LETTER_LINKS = Object.freeze(['A', 'B', 'C', 'D', 'E', 'F']);
+
+const SWITCH_PUZZLE_NAMES = Object.freeze({
+  vine: Object.freeze({ switch: '藤蔓机关', gate: '藤蔓封锁' }),
+  tide: Object.freeze({ switch: '潮汐机关', gate: '潮汐封锁' }),
+  ember: Object.freeze({ switch: '赤焰机关', gate: '赤焰封锁' }),
+  forge: Object.freeze({ switch: '锻炉机关', gate: '锻炉封锁' }),
+  hush: Object.freeze({ switch: '静默机关', gate: '静默封锁' }),
+  mirror: Object.freeze({ switch: '镜序机关', gate: '镜序封锁' }),
+  tri: Object.freeze({ switch: '三相机关', gate: '三相封锁' }),
+  blackstar: Object.freeze({ switch: '黯星机关', gate: '黯星封锁' })
+});
+
+function puzzleName(gateId, part) {
+  return SWITCH_PUZZLE_NAMES[gateId]?.[part] ?? (part === 'switch' ? '魔力机关' : '机关封锁');
+}
+
+function linkCodeForSwitchGate(floor, gateId) {
+  const index = Object.keys(floor?.puzzles?.switches ?? {}).indexOf(gateId);
+  return LETTER_LINKS[index] ?? `M${index + 1}`;
+}
+
+function guardianGateName(gateId, rewardIds) {
+  if (gateId === 'dualKeyVault' && rewardIds.includes('lucky')) return '招财星币宝库封印';
+  return rewardIds.length > 0 ? '守护宝库封印' : '守护封锁结界';
+}
 
 function formatCardRequirement(requirements) {
   return Object.entries(requirements ?? {})
@@ -78,14 +107,49 @@ export function guardianMarkerLabel(enemy) {
   return enemy.finalBoss ? '最终守护者' : '结界守护者';
 }
 
+function enemyRuleText(state, enemyId, enemy) {
+  const floor = currentFloor(state);
+  let eventText = null;
+  if (floor?.number === 18 && enemyId === 'voidHerald') {
+    const protocol = getBossProtocolBriefing(state).find((entry) => entry.id === 'void-audit');
+    eventText = protocol?.active
+      ? '虚空审计已完成：回声摄政官的生命与魔法伤害已降低。'
+      : '击败后：回声摄政官生命 -18%，每次魔法伤害 -45。';
+  }
+
+  const handoff = floor?.number === 27 ? getAct3HandoffForEnemy(enemyId) : null;
+  if (handoff) {
+    const selected = getSelectedAct3Handoff(state);
+    eventText = !selected
+      ? `若它是首个被击败的校场守卫：锁定「${handoff.title}」；${handoff.payoff} 另外两项支援本轮不再获得。`
+      : selected.id === handoff.id
+        ? `已锁定「${selected.title}」：${selected.payoff}`
+        : `本轮已锁定「${selected.title}」；「${handoff.title}」不再获得。`;
+  }
+  const modifierLabels = [
+    ...(enemy?.protocolLabels ?? []),
+    ...(enemy?.councilLabels ?? []),
+    ...(enemy?.charterLabels ?? []),
+    ...(enemy?.handoffLabels ?? [])
+  ];
+  const modifierText = modifierLabels.length ? `当前已生效：${modifierLabels.join('；')}。` : null;
+  return [eventText, modifierText].filter(Boolean).join(' ');
+}
+
 export function buildEnemyHoverPreview(state, enemyId) {
-  const enemy = ENEMIES[enemyId];
+  const enemy = getEffectiveEnemy(state, enemyId);
   if (!state || !enemy) return null;
   const battle = calculateBattle(state.stats, enemy, state.relics, state.magic);
   const tone = battle.heroDamage <= 0 || !battle.winnable ? 'danger' : battle.totalDamage === 0 ? 'perfect' : 'safe';
-  const damageText = battle.heroDamage <= 0 ? '无法破防' : `${formatNumber(battle.totalDamage)} HP`;
+  const damageText = battle.heroDamage <= 0
+    ? '无法破防'
+    : battle.magicAffordable === false
+      ? `需要 ${formatNumber(battle.magicCost)} MP`
+      : `${formatNumber(battle.totalDamage)} HP`;
   const remainingText = battle.heroDamage <= 0
     ? '需要提高攻击后再交战'
+    : battle.magicAffordable === false
+      ? `本战不能开始：${battle.reason}。请降低附刃档位或恢复 MP。`
     : battle.winnable
       ? `战后剩余 ${formatNumber(Math.max(0, battle.remainingHp))} HP`
       : '当前生命不足，会战败';
@@ -101,6 +165,7 @@ export function buildEnemyHoverPreview(state, enemyId) {
     damageText,
     remainingText,
     specialText: specialLabel(enemy),
+    ruleText: enemyRuleText(state, enemyId, enemy),
     ...battle
   };
 }
@@ -111,7 +176,7 @@ function buildHeroHoverPreview(state) {
     title: '绫星·璃',
     badge: '主角',
     tone: 'info',
-    description: '固定数值战斗：先看敌人的预计耗血，再决定是否开战。',
+    description: '固定数值战斗：敌人悬停信息会显示预计耗血与战后生命。',
     primaryLabel: '生命',
     primaryValue: `${formatNumber(state.stats.hp)} / ${formatNumber(state.stats.maxHp)} HP`,
     details: [
@@ -126,6 +191,10 @@ function buildHeroHoverPreview(state) {
 function buildItemHoverPreview(state, itemId) {
   const item = ITEMS[itemId];
   if (!item) return null;
+  const floor = currentFloor(state);
+  const optionalNote = floor?.number === 4 && itemId === 'weapon'
+    ? '可选奖励；不影响上行阶梯。'
+    : null;
   const badge = item.kind === 'card' ? '结界卡牌' : item.kind === 'relic' ? '宝物' : '成长宝物';
   const details = [];
   if (item.kind === 'card') {
@@ -143,10 +212,10 @@ function buildItemHoverPreview(state, itemId) {
     title: item.name,
     badge,
     tone: 'info',
-    description: item.description,
+    description: [item.description, optionalNote].filter(Boolean).join(' '),
     primaryLabel: item.kind === 'card' ? '拾取' : '效果',
     primaryValue: item.kind === 'card' ? `+${item.amount ?? 1} 张` : item.description,
-    details
+    details: [...details, ...(optionalNote ? [detail('上行关系', optionalNote)] : [])]
   };
 }
 
@@ -197,7 +266,7 @@ function buildSwitchHoverPreview(state, switchId) {
   if (!puzzle) {
     return {
       kind: 'switch',
-      title: '魔力机关开关',
+      title: '魔力机关',
       badge: '机关',
       tone: activated ? 'safe' : 'info',
       description: '踏上后触发本层机关。',
@@ -211,14 +280,14 @@ function buildSwitchHoverPreview(state, switchId) {
   const linkCode = LETTER_LINKS[linkIndex] ?? `M${linkIndex + 1}`;
   return {
     kind: 'switch',
-    title: '魔力机关开关',
+    title: puzzleName(puzzle.gateId, 'switch'),
     badge: '机关',
     tone: activated ? 'safe' : 'info',
-    description: `本组共有 ${puzzle.requirements.length} 枚开关；全部踩亮后，关联封锁会解除。`,
+    description: `本组共有 ${puzzle.requirements.length} 枚机关；全部激活后，${linkCode} 封锁会解除。`,
     primaryLabel: '机关进度',
     primaryValue: `${activeCount} / ${puzzle.requirements.length}`,
     details: [
-      detail('关联标记', `${linkCode} → 机关结界`),
+      detail('关联标记', `${linkCode} → ${puzzleName(puzzle.gateId, 'gate')}`),
       detail('本开关', activated ? '已经激活' : '踏上后激活')
     ]
   };
@@ -231,17 +300,23 @@ function buildGateHoverPreview(state, gateId) {
   if (cardRequirements) {
     const missing = getMissingCards(state.cards, cardRequirements);
     const ready = missing.length === 0;
+    const voidAudit = gateId === 'f18StarChannel'
+      ? getBossProtocolBriefing(state).find((entry) => entry.id === 'void-audit')
+      : null;
     return {
       kind: 'gate',
-      title: '卡牌封锁结界',
+      title: voidAudit ? '星渠封锁结界' : '卡牌封锁结界',
       badge: '卡牌结界',
       tone: ready ? 'safe' : 'warning',
-      description: '穿过时按下列条件一次性消耗对应结界卡。',
+      description: voidAudit
+        ? '穿过时消耗星蚀卡 ×2；后方的虚空先驱会决定回声摄政官的终局数值。'
+        : '穿过时按下列条件一次性消耗对应结界卡。',
       primaryLabel: '开启条件',
       primaryValue: formatCardRequirement(cardRequirements),
       details: [
         detail('当前持有', `日 ${state.cards.sun} · 月 ${state.cards.moon} · 星 ${state.cards.star}`),
-        detail('状态', ready ? '可以开启' : `还缺 ${formatCardRequirement(Object.fromEntries(missing.map(({ card, missing: amount }) => [card, amount])))}`)
+        detail('状态', ready ? '可以开启' : `还缺 ${formatCardRequirement(Object.fromEntries(missing.map(({ card, missing: amount }) => [card, amount])))}`),
+        ...(voidAudit ? [detail('完成效果', voidAudit.active ? '虚空审计已完成' : '击败虚空先驱后：回声摄政官生命 -18%，每次魔法伤害 -45')] : [])
       ]
     };
   }
@@ -251,13 +326,16 @@ function buildGateHoverPreview(state, gateId) {
     const activeCount = switchRequirements.filter((id) => floorState.switches.includes(id)).length;
     return {
       kind: 'gate',
-      title: '机关封锁结界',
+      title: puzzleName(gateId, 'gate'),
       badge: '机关结界',
       tone: 'warning',
-      description: '先踩亮全部关联开关，结界才会解除。',
+      description: `全部 ${linkCodeForSwitchGate(floor, gateId)} 机关激活后，封锁自动解除。`,
       primaryLabel: '机关进度',
       primaryValue: `${activeCount} / ${switchRequirements.length}`,
-      details: [detail('剩余', `${Math.max(0, switchRequirements.length - activeCount)} 枚开关`)]
+      details: [
+        detail('关联标记', `${linkCodeForSwitchGate(floor, gateId)} → ${puzzleName(gateId, 'switch')}`),
+        detail('剩余', `${Math.max(0, switchRequirements.length - activeCount)} 枚机关`)
+      ]
     };
   }
 
@@ -286,7 +364,7 @@ function buildGateHoverPreview(state, gateId) {
     const rewardIds = floor?.puzzles?.visualLinks?.guardianRewards?.[gateId] ?? [];
     return {
       kind: 'gate',
-      title: rewardIds.length > 0 ? '守护宝库封印' : '守护封锁结界',
+      title: guardianGateName(gateId, rewardIds),
       badge: `关联 ${linkCode}`,
       tone: missing.length === 0 ? 'safe' : 'warning',
       description: rewardIds.length > 0
@@ -346,6 +424,22 @@ function buildRuneHoverPreview(state, runeId) {
   };
 }
 
+function upstairsCondition(state, floor, remainingGuardians) {
+  if (floor?.number === 11 && !state.doctrine?.selectedId && state.doctrine?.legacyOpen !== true) {
+    return '离开前需要选择一座专家宝库；选择本身不消耗资源。';
+  }
+  if (floor?.number === 21 && !state.charter?.selectedId && state.charter?.legacyOpen !== true) {
+    return '离开前需要选择一份修复章程；选择本身不消耗资源。';
+  }
+  const doctrineBlocker = getRouteDoctrineExitBlocker(state);
+  if (doctrineBlocker) return doctrineBlocker;
+  if (remainingGuardians.length > 0) {
+    const guardianNames = remainingGuardians.map((id) => ENEMIES[id]?.name ?? id).join('、');
+    return `上行结界仍由 ${remainingGuardians.length} 名守护者维持：${guardianNames}`;
+  }
+  return '传送通路已开放';
+}
+
 function buildStairHoverPreview(state, direction) {
   const targetId = direction === 'up' ? state.floor + 1 : state.floor - 1;
   const target = FLOORS[targetId];
@@ -354,38 +448,45 @@ function buildStairHoverPreview(state, direction) {
   const remainingGuardians = direction === 'up'
     ? getRemainingExitGuardianIds(getFloorState(state), floor)
     : [];
-  const locked = remainingGuardians.length > 0;
-  const guardianNames = remainingGuardians
-    .map((id) => ENEMIES[id]?.name ?? id)
-    .join('、');
+  const condition = direction === 'up' ? upstairsCondition(state, floor, remainingGuardians) : '传送通路已开放';
+  const locked = direction === 'up' && condition !== '传送通路已开放';
   return {
     kind: 'stairs',
     title: direction === 'up' ? '上行楼层传送阵' : '下行楼层传送阵',
     badge: '楼层传送',
     tone: locked ? 'warning' : 'safe',
     description: direction === 'up' ? '通往下一层。' : '返回已经到达的上一层。',
-    primaryLabel: '目标',
+    primaryLabel: '前往',
     primaryValue: `第 ${target.number} 阵 · ${target.title}`,
     details: [
-      detail('状态', locked
-        ? `上行结界仍由 ${remainingGuardians.length} 名守护者维持：${guardianNames}`
-        : '传送通路已开放')
+      detail('状态', condition)
     ]
   };
 }
 
-function buildFallbackHoverPreview(token) {
-  const parsed = parseToken(token);
+function buildCouncilHoverPreview(state) {
+  const complete = state.council?.completed === true;
   return {
-    kind: 'unit',
-    title: '魔法阵交互单位',
-    badge: '交互单位',
-    tone: 'info',
-    description: '靠近或踏上后会触发该地图单位。',
-    primaryLabel: '类型',
-    primaryValue: parsed.type === token ? '特殊阵列' : parsed.type,
-    details: []
+    kind: 'council',
+    title: '王座前共鸣会战',
+    badge: '会战部署',
+    tone: complete ? 'safe' : 'warning',
+    description: complete
+      ? '会战已经完成，王座前的封锁已解除。'
+      : '踏入后打开部署面板：面板会列出敌方顺序、可出战盟友、可分配 MP 与预演结果。',
+    primaryLabel: '状态',
+    primaryValue: complete ? '已经完成' : '尚未部署',
+    details: complete ? [] : [detail('确认条件', '只有预演为胜利的部署才能确认；查看与预演不消耗资源。')]
   };
+}
+
+function attachRelationHint(state, x, y, preview) {
+  if (!preview || (preview.kind !== 'enemy' && preview.kind !== 'item')) return preview;
+  const codes = [...getInteractionLinkCodesAt(state, x, y)];
+  if (!codes.length) return preview;
+  const hint = `关联 ${codes.join('、')}：同标记的单位会同时高亮。`;
+  if (preview.kind === 'enemy') return { ...preview, relationText: hint };
+  return { ...preview, details: [...(preview.details ?? []), detail('关联标记', hint)] };
 }
 
 export function buildMapUnitHoverPreview(state, x, y) {
@@ -403,13 +504,14 @@ export function buildMapUnitHoverPreview(state, x, y) {
   if (token === 'D') return buildStairHoverPreview(state, 'down');
 
   const parsed = parseToken(token);
-  if (parsed.type === 'enemy') return buildEnemyHoverPreview(state, parsed.id);
-  if (parsed.type === 'item') return buildItemHoverPreview(state, parsed.id);
+  if (token === 'council') return buildCouncilHoverPreview(state);
+  if (parsed.type === 'enemy') return attachRelationHint(state, x, y, buildEnemyHoverPreview(state, parsed.id));
+  if (parsed.type === 'item') return attachRelationHint(state, x, y, buildItemHoverPreview(state, parsed.id));
   if (parsed.type === 'door') return buildDoorHoverPreview(state, parsed.id);
   if (parsed.type === 'switch') return buildSwitchHoverPreview(state, parsed.id);
   if (parsed.type === 'gate') return buildGateHoverPreview(state, parsed.id);
   if (parsed.type === 'rune') return buildRuneHoverPreview(state, parsed.id);
-  return buildFallbackHoverPreview(token);
+  return null;
 }
 
 export function getEnemyHoverAt(state, x, y) {
@@ -460,11 +562,11 @@ export function listInteractionMarkers(state) {
     const missing = getMissingGuardianIds(floorState, floor, gateId);
     for (const enemyId of guardianIds) guardianCodes.set(enemyId, code);
     for (const { x, y } of tilesMatching(state, `gate:${gateId}`)) {
-      markers.push({ x, y, label: `${code} · ${guardianIds.length - missing.length}/${guardianIds.length}`, kind: 'guardian-gate' });
+      markers.push({ x, y, label: `${code} · ${guardianIds.length - missing.length}/${guardianIds.length}`, kind: 'guardian-gate', linkCode: code });
     }
     for (const itemId of floor?.puzzles?.visualLinks?.guardianRewards?.[gateId] ?? []) {
       for (const { x, y } of tilesMatching(state, `item:${itemId}`)) {
-        markers.push({ x, y, label: `${code} · 奖`, kind: 'guardian-reward' });
+        markers.push({ x, y, label: `${code} · 奖`, kind: 'guardian-reward', linkCode: code });
       }
     }
   }
@@ -474,11 +576,11 @@ export function listInteractionMarkers(state) {
     const active = switchIds.filter((id) => floorState.switches.includes(id)).length;
     for (const switchId of switchIds) {
       for (const { x, y } of tilesMatching(state, `switch:${switchId}`)) {
-        markers.push({ x, y, label: code, kind: 'switch' });
+        markers.push({ x, y, label: code, kind: 'switch', linkCode: code });
       }
     }
     for (const { x, y } of tilesMatching(state, `gate:${gateId}`)) {
-      markers.push({ x, y, label: `${code} · ${active}/${switchIds.length}`, kind: 'switch-gate' });
+      markers.push({ x, y, label: `${code} · ${active}/${switchIds.length}`, kind: 'switch-gate', linkCode: code });
     }
   }
 
@@ -486,10 +588,19 @@ export function listInteractionMarkers(state) {
     markers.push({
       ...marker,
       label: guardianCodes.get(marker.enemyId) ?? marker.label,
-      kind: guardianCodes.has(marker.enemyId) ? 'guardian' : 'guardian-default'
+      kind: guardianCodes.has(marker.enemyId) ? 'guardian' : 'guardian-default',
+      linkCode: guardianCodes.get(marker.enemyId) ?? null
     });
   }
   return markers;
+}
+
+export function getInteractionLinkCodesAt(state, x, y) {
+  return new Set(
+    listInteractionMarkers(state)
+      .filter((marker) => marker.x === x && marker.y === y && marker.linkCode)
+      .map((marker) => marker.linkCode)
+  );
 }
 
 function readCurrentState() {
@@ -563,11 +674,29 @@ function renderEnemyTooltip(card, preview) {
 
   const detailText = document.createElement('p');
   detailText.className = 'enemy-hover-detail';
-  detailText.textContent = preview.heroDamage <= 0
+  detailText.textContent = preview.heroDamage <= 0 || preview.magicAffordable === false
     ? preview.reason ?? preview.specialText
     : `${preview.rounds} 回合 · 每次反击 ${formatNumber(preview.enemyDamage)} · ${combatRuleCopy(preview.enemy)}`;
 
   card.append(stats, damage, result, detailText);
+  if (preview.magicTier > 0) {
+    const magic = document.createElement('p');
+    magic.className = 'enemy-hover-detail';
+    magic.textContent = `当前附刃 ${preview.magicTier} 档：本战开始时消耗 ${formatNumber(preview.magicCost)} MP。`;
+    card.append(magic);
+  }
+  if (preview.ruleText) {
+    const rule = document.createElement('p');
+    rule.className = 'enemy-hover-event';
+    rule.textContent = preview.ruleText;
+    card.append(rule);
+  }
+  if (preview.relationText) {
+    const relation = document.createElement('p');
+    relation.className = 'enemy-hover-event';
+    relation.textContent = preview.relationText;
+    card.append(relation);
+  }
 }
 
 function renderUnitTooltip(card, preview) {
@@ -641,17 +770,32 @@ function createMarkerLayer() {
   return layer;
 }
 
-function renderGuardianMarkers(layer, canvas, state) {
+function renderGuardianMarkers(layer, canvas, state, { focusedCodes = new Set(), flashedCodes = new Set(), flashMarkers = [] } = {}) {
   if (!canvas.isConnected || !state) {
     layer.replaceChildren();
     return;
   }
   const rect = canvas.getBoundingClientRect();
   const markers = listInteractionMarkers(state);
+  const haloKeys = new Set();
+  const halos = [...markers, ...flashMarkers].flatMap((marker) => {
+    const active = marker.linkCode && (focusedCodes.has(marker.linkCode) || flashedCodes.has(marker.linkCode));
+    const key = `${marker.x}:${marker.y}`;
+    if (!active || haloKeys.has(key)) return [];
+    haloKeys.add(key);
+    const halo = document.createElement('div');
+    halo.className = `interaction-map-halo interaction-map-halo-${marker.kind ?? 'guardian-default'}${focusedCodes.has(marker.linkCode) ? ' relation-focused' : ''}${flashedCodes.has(marker.linkCode) ? ' relation-flashed' : ''}`;
+    halo.style.left = `${rect.left + (marker.x / GRID_SIZE) * rect.width}px`;
+    halo.style.top = `${rect.top + (marker.y / GRID_SIZE) * rect.height}px`;
+    halo.style.width = `${rect.width / GRID_SIZE}px`;
+    halo.style.height = `${rect.height / GRID_SIZE}px`;
+    return [halo];
+  });
   const nodes = markers.map((marker) => {
     const node = document.createElement('div');
-    node.className = `guardian-map-marker interaction-marker interaction-marker-${marker.kind ?? 'guardian-default'}`;
+    node.className = `guardian-map-marker interaction-marker interaction-marker-${marker.kind ?? 'guardian-default'}${marker.linkCode && focusedCodes.has(marker.linkCode) ? ' relation-focused' : ''}${marker.linkCode && flashedCodes.has(marker.linkCode) ? ' relation-flashed' : ''}`;
     node.dataset.enemyId = marker.enemyId;
+    if (marker.linkCode) node.dataset.linkCode = marker.linkCode;
     node.textContent = marker.label;
     node.style.left = `${rect.left + ((marker.x + 0.5) / GRID_SIZE) * rect.width}px`;
     // Anchor to the cell's top edge, then CSS lifts the entire pill above it.
@@ -659,7 +803,7 @@ function renderGuardianMarkers(layer, canvas, state) {
     node.style.top = `${rect.top + (marker.y / GRID_SIZE) * rect.height}px`;
     return node;
   });
-  layer.replaceChildren(...nodes);
+  layer.replaceChildren(...halos, ...nodes);
 }
 
 export async function installTacticalInteractionLayer() {
@@ -667,21 +811,93 @@ export async function installTacticalInteractionLayer() {
   const canvas = await waitForCanvas();
   if (!canvas || canvas.dataset.tacticalInteraction === 'installed') return null;
   canvas.dataset.tacticalInteraction = 'installed';
-  canvas.setAttribute('aria-description', '鼠标悬停地图单位可查看功能、资源需求与战斗耗血；地图会以文字标出当前楼层守护者位置。');
+  canvas.setAttribute('aria-description', '鼠标悬停地图单位可查看功能、资源需求与战斗耗血；触摸时第一次只查看，再次触摸同一格才行动。键盘玩家可按 V 打开四邻对象说明。');
 
   const tooltip = createTooltip();
   const markerLayer = createMarkerLayer();
   let touchHideTimer = null;
+  let touchArmedTile = null;
+  let focusedCodes = new Set();
+  let lastRelationSnapshot = null;
+  const flashUntil = new Map();
+  const flashMarkersByCode = new Map();
+
+  const relationSnapshot = (currentState) => {
+    if (!currentState) return null;
+    const markers = listInteractionMarkers(currentState);
+    const byCode = new Map();
+    for (const marker of markers) {
+      if (!marker.linkCode) continue;
+      const entry = `${marker.kind}:${marker.label}:${marker.x}:${marker.y}`;
+      byCode.set(marker.linkCode, [...(byCode.get(marker.linkCode) ?? []), entry]);
+    }
+    return {
+      floor: currentState.floor,
+      markers,
+      byCode: new Map([...byCode].map(([code, entries]) => [code, entries.sort().join('|')]))
+    };
+  };
+
+  const refreshRelationFeedback = (currentState) => {
+    const next = relationSnapshot(currentState);
+    if (next && lastRelationSnapshot?.floor === next.floor) {
+      const codes = new Set([...lastRelationSnapshot.byCode.keys(), ...next.byCode.keys()]);
+      for (const code of codes) {
+        if (lastRelationSnapshot.byCode.get(code) !== next.byCode.get(code)) {
+          flashUntil.set(code, Date.now() + 1400);
+          flashMarkersByCode.set(code, [
+            ...lastRelationSnapshot.markers.filter((marker) => marker.linkCode === code),
+            ...next.markers.filter((marker) => marker.linkCode === code)
+          ]);
+        }
+      }
+    }
+    lastRelationSnapshot = next;
+  };
+
+  const activeFlashCodes = () => {
+    const now = Date.now();
+    for (const [code, until] of flashUntil) {
+      if (until <= now) flashUntil.delete(code);
+      if (until <= now) flashMarkersByCode.delete(code);
+    }
+    return new Set(flashUntil.keys());
+  };
+
+  const activeFlashMarkers = () => [...flashMarkersByCode.entries()]
+    .filter(([code]) => flashUntil.has(code))
+    .flatMap(([, markers]) => markers);
+
+  const updateMarkers = () => {
+    const currentState = readCurrentState();
+    refreshRelationFeedback(currentState);
+    renderGuardianMarkers(markerLayer, canvas, currentState, {
+      focusedCodes,
+      flashedCodes: activeFlashCodes(),
+      flashMarkers: activeFlashMarkers()
+    });
+  };
+
+  const setFocus = (currentState, tile) => {
+    const next = tile ? getInteractionLinkCodesAt(currentState, tile.x, tile.y) : new Set();
+    const changed = next.size !== focusedCodes.size || [...next].some((code) => !focusedCodes.has(code));
+    if (!changed) return;
+    focusedCodes = next;
+    updateMarkers();
+  };
 
   const hideTooltip = () => {
     tooltip.classList.add('hidden');
     canvas.style.cursor = '';
+    touchArmedTile = null;
+    setFocus(null, null);
   };
 
   const previewAtEvent = (event, persistForTouch = false) => {
     const state = readCurrentState();
     const tile = pointerTile(canvas, event);
     const preview = tile && state ? buildMapUnitHoverPreview(state, tile.x, tile.y) : null;
+    setFocus(state, tile);
     if (!preview) {
       hideTooltip();
       return;
@@ -699,10 +915,29 @@ export async function installTacticalInteractionLayer() {
   const onPointerMove = (event) => previewAtEvent(event, false);
   const onPointerLeave = () => hideTooltip();
   const onPointerDownCapture = (event) => {
-    if (event.pointerType !== 'mouse') previewAtEvent(event, true);
+    if (event.pointerType === 'mouse') return;
+    const state = readCurrentState();
+    const tile = pointerTile(canvas, event);
+    const preview = tile && state ? buildMapUnitHoverPreview(state, tile.x, tile.y) : null;
+    if (!preview) {
+      touchArmedTile = null;
+      return;
+    }
+    const now = Date.now();
+    const confirming = touchArmedTile
+      && touchArmedTile.x === tile.x
+      && touchArmedTile.y === tile.y
+      && touchArmedTile.until > now;
+    if (confirming) {
+      clearTimeout(touchHideTimer);
+      hideTooltip();
+      return;
+    }
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    touchArmedTile = { x: tile.x, y: tile.y, until: now + 1900 };
+    previewAtEvent(event, true);
   };
-  const updateMarkers = () => renderGuardianMarkers(markerLayer, canvas, readCurrentState());
-
   canvas.addEventListener('pointermove', onPointerMove);
   canvas.addEventListener('pointerleave', onPointerLeave);
   canvas.addEventListener('pointerdown', onPointerDownCapture, { capture: true });
@@ -713,6 +948,7 @@ export async function installTacticalInteractionLayer() {
 
   return () => {
     clearTimeout(touchHideTimer);
+    touchArmedTile = null;
     clearInterval(markerTimer);
     canvas.removeEventListener('pointermove', onPointerMove);
     canvas.removeEventListener('pointerleave', onPointerLeave);

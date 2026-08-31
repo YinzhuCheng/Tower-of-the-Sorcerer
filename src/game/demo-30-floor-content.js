@@ -210,7 +210,7 @@ const ACT3_FLOORS = Object.freeze([
   }),
   floor({
     number: 28, title: '归档风暴', intro: 'floor28',
-    objective: '主路可上行；侧路提供生命或 MP 的可选补给。',
+    objective: '上行阶梯已经开放；可选区域提供生命或 MP 补给。',
     roomPlan: ['风暴入口', '重排书架', '生命夹层', '魔力夹层', '上行静室'],
     theme: THEMES[7],
     map: `
@@ -339,23 +339,23 @@ function installDialogues(dialogues) {
       turn('绫星·璃', 'hero', '先看执行官的魔法耗血。')
     ]),
     floor24: sequence('第二十四阵：灯塔接力室', [
-      turn('龙姬·焰璃', 'dragon_boss', '接力侧库要日、月卡各一张；拿到后现在补满 MP，F27 后再补一次。'),
+      turn('龙姬·焰璃', 'dragon_boss', '接力侧库要日、月卡各一张；拿到后最大 MP +60、恢复 160 MP（不超过上限），F27 后再补满一次。'),
       turn('绫星·璃', 'hero', '那次补魔要留给终局。')
     ]),
     floor25: sequence('第二十五阵：缺页庭', [
       turn('绫星·璃', 'hero', '缺页封条要日曜一张、月辉两张、星蚀一张。'),
-      turn('残响精灵·纱雾', 'guide', '这是所有路线都绕不过的支出。')
+      turn('残响精灵·纱雾', 'guide', '这是任何选择都绕不过的支出。')
     ]),
     floor26: sequence('第二十六阵：折角集市', [
       turn('阵间商人·珂珂', 'merchant', '价签都写着：血、刃、甲、补 MP、扩 MP。买一次，下一次就涨价。'),
       turn('绫星·璃', 'hero', '先算清哪一项能撑到 F30。')
     ]),
     floor27: sequence('第二十七阵：接力校场', [
-      turn('影织姬·鸦羽', 'shadow_boss', '先击败哪名守卫，就锁定哪一项终局支援。三人仍都要打。'),
-      turn('绫星·璃', 'hero', '先看三场战斗，再定顺序。')
+      turn('影织姬·鸦羽', 'shadow_boss', '第一个被击败的守卫会锁定一种终局支援；三人的具体效果写在各自战斗说明里。三人仍都要打。'),
+      turn('绫星·璃', 'hero', '看清每一人的效果和预计耗血，再决定第一战。')
     ]),
     floor28: sequence('第二十八阵：归档风暴', [
-      turn('残响精灵·纱雾', 'guide', '主路已经通；侧路是生命和 MP 补给。'),
+      turn('残响精灵·纱雾', 'guide', '上行阶梯已经开放；可选区域有生命和 MP 补给。'),
       turn('绫星·璃', 'hero', '拿不拿，要看终局还缺什么。')
     ]),
     floor29: sequence('第二十九阵：最后索引', [

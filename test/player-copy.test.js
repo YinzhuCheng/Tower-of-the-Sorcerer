@@ -17,23 +17,28 @@ import { applyDemoThirtyFloorContent } from '../src/game/demo-30-floor-content.j
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 
 test('combat copy states timing and defense exceptions explicitly', () => {
-  assert.equal(PLAYER_COPY_VERSION, 'decision-first-v1');
+  assert.equal(PLAYER_COPY_VERSION, 'object-facts-v2');
   assert.match(combatRuleCopy({ special: 'magic', magicPower: 28 }), /每次反击固定造成 28 点伤害，不受防御影响/);
   assert.match(combatRuleCopy({ special: 'firstStrike' }), /开战前会额外攻击 1 次/);
   assert.match(combatRuleCopy({ special: 'doubleHit' }), /每次反击会造成 2 段伤害/);
   assert.equal(HELP_SECTIONS.length, 3);
 });
 
-test('main UI distinguishes decision facts from optional detail and permits story skipping', async () => {
-  const source = await readFile(join(root, 'src/main.js'), 'utf8');
-  assert.match(source, /当前账本/);
-  assert.match(source, /这一层要记住/);
+test('main UI presents object facts instead of fixed objectives or route forecasts', async () => {
+  const [source, markup] = await Promise.all([
+    readFile(join(root, 'src/main.js'), 'utf8'),
+    readFile(join(root, 'index.html'), 'utf8')
+  ]);
+  assert.match(source, /专家选择/);
   assert.match(source, /跳过叙事/);
-  assert.match(source, /可选拿取/);
-  assert.match(source, /离开本层前/);
+  assert.doesNotMatch(source, /getFreeRouteIntel|showRouteIntel|路线情报/);
+  assert.doesNotMatch(markup, /floor-objective|btn-route-intel|路线情报/);
+  assert.match(HELP_SECTIONS[0].lines.join('\n'), /效果、条件、消耗与当前状态/);
+  assert.match(HELP_SECTIONS[0].lines.join('\n'), /结界本身会显示实际消耗/);
+  assert.doesNotMatch(HELP_SECTIONS.flatMap((section) => section.lines).join('\n'), /主路|支线|先在.*情报/);
 });
 
-test('all acts use concise, decision-first floor objectives in the playable content', async () => {
+test('internal floor metadata stays concise without leaking solver terminology into current dialogue', async () => {
   const source = await Promise.all([
     readFile(join(root, 'src/game/demo-10-floor-progression-topology.js'), 'utf8'),
     readFile(join(root, 'src/game/demo-20-floor-content.js'), 'utf8'),
@@ -43,7 +48,7 @@ test('all acts use concise, decision-first floor objectives in the playable cont
     assert.doesNotMatch(file, /路线代价仍由你承担|本层不设 Boss 税|数值收敛配置统一管理/);
   }
   assert.match(source[2], /首战决定终局支援/);
-  assert.match(source[1], /离开前选择一条专家路线/);
+  assert.doesNotMatch(source[1], /主路可上行/);
 });
 
 test('assembled 30F campaign keeps automatic story and objectives scannable', () => {

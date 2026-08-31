@@ -230,7 +230,7 @@ export function applyDemoTenFloorProgressionTopology({ floors, enemies } = {}) {
   });
   configureFloor(floorByNumber(floors, 4), {
     title: '锋刃锻炉',
-    objective: '开启锻炉，拿辉月魔刃后前往中层。',
+    objective: '锻炉与辉月魔刃可分别查看效果；上行阶梯不受魔刃影响。',
     exitGuardians: []
   });
   configureFloor(floorByNumber(floors, 5), {

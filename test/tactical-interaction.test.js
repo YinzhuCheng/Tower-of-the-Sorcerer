@@ -5,6 +5,7 @@ import { ENEMIES } from '../src/game/data.js';
 import {
   buildEnemyHoverPreview,
   buildMapUnitHoverPreview,
+  getInteractionLinkCodesAt,
   guardianMarkerLabel,
   listGuardianMarkers,
   listInteractionMarkers
@@ -125,6 +126,21 @@ test('shared map markers bind a guardian vault, its reward and a switch seal wit
     assert.ok(markers.some((marker) => marker.kind === 'guardian-reward' && marker.label === 'Ⅰ · 奖'));
     assert.ok(markers.some((marker) => marker.kind === 'switch' && marker.label === 'A'));
     assert.ok(markers.some((marker) => marker.kind === 'switch-gate' && marker.label === 'A · 0/1'));
+    assert.deepEqual([...getInteractionLinkCodesAt(state, 1, 1)], ['Ⅰ']);
+    assert.deepEqual([...getInteractionLinkCodesAt(state, 4, 4)], ['A']);
+
+    const vault = buildMapUnitHoverPreview(state, 1, 2);
+    assert.equal(vault.title, '招财星币宝库封印');
+    assert.match(vault.description, /同编号守护者/);
+    assert.ok(vault.details.some((entry) => entry.label === '关联奖励' && entry.value === '招财星币'));
+
+    const switchPreview = buildMapUnitHoverPreview(state, 4, 4);
+    assert.equal(switchPreview.title, '藤蔓机关');
+    assert.ok(switchPreview.details.some((entry) => entry.value === 'A → 藤蔓封锁'));
+
+    const gate = buildMapUnitHoverPreview(state, 4, 3);
+    assert.equal(gate.title, '藤蔓封锁');
+    assert.ok(gate.details.some((entry) => entry.value === 'A → 藤蔓机关'));
   } finally {
     floor.puzzles = originalPuzzles;
     state.floorStates[state.floor].map = originalMap;

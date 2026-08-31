@@ -37,7 +37,7 @@ export const CHALLENGE_CONTRACTS = Object.freeze([
     allyId: 'yayu',
     difficulty: '极严苛',
     summary: '完成「影线校准」，并让影织姬·鸦羽成为会战幸存者。',
-    detail: '选择影线路线后完成 F16 双镜宝库，再在会战预演中保住鸦羽。'
+    detail: '选择影线公开后完成 F16 双镜宝库，再在会战预演中保住鸦羽。'
   })
 ]);
 

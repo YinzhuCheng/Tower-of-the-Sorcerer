@@ -1,5 +1,5 @@
 /**
- * 第二章路线盟约
+ * 第二章专家盟约
  *
  * Act II deliberately has three expensive specialist vaults.  Leaving all
  * three simultaneously open turned them into a checklist: a patient player
@@ -20,37 +20,39 @@ export const ROUTE_DOCTRINES_ID = 'act2-route-doctrines-v1';
 export const ROUTE_DOCTRINES = Object.freeze([
   Object.freeze({
     id: 'ember',
-    title: '赤焰裂印路线',
+    title: '赤焰裂印',
     allyId: 'yanli',
     difficulty: '爆发型',
     route: 'F15 档案封卷 → 赤焰蓄能',
     cardPressure: '星蚀卡 ×2',
     risk: 'MP 回充较晚；F15 后的附刃 MP 要留给高压战。',
+    midgameSupport: '赤焰蓄能：最大 MP +30；恢复 60 MP（不超过当前上限）。',
     payoff: '焰璃在会战存活时：最终两相生命 -6%。',
     councilGoal: '会战后让龙姬·焰璃存活。',
     gateIds: Object.freeze(['f15ArchiveSeal'])
   }),
   Object.freeze({
     id: 'tide',
-    title: '潮汐预唱路线',
+    title: '潮汐预唱',
     allyId: 'lanin',
     difficulty: '容量型',
     route: 'F13 星导管 → 潮汐导管',
     cardPressure: '星蚀卡 ×2',
     risk: '早拿容量，但后段 MP 回充较少。',
+    midgameSupport: '潮汐导管：最大 MP +20。',
     payoff: '澜音在会战存活时：魔法终局阶段少 1 次反击。',
     councilGoal: '会战后让深蓝歌姬·澜音存活。',
     gateIds: Object.freeze(['f13StarConduit'])
   }),
   Object.freeze({
     id: 'shadow',
-    title: '影线公开路线',
+    title: '影线公开',
     allyId: 'yayu',
     difficulty: '高风险镜殿',
     route: 'F16 棱镜门槛 → 双镜宝库 → 影线校准',
     cardPressure: '月辉卡 ×2，外加双 Boss 战',
     risk: '保留月卡到 F16；一旦开启，必须打完双镜宝库才能离开。',
-    midgameSupport: '开门：HP +14000、最大 MP +120、MP 补满；首名镜卫后再补满一次。',
+    midgameSupport: '开门：HP +14000、最大 MP +120、MP 补满；镜泉信物：最大 MP +30、恢复 30 MP（不超过当前上限）；首名镜卫后再补满一次。',
     payoff: '鸦羽在会战存活时：起源核心失去二连击。',
     councilGoal: '会战后让影织姬·鸦羽存活。',
     gateIds: Object.freeze(['f16PrismThreshold', 'mirrorReservoirVault'])
@@ -103,9 +105,9 @@ export function canSelectRouteDoctrine(state) {
  * takes no turn and is irrevocable for the run. */
 export function selectRouteDoctrine(state, doctrineId) {
   const doctrine = getRouteDoctrine(doctrineId);
-  if (!doctrine) return { ok: false, reason: '未知的第二章路线。' };
+  if (!doctrine) return { ok: false, reason: '未知的第二章专家选择。' };
   if (!canSelectRouteDoctrine(state)) {
-    return { ok: false, reason: '路线盟约只能在第十一阵、离开复苏环廊前签署一次。' };
+    return { ok: false, reason: '专家盟约只能在第十一阵、离开复苏环廊前签署一次。' };
   }
   state.doctrine = { selectedId: doctrine.id, legacyOpen: false };
   return { ok: true, doctrine };
@@ -123,7 +125,7 @@ export function routeDoctrineGateAccess(state, gateId) {
     doctrine,
     reason: selected
       ? `已签署「${selected.title}」；「${doctrine.title}」的专家回路在本轮保持封印。`
-      : `必须先在第十一阵签署路线盟约，才能决定是否开启「${doctrine.title}」。`
+      : `必须先在第十一阵签署专家盟约，才能决定是否开启「${doctrine.title}」。`
   };
 }
 

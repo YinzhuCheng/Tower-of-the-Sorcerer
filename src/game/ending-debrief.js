@@ -4,6 +4,7 @@
 
 import { getAllianceBond, isAllianceBonded } from './alliance-bonds.js';
 import { getSelectedAct3Charter, isAct3CharterCompleted } from './act3-charters.js';
+import { getSelectedAct3Handoff } from './act3-handoff-priorities.js';
 
 const SURVIVOR_ENDINGS = Object.freeze({
   milu: Object.freeze({
@@ -37,6 +38,12 @@ export function getEndingDebrief(state) {
   const activatedRules = [...(state?.council?.outcome?.modifiers?.labels ?? [])];
   const charter = getSelectedAct3Charter(state);
   const charterCompleted = charter ? isAct3CharterCompleted(state, charter.id) : false;
+  const handoff = getSelectedAct3Handoff(state);
+  const finaleRules = Object.freeze([
+    ...activatedRules,
+    ...(charterCompleted && charter?.finale?.label ? [charter.finale.label] : []),
+    ...(handoff?.finale?.label ? [handoff.finale.label] : [])
+  ]);
 
   const charterEpilogue = charterCompleted ? {
     shelter: {
@@ -59,10 +66,10 @@ export function getEndingDebrief(state) {
       title: charterEpilogue.title,
       text: charterEpilogue.text,
       survivorName: survivor?.name ?? null,
-      bondTitle: charter.title,
+      bondTitle: null,
       completedBondCount: completedBonds.length,
       completedCharter: charter.title,
-      activatedRules: Object.freeze([...activatedRules, charter.finale?.label].filter(Boolean))
+      activatedRules: finaleRules
     });
   }
 
@@ -76,7 +83,7 @@ export function getEndingDebrief(state) {
       bondTitle: bond?.title ?? null,
       completedBondCount: completedBonds.length,
       completedCharter: null,
-      activatedRules: Object.freeze(activatedRules)
+      activatedRules: finaleRules
     });
   }
 
@@ -90,6 +97,6 @@ export function getEndingDebrief(state) {
     bondTitle: null,
     completedBondCount: completedBonds.length,
     completedCharter: null,
-    activatedRules: Object.freeze(activatedRules)
+    activatedRules: finaleRules
   });
 }

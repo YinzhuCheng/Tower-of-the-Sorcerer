@@ -466,7 +466,7 @@ export function collectItem(state, itemId) {
   if (item.allyBond) {
     allianceBond = canCompleteAllianceBondForDoctrine(state, item.allyBond)
       ? completeAllianceBond(state, item.allyBond)
-      : { ok: false, skipped: true, reason: '这件信物属于本轮未选择的路线。' };
+      : { ok: false, skipped: true, reason: '这件信物只能在对应专家选择后获得。' };
     if (allianceBond.ok && allianceBond.completed) {
       addLog(state, `完成「${allianceBond.bond.title}」：终局效果已启用，盟友需在会战中存活。`);
     }
@@ -640,7 +640,7 @@ export function tryMove(state, dx, dy) {
     if (floor.number === 11 && !state.doctrine?.selectedId && state.doctrine?.legacyOpen !== true) {
       result.blocked = true;
       result.openDoctrine = true;
-      result.reason = '离开 F11 前，必须选择一条第二章路线盟约。';
+      result.reason = '离开 F11 前，需要选择一座第二章专家宝库。';
       return result;
     }
     if (floor.number === 21 && !state.charter?.selectedId && state.charter?.legacyOpen !== true) {

@@ -95,8 +95,8 @@ export function applyDemoTenFloorHardMode({ enemies } = {}) {
   if (enemies.eclipseMage) enemies.eclipseMage.magicPower = DEMO10_HARD_MODE_ORDINARY_PRESSURE.eclipseMageMagicPower;
   enemies.palaceWarden.description = '王庭外环的高压执剑官。她以固定魔法压力检验玩家是否在唯一的 F5 转换点完成有效配装。';
   enemies.blackSealKeeper.description = '王座前最后一道黯星许可印。她保留终盘阈值，要求玩家把 F5 的资源转换兑现到最后。';
-  if (enemies.hushCantor) enemies.hushCantor.description = '外环的静默咏唱者。她以固定魔法压力压缩“随便拿资源也能过”的宽松路线，迫使玩家在王庭前完成有效配装。';
-  if (enemies.outerCrown) enemies.outerCrown.description = '先制剑压守住外环侧翼。她不是门禁单位，但让绕路取宝与直奔主线都要支付清楚的战斗代价。';
+  if (enemies.hushCantor) enemies.hushCantor.description = '外环的静默咏唱者。她以固定魔法压力压缩“随便拿资源也能过”的宽松战法，迫使玩家在王庭前完成有效配装。';
+  if (enemies.outerCrown) enemies.outerCrown.description = '先制剑压守住外环侧翼。她不是门禁单位，但让取宝和直取上行都要支付清楚的战斗代价。';
   if (enemies.nullCantor) enemies.nullCantor.description = '倒悬星桥的空谱咏唱者。她是旧数值基线的一部分，等待单店制下的整体重算。';
   if (enemies.eclipseMage) enemies.eclipseMage.description = '蚀月术是王座前的最后一次普通敌人检查：迟到的生命投资与攻击投资都必须已经兑现。';
   if (enemies.voidCore) {

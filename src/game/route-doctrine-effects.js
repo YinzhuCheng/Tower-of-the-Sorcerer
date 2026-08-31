@@ -71,5 +71,5 @@ export function applyRouteDoctrineEnemyDefeatEffect(state, enemyId) {
 export function getRouteDoctrineExitBlocker(state) {
   if (!isShadowRoute(state) || state.floor !== SHADOW_PRISM_EXPEDITION.floorIndex) return null;
   if (isAllianceBonded(state, SHADOW_PRISM_EXPEDITION.allyId)) return null;
-  return '影线路线已开启双镜宝库；必须完成双镜宝库、击败双镜守卫并取得镜泉信物后才能离开 F16。';
+  return '影线公开已开启双镜宝库；必须完成双镜宝库、击败双镜守卫并取得镜泉信物后才能离开 F16。';
 }

@@ -74,12 +74,12 @@ const ACT2_TITLES = Object.freeze({
 });
 
 const ACT2_OBJECTIVES = Object.freeze({
-  11: '附刃已可用；离开前选择一条专家路线。',
-  12: '主路可上行；共鸣双卫宝库为可选。',
+  11: '附刃已可用；离开前选择一座专家宝库。',
+  12: '共鸣双卫宝库为可选奖励；入口与上行封锁会各自显示解除条件。',
   13: '星卡开导管，月卡开旁路；两者都不是上行必需。',
   14: '三名竞技场守卫全部落败后才能上行。',
   15: '本章唯一商店；星卡封卷通向可选书库。',
-  16: '棱镜门与双镜宝库只对对应路线开放。',
+  16: '棱镜门与双镜宝库只会在对应专家选择后开放。',
   17: '三冠守卫全部落败后才能上行。',
   18: '日曜卡开上行；星蚀卡开可选星渠。',
   19: '月辉卡 ×2 开王座执照；击败摄政官后上行。',
@@ -99,6 +99,13 @@ function cloneEffect(effect) {
   return Object.freeze({ ...effect });
 }
 
+function magicRelicDescription(effect, bond) {
+  const parts = [];
+  if (effect.maxMp) parts.push(`最大 MP +${effect.maxMp}`);
+  if (effect.mp) parts.push(`恢复 ${effect.mp} MP（不超过当前上限）`);
+  return `${parts.join('；')}。${bond ? ` 同时完成「${bond.title}」。` : ''}`;
+}
+
 function installActTwoItems(items) {
   for (const [id, relic] of Object.entries(ACT2_RELIC_CATALOG)) {
     if (items[id]) continue;
@@ -110,9 +117,7 @@ function installActTwoItems(items) {
       relic: id,
       allyBond: bond?.allyId,
       ...cloneEffect(effect),
-      description: relic.effectRole === 'restoreMp'
-        ? `恢复 MP。${bond ? ` 同时完成「${bond.title}」。` : ''}`
-        : `提高最大 MP 或恢复 MP。${bond ? ` 同时完成「${bond.title}」。` : ''}`
+      description: magicRelicDescription(effect, bond)
     };
   }
 }
@@ -157,7 +162,7 @@ function installActTwoDialogues(dialogues) {
       dialogueTurn('绫星·璃', 'hero', '附刃已经恢复。接下来，每场战斗前都由我自己设档。')
     ]),
     floor12: dialogueSequence('第十二阵：双谱温室', [
-      dialogueTurn('绫星·璃', 'hero', '主路能上行；双谱宝库是额外投资。'),
+      dialogueTurn('绫星·璃', 'hero', '双谱宝库是可选奖励；入口和上行封锁会显示各自的解除条件。'),
       dialogueTurn('残响精灵·纱雾', 'guide', '宝库能提高 MP 上限，但不拿也能通关。')
     ]),
     floor13: dialogueSequence('第十三阵：脉冲锻炉', [
@@ -173,7 +178,7 @@ function installActTwoDialogues(dialogues) {
       dialogueTurn('绫星·璃', 'hero', '先决定要不要为书库留两张星卡。')
     ]),
     floor16: dialogueSequence('第十六阵：镜轮双殿', [
-      dialogueTurn('绫星·璃', 'hero', '双镜殿的收益很高，但只属于对应路线。'),
+      dialogueTurn('绫星·璃', 'hero', '双镜殿的收益很高，但只会在对应专家选择后开放。'),
       dialogueTurn('残响精灵·纱雾', 'guide', '打开后必须打完双镜守卫才能离开。')
     ]),
     floor17: dialogueSequence('第十七阵：三冠阶庭', [
@@ -181,8 +186,8 @@ function installActTwoDialogues(dialogues) {
       dialogueTurn('绫星·璃', 'hero', '先算哪一场最该先打。')
     ]),
     floor18: dialogueSequence('第十八阵：澄空航渠', [
-      dialogueTurn('绫星·璃', 'hero', '日桥是上行必需；星渠只是可选挑战。'),
-      dialogueTurn('残响精灵·纱雾', 'guide', '想走星渠，先确认终局前还剩多少 MP。')
+      dialogueTurn('绫星·璃', 'hero', '日桥通向上行；星渠要两张星蚀卡，后方还有虚空先驱。'),
+      dialogueTurn('残响精灵·纱雾', 'guide', '击败虚空先驱会削弱回声摄政官；星渠结界会写明具体效果。')
     ]),
     floor19: dialogueSequence('第十九阵：回响王庭', [
       dialogueTurn('回声摄政官', 'echo_regent', '我保管过避难城的死亡名簿。王座执照要两张月辉卡；没有它，你到不了起源魔源。'),

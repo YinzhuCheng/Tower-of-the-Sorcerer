@@ -209,8 +209,8 @@ export const DIALOGUES = {
     text: '无声女王夺走了璃的魔力，并把七枚核心锁进高塔。守卫被术式操控，但仍有清醒的一面。\n\n所有战斗都是固定数值。靠近或悬停敌人，就能先看到预计耗血。'
   },
   floor2: {
-    speaker: '绫星·璃', portrait: 'hero', title: '第二阵：森罗回廊',
-    text: '月影核心让璃重新感到魔力。狐巫们同样被操控。\n\n主路可以上行；双钥宝库不是必经路。'
+    speaker: '绫星·璃', portrait: 'hero', title: '第二阵：森罗双钥',
+    text: '月影核心让璃重新感到魔力。狐巫们同样被操控。\n\n相同的Ⅰ标记连接守卫、宝库封印与招财星币；A 机关全部激活后会解除同标记的藤蔓封锁。'
   },
   floor3: {
     speaker: '残响精灵·纱雾', portrait: 'guide', title: '第三阵：深蓝回廊',
@@ -222,7 +222,7 @@ export const DIALOGUES = {
   },
   floor5: {
     speaker: '龙姬·焰璃', portrait: 'dragon_boss', title: '第五阵：赤焰龙脉',
-    text: '“上层的火不会让路。想过去，就用你算清楚的路线。”\n\n本层有第一幕唯一商店；买什么会影响接下来的三名守卫。'
+    text: '“上层的火不会让路。想过去，就证明你的判断。”\n\n这里有阵间商店：购买效果与下一次价格都写在商店面板里。'
   },
   floor6: {
     speaker: '天穹魔女·露米', portrait: 'astral_boss', title: '第六阵：星镜书库',
@@ -234,7 +234,7 @@ export const DIALOGUES = {
   },
   floor8: {
     speaker: '无声女王·诺克缇娅', portrait: 'final_queen', title: '终阵：无声王座',
-    text: '“你拿回了核心，但王座不会因此打开。”\n\n先清掉近卫与封印；悬停守卫可看数值与耗血，终局条件看路线情报。'
+    text: '“你拿回了核心，但王座不会因此打开。”\n\n悬停守卫可查看数值与预计耗血；王座封印会显示仍需解除的条件。'
   },
   bossCat: {
     speaker: '猫卫长·米露', portrait: 'cat_boss', title: '月影核心回收',

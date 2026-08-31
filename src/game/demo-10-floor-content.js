@@ -84,7 +84,7 @@ export function applyDemoTenFloorContent({ enemies, floors, dialogues, gridSize 
     muteGuard: {
       name: '缄默近卫', portrait: 'silence_guard', faction: '无声王庭·外环', floor: 8,
       hp: 1000, atk: 205, def: 82, gold: 155,
-      description: '王庭外环的实体防线，专门惩罚只堆生命、不补防御的路线。'
+      description: '王庭外环的实体防线，专门惩罚只堆生命、不补防御的战法。'
     },
     hushCantor: {
       name: '止声咏唱者', portrait: 'eclipse_mage', faction: '无声王庭·外环', floor: 8,
@@ -104,7 +104,7 @@ export function applyDemoTenFloorContent({ enemies, floors, dialogues, gridSize 
     starSentinel: {
       name: '逆星守望者', portrait: 'mirror_doll', faction: '倒悬星桥', floor: 9,
       hp: 1200, atk: 220, def: 92, gold: 185,
-      description: '以倒悬星轨校准来客的进退路线，迫使防御路线真正兑现价值。'
+      description: '以倒悬星轨校准来客的进退，迫使防御取舍真正兑现价值。'
     },
     nullCantor: {
       name: '空谱咏唱者', portrait: 'void_priestess', faction: '倒悬星桥', floor: 9,
@@ -114,7 +114,7 @@ export function applyDemoTenFloorContent({ enemies, floors, dialogues, gridSize 
     crownShade: {
       name: '冠影巡猎姬', portrait: 'shadow_ninja', faction: '倒悬星桥', floor: 9,
       hp: 1100, atk: 225, def: 88, gold: 195, special: 'firstStrike',
-      description: '在星桥阴影中先制截击，逼迫入侵者为路线选择付出成本。'
+      description: '在星桥阴影中先制截击，逼迫入侵者为选择付出成本。'
     },
     blackSealKeeper: {
       name: '黯印观测官·塞芙', portrait: 'astral_boss', faction: '王座前厅', floor: 9,
@@ -196,7 +196,7 @@ export function applyDemoTenFloorContent({ enemies, floors, dialogues, gridSize 
     ]),
     bossShadowPreDemo: dialogueSequence('第七阵守护者：影织姬·鸦羽', [
       dialogueTurn('影织姬·鸦羽', 'shadow_boss', '三相结界后就是王庭。再没有核心奖励。'),
-      dialogueTurn('绫星·璃', 'hero', '那就靠已经准备好的路线。')
+      dialogueTurn('绫星·璃', 'hero', '那就靠已经准备好的力量。')
     ]),
     bossShadowPostDemo: dialogueSequence('虚影核心回收', [
       dialogueTurn('影织姬·鸦羽', 'shadow_boss', '七枚核心齐了。'),
@@ -207,7 +207,7 @@ export function applyDemoTenFloorContent({ enemies, floors, dialogues, gridSize 
       dialogueTurn('绫星·璃', 'hero', '那就检验我的配置。')
     ]),
     bossPalacePostDemo: dialogueSequence('王庭外环解除', [
-      dialogueTurn('静默执剑官·维拉', 'sword_boss', '你的路线撑住了。'),
+      dialogueTurn('静默执剑官·维拉', 'sword_boss', '你的判断撑住了。'),
       dialogueTurn('绫星·璃', 'hero', '下一道门也是。')
     ]),
     bossBlackSealPreDemo: dialogueSequence('第九阵守护者：黯印观测官·塞芙', [

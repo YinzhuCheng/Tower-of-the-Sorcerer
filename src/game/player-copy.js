@@ -6,7 +6,7 @@
  * what it costs.  Story can be suggestive; rules cannot.
  */
 
-export const PLAYER_COPY_VERSION = 'decision-first-v1';
+export const PLAYER_COPY_VERSION = 'object-facts-v2';
 
 export function combatRuleCopy(enemy, { compact = false } = {}) {
   if (enemy?.special === 'magic') {
@@ -28,19 +28,15 @@ export function combatRuleCopy(enemy, { compact = false } = {}) {
   return compact ? '普通反击' : '普通：主角先攻击，敌人随后反击。';
 }
 
-export function irreversibleLabel({ required = false, optional = false } = {}) {
-  if (required) return '必须完成';
-  if (optional) return '可选；不会阻挡上行';
-  return '查看条件';
-}
-
 export const HELP_SECTIONS = Object.freeze([
   Object.freeze({
-    title: '先看这三件事',
+    title: '查看地图单位',
     lines: Object.freeze([
-      '靠近敌人或悬停地图单位：先看“预计耗血”和“战后剩余生命”。',
-      '穿过卡牌结界会立刻消耗对应卡；先在“路线情报”确认后两层需要什么。',
-      '带“必须完成”的守护者不倒，上行阶梯不会开放；宝库和支线会明确标为可选。'
+      '悬停或触摸地图单位，会显示它的效果、条件、消耗与当前状态。',
+      '穿过卡牌结界会立刻消耗对应卡；结界本身会显示实际消耗与当前持有数量。',
+      '相同的Ⅰ、A 等标记表示同一组守卫、封印、奖励或机关；悬停任一标记会高亮整组。',
+      '上行阶梯被封锁时，悬停阶梯可查看仍在维持封锁的守护者或选择条件。',
+      '触摸对象时，第一次只查看；在短时间内再次触摸同一格才行动。键盘可按 V 查看四邻对象。'
     ])
   }),
   Object.freeze({
@@ -51,10 +47,10 @@ export const HELP_SECTIONS = Object.freeze([
     ])
   }),
   Object.freeze({
-    title: '什么时候该读说明',
+    title: '选择面板',
     lines: Object.freeze([
-      '商店、路线盟约、修复章程、会战和终局前：阅读完整面板，因为它们会改变整局路线。',
-      '普通敌人、物品、门和机关：直接悬停或触摸查看；理解后不需要再读教程。'
+      '商店、专家盟约、修复章程、会战和终局：面板会列出选择、代价、结果与触发条件。',
+      '普通敌人、物品、门和机关：直接悬停或触摸查看；规则都写在对应对象上。'
     ])
   })
 ]);

@@ -384,6 +384,7 @@ export function applyWarCouncilFinaleModifier(enemy, council) {
       : enemy.magicPower,
     special,
     councilRules: Object.freeze({ counterattackGuard, magicCounterattackGuard, disableDoubleHit }),
+    councilLabels: Object.freeze([...(modifiers.labels ?? [])]),
     councilModified: true
   };
 }

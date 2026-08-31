@@ -66,6 +66,10 @@ export function getAct3Handoff(id) {
   return HANDOFF_BY_ID.get(id) ?? null;
 }
 
+export function getAct3HandoffForEnemy(enemyId) {
+  return HANDOFF_BY_ENEMY.get(enemyId) ?? null;
+}
+
 export function getSelectedAct3Handoff(state) {
   return getAct3Handoff(state?.handoff?.selectedId);
 }
