@@ -97,7 +97,7 @@ export function applyDemoTenFloorContent({ enemies, floors, dialogues, gridSize 
       description: '先制剑压守住侧翼资源，制造是否绕路取宝的真实成本。'
     },
     palaceWarden: {
-      name: '静默执剑官·维拉', portrait: 'sword_boss', faction: '无声王庭·外环', floor: 8,
+      name: '静默执剑官·维拉', portrait: 'palace_warden_v2', faction: '无声王庭·外环', floor: 8,
       hp: 2250, atk: 205, def: 92, gold: 520, boss: true, special: 'magic', magicPower: 240,
       description: '守在王庭外环的执剑官。她不持有魔力核心，以高压静默剑域检验七核回收后的资源配置。'
     },
@@ -117,7 +117,7 @@ export function applyDemoTenFloorContent({ enemies, floors, dialogues, gridSize 
       description: '在星桥阴影中先制截击，逼迫入侵者为选择付出成本。'
     },
     blackSealKeeper: {
-      name: '黯印观测官·塞芙', portrait: 'astral_boss', faction: '王座前厅', floor: 9,
+      name: '黯印观测官·塞芙', portrait: 'black_seal_keeper_v2', faction: '王座前厅', floor: 9,
       hp: 2700, atk: 215, def: 95, gold: 600, boss: true, special: 'magic', magicPower: 160,
       description: '掌管王座前最后一道黯星许可印。她守住的是不可替代的校准权限，而不是另一处可反复购买的补救点。'
     },

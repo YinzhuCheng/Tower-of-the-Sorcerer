@@ -288,11 +288,11 @@ function installItems(items) {
 
 function installEnemies(enemies) {
   const portraits = {
-    cinderScribe: 'act3_cinder_scribe', ashCustodian: 'act3_ash_custodian', shelterWarden: 'crown_blade',
-    auditBailiff: 'act3_audit_bailiff', relayRunner: 'mirror_huntress', relayConductor: 'act3_relay_conductor',
-    ledgerMage: 'resonance_cantor', archiveLancer: 'act3_archive_lancer', shelfWarden: 'spectrum_marshal',
-    triageKnight: 'mirror_duelist', marginDuelist: 'act3_margin_duelist', errataCantor: 'act3_errata_cantor',
-    archiveMarshal: 'act3_archive_marshal', indexBeast: 'void_herald', lastCustodian: 'crown_magus',
+    cinderScribe: 'act3_cinder_scribe', ashCustodian: 'act3_ash_custodian', shelterWarden: 'act3_shelter_warden',
+    auditBailiff: 'act3_audit_bailiff', relayRunner: 'act3_relay_runner', relayConductor: 'act3_relay_conductor',
+    ledgerMage: 'act3_ledger_mage', archiveLancer: 'act3_archive_lancer', shelfWarden: 'act3_shelf_warden',
+    triageKnight: 'act3_triage_knight', marginDuelist: 'act3_margin_duelist', errataCantor: 'act3_errata_cantor',
+    archiveMarshal: 'act3_archive_marshal', indexBeast: 'act3_index_beast', lastCustodian: 'act3_last_custodian',
     archiveWarden: 'act3_archive_warden', errataCore: 'act3_errata_core'
   };
   const names = {

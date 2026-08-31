@@ -1,5 +1,5 @@
 import { createCanvasTowerScene as createBaseCanvasTowerScene } from './anime-canvas-scene.js';
-import { ENEMIES, ITEMS, TILE_SIZE } from './data.js';
+import { ENEMIES, FLOORS, ITEMS, TILE_SIZE } from './data.js';
 import { parseToken } from './engine.js';
 import { portraitIndex } from './anime-portraits.js';
 import { getMapAsset } from './map-assets.js';
@@ -22,6 +22,25 @@ const VAULT_GATE_IDS = new Set(['dualKeyVault', 'hushVault', 'twinChordVault', '
 const SINGLE_SWITCH_GATE_IDS = new Set(['forge', 'hush']);
 const DUAL_SWITCH_GATE_IDS = new Set(['tide', 'ember']);
 const SEQUENCE_GATE_IDS = new Set(['mirror', 'tri', 'blackstar']);
+const CHARTER_GATE_IDS = new Set(['f22ShelterAnnex', 'f23AuditAnnex', 'f24RelayAnnex']);
+const PROTOCOL_GATE_IDS = new Set([
+  'f14TriuneSeal', 'f17CrownSeal', 'f19RegentSeal', 'f20SovereignSeal',
+  'f27RelaySeal', 'f29IndexSeal'
+]);
+
+const SWITCH_ASSET_BY_ID = Object.freeze({
+  vine: 'switch-vine',
+  tideA: 'switch-tide', tideB: 'switch-tide',
+  forge: 'switch-forge',
+  emberA: 'switch-ember', emberB: 'switch-ember',
+  hushA: 'switch-hush', hushB: 'switch-hush'
+});
+
+const CARD_BARRIER_ASSET = Object.freeze({
+  sun: 'barrier-sun-v10',
+  moon: 'barrier-moon-v10',
+  star: 'barrier-star-v10'
+});
 
 const INTERACTABLE_ITEM_ASSET = Object.freeze({
   lucky: 'relic-lucky-coin',
@@ -42,11 +61,57 @@ const INTERACTABLE_ITEM_ASSET = Object.freeze({
 const ACCEPTED_RESOURCE_ASSET = Object.freeze({
   act3Atk: 'gem-atk-v10',
   act3Def: 'gem-def-v10',
-  act3Dual: 'gem-atk-v10',
   act3Hp: 'potion-red-v10',
   act3Restorative: 'potion-red-v10',
-  act3Mana: 'potion-blue-v10'
+  act3Mana: 'relic-mana-flask',
+  manaFlask: 'relic-mana-flask'
 });
+
+function cardCostForGate(floor, gateId) {
+  const raw = floor?.puzzles?.cardGates?.[gateId];
+  if (!raw) return null;
+  return Object.entries(raw).filter(([kind, count]) => CARD_BARRIER_ASSET[kind] && Number(count) > 0);
+}
+
+function drawCardCostGate(scene, x, y, costs, charter = false) {
+  if (!costs?.length) return false;
+  const cx = scene.center(x);
+  const cy = scene.center(y);
+  const count = costs.length;
+  const gap = count === 1 ? 0 : 0.18;
+  const scale = count === 1 ? 0.82 : 0.53;
+  let drawn = false;
+
+  if (charter) {
+    const base = getMapAsset('seal-charter-archive');
+    if (base) {
+      scene.drawSoftShadow(cx, cy + TILE_SIZE * 0.28, TILE_SIZE * 0.46, 0.2);
+      scene.drawMapImage(base, cx, cy, TILE_SIZE * 0.98, TILE_SIZE * 0.98, 0, 0.88);
+      drawn = true;
+    }
+  }
+
+  costs.forEach(([kind], index) => {
+    const image = getMapAsset(CARD_BARRIER_ASSET[kind]);
+    if (!image) return;
+    const offset = (index - (count - 1) / 2) * gap * TILE_SIZE;
+    scene.drawMapImage(image, cx + offset, cy + (charter ? TILE_SIZE * 0.11 : 0), TILE_SIZE * scale, TILE_SIZE * scale, 0, charter ? 1 : 0.98);
+    drawn = true;
+  });
+  return drawn;
+}
+
+function drawDualResource(scene, x, y) {
+  const atk = getMapAsset('gem-atk-v10');
+  const def = getMapAsset('gem-def-v10');
+  if (!atk || !def) return false;
+  const cx = scene.center(x);
+  const cy = scene.center(y);
+  scene.drawSoftShadow(cx, cy + TILE_SIZE * 0.24, TILE_SIZE * 0.42, 0.17);
+  scene.drawMapImage(atk, cx - TILE_SIZE * 0.095, cy + TILE_SIZE * 0.02, TILE_SIZE * 0.53, TILE_SIZE * 0.53, -0.08, 0.96);
+  scene.drawMapImage(def, cx + TILE_SIZE * 0.095, cy - TILE_SIZE * 0.02, TILE_SIZE * 0.53, TILE_SIZE * 0.53, 0.08, 0.96);
+  return true;
+}
 
 function gateVisualFor(gateId) {
   if (VAULT_GATE_IDS.has(gateId)) return { asset: 'seal-guardian-vault', scale: 1.02 };
@@ -54,6 +119,8 @@ function gateVisualFor(gateId) {
   if (SINGLE_SWITCH_GATE_IDS.has(gateId)) return { asset: 'seal-switch-single', scale: 1.0 };
   if (DUAL_SWITCH_GATE_IDS.has(gateId)) return { asset: 'seal-switch-dual', scale: 1.0 };
   if (SEQUENCE_GATE_IDS.has(gateId)) return { asset: 'seal-rune-sequence', scale: 1.0 };
+  if (PROTOCOL_GATE_IDS.has(gateId)) return { asset: 'seal-protocol', scale: 1.04 };
+  if (CHARTER_GATE_IDS.has(gateId)) return { asset: 'seal-charter-archive', scale: 1.02 };
   return { asset: 'seal-archive-index', scale: 1.0 };
 }
 
@@ -415,13 +482,21 @@ export function createCanvasTowerScene(bridge, parent = document.getElementById(
       }
       const asset = INTERACTABLE_ITEM_ASSET[parsed.id];
       if (asset && drawFeaturedProp(scene, asset, x, y, 0.78, 0.44)) return;
+      if (parsed.id === 'act3Dual' && drawDualResource(scene, x, y)) return;
       const acceptedAsset = ACCEPTED_RESOURCE_ASSET[parsed.id];
       if (acceptedAsset && drawFeaturedProp(scene, acceptedAsset, x, y, 0.72, 0.4)) return;
       if (parsed.id === 'codex' && drawFeaturedProp(scene, 'featured-codex-shrine', x, y, 0.9, 0.48)) return;
       if (parsed.id === 'holy' && drawFeaturedProp(scene, 'featured-treasure', x, y, 0.88, 0.52)) return;
     }
-    if (parsed.type === 'switch' && drawFeaturedProp(scene, 'switch-vine', x, y, 0.8, 0.44)) return;
+    if (parsed.type === 'switch') {
+      const asset = SWITCH_ASSET_BY_ID[parsed.id] ?? 'switch-vine';
+      if (drawFeaturedProp(scene, asset, x, y, 0.8, 0.44)) return;
+    }
     if (parsed.type === 'gate') {
+      const state = scene.bridge?.getState?.();
+      const floor = FLOORS[state?.floor];
+      const cardCost = cardCostForGate(floor, parsed.id);
+      if (drawCardCostGate(scene, x, y, cardCost, CHARTER_GATE_IDS.has(parsed.id))) return;
       const visual = gateVisualFor(parsed.id);
       if (drawFeaturedProp(scene, visual.asset, x, y, visual.scale, 0.52)) return;
     }

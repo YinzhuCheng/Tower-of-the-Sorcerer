@@ -94,7 +94,7 @@ export const ACT2_UNIT_CATALOG = Object.freeze({
   voidHerald: Object.freeze({ kind: 'enemy', floorRange: Object.freeze([18, 20]), portrait: 'void_herald', role: '终局前魔法高压单位' }),
   resonanceBlade: Object.freeze({ kind: 'boss', floor: 12, portrait: 'resonance_blade', role: '双谱宝库近战守卫' }),
   resonanceCantor: Object.freeze({ kind: 'boss', floor: 12, portrait: 'resonance_cantor', role: '双谱宝库咏唱守卫' }),
-  arcaneGatekeeper: Object.freeze({ kind: 'boss', floor: 14, portrait: 'aether_gatekeeper', role: '三矢竞技场守门人' }),
+  arcaneGatekeeper: Object.freeze({ kind: 'boss', floor: 14, portrait: 'arcane_gatekeeper', role: '三矢竞技场守门人' }),
   spectrumMarshal: Object.freeze({ kind: 'boss', floor: 14, portrait: 'spectrum_marshal', role: '三矢竞技场中翼统领' }),
   triuneArbiter: Object.freeze({ kind: 'boss', floor: 14, portrait: 'triune_arbiter', role: '三矢竞技场裁定者' }),
   mirrorDuelist: Object.freeze({ kind: 'boss', floor: 16, portrait: 'mirror_duelist', role: '镜轮宝库剑卫' }),
