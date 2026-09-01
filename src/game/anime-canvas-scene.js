@@ -111,6 +111,10 @@ class AnimeCanvasTowerScene {
   }
 
   handleKeydown(event) {
+    // The application-level router owns game shortcuts.  Respect its
+    // prevention flag so a single key never becomes two moves when the
+    // renderer also receives the same window event.
+    if (event.defaultPrevented) return;
     if (event.repeat) return;
     const direction = {
       arrowup: 'up', w: 'up', arrowdown: 'down', s: 'down',

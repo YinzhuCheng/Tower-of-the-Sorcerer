@@ -31,6 +31,7 @@ export function createMagicTowerScene(Phaser, bridge) {
     create() {
       this.cameras.main.setRoundPixels(true);
       this.input.keyboard.on('keydown', (event) => {
+        if (event.defaultPrevented) return;
         if (event.repeat) return;
         const key = event.key.toLowerCase();
         const direction = {

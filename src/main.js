@@ -86,6 +86,12 @@ let galTransitionTimer = null;
 const GAL_HISTORY_LIMIT = 80;
 const galHistory = [];
 const galSettings = { auto: false, fast: false };
+const KEYBOARD_DIRECTIONS = Object.freeze({
+  arrowup: 'up', w: 'up',
+  arrowdown: 'down', s: 'down',
+  arrowleft: 'left', a: 'left',
+  arrowright: 'right', d: 'right'
+});
 
 const GAL_BACKDROPS = Object.freeze({
   night: '/assets/anime/themes/theme-night-tower.webp',
@@ -169,6 +175,20 @@ function showToast(message, duration = 1700) {
   elements.loading.textContent = message;
   elements.loading.classList.remove('hidden');
   toastTimer = setTimeout(() => elements.loading.classList.add('hidden'), duration);
+}
+
+function initialGalDialogue() {
+  const dialogueId = initialDialogue(state);
+  if (!dialogueId) return;
+  // Persist the presentation marker immediately.  Otherwise a refresh after
+  // the first line would make the prologue look randomly absent or replay it.
+  autoSave();
+  showDialogue(dialogueId);
+}
+
+function editableKeyTarget(target) {
+  return target instanceof Element
+    && Boolean(target.closest('input, textarea, select, [contenteditable="true"]'));
 }
 
 function clearCinematic() {
@@ -1245,8 +1265,7 @@ function confirmReset() {
           scene?.refresh();
           updateHud();
           autoSave();
-          const dialogueId = initialDialogue(state);
-          if (dialogueId) showDialogue(dialogueId);
+          initialGalDialogue();
         }
       }
     ]
@@ -1347,9 +1366,9 @@ function bindControls() {
   });
 
   window.addEventListener('keydown', (event) => {
+    const key = event.key.toLowerCase();
     if (!elements.modalRoot.classList.contains('hidden') || !elements.galRoot.classList.contains('hidden')) {
       if (event.defaultPrevented) return;
-      const key = event.key.toLowerCase();
       if (event.key === 'Escape' && cinematicControls?.skip) {
         event.preventDefault();
         cinematicControls.skip();
@@ -1368,13 +1387,24 @@ function bindControls() {
       } else if ((event.key === 'Enter' || event.key === ' ') && cinematicControls?.advance) {
         event.preventDefault();
         cinematicControls.advance();
+      } else if (KEYBOARD_DIRECTIONS[key]) {
+        // A Gal scene locks movement, but still consumes movement keys so
+        // focused browser controls cannot scroll the page beneath it.
+        event.preventDefault();
       }
       return;
     }
-    if (event.key.toLowerCase() === 'e') showCodex();
-    if (event.key.toLowerCase() === 'r') showRouteDoctrine();
-    if (event.key.toLowerCase() === 't') showTeleport();
-    if (event.key.toLowerCase() === 'm') showMagicBlade();
+    if (editableKeyTarget(event.target)) return;
+    const direction = KEYBOARD_DIRECTIONS[key];
+    if (direction) {
+      event.preventDefault();
+      scene?.move(direction);
+      return;
+    }
+    if (key === 'e') showCodex();
+    if (key === 'r') showRouteDoctrine();
+    if (key === 't') showTeleport();
+    if (key === 'm') showMagicBlade();
   });
 }
 
@@ -1397,8 +1427,7 @@ async function boot() {
         readyScene.refresh?.();
       }
       elements.loading.classList.add('hidden');
-      const dialogueId = initialDialogue(state);
-      if (dialogueId) showDialogue(dialogueId);
+      initialGalDialogue();
     }
   };
 

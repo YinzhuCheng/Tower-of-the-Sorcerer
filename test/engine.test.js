@@ -9,6 +9,7 @@ import {
   createInitialState,
   deserializeState,
   getTile,
+  initialDialogue,
   serializeState,
   setMagicTier,
   setTile,
@@ -113,6 +114,19 @@ test('v3 saves receive empty optional ally-bond progress without changing counci
   const restored = deserializeState(JSON.stringify(legacy));
   assert.deepEqual(restored.alliance, { bonds: { milu: false, lanin: false, yanli: false, yayu: false } });
   assert.deepEqual(restored.council, state.council);
+});
+
+test('an existing save receives the Gal prologue once without rewinding its story state', () => {
+  const state = createInitialState();
+  state.storySeen.push('prologue');
+  delete state.galSeen;
+
+  const restored = deserializeState(serializeState(state));
+  assert.deepEqual(restored.galSeen, []);
+  assert.equal(initialDialogue(restored), 'prologue');
+  assert.deepEqual(restored.storySeen, ['prologue']);
+  assert.deepEqual(restored.galSeen, ['prologue']);
+  assert.equal(initialDialogue(restored), null, 'the Gal prologue must not replay after its marker is persisted');
 });
 
 test('legacy witness-contract records are discarded without changing bonds', () => {

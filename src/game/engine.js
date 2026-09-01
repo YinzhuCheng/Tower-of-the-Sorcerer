@@ -139,6 +139,11 @@ export function createInitialState() {
     floorStates,
     visitedFloors: [0],
     storySeen: [],
+    // `storySeen` records narrative state.  `galSeen` records whether the
+    // player has actually been given the visual-novel presentation.  Keeping
+    // them separate lets existing saves receive the new Gal scenes once
+    // without rewinding any gameplay facts.
+    galSeen: [],
     seenEnemies: [],
     turns: 0,
     battles: 0,
@@ -221,6 +226,7 @@ export function migrateState(state) {
     state.doctrine = normalizeRouteDoctrineState(state.doctrine);
     state.charter = normalizeAct3CharterState(state.charter);
     state.handoff = normalizeAct3HandoffState(state.handoff);
+    state.galSeen = Array.isArray(state.galSeen) ? state.galSeen : [];
     return state;
   }
   if (state.version === 1 || state.version === 2 || state.version === 3 || state.version === 4 || state.version === 5 || state.version === 6 || state.version === 7 || state.version === 8 || state.version === 9) {
@@ -244,7 +250,8 @@ export function migrateState(state) {
       // F27's first-guardian priority is additive content. Existing saves
       // keep their pre-update final numbers rather than gaining a retroactive
       // reward after a guardian was already defeated.
-      handoff: createLegacyAct3HandoffState()
+      handoff: createLegacyAct3HandoffState(),
+      galSeen: []
     }));
   }
   return state;
@@ -553,6 +560,25 @@ function markSeenEnemy(state, enemyId) {
   if (!state.seenEnemies.includes(enemyId)) state.seenEnemies.push(enemyId);
 }
 
+// Dialogue state used to mean only that its text had been shown.  Gal scenes
+// need their own durable marker: upgrading an old save must not silently skip
+// a newly authored presentation just because it saw the earlier text popup.
+function ensureDialogueTracking(state) {
+  if (!Array.isArray(state.storySeen)) state.storySeen = [];
+  if (!Array.isArray(state.galSeen)) state.galSeen = [];
+}
+
+function hasPresentedDialogue(state, dialogueId) {
+  ensureDialogueTracking(state);
+  return state.galSeen.includes(dialogueId);
+}
+
+function markDialoguePresented(state, dialogueId) {
+  ensureDialogueTracking(state);
+  if (!state.galSeen.includes(dialogueId)) state.galSeen.push(dialogueId);
+  if (!state.storySeen.includes(dialogueId)) state.storySeen.push(dialogueId);
+}
+
 function moveTo(state, x, y) {
   state.x = x;
   state.y = y;
@@ -570,8 +596,8 @@ function enterFloor(state, targetFloor, direction) {
   state.y = anchor.y;
   state.turns += 1;
   const introId = FLOORS[targetFloor].intro;
-  const dialogue = introId && !state.storySeen.includes(introId) ? introId : null;
-  if (dialogue) state.storySeen.push(dialogue);
+  const dialogue = introId && !hasPresentedDialogue(state, introId) ? introId : null;
+  if (dialogue) markDialoguePresented(state, dialogue);
   addLog(state, `进入第 ${FLOORS[targetFloor].number} 阵「${FLOORS[targetFloor].title}」。`);
   return dialogue;
 }
@@ -584,8 +610,9 @@ function formatCardRequirement(requirements) {
 
 export function initialDialogue(state) {
   const id = FLOORS[state.floor].intro;
-  if (!id || state.storySeen.includes(id)) return null;
-  state.storySeen.push(id);
+  if (!id) return null;
+  if (hasPresentedDialogue(state, id)) return null;
+  markDialoguePresented(state, id);
   return id;
 }
 
@@ -613,8 +640,8 @@ export function tryMove(state, dx, dy) {
   if (token === 'council') {
     result.openCouncil = true;
     result.councilReady = true;
-    result.dialogue = state.storySeen.includes('warCouncil') ? null : 'warCouncil';
-    if (result.dialogue) state.storySeen.push(result.dialogue);
+    result.dialogue = hasPresentedDialogue(state, 'warCouncil') ? null : 'warCouncil';
+    if (result.dialogue) markDialoguePresented(state, result.dialogue);
     result.reason = '王座前的共鸣会战需要先完成出战与 MP 分配。';
     return result;
   }
@@ -687,7 +714,7 @@ export function tryMove(state, dx, dy) {
     if (item.allianceBond?.completed) {
       result.allianceBond = item.allianceBond.bond.allyId;
       result.dialogue = item.allianceBond.bond.dialogue;
-      if (result.dialogue && !state.storySeen.includes(result.dialogue)) state.storySeen.push(result.dialogue);
+      if (result.dialogue && !hasPresentedDialogue(state, result.dialogue)) markDialoguePresented(state, result.dialogue);
     }
     result.events.push({ type: 'item', itemId: parsed.id, item });
     return result;
@@ -841,7 +868,7 @@ export function tryMove(state, dx, dy) {
       result.moved = false;
       result.phaseChanged = true;
       result.dialogue = enemy.phaseDialogue ?? null;
-      if (result.dialogue && !state.storySeen.includes(result.dialogue)) state.storySeen.push(result.dialogue);
+      if (result.dialogue && !hasPresentedDialogue(state, result.dialogue)) markDialoguePresented(state, result.dialogue);
       return result;
     }
 
@@ -893,7 +920,7 @@ export function tryMove(state, dx, dy) {
         result.events.push({ type: 'act3HandoffEffect', effect: handoffEffect });
       }
       result.dialogue = enemy.defeatDialogue ?? null;
-      if (result.dialogue && !state.storySeen.includes(result.dialogue)) state.storySeen.push(result.dialogue);
+      if (result.dialogue && !hasPresentedDialogue(state, result.dialogue)) markDialoguePresented(state, result.dialogue);
     }
 
     if (enemy.finalBoss) {
