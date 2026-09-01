@@ -204,37 +204,83 @@ export const ENEMIES = {
 
 export const DIALOGUES = {
   prologue: {
-    speaker: '残响精灵·纱雾', portrait: 'guide',
     title: '序章：被夺去的咏唱',
-    text: '无声女王夺走了璃的魔力，并把七枚核心锁进高塔。守卫被术式操控，但仍有清醒的一面。\n\n所有战斗都是固定数值。靠近或悬停敌人，就能先看到预计耗血。'
+    turns: [
+      {
+        kind: 'narration',
+        speaker: '旁白',
+        cg: '/assets/anime/cg/liyue-prologue-tower-cg.webp',
+        text: '停战夜，高塔封闭。无声女王把璃的咏唱拆成七枚核心，嵌进了守卫的术式。'
+      },
+      {
+        speaker: '残响精灵·纱雾',
+        portrait: 'guide',
+        text: '她们不是自愿敌对。术式把任何靠近核心的人都登记为入侵者，连女王自己也停不下来。'
+      },
+      {
+        speaker: '绫星·璃',
+        portrait: 'hero',
+        text: '我会取回咏唱，也会问清她为什么把所有人困在这里。先从第一枚核心开始。',
+        choices: [
+          { label: '“先确认每场战斗的损伤。”', response: '璃握紧剑柄：看清代价，再决定这一击值不值得。' },
+          { label: '“先找能回收的资源。”', response: '璃抬头望向塔顶：力量要留给真正无法绕开的地方。' }
+        ]
+      }
+    ]
   },
   floor2: {
-    speaker: '绫星·璃', portrait: 'hero', title: '第二阵：森罗双钥',
-    text: '月影核心让璃重新感到魔力。狐巫们同样被操控。\n\n相同的Ⅰ标记连接守卫、宝库封印与招财星币；A 机关全部激活后会解除同标记的藤蔓封锁。'
+    title: '第二阵：森罗双钥',
+    turns: [
+      { speaker: '旁白', portrait: null, text: '月影核心复苏时，一段求援录音也钻进璃的耳中：灰港撤离，请确认名单。' },
+      { speaker: '残响精灵·纱雾', portrait: 'guide', text: '那份紧急登记本该在三日后封存，却在塔里重复了三年。女王没有让它结束。' },
+      { speaker: '绫星·璃', portrait: 'hero', text: '她把守卫和门锁都接进登记网，只为不让这句求援消失。我要找到她。' }
+    ]
   },
   floor3: {
-    speaker: '残响精灵·纱雾', portrait: 'guide', title: '第三阵：深蓝回廊',
-    text: '两枚水纹开关同时控制上行门。\n\n这里开始出现魔法反击：它无视防御，战前请看预计耗血。'
+    title: '第三阵：深蓝回廊',
+    turns: [
+      { speaker: '旁白', portrait: null, text: '回廊里反复响起撤离号角。真正的出口提示，却被更响的鲸歌盖住。' },
+      { speaker: '深蓝歌姬·澜音', portrait: 'whale_boss', text: '术式要我唱下去。只要歌不停，名单就不会被标成“无人回应”。' },
+      { speaker: '绫星·璃', portrait: 'hero', text: '求救该被听见，不该被无限重播。澜音，我会先让你停下来。' }
+    ]
   },
   floor4: {
-    speaker: '绫星·璃', portrait: 'hero', title: '第四阵：锋刃庭院',
-    text: '这里的剑士只看攻防。攻击不够就无法破防；防御足够可让普通反击归零。\n\n锻炉里的魔刃会直接提高攻击。'
+    title: '第四阵：锋刃庭院',
+    turns: [
+      { speaker: '剑圣·塞蕾娜', portrait: 'sword_boss', text: '我曾教巡卫按规程护送伤者。现在规程只有一条：阻止所有人上楼。' },
+      { speaker: '残响精灵·纱雾', portrait: 'guide', text: '女王把一条临时封锁令写成了永久命令。守卫们只能照做。' },
+      { speaker: '绫星·璃', portrait: 'hero', text: '规则可以写清代价，不能替人决定一辈子。让我替你们切断它。' }
+    ]
   },
   floor5: {
-    speaker: '龙姬·焰璃', portrait: 'dragon_boss', title: '第五阵：赤焰龙脉',
-    text: '“上层的火不会让路。想过去，就证明你的判断。”\n\n这里有阵间商店：购买效果与下一次价格都写在商店面板里。'
+    title: '第五阵：赤焰龙脉',
+    turns: [
+      { speaker: '龙姬·焰璃', portrait: 'dragon_boss', text: '我守着供暖炉。登记网说外面仍有避难者，所以炉火不准熄。' },
+      { speaker: '绫星·璃', portrait: 'hero', text: '可炉火已经在烧空房间。你们被旧消息困住了。' },
+      { speaker: '龙姬·焰璃', portrait: 'dragon_boss', text: '若你真能找到女王，就问她：名单里的名字，后来怎样了？' }
+    ]
   },
   floor6: {
-    speaker: '天穹魔女·露米', portrait: 'astral_boss', title: '第六阵：星镜书库',
-    text: '星镜只接受顺序：新月 → 半月 → 满月。\n\n踩错只会重置进度，不消耗卡牌或生命。'
+    title: '第六阵：星镜书库',
+    turns: [
+      { speaker: '天穹魔女·露米', portrait: 'astral_boss', text: '星镜推演过千次：停掉登记网，档案会被清空；维持它，塔会继续伤人。' },
+      { speaker: '残响精灵·纱雾', portrait: 'guide', text: '女王只看见了这两个结果，便把整座塔冻结在“仍在救援”的那一天。' },
+      { speaker: '绫星·璃', portrait: 'hero', text: '一定还有第三种做法：留下记录，结束错误的命令。' }
+    ]
   },
   floor7: {
-    speaker: '影织姬·鸦羽', portrait: 'shadow_boss', title: '第七阵：虚影织界',
-    text: '“三相结界要日、月、星各一张卡。”\n\n穿过后是王庭；最后一张日曜卡还要留给王座。'
+    title: '第七阵：虚影织界',
+    turns: [
+      { speaker: '影织姬·鸦羽', portrait: 'shadow_boss', text: '女王听见“撤销登记”时，以为那些名字也会一起消失。于是她封住了整座塔。' },
+      { speaker: '绫星·璃', portrait: 'hero', text: '她想守住名字，却让活着的人变成了工具。王庭里，我会亲口告诉她。' }
+    ]
   },
   floor8: {
-    speaker: '无声女王·诺克缇娅', portrait: 'final_queen', title: '终阵：无声王座',
-    text: '“你拿回了核心，但王座不会因此打开。”\n\n悬停守卫可查看数值与预计耗血；王座封印会显示仍需解除的条件。'
+    title: '终阵：无声王座',
+    turns: [
+      { speaker: '无声女王·诺克缇娅', portrait: 'final_queen', text: '我没有忘记每一个名字。只要登记还在，他们就还在等着回家。' },
+      { speaker: '绫星·璃', portrait: 'hero', text: '你守住的是一份记录，不是他们本人。让我替你把这条命令停下。' }
+    ]
   },
   bossCat: {
     speaker: '猫卫长·米露', portrait: 'cat_boss', title: '月影核心回收',

@@ -23,6 +23,20 @@ const THEMES = Object.freeze([
   { id: 'forest', label: '森林' }
 ]);
 
+const THEME_ENVIRONMENT_URLS = Object.freeze({
+  night: '/assets/anime/themes/theme-night-tower.webp',
+  sun: '/assets/anime/themes/theme-sun-sanctum.webp',
+  ocean: '/assets/anime/themes/theme-ocean-archive.webp',
+  forest: '/assets/anime/themes/theme-forest-sanctuary.webp'
+});
+
+const THEME_FLOOR_PALETTES = Object.freeze({
+  night: { base: '#172542', veil: 'rgba(13,20,50,.42)', light: ['rgba(179,202,255,.16)', 'rgba(123,156,236,.05)', 'rgba(8,19,55,.26)'] },
+  sun: { base: '#6d5328', veil: 'rgba(82,53,10,.4)', light: ['rgba(255,245,204,.17)', 'rgba(255,203,108,.055)', 'rgba(73,43,9,.28)'] },
+  ocean: { base: '#123f53', veil: 'rgba(2,54,71,.42)', light: ['rgba(192,255,251,.16)', 'rgba(78,231,229,.055)', 'rgba(3,35,55,.28)'] },
+  forest: { base: '#274c36', veil: 'rgba(7,50,26,.42)', light: ['rgba(222,255,202,.15)', 'rgba(127,229,153,.055)', 'rgba(7,36,18,.29)'] }
+});
+
 const CARD_STYLE = Object.freeze({
   sun: { rgb: '243,194,76', edge: '#fff1a8', symbol: '☀' },
   moon: { rgb: '91,181,235', edge: '#dff4ff', symbol: '☾' },
@@ -31,6 +45,8 @@ const CARD_STYLE = Object.freeze({
 
 const generatedAssets = new Map();
 let generatedPromise = null;
+const themeEnvironmentAssets = new Map();
+let themeEnvironmentPromise = null;
 
 function roundRectPath(ctx, x, y, width, height, radius) {
   const r = Math.min(radius, width / 2, height / 2);
@@ -55,6 +71,21 @@ function loadImage(url) {
     image.onerror = () => resolve(null);
     image.src = url;
   });
+}
+
+function activeThemeId() {
+  return document.body?.dataset?.theme in THEME_ENVIRONMENT_URLS
+    ? document.body.dataset.theme
+    : 'night';
+}
+
+function preloadThemeEnvironmentAssets() {
+  if (themeEnvironmentPromise) return themeEnvironmentPromise;
+  themeEnvironmentPromise = Promise.all(Object.entries(THEME_ENVIRONMENT_URLS).map(async ([id, url]) => {
+    const image = await loadImage(url);
+    if (image) themeEnvironmentAssets.set(id, image);
+  })).then(() => themeEnvironmentAssets);
+  return themeEnvironmentPromise;
 }
 
 function decodeBase64Bytes(payload) {
@@ -161,7 +192,7 @@ function installV82Styles() {
   const style = document.createElement('style');
   style.dataset.visualThemeV82 = '1';
   style.textContent = `
-    #game-container{position:relative!important;background:radial-gradient(circle at 9% 14%,rgba(220,240,255,.75) 0 1px,transparent 1.4px) 0 0/109px 109px,radial-gradient(circle at 72% 21%,rgba(122,196,255,.68) 0 1px,transparent 1.5px) 0 0/151px 151px,radial-gradient(circle at 31% 76%,rgba(255,255,255,.52) 0 1px,transparent 1.35px) 0 0/83px 83px,radial-gradient(ellipse at 24% 18%,rgba(46,119,176,.34),transparent 38%),radial-gradient(ellipse at 83% 72%,rgba(61,91,170,.22),transparent 34%),linear-gradient(145deg,#0c2e49 0%,#09233a 48%,#071827 100%)!important}
+    #game-container{position:relative!important;background:var(--theme-board-overlay),var(--theme-scene-image) center/cover!important}
     #game-container canvas{position:relative;z-index:1}
     .ui-frame-v82{position:absolute;pointer-events:none;z-index:4;background-repeat:no-repeat;background-position:center;background-size:contain;opacity:.52}
     .ui-frame-v82.corner{width:42px;height:42px}
@@ -186,6 +217,7 @@ function setTheme(themeId) {
   const button = document.getElementById('btn-theme');
   if (button) button.textContent = `主题·${theme.label}`;
   try { localStorage.setItem(THEME_KEY, theme.id); } catch {}
+  window.dispatchEvent(new Event('tower-theme-change'));
   return theme;
 }
 
@@ -267,28 +299,39 @@ function drawFloorTexture(ctx, image, x, y, size, alternate = false) {
 function drawFloorV82(scene) {
   const ctx = scene.ctx;
   const mapSize = GRID_SIZE * TILE_SIZE;
+  const themeId = activeThemeId();
+  const palette = THEME_FLOOR_PALETTES[themeId] ?? THEME_FLOOR_PALETTES.night;
+  const environment = themeEnvironmentAssets.get(themeId);
   const main = generatedAsset('floor-main-v8');
   const alt = generatedAsset('floor-alt-v8');
-  ctx.fillStyle = '#86bed2';
+  ctx.fillStyle = palette.base;
   ctx.fillRect(0, 0, mapSize, mapSize);
+  if (environment) {
+    ctx.save();
+    ctx.globalAlpha = 0.38;
+    ctx.drawImage(environment, 0, 0, mapSize, mapSize);
+    ctx.fillStyle = palette.veil;
+    ctx.fillRect(0, 0, mapSize, mapSize);
+    ctx.restore();
+  }
   ctx.save();
-  ctx.globalAlpha = 0.94;
+  ctx.globalAlpha = 0.79;
   for (let y = 0; y < GRID_SIZE; y += 1) {
     for (let x = 0; x < GRID_SIZE; x += 1) {
       const alternate = ((x * 19 + y * 31) % 7) === 0;
       const image = alternate ? (alt ?? main) : (main ?? alt);
       if (image) drawFloorTexture(ctx, image, x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, alternate);
       else {
-        ctx.fillStyle = alternate ? '#91c8d9' : '#82bad0';
+        ctx.fillStyle = alternate ? palette.light[1] : palette.light[0];
         ctx.fillRect(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
       }
     }
   }
   ctx.restore();
   const light = ctx.createRadialGradient(mapSize * 0.5, mapSize * 0.44, 10, mapSize * 0.5, mapSize * 0.48, mapSize * 0.72);
-  light.addColorStop(0, 'rgba(239,252,255,.13)');
-  light.addColorStop(0.6, 'rgba(166,220,238,.035)');
-  light.addColorStop(1, 'rgba(18,61,83,.17)');
+  light.addColorStop(0, palette.light[0]);
+  light.addColorStop(0.6, palette.light[1]);
+  light.addColorStop(1, palette.light[2]);
   ctx.fillStyle = light;
   ctx.fillRect(0, 0, mapSize, mapSize);
 }
@@ -539,6 +582,7 @@ export function applySceneThemeV8(scene) {
       scene.refresh?.();
     });
   }
+  preloadThemeEnvironmentAssets().then(() => scene.refresh?.());
   const previousRenderToken = scene.renderToken.bind(scene);
   installCleanSpritePipeline(scene);
   scene.drawFloorLayer = () => drawFloorV82(scene);
@@ -566,5 +610,6 @@ export function applySceneThemeV8(scene) {
   scene.canvas.dataset.cardPipeline = 'programmatic-card-v8';
   scene.canvas.dataset.spriteCleanup = 'edge-keyed-transparent-v8.2';
   scene.canvas.dataset.uiThemes = THEMES.map((theme) => theme.id).join(',');
+  window.addEventListener('tower-theme-change', () => scene.refresh?.());
   return scene;
 }

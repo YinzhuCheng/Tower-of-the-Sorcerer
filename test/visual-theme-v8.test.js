@@ -72,6 +72,9 @@ test('V8 generated UI atlas remains exact while V10 supplies gameplay pickups an
   assert.match(source, /drawFloorV82/);
   assert.match(source, /drawOuterWallTrim/);
   assert.match(source, /decorateUiPanels/);
+  assert.match(source, /THEME_ENVIRONMENT_URLS/);
+  assert.match(source, /preloadThemeEnvironmentAssets/);
+  assert.match(source, /tower-theme-change/);
 
   assert.match(patch, /generated-items-v10/);
   assert.match(patch, /generated-cards-v10/);

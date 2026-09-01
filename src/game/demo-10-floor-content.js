@@ -29,8 +29,8 @@ function ensureShop(map, { x, y }) {
   map[y][x] = 'shop';
 }
 
-function dialogueTurn(speaker, portrait, text) {
-  return Object.freeze({ speaker, portrait, text });
+function dialogueTurn(speaker, portrait, text, extras = {}) {
+  return Object.freeze({ speaker, portrait, text, ...extras });
 }
 
 function dialogueSequence(title, turns) {
@@ -130,107 +130,120 @@ export function applyDemoTenFloorContent({ enemies, floors, dialogues, gridSize 
 
   Object.assign(dialogues, {
     floor7: {
-      speaker: '影织姬·鸦羽', portrait: 'shadow_boss', title: '第七阵：虚影织界',
-      text: '“三相结界需要日、月、星各一张。”\n\n穿过后是王庭；最后一张日曜卡还要留给王座。'
+      title: '第七阵：虚影织界',
+      turns: [
+        dialogueTurn('影织姬·鸦羽', 'shadow_boss', '女王听见“撤销登记”时，以为那些名字也会一起消失。于是她封住了整座塔。'),
+        dialogueTurn('绫星·璃', 'hero', '她想守住名字，却让活着的人变成了工具。王庭里，我会亲口告诉她。')
+      ]
     },
     floor8: {
-      speaker: '残响精灵·纱雾', portrait: 'guide', title: '第八阵：静默前庭',
-      text: '七枚核心已经齐全。两枚静默开关共同控制外环闸门。\n\n双卫宝库可选；执剑官才是上行条件。'
+      title: '第八阵：静默前庭',
+      turns: [
+        dialogueTurn('残响精灵·纱雾', 'guide', '七枚核心归位后，登记网露出了一条更高的回路：起源魔源仍在为它供能。'),
+        dialogueTurn('绫星·璃', 'hero', '先到王座，问女王是谁把临时登记接成了永不停机的系统。')
+      ]
     },
     floor9: {
-      speaker: '绫星·璃', portrait: 'hero', title: '第九阵：倒悬星桥',
-      text: '月辉卡打开月蚀校准台。\n\n之后按月蚀 → 晨辉 → 星落的顺序踩符文，才能打开黯星门。'
+      title: '第九阵：倒悬星桥',
+      turns: [
+        dialogueTurn('旁白', null, '星桥的封印记录着当年的签署顺序：撤离、封塔、延长紧急登记。'),
+        dialogueTurn('绫星·璃', 'hero', '不是女王一个人把事情变成这样。我要把签署人和源头都找出来。')
+      ]
     },
     floor10: {
-      speaker: '无声女王·诺克缇娅', portrait: 'final_queen', title: '第十阵：无声王座',
-      text: '“王座门后没有商店，也没有补救。”\n\n璃握紧最后一张日曜卡，走向女王。'
+      title: '第十阵：无声王座',
+      turns: [
+        dialogueTurn('无声女王·诺克缇娅', 'final_queen', '三年里，我每天都听见同一句求援。若我关掉它，谁来记得灰港的人？', { cg: '/assets/anime/cg/liyue-noctia-truth-cg.webp' }),
+        dialogueTurn('绫星·璃', 'hero', '我会记得。但让守卫永远互相伤害，不会把任何人送回家。'),
+        dialogueTurn('无声女王·诺克缇娅', 'final_queen', '那就证明给我看：你能让记录留下，也能让命令结束。')
+      ]
     },
 
     bossCatPreDemo: dialogueSequence('第一阵守护者：猫卫长·米露', [
-      dialogueTurn('猫卫长·米露', 'cat_boss', '术式要我守住核心。可我知道，这不是我的命令。'),
-      dialogueTurn('绫星·璃', 'hero', '那我会斩断术式，只取回自己的魔力。')
+      dialogueTurn('猫卫长·米露', 'cat_boss', '昨夜起，塔门把每位来客都登记成敌人。我知道不对，却停不下爪子。'),
+      dialogueTurn('绫星·璃', 'hero', '我不是来夺你的意志。让我斩断术式，带回属于我的核心。')
     ]),
     bossCatPostDemo: dialogueSequence('月影核心回收', [
-      dialogueTurn('猫卫长·米露', 'cat_boss', '结界解除了。我终于能自己开口。'),
-      dialogueTurn('绫星·璃', 'hero', '休息吧。我会继续往上。')
+      dialogueTurn('猫卫长·米露', 'cat_boss', '结界解除了。女王封塔前，一直在等灰港撤离的最后确认。'),
+      dialogueTurn('绫星·璃', 'hero', '那份确认我会找出来。你先休息。')
     ]),
     bossFoxPreDemo: dialogueSequence('第二阵守护者：狐祝·绯叶', [
-      dialogueTurn('狐祝·绯叶', 'fox_boss', '森罗结界会记下你花掉的每一张卡。'),
-      dialogueTurn('绫星·璃', 'hero', '那就让它记下我做过的选择。')
+      dialogueTurn('狐祝·绯叶', 'fox_boss', '森罗结界会记下每一把钥匙和每一滴血。女王说，代价必须被保存。'),
+      dialogueTurn('绫星·璃', 'hero', '记录代价是为了避免重犯，不是让人永远为旧日受罚。')
     ]),
     bossFoxPostDemo: dialogueSequence('森罗核心回收', [
-      dialogueTurn('狐祝·绯叶', 'fox_boss', '你没有把钥匙和生命随手花掉。'),
-      dialogueTurn('绫星·璃', 'hero', '因为后面的门还在等着。')
+      dialogueTurn('狐祝·绯叶', 'fox_boss', '你没有把钥匙和生命随手花掉。也许女王该看见这种选择。'),
+      dialogueTurn('绫星·璃', 'hero', '等她肯听，我会把选择还给所有人。')
     ]),
     bossWhalePreDemo: dialogueSequence('第三阵守护者：深蓝歌姬·澜音', [
-      dialogueTurn('深蓝歌姬·澜音', 'whale_boss', '鲸歌的反击无视防御。你看清耗血了吗？'),
-      dialogueTurn('绫星·璃', 'hero', '看清了。来吧。')
+      dialogueTurn('深蓝歌姬·澜音', 'whale_boss', '我的鲸歌本该指引最后一艘避难船。术式却要我把它唱成警报。'),
+      dialogueTurn('绫星·璃', 'hero', '那就让它停下。真正的航线，不能被旧警报淹没。')
     ]),
     bossWhalePostDemo: dialogueSequence('潮汐核心回收', [
-      dialogueTurn('深蓝歌姬·澜音', 'whale_boss', '鲸歌停下了。谢谢你。'),
-      dialogueTurn('绫星·璃', 'hero', '把你困在这里的人才该负责。')
+      dialogueTurn('深蓝歌姬·澜音', 'whale_boss', '鲸歌停下了。我听见船长的原话：全员已离港。'),
+      dialogueTurn('绫星·璃', 'hero', '女王从没收到这句确认。有人让登记网只收不结。')
     ]),
     bossSwordPreDemo: dialogueSequence('第四阵守护者：剑圣·塞蕾娜', [
-      dialogueTurn('剑圣·塞蕾娜', 'sword_boss', '不破防就无法赢；防得住就不掉血。'),
-      dialogueTurn('绫星·璃', 'hero', '规则清楚，正好。')
+      dialogueTurn('剑圣·塞蕾娜', 'sword_boss', '封锁令只该维持到撤离结束。可它没有终止栏，我只能继续执行。'),
+      dialogueTurn('绫星·璃', 'hero', '那就由我走到终止栏前，把这条命令补完。')
     ]),
     bossSwordPostDemo: dialogueSequence('锋刃核心回收', [
-      dialogueTurn('剑圣·塞蕾娜', 'sword_boss', '你看懂了数值。'),
-      dialogueTurn('绫星·璃', 'hero', '也看懂了下一步。')
+      dialogueTurn('剑圣·塞蕾娜', 'sword_boss', '你看懂了规则，也没把它当借口。上层有供暖炉的记录。'),
+      dialogueTurn('绫星·璃', 'hero', '我会追着记录走。')
     ]),
     bossDragonPreDemo: dialogueSequence('第五阵守护者：龙姬·焰璃', [
-      dialogueTurn('龙姬·焰璃', 'dragon_boss', '商店在这里，龙火也在这里。别把金币花空。'),
-      dialogueTurn('绫星·璃', 'hero', '我会给后面的路留余地。')
+      dialogueTurn('龙姬·焰璃', 'dragon_boss', '炉火烧了三年，连空屋都不准断热。登记网说：避难者可能归来。'),
+      dialogueTurn('绫星·璃', 'hero', '“可能”不能成为永远消耗所有人的理由。')
     ]),
     bossDragonPostDemo: dialogueSequence('赤焰核心回收', [
-      dialogueTurn('龙姬·焰璃', 'dragon_boss', '强制契约断了。上层只会更难。'),
-      dialogueTurn('绫星·璃', 'hero', '那就继续算，继续走。')
+      dialogueTurn('龙姬·焰璃', 'dragon_boss', '强制契约断了。避难者的最后记录在星镜书库。'),
+      dialogueTurn('绫星·璃', 'hero', '我会带着它去见女王。')
     ]),
     bossAstralPreDemo: dialogueSequence('第六阵守护者：天穹魔女·露米', [
-      dialogueTurn('天穹魔女·露米', 'astral_boss', '符文顺序错了会重置；数值不够就会输。'),
-      dialogueTurn('绫星·璃', 'hero', '那我先把顺序走对。')
+      dialogueTurn('天穹魔女·露米', 'astral_boss', '我算过两条路：停止会遗失档案，继续会伤害守卫。女王选了后者。'),
+      dialogueTurn('绫星·璃', 'hero', '那是被迫接受的两难，不是唯一答案。我要找出被藏掉的第三条。')
     ]),
     bossAstralPostDemo: dialogueSequence('天穹核心回收', [
-      dialogueTurn('天穹魔女·露米', 'astral_boss', '演算更新：你有胜算。'),
-      dialogueTurn('绫星·璃', 'hero', '那就继续。')
+      dialogueTurn('天穹魔女·露米', 'astral_boss', '演算更新：离港确认是真的，却被标成“不可结案”。'),
+      dialogueTurn('绫星·璃', 'hero', '有人在女王之外，给系统加了更高的权限。')
     ]),
     bossShadowPreDemo: dialogueSequence('第七阵守护者：影织姬·鸦羽', [
-      dialogueTurn('影织姬·鸦羽', 'shadow_boss', '三相结界后就是王庭。再没有核心奖励。'),
-      dialogueTurn('绫星·璃', 'hero', '那就靠已经准备好的力量。')
+      dialogueTurn('影织姬·鸦羽', 'shadow_boss', '我亲眼看见女王删掉自己的离塔许可。她宁可困住自己，也不肯结案。'),
+      dialogueTurn('绫星·璃', 'hero', '她害怕停下后，灰港会被当作从未存在。我会让她看见真相。')
     ]),
     bossShadowPostDemo: dialogueSequence('虚影核心回收', [
-      dialogueTurn('影织姬·鸦羽', 'shadow_boss', '七枚核心齐了。'),
-      dialogueTurn('绫星·璃', 'hero', '王庭就在前面。')
+      dialogueTurn('影织姬·鸦羽', 'shadow_boss', '七枚核心齐了。王庭能告诉你谁签了延长命令。'),
+      dialogueTurn('绫星·璃', 'hero', '我不会再只问女王一个人。')
     ]),
     bossPalacePreDemo: dialogueSequence('第八阵守护者：静默执剑官·维拉', [
-      dialogueTurn('静默执剑官·维拉', 'sword_boss', '核心齐全不代表能过王庭。'),
-      dialogueTurn('绫星·璃', 'hero', '那就检验我的配置。')
+      dialogueTurn('静默执剑官·维拉', 'sword_boss', '王庭封的是起源魔源的访问权。没有它，女王也无法修改底层登记。'),
+      dialogueTurn('绫星·璃', 'hero', '那我就先解除访问权，再让她亲手看完结案记录。')
     ]),
     bossPalacePostDemo: dialogueSequence('王庭外环解除', [
-      dialogueTurn('静默执剑官·维拉', 'sword_boss', '你的判断撑住了。'),
-      dialogueTurn('绫星·璃', 'hero', '下一道门也是。')
+      dialogueTurn('静默执剑官·维拉', 'sword_boss', '外环解除。上层观测官保管着延长令的黯印。'),
+      dialogueTurn('绫星·璃', 'hero', '我要那枚印，也要签署人的名字。')
     ]),
     bossBlackSealPreDemo: dialogueSequence('第九阵守护者：黯印观测官·塞芙', [
-      dialogueTurn('黯印观测官·塞芙', 'astral_boss', '后面没有商店。现在只剩最终配置。'),
-      dialogueTurn('绫星·璃', 'hero', '那就开始。')
+      dialogueTurn('黯印观测官·塞芙', 'astral_boss', '延长令的黯印来自王座之外。女王只能执行，不能撤销。'),
+      dialogueTurn('绫星·璃', 'hero', '那我会带着印上去，让她知道自己并非唯一的罪人。')
     ]),
     bossBlackSealPostDemo: dialogueSequence('黯星通行印解除', [
-      dialogueTurn('黯印观测官·塞芙', 'astral_boss', '许可印解除。王座就在上面。'),
-      dialogueTurn('绫星·璃', 'hero', '足够了。')
+      dialogueTurn('黯印观测官·塞芙', 'astral_boss', '许可印解除。签名写着：奥术主权者，紧急登记无限延长。'),
+      dialogueTurn('绫星·璃', 'hero', '王座就在上面。真相还没结束。')
     ]),
     bossQueenPreDemo: dialogueSequence('第十阵：无声女王', [
-      dialogueTurn('无声女王·诺克缇娅', 'final_queen', '你带着最后一张日曜卡来了。'),
-      dialogueTurn('绫星·璃', 'hero', '因为我知道它该用在哪里。'),
-      dialogueTurn('无声女王·诺克缇娅', 'final_queen', '那就来。')
+      dialogueTurn('无声女王·诺克缇娅', 'final_queen', '我收到的最后一条讯息是“等待确认”。我不敢让它被结案。'),
+      dialogueTurn('绫星·璃', 'hero', '离港确认早就到了，却被更高权限拦下。你不必再替那条命令伤害所有人。'),
+      dialogueTurn('无声女王·诺克缇娅', 'final_queen', '若你说得是真的，就用你的力量让我面对它。')
     ]),
     queenPhaseDemo: dialogueSequence('最终术式展开', [
-      dialogueTurn('无声女王·诺克缇娅', 'final_queen', '现在轮到黯星核心。'),
-      dialogueTurn('绫星·璃', 'hero', '数值都在眼前。继续。')
+      dialogueTurn('无声女王·诺克缇娅', 'final_queen', '黯星核心保管着原始签名。它不会允许任何人读取。'),
+      dialogueTurn('绫星·璃', 'hero', '那就由我打破封锁，把记录取出来。')
     ]),
     bossQueenPostDemo: dialogueSequence('终章：魔法重新被选择', [
-      dialogueTurn('绫星·璃', 'hero', '黯星核心碎了。高塔的命令结束了。'),
-      dialogueTurn('无声女王·诺克缇娅', 'final_queen', '原来我怕的是失去控制。'),
-      dialogueTurn('残响精灵·纱雾', 'guide', '十重阵列解除。')
+      dialogueTurn('绫星·璃', 'hero', '黯星核心碎了。原始签名指向起源魔源，那里才是延长令的根。'),
+      dialogueTurn('无声女王·诺克缇娅', 'final_queen', '我会一起去。我要亲眼确认灰港的每个名字都还在。'),
+      dialogueTurn('残响精灵·纱雾', 'guide', '王座开启通往上层的阶梯。十层并非终点。')
     ])
   });
 

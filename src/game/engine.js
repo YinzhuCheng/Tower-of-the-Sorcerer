@@ -789,8 +789,19 @@ export function tryMove(state, dx, dy) {
     const enemy = getEffectiveEnemy(state, parsed.id);
     if (!enemy) throw new Error(`Unknown enemy: ${parsed.id}`);
     markSeenEnemy(state, parsed.id);
+    // Rendering is deliberately downstream of the rules engine.  Preserve the
+    // exact pre-combat snapshot so cinematic UI can animate the authoritative
+    // calculation even after a boss reward changes the live HUD values.
+    const hero = {
+      hp: state.stats.hp,
+      maxHp: state.stats.maxHp,
+      atk: state.stats.atk,
+      def: state.stats.def,
+      mp: state.magic?.mp ?? 0,
+      maxMp: state.magic?.maxMp ?? 0
+    };
     const battle = calculateBattle(state.stats, enemy, state.relics, state.magic);
-    result.battle = { enemyId: parsed.id, enemy, ...battle };
+    result.battle = { enemyId: parsed.id, enemy, hero, ...battle };
     if (!battle.winnable) {
       result.blocked = true;
       result.reason = battle.reason;

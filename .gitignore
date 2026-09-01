@@ -1,5 +1,6 @@
 # Build output
 dist/
+generated_images/
 
 # Local tooling
 .DS_Store

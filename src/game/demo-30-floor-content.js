@@ -321,58 +321,64 @@ function installEnemies(enemies) {
   enemies.errataCore.defeatDialogue = 'ending';
 }
 
-function turn(speaker, portrait, text) { return Object.freeze({ speaker, portrait, text }); }
+function turn(speaker, portrait, text, extras = {}) { return Object.freeze({ speaker, portrait, text, ...extras }); }
 function sequence(title, turns) { return Object.freeze({ title, turns: Object.freeze(turns) }); }
 
 function installDialogues(dialogues) {
   Object.assign(dialogues, {
     floor21: sequence('第二十一阵：余烬登记库', [
-      turn('残响精灵·纱雾', 'guide', '上面是仍在运转的余烬登记库。它只允许带走一套修复工具。'),
-      turn('绫星·璃', 'hero', '夜航、校验、接力：成本和效果都写在章程面板里。')
+      turn('残响精灵·纱雾', 'guide', '余烬登记库没有敌人名单，只有未投递的信、离港回执和三套修复章程。'),
+      turn('无声女王·诺克缇娅', 'final_queen', '它一次只能先接通一条修复线：护送、校验，或灯塔接力。'),
+      turn('绫星·璃', 'hero', '不是决定谁更重要，而是决定先用哪种方法，让记录不再伤人。')
     ]),
     floor22: sequence('第二十二阵：夜航侧库', [
-      turn('猫卫长·米露', 'cat_boss', '夜航侧库要两张月辉卡和一场战斗。完成后，终局每阶段少三次反击。'),
-      turn('绫星·璃', 'hero', '代价明确，就看它值不值。')
+      turn('猫卫长·米露', 'cat_boss', '夜航章程把仍在路上的回执护送到归档口，不再让它们被警报截走。'),
+      turn('绫星·璃', 'hero', '月辉卡和战斗，是为这条安全路径付出的代价。完成后，终局每阶段少三次反击。')
     ]),
     floor23: sequence('第二十三阵：逐页校验室', [
-      turn('深蓝歌姬·澜音', 'whale_boss', '校验侧库要两张星蚀卡。完成后会削弱 F30 两个阶段。'),
-      turn('绫星·璃', 'hero', '先看执行官的魔法耗血。')
+      turn('深蓝歌姬·澜音', 'whale_boss', '校验章程逐页比对求援与离港记录，能把伪造的“仍待救援”标出来。'),
+      turn('绫星·璃', 'hero', '两张星蚀卡换来两相削弱。先看执行官的魔法耗血。')
     ]),
     floor24: sequence('第二十四阵：灯塔接力室', [
-      turn('龙姬·焰璃', 'dragon_boss', '接力侧库要日、月卡各一张；拿到后最大 MP +60、恢复 160 MP（不超过上限），F27 后再补满一次。'),
-      turn('绫星·璃', 'hero', '那次补魔要留给终局。')
+      turn('龙姬·焰璃', 'dragon_boss', '接力章程重启灯塔，把已确认的结案送给仍在等待回应的地区。'),
+      turn('绫星·璃', 'hero', '日、月卡各一张换来接力电容；F27 后会再补满一次魔力，留给终局。')
     ]),
     floor25: sequence('第二十五阵：缺页庭', [
-      turn('绫星·璃', 'hero', '缺页封条要日曜一张、月辉两张、星蚀一张。'),
-      turn('残响精灵·纱雾', 'guide', '这是任何选择都绕不过的支出。')
+      turn('残响精灵·纱雾', 'guide', '缺页封条锁着最后的签署原件。必须用日曜一张、月辉两张、星蚀一张才能补齐。'),
+      turn('绫星·璃', 'hero', '这是所有修复线都绕不过的支出。原件会告诉我们如何终止，而不清空记录。')
     ]),
     floor26: sequence('第二十六阵：折角集市', [
-      turn('阵间商人·珂珂', 'merchant', '价签都写着：血、刃、甲、补 MP、扩 MP。买一次，下一次就涨价。'),
-      turn('绫星·璃', 'hero', '先算清哪一项能撑到 F30。')
+      turn('阵间商人·珂珂', 'merchant', '三年前，我的价签被系统锁死；今天终于能自己决定把补给交给谁。'),
+      turn('绫星·璃', 'hero', '价签都写着：血、刃、甲、补 MP、扩 MP。先算清哪一项能撑到 F30。')
     ]),
     floor27: sequence('第二十七阵：接力校场', [
-      turn('影织姬·鸦羽', 'shadow_boss', '第一个被击败的守卫会锁定一种终局支援；三人的具体效果写在各自战斗说明里。三人仍都要打。'),
-      turn('绫星·璃', 'hero', '看清每一人的效果和预计耗血，再决定第一战。')
+      turn('影织姬·鸦羽', 'shadow_boss', '三位校场守卫分别承接护送、校验和接力。首战决定终局优先加载哪一种支援。'),
+      turn('绫星·璃', 'hero', '三人仍都要打；先后只决定有限的准备顺序，不决定谁被放弃。'),
+      turn('残响精灵·纱雾', 'guide', '具体效果和预计耗血，都写在各自的战斗说明里。')
     ]),
     floor28: sequence('第二十八阵：归档风暴', [
+      turn('无声女王·诺克缇娅', 'final_queen', '风暴里飘着没能送达的最后一句话。它们不该再被系统拿去驱动守卫。'),
       turn('残响精灵·纱雾', 'guide', '上行阶梯已经开放；可选区域有生命和 MP 补给。'),
       turn('绫星·璃', 'hero', '拿不拿，要看终局还缺什么。')
     ]),
     floor29: sequence('第二十九阵：最后索引', [
-      turn('最后保管人', 'crown_magus', '两名索引守卫都倒下，灯塔楼梯才会显现。'),
-      turn('绫星·璃', 'hero', '最后的卡片和 MP，都留给上面。')
+      turn('最后保管人', 'crown_magus', '我们被命令保护“不完整的记录”，因为系统认定缺一页就必须从头重算。'),
+      turn('绫星·璃', 'hero', '记录可以标注缺失，不能因此抹掉所有已经确认的事。'),
+      turn('最后保管人', 'crown_magus', '击败两名索引守卫后，灯塔楼梯会显现。')
     ]),
     floor30: sequence('第三十阵：余烬灯塔', [
-      turn('档案守望者', 'act3_archive_warden', '先过我，再过勘误核心。两相连续，没有补给。'),
-      turn('绫星·璃', 'hero', '所有终局支援都已经写明。开始吧。')
+      turn('档案守望者', 'act3_archive_warden', '原始协议规定：发现矛盾记录时，先冻结，再由勘误核心清零重建。'),
+      turn('无声女王·诺克缇娅', 'final_queen', '这就是我一直害怕的“结案”。可原件已经证明，还有归档模式。'),
+      turn('绫星·璃', 'hero', '先过守望者，再阻止勘误核心。两相连续，没有补给。')
     ]),
     bossArchiveWardenPost: sequence('灯塔：守望者停机', [
-      turn('档案守望者', 'act3_archive_warden', '守望协议结束。勘误核心接管。'),
-      turn('绫星·璃', 'hero', '第二阶段。')
+      turn('档案守望者', 'act3_archive_warden', '守望协议结束。勘误核心仍会按旧规则，将矛盾记录清零。'),
+      turn('绫星·璃', 'hero', '第二阶段。我要在它清零前写入归档。')
     ]),
     ending: sequence('终章：未投递的信', [
-      turn('残响精灵·纱雾', 'guide', '灯塔熄下来了。未投递的信终于不会再被重放。'),
-      turn('绫星·璃', 'hero', '记录留下，命令结束。')
+      turn('残响精灵·纱雾', 'guide', '灯塔转入归档。未投递的信不再被重放，将等待能收到它们的人。', { cg: '/assets/anime/cg/liyue-noctia-afterlight-cg.webp' }),
+      turn('无声女王·诺克缇娅', 'final_queen', '灰港的名字都在：离港者、罹难者、等待的人。它们终于不必再证明自己存在。'),
+      turn('绫星·璃', 'hero', '记录留下，命令结束。以后由活着的人决定怎样继续。')
     ])
   });
 }

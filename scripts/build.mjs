@@ -201,13 +201,65 @@ async function applyMainProductionPatch() {
   if (result.moved || result.battle || result.floorChanged || result.bossEncounter) autoSave();
 }
 `;
-  source = source.includes(oldDoctrineCharterCouncilResult)
-    ? replaceRequired(source, oldDoctrineCharterCouncilResult, newDoctrineCharterCouncilResult, 'Boss dialogue result flow with doctrine, charter and council')
-    : source.includes(oldDoctrineCouncilResult)
-    ? replaceRequired(source, oldDoctrineCouncilResult, newDoctrineCouncilResult, 'Boss dialogue result flow with doctrine and council')
-    : source.includes(oldCouncilResult)
-      ? replaceRequired(source, oldCouncilResult, newCouncilResult, 'Boss dialogue result flow with council')
-      : replaceRequired(source, oldResult, newResult, 'Boss dialogue result flow');
+  const oldCinematicResult = `function continueSceneResult(result) {
+  if (result.blocked) showToast(result.reason ?? '无法行动。');
+  if (result.openDoctrine) {
+    showRouteDoctrine();
+    return;
+  }
+  if (result.openCharter) {
+    showAct3Charter();
+    return;
+  }
+  if (result.openCouncil) {
+    if (result.dialogue) showDialogue(result.dialogue, showWarCouncil);
+    else showWarCouncil();
+    return;
+  }
+  if (result.openShop) showShop();
+  if (result.dialogue) {
+    showDialogue(result.dialogue, result.victory ? showVictory : null);
+  } else if (result.victory) {
+    showVictory();
+  }
+  if (result.moved || result.battle || result.floorChanged) autoSave();
+}
+`;
+  const newCinematicResult = `function continueSceneResult(result) {
+  if (result.blocked) showToast(result.reason ?? '无法行动。');
+  if (result.openDoctrine) {
+    showRouteDoctrine();
+    return;
+  }
+  if (result.openCharter) {
+    showAct3Charter();
+    return;
+  }
+  if (result.openCouncil) {
+    if (result.dialogue) showDialogue(result.dialogue, showWarCouncil);
+    else showWarCouncil();
+    return;
+  }
+  if (result.openShop) showShop();
+  if (result.bossEncounter && result.dialogue) {
+    showDialogue(result.dialogue, () => scene?.move(result.resumeDirection), { finalLabel: '开战' });
+  } else if (result.dialogue) {
+    showDialogue(result.dialogue, result.victory ? showVictory : null);
+  } else if (result.victory) {
+    showVictory();
+  }
+  if (result.moved || result.battle || result.floorChanged || result.bossEncounter) autoSave();
+}
+`;
+  source = source.includes(oldCinematicResult)
+    ? replaceRequired(source, oldCinematicResult, newCinematicResult, 'Boss dialogue result flow with cinematic battle layer')
+    : source.includes(oldDoctrineCharterCouncilResult)
+      ? replaceRequired(source, oldDoctrineCharterCouncilResult, newDoctrineCharterCouncilResult, 'Boss dialogue result flow with doctrine, charter and council')
+      : source.includes(oldDoctrineCouncilResult)
+        ? replaceRequired(source, oldDoctrineCouncilResult, newDoctrineCouncilResult, 'Boss dialogue result flow with doctrine and council')
+        : source.includes(oldCouncilResult)
+          ? replaceRequired(source, oldCouncilResult, newCouncilResult, 'Boss dialogue result flow with council')
+          : replaceRequired(source, oldResult, newResult, 'Boss dialogue result flow');
 
   await writeFile(mainPath, source);
 }

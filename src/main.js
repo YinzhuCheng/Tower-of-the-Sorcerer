@@ -79,6 +79,8 @@ let state = createInitialState();
 let scene = null;
 let modalClosable = true;
 let toastTimer = null;
+let cinematicCleanup = null;
+let cinematicControls = null;
 
 function escapeHtml(value) {
   return String(value)
@@ -104,15 +106,26 @@ function showToast(message, duration = 1700) {
   toastTimer = setTimeout(() => elements.loading.classList.add('hidden'), duration);
 }
 
+function clearCinematic() {
+  cinematicCleanup?.();
+  cinematicCleanup = null;
+  cinematicControls = null;
+}
+
 function closeModal() {
   if (!modalClosable) return;
+  clearCinematic();
   elements.modalRoot.classList.add('hidden');
+  delete elements.modalRoot.dataset.variant;
   elements.modalBody.replaceChildren();
   elements.modalActions.replaceChildren();
 }
 
-function openModal({ kicker = '', title, body = '', actions = [], closable = true, afterOpen = null }) {
+function openModal({ kicker = '', title, body = '', actions = [], closable = true, afterOpen = null, variant = '' }) {
+  clearCinematic();
   modalClosable = closable;
+  if (variant) elements.modalRoot.dataset.variant = variant;
+  else delete elements.modalRoot.dataset.variant;
   elements.modalKicker.textContent = kicker;
   elements.modalTitle.textContent = title;
   elements.modalBody.innerHTML = body;
@@ -138,73 +151,315 @@ function openModal({ kicker = '', title, body = '', actions = [], closable = tru
   afterOpen?.();
 }
 
+function textToHtml(text) {
+  return escapeHtml(text).replaceAll('\n', '<br>');
+}
+
+function dialogueTurns(dialogue) {
+  if (Array.isArray(dialogue.turns) && dialogue.turns.length > 0) return dialogue.turns;
+  return [{
+    speaker: dialogue.speaker ?? '旁白',
+    portrait: dialogue.portrait ?? null,
+    text: dialogue.text ?? '',
+    kind: dialogue.kind ?? 'dialogue'
+  }];
+}
+
 function showDialogue(dialogueId, after = null, { finalLabel = null } = {}) {
   const dialogue = getDialogue(dialogueId);
   if (!dialogue) return;
+  const turns = dialogueTurns(dialogue);
+  let index = 0;
 
-  // Boss dialogue is authored as a short exchange rather than a block of
-  // exposition.  Older screens only knew the single-speaker format, which
-  // silently rendered sequence records as empty content.  Keep both formats
-  // valid so existing floor narration remains lightweight while confrontations
-  // can reveal competing motives one line at a time.
-  if (Array.isArray(dialogue.turns) && dialogue.turns.length > 0) {
-    let index = 0;
-    const renderTurn = () => {
-      const turn = dialogue.turns[index];
-      const finalTurn = index === dialogue.turns.length - 1;
-      openModal({
-        kicker: `${turn.speaker} · ${index + 1}/${dialogue.turns.length}`,
-        title: dialogue.title,
-        closable: finalLabel ? false : true,
-        body: `
-          <div class="dialogue-grid">
-            <img src="${portraitUrl(turn.portrait)}" alt="${escapeHtml(turn.speaker)}" />
-            <div class="dialogue-copy">
-              <strong>${escapeHtml(turn.speaker)}</strong>
-              <p>${escapeHtml(turn.text).replaceAll('\n', '<br>')}</p>
-            </div>
+  const finish = () => {
+    modalClosable = true;
+    closeModal();
+    after?.();
+  };
+
+  const renderTurn = () => {
+    const turn = turns[index];
+    const finalTurn = index === turns.length - 1;
+    const isNarration = turn.kind === 'narration' || !turn.portrait;
+    const choices = Array.isArray(turn.choices) ? turn.choices : [];
+    let revealed = false;
+    let chosen = null;
+    const narratorName = turn.speaker ?? '旁白';
+    const cg = typeof turn.cg === 'string' && turn.cg ? turn.cg : null;
+
+    const portrait = isNarration
+      ? '<div class="gal-narration-mark" aria-hidden="true">✦</div>'
+      : `<img class="gal-portrait" src="${portraitUrl(turn.portrait)}" alt="${escapeHtml(narratorName)}" />`;
+
+    openModal({
+      kicker: `STORY LOG · ${index + 1}/${turns.length}`,
+      title: dialogue.title,
+      // Some conversations hand directly into an irreversible UI (the
+      // council or clear screen).  Keep the explicit skip button, but avoid
+      // letting an accidental backdrop click strand that handoff.
+      closable: !after,
+      variant: 'gal',
+      body: `
+        <section class="gal-dialogue ${isNarration ? 'is-narration' : ''} ${cg ? 'has-cg' : ''}" aria-label="${escapeHtml(narratorName)}的对话">
+          <div class="gal-stage">
+            ${cg ? `<div class="gal-cg" style="--gal-cg:url('${escapeHtml(cg)}')" aria-hidden="true"></div>` : ''}
+            ${portrait}
+            <div class="gal-lens"></div>
           </div>
-        `,
-        actions: [
-          ...(index > 0 ? [{
-            label: '上一句',
-            close: false,
-            onClick: () => { index -= 1; renderTurn(); }
-          }] : []),
-          ...(!finalLabel ? [{ label: '跳过叙事', close: true }] : []),
-          {
-            label: finalTurn ? (finalLabel ?? (state.victory ? '查看通关结算' : '继续')) : '下一句',
-            className: 'primary',
-            close: finalTurn,
-            onClick: () => {
-              if (finalTurn) after?.();
-              else { index += 1; renderTurn(); }
-            }
+          <article class="gal-textbox" role="button" tabindex="0" aria-label="点击显示全文或继续">
+            <div class="gal-nameplate">${escapeHtml(narratorName)}</div>
+            <p class="gal-typewriter"></p>
+            ${choices.length ? `<div class="gal-choices">${choices.map((choice, choiceIndex) => `<button class="gal-choice" data-dialogue-choice="${choiceIndex}">${escapeHtml(choice.label)}</button>`).join('')}</div><p class="gal-choice-response" aria-live="polite"></p>` : ''}
+            <div class="gal-advance-hint">点击文本框 / 空格 / Enter</div>
+          </article>
+        </section>
+      `,
+      actions: [
+        ...(index > 0 ? [{
+          label: '上一句',
+          close: false,
+          onClick: () => { index -= 1; renderTurn(); }
+        }] : []),
+        {
+          label: '跳过叙事',
+          className: 'gal-skip',
+          close: false,
+          onClick: finish
+        },
+        {
+          label: choices.length ? '选择一句回应' : '显示全文',
+          className: 'primary gal-advance',
+          disabled: choices.length > 0,
+          close: false,
+          onClick: () => advance()
+        }
+      ],
+      afterOpen: () => {
+        const textNode = elements.modalBody.querySelector('.gal-typewriter');
+        const textbox = elements.modalBody.querySelector('.gal-textbox');
+        const advanceButton = elements.modalActions.querySelector('.gal-advance');
+        const source = String(turn.text ?? '');
+        let count = 0;
+        let timer = null;
+
+        const setAdvanceLabel = () => {
+          if (!advanceButton) return;
+          if (choices.length && !chosen) advanceButton.textContent = '选择一句回应';
+          else if (!revealed) advanceButton.textContent = '显示全文';
+          else advanceButton.textContent = finalTurn
+            ? (finalLabel ?? (state.victory ? '查看通关结算' : '结束对话'))
+            : '下一句';
+        };
+        const renderText = () => { textNode.innerHTML = textToHtml(source.slice(0, count)); };
+        const revealAll = () => {
+          if (revealed) return;
+          clearInterval(timer);
+          timer = null;
+          count = source.length;
+          revealed = true;
+          renderText();
+          setAdvanceLabel();
+        };
+        const advance = () => {
+          if (choices.length && !chosen) return;
+          if (!revealed) { revealAll(); return; }
+          if (finalTurn) finish();
+          else { index += 1; renderTurn(); }
+        };
+
+        // Keep the text snappy: the player can always click once to reveal it,
+        // then use the same control to advance.  This is the familiar Gal UX
+        // without making tactical players wait through a line they already read.
+        timer = window.setInterval(() => {
+          count += 2;
+          if (count >= source.length) revealAll();
+          else renderText();
+        }, 16);
+        renderText();
+        setAdvanceLabel();
+
+        textbox.addEventListener('click', (event) => {
+          if (event.target.closest('button')) return;
+          advance();
+        });
+        textbox.addEventListener('keydown', (event) => {
+          if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            advance();
           }
-        ]
-      });
-    };
-    renderTurn();
-    return;
+        });
+        elements.modalBody.querySelectorAll('[data-dialogue-choice]').forEach((button) => {
+          button.addEventListener('click', () => {
+            const choice = choices[Number(button.dataset.dialogueChoice)];
+            if (!choice || chosen) return;
+            chosen = choice;
+            elements.modalBody.querySelectorAll('.gal-choice').forEach((item) => {
+              item.disabled = true;
+              item.classList.toggle('selected', item === button);
+            });
+            const response = elements.modalBody.querySelector('.gal-choice-response');
+            if (response) response.textContent = choice.response ?? '璃记下这句话，迈向高塔深处。';
+            revealAll();
+            advanceButton.disabled = false;
+            setAdvanceLabel();
+          });
+        });
+        cinematicCleanup = () => clearInterval(timer);
+        cinematicControls = { advance, skip: finish };
+      }
+    });
+  };
+
+  renderTurn();
+}
+
+function combatHpBar(value, maximum) {
+  const safeMaximum = Math.max(1, maximum);
+  return `${Math.max(0, Math.min(100, value / safeMaximum * 100)).toFixed(2)}%`;
+}
+
+function showBattleCinematic(battle, after = null) {
+  const { enemy } = battle;
+  const hero = battle.hero ?? { hp: Math.max(1, state.stats.hp + (battle.totalDamage || 0)), maxHp: state.stats.maxHp };
+  const predictedDefeat = !battle.winnable;
+  const critical = !predictedDefeat && battle.remainingHp / Math.max(1, hero.maxHp) <= 0.3;
+  const cg = predictedDefeat
+    ? '/assets/anime/cg/liyue-defeat-cg.webp'
+    : critical
+      ? '/assets/anime/cg/liyue-critical-cg.webp'
+      : null;
+  const special = specialLabel(enemy);
+  const heroStart = Math.max(0, hero.hp);
+  const enemyStart = Math.max(1, enemy.hp);
+  const events = [];
+  let finishBattle = () => {};
+  if (battle.heroDamage > 0 && battle.magicAffordable !== false) {
+    if (enemy.special === 'firstStrike') {
+      events.push({ side: 'enemy', damage: battle.enemyDamage, label: '先制斩击' });
+    }
+    for (let round = 0; round < battle.rounds; round += 1) {
+      events.push({ side: 'hero', damage: battle.heroDamage, label: round + 1 === battle.rounds ? '终结一击' : '剑技命中' });
+      if (round < battle.rounds - 1) events.push({ side: 'enemy', damage: battle.enemyDamage, label: enemy.special === 'magic' ? '魔法反击' : enemy.special === 'doubleHit' ? '二连反击' : '反击' });
+    }
   }
 
   openModal({
-    kicker: dialogue.speaker,
-    title: dialogue.title,
-    closable: finalLabel ? false : true,
+    kicker: predictedDefeat ? 'BATTLE FORECAST · 战败预演' : `BATTLE SEQUENCE · ${battle.rounds} 回合`,
+    title: predictedDefeat ? `无法战胜「${enemy.name}」` : `与「${enemy.name}」交锋`,
+    closable: false,
+    variant: 'battle',
     body: `
-      <div class="dialogue-grid">
-        <img src="${portraitUrl(dialogue.portrait)}" alt="${escapeHtml(dialogue.speaker)}" />
-        <div class="dialogue-copy">
-          <strong>${escapeHtml(dialogue.speaker)}</strong>
-          <p>${escapeHtml(dialogue.text).replaceAll('\n', '<br>')}</p>
+      <section class="battle-cinematic ${predictedDefeat ? 'is-defeat' : critical ? 'is-critical' : ''}" ${cg ? `style="--battle-cg:url('${cg}')"` : ''}>
+        <div class="battle-cg" aria-hidden="true"></div>
+        <div class="battle-vignette" aria-hidden="true"></div>
+        <div class="battle-combatants">
+          <article class="battle-combatant hero-combatant">
+            <div class="battle-portrait"><img src="${portraitUrl('hero')}" alt="绫星·璃" /></div>
+            <div class="battle-name"><span>PLAYER</span><strong>绫星·璃</strong></div>
+            <div class="battle-hp"><span class="battle-hero-fill" style="width:${combatHpBar(heroStart, hero.maxHp)}"></span></div>
+            <b class="battle-hp-number">${formatNumber(heroStart)} / ${formatNumber(hero.maxHp)}</b>
+          </article>
+          <div class="battle-center" aria-live="polite">
+            <span class="battle-round">预演准备</span>
+            <strong class="battle-callout">${predictedDefeat ? '生命不足' : '交锋开始'}</strong>
+            <span class="battle-rule">${escapeHtml(special)}</span>
+            <span class="battle-damage" aria-hidden="true"></span>
+          </div>
+          <article class="battle-combatant enemy-combatant">
+            <div class="battle-portrait"><img src="${portraitUrl(enemy.portrait)}" alt="${escapeHtml(enemy.name)}" /></div>
+            <div class="battle-name"><span>${enemy.boss ? 'BOSS' : 'ENEMY'}</span><strong>${escapeHtml(enemy.name)}</strong></div>
+            <div class="battle-hp"><span class="battle-enemy-fill" style="width:100%"></span></div>
+            <b class="battle-enemy-number">${formatNumber(enemyStart)} / ${formatNumber(enemyStart)}</b>
+          </article>
         </div>
-      </div>
+        <p class="battle-summary">${predictedDefeat
+          ? `预估损伤 ${formatNumber(battle.totalDamage)} HP，会使生命归零。本次行动未消耗任何资源。`
+          : `预计损失 ${formatNumber(battle.totalDamage)} HP${battle.magicCost ? ` · 消耗 ${formatNumber(battle.magicCost)} MP` : ''}。`}</p>
+      </section>
     `,
     actions: [
-      ...(!finalLabel ? [{ label: '跳过叙事' }] : []),
-      { label: finalLabel ?? (state.victory && dialogueId === 'ending' ? '查看通关结算' : '继续'), className: 'primary', onClick: after }
-    ]
+      {
+        label: '跳过战斗演出',
+        className: 'battle-skip',
+        close: false,
+        onClick: () => finishBattle(true)
+      },
+      {
+        label: predictedDefeat ? '调整后再试' : '继续',
+        className: 'primary battle-continue',
+        disabled: true,
+        close: false,
+        onClick: () => finishBattle(false)
+      }
+    ],
+    afterOpen: () => {
+      const heroFill = elements.modalBody.querySelector('.battle-hero-fill');
+      const heroNumber = elements.modalBody.querySelector('.battle-hp-number');
+      const enemyFill = elements.modalBody.querySelector('.battle-enemy-fill');
+      const enemyNumber = elements.modalBody.querySelector('.battle-enemy-number');
+      const round = elements.modalBody.querySelector('.battle-round');
+      const callout = elements.modalBody.querySelector('.battle-callout');
+      const damage = elements.modalBody.querySelector('.battle-damage');
+      const continueButton = elements.modalActions.querySelector('.battle-continue');
+      let heroHp = heroStart;
+      let enemyHp = enemyStart;
+      let step = 0;
+      let settled = false;
+      let timer = null;
+
+      const render = (event = null) => {
+        heroFill.style.width = combatHpBar(heroHp, hero.maxHp);
+        enemyFill.style.width = combatHpBar(enemyHp, enemyStart);
+        heroNumber.textContent = `${formatNumber(Math.max(0, heroHp))} / ${formatNumber(hero.maxHp)}`;
+        enemyNumber.textContent = `${formatNumber(Math.max(0, enemyHp))} / ${formatNumber(enemyStart)}`;
+        if (!event) return;
+        round.textContent = `回合 ${Math.min(battle.rounds, Math.ceil((step + 1) / 2))} / ${battle.rounds}`;
+        callout.textContent = event.label;
+        damage.textContent = `-${formatNumber(event.damage)}`;
+        damage.className = `battle-damage show ${event.side}`;
+        window.setTimeout(() => damage.classList.remove('show'), 140);
+      };
+      const settle = () => {
+        if (settled) return;
+        settled = true;
+        clearInterval(timer);
+        if (predictedDefeat) heroHp = 0;
+        else {
+          heroHp = Math.max(0, battle.remainingHp);
+          enemyHp = 0;
+        }
+        render();
+        callout.textContent = predictedDefeat ? '预演中止 · 调整配置' : critical ? '险胜 · 璃仍能前进' : '胜利';
+        round.textContent = predictedDefeat ? '本次没有发生实际战斗' : `结算 · ${battle.rounds} 回合`;
+        continueButton.disabled = false;
+        cinematicControls = { advance: () => finishBattle(false), skip: () => finishBattle(true) };
+      };
+      const playStep = () => {
+        const event = events[step];
+        if (!event) { settle(); return; }
+        if (event.side === 'hero') enemyHp = Math.max(0, enemyHp - event.damage);
+        else heroHp = Math.max(0, heroHp - event.damage);
+        render(event);
+        step += 1;
+      };
+      finishBattle = (skip) => {
+        settle();
+        modalClosable = true;
+        closeModal();
+        if (skip) showToast(predictedDefeat ? '战败预演已跳过：本次没有消耗资源。' : '已跳过战斗演出。', 1400);
+        after?.();
+      };
+
+      // Unwinnable battles deliberately remain a forecast; fixed-number play
+      // never commits an opaque death.  The CG still gives that warning weight.
+      if (predictedDefeat || events.length === 0) settle();
+      else {
+        playStep();
+        timer = window.setInterval(playStep, 118);
+      }
+      cinematicCleanup = () => clearInterval(timer);
+      cinematicControls = { advance: () => finishBattle(false), skip: () => finishBattle(true) };
+    }
   });
 }
 
@@ -738,8 +993,7 @@ function confirmReset() {
   });
 }
 
-function handleSceneResult(result) {
-  updateHud();
+function continueSceneResult(result) {
   if (result.blocked) showToast(result.reason ?? '无法行动。');
   if (result.openDoctrine) {
     showRouteDoctrine();
@@ -761,6 +1015,15 @@ function handleSceneResult(result) {
     showVictory();
   }
   if (result.moved || result.battle || result.floorChanged) autoSave();
+}
+
+function handleSceneResult(result) {
+  updateHud();
+  if (result.battle) {
+    showBattleCinematic(result.battle, () => continueSceneResult(result));
+    return;
+  }
+  continueSceneResult(result);
 }
 
 async function loadScript(src, timeoutMs = 2500) {
@@ -824,7 +1087,16 @@ function bindControls() {
   });
 
   window.addEventListener('keydown', (event) => {
-    if (!elements.modalRoot.classList.contains('hidden')) return;
+    if (!elements.modalRoot.classList.contains('hidden')) {
+      if (event.key === 'Escape' && cinematicControls?.skip) {
+        event.preventDefault();
+        cinematicControls.skip();
+      } else if ((event.key === 'Enter' || event.key === ' ') && cinematicControls?.advance) {
+        event.preventDefault();
+        cinematicControls.advance();
+      }
+      return;
+    }
     if (event.key.toLowerCase() === 'e') showCodex();
     if (event.key.toLowerCase() === 'r') showRouteDoctrine();
     if (event.key.toLowerCase() === 't') showTeleport();
