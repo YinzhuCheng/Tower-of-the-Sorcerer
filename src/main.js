@@ -39,7 +39,7 @@ import { getEndingDebrief } from './game/ending-debrief.js';
 import { combatRuleCopy, HELP_SECTIONS } from './game/player-copy.js';
 import { createMagicTowerScene } from './game/scene.js';
 import { createCanvasTowerScene } from './game/canvas-scene.js';
-import { hydratePortraits, portraitUrl } from './game/portraits.js';
+import { dialoguePresentation, hydratePortraits, portraitUrl } from './game/portraits.js';
 import { applySceneThemeV8, installV8VisualLayer } from './game/visual-theme-v8.js';
 import { applyV83RenderFixes, installV83UiFixes } from './game/visual-patch-v83.js';
 
@@ -205,7 +205,19 @@ function galSideFor(portrait, turn) {
 function galActorHtml(side, actor, speakerId, speakerName) {
   if (!actor) return '';
   const speaking = actor.id === speakerId;
-  return `<img class="gal-portrait gal-portrait-${side} ${speaking ? 'is-speaking' : 'is-listening'}" src="${portraitUrl(actor.id, actor.expression)}" alt="${escapeHtml(speaking ? speakerName : '')}" />`;
+  const visual = dialoguePresentation(actor.id, actor.expression);
+  return `<img class="gal-portrait gal-portrait-${side} expression-${escapeHtml(visual.expression)} ${visual.hasPaintedExpression ? 'has-painted-expression' : ''} ${speaking ? 'is-speaking' : 'is-listening'}" data-expression="${escapeHtml(visual.expression)}" src="${visual.stage}" alt="${escapeHtml(speaking ? speakerName : '')}" />`;
+}
+
+function galNameplateHtml(turn, speakerName, isNarration) {
+  if (isNarration) {
+    return `<div class="gal-nameplate gal-nameplate-narration"><span class="gal-nameplate-kicker">NARRATION</span><strong>${escapeHtml(speakerName)}</strong></div>`;
+  }
+  const visual = dialoguePresentation(turn.portrait, turn.expression);
+  return `<div class="gal-nameplate" data-expression="${escapeHtml(visual.expression)}">
+    <span class="gal-speaker-avatar ${visual.hasAvatarArt ? 'has-avatar-art' : ''} ${visual.hasPaintedExpression ? 'has-painted-expression' : ''}" aria-hidden="true"><img src="${visual.avatar}" alt="" /></span>
+    <span class="gal-nameplate-copy"><small>${escapeHtml(visual.label)} · DIALOGUE</small><strong>${escapeHtml(speakerName)}</strong></span>
+  </div>`;
 }
 
 function dialogueTurns(dialogue) {
@@ -259,6 +271,7 @@ function showDialogue(dialogueId, after = null, { finalLabel = null } = {}) {
     const portraits = isNarration
       ? '<div class="gal-narration-mark" aria-hidden="true">✦</div>'
       : `${galActorHtml('left', stage.left, turn.portrait, narratorName)}${galActorHtml('right', stage.right, turn.portrait, narratorName)}`;
+    const nameplate = galNameplateHtml(turn, narratorName, isNarration);
     const historyMarkup = () => galHistory.slice(-16).reverse().map((entry) => `
       <article class="gal-history-entry">
         <strong>${escapeHtml(entry.speaker)}</strong>
@@ -281,6 +294,7 @@ function showDialogue(dialogueId, after = null, { finalLabel = null } = {}) {
             ${portraits}
             <div class="gal-lens"></div>
           </div>
+          <div class="gal-scene-label" aria-hidden="true"><span>LOST MAGIC TOWER</span><strong>${escapeHtml(dialogue.title)}</strong><small>SCENE ${String(index + 1).padStart(2, '0')} / ${String(turns.length).padStart(2, '0')}</small></div>
           <nav class="gal-toolbar" aria-label="剧情控制">
             <button type="button" data-gal-control="backlog" aria-pressed="false">历史</button>
             <button type="button" data-gal-control="auto" aria-pressed="false">自动</button>
@@ -289,7 +303,7 @@ function showDialogue(dialogueId, after = null, { finalLabel = null } = {}) {
             <button type="button" data-gal-control="skip" class="gal-skip">跳过叙事</button>
           </nav>
           <article class="gal-textbox" role="button" tabindex="0" aria-label="点击显示全文或继续">
-            <div class="gal-nameplate">${escapeHtml(narratorName)}</div>
+            ${nameplate}
             <p class="gal-typewriter"></p>
             ${choices.length ? `<div class="gal-choices">${choices.map((choice, choiceIndex) => `<button class="gal-choice" data-dialogue-choice="${choiceIndex}">${escapeHtml(choice.label)}</button>`).join('')}</div><p class="gal-choice-response" aria-live="polite"></p>` : ''}
             <div class="gal-text-actions">

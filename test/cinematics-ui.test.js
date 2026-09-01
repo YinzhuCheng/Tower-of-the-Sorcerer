@@ -3,6 +3,12 @@ import { readFile, stat } from 'node:fs/promises';
 import test from 'node:test';
 
 import { createInitialState, tryMove } from '../src/game/engine.js';
+import { DIALOGUES, ENEMIES, FLOORS, GRID_SIZE, ITEMS } from '../src/game/data.js';
+import { applyDemoTenFloorContent } from '../src/game/demo-10-floor-content.js';
+import { applyDemoTenFloorProgressionGrammar } from '../src/game/demo-10-floor-progression.js';
+import { applyDemoTwentyFloorContent } from '../src/game/demo-20-floor-content.js';
+import { applyDemoThirtyFloorContent } from '../src/game/demo-30-floor-content.js';
+import { DIALOGUE_CAST } from '../src/game/anime-portraits.js';
 
 test('battle results retain an authoritative pre-combat hero snapshot for the cinematic layer', () => {
   const state = createInitialState();
@@ -46,12 +52,16 @@ test('cinematic UI ships working Gal controls, story CGs, character expressions,
   assert.match(main, /gal-choices/);
   assert.match(main, /gal-cg/);
   assert.match(main, /galActorHtml/);
+  assert.match(main, /gal-speaker-avatar/);
+  assert.match(main, /galNameplateHtml/);
   assert.match(css, /\.gal-dialogue/);
   assert.match(css, /\.gal-cg/);
   assert.match(css, /\.gal-toolbar/);
   assert.match(css, /\.gal-backlog/);
   assert.match(css, /\.gal-portrait-left/);
   assert.match(css, /\.gal-portrait-right/);
+  assert.match(css, /\.gal-speaker-avatar/);
+  assert.match(css, /height:100svh/);
   assert.match(css, /\.battle-cinematic/);
   assert.ok(critical.size > 80_000, 'critical-health CG should be a real runtime asset');
   assert.ok(defeat.size > 80_000, 'defeat CG should be a real runtime asset');
@@ -60,5 +70,27 @@ test('cinematic UI ships working Gal controls, story CGs, character expressions,
   for (const expression of [liyue, noctia, shawu]) assert.ok(expression.size > 100_000, 'every lead dialogue expression should be a real runtime asset');
   for (const filename of ['theme-night-tower.webp', 'theme-sun-sanctum.webp', 'theme-ocean-archive.webp', 'theme-forest-sanctuary.webp']) {
     assert.match(css, new RegExp(filename.replace('.', '\\.')));
+  }
+});
+
+test('every speaking character receives a shipped Gal avatar and a declared expression state', async () => {
+  applyDemoTenFloorContent({ enemies: ENEMIES, floors: FLOORS, dialogues: DIALOGUES, gridSize: GRID_SIZE });
+  applyDemoTenFloorProgressionGrammar({ enemies: ENEMIES, floors: FLOORS, dialogues: DIALOGUES });
+  applyDemoTwentyFloorContent({ enemies: ENEMIES, floors: FLOORS, items: ITEMS, dialogues: DIALOGUES });
+  applyDemoThirtyFloorContent({ enemies: ENEMIES, floors: FLOORS, items: ITEMS, dialogues: DIALOGUES });
+
+  const speakers = new Set(Object.values(DIALOGUES)
+    .flatMap((dialogue) => dialogue.turns ?? [dialogue])
+    .map((turn) => turn.portrait)
+    .filter(Boolean));
+
+  assert.equal(speakers.size, 15, 'the shipped 30F story has fifteen named speakers');
+  for (const portrait of speakers) {
+    assert.ok(DIALOGUE_CAST[portrait], `${portrait} needs a dialogue avatar + expression definition`);
+    assert.ok(DIALOGUE_CAST[portrait].expression, `${portrait} needs an expression key`);
+    assert.ok(DIALOGUE_CAST[portrait].label, `${portrait} needs a localized expression label`);
+    assert.match(DIALOGUE_CAST[portrait].avatar, /^\/assets\/anime\/avatars\/.+\.webp$/, `${portrait} needs a dedicated avatar art file`);
+    const avatar = await stat(new URL(`../public${DIALOGUE_CAST[portrait].avatar}`, import.meta.url));
+    assert.ok(avatar.size > 8_000, `${portrait} avatar should be a real image, not a placeholder`);
   }
 });

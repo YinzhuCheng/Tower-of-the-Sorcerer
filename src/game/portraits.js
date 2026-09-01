@@ -1,1 +1,8 @@
-export { hydratePortraits, portraitIndex, portraitName, portraitStyle, portraitUrl } from './anime-portraits.js';
+export {
+  dialoguePresentation,
+  hydratePortraits,
+  portraitIndex,
+  portraitName,
+  portraitStyle,
+  portraitUrl
+} from './anime-portraits.js';

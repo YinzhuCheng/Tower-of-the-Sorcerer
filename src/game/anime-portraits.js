@@ -154,6 +154,30 @@ const DIALOGUE_EXPRESSIONS = Object.freeze({
   'final_queen:sorrow': '/assets/anime/characters/noctia-dialogue-sorrow.webp'
 });
 
+// Dialogue is not a smaller version of the enemy codex.  Every person who
+// speaks owns a compact face avatar, a readable expression label, and a
+// default emotional state for turns that predate the visual-novel layer.
+// The three recurring leads have dedicated painted expression files above;
+// the supporting cast deliberately keeps its authored runtime portrait while
+// the stage supplies its expression lighting and state treatment.
+export const DIALOGUE_CAST = Object.freeze({
+  hero: { expression: 'resolve', label: '决意', avatar: '/assets/anime/avatars/liyue-avatar-resolve.webp' },
+  guide: { expression: 'gentle', label: '温柔', avatar: '/assets/anime/avatars/shawu-avatar-gentle.webp' },
+  final_queen: { expression: 'sorrow', label: '哀伤', avatar: '/assets/anime/avatars/noctia-avatar-sorrow.webp' },
+  cat_boss: { expression: 'alert', label: '警惕', avatar: '/assets/anime/avatars/cat-boss-avatar-alert.webp' },
+  fox_boss: { expression: 'watchful', label: '审视', avatar: '/assets/anime/avatars/fox-boss-avatar-watchful.webp' },
+  whale_boss: { expression: 'lament', label: '低回', avatar: '/assets/anime/avatars/whale-boss-avatar-lament.webp' },
+  sword_boss: { expression: 'stern', label: '肃然', avatar: '/assets/anime/avatars/sword-boss-avatar-stern.webp' },
+  dragon_boss: { expression: 'embers', label: '炽烈', avatar: '/assets/anime/avatars/dragon-boss-avatar-embers.webp' },
+  astral_boss: { expression: 'focus', label: '推演', avatar: '/assets/anime/avatars/astral-boss-avatar-focus.webp' },
+  shadow_boss: { expression: 'guarded', label: '戒备', avatar: '/assets/anime/avatars/shadow-boss-avatar-guarded.webp' },
+  merchant: { expression: 'knowing', label: '了然', avatar: '/assets/anime/avatars/merchant-avatar-knowing.webp' },
+  echo_regent: { expression: 'grave', label: '肃穆', avatar: '/assets/anime/avatars/echo-regent-avatar-grave.webp' },
+  arcane_sovereign: { expression: 'regret', label: '愧悔', avatar: '/assets/anime/avatars/arcane-sovereign-avatar-regret.webp' },
+  crown_magus: { expression: 'certain', label: '执念', avatar: '/assets/anime/avatars/crown-magus-avatar-certain.webp' },
+  act3_archive_warden: { expression: 'duty', label: '执行', avatar: '/assets/anime/avatars/archive-warden-avatar-duty.webp' }
+});
+
 function archetype(id) { return PORTRAITS[id]?.[1] ?? 'hero'; }
 
 export function portraitIndex(id) { return ARCHETYPES[archetype(id)] ?? 0; }
@@ -179,6 +203,27 @@ export function portraitUrl(id, expression = null) {
   const url = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
   urlCache.set(key, url);
   return url;
+}
+
+/**
+ * Shared dialogue presentation for the stage portrait and the framed avatar
+ * next to the nameplate.  Keeping this in the asset module makes every new
+ * dialogue character automatically receive the Galgame treatment instead of
+ * requiring markup forks in every floor's narrative data.
+ */
+export function dialoguePresentation(id, requestedExpression = null) {
+  const cast = DIALOGUE_CAST[id] ?? { expression: 'neutral', label: '平静' };
+  const expression = requestedExpression ?? cast.expression;
+  const key = `${id}:${expression}`;
+  return Object.freeze({
+    id,
+    expression,
+    label: expression === cast.expression ? cast.label : (expression === 'resolve' ? '决意' : expression === 'gentle' ? '温柔' : expression === 'sorrow' ? '哀伤' : '平静'),
+    avatar: cast.avatar ?? portraitUrl(id, expression),
+    stage: portraitUrl(id, expression),
+    hasAvatarArt: Boolean(cast.avatar),
+    hasPaintedExpression: Boolean(DIALOGUE_EXPRESSIONS[key])
+  });
 }
 
 export function portraitStyle() { return 'object-fit:cover;object-position:center top;'; }
