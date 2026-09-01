@@ -84,7 +84,7 @@ test('Act II story scenes expose complete, bounded exchanges for the gameplay UI
     const dialogue = DIALOGUES[id];
     assert.ok(Array.isArray(dialogue?.turns), `${id} must be an interactive dialogue sequence`);
     assert.ok(dialogue.turns.length >= 2 && dialogue.turns.length <= 5, `${id} must stay concise and readable`);
-    assert.ok(dialogue.turns.every((turn) => turn.speaker && turn.portrait && turn.text), `${id} turns must be complete`);
+    assert.ok(dialogue.turns.every((turn) => turn.speaker && turn.text && (turn.portrait || turn.kind === 'narration')), `${id} turns must be complete`);
   }
 
   assert.match(DIALOGUES.floor11.turns.map((turn) => turn.text).join('\n'), /三日后必须撤销/);

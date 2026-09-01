@@ -82,6 +82,7 @@ let modalClosable = true;
 let toastTimer = null;
 let cinematicCleanup = null;
 let cinematicControls = null;
+let galTransitionTimer = null;
 const GAL_HISTORY_LIMIT = 80;
 const galHistory = [];
 const galSettings = { auto: false, fast: false };
@@ -90,15 +91,60 @@ const GAL_BACKDROPS = Object.freeze({
   night: '/assets/anime/themes/theme-night-tower.webp',
   sun: '/assets/anime/themes/theme-sun-sanctum.webp',
   ocean: '/assets/anime/themes/theme-ocean-archive.webp',
-  forest: '/assets/anime/themes/theme-forest-approach.webp'
+  forest: '/assets/anime/themes/theme-forest-approach.webp',
+  redVein: '/assets/anime/themes/theme-red-vein.webp',
+  starMirror: '/assets/anime/themes/theme-star-mirror.webp',
+  echoCourt: '/assets/anime/themes/theme-echo-court.webp',
+  originCore: '/assets/anime/themes/theme-origin-core.webp',
+  ashRegistry: '/assets/anime/themes/theme-ash-registry.webp',
+  archiveStorm: '/assets/anime/themes/theme-archive-storm.webp',
+  emberLighthouse: '/assets/anime/themes/theme-ember-lighthouse.webp'
 });
+
+const GAL_TRANSITIONS = Object.freeze({
+  witness: '/assets/anime/transitions/witness-entry.webp',
+  boss: '/assets/anime/transitions/seal-shatter.webp',
+  return: '/assets/anime/transitions/witness-entry.webp'
+});
+
+const GAL_BOSS_SCENES = new Set([
+  'bossCatPreDemo', 'bossCatPostDemo', 'bossFoxPreDemo', 'bossFoxPostDemo',
+  'bossWhalePreDemo', 'bossWhalePostDemo', 'bossSwordPreDemo', 'bossSwordPostDemo',
+  'bossDragonPreDemo', 'bossDragonPostDemo', 'bossAstralPreDemo', 'bossAstralPostDemo',
+  'bossShadowPreDemo', 'bossShadowPostDemo', 'bossPalacePreDemo', 'bossPalacePostDemo',
+  'bossBlackSealPreDemo', 'bossBlackSealPostDemo', 'bossQueenPreDemo', 'queenPhaseDemo',
+  'bossQueenPostDemo', 'floor19', 'bossEchoRegentPost', 'floor20',
+  'bossArcaneSovereignPost', 'bossOriginCorePost', 'floor30', 'bossArchiveWardenPost'
+]);
 
 const GAL_DIALOGUE_BACKDROPS = Object.freeze({
   prologue: 'night',
-  ending: 'sun',
-  bossQueenPostDemo: 'night',
-  bossArcaneSovereignPost: 'sun',
-  bossOriginCorePost: 'ocean'
+  ending: 'emberLighthouse',
+  bossCatPreDemo: 'forest', bossCatPostDemo: 'forest',
+  bossFoxPreDemo: 'forest', bossFoxPostDemo: 'forest',
+  bossWhalePreDemo: 'ocean', bossWhalePostDemo: 'ocean',
+  bossSwordPreDemo: 'forest', bossSwordPostDemo: 'forest',
+  bossDragonPreDemo: 'redVein', bossDragonPostDemo: 'redVein',
+  bossAstralPreDemo: 'starMirror', bossAstralPostDemo: 'starMirror',
+  bossShadowPreDemo: 'starMirror', bossShadowPostDemo: 'starMirror',
+  bossPalacePreDemo: 'night', bossPalacePostDemo: 'night',
+  bossBlackSealPreDemo: 'night', bossBlackSealPostDemo: 'night',
+  bossQueenPreDemo: 'night', queenPhaseDemo: 'night', bossQueenPostDemo: 'night',
+  bossEchoRegentPost: 'echoCourt',
+  bossArcaneSovereignPost: 'originCore', bossOriginCorePost: 'originCore',
+  bossArchiveWardenPost: 'emberLighthouse'
+});
+
+// A floor is a chapter of the same physical Tower, not a random world map.
+// This table makes that rule executable: each witness-field owns one specific
+// visual-novel scene, while stairs and the usual tower anchors bridge scenes.
+const GAL_FLOOR_BACKDROPS = Object.freeze({
+  1: 'forest', 2: 'forest', 3: 'forest', 4: 'forest',
+  5: 'redVein', 6: 'ocean', 7: 'starMirror', 8: 'night', 9: 'night', 10: 'night',
+  11: 'sun', 12: 'sun', 13: 'redVein', 14: 'sun', 15: 'starMirror', 16: 'ocean', 17: 'sun',
+  18: 'ocean', 19: 'echoCourt', 20: 'originCore',
+  21: 'ashRegistry', 22: 'ashRegistry', 23: 'ashRegistry', 24: 'ashRegistry', 25: 'ashRegistry',
+  26: 'ashRegistry', 27: 'ashRegistry', 28: 'archiveStorm', 29: 'archiveStorm', 30: 'emberLighthouse'
 });
 
 function escapeHtml(value) {
@@ -126,13 +172,55 @@ function showToast(message, duration = 1700) {
 }
 
 function clearCinematic() {
+  window.clearTimeout(galTransitionTimer);
+  galTransitionTimer = null;
   cinematicCleanup?.();
   cinematicCleanup = null;
   cinematicControls = null;
   elements.modalRoot.classList.remove('gal-ui-hidden');
+  elements.galRoot.classList.remove('is-entering', 'is-exiting');
   elements.galRoot.classList.add('hidden');
   elements.galRoot.classList.remove('gal-ui-hidden');
+  delete elements.galRoot.dataset.transition;
   elements.galRoot.replaceChildren();
+}
+
+function galTransitionFor(dialogueId, dialogue) {
+  if (dialogue.transition && GAL_TRANSITIONS[dialogue.transition]) return dialogue.transition;
+  return GAL_BOSS_SCENES.has(dialogueId) ? 'boss' : 'witness';
+}
+
+function beginGalScene(transition) {
+  window.clearTimeout(galTransitionTimer);
+  galTransitionTimer = null;
+  elements.galRoot.dataset.transition = transition;
+  elements.galRoot.classList.remove('hidden', 'is-exiting');
+  elements.galRoot.classList.add('is-entering');
+  galTransitionTimer = window.setTimeout(() => {
+    elements.galRoot.classList.remove('is-entering');
+    galTransitionTimer = null;
+  }, 760);
+}
+
+function closeGalScene(after = null) {
+  if (elements.galRoot.classList.contains('hidden')) {
+    clearCinematic();
+    after?.();
+    return;
+  }
+  window.clearTimeout(galTransitionTimer);
+  galTransitionTimer = null;
+  cinematicCleanup?.();
+  cinematicCleanup = null;
+  cinematicControls = null;
+  elements.galRoot.dataset.transition = 'return';
+  elements.galRoot.classList.remove('is-entering', 'gal-ui-hidden');
+  elements.galRoot.classList.add('is-exiting');
+  galTransitionTimer = window.setTimeout(() => {
+    galTransitionTimer = null;
+    clearCinematic();
+    after?.();
+  }, 620);
 }
 
 function closeModal() {
@@ -192,6 +280,7 @@ function galBackdropFor(dialogueId, dialogue, turn) {
   const explicit = turn.backdrop ?? dialogue.backdrop ?? GAL_DIALOGUE_BACKDROPS[dialogueId];
   if (explicit && GAL_BACKDROPS[explicit]) return GAL_BACKDROPS[explicit];
   const floor = Number((dialogueId.match(/\d+/) ?? [])[0]);
+  if (GAL_FLOOR_BACKDROPS[floor]) return GAL_BACKDROPS[GAL_FLOOR_BACKDROPS[floor]];
   if (floor >= 1 && floor <= 4) return GAL_BACKDROPS.forest;
   if (floor >= 5 && floor <= 7) return GAL_BACKDROPS.ocean;
   if (floor >= 8 && floor <= 10) return GAL_BACKDROPS.night;
@@ -243,6 +332,8 @@ function showDialogue(dialogueId, after = null, { finalLabel = null } = {}) {
   let index = 0;
   let finished = false;
   let historyOpen = false;
+  let sceneOpened = false;
+  const transition = galTransitionFor(dialogueId, dialogue);
   // Keep the player on stage. A new speaker replaces only their own side,
   // which creates the familiar two-character visual-novel rhythm without
   // requiring every content row to repeat cast metadata.
@@ -251,8 +342,7 @@ function showDialogue(dialogueId, after = null, { finalLabel = null } = {}) {
   const finish = () => {
     if (finished) return;
     finished = true;
-    clearCinematic();
-    after?.();
+    closeGalScene(after);
   };
 
   const renderTurn = () => {
@@ -297,6 +387,9 @@ function showDialogue(dialogueId, after = null, { finalLabel = null } = {}) {
             ${portraits}
             <div class="gal-lens"></div>
           </div>
+          <div class="gal-witness-transition" aria-hidden="true" style="--gal-transition-enter:url('${escapeHtml(GAL_TRANSITIONS[transition])}');--gal-transition-return:url('${escapeHtml(GAL_TRANSITIONS.return)}')">
+            <div class="gal-witness-transition-copy"><small>塔内档案接续</small><strong>${escapeHtml(transition === 'boss' ? '封印正在解锁' : '进入见证场')}</strong></div>
+          </div>
           <div class="gal-scene-label" aria-hidden="true"><span>LOST MAGIC TOWER</span><strong>${escapeHtml(dialogue.title)}</strong><small>SCENE ${String(index + 1).padStart(2, '0')} / ${String(turns.length).padStart(2, '0')}</small></div>
           <nav class="gal-toolbar" aria-label="剧情控制">
             <button type="button" data-gal-control="backlog" aria-pressed="false">历史</button>
@@ -322,7 +415,12 @@ function showDialogue(dialogueId, after = null, { finalLabel = null } = {}) {
           <button type="button" class="gal-ui-restore" aria-label="显示对话界面">点击任意位置显示界面</button>
         </section>
       </div>`;
-    elements.galRoot.classList.remove('hidden');
+    if (!sceneOpened) {
+      sceneOpened = true;
+      beginGalScene(transition);
+    } else {
+      elements.galRoot.classList.remove('hidden');
+    }
     {
         const textNode = elements.galRoot.querySelector('.gal-typewriter');
         const textbox = elements.galRoot.querySelector('.gal-textbox');

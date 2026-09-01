@@ -1,0 +1,13 @@
+{
+  "batch": "premium-stage-polish-v3",
+  "tool": "built-in image generation",
+  "outcome": "10 accepted runtime assets, 4 rejected transparent-background failures",
+  "runtime_changes": [
+    "witness entry and Boss seal transition overlays",
+    "delayed Gal exit back to the tactical Tower",
+    "six new full-body visual-novel expression states",
+    "F5/F10/F19/F20 expression-state bindings",
+    "F10 shared seal-break CG and F20 signet-accountability CG bound to authored climax lines"
+  ],
+  "quality_gate": "accepted transparent stage art is 1024x1536 yuva420p; transition plates are 1672x941; opaque checkerboard outputs are not shipped"
+}

@@ -1,0 +1,10 @@
+{
+  "batch": "gal-batch-v2-2026-09-01",
+  "tool": "built-in image generation",
+  "outcome": "7 accepted backgrounds, 5 accepted key-Boss standing sprites, 2 accepted CGs, 2 rejected iterations",
+  "rejections": [
+    {"file":"04_cg/rejected/BG_05_ash-registry_text-artifact_v1.png","reason":"generated readable scene title"},
+    {"file":"04_cg/rejected/CHAR_yanli_embers_fake-checkerboard_v1.png","reason":"checkerboard was RGB art rather than true alpha"}
+  ],
+  "runtime_binding": ["src/main.js","src/game/anime-portraits.js","src/game/demo-10-floor-content.js","src/game/demo-20-floor-content.js","src/game/demo-30-floor-content.js"]
+}

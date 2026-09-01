@@ -1,0 +1,20 @@
+{
+  "batch": "gal-batch-v2-2026-09-01",
+  "style_reference": "art/visual-novel/01_canon/visual-canon-v2.json",
+  "prompt_packet": "art/visual-novel/03_intermediate/prompt_packets/act-backgrounds-v2.md",
+  "references": {
+    "hero": "public/assets/anime/characters/liyue-dialogue-resolve.webp",
+    "guide": "public/assets/anime/characters/shawu-dialogue-gentle.webp",
+    "queen": "public/assets/anime/characters/noctia-dialogue-sorrow.webp",
+    "dragon_boss": "public/assets/anime/portraits/v1/dragon-boss-portrait-runtime.webp"
+  },
+  "shots": {
+    "CG_06": ["hero", "queen", "echo_regent"],
+    "CG_07": ["hero", "guide", "queen"],
+    "CHAR_yanli": ["dragon_boss"],
+    "CHAR_yayu": [],
+    "CHAR_echo_regent": [],
+    "CHAR_arcane_sovereign": [],
+    "CHAR_archive_warden": []
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "batch": "gal-batch-v2-2026-09-01",
+  "status": "approved-runtime",
+  "style_canon": "01_canon/visual-canon-v2.json",
+  "assets": [
+    {"id":"BG-01","path":"public/assets/anime/themes/theme-red-vein.webp","kind":"backdrop","dimensions":"1672x941","sha256":"7117b311d519a0b30a543dafd5aa164231f901ce0c4b2ac89fc729a03d461247","runtime":"redVein"},
+    {"id":"BG-02","path":"public/assets/anime/themes/theme-star-mirror.webp","kind":"backdrop","dimensions":"1672x941","sha256":"893781c51bb23757b36c244bdc26fe0c135948f039f3cd373329c870778c9297","runtime":"starMirror"},
+    {"id":"BG-03","path":"public/assets/anime/themes/theme-echo-court.webp","kind":"backdrop","dimensions":"1672x941","sha256":"797443fc2a5bade2f513484b3c183a288f3fe165b72c8f2e80925d6657bc0e8d","runtime":"echoCourt"},
+    {"id":"BG-04","path":"public/assets/anime/themes/theme-origin-core.webp","kind":"backdrop","dimensions":"1672x941","sha256":"7b52763bb55bedcc52ab260576d97c7cea710bc062e7df634e7dce627edfad39","runtime":"originCore"},
+    {"id":"BG-05","path":"public/assets/anime/themes/theme-ash-registry.webp","kind":"backdrop","dimensions":"1672x941","sha256":"d1dc33679cb4225d49b73a4f7c3a85ef41a43544914c49f7a730fac14c099651","runtime":"ashRegistry"},
+    {"id":"BG-06","path":"public/assets/anime/themes/theme-archive-storm.webp","kind":"backdrop","dimensions":"1672x941","sha256":"98643e41fb146fc44ac4d5da550819db26df57d3bcebb0e94dce0a8e96063b15","runtime":"archiveStorm"},
+    {"id":"BG-07","path":"public/assets/anime/themes/theme-ember-lighthouse.webp","kind":"backdrop","dimensions":"1672x941","sha256":"aa0be2fb08c312316f51ea608c11e24098a50a61e1450cd29424038291750611","runtime":"emberLighthouse"},
+    {"id":"CHAR-01","path":"public/assets/anime/characters/yanli-dialogue-embers.webp","kind":"standing-sprite","dimensions":"1024x1536 RGBA","sha256":"6076c89ba2b5fd6a0ad4cc7fb5cd4f0a87dbbe7762ee64e0e46daa57ccd14373","runtime":"dragon_boss:embers"},
+    {"id":"CHAR-02","path":"public/assets/anime/characters/yayu-dialogue-guarded.webp","kind":"standing-sprite","dimensions":"1024x1536 RGBA","sha256":"6d777632c54609e4d1982b637f694ed874fcc4ef6bf4aa59189134d19ce3979f","runtime":"shadow_boss:guarded"},
+    {"id":"CHAR-03","path":"public/assets/anime/characters/echo-regent-dialogue-grave.webp","kind":"standing-sprite","dimensions":"1024x1536 RGBA","sha256":"2a26a9f309523d46ec4b1e7e79bf79d4d1275d96a0e5804a556269e2e85ec3e0","runtime":"echo_regent:grave"},
+    {"id":"CHAR-04","path":"public/assets/anime/characters/arcane-sovereign-dialogue-regret.webp","kind":"standing-sprite","dimensions":"1024x1536 RGBA","sha256":"0ee74ec21cf0e3e3a1d247997da759b80e005fd402e2503877e909877792c710","runtime":"arcane_sovereign:regret"},
+    {"id":"CHAR-05","path":"public/assets/anime/characters/archive-warden-dialogue-duty.webp","kind":"standing-sprite","dimensions":"1024x1536 RGBA","sha256":"9808fa7937278fd2abf5e8d23cdf686addcb3650130b1de642593e30c6ad8251","runtime":"act3_archive_warden:duty"},
+    {"id":"CG-06","path":"public/assets/anime/cg/liyue-echo-ledger-cg.webp","kind":"story-cg","dimensions":"1672x941","sha256":"705f0bf3df897c4f219a1a81dd35d78525fb08558d4f8b3916f5fd2bea6e999b","runtime":"floor19"},
+    {"id":"CG-07","path":"public/assets/anime/cg/liyue-lighthouse-archive-cg.webp","kind":"story-cg","dimensions":"1672x941","sha256":"90a86c05525987045404e094c176e42c133fbbb2833888c86f4b3f7bf980666a","runtime":"ending"}
+  ]
+}

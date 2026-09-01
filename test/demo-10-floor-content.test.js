@@ -93,7 +93,7 @@ test('every boss encounter dialogue sequence stays interactive and within five t
   for (const [id, dialogue] of sequences) {
     assert.ok(dialogue.turns.length >= 2, `${id} should contain at least two turns.`);
     assert.ok(dialogue.turns.length <= 5, `${id} must stay within the five-turn interaction limit.`);
-    assert.ok(dialogue.turns.every((turn) => turn.speaker && turn.portrait && turn.text), `${id} turns must be complete.`);
+    assert.ok(dialogue.turns.every((turn) => turn.speaker && turn.text && (turn.portrait || turn.kind === 'narration')), `${id} turns must be complete.`);
   }
   assert.equal(fixture.enemies.finalQueen.preBattleDialogue, 'bossQueenPreDemo');
   assert.equal(fixture.enemies.finalQueen.phaseDialogue, 'queenPhaseDemo');

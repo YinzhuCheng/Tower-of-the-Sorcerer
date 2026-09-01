@@ -198,14 +198,18 @@ function installActTwoDialogues(dialogues) {
       dialogueTurn('残响精灵·纱雾', 'guide', '星渠的结界会显示削弱摄政官的具体效果。')
     ]),
     floor19: dialogueSequence('第十九阵：回响王庭', [
-      dialogueTurn('回声摄政官', 'echo_regent', '我保管过避难城的死亡名簿。灰港并未全灭：离港者和罹难者，都有最后记录。'),
-      dialogueTurn('无声女王·诺克缇娅', 'final_queen', '原来我守着的不是失踪者，而是一道故意不让人结案的门。', { expression: 'sorrow' }),
-      dialogueTurn('绫星·璃', 'hero', '交出王座执照。我们去让签署人回答。', { expression: 'resolve' })
+      dialogueTurn('旁白', null, '月光落进王庭，地上的玻璃名牌逐一亮起。它们没有命令，只有被扣住的最后记录。', { kind: 'narration' }),
+      dialogueTurn('回声摄政官', 'echo_regent', '我保管过避难城的死亡名簿。灰港没有被抹掉：离港者、罹难者、仍在等待的人，都有最后记录。', { expression: 'grave' }),
+      dialogueTurn('无声女王·诺克缇娅', 'final_queen', '原来我守着的不是失踪者，而是一道故意不让人结案的门。', { cg: '/assets/anime/cg/liyue-echo-ledger-cg.webp', expression: 'knowing' }),
+      dialogueTurn('绫星·璃', 'hero', '把名簿留在这里，交还给该被记住的人。然后把王座执照交给我们。', { expression: 'resolve' }),
+      dialogueTurn('回声摄政官', 'echo_regent', '执照归还。签署人就在起源魔源；这一次，别让任何人替所有人作答。', { expression: 'release' })
     ]),
     floor20: dialogueSequence('第二十阵：起源魔源', [
-      dialogueTurn('奥术主权者', 'arcane_sovereign', '是我签了无限延长。战乱中我害怕漏掉一个求援者，便删去了终止期限。'),
-      dialogueTurn('绫星·璃', 'hero', '你把恐惧写成了所有人的命令。现在先交出起源权限。', { expression: 'resolve' }),
-      dialogueTurn('无声女王·诺克缇娅', 'final_queen', '主权者，和我一起看完灰港的结案。然后停止。', { expression: 'sorrow' })
+      dialogueTurn('旁白', null, '起源晶核把一枚破裂的印戒悬在半空。每一道光环都重复着同一句旧命令，却已经听不清声音。', { kind: 'narration' }),
+      dialogueTurn('奥术主权者', 'arcane_sovereign', '是我签了无限延长。战乱时我怕漏掉一个求援者，便删去了终止期限。', { expression: 'regret' }),
+      dialogueTurn('绫星·璃', 'hero', '害怕不是罪；把恐惧写成所有人的永久命令，才是。先交出起源权限。', { expression: 'resolve' }),
+      dialogueTurn('无声女王·诺克缇娅', 'final_queen', '主权者，和我一起看完灰港的结案。不是为了宽恕你，而是为了终于让它停止。', { expression: 'grave' }),
+      dialogueTurn('奥术主权者', 'arcane_sovereign', '封印由我开启，核心却仍会反抗。请把“归档”写进它能听懂的地方。', { cg: '/assets/anime/cg/liyue-noctia-sovereign-cg.webp', expression: 'acceptance' })
     ]),
     bondMilu: dialogueSequence('月镜复写', [
       dialogueTurn('猫卫长·米露', 'cat_boss', '月镜能在终局每阶段挡下一次反击。让我带上它，替夜航的人守住回程。'),
@@ -228,13 +232,15 @@ function installActTwoDialogues(dialogues) {
       dialogueTurn('影织姬·鸦羽', 'shadow_boss', '敌方顺序和 MP 配额都在面板里。'),
       dialogueTurn('绫星·璃', 'hero', '那就预演后再确认。')
     ]),
-    bossEchoRegentPost: dialogueSequence('回响王庭：执照碎裂', [
-      dialogueTurn('回声摄政官', 'echo_regent', '执照碎了。名簿会留在这里，不再拿来驱使活着的人。'),
-      dialogueTurn('绫星·璃', 'hero', '起源魔源就在上面。')
+    bossEchoRegentPost: dialogueSequence('回响王庭：执照归还', [
+      dialogueTurn('回声摄政官', 'echo_regent', '执照不该再属于任何一个人。名簿会留在这里，不再拿来驱使活着的人。', { expression: 'release' }),
+      dialogueTurn('无声女王·诺克缇娅', 'final_queen', '我会亲自把灰港的每一页放回归档。', { expression: 'knowing' }),
+      dialogueTurn('绫星·璃', 'hero', '起源魔源就在上面。下一页，轮到签署人回答。', { expression: 'resolve' })
     ]),
     bossArcaneSovereignPost: dialogueSequence('主权封印解除', [
-      dialogueTurn('奥术主权者', 'arcane_sovereign', '我的封印解除了。起源核心仍把“无限延长”当作最高命令。'),
-      dialogueTurn('绫星·璃', 'hero', '那就打完第二阶段，夺回它的解释权。')
+      dialogueTurn('奥术主权者', 'arcane_sovereign', '我的封印解除了。起源核心仍把“无限延长”当作最高命令。', { expression: 'acceptance' }),
+      dialogueTurn('残响精灵·纱雾', 'guide', '核心只能读取旧的二选一。归档模式需要活着的见证一起写入。', { expression: 'focus' }),
+      dialogueTurn('绫星·璃', 'hero', '那就打完第二阶段，夺回它的解释权。', { expression: 'resolve' })
     ]),
     bossOriginCorePost: dialogueSequence('终章：魔源再临', [
       dialogueTurn('绫星·璃', 'hero', '起源核心安静下来了。它保存灾难的记录；上面还有一座未投递登记库。'),

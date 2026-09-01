@@ -1,0 +1,22 @@
+{
+  "batch": "premium-stage-polish-v3",
+  "generated_with": "built-in image generation",
+  "assets": [
+    {"id":"TRANS_01","runtime":"public/assets/anime/transitions/witness-entry.webp","dimension":"1672x941","status":"accepted","sha256":"0c5474fcfa02cdd85a7ca5f33c01659b5f6ddb443834e2422d2675806d8b816a"},
+    {"id":"TRANS_02","runtime":"public/assets/anime/transitions/seal-shatter.webp","dimension":"1672x941","status":"accepted","sha256":"66fd2e818238fc4e143acb05510a05ed214c7bd303d95ce9f8329bbd573ccc64"},
+    {"id":"CHAR_LIYU_GUARDED","runtime":"public/assets/anime/characters/liyue-dialogue-guarded-v2.webp","dimension":"1024x1536 RGBA","status":"accepted","sha256":"ac2a616419e2dce64b7cc012f1c1f518452f5bca5cb01acf398d5793a98a6d55"},
+    {"id":"CHAR_LIYU_EMBERS","runtime":"public/assets/anime/characters/liyue-dialogue-embers-v2.webp","dimension":"1024x1536 RGBA","status":"accepted","sha256":"086aa26c17be881b9a0c44cd62e0185ccd015eb0b520233e18e457a4eb12b9a0"},
+    {"id":"CHAR_NOCTIA_COLD","runtime":"public/assets/anime/characters/noctia-dialogue-cold-v2.webp","dimension":"1024x1536 RGBA","status":"accepted","sha256":"a638b6b1750e4037bfd8aff14b080a0f598911b656ad37d2f37d00537b87be90"},
+    {"id":"CHAR_NOCTIA_KNOWING","runtime":"public/assets/anime/characters/noctia-dialogue-knowing-v2.webp","dimension":"1024x1536 RGBA","status":"accepted","sha256":"8d5faa83946f660211ecb5b8217065d75950839cc94a618f3290ed28658ad2b4"},
+    {"id":"CHAR_ECHO_REGENT_RELEASE","runtime":"public/assets/anime/characters/echo-regent-dialogue-release.webp","dimension":"1024x1536 RGBA","status":"accepted","sha256":"b15c1c5239ac46035eb483a3221ea807d20452052e84edf4b240fad2ac3f8014"},
+    {"id":"CHAR_ARCANE_SOVEREIGN_ACCEPTANCE","runtime":"public/assets/anime/characters/arcane-sovereign-dialogue-acceptance.webp","dimension":"1024x1536 RGBA","status":"accepted","sha256":"976c3345d2013733f188ac80e308d643e7005e6044ae7c499d72009dc4a4fa94"},
+    {"id":"CG_08_F10_SHARED_SEAL_BREAK","runtime":"public/assets/anime/cg/liyue-noctia-seal-cg.webp","dimension":"1672x941","status":"accepted","sha256":"f2a3083c1f94c1d26c30d339288471399bd5f1e7fa098545f8b8763aa5a44070"},
+    {"id":"CG_09_F20_SIGNET_ACCOUNTABILITY","runtime":"public/assets/anime/cg/liyue-noctia-sovereign-cg.webp","dimension":"1672x941","status":"accepted","sha256":"1b5b4a1015b672d9b77f7393806a08a257a74a521f865954711e12d20b7aef5d"}
+  ],
+  "rejected": [
+    "CHAR_shawu_sheet_fake-checkerboard_v1.png",
+    "CHAR_shawu_watchful_fake-checkerboard_v1.png",
+    "CHAR_shawu_watchful_background-extraction-failed_v1.png",
+    "CHAR_yanli_softened_fake-checkerboard_v1.png"
+  ]
+}

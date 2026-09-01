@@ -1,0 +1,13 @@
+{
+  "batch": "premium-stage-polish-v3",
+  "style_lock": "Japanese 2D anime cel-shaded visual novel art; shoujo Galgame; no text or watermark.",
+  "references": [
+    {"asset":"璃","source":"public/assets/anime/characters/liyue-dialogue-resolve.webp","role":"identity-and-costume"},
+    {"asset":"诺克缇娅","source":"public/assets/anime/characters/noctia-dialogue-sorrow.webp","role":"identity-and-costume"},
+    {"asset":"回声摄政官","source":"public/assets/anime/characters/echo-regent-dialogue-grave.webp","role":"identity-and-costume"},
+    {"asset":"奥术主权者","source":"public/assets/anime/characters/arcane-sovereign-dialogue-regret.webp","role":"identity-and-costume"},
+    {"asset":"塔锚点","source":"art/visual-novel/01_canon/visual-canon-v2.json","role":"tower-continuity"},
+    {"asset":"F10 共同破封","source":"public/assets/anime/cg/liyue-noctia-seal-cg.webp","role":"climax-CG"},
+    {"asset":"F20 签名承担","source":"public/assets/anime/cg/liyue-noctia-sovereign-cg.webp","role":"climax-CG"}
+  ]
+}

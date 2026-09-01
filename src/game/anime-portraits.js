@@ -151,16 +151,26 @@ const RUNTIME_PORTRAITS = Object.freeze({
 const DIALOGUE_EXPRESSIONS = Object.freeze({
   'hero:resolve': '/assets/anime/characters/liyue-dialogue-resolve.webp',
   'hero:stern': '/assets/anime/characters/liyue-dialogue-resolve.webp',
-  'hero:guarded': '/assets/anime/characters/liyue-dialogue-resolve.webp',
-  'hero:embers': '/assets/anime/characters/liyue-dialogue-resolve.webp',
+  'hero:guarded': '/assets/anime/characters/liyue-dialogue-guarded-v2.webp',
+  'hero:embers': '/assets/anime/characters/liyue-dialogue-embers-v2.webp',
   'guide:gentle': '/assets/anime/characters/shawu-dialogue-gentle.webp',
   'guide:watchful': '/assets/anime/characters/shawu-dialogue-gentle.webp',
   'guide:lament': '/assets/anime/characters/shawu-dialogue-gentle.webp',
   'guide:focus': '/assets/anime/characters/shawu-dialogue-gentle.webp',
   'final_queen:sorrow': '/assets/anime/characters/noctia-dialogue-sorrow.webp',
   'final_queen:grave': '/assets/anime/characters/noctia-dialogue-sorrow.webp',
-  'final_queen:knowing': '/assets/anime/characters/noctia-dialogue-sorrow.webp',
-  'final_queen:cold': '/assets/anime/characters/noctia-dialogue-sorrow.webp'
+  'final_queen:knowing': '/assets/anime/characters/noctia-dialogue-knowing-v2.webp',
+  'final_queen:cold': '/assets/anime/characters/noctia-dialogue-cold-v2.webp',
+  // Key witness encounters receive true visual-novel standing art.  These
+  // remain distinct from the small combat/codex portraits below, so bringing
+  // a Boss onto the Gal stage never scales a 58px map token into a sprite.
+  'dragon_boss:embers': '/assets/anime/characters/yanli-dialogue-embers.webp',
+  'shadow_boss:guarded': '/assets/anime/characters/yayu-dialogue-guarded.webp',
+  'echo_regent:grave': '/assets/anime/characters/echo-regent-dialogue-grave.webp',
+  'echo_regent:release': '/assets/anime/characters/echo-regent-dialogue-release.webp',
+  'arcane_sovereign:regret': '/assets/anime/characters/arcane-sovereign-dialogue-regret.webp',
+  'arcane_sovereign:acceptance': '/assets/anime/characters/arcane-sovereign-dialogue-acceptance.webp',
+  'act3_archive_warden:duty': '/assets/anime/characters/archive-warden-dialogue-duty.webp'
 });
 
 // The three recurring leads use a real painted face for each dialogue state,
@@ -178,6 +188,14 @@ const LEAD_EXPRESSION_AVATARS = Object.freeze({
   'final_queen:grave': { label: '威仪', avatar: '/assets/anime/avatars/noctia-avatar-grave-cel.webp' },
   'final_queen:knowing': { label: '了然', avatar: '/assets/anime/avatars/noctia-avatar-knowing-cel.webp' },
   'final_queen:cold': { label: '冷峻', avatar: '/assets/anime/avatars/noctia-avatar-cold-cel.webp' }
+});
+
+const EXPRESSION_LABELS = Object.freeze({
+  resolve: '决意',
+  gentle: '温柔',
+  sorrow: '哀伤',
+  release: '放手',
+  acceptance: '承担'
 });
 
 // Dialogue is not a smaller version of the enemy codex.  Every person who
@@ -245,7 +263,7 @@ export function dialoguePresentation(id, requestedExpression = null) {
   return Object.freeze({
     id,
     expression,
-    label: leadExpression?.label ?? (expression === cast.expression ? cast.label : (expression === 'resolve' ? '决意' : expression === 'gentle' ? '温柔' : expression === 'sorrow' ? '哀伤' : '平静')),
+    label: leadExpression?.label ?? (expression === cast.expression ? cast.label : (EXPRESSION_LABELS[expression] ?? '平静')),
     avatar: leadExpression?.avatar ?? cast.avatar ?? portraitUrl(id, expression),
     stage: portraitUrl(id, expression),
     hasAvatarArt: Boolean(leadExpression?.avatar ?? cast.avatar),

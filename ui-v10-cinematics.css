@@ -784,3 +784,78 @@ body[data-theme="forest"]::after{opacity:.23;background-image:radial-gradient(ci
   .gal-root .gal-backlog{top:62px;right:9px;bottom:9px;left:9px;width:auto}
 }
 @media (prefers-reduced-motion:reduce){.gal-root .gal-backdrop,.gal-root .gal-cg,.gal-root .gal-actor,.gal-root .gal-dialogue.is-narration .gal-narration-mark{animation:none;transition:none;transform:none!important}}
+
+/* Witness-field bridge -----------------------------------------------------
+   Gal scenes are stored inside the same Tower.  A short, full-bleed bridge
+   lets the tactical floor recede into the archive record on entry, then lets
+   the record fold back into the floor when dialogue ends.  This deliberately
+   belongs to #gal-root only: ordinary Magic Tower play never inherits it. */
+.gal-root .gal-witness-transition{
+  position:absolute;
+  z-index:40;
+  inset:0;
+  display:none;
+  overflow:hidden;
+  pointer-events:none;
+  background:var(--gal-transition-enter) center / cover no-repeat;
+  opacity:0;
+  isolation:isolate;
+}
+.gal-root .gal-witness-transition::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:radial-gradient(ellipse at 50% 46%,rgba(173,219,255,.08),rgba(3,6,18,.55) 74%),linear-gradient(90deg,rgba(3,6,18,.45),transparent 37%,rgba(3,6,18,.38));
+}
+.gal-root .gal-witness-transition::after{
+  content:"";
+  position:absolute;
+  inset:-20%;
+  background:repeating-linear-gradient(100deg,transparent 0 14px,rgba(202,225,255,.13) 16px 17px,transparent 20px 40px);
+  mix-blend-mode:screen;
+  opacity:.42;
+  transform:translateX(-13%);
+}
+.gal-root .gal-witness-transition-copy{
+  position:absolute;
+  z-index:2;
+  top:50%;
+  left:50%;
+  display:grid;
+  gap:7px;
+  min-width:min(55%,430px);
+  padding:16px 24px;
+  border-top:1px solid rgba(234,240,255,.74);
+  border-bottom:1px solid rgba(234,240,255,.4);
+  color:#f4f7ff;
+  text-align:center;
+  text-shadow:0 2px 12px #000;
+  transform:translate(-50%,-50%);
+}
+.gal-root .gal-witness-transition-copy small{color:#f0d993;font-size:clamp(.48rem,.72vw,.66rem);font-weight:850;letter-spacing:.24em}
+.gal-root .gal-witness-transition-copy strong{font-family:"Noto Serif SC","Songti SC",serif;font-size:clamp(1.15rem,2.2vw,1.85rem);font-weight:700;letter-spacing:.12em}
+.gal-root.is-entering .gal-witness-transition{display:block;animation:witnessFieldEnter .76s cubic-bezier(.16,.8,.24,1) both}
+.gal-root.is-entering .gal-shell{animation:witnessStageArrive .76s cubic-bezier(.16,.8,.24,1) both}
+.gal-root.is-exiting .gal-witness-transition{display:block;background-image:var(--gal-transition-return);animation:witnessFieldExit .62s cubic-bezier(.55,.03,.76,.45) both}
+.gal-root.is-exiting .gal-shell{animation:witnessStageRecede .62s cubic-bezier(.55,.03,.76,.45) both}
+.gal-root[data-transition="boss"] .gal-witness-transition-copy{border-color:rgba(255,160,180,.58);color:#fff2f3}.gal-root[data-transition="boss"] .gal-witness-transition-copy small{color:#ffbecb}
+@keyframes witnessFieldEnter{
+  0%{opacity:1;clip-path:inset(0 0 0 0);transform:scale(1);filter:brightness(.72) saturate(.82)}
+  54%{opacity:1;clip-path:inset(0 0 0 0);transform:scale(1.025);filter:brightness(1.05) saturate(1.1)}
+  100%{opacity:0;clip-path:inset(41% 0 41% 0);transform:scale(1.07);filter:brightness(1.26) saturate(1.15)}
+}
+@keyframes witnessStageArrive{0%{opacity:.12;filter:brightness(.52) blur(3px);transform:scale(1.035)}60%{opacity:.58;filter:brightness(.92) blur(.6px)}100%{opacity:1;filter:none;transform:none}}
+@keyframes witnessFieldExit{
+  0%{opacity:0;clip-path:inset(41% 0 41% 0);transform:scale(1.08);filter:brightness(1.24) saturate(1.18)}
+  46%{opacity:1;clip-path:inset(0 0 0 0);transform:scale(1.03);filter:brightness(1.04) saturate(1.06)}
+  100%{opacity:1;clip-path:inset(0 0 0 0);transform:scale(1);filter:brightness(.66) saturate(.76)}
+}
+@keyframes witnessStageRecede{0%{opacity:1;filter:none;transform:none}42%{opacity:.65;filter:brightness(.85) blur(.7px)}100%{opacity:0;filter:brightness(.52) blur(3px);transform:scale(1.035)}}
+
+@media (max-width:700px), (max-aspect-ratio:4/5){
+  .gal-root .gal-witness-transition-copy{min-width:66%;padding:12px 17px}.gal-root .gal-witness-transition-copy strong{font-size:1.12rem}
+}
+@media (prefers-reduced-motion:reduce){
+  .gal-root.is-entering .gal-witness-transition,.gal-root.is-entering .gal-shell,.gal-root.is-exiting .gal-witness-transition,.gal-root.is-exiting .gal-shell{animation:none}
+  .gal-root.is-entering .gal-witness-transition{opacity:0}.gal-root.is-exiting .gal-witness-transition{opacity:1}
+}

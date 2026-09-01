@@ -367,17 +367,21 @@ function installDialogues(dialogues) {
       turn('最后保管人', 'crown_magus', '击败两名索引守卫后，灯塔楼梯会显现。')
     ]),
     floor30: sequence('第三十阵：余烬灯塔', [
-      turn('档案守望者', 'act3_archive_warden', '原始协议规定：发现矛盾记录时，先冻结，再由勘误核心清零重建。'),
-      turn('无声女王·诺克缇娅', 'final_queen', '这就是我一直害怕的“结案”。可原件已经证明，还有归档模式。', { expression: 'sorrow' }),
-      turn('绫星·璃', 'hero', '先过守望者，再阻止勘误核心。两相连续，没有补给。', { expression: 'resolve' })
+      turn('旁白', null, '灯塔的镜面朝向灰港。最旧的协议在光里展开：冻结、清零、重建。没有一条写着“归还”。', { kind: 'narration' }),
+      turn('档案守望者', 'act3_archive_warden', '原始协议规定：发现矛盾记录时，先冻结，再由勘误核心清零重建。执行即是守护。', { expression: 'duty' }),
+      turn('无声女王·诺克缇娅', 'final_queen', '这就是我一直害怕的“结案”。可原件已经证明，还有归档模式。', { expression: 'grave' }),
+      turn('绫星·璃', 'hero', '你守的是旧条文；我们守的是被条文困住的人。先过守望者，再阻止勘误核心。', { expression: 'resolve' }),
+      turn('档案守望者', 'act3_archive_warden', '若你们能写出不清零的答案，我会让出灯塔。', { expression: 'duty' })
     ]),
     bossArchiveWardenPost: sequence('灯塔：守望者停机', [
-      turn('档案守望者', 'act3_archive_warden', '守望协议结束。勘误核心仍会按旧规则，将矛盾记录清零。'),
-      turn('绫星·璃', 'hero', '第二阶段。我要在它清零前写入归档。')
+      turn('档案守望者', 'act3_archive_warden', '守望协议结束。勘误核心仍会按旧规则，将矛盾记录清零。', { expression: 'duty' }),
+      turn('残响精灵·纱雾', 'guide', '现在。把见证者留下的名字写进归档栏。', { expression: 'focus' }),
+      turn('绫星·璃', 'hero', '第二阶段。我要在它清零前写入归档。', { expression: 'resolve' })
     ]),
     ending: sequence('终章：未投递的信', [
-      turn('残响精灵·纱雾', 'guide', '灯塔转入归档。未投递的信不再被重放，将等待能收到它们的人。', { cg: '/assets/anime/cg/liyue-noctia-afterlight-cg.webp', expression: 'gentle' }),
-      turn('无声女王·诺克缇娅', 'final_queen', '灰港的名字都在：离港者、罹难者、等待的人。它们终于不必再证明自己存在。', { expression: 'sorrow' }),
+      turn('旁白', null, '余烬灯塔亮起新的灯语。它没有命令任何人留下，只向远方回答：已收到。', { cg: '/assets/anime/cg/liyue-lighthouse-archive-cg.webp', kind: 'narration' }),
+      turn('残响精灵·纱雾', 'guide', '灯塔转入归档。未投递的信不再被重放，将等待能收到它们的人。', { expression: 'gentle' }),
+      turn('无声女王·诺克缇娅', 'final_queen', '灰港的名字都在：离港者、罹难者、等待的人。它们终于不必再证明自己存在。', { expression: 'knowing' }),
       turn('绫星·璃', 'hero', '记录留下，命令结束。以后由活着的人决定怎样继续。', { expression: 'resolve' })
     ])
   });
