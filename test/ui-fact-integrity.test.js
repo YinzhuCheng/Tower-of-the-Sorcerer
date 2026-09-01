@@ -55,7 +55,7 @@ test('critical map interactions disclose their own rule before the player commit
 
   state.floor = 10; // F11
   const f11Stairs = findToken(state, 'U');
-  assert.match(buildMapUnitHoverPreview(state, f11Stairs.x, f11Stairs.y).details[0].value, /选择一座专家宝库/);
+  assert.match(buildMapUnitHoverPreview(state, f11Stairs.x, f11Stairs.y).details[0].value, /签署一份见证契约/);
 
   state.floor = 3; // F4
   const weapon = findToken(state, 'item:weapon');

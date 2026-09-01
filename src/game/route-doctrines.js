@@ -1,5 +1,5 @@
 /**
- * 第二章专家盟约
+ * 第二章见证契约
  *
  * Act II deliberately has three expensive specialist vaults.  Leaving all
  * three simultaneously open turned them into a checklist: a patient player
@@ -105,9 +105,9 @@ export function canSelectRouteDoctrine(state) {
  * takes no turn and is irrevocable for the run. */
 export function selectRouteDoctrine(state, doctrineId) {
   const doctrine = getRouteDoctrine(doctrineId);
-  if (!doctrine) return { ok: false, reason: '未知的第二章专家选择。' };
+  if (!doctrine) return { ok: false, reason: '未知的第二章见证契约。' };
   if (!canSelectRouteDoctrine(state)) {
-    return { ok: false, reason: '专家盟约只能在第十一阵、离开复苏环廊前签署一次。' };
+    return { ok: false, reason: '见证契约只能在第十一阵、离开复苏环廊前签署一次。' };
   }
   state.doctrine = { selectedId: doctrine.id, legacyOpen: false };
   return { ok: true, doctrine };
@@ -124,8 +124,8 @@ export function routeDoctrineGateAccess(state, gateId) {
     ok: false,
     doctrine,
     reason: selected
-      ? `已签署「${selected.title}」；「${doctrine.title}」的专家回路在本轮保持封印。`
-      : `必须先在第十一阵签署专家盟约，才能决定是否开启「${doctrine.title}」。`
+      ? `已签署「${selected.title}」；「${doctrine.title}」的路线宝库在本轮保持封印。`
+      : `必须先在第十一阵签署见证契约，才能决定是否开启「${doctrine.title}」。`
   };
 }
 

@@ -29,7 +29,7 @@ test('main UI presents object facts instead of fixed objectives or route forecas
     readFile(join(root, 'src/main.js'), 'utf8'),
     readFile(join(root, 'index.html'), 'utf8')
   ]);
-  assert.match(source, /专家选择/);
+  assert.match(source, /路线选择/);
   assert.match(source, /跳过叙事/);
   assert.doesNotMatch(source, /getFreeRouteIntel|showRouteIntel|路线情报/);
   assert.doesNotMatch(markup, /floor-objective|btn-route-intel|路线情报/);

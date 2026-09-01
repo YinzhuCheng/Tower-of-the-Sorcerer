@@ -426,7 +426,7 @@ function buildRuneHoverPreview(state, runeId) {
 
 function upstairsCondition(state, floor, remainingGuardians) {
   if (floor?.number === 11 && !state.doctrine?.selectedId && state.doctrine?.legacyOpen !== true) {
-    return '离开前需要选择一座专家宝库；选择本身不消耗资源。';
+    return '离开前需要签署一份见证契约；选择本身不消耗资源。';
   }
   if (floor?.number === 21 && !state.charter?.selectedId && state.charter?.legacyOpen !== true) {
     return '离开前需要选择一份修复章程；选择本身不消耗资源。';

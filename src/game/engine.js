@@ -40,11 +40,6 @@ import {
   normalizeAllianceState
 } from './alliance-bonds.js';
 import {
-  createChallengeState,
-  normalizeChallengeState,
-  settleChallengeContract
-} from './challenge-contracts.js';
-import {
   createLegacyRouteDoctrineState,
   createRouteDoctrineState,
   canCompleteAllianceBondForDoctrine,
@@ -128,7 +123,6 @@ export function createInitialState() {
     magic: createDormantMagicState(),
     council: createWarCouncilState(),
     alliance: createAllianceState(),
-    challenge: createChallengeState(),
     doctrine: createRouteDoctrineState(),
     charter: createAct3CharterState(),
     handoff: createAct3HandoffState(),
@@ -161,7 +155,7 @@ export function validateStateShape(state) {
   if (!state || state.version !== GAME_VERSION) return false;
   if (!Number.isInteger(state.floor) || state.floor < 0 || state.floor >= FLOORS.length) return false;
   if (!Array.isArray(state.floorStates) || state.floorStates.length !== FLOORS.length) return false;
-  if (!state.stats || !state.cards || !state.relics || !state.magic || !state.council || !state.alliance || !state.challenge || !state.doctrine || !state.charter || !state.handoff) return false;
+  if (!state.stats || !state.cards || !state.relics || !state.magic || !state.council || !state.alliance || !state.doctrine || !state.charter || !state.handoff) return false;
   if (!Number.isFinite(state.magic.mp) || !Number.isFinite(state.magic.maxMp)) return false;
   return true;
 }
@@ -208,8 +202,8 @@ export function deserializeState(serialized) {
 
 /**
  * V1 saves predate player magic; V2 predates the deterministic F20 council;
- * V3 predates optional Act II ally bonds; V4 predates optional witness
- * contracts; V5 predates the mutually-exclusive Act II route doctrine; V6
+ * V3 predates optional Act II ally bonds; V5 predates the mutually-exclusive
+ * Act II route doctrine; V6
  * predates the repaired F16 mirror-vault topology and its explicit route
  * expedition support.
  * Older saves receive a legacy-open doctrine so an in-progress campaign never
@@ -223,22 +217,23 @@ export function migrateState(state) {
     state.magic = normalizeMagicState(state.magic);
     state.council = normalizeWarCouncilState(state.council);
     state.alliance = normalizeAllianceState(state.alliance);
-    state.challenge = normalizeChallengeState(state.challenge);
+    delete state.challenge;
     state.doctrine = normalizeRouteDoctrineState(state.doctrine);
     state.charter = normalizeAct3CharterState(state.charter);
     state.handoff = normalizeAct3HandoffState(state.handoff);
     return state;
   }
-  if (state.version === 1 || state.version === 2 || state.version === 3 || state.version === 4 || state.version === 5 || state.version === 6 || state.version === 7 || state.version === 8) {
+  if (state.version === 1 || state.version === 2 || state.version === 3 || state.version === 4 || state.version === 5 || state.version === 6 || state.version === 7 || state.version === 8 || state.version === 9) {
+    const legacyState = { ...state };
+    delete legacyState.challenge;
     return appendMissingFloorStates(migrateMirrorVaultGatePosition({
-      ...state,
+      ...legacyState,
       version: GAME_VERSION,
       magic: state.version === 1 ? createDormantMagicState() : normalizeMagicState(state.magic),
       council: state.version === 1 || state.version === 2 ? createWarCouncilState() : normalizeWarCouncilState(state.council),
       alliance: state.version === 1 || state.version === 2 || state.version === 3
         ? createAllianceState()
         : normalizeAllianceState(state.alliance),
-      challenge: state.version >= 5 ? normalizeChallengeState(state.challenge) : createChallengeState(),
       doctrine: state.version === 6 || state.version === 7
         ? normalizeRouteDoctrineState(state.doctrine)
         : createLegacyRouteDoctrineState(),
@@ -317,15 +312,9 @@ export function resolveWarCouncil(state, plan) {
     }
   };
   const cleared = clearCouncilTiles(state);
-  const challenge = settleChallengeContract(state);
   addLog(state, `共鸣会战获胜：${report.survivors.map((unit) => unit.name).join('、')}仍可支援最终战。`);
   for (const label of report.modifiers.labels) addLog(state, label);
-  if (challenge) {
-    addLog(state, challenge.result.status === 'completed'
-      ? `完成见证契约「${challenge.contract.title}」。`
-      : `见证契约「${challenge.contract.title}」未达成：${challenge.result.missing.join('；')}。`);
-  }
-  return { ok: true, report, cleared, challenge };
+  return { ok: true, report, cleared };
 }
 
 export function parseToken(token) {
@@ -466,7 +455,7 @@ export function collectItem(state, itemId) {
   if (item.allyBond) {
     allianceBond = canCompleteAllianceBondForDoctrine(state, item.allyBond)
       ? completeAllianceBond(state, item.allyBond)
-      : { ok: false, skipped: true, reason: '这件信物只能在对应专家选择后获得。' };
+      : { ok: false, skipped: true, reason: '这件信物只能在对应见证契约路线中获得。' };
     if (allianceBond.ok && allianceBond.completed) {
       addLog(state, `完成「${allianceBond.bond.title}」：终局效果已启用，盟友需在会战中存活。`);
     }
@@ -640,7 +629,7 @@ export function tryMove(state, dx, dy) {
     if (floor.number === 11 && !state.doctrine?.selectedId && state.doctrine?.legacyOpen !== true) {
       result.blocked = true;
       result.openDoctrine = true;
-      result.reason = '离开 F11 前，需要选择一座第二章专家宝库。';
+      result.reason = '离开 F11 前，需要签署一份第二章见证契约。';
       return result;
     }
     if (floor.number === 21 && !state.charter?.selectedId && state.charter?.legacyOpen !== true) {

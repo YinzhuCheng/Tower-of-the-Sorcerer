@@ -46,7 +46,7 @@ export function deriveRouteInsights({ steps = [], battleLog = [], doctrine = nul
       id: `doctrine:${doctrineStep.action?.doctrineId ?? 'unknown'}`,
       kind: 'route',
       title: '路线承诺',
-      text: doctrine ? `签署「${doctrine.title}」，专家宝库从此互斥。` : '在 F11 签署路线盟约，专家宝库从此互斥。'
+      text: doctrine ? `签署「${doctrine.title}」，路线宝库从此互斥。` : '在 F11 签署见证契约，路线宝库从此互斥。'
     });
   }
   const charterStep = steps.find((step) => step.kind === 'charter');

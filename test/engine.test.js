@@ -115,23 +115,22 @@ test('v3 saves receive empty optional ally-bond progress without changing counci
   assert.deepEqual(restored.council, state.council);
 });
 
-test('v4 saves receive an empty optional witness-contract record without changing bonds', () => {
+test('legacy witness-contract records are discarded without changing bonds', () => {
   const state = createInitialState();
   state.alliance.bonds.yayu = true;
-  const legacy = { ...state, version: 4 };
-  delete legacy.challenge;
+  const legacy = { ...state, version: 4, challenge: { selectedId: 'shadow-witness', result: null } };
   const restored = deserializeState(JSON.stringify(legacy));
-  assert.deepEqual(restored.challenge, { selectedId: null, result: null });
+  assert.equal(Object.hasOwn(restored, 'challenge'), false);
   assert.deepEqual(restored.alliance, state.alliance);
 });
 
-test('v5 saves retain completed contracts and receive a legacy-open route doctrine', () => {
+test('v5 saves discard old witness records and receive a legacy-open route doctrine', () => {
   const state = createInitialState();
   state.challenge = { selectedId: 'red-witness', result: null };
   const legacy = { ...state, version: 5 };
   delete legacy.doctrine;
   const restored = deserializeState(JSON.stringify(legacy));
-  assert.deepEqual(restored.challenge, state.challenge);
+  assert.equal(Object.hasOwn(restored, 'challenge'), false);
   assert.deepEqual(restored.doctrine, { selectedId: null, legacyOpen: true });
 });
 

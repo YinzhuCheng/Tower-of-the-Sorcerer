@@ -1,4 +1,4 @@
-export const GAME_VERSION = 9;
+export const GAME_VERSION = 10;
 export const GRID_SIZE = 11;
 export const TILE_SIZE = 58;
 

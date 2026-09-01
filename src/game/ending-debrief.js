@@ -5,6 +5,7 @@
 import { getAllianceBond, isAllianceBonded } from './alliance-bonds.js';
 import { getSelectedAct3Charter, isAct3CharterCompleted } from './act3-charters.js';
 import { getSelectedAct3Handoff } from './act3-handoff-priorities.js';
+import { getHiddenWitnessEnding } from './hidden-witnesses.js';
 
 const SURVIVOR_ENDINGS = Object.freeze({
   milu: Object.freeze({
@@ -39,6 +40,7 @@ export function getEndingDebrief(state) {
   const charter = getSelectedAct3Charter(state);
   const charterCompleted = charter ? isAct3CharterCompleted(state, charter.id) : false;
   const handoff = getSelectedAct3Handoff(state);
+  const hiddenWitness = getHiddenWitnessEnding(state);
   const finaleRules = Object.freeze([
     ...activatedRules,
     ...(charterCompleted && charter?.finale?.label ? [charter.finale.label] : []),
@@ -69,7 +71,8 @@ export function getEndingDebrief(state) {
       bondTitle: null,
       completedBondCount: completedBonds.length,
       completedCharter: charter.title,
-      activatedRules: finaleRules
+      activatedRules: finaleRules,
+      hiddenWitness
     });
   }
 
@@ -83,7 +86,8 @@ export function getEndingDebrief(state) {
       bondTitle: bond?.title ?? null,
       completedBondCount: completedBonds.length,
       completedCharter: null,
-      activatedRules: finaleRules
+      activatedRules: finaleRules,
+      hiddenWitness
     });
   }
 
@@ -97,6 +101,7 @@ export function getEndingDebrief(state) {
     bondTitle: null,
     completedBondCount: completedBonds.length,
     completedCharter: null,
-    activatedRules: finaleRules
+    activatedRules: finaleRules,
+    hiddenWitness
   });
 }

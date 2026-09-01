@@ -30,3 +30,14 @@ test('an unbonded survivor receives a distinct but non-punitive open-future epil
   assert.equal(ending.title, '仍在练习的自由');
   assert.match(ending.text, /龙姬·焰璃/);
 });
+
+test('a completed route and matching council survivor append a hidden witness without changing the main ending', () => {
+  const ending = getEndingDebrief({
+    doctrine: { selectedId: 'ember', legacyOpen: false },
+    alliance: { bonds: { milu: false, lanin: false, yanli: true, yayu: false } },
+    council: { outcome: { survivors: [{ id: 'yanli', name: '龙姬·焰璃' }], modifiers: { labels: [] } } }
+  });
+  assert.equal(ending.kind, 'bonded-survivor');
+  assert.equal(ending.hiddenWitness?.id, 'ember');
+  assert.match(ending.hiddenWitness?.title ?? '', /赤焰/);
+});

@@ -259,10 +259,6 @@ function summarizeState(state) {
       survivors: (state.council.outcome?.survivors ?? []).map((unit) => unit.id).sort()
     } : { completed: false },
     alliance: { bonds: { ...(state.alliance?.bonds ?? {}) } },
-    challenge: {
-      selectedId: state.challenge?.selectedId ?? null,
-      result: state.challenge?.result ? { ...state.challenge.result, missing: [...(state.challenge.result.missing ?? [])] } : null
-    },
     doctrine: {
       selectedId: state.doctrine?.selectedId ?? null,
       legacyOpen: state.doctrine?.legacyOpen === true
@@ -315,10 +311,6 @@ function structuralKeyObject(state) {
       survivors: (compact.council.outcome?.survivors ?? []).map((unit) => unit.id).sort()
     } : null,
     alliance: { ...(compact.alliance?.bonds ?? {}) },
-    challenge: {
-      selectedId: compact.challenge?.selectedId ?? null,
-      result: compact.challenge?.result ?? null
-    },
     doctrine: {
       selectedId: compact.doctrine?.selectedId ?? null,
       legacyOpen: compact.doctrine?.legacyOpen === true

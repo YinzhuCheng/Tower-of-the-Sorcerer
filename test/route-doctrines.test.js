@@ -40,7 +40,7 @@ test('F11 requires a public doctrine before ascent, with no resource price', () 
   const before = serializeState(state);
   const blocked = tryMove(state, 0, -1);
   assert.equal(blocked.openDoctrine, true);
-  assert.match(blocked.reason, /专家宝库/);
+  assert.match(blocked.reason, /见证契约/);
   assert.equal(serializeState(state), before, 'the blocked prompt must not mutate a save or charge scouting resources');
 
   const signed = selectRouteDoctrine(state, 'ember');

@@ -172,10 +172,6 @@ export function createTowerStateCodec({ baseState, floors, enemies }) {
         outcome: engineState.council?.outcome ? JSON.parse(JSON.stringify(engineState.council.outcome)) : null
       },
       alliance: { bonds: { ...(engineState.alliance?.bonds ?? {}) } },
-      challenge: {
-        selectedId: engineState.challenge?.selectedId ?? null,
-        result: engineState.challenge?.result ? JSON.parse(JSON.stringify(engineState.challenge.result)) : null
-      },
       doctrine: {
         selectedId: engineState.doctrine?.selectedId ?? null,
         legacyOpen: engineState.doctrine?.legacyOpen === true
@@ -228,10 +224,6 @@ export function createTowerStateCodec({ baseState, floors, enemies }) {
         outcome: compactState.council?.outcome ? JSON.parse(JSON.stringify(compactState.council.outcome)) : null
       },
       alliance: { bonds: { ...(compactState.alliance?.bonds ?? {}) } },
-      challenge: {
-        selectedId: compactState.challenge?.selectedId ?? null,
-        result: compactState.challenge?.result ? JSON.parse(JSON.stringify(compactState.challenge.result)) : null
-      },
       doctrine: {
         selectedId: compactState.doctrine?.selectedId ?? null,
         legacyOpen: compactState.doctrine?.legacyOpen === true
@@ -286,10 +278,6 @@ export function createTowerStateCodec({ baseState, floors, enemies }) {
         outcome: state.council?.outcome ? JSON.parse(JSON.stringify(state.council.outcome)) : null
       },
       alliance: { bonds: { ...(state.alliance?.bonds ?? {}) } },
-      challenge: {
-        selectedId: state.challenge?.selectedId ?? null,
-        result: state.challenge?.result ? JSON.parse(JSON.stringify(state.challenge.result)) : null
-      },
       doctrine: {
         selectedId: state.doctrine?.selectedId ?? null,
         legacyOpen: state.doctrine?.legacyOpen === true

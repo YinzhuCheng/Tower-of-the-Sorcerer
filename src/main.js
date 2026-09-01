@@ -17,12 +17,6 @@ import {
   teleportToFloor
 } from './game/engine.js';
 import {
-  getChallengeContractBriefing,
-  getSelectedChallengeContract,
-  previewChallengeContract,
-  selectChallengeContract
-} from './game/challenge-contracts.js';
-import {
   getRouteDoctrineBriefing,
   getSelectedRouteDoctrine,
   selectRouteDoctrine
@@ -43,7 +37,6 @@ import {
 } from './game/war-council.js';
 import { getEndingDebrief } from './game/ending-debrief.js';
 import { combatRuleCopy, HELP_SECTIONS } from './game/player-copy.js';
-import { buildMapUnitHoverPreview } from './game/tactical-interaction.js';
 import { createMagicTowerScene } from './game/scene.js';
 import { createCanvasTowerScene } from './game/canvas-scene.js';
 import { hydratePortraits, portraitUrl } from './game/portraits.js';
@@ -70,9 +63,7 @@ const elements = {
   relicList: $('#relic-list'),
   preview: $('#battle-preview'),
   logList: $('#log-list'),
-  nearbyButton: $('#btn-nearby'),
   doctrineButton: $('#btn-doctrine'),
-  challengeButton: $('#btn-challenges'),
   codexButton: $('#btn-codex'),
   teleportButton: $('#btn-teleport'),
   magicButton: $('#btn-magic'),
@@ -270,9 +261,8 @@ function updateHud() {
     : `魔力回收率 ${getProgressPercent(state)}%`;
   elements.magicTierButton.disabled = !magic.unlocked;
   elements.magicButton.disabled = !magic.unlocked;
-  elements.challengeButton.disabled = FLOORS[state.floor].number < 11;
   elements.doctrineButton.disabled = FLOORS[state.floor].number < 11;
-  elements.doctrineButton.textContent = FLOORS[state.floor].number >= 21 ? '修复章程' : '专家盟约';
+  elements.doctrineButton.textContent = FLOORS[state.floor].number >= 21 ? '修复章程' : '见证契约';
 
   const relics = getRelicLabels(state);
   elements.relicList.innerHTML = relics.length
@@ -330,42 +320,10 @@ function showHelp() {
         <summary>查看完整规则与快捷键</summary>
         <p><strong>伤害公式：</strong><code>(攻击所需回合 - 1) × max(敌方攻击 - 我方防御, 0)</code>。静谧耳坠会降低无视防御的魔法伤害。</p>
         <p><strong>附刃：</strong>第十阵后解锁。每档在下一场战斗开始时消耗 10 MP；该战每次主角攻击额外 +10 伤害，仍需先物理破防。</p>
-        <p><strong>专家选择：</strong>F11 选择一座专家宝库，F21 选择一座修复侧库；同一轮中其余同类区域不可进入。选择本身不消耗资源，卡牌和战斗代价会在区域内结算。</p>
-        <p><strong>快捷键：</strong>方向键 / WASD 移动；V 查看四邻单位；R 专家盟约或修复章程；C 见证契约；E 图鉴；T 楼层罗盘；M 魔力附刃。触摸对象时，第一次只查看，再点同一格才行动。</p>
+        <p><strong>路线选择：</strong>F11 签署一份见证契约，选择一座路线宝库；F21 选择一座修复侧库。同一轮中其余同类区域不可进入。选择本身不消耗资源，卡牌和战斗代价会在区域内结算。</p>
+        <p><strong>快捷键：</strong>方向键 / WASD 移动；R 见证契约或修复章程；E 图鉴；T 楼层罗盘；M 魔力附刃。触摸对象时，第一次只查看，再点同一格才行动。</p>
       </details>
     `,
-    actions: [{ label: '返回游戏', className: 'primary' }]
-  });
-}
-
-function renderNearbyPreview(preview) {
-  if (preview.kind === 'enemy') {
-    return `<p>HP ${formatNumber(preview.enemy.hp)} · ATK ${formatNumber(preview.enemy.atk)} · DEF ${formatNumber(preview.enemy.def)}</p>
-      <p><strong>预计耗血：</strong>${escapeHtml(preview.damageText)} · ${escapeHtml(preview.remainingText)}</p>
-      <p>${escapeHtml(preview.ruleText ?? combatRuleCopy(preview.enemy))}</p>
-      ${preview.relationText ? `<p>${escapeHtml(preview.relationText)}</p>` : ''}`;
-  }
-  const details = preview.details?.length
-    ? `<ul>${preview.details.map((entry) => `<li><strong>${escapeHtml(entry.label)}：</strong>${escapeHtml(entry.value)}</li>`).join('')}</ul>`
-    : '';
-  return `${preview.description ? `<p>${escapeHtml(preview.description)}</p>` : ''}
-    ${preview.primaryValue ? `<p><strong>${escapeHtml(preview.primaryLabel ?? '状态')}：</strong>${escapeHtml(preview.primaryValue)}</p>` : ''}${details}`;
-}
-
-function showNearbyUnits() {
-  const entries = [
-    ['上方', state.x, state.y - 1],
-    ['右侧', state.x + 1, state.y],
-    ['下方', state.x, state.y + 1],
-    ['左侧', state.x - 1, state.y]
-  ].map(([direction, x, y]) => ({ direction, preview: buildMapUnitHoverPreview(state, x, y) }))
-    .filter((entry) => entry.preview && entry.preview.kind !== 'hero');
-  openModal({
-    kicker: 'NEARBY UNITS · 不消耗资源',
-    title: '四邻对象说明',
-    body: entries.length
-      ? `<div class="route-intel-list">${entries.map(({ direction, preview }) => `<article class="route-intel-floor"><h3>${escapeHtml(direction)} · ${escapeHtml(preview.title)}</h3>${renderNearbyPreview(preview)}</article>`).join('')}</div>`
-      : '<p class="muted">四邻没有可交互对象。移动到机关、结界、敌人或物品附近后可再次查看。</p>',
     actions: [{ label: '返回游戏', className: 'primary' }]
   });
 }
@@ -432,15 +390,13 @@ function showWarCouncil() {
     const report = simulateWarCouncil(state, plan);
     const allocated = plan.order.reduce((sum, id) => sum + (Number(plan.allocations[id]) || 0), 0);
     const validPlan = report.ok && allocated === WAR_COUNCIL_MP_POOL;
-    const challengeForecast = previewChallengeContract(state, report);
     const forecast = report.ok
       ? `
         <div class="war-council-forecast ${report.won ? 'safe' : 'danger'}">
           <strong>${report.won ? '预演结果：可击破全部忠诚随从' : '预演结果：我方会战失败'}</strong>
           <p>${report.records.map((duel, index) => `${index + 1}. ${escapeHtml(duel.left.name)} vs ${escapeHtml(duel.right.name)} → ${escapeHtml(duel.leftWon ? duel.left.name : duel.right.name)}胜（${duel.exchanges} 次交锋）`).join('<br>')}</p>
           ${report.won ? `<p>可支援终局：${report.survivors.map((unit) => `${escapeHtml(unit.name)} ${formatNumber(unit.hp)}/${formatNumber(unit.maxHp)}`).join('；')}。</p>
-          <p>${report.modifiers.labels.map(escapeHtml).join('<br>')}</p>
-          ${challengeForecast ? `<p class="challenge-result ${challengeForecast.status === 'would-complete' ? 'safe' : 'danger'}"><strong>见证契约「${escapeHtml(challengeForecast.contract.title)}」：</strong>${challengeForecast.status === 'would-complete' ? '此配置会达成。' : `此配置不会达成：${escapeHtml(challengeForecast.missing.join('；'))}。`}</p>` : ''}` : `<p>调整出战顺序或 MP 配额后再试。敌方配置不会变化。</p>${challengeForecast ? `<p class="challenge-result danger"><strong>见证契约「${escapeHtml(challengeForecast.contract.title)}」：</strong>会战未胜，无法达成。</p>` : ''}`}
+          <p>${report.modifiers.labels.map(escapeHtml).join('<br>')}</p>` : '<p>调整出战顺序或 MP 配额后再试。敌方配置不会变化。</p>'}
         </div>`
       : `<div class="war-council-forecast danger"><strong>配置无效</strong><p>${escapeHtml(report.reason)}</p></div>`;
 
@@ -643,18 +599,18 @@ function showRouteDoctrine() {
     return;
   }
   if (FLOORS[state.floor].number < 11) {
-    showToast('专家盟约会在第十一阵开放。');
+    showToast('见证契约会在第十一阵开放。');
     return;
   }
   const briefing = getRouteDoctrineBriefing(state);
   const selected = getSelectedRouteDoctrine(state);
   openModal({
-    kicker: 'ACT II EXPERT PACT · 信息公开',
-    title: selected ? `专家盟约 · ${selected.title}` : '签署第二章专家盟约',
+    kicker: 'ACT II WITNESS PACT · 路线选择',
+    title: selected ? `见证契约 · ${selected.title}` : '签署第二章见证契约',
     closable: Boolean(selected || state.doctrine?.legacyOpen),
     body: `
       <div class="dialogue-copy doctrine-intro">
-        <p><strong>选择不扣资源。</strong>本轮会开启一座专家宝库；F12 月镜宝库不受此选择影响。</p>
+        <p><strong>选择不扣资源。</strong>本轮会开启一座路线宝库；F12 月镜宝库不受此选择影响。</p>
         <p>${selected ? '已锁定。下方保留成本和终局效果，方便复核。' : state.doctrine?.legacyOpen ? '旧存档保留原有开放状态。' : '离开 F11 前必须选择一次，之后不能更换。'}</p>
       </div>
       <section class="doctrine-list">
@@ -665,7 +621,7 @@ function showRouteDoctrine() {
             <p><strong>进入后：</strong>${escapeHtml(doctrine.risk)}</p>
             ${doctrine.midgameSupport ? `<p><strong>中途得到：</strong>${escapeHtml(doctrine.midgameSupport)}</p>` : ''}
             <p><strong>终局效果：</strong>${escapeHtml(doctrine.payoff)}</p>
-            <p><strong>会战目标：</strong>${escapeHtml(doctrine.councilGoal)}</p>
+            <p><strong>生效条件：</strong>${escapeHtml(doctrine.councilGoal)}</p>
             ${doctrine.completed ? `<p class="doctrine-complete">已完成信物「${escapeHtml(doctrine.bondTitle ?? '')}」。</p>` : ''}
             ${!selected && !state.doctrine?.legacyOpen ? `<button data-route-doctrine="${escapeHtml(doctrine.id)}">选择这座宝库</button>` : doctrine.selected ? '<p class="doctrine-selected-label">本轮已选择</p>' : doctrine.locked ? '<p class="doctrine-locked-label">本轮不可进入</p>' : ''}
           </article>
@@ -685,61 +641,7 @@ function showRouteDoctrine() {
           autoSave();
           modalClosable = true;
           closeModal();
-          showToast(`已选择「${result.doctrine.title}」。其他专家宝库本轮不可进入。`, 2600);
-        });
-      });
-    }
-  });
-}
-
-function renderChallengeResult(entry) {
-  if (!entry.result) return '';
-  if (entry.result.status === 'completed') return '<p class="challenge-result safe">本轮已完成挑战。</p>';
-  return `<p class="challenge-result danger">本轮未达成：${escapeHtml(entry.result.missing.join('；'))}。普通通关不受影响。</p>`;
-}
-
-function showWitnessContracts() {
-  if (FLOORS[state.floor].number < 11) {
-    showToast('见证契约在第十一阵进入第二章后开放。');
-    return;
-  }
-  const briefing = getChallengeContractBriefing(state);
-  const selected = getSelectedChallengeContract(state);
-  const councilDone = Boolean(state.council?.completed);
-  openModal({
-    kicker: 'WITNESS CONTRACTS · 零资源',
-    title: selected ? `见证契约 · ${selected.title}` : '签署一份见证契约',
-    body: `
-      <div class="dialogue-copy challenge-intro">
-        <p><strong>这是可选挑战，不是资源交易。</strong>签署、查看和预演都不消耗资源；未完成也不影响普通通关。</p>
-        <p>${selected ? '已选择；王座前会战结束后自动判定。' : councilDone ? '会战已结算，本轮没有选择挑战。' : '每轮只能选一项，之后不能更换。下方数字表示现有胜利方案中能完成它的数量。'}</p>
-      </div>
-      <section class="challenge-contract-list">
-        ${briefing.entries.map((entry) => `
-          <article class="challenge-contract ${entry.selected ? 'selected-challenge' : ''}">
-            <div class="challenge-contract-heading"><h3>${escapeHtml(entry.title)}</h3><span>${escapeHtml(entry.difficulty)}</span></div>
-            <p>${escapeHtml(entry.summary)}</p>
-            <p class="challenge-detail">${escapeHtml(entry.detail)}</p>
-            <p><strong>对应信物：</strong>${escapeHtml(entry.bondRoute ?? '无')} · ${entry.bondComplete ? '已完成' : '尚未完成'}</p>
-            ${councilDone ? '' : `<p><strong>公开会战窗口：</strong>${entry.matchingPlanCount} / ${entry.totalWinningPlanCount} 套现有胜利方案会留下该盟友。</p>`}
-            ${renderChallengeResult(entry)}
-            ${!selected && !councilDone ? `<button data-challenge-contract="${escapeHtml(entry.id)}">签署此契约</button>` : entry.selected ? '<p class="challenge-selected-label">本轮已签署</p>' : ''}
-          </article>
-        `).join('')}
-      </section>
-    `,
-    actions: [{ label: '返回游戏', className: 'primary' }],
-    afterOpen: () => {
-      elements.modalBody.querySelectorAll('[data-challenge-contract]').forEach((button) => {
-        button.addEventListener('click', () => {
-          const result = selectChallengeContract(state, button.dataset.challengeContract);
-          if (!result.ok) {
-            showToast(result.reason);
-            return;
-          }
-          updateHud();
-          autoSave();
-          showWitnessContracts();
+          showToast(`已签署「${result.doctrine.title}」。其他路线宝库本轮不可进入。`, 2600);
         });
       });
     }
@@ -796,7 +698,7 @@ function showVictory() {
       ${ending.completedCharter ? `<p><strong>完成章程：</strong>${escapeHtml(ending.completedCharter)}</p>` : ''}
       ${ending.survivorName ? `<p><strong>会战幸存者：</strong>${escapeHtml(ending.survivorName)}</p>` : ''}
       ${ending.activatedRules.length ? `<p><strong>终局支援：</strong>${ending.activatedRules.map(escapeHtml).join('；')}</p>` : ''}
-      ${state.challenge?.selectedId ? `<p><strong>见证契约：</strong>${escapeHtml(getSelectedChallengeContract(state)?.title ?? '未知')} · ${state.challenge.result?.status === 'completed' ? '已达成' : `未达成${state.challenge.result?.missing?.length ? `（${escapeHtml(state.challenge.result.missing.join('；'))}）` : ''}`}</p>` : ''}
+      ${ending.hiddenWitness ? `<section class="route-intel-floor hidden-witness"><h3>${escapeHtml(ending.hiddenWitness.title)}</h3><p>${escapeHtml(ending.hiddenWitness.text)}</p></section>` : ''}
       <p><strong>已完成盟友信物：</strong>${ending.completedBondCount} / 4</p>
       <p>通关生命：<strong>${formatNumber(state.stats.hp)} / ${formatNumber(state.stats.maxHp)}</strong></p>
       <p>最终攻击 / 防御：<strong>${formatNumber(state.stats.atk)} / ${formatNumber(state.stats.def)}</strong></p>
@@ -907,9 +809,7 @@ function bindControls() {
   $('#btn-load').addEventListener('click', loadGame);
   $('#btn-reset').addEventListener('click', confirmReset);
   elements.codexButton.addEventListener('click', showCodex);
-  elements.nearbyButton.addEventListener('click', showNearbyUnits);
   elements.doctrineButton.addEventListener('click', showRouteDoctrine);
-  elements.challengeButton.addEventListener('click', showWitnessContracts);
   elements.teleportButton.addEventListener('click', showTeleport);
   elements.magicButton.addEventListener('click', showMagicBlade);
   elements.magicTierButton.addEventListener('click', showMagicBlade);
@@ -926,9 +826,7 @@ function bindControls() {
   window.addEventListener('keydown', (event) => {
     if (!elements.modalRoot.classList.contains('hidden')) return;
     if (event.key.toLowerCase() === 'e') showCodex();
-    if (event.key.toLowerCase() === 'v') showNearbyUnits();
     if (event.key.toLowerCase() === 'r') showRouteDoctrine();
-    if (event.key.toLowerCase() === 'c') showWitnessContracts();
     if (event.key.toLowerCase() === 't') showTeleport();
     if (event.key.toLowerCase() === 'm') showMagicBlade();
   });

@@ -40,8 +40,7 @@ test('free route intel exposes the F18-to-F20 plan before card spending without 
   assert.equal(intel.upcoming.find((floor) => floor.number === 19)?.gates.find((gate) => gate.id === 'f19ThroneLicense')?.requirement, '月辉卡×2');
   assert.equal(intel.upcoming.find((floor) => floor.number === 20)?.mandatory.length, 0);
   assert.deepEqual(intel.finale.loyalists.map((unit) => unit.mp), [20, 60, 40]);
-  assert.equal(intel.finale.contracts.free, true);
-  assert.equal(intel.finale.contracts.entries.length, 3);
+  assert.equal('contracts' in intel.finale, false, 'hidden witness conditions are not route-intel objectives');
   assert.equal(intel.doctrines.free, true);
   assert.equal(intel.doctrines.entries.length, 3);
   assert.match(intel.notice, /不会消耗卡片、金币、HP、MP 或回合/);
@@ -58,4 +57,5 @@ test('free route intel exposes current enemy numbers and final facts, not a hidd
   assert.ok(intel.finale.finalEnemies.some((enemy) => enemy.id === 'originCore' && enemy.hp === ENEMIES.originCore.hp));
   assert.equal('effect' in intel, false);
   assert.equal('cost' in intel, false);
+  assert.equal('contracts' in intel.finale, false);
 });

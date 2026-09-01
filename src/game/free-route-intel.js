@@ -18,7 +18,6 @@ import {
 } from './progression-rules.js';
 import { WAR_COUNCIL_ALLIES, WAR_COUNCIL_LOYALISTS } from './war-council.js';
 import { getAllianceBond, isAllianceBonded } from './alliance-bonds.js';
-import { getChallengeContractBriefing } from './challenge-contracts.js';
 import { getRouteDoctrineBriefing } from './route-doctrines.js';
 import { getAct3CharterBriefing } from './act3-charters.js';
 import { getAct3HandoffBriefing } from './act3-handoff-priorities.js';
@@ -62,7 +61,7 @@ const ROUTE_NOTES = Object.freeze({
   8: '两枚开关加维拉是上行条件；双卫宝库可选。',
   9: '月辉卡开启校准台；符文顺序为月蚀 → 晨辉 → 星落。',
   10: '日曜卡开启王座结界。门后没有商店，确认后再进入。',
-  11: '离开前必须选一条专家路线；选择不扣资源，但其余两条会关闭。',
+  11: '离开前必须签署一份见证契约；选择不扣资源，但其余两条路线会关闭。',
   12: '双谱宝库是可选双守卫战，奖励是 MP 容量。',
   13: '星卡开容量导管；月卡开可选旁路。两者都不挡上行。',
   14: '三名竞技场守卫全是上行条件；先比较三场的耗血和 MP。',
@@ -230,7 +229,6 @@ function finaleFacts(state) {
       ]
     } : null;
   }).filter(Boolean);
-  const contracts = getChallengeContractBriefing(state);
   return Object.freeze({
     title: atActThree ? '余烬灯塔公开情报' : '终局公开情报',
     premise: atActThree
@@ -258,7 +256,6 @@ function finaleFacts(state) {
         bondEffect: bond?.finale?.label ?? null
       });
     })),
-    contracts,
     bossProtocols: getBossProtocolBriefing(state),
     finalEnemies: Object.freeze(finalEnemies)
   });
