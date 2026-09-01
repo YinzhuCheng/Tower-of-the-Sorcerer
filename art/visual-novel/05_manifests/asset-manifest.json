@@ -1,0 +1,86 @@
+{
+  "version": "2026-09-01",
+  "release_target": "public/assets/anime",
+  "assets": [
+    {
+      "id": "lead-expression-avatars-v1",
+      "kind": "avatar-expression-pack",
+      "characters": ["hero", "guide", "final_queen"],
+      "paths": [
+        "public/assets/anime/avatars/liyue-avatar-resolve-cel.webp",
+        "public/assets/anime/avatars/liyue-avatar-stern-cel.webp",
+        "public/assets/anime/avatars/liyue-avatar-guarded-cel.webp",
+        "public/assets/anime/avatars/liyue-avatar-embers-cel.webp",
+        "public/assets/anime/avatars/shawu-avatar-gentle-cel.webp",
+        "public/assets/anime/avatars/shawu-avatar-watchful-cel.webp",
+        "public/assets/anime/avatars/shawu-avatar-lament-cel.webp",
+        "public/assets/anime/avatars/shawu-avatar-focus-cel.webp",
+        "public/assets/anime/avatars/noctia-avatar-sorrow-cel.webp",
+        "public/assets/anime/avatars/noctia-avatar-grave-cel.webp",
+        "public/assets/anime/avatars/noctia-avatar-knowing-cel.webp",
+        "public/assets/anime/avatars/noctia-avatar-cold-cel.webp"
+      ],
+      "status": "approved-2026-09-01"
+    },
+    {
+      "id": "hero-standing-resolve",
+      "kind": "standing-sprite",
+      "character": "hero",
+      "path": "public/assets/anime/characters/liyue-dialogue-resolve.webp",
+      "scene_use": ["prologue", "tower-dialogue", "battle-prelude"],
+      "status": "approved-existing"
+    },
+    {
+      "id": "guide-standing-gentle",
+      "kind": "standing-sprite",
+      "character": "guide",
+      "path": "public/assets/anime/characters/shawu-dialogue-gentle.webp",
+      "scene_use": ["prologue", "archive-dialogue", "revelation"],
+      "status": "approved-existing"
+    },
+    {
+      "id": "queen-standing-sorrow",
+      "kind": "standing-sprite",
+      "character": "final_queen",
+      "path": "public/assets/anime/characters/noctia-dialogue-sorrow.webp",
+      "scene_use": ["queen-encounter", "finale"],
+      "status": "approved-existing"
+    },
+    {
+      "id": "theme-forest-approach",
+      "kind": "background",
+      "path": "public/assets/anime/themes/theme-forest-approach.webp",
+      "scene_use": ["prologue", "forest", "tower-approach"],
+      "status": "approved-2026-09-01",
+      "replaces_runtime_slot": "forest"
+    },
+    {
+      "id": "theme-night-tower",
+      "kind": "background",
+      "path": "public/assets/anime/themes/theme-night-tower.webp",
+      "scene_use": ["night"],
+      "status": "approved-existing"
+    },
+    {
+      "id": "theme-sun-sanctum",
+      "kind": "background",
+      "path": "public/assets/anime/themes/theme-sun-sanctum.webp",
+      "scene_use": ["sun"],
+      "status": "approved-existing"
+    },
+    {
+      "id": "theme-ocean-archive",
+      "kind": "background",
+      "path": "public/assets/anime/themes/theme-ocean-archive.webp",
+      "scene_use": ["ocean"],
+      "status": "approved-existing"
+    },
+    {
+      "id": "theme-forest-sanctuary",
+      "kind": "background",
+      "path": "public/assets/anime/themes/theme-forest-sanctuary.webp",
+      "scene_use": ["forest"],
+      "status": "approved-existing"
+    }
+  ]
+}

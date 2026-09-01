@@ -232,8 +232,8 @@ export const DIALOGUES = {
     title: '第二阵：森罗双钥',
     turns: [
       { speaker: '旁白', portrait: null, text: '月影核心复苏时，一段求援录音也钻进璃的耳中：灰港撤离，请确认名单。' },
-      { speaker: '残响精灵·纱雾', portrait: 'guide', text: '那份紧急登记本该在三日后封存，却在塔里重复了三年。女王没有让它结束。' },
-      { speaker: '绫星·璃', portrait: 'hero', text: '她把守卫和门锁都接进登记网，只为不让这句求援消失。我要找到她。' }
+      { speaker: '残响精灵·纱雾', portrait: 'guide', expression: 'watchful', text: '那份紧急登记本该在三日后封存，却在塔里重复了三年。女王没有让它结束。' },
+      { speaker: '绫星·璃', portrait: 'hero', expression: 'guarded', text: '她把守卫和门锁都接进登记网，只为不让这句求援消失。我要找到她。' }
     ]
   },
   floor3: {
@@ -241,22 +241,22 @@ export const DIALOGUES = {
     turns: [
       { speaker: '旁白', portrait: null, text: '回廊里反复响起撤离号角。真正的出口提示，却被更响的鲸歌盖住。' },
       { speaker: '深蓝歌姬·澜音', portrait: 'whale_boss', text: '术式要我唱下去。只要歌不停，名单就不会被标成“无人回应”。' },
-      { speaker: '绫星·璃', portrait: 'hero', text: '求救该被听见，不该被无限重播。澜音，我会先让你停下来。' }
+      { speaker: '绫星·璃', portrait: 'hero', expression: 'stern', text: '求救该被听见，不该被无限重播。澜音，我会先让你停下来。' }
     ]
   },
   floor4: {
     title: '第四阵：锋刃庭院',
     turns: [
       { speaker: '剑圣·塞蕾娜', portrait: 'sword_boss', text: '我曾教巡卫按规程护送伤者。现在规程只有一条：阻止所有人上楼。' },
-      { speaker: '残响精灵·纱雾', portrait: 'guide', text: '女王把一条临时封锁令写成了永久命令。守卫们只能照做。' },
-      { speaker: '绫星·璃', portrait: 'hero', text: '规则可以写清代价，不能替人决定一辈子。让我替你们切断它。' }
+      { speaker: '残响精灵·纱雾', portrait: 'guide', expression: 'lament', text: '女王把一条临时封锁令写成了永久命令。守卫们只能照做。' },
+      { speaker: '绫星·璃', portrait: 'hero', expression: 'embers', text: '规则可以写清代价，不能替人决定一辈子。让我替你们切断它。' }
     ]
   },
   floor5: {
     title: '第五阵：赤焰龙脉',
     turns: [
       { speaker: '龙姬·焰璃', portrait: 'dragon_boss', text: '我守着供暖炉。登记网说外面仍有避难者，所以炉火不准熄。' },
-      { speaker: '绫星·璃', portrait: 'hero', text: '可炉火已经在烧空房间。你们被旧消息困住了。' },
+      { speaker: '绫星·璃', portrait: 'hero', expression: 'guarded', text: '可炉火已经在烧空房间。你们被旧消息困住了。' },
       { speaker: '龙姬·焰璃', portrait: 'dragon_boss', text: '若你真能找到女王，就问她：名单里的名字，后来怎样了？' }
     ]
   },
@@ -264,7 +264,7 @@ export const DIALOGUES = {
     title: '第六阵：星镜书库',
     turns: [
       { speaker: '天穹魔女·露米', portrait: 'astral_boss', text: '星镜推演过千次：停掉登记网，档案会被清空；维持它，塔会继续伤人。' },
-      { speaker: '残响精灵·纱雾', portrait: 'guide', text: '女王只看见了这两个结果，便把整座塔冻结在“仍在救援”的那一天。' },
+      { speaker: '残响精灵·纱雾', portrait: 'guide', expression: 'focus', text: '女王只看见了这两个结果，便把整座塔冻结在“仍在救援”的那一天。' },
       { speaker: '绫星·璃', portrait: 'hero', text: '一定还有第三种做法：留下记录，结束错误的命令。' }
     ]
   },
@@ -272,14 +272,14 @@ export const DIALOGUES = {
     title: '第七阵：虚影织界',
     turns: [
       { speaker: '影织姬·鸦羽', portrait: 'shadow_boss', text: '女王听见“撤销登记”时，以为那些名字也会一起消失。于是她封住了整座塔。' },
-      { speaker: '绫星·璃', portrait: 'hero', text: '她想守住名字，却让活着的人变成了工具。王庭里，我会亲口告诉她。' }
+      { speaker: '绫星·璃', portrait: 'hero', expression: 'stern', text: '她想守住名字，却让活着的人变成了工具。王庭里，我会亲口告诉她。' }
     ]
   },
   floor8: {
     title: '终阵：无声王座',
     turns: [
-      { speaker: '无声女王·诺克缇娅', portrait: 'final_queen', text: '我没有忘记每一个名字。只要登记还在，他们就还在等着回家。' },
-      { speaker: '绫星·璃', portrait: 'hero', text: '你守住的是一份记录，不是他们本人。让我替你把这条命令停下。' }
+      { speaker: '无声女王·诺克缇娅', portrait: 'final_queen', expression: 'grave', text: '我没有忘记每一个名字。只要登记还在，他们就还在等着回家。' },
+      { speaker: '绫星·璃', portrait: 'hero', expression: 'embers', text: '你守住的是一份记录，不是他们本人。让我替你把这条命令停下。' }
     ]
   },
   bossCat: {
@@ -311,11 +311,11 @@ export const DIALOGUES = {
     text: '影线一根根断开。鸦羽低声说：“她怕的不是你的力量，是你还能自己选择。”'
   },
   queenPhase: {
-    speaker: '无声女王·诺克缇娅', portrait: 'final_queen', title: '最终术式展开',
+    speaker: '无声女王·诺克缇娅', portrait: 'final_queen', expression: 'cold', title: '最终术式展开',
     text: '女王与黯星核心融合。核心的魔法反击无视防御。\n\n第二阶段紧接着开始，战前请确认生命和附刃档位。'
   },
   ending: {
-    speaker: '绫星·璃', portrait: 'hero', title: '终章：魔法重新被选择',
+    speaker: '绫星·璃', portrait: 'hero', expression: 'guarded', title: '终章：魔法重新被选择',
     text: '黯星核心破碎，守卫们恢复意识。\n\n璃没有夺走任何人的魔力；高塔的命令终于失效。'
   }
 };

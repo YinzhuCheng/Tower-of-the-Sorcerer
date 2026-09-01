@@ -1,0 +1,19 @@
+{
+  "asset_id": "lead-expression-avatars-v1",
+  "source": "image generation with character-stage reference",
+  "created_at": "2026-09-01",
+  "prompt_packet": "03_intermediate/prompt_packets/style-lock.md",
+  "layout": "Three separate 2x2 head-and-shoulder expression sheets, cropped to 12 WebP runtime avatars.",
+  "coverage": {
+    "hero": ["resolve", "stern", "guarded", "embers"],
+    "guide": ["gentle", "watchful", "lament", "focus"],
+    "final_queen": ["sorrow", "grave", "knowing", "cold"]
+  },
+  "qa": {
+    "identity_within_sheet": "pass",
+    "head_and_shoulders_safe_crop": "pass",
+    "no_text_or_watermark": "pass",
+    "runtime_size": "256x256 WebP",
+    "code_switch_mapping": "pass"
+  }
+}

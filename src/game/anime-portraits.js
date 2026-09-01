@@ -150,8 +150,34 @@ const RUNTIME_PORTRAITS = Object.freeze({
 // portrait without paying for a full character illustration.
 const DIALOGUE_EXPRESSIONS = Object.freeze({
   'hero:resolve': '/assets/anime/characters/liyue-dialogue-resolve.webp',
+  'hero:stern': '/assets/anime/characters/liyue-dialogue-resolve.webp',
+  'hero:guarded': '/assets/anime/characters/liyue-dialogue-resolve.webp',
+  'hero:embers': '/assets/anime/characters/liyue-dialogue-resolve.webp',
   'guide:gentle': '/assets/anime/characters/shawu-dialogue-gentle.webp',
-  'final_queen:sorrow': '/assets/anime/characters/noctia-dialogue-sorrow.webp'
+  'guide:watchful': '/assets/anime/characters/shawu-dialogue-gentle.webp',
+  'guide:lament': '/assets/anime/characters/shawu-dialogue-gentle.webp',
+  'guide:focus': '/assets/anime/characters/shawu-dialogue-gentle.webp',
+  'final_queen:sorrow': '/assets/anime/characters/noctia-dialogue-sorrow.webp',
+  'final_queen:grave': '/assets/anime/characters/noctia-dialogue-sorrow.webp',
+  'final_queen:knowing': '/assets/anime/characters/noctia-dialogue-sorrow.webp',
+  'final_queen:cold': '/assets/anime/characters/noctia-dialogue-sorrow.webp'
+});
+
+// The three recurring leads use a real painted face for each dialogue state,
+// not one neutral avatar dressed up with a different text label.
+const LEAD_EXPRESSION_AVATARS = Object.freeze({
+  'hero:resolve': { label: '决意', avatar: '/assets/anime/avatars/liyue-avatar-resolve-cel.webp' },
+  'hero:stern': { label: '警觉', avatar: '/assets/anime/avatars/liyue-avatar-stern-cel.webp' },
+  'hero:guarded': { label: '克制', avatar: '/assets/anime/avatars/liyue-avatar-guarded-cel.webp' },
+  'hero:embers': { label: '战意', avatar: '/assets/anime/avatars/liyue-avatar-embers-cel.webp' },
+  'guide:gentle': { label: '温柔', avatar: '/assets/anime/avatars/shawu-avatar-gentle-cel.webp' },
+  'guide:watchful': { label: '担忧', avatar: '/assets/anime/avatars/shawu-avatar-watchful-cel.webp' },
+  'guide:lament': { label: '低回', avatar: '/assets/anime/avatars/shawu-avatar-lament-cel.webp' },
+  'guide:focus': { label: '凝神', avatar: '/assets/anime/avatars/shawu-avatar-focus-cel.webp' },
+  'final_queen:sorrow': { label: '哀伤', avatar: '/assets/anime/avatars/noctia-avatar-sorrow-cel.webp' },
+  'final_queen:grave': { label: '威仪', avatar: '/assets/anime/avatars/noctia-avatar-grave-cel.webp' },
+  'final_queen:knowing': { label: '了然', avatar: '/assets/anime/avatars/noctia-avatar-knowing-cel.webp' },
+  'final_queen:cold': { label: '冷峻', avatar: '/assets/anime/avatars/noctia-avatar-cold-cel.webp' }
 });
 
 // Dialogue is not a smaller version of the enemy codex.  Every person who
@@ -161,9 +187,9 @@ const DIALOGUE_EXPRESSIONS = Object.freeze({
 // the supporting cast deliberately keeps its authored runtime portrait while
 // the stage supplies its expression lighting and state treatment.
 export const DIALOGUE_CAST = Object.freeze({
-  hero: { expression: 'resolve', label: '决意', avatar: '/assets/anime/avatars/liyue-avatar-resolve.webp' },
-  guide: { expression: 'gentle', label: '温柔', avatar: '/assets/anime/avatars/shawu-avatar-gentle.webp' },
-  final_queen: { expression: 'sorrow', label: '哀伤', avatar: '/assets/anime/avatars/noctia-avatar-sorrow.webp' },
+  hero: { expression: 'resolve', label: '决意', avatar: '/assets/anime/avatars/liyue-avatar-resolve-cel.webp' },
+  guide: { expression: 'gentle', label: '温柔', avatar: '/assets/anime/avatars/shawu-avatar-gentle-cel.webp' },
+  final_queen: { expression: 'sorrow', label: '哀伤', avatar: '/assets/anime/avatars/noctia-avatar-sorrow-cel.webp' },
   cat_boss: { expression: 'alert', label: '警惕', avatar: '/assets/anime/avatars/cat-boss-avatar-alert.webp' },
   fox_boss: { expression: 'watchful', label: '审视', avatar: '/assets/anime/avatars/fox-boss-avatar-watchful.webp' },
   whale_boss: { expression: 'lament', label: '低回', avatar: '/assets/anime/avatars/whale-boss-avatar-lament.webp' },
@@ -215,13 +241,14 @@ export function dialoguePresentation(id, requestedExpression = null) {
   const cast = DIALOGUE_CAST[id] ?? { expression: 'neutral', label: '平静' };
   const expression = requestedExpression ?? cast.expression;
   const key = `${id}:${expression}`;
+  const leadExpression = LEAD_EXPRESSION_AVATARS[key];
   return Object.freeze({
     id,
     expression,
-    label: expression === cast.expression ? cast.label : (expression === 'resolve' ? '决意' : expression === 'gentle' ? '温柔' : expression === 'sorrow' ? '哀伤' : '平静'),
-    avatar: cast.avatar ?? portraitUrl(id, expression),
+    label: leadExpression?.label ?? (expression === cast.expression ? cast.label : (expression === 'resolve' ? '决意' : expression === 'gentle' ? '温柔' : expression === 'sorrow' ? '哀伤' : '平静')),
+    avatar: leadExpression?.avatar ?? cast.avatar ?? portraitUrl(id, expression),
     stage: portraitUrl(id, expression),
-    hasAvatarArt: Boolean(cast.avatar),
+    hasAvatarArt: Boolean(leadExpression?.avatar ?? cast.avatar),
     hasPaintedExpression: Boolean(DIALOGUE_EXPRESSIONS[key])
   });
 }

@@ -569,3 +569,218 @@ body[data-theme="forest"]::after{opacity:.23;background-image:radial-gradient(ci
   .gal-nameplate-narration{min-width:126px;min-height:37px;padding:5px 11px}
   .gal-typewriter{min-height:4.8em}
 }
+
+/* V13 — isolated Gal Layer -------------------------------------------------
+   The tactical modal and the visual-novel stage deliberately do not share a
+   box model.  This final layer owns its viewport, aspect ratio and overflow,
+   so a story scene can never turn into a scrollable game-panel again. */
+.gal-root{
+  position:fixed;
+  z-index:120;
+  inset:0;
+  display:grid;
+  place-items:center;
+  overflow:hidden;
+  background:#02050d;
+  color:#eef3ff;
+  isolation:isolate;
+}
+.gal-root.hidden{display:none!important}
+.gal-root .gal-shell{
+  position:relative;
+  width:min(100vw,calc(100svh * 16 / 9));
+  aspect-ratio:16 / 9;
+  overflow:hidden;
+  background:#071020;
+  box-shadow:0 0 0 1px rgba(213,231,255,.2),0 28px 90px rgba(0,0,0,.72);
+}
+.gal-root .gal-dialogue{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  min-height:0;
+  overflow:hidden;
+  background:#071020;
+}
+.gal-root .gal-dialogue::before,
+.gal-root .gal-dialogue::after,
+.gal-root .gal-stage::before,
+.gal-root .gal-stage::after{content:none}
+.gal-root .gal-backdrop{
+  position:absolute;
+  z-index:0;
+  inset:0;
+  opacity:1;
+  transform:none;
+  filter:none;
+  background-image:var(--gal-backdrop);
+  background-position:center;
+  background-size:cover;
+  animation:galBackdropReveal .65s ease-out both;
+}
+.gal-root .gal-backdrop::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(90deg,rgba(3,7,17,.48),rgba(3,7,17,.06) 47%,rgba(3,7,17,.34)),linear-gradient(0deg,rgba(2,5,14,.64),transparent 58%);
+}
+.gal-root .gal-stage{position:absolute;z-index:2;inset:0;overflow:hidden;pointer-events:none}
+.gal-root .gal-stage::before,.gal-root .gal-stage::after{display:none}
+.gal-root .gal-lens{position:absolute;z-index:4;inset:0;background:radial-gradient(ellipse at 52% 35%,transparent 28%,rgba(3,6,18,.3) 100%)}
+.gal-root .gal-cg{
+  position:absolute;
+  z-index:1;
+  inset:0;
+  opacity:1;
+  transform:none;
+  background:var(--gal-cg) center / cover no-repeat;
+  animation:galCgReveal .7s ease-out both;
+}
+.gal-root .gal-dialogue.has-cg .gal-backdrop{filter:brightness(.42) saturate(.7)}
+.gal-root .gal-dialogue.has-cg .gal-lens{background:linear-gradient(0deg,rgba(2,4,12,.63),transparent 55%),linear-gradient(90deg,rgba(2,5,14,.34),transparent 47%,rgba(2,5,14,.3))}
+
+/* Standing art lives in a fixed lower-stage frame.  Image content is always
+   contained and bottom-aligned; the alpha canvas can never crop to a foot. */
+.gal-root .gal-actor{
+  position:absolute;
+  z-index:2;
+  bottom:20.5%;
+  width:42%;
+  height:77%;
+  margin:0;
+  display:flex;
+  align-items:flex-end;
+  justify-content:center;
+  opacity:.45;
+  filter:grayscale(.18) brightness(.61) drop-shadow(0 18px 17px rgba(0,0,0,.62));
+  transform:translateY(1.8%) scale(.96);
+  transform-origin:center bottom;
+  transition:opacity .24s ease,filter .24s ease,transform .28s cubic-bezier(.2,.8,.25,1);
+}
+.gal-root .gal-actor-left{left:-2.5%}
+.gal-root .gal-actor-right{right:-2.5%}
+.gal-root .gal-standing{
+  display:block;
+  width:100%;
+  height:100%;
+  max-width:none;
+  max-height:none;
+  object-fit:contain;
+  object-position:center bottom;
+}
+.gal-root .gal-actor.is-speaking{
+  z-index:3;
+  opacity:1;
+  filter:drop-shadow(0 24px 20px rgba(0,0,0,.72)) drop-shadow(0 0 28px rgba(148,183,255,.31)) saturate(1.06) brightness(1.05);
+  transform:translateY(-.7%) scale(1.015);
+}
+.gal-root .gal-actor.expression-embers.is-speaking{filter:drop-shadow(0 24px 20px rgba(0,0,0,.72)) drop-shadow(0 0 31px rgba(255,120,73,.42)) saturate(1.1) brightness(1.06)}
+.gal-root .gal-actor.expression-sorrow.is-speaking,.gal-root .gal-actor.expression-lament.is-speaking{filter:drop-shadow(0 24px 20px rgba(0,0,0,.72)) drop-shadow(0 0 31px rgba(111,189,255,.36)) saturate(.96) brightness(1.08)}
+.gal-root .gal-dialogue.is-narration .gal-narration-mark{position:absolute;z-index:3;left:50%;top:39%;font-size:clamp(3.6rem,8vw,7rem);color:#e9deff;transform:translate(-50%,-50%);text-shadow:0 0 48px #8f79f4;animation:markPulse 2.5s ease-in-out infinite}
+
+.gal-root .gal-scene-label{
+  position:absolute;
+  z-index:10;
+  top:3.2%;
+  left:4.1%;
+  display:grid;
+  gap:2px;
+  max-width:43%;
+  color:#f5f7ff;
+  text-shadow:0 2px 12px #000;
+  pointer-events:none;
+  transition:opacity .18s ease,transform .18s ease;
+}
+.gal-root .gal-scene-label span{color:#e5c981;font-size:clamp(.46rem,.72vw,.63rem);font-weight:900;letter-spacing:.18em}
+.gal-root .gal-scene-label strong{overflow:hidden;font-family:"Noto Serif SC","Songti SC",serif;font-size:clamp(.83rem,1.5vw,1.25rem);letter-spacing:.07em;text-overflow:ellipsis;white-space:nowrap}
+.gal-root .gal-scene-label small{color:rgba(230,237,255,.73);font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:clamp(.42rem,.6vw,.55rem);letter-spacing:.12em}
+.gal-root .gal-toolbar{
+  position:absolute;
+  z-index:12;
+  top:3.1%;
+  right:3.3%;
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:flex-end;
+  gap:5px;
+  max-width:47%;
+  transition:opacity .18s ease,transform .18s ease;
+}
+.gal-root .gal-toolbar button,.gal-root .gal-text-actions button{
+  min-height:30px;
+  padding:6px 10px;
+  border:1px solid rgba(207,226,255,.35);
+  border-radius:5px;
+  background:rgba(8,19,41,.72);
+  color:#edf4ff;
+  font-size:clamp(.55rem,.78vw,.7rem);
+  font-weight:800;
+  letter-spacing:.05em;
+  text-shadow:0 1px 4px #000;
+  backdrop-filter:blur(8px);
+}
+.gal-root .gal-toolbar button:hover,.gal-root .gal-text-actions button:hover{border-color:rgba(246,231,183,.84);background:rgba(39,58,103,.85)}
+.gal-root .gal-toolbar button.is-active{border-color:rgba(250,221,148,.9);background:linear-gradient(135deg,rgba(125,86,43,.85),rgba(77,54,129,.85));color:#fff5d6}
+.gal-root .gal-toolbar .gal-skip{border-color:rgba(255,179,199,.55);color:#ffe3eb}
+
+.gal-root .gal-textbox{
+  position:absolute;
+  z-index:11;
+  right:0;
+  bottom:0;
+  left:0;
+  box-sizing:border-box;
+  min-height:28.5%;
+  padding:3.25% 12.5% 2.2% 14.4%;
+  overflow:visible;
+  border:0;
+  border-top:1px solid rgba(224,237,255,.7);
+  border-radius:0;
+  background:linear-gradient(100deg,rgba(7,16,40,.93),rgba(13,28,61,.89) 57%,rgba(26,28,63,.86));
+  box-shadow:0 -8px 36px rgba(0,0,0,.22),inset 0 1px rgba(255,255,255,.12);
+  color:#f3f7ff;
+  text-align:left;
+  transition:opacity .18s ease,transform .18s ease;
+}
+.gal-root .gal-textbox::before{content:"";position:absolute;top:-2px;left:0;width:32%;height:2px;background:linear-gradient(90deg,#f7e0a0,#b7caff,#7d6ddd,transparent)}
+.gal-root .gal-textbox:focus-visible{outline:2px solid #e7efff;outline-offset:-4px}
+.gal-root .gal-nameplate{
+  position:absolute;
+  z-index:2;
+  top:calc(-1 * clamp(26px,3.7vw,42px));
+  left:clamp(20px,4.2vw,68px);
+  display:flex;
+  align-items:center;
+  gap:9px;
+  min-width:clamp(220px,25vw,348px);
+  min-height:clamp(48px,5vw,60px);
+  margin:0;
+  padding:4px 16px 4px 5px;
+  border:1px solid rgba(226,236,255,.61);
+  border-radius:7px 18px 18px 7px;
+  background:linear-gradient(112deg,rgba(25,50,108,.98),rgba(96,61,127,.95) 72%,rgba(167,93,136,.92));
+  box-shadow:0 7px 20px rgba(0,0,0,.42),inset 0 1px rgba(255,255,255,.18);
+}
+.gal-root .gal-speaker-avatar{width:clamp(39px,4.1vw,51px);height:clamp(39px,4.1vw,51px);flex-basis:clamp(39px,4.1vw,51px);border-radius:50%;overflow:hidden;border:1px solid rgba(255,244,209,.8);background:#21365e;box-shadow:0 0 0 2px rgba(17,28,58,.55),0 0 13px rgba(178,202,255,.38)}
+.gal-root .gal-speaker-avatar img,.gal-root .gal-speaker-avatar.has-avatar-art img{display:block;width:100%;height:100%;object-fit:cover;object-position:center;transform:none;filter:contrast(1.03) saturate(1.05)}
+.gal-root .gal-nameplate-copy{display:grid;gap:1px;min-width:0}.gal-root .gal-nameplate-copy small,.gal-root .gal-nameplate-kicker{overflow:hidden;color:rgba(246,240,255,.74);font-size:clamp(.42rem,.55vw,.52rem);font-weight:850;letter-spacing:.14em;line-height:1.16;text-overflow:ellipsis;white-space:nowrap}.gal-root .gal-nameplate-copy strong,.gal-root .gal-nameplate strong{overflow:hidden;font-family:"Noto Serif SC","Songti SC",serif;font-size:clamp(.77rem,1.12vw,.96rem);letter-spacing:.08em;text-overflow:ellipsis;white-space:nowrap}
+.gal-root .gal-nameplate-narration{display:grid;min-width:128px;min-height:34px;padding:5px 13px;text-align:center}
+.gal-root .gal-nameplate[data-expression="embers"]{background:linear-gradient(112deg,rgba(113,35,26,.98),rgba(130,58,46,.96) 72%,rgba(191,109,72,.91))}.gal-root .gal-nameplate[data-expression="sorrow"],.gal-root .gal-nameplate[data-expression="lament"]{background:linear-gradient(112deg,rgba(24,57,105,.98),rgba(55,76,135,.95) 72%,rgba(112,79,147,.9))}.gal-root .gal-nameplate[data-expression="guarded"],.gal-root .gal-nameplate[data-expression="grave"]{background:linear-gradient(112deg,rgba(38,26,68,.98),rgba(75,50,106,.95) 72%,rgba(110,74,139,.9))}
+.gal-root .gal-typewriter{min-height:3.4em;margin:0;color:#f2f5ff;font-family:"Noto Serif SC","Songti SC",serif;font-size:clamp(.87rem,1.35vw,1.08rem);line-height:1.82;letter-spacing:.03em;text-shadow:0 1px 2px rgba(0,0,0,.42)}
+.gal-root .gal-choices{position:relative;z-index:2;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:10px 0 0}.gal-root .gal-choice{min-height:33px;padding:7px 9px;border:1px solid rgba(205,221,255,.35);border-radius:5px;background:rgba(20,38,77,.76);color:#f1f5ff;font-size:clamp(.62rem,.83vw,.76rem);text-align:left}.gal-root .gal-choice:hover{border-color:#f3dfaa;background:rgba(62,71,125,.84)}.gal-root .gal-choice.selected{border-color:#f7e0a4!important;background:linear-gradient(120deg,rgba(165,113,56,.78),rgba(103,77,164,.78))!important;color:#fff9df!important}
+.gal-root .gal-choice-response{margin:7px 0 0;color:#dfd1ff;font-size:clamp(.6rem,.78vw,.72rem);line-height:1.5}
+.gal-root .gal-text-actions{display:flex;gap:7px;margin-top:10px}.gal-root .gal-text-actions .primary{border-color:rgba(244,222,155,.72);background:linear-gradient(135deg,rgba(74,95,156,.94),rgba(109,72,137,.94));color:#fff8df}.gal-root .gal-text-actions button:disabled{opacity:.38;cursor:not-allowed}
+.gal-root .gal-advance-hint{position:absolute;right:5.2%;bottom:12%;color:rgba(227,236,255,.58);font-size:clamp(.42rem,.57vw,.55rem);letter-spacing:.04em}
+.gal-root .gal-backlog{position:absolute;z-index:22;top:12%;right:8%;bottom:8%;width:min(56%,610px);overflow:hidden;border:1px solid rgba(204,222,255,.45);border-radius:10px;background:rgba(6,13,33,.94);box-shadow:0 20px 60px rgba(0,0,0,.65);backdrop-filter:blur(14px)}.gal-root .gal-backlog[hidden]{display:none}.gal-root .gal-backlog header{display:flex;justify-content:space-between;align-items:center;padding:11px 15px;border-bottom:1px solid rgba(207,224,255,.2);color:#f3dfad;font-size:.68rem;letter-spacing:.12em}.gal-root .gal-backlog header button{border:0;background:none;color:#fff;font-size:1.2rem;cursor:pointer}.gal-root .gal-history-list{height:calc(100% - 46px);padding:12px 15px;overflow:auto}.gal-root .gal-history-entry{padding:8px 0;border-bottom:1px solid rgba(208,222,255,.11)}.gal-root .gal-history-entry strong{color:#f2e0a5;font-size:.68rem}.gal-root .gal-history-entry p{margin:4px 0 0;color:#e9efff;font-family:"Noto Serif SC","Songti SC",serif;font-size:.76rem;line-height:1.62}.gal-root .gal-history-entry small{display:block;margin-top:5px;color:#decaff;font-size:.65rem}
+.gal-root .gal-ui-restore{display:none}.gal-root .gal-dialogue.ui-hidden .gal-toolbar,.gal-root .gal-dialogue.ui-hidden .gal-textbox,.gal-root .gal-dialogue.ui-hidden .gal-scene-label{opacity:0;transform:translateY(12px);pointer-events:none}.gal-root .gal-dialogue.ui-hidden .gal-ui-restore{position:absolute;z-index:30;inset:0;display:block;width:100%;height:100%;border:0;background:transparent;color:transparent;cursor:pointer}.gal-root .gal-dialogue.ui-hidden .gal-backlog{display:none}
+
+@media (max-width:700px), (max-aspect-ratio:4/5){
+  .gal-root .gal-shell{width:100vw;height:100svh;aspect-ratio:auto}
+  .gal-root .gal-actor{bottom:25%;width:78%;height:61%;opacity:.36}.gal-root .gal-actor-left{left:-34%}.gal-root .gal-actor-right{right:-34%}.gal-root .gal-actor.is-speaking{opacity:1}
+  .gal-root .gal-scene-label{top:14px;left:14px;max-width:45%}.gal-root .gal-scene-label small{display:none}
+  .gal-root .gal-toolbar{top:10px;right:10px;max-width:49%;gap:3px}.gal-root .gal-toolbar button{min-height:27px;padding:5px 6px;font-size:.54rem}
+  .gal-root .gal-textbox{min-height:31%;padding:38px 17px 32px 77px}.gal-root .gal-nameplate{top:-26px;left:12px;min-width:min(228px,calc(100% - 24px));min-height:48px}.gal-root .gal-speaker-avatar{width:40px;height:40px;flex-basis:40px}.gal-root .gal-nameplate-copy strong{font-size:.77rem}.gal-root .gal-typewriter{min-height:4.25em;font-size:.91rem;line-height:1.76}.gal-root .gal-choices{grid-template-columns:1fr}.gal-root .gal-text-actions button{min-height:31px;padding:6px 9px}.gal-root .gal-advance-hint{right:15px;bottom:9px;font-size:.48rem}
+  .gal-root .gal-backlog{top:62px;right:9px;bottom:9px;left:9px;width:auto}
+}
+@media (prefers-reduced-motion:reduce){.gal-root .gal-backdrop,.gal-root .gal-cg,.gal-root .gal-actor,.gal-root .gal-dialogue.is-narration .gal-narration-mark{animation:none;transition:none;transform:none!important}}

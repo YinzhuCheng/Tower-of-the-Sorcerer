@@ -72,7 +72,8 @@ const elements = {
   modalTitle: $('#modal-title'),
   modalBody: $('#modal-body'),
   modalActions: $('#modal-actions'),
-  modalClose: $('#modal-close')
+  modalClose: $('#modal-close'),
+  galRoot: $('#gal-root')
 };
 
 let state = createInitialState();
@@ -89,7 +90,7 @@ const GAL_BACKDROPS = Object.freeze({
   night: '/assets/anime/themes/theme-night-tower.webp',
   sun: '/assets/anime/themes/theme-sun-sanctum.webp',
   ocean: '/assets/anime/themes/theme-ocean-archive.webp',
-  forest: '/assets/anime/themes/theme-forest-sanctuary.webp'
+  forest: '/assets/anime/themes/theme-forest-approach.webp'
 });
 
 const GAL_DIALOGUE_BACKDROPS = Object.freeze({
@@ -129,6 +130,9 @@ function clearCinematic() {
   cinematicCleanup = null;
   cinematicControls = null;
   elements.modalRoot.classList.remove('gal-ui-hidden');
+  elements.galRoot.classList.add('hidden');
+  elements.galRoot.classList.remove('gal-ui-hidden');
+  elements.galRoot.replaceChildren();
 }
 
 function closeModal() {
@@ -206,7 +210,9 @@ function galActorHtml(side, actor, speakerId, speakerName) {
   if (!actor) return '';
   const speaking = actor.id === speakerId;
   const visual = dialoguePresentation(actor.id, actor.expression);
-  return `<img class="gal-portrait gal-portrait-${side} expression-${escapeHtml(visual.expression)} ${visual.hasPaintedExpression ? 'has-painted-expression' : ''} ${speaking ? 'is-speaking' : 'is-listening'}" data-expression="${escapeHtml(visual.expression)}" src="${visual.stage}" alt="${escapeHtml(speaking ? speakerName : '')}" />`;
+  return `<figure class="gal-actor gal-actor-${side} expression-${escapeHtml(visual.expression)} ${visual.hasPaintedExpression ? 'has-painted-expression' : ''} ${speaking ? 'is-speaking' : 'is-listening'}" data-expression="${escapeHtml(visual.expression)}">
+    <img class="gal-standing" src="${visual.stage}" alt="${escapeHtml(speaking ? speakerName : '')}" />
+  </figure>`;
 }
 
 function galNameplateHtml(turn, speakerName, isNarration) {
@@ -245,12 +251,14 @@ function showDialogue(dialogueId, after = null, { finalLabel = null } = {}) {
   const finish = () => {
     if (finished) return;
     finished = true;
-    modalClosable = true;
-    closeModal();
+    clearCinematic();
     after?.();
   };
 
   const renderTurn = () => {
+    cinematicCleanup?.();
+    cinematicCleanup = null;
+    cinematicControls = null;
     const turn = turns[index];
     const finalTurn = index === turns.length - 1;
     const isNarration = turn.kind === 'narration' || !turn.portrait;
@@ -279,14 +287,9 @@ function showDialogue(dialogueId, after = null, { finalLabel = null } = {}) {
         ${entry.choice ? `<small>${escapeHtml(entry.choice)}</small>` : ''}
       </article>`).join('') || '<p class="gal-history-empty">尚未记录对话。</p>';
 
-    openModal({
-      kicker: `STORY LOG · ${index + 1}/${turns.length}`,
-      title: dialogue.title,
-      // Conversations that hand directly into an irreversible UI stay modal,
-      // but every Gal control remains available inside the stage itself.
-      closable: !after,
-      variant: 'gal',
-      body: `
+    elements.galRoot.classList.remove('gal-ui-hidden');
+    elements.galRoot.innerHTML = `
+      <div class="gal-shell">
         <section class="gal-dialogue ${isNarration ? 'is-narration' : ''} ${cg ? 'has-cg' : ''}" aria-label="${escapeHtml(narratorName)}的对话" style="--gal-backdrop:url('${escapeHtml(backdrop)}')">
           <div class="gal-backdrop" aria-hidden="true"></div>
           <div class="gal-stage">
@@ -318,15 +321,15 @@ function showDialogue(dialogueId, after = null, { finalLabel = null } = {}) {
           </aside>
           <button type="button" class="gal-ui-restore" aria-label="显示对话界面">点击任意位置显示界面</button>
         </section>
-      `,
-      actions: [],
-      afterOpen: () => {
-        const textNode = elements.modalBody.querySelector('.gal-typewriter');
-        const textbox = elements.modalBody.querySelector('.gal-textbox');
-        const galRoot = elements.modalBody.querySelector('.gal-dialogue');
-        const advanceButton = elements.modalBody.querySelector('.gal-advance');
-        const previousButton = elements.modalBody.querySelector('.gal-previous');
-        const backlog = elements.modalBody.querySelector('.gal-backlog');
+      </div>`;
+    elements.galRoot.classList.remove('hidden');
+    {
+        const textNode = elements.galRoot.querySelector('.gal-typewriter');
+        const textbox = elements.galRoot.querySelector('.gal-textbox');
+        const dialogueRoot = elements.galRoot.querySelector('.gal-dialogue');
+        const advanceButton = elements.galRoot.querySelector('.gal-advance');
+        const previousButton = elements.galRoot.querySelector('.gal-previous');
+        const backlog = elements.galRoot.querySelector('.gal-backlog');
         const source = String(turn.text ?? '');
         let count = 0;
         let timer = null;
@@ -371,14 +374,14 @@ function showDialogue(dialogueId, after = null, { finalLabel = null } = {}) {
         const toggleBacklog = (force = null) => {
           historyOpen = force ?? !historyOpen;
           backlog.hidden = !historyOpen;
-          const button = elements.modalBody.querySelector('[data-gal-control="backlog"]');
+          const button = elements.galRoot.querySelector('[data-gal-control="backlog"]');
           button?.classList.toggle('is-active', historyOpen);
           button?.setAttribute('aria-pressed', String(historyOpen));
           if (historyOpen) backlog.querySelector('[data-gal-control="backlog-close"]')?.focus();
         };
         const refreshToolbar = () => {
-          const autoButton = elements.modalBody.querySelector('[data-gal-control="auto"]');
-          const fastButton = elements.modalBody.querySelector('[data-gal-control="fast"]');
+          const autoButton = elements.galRoot.querySelector('[data-gal-control="auto"]');
+          const fastButton = elements.galRoot.querySelector('[data-gal-control="fast"]');
           autoButton.textContent = galSettings.auto ? '自动·开' : '自动';
           fastButton.textContent = galSettings.fast ? '快进·开' : '快进';
           autoButton.classList.toggle('is-active', galSettings.auto);
@@ -402,9 +405,9 @@ function showDialogue(dialogueId, after = null, { finalLabel = null } = {}) {
           scheduleAutoAdvance();
         };
         const toggleUi = (force = null) => {
-          const hidden = force ?? !galRoot.classList.contains('ui-hidden');
-          galRoot.classList.toggle('ui-hidden', hidden);
-          elements.modalRoot.classList.toggle('gal-ui-hidden', hidden);
+          const hidden = force ?? !dialogueRoot.classList.contains('ui-hidden');
+          dialogueRoot.classList.toggle('ui-hidden', hidden);
+          elements.galRoot.classList.toggle('gal-ui-hidden', hidden);
           if (!hidden) textbox.focus({ preventScroll: true });
         };
 
@@ -433,7 +436,7 @@ function showDialogue(dialogueId, after = null, { finalLabel = null } = {}) {
           if (index > 0) { index -= 1; renderTurn(); }
         });
         advanceButton?.addEventListener('click', advance);
-        elements.modalBody.querySelectorAll('[data-gal-control]').forEach((button) => {
+        elements.galRoot.querySelectorAll('[data-gal-control]').forEach((button) => {
           button.addEventListener('click', () => {
             const control = button.dataset.galControl;
             if (control === 'backlog') toggleBacklog();
@@ -444,17 +447,17 @@ function showDialogue(dialogueId, after = null, { finalLabel = null } = {}) {
             if (control === 'skip') finish();
           });
         });
-        elements.modalBody.querySelector('.gal-ui-restore')?.addEventListener('click', () => toggleUi(false));
-        elements.modalBody.querySelectorAll('[data-dialogue-choice]').forEach((button) => {
+        elements.galRoot.querySelector('.gal-ui-restore')?.addEventListener('click', () => toggleUi(false));
+        elements.galRoot.querySelectorAll('[data-dialogue-choice]').forEach((button) => {
           button.addEventListener('click', () => {
             const choice = choices[Number(button.dataset.dialogueChoice)];
             if (!choice || chosen) return;
             chosen = choice;
-            elements.modalBody.querySelectorAll('.gal-choice').forEach((item) => {
+            elements.galRoot.querySelectorAll('.gal-choice').forEach((item) => {
               item.disabled = true;
               item.classList.toggle('selected', item === button);
             });
-            const response = elements.modalBody.querySelector('.gal-choice-response');
+            const response = elements.galRoot.querySelector('.gal-choice-response');
             if (response) response.textContent = choice.response ?? '璃记下这句话，迈向高塔深处。';
             rememberGalLine(historyKey, narratorName, source, choice.label);
             revealAll();
@@ -466,8 +469,7 @@ function showDialogue(dialogueId, after = null, { finalLabel = null } = {}) {
           clearAutoAdvance();
         };
         cinematicControls = { advance, skip: finish, toggleBacklog, toggleAuto, toggleFast, toggleUi };
-      }
-    });
+    }
   };
 
   renderTurn();
@@ -1247,7 +1249,7 @@ function bindControls() {
   });
 
   window.addEventListener('keydown', (event) => {
-    if (!elements.modalRoot.classList.contains('hidden')) {
+    if (!elements.modalRoot.classList.contains('hidden') || !elements.galRoot.classList.contains('hidden')) {
       if (event.defaultPrevented) return;
       const key = event.key.toLowerCase();
       if (event.key === 'Escape' && cinematicControls?.skip) {
@@ -1287,7 +1289,7 @@ async function boot() {
   autoSave();
   const bridge = {
     getState: () => state,
-    canMove: () => elements.modalRoot.classList.contains('hidden') && !state.victory,
+    canMove: () => elements.modalRoot.classList.contains('hidden') && elements.galRoot.classList.contains('hidden') && !state.victory,
     onResult: handleSceneResult,
     onReady: (readyScene) => {
       scene = readyScene;

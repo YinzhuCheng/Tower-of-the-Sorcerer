@@ -144,6 +144,10 @@
       </section>
     </div>
 
+    <!-- Kept separate from the tactical modal on purpose: story scenes own a
+         fixed visual-novel stage and must never inherit scrollable game UI. -->
+    <section id="gal-root" class="gal-root hidden" role="dialog" aria-modal="true" aria-label="剧情演出"></section>
+
     <noscript>本游戏需要启用 JavaScript。</noscript>
     <script src="/src/game/v8-atlas-fetch-shim.js"></script>
     <script type="module" src="/src/demo-main.js"></script>

@@ -8,7 +8,7 @@ import { applyDemoTenFloorContent } from '../src/game/demo-10-floor-content.js';
 import { applyDemoTenFloorProgressionGrammar } from '../src/game/demo-10-floor-progression.js';
 import { applyDemoTwentyFloorContent } from '../src/game/demo-20-floor-content.js';
 import { applyDemoThirtyFloorContent } from '../src/game/demo-30-floor-content.js';
-import { DIALOGUE_CAST } from '../src/game/anime-portraits.js';
+import { DIALOGUE_CAST, dialoguePresentation } from '../src/game/anime-portraits.js';
 
 test('battle results retain an authoritative pre-combat hero snapshot for the cinematic layer', () => {
   const state = createInitialState();
@@ -92,5 +92,21 @@ test('every speaking character receives a shipped Gal avatar and a declared expr
     assert.match(DIALOGUE_CAST[portrait].avatar, /^\/assets\/anime\/avatars\/.+\.webp$/, `${portrait} needs a dedicated avatar art file`);
     const avatar = await stat(new URL(`../public${DIALOGUE_CAST[portrait].avatar}`, import.meta.url));
     assert.ok(avatar.size > 8_000, `${portrait} avatar should be a real image, not a placeholder`);
+  }
+});
+
+test('the three narrative leads switch to distinct painted facial expressions', async () => {
+  const variants = [
+    ['hero', 'resolve'], ['hero', 'stern'], ['hero', 'guarded'], ['hero', 'embers'],
+    ['guide', 'gentle'], ['guide', 'watchful'], ['guide', 'lament'], ['guide', 'focus'],
+    ['final_queen', 'sorrow'], ['final_queen', 'grave'], ['final_queen', 'knowing'], ['final_queen', 'cold']
+  ].map(([id, expression]) => dialoguePresentation(id, expression));
+
+  assert.equal(new Set(variants.map((variant) => variant.avatar)).size, variants.length);
+  for (const variant of variants) {
+    assert.ok(variant.hasAvatarArt, `${variant.id}:${variant.expression} needs painted avatar art`);
+    assert.ok(variant.hasPaintedExpression, `${variant.id}:${variant.expression} needs a stage presentation`);
+    const avatar = await stat(new URL(`../public${variant.avatar}`, import.meta.url));
+    assert.ok(avatar.size > 10_000, `${variant.id}:${variant.expression} avatar should be a real image`);
   }
 });

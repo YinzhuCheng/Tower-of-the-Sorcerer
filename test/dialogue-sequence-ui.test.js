@@ -14,3 +14,20 @@ test('the dialogue modal renders authored exchanges one turn at a time', async (
   assert.match(source, /turn\.portrait/);
   assert.match(source, /after\?\.\(\)/);
 });
+
+test('story presentation owns an isolated Gal layer instead of the scrollable tactical modal', async () => {
+  const [html, source, css] = await Promise.all([
+    readFile(join(root, 'index.html'), 'utf8'),
+    readFile(join(root, 'src/main.js'), 'utf8'),
+    readFile(join(root, 'ui-v10-cinematics.css'), 'utf8')
+  ]);
+
+  assert.match(html, /id="gal-root" class="gal-root hidden"/);
+  assert.match(source, /elements\.galRoot\.innerHTML/);
+  assert.match(source, /<div class="gal-shell">/);
+  assert.match(source, /elements\.galRoot\.querySelectorAll\('\[data-gal-control\]'/);
+  assert.match(source, /elements\.galRoot\.classList\.contains\('hidden'\)/);
+  assert.match(css, /\.gal-root\{[\s\S]*?overflow:hidden/);
+  assert.match(css, /\.gal-root \.gal-shell\{[\s\S]*?aspect-ratio:16 \/ 9/);
+  assert.match(css, /\.gal-root \.gal-standing\{[\s\S]*?object-position:center bottom/);
+});

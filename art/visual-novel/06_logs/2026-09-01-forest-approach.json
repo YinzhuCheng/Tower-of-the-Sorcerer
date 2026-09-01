@@ -1,0 +1,21 @@
+{
+  "asset_id": "theme-forest-approach",
+  "source": "image generation",
+  "created_at": "2026-09-01",
+  "output": "public/assets/anime/themes/theme-forest-approach.webp",
+  "reference_set": [],
+  "prompt_packet": "03_intermediate/prompt_packets/style-lock.md",
+  "prompt_summary": "A first-light ancient forest approach to the lost magical tower, built as a clean 16:9 visual-novel background with left/right standing-sprite clearance and a quiet shoujo Galgame atmosphere.",
+  "technical": {
+    "generated_resolution": "1672x941",
+    "release_format": "webp",
+    "release_resolution": "1672x941"
+  },
+  "qa": {
+    "no_text_or_watermark": "pass",
+    "no_human_figures": "pass",
+    "two_character_clearance": "pass",
+    "lower_textbox_clearance": "pass",
+    "style_lock": "pass"
+  }
+}

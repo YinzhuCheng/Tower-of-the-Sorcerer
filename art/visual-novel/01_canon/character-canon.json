@@ -1,0 +1,36 @@
+{
+  "version": "2026-09-01",
+  "style_lock": "Japanese 2D anime cel-shaded visual novel art, shoujo Galgame aesthetic. Clean fine linework, restrained cel shading, delicate luminous eyes, readable silhouette and emotional facial acting. Never use 3D rendering, painterly photorealism, western-comic linework, text, logos, watermarks or a busy background on standing sprites.",
+  "characters": [
+    {
+      "id": "hero",
+      "display_name": "绫星·璃",
+      "role": "主角／持剑的塔行者",
+      "identity_lock": "A young woman with long midnight-blue hair fading to cobalt at the ends, violet-blue eyes, a black fitted adventure dress, asymmetric white mantle, black thigh-high stockings, silver-blue sword, and a violet-blue wisp of magic in her free hand.",
+      "runtime_stage": "/assets/anime/characters/liyue-dialogue-resolve.webp",
+      "runtime_avatar": "/assets/anime/avatars/liyue-avatar-resolve.webp",
+      "required_expressions": ["resolve", "embers", "stern", "guarded"],
+      "pose_rule": "Full body, three-quarter front, feet visible, sword and magic kept inside the alpha canvas."
+    },
+    {
+      "id": "guide",
+      "display_name": "残响精灵·纱雾",
+      "role": "引路者／塔的残响",
+      "identity_lock": "A gentle young woman with silver-lilac bobbed hair, soft violet eyes, a white and pale-lavender layered ceremonial dress, translucent ice-blue ribbons, small floral hair ornaments, and a floating silver-blue astrolabe.",
+      "runtime_stage": "/assets/anime/characters/shawu-dialogue-gentle.webp",
+      "runtime_avatar": "/assets/anime/avatars/shawu-avatar-gentle.webp",
+      "required_expressions": ["gentle", "lament", "watchful"],
+      "pose_rule": "Full body, calm three-quarter front, feet visible, floating ribbons and astrolabe contained in the alpha canvas."
+    },
+    {
+      "id": "final_queen",
+      "display_name": "无声女王·诺克缇娅",
+      "role": "终局对手／沉默王座的守望者",
+      "identity_lock": "A regal young woman with very long black hair, pale skin, crimson eyes, a black-and-burgundy gothic royal gown, a delicate dark crown, chained red crystal sigils, and an austere, sorrowful presence.",
+      "runtime_stage": "/assets/anime/characters/noctia-dialogue-sorrow.webp",
+      "runtime_avatar": "/assets/anime/avatars/noctia-avatar-sorrow.webp",
+      "required_expressions": ["sorrow", "grave", "knowing"],
+      "pose_rule": "Full body, poised three-quarter front, feet visible, crown and crystal sigils contained in the alpha canvas."
+    }
+  ]
+}
