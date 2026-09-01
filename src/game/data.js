@@ -214,12 +214,12 @@ export const DIALOGUES = {
       },
       {
         speaker: '残响精灵·纱雾',
-        portrait: 'guide',
+        portrait: 'guide', expression: 'gentle',
         text: '她们不是自愿敌对。术式把任何靠近核心的人都登记为入侵者，连女王自己也停不下来。'
       },
       {
         speaker: '绫星·璃',
-        portrait: 'hero',
+        portrait: 'hero', expression: 'resolve',
         text: '我会取回咏唱，也会问清她为什么把所有人困在这里。先从第一枚核心开始。',
         choices: [
           { label: '“先确认每场战斗的损伤。”', response: '璃握紧剑柄：看清代价，再决定这一击值不值得。' },

@@ -327,9 +327,9 @@ function sequence(title, turns) { return Object.freeze({ title, turns: Object.fr
 function installDialogues(dialogues) {
   Object.assign(dialogues, {
     floor21: sequence('第二十一阵：余烬登记库', [
-      turn('残响精灵·纱雾', 'guide', '余烬登记库没有敌人名单，只有未投递的信、离港回执和三套修复章程。'),
-      turn('无声女王·诺克缇娅', 'final_queen', '它一次只能先接通一条修复线：护送、校验，或灯塔接力。'),
-      turn('绫星·璃', 'hero', '不是决定谁更重要，而是决定先用哪种方法，让记录不再伤人。')
+      turn('残响精灵·纱雾', 'guide', '余烬登记库没有敌人名单，只有未投递的信、离港回执和三套修复章程。', { expression: 'gentle' }),
+      turn('无声女王·诺克缇娅', 'final_queen', '它一次只能先接通一条修复线：护送、校验，或灯塔接力。', { expression: 'sorrow' }),
+      turn('绫星·璃', 'hero', '不是决定谁更重要，而是决定先用哪种方法，让记录不再伤人。', { expression: 'resolve' })
     ]),
     floor22: sequence('第二十二阵：夜航侧库', [
       turn('猫卫长·米露', 'cat_boss', '夜航章程把仍在路上的回执护送到归档口，不再让它们被警报截走。'),
@@ -357,9 +357,9 @@ function installDialogues(dialogues) {
       turn('残响精灵·纱雾', 'guide', '具体效果和预计耗血，都写在各自的战斗说明里。')
     ]),
     floor28: sequence('第二十八阵：归档风暴', [
-      turn('无声女王·诺克缇娅', 'final_queen', '风暴里飘着没能送达的最后一句话。它们不该再被系统拿去驱动守卫。'),
-      turn('残响精灵·纱雾', 'guide', '上行阶梯已经开放；可选区域有生命和 MP 补给。'),
-      turn('绫星·璃', 'hero', '拿不拿，要看终局还缺什么。')
+      turn('无声女王·诺克缇娅', 'final_queen', '风暴里飘着没能送达的最后一句话。它们不该再被系统拿去驱动守卫。', { expression: 'sorrow' }),
+      turn('残响精灵·纱雾', 'guide', '上行阶梯已经开放；可选区域有生命和 MP 补给。', { expression: 'gentle' }),
+      turn('绫星·璃', 'hero', '拿不拿，要看终局还缺什么。', { expression: 'resolve' })
     ]),
     floor29: sequence('第二十九阵：最后索引', [
       turn('最后保管人', 'crown_magus', '我们被命令保护“不完整的记录”，因为系统认定缺一页就必须从头重算。'),
@@ -368,17 +368,17 @@ function installDialogues(dialogues) {
     ]),
     floor30: sequence('第三十阵：余烬灯塔', [
       turn('档案守望者', 'act3_archive_warden', '原始协议规定：发现矛盾记录时，先冻结，再由勘误核心清零重建。'),
-      turn('无声女王·诺克缇娅', 'final_queen', '这就是我一直害怕的“结案”。可原件已经证明，还有归档模式。'),
-      turn('绫星·璃', 'hero', '先过守望者，再阻止勘误核心。两相连续，没有补给。')
+      turn('无声女王·诺克缇娅', 'final_queen', '这就是我一直害怕的“结案”。可原件已经证明，还有归档模式。', { expression: 'sorrow' }),
+      turn('绫星·璃', 'hero', '先过守望者，再阻止勘误核心。两相连续，没有补给。', { expression: 'resolve' })
     ]),
     bossArchiveWardenPost: sequence('灯塔：守望者停机', [
       turn('档案守望者', 'act3_archive_warden', '守望协议结束。勘误核心仍会按旧规则，将矛盾记录清零。'),
       turn('绫星·璃', 'hero', '第二阶段。我要在它清零前写入归档。')
     ]),
     ending: sequence('终章：未投递的信', [
-      turn('残响精灵·纱雾', 'guide', '灯塔转入归档。未投递的信不再被重放，将等待能收到它们的人。', { cg: '/assets/anime/cg/liyue-noctia-afterlight-cg.webp' }),
-      turn('无声女王·诺克缇娅', 'final_queen', '灰港的名字都在：离港者、罹难者、等待的人。它们终于不必再证明自己存在。'),
-      turn('绫星·璃', 'hero', '记录留下，命令结束。以后由活着的人决定怎样继续。')
+      turn('残响精灵·纱雾', 'guide', '灯塔转入归档。未投递的信不再被重放，将等待能收到它们的人。', { cg: '/assets/anime/cg/liyue-noctia-afterlight-cg.webp', expression: 'gentle' }),
+      turn('无声女王·诺克缇娅', 'final_queen', '灰港的名字都在：离港者、罹难者、等待的人。它们终于不必再证明自己存在。', { expression: 'sorrow' }),
+      turn('绫星·璃', 'hero', '记录留下，命令结束。以后由活着的人决定怎样继续。', { expression: 'resolve' })
     ])
   });
 }

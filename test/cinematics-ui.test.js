@@ -20,8 +20,8 @@ test('battle results retain an authoritative pre-combat hero snapshot for the ci
   assert.equal(result.battle.hero.def, before.def);
 });
 
-test('cinematic UI ships skip controls, story CGs, and authored theme environments', async () => {
-  const [html, main, css, critical, defeat, prologue, truth, afterlight, night, sun, ocean, forest] = await Promise.all([
+test('cinematic UI ships working Gal controls, story CGs, character expressions, and authored theme environments', async () => {
+  const [html, main, css, critical, defeat, prologue, truth, afterlight, night, sun, ocean, forest, liyue, noctia, shawu] = await Promise.all([
     readFile(new URL('../index.html', import.meta.url), 'utf8'),
     readFile(new URL('../src/main.js', import.meta.url), 'utf8'),
     readFile(new URL('../ui-v10-cinematics.css', import.meta.url), 'utf8'),
@@ -33,21 +33,31 @@ test('cinematic UI ships skip controls, story CGs, and authored theme environmen
     stat(new URL('../public/assets/anime/themes/theme-night-tower.webp', import.meta.url)),
     stat(new URL('../public/assets/anime/themes/theme-sun-sanctum.webp', import.meta.url)),
     stat(new URL('../public/assets/anime/themes/theme-ocean-archive.webp', import.meta.url)),
-    stat(new URL('../public/assets/anime/themes/theme-forest-sanctuary.webp', import.meta.url))
+    stat(new URL('../public/assets/anime/themes/theme-forest-sanctuary.webp', import.meta.url)),
+    stat(new URL('../public/assets/anime/characters/liyue-dialogue-resolve.webp', import.meta.url)),
+    stat(new URL('../public/assets/anime/characters/noctia-dialogue-sorrow.webp', import.meta.url)),
+    stat(new URL('../public/assets/anime/characters/shawu-dialogue-gentle.webp', import.meta.url))
   ]);
 
   assert.match(html, /ui-v10-cinematics\.css/);
   assert.match(main, /跳过叙事/);
+  for (const label of ['历史', '自动', '快进', '隐藏', 'data-gal-control']) assert.match(main, new RegExp(label));
   assert.match(main, /跳过战斗演出/);
   assert.match(main, /gal-choices/);
   assert.match(main, /gal-cg/);
+  assert.match(main, /galActorHtml/);
   assert.match(css, /\.gal-dialogue/);
   assert.match(css, /\.gal-cg/);
+  assert.match(css, /\.gal-toolbar/);
+  assert.match(css, /\.gal-backlog/);
+  assert.match(css, /\.gal-portrait-left/);
+  assert.match(css, /\.gal-portrait-right/);
   assert.match(css, /\.battle-cinematic/);
   assert.ok(critical.size > 80_000, 'critical-health CG should be a real runtime asset');
   assert.ok(defeat.size > 80_000, 'defeat CG should be a real runtime asset');
   for (const cg of [prologue, truth, afterlight]) assert.ok(cg.size > 100_000, 'story CG should be a real runtime asset');
   for (const environment of [night, sun, ocean, forest]) assert.ok(environment.size > 90_000, 'every theme needs a real environment image');
+  for (const expression of [liyue, noctia, shawu]) assert.ok(expression.size > 100_000, 'every lead dialogue expression should be a real runtime asset');
   for (const filename of ['theme-night-tower.webp', 'theme-sun-sanctum.webp', 'theme-ocean-archive.webp', 'theme-forest-sanctuary.webp']) {
     assert.match(css, new RegExp(filename.replace('.', '\\.')));
   }

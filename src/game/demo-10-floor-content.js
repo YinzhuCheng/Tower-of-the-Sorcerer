@@ -139,23 +139,23 @@ export function applyDemoTenFloorContent({ enemies, floors, dialogues, gridSize 
     floor8: {
       title: '第八阵：静默前庭',
       turns: [
-        dialogueTurn('残响精灵·纱雾', 'guide', '七枚核心归位后，登记网露出了一条更高的回路：起源魔源仍在为它供能。'),
-        dialogueTurn('绫星·璃', 'hero', '先到王座，问女王是谁把临时登记接成了永不停机的系统。')
+        dialogueTurn('残响精灵·纱雾', 'guide', '七枚核心归位后，登记网露出了一条更高的回路：起源魔源仍在为它供能。', { expression: 'gentle' }),
+        dialogueTurn('绫星·璃', 'hero', '先到王座，问女王是谁把临时登记接成了永不停机的系统。', { expression: 'resolve' })
       ]
     },
     floor9: {
       title: '第九阵：倒悬星桥',
       turns: [
         dialogueTurn('旁白', null, '星桥的封印记录着当年的签署顺序：撤离、封塔、延长紧急登记。'),
-        dialogueTurn('绫星·璃', 'hero', '不是女王一个人把事情变成这样。我要把签署人和源头都找出来。')
+        dialogueTurn('绫星·璃', 'hero', '不是女王一个人把事情变成这样。我要把签署人和源头都找出来。', { expression: 'resolve' })
       ]
     },
     floor10: {
       title: '第十阵：无声王座',
       turns: [
-        dialogueTurn('无声女王·诺克缇娅', 'final_queen', '三年里，我每天都听见同一句求援。若我关掉它，谁来记得灰港的人？', { cg: '/assets/anime/cg/liyue-noctia-truth-cg.webp' }),
-        dialogueTurn('绫星·璃', 'hero', '我会记得。但让守卫永远互相伤害，不会把任何人送回家。'),
-        dialogueTurn('无声女王·诺克缇娅', 'final_queen', '那就证明给我看：你能让记录留下，也能让命令结束。')
+        dialogueTurn('无声女王·诺克缇娅', 'final_queen', '三年里，我每天都听见同一句求援。若我关掉它，谁来记得灰港的人？', { cg: '/assets/anime/cg/liyue-noctia-truth-cg.webp', expression: 'sorrow' }),
+        dialogueTurn('绫星·璃', 'hero', '我会记得。但让守卫永远互相伤害，不会把任何人送回家。', { expression: 'resolve' }),
+        dialogueTurn('无声女王·诺克缇娅', 'final_queen', '那就证明给我看：你能让记录留下，也能让命令结束。', { expression: 'sorrow' })
       ]
     },
 
@@ -232,18 +232,18 @@ export function applyDemoTenFloorContent({ enemies, floors, dialogues, gridSize 
       dialogueTurn('绫星·璃', 'hero', '王座就在上面。真相还没结束。')
     ]),
     bossQueenPreDemo: dialogueSequence('第十阵：无声女王', [
-      dialogueTurn('无声女王·诺克缇娅', 'final_queen', '我收到的最后一条讯息是“等待确认”。我不敢让它被结案。'),
-      dialogueTurn('绫星·璃', 'hero', '离港确认早就到了，却被更高权限拦下。你不必再替那条命令伤害所有人。'),
-      dialogueTurn('无声女王·诺克缇娅', 'final_queen', '若你说得是真的，就用你的力量让我面对它。')
+      dialogueTurn('无声女王·诺克缇娅', 'final_queen', '我收到的最后一条讯息是“等待确认”。我不敢让它被结案。', { expression: 'sorrow' }),
+      dialogueTurn('绫星·璃', 'hero', '离港确认早就到了，却被更高权限拦下。你不必再替那条命令伤害所有人。', { expression: 'resolve' }),
+      dialogueTurn('无声女王·诺克缇娅', 'final_queen', '若你说得是真的，就用你的力量让我面对它。', { expression: 'sorrow' })
     ]),
     queenPhaseDemo: dialogueSequence('最终术式展开', [
       dialogueTurn('无声女王·诺克缇娅', 'final_queen', '黯星核心保管着原始签名。它不会允许任何人读取。'),
       dialogueTurn('绫星·璃', 'hero', '那就由我打破封锁，把记录取出来。')
     ]),
     bossQueenPostDemo: dialogueSequence('终章：魔法重新被选择', [
-      dialogueTurn('绫星·璃', 'hero', '黯星核心碎了。原始签名指向起源魔源，那里才是延长令的根。'),
-      dialogueTurn('无声女王·诺克缇娅', 'final_queen', '我会一起去。我要亲眼确认灰港的每个名字都还在。'),
-      dialogueTurn('残响精灵·纱雾', 'guide', '王座开启通往上层的阶梯。十层并非终点。')
+      dialogueTurn('绫星·璃', 'hero', '黯星核心碎了。原始签名指向起源魔源，那里才是延长令的根。', { expression: 'resolve' }),
+      dialogueTurn('无声女王·诺克缇娅', 'final_queen', '我会一起去。我要亲眼确认灰港的每个名字都还在。', { expression: 'sorrow' }),
+      dialogueTurn('残响精灵·纱雾', 'guide', '王座开启通往上层的阶梯。十层并非终点。', { expression: 'gentle' })
     ])
   });
 

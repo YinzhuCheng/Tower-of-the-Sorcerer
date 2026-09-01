@@ -147,8 +147,8 @@ function installActTwoEnemies(enemies) {
   enemies.originCore.defeatDialogue = 'bossOriginCorePost';
 }
 
-function dialogueTurn(speaker, portrait, text) {
-  return Object.freeze({ speaker, portrait, text });
+function dialogueTurn(speaker, portrait, text, extras = {}) {
+  return Object.freeze({ speaker, portrait, text, ...extras });
 }
 
 function dialogueSequence(title, turns) {
@@ -158,9 +158,9 @@ function dialogueSequence(title, turns) {
 function installActTwoDialogues(dialogues) {
   Object.assign(dialogues, {
     floor11: dialogueSequence('第十一阵：复苏环廊', [
-      dialogueTurn('残响精灵·纱雾', 'guide', '高塔上方还有起源魔源。紧急登记本该三日后必须撤销，阵列却仍在执行旧命令。'),
-      dialogueTurn('无声女王·诺克缇娅', 'final_queen', '黯星留下的副本显示：延长令需要主权签名和三位见证者。我从未见过完整副本。'),
-      dialogueTurn('绫星·璃', 'hero', '那就去起源魔源找签名，再找出能保留记录的关闭方法。')
+      dialogueTurn('残响精灵·纱雾', 'guide', '高塔上方还有起源魔源。紧急登记本该三日后必须撤销，阵列却仍在执行旧命令。', { expression: 'gentle' }),
+      dialogueTurn('无声女王·诺克缇娅', 'final_queen', '黯星留下的副本显示：延长令需要主权签名和三位见证者。我从未见过完整副本。', { expression: 'sorrow' }),
+      dialogueTurn('绫星·璃', 'hero', '那就去起源魔源找签名，再找出能保留记录的关闭方法。', { expression: 'resolve' })
     ]),
     floor12: dialogueSequence('第十二阵：双谱温室', [
       dialogueTurn('猫卫长·米露', 'cat_boss', '温室的补给簿还在按三年前的名单配药，可离港确认后的船舱早已空了。'),
@@ -189,8 +189,8 @@ function installActTwoDialogues(dialogues) {
     ]),
     floor17: dialogueSequence('第十七阵：三冠阶庭', [
       dialogueTurn('天穹魔女·露米', 'astral_boss', '三冠的校验拼合后显示：主权签名在前，三位见证者的自动同意在后。'),
-      dialogueTurn('无声女王·诺克缇娅', 'final_queen', '自动同意？我只记得自己按下“继续救援”，从未同意无限延长。'),
-      dialogueTurn('绫星·璃', 'hero', '有人把临时许可伪装成共识。证据终于完整了。')
+      dialogueTurn('无声女王·诺克缇娅', 'final_queen', '自动同意？我只记得自己按下“继续救援”，从未同意无限延长。', { expression: 'sorrow' }),
+      dialogueTurn('绫星·璃', 'hero', '有人把临时许可伪装成共识。证据终于完整了。', { expression: 'resolve' })
     ]),
     floor18: dialogueSequence('第十八阵：澄空航渠', [
       dialogueTurn('影织姬·鸦羽', 'shadow_boss', '虚空先驱截住了离港回执，才让登记网永远等不到“全员安全”。'),
@@ -199,13 +199,13 @@ function installActTwoDialogues(dialogues) {
     ]),
     floor19: dialogueSequence('第十九阵：回响王庭', [
       dialogueTurn('回声摄政官', 'echo_regent', '我保管过避难城的死亡名簿。灰港并未全灭：离港者和罹难者，都有最后记录。'),
-      dialogueTurn('无声女王·诺克缇娅', 'final_queen', '原来我守着的不是失踪者，而是一道故意不让人结案的门。'),
-      dialogueTurn('绫星·璃', 'hero', '交出王座执照。我们去让签署人回答。')
+      dialogueTurn('无声女王·诺克缇娅', 'final_queen', '原来我守着的不是失踪者，而是一道故意不让人结案的门。', { expression: 'sorrow' }),
+      dialogueTurn('绫星·璃', 'hero', '交出王座执照。我们去让签署人回答。', { expression: 'resolve' })
     ]),
     floor20: dialogueSequence('第二十阵：起源魔源', [
       dialogueTurn('奥术主权者', 'arcane_sovereign', '是我签了无限延长。战乱中我害怕漏掉一个求援者，便删去了终止期限。'),
-      dialogueTurn('绫星·璃', 'hero', '你把恐惧写成了所有人的命令。现在先交出起源权限。'),
-      dialogueTurn('无声女王·诺克缇娅', 'final_queen', '主权者，和我一起看完灰港的结案。然后停止。')
+      dialogueTurn('绫星·璃', 'hero', '你把恐惧写成了所有人的命令。现在先交出起源权限。', { expression: 'resolve' }),
+      dialogueTurn('无声女王·诺克缇娅', 'final_queen', '主权者，和我一起看完灰港的结案。然后停止。', { expression: 'sorrow' })
     ]),
     bondMilu: dialogueSequence('月镜复写', [
       dialogueTurn('猫卫长·米露', 'cat_boss', '月镜能在终局每阶段挡下一次反击。让我带上它，替夜航的人守住回程。'),
@@ -238,7 +238,7 @@ function installActTwoDialogues(dialogues) {
     ]),
     bossOriginCorePost: dialogueSequence('终章：魔源再临', [
       dialogueTurn('绫星·璃', 'hero', '起源核心安静下来了。它保存灾难的记录；上面还有一座未投递登记库。'),
-      dialogueTurn('无声女王·诺克缇娅', 'final_queen', '那里能把记录转为归档，而不是删除吗？'),
+      dialogueTurn('无声女王·诺克缇娅', 'final_queen', '那里能把记录转为归档，而不是删除吗？', { expression: 'sorrow' }),
       dialogueTurn('奥术主权者', 'arcane_sovereign', '能。去把最后的命令关掉。')
     ])
   });

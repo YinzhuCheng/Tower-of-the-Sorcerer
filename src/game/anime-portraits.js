@@ -144,6 +144,16 @@ const RUNTIME_PORTRAITS = Object.freeze({
   merchant: '/assets/anime/portraits/v1/merchant-keke-portrait-runtime.webp'
 });
 
+// The gameplay portrait is intentionally stable, while the visual-novel
+// layer may request an authored expression. Keeping this mapping separate
+// means every other HUD/codex consumer continues to use the compact runtime
+// portrait without paying for a full character illustration.
+const DIALOGUE_EXPRESSIONS = Object.freeze({
+  'hero:resolve': '/assets/anime/characters/liyue-dialogue-resolve.webp',
+  'guide:gentle': '/assets/anime/characters/shawu-dialogue-gentle.webp',
+  'final_queen:sorrow': '/assets/anime/characters/noctia-dialogue-sorrow.webp'
+});
+
 function archetype(id) { return PORTRAITS[id]?.[1] ?? 'hero'; }
 
 export function portraitIndex(id) { return ARCHETYPES[archetype(id)] ?? 0; }
@@ -152,8 +162,8 @@ function canvasUrl(canvas) {
   try { return canvas?.toDataURL?.('image/webp', 0.94) ?? null; } catch { return null; }
 }
 
-export function portraitUrl(id) {
-  const runtime = RUNTIME_PORTRAITS[id];
+export function portraitUrl(id, expression = null) {
+  const runtime = DIALOGUE_EXPRESSIONS[`${id}:${expression}`] ?? RUNTIME_PORTRAITS[id];
   if (runtime) return runtime;
   const key = archetype(id);
   if (urlCache.has(key)) return urlCache.get(key);
