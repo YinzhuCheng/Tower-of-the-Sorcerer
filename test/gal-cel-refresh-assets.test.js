@@ -95,3 +95,12 @@ test('event CG turns suppress standing sprites while ordinary turns retain the a
   assert.match(css, /\.gal-dialogue\.has-cg \.gal-actor[^\{]*\{display:none\}/);
   assert.doesNotMatch(css, /\.gal-dialogue\.has-cg \.gal-portrait[^\{]*\{display:none\}/);
 });
+
+test('an explicit production QA query can open any authored GAL scene without marking story progress', async () => {
+  const main = await readFile(new URL('../src/main.js', import.meta.url), 'utf8');
+
+  assert.match(main, /new URLSearchParams\(window\.location\.search\)\.get\('gal-preview'\)/);
+  assert.match(main, /dialogueId && getDialogue\(dialogueId\) \? dialogueId : null/);
+  assert.match(main, /const previewDialogueId = requestedGalPreviewDialogue\(\);\s*if \(!previewDialogueId\) autoSave\(\)/);
+  assert.match(main, /previewDialogueId\s*\? \(showDialogue\(previewDialogueId, startCanvasAssets\), true\)\s*: initialGalDialogue\(startCanvasAssets\)/);
+});

@@ -145,3 +145,4 @@
 - 有 CG 的回合仍由 `.has-cg` 明确标记；普通 standing sprite 只作为同一回合的数据层存在，视觉样式负责在事件 CG 中隐藏/降级，避免双重人物构图。
 - 所有 19 张替换资产都经 `galArtUrl()` 加上 `?v=20260902-cel3`，包含预加载路径与实际渲染路径。
 - 旧资产的 Git blob SHA、归档路径、旧母版路径和替换原因见 `07_archive/2026-09-02-pre-cel-gal-refresh/manifest.json`。
+- 线上视觉回归可用 `?gal-preview=<dialogueId>` 直接进入任意已创作的 GAL 段落；该入口只调用真实 `showDialogue()`，不写入 `storySeen` / `galSeen`，便于检查 F10、F19、F20 与 ending，而不污染玩家进度。

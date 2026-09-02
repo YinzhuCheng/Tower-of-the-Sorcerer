@@ -120,7 +120,8 @@ test('production build publishes the isolated Gal stylesheet and scene input loc
   assert.match(main, /document\.body\.classList\.add\('gal-active'\)/);
   assert.match(main, /\$\('#app-shell'\)\.inert = true/);
   assert.match(main, /dialogueRoot\.addEventListener\('click'/);
-  assert.match(main, /const openingDialogueActive = initialGalDialogue\(startCanvasAssets\)/);
+  assert.match(main, /const previewDialogueId = requestedGalPreviewDialogue\(\)/);
+  assert.match(main, /: initialGalDialogue\(startCanvasAssets\)/);
   assert.match(main, /createCanvasTowerScene\(bridge, undefined, \{ autoStart: !openingDialogueActive \}\)/);
   assert.match(css, /body\.gal-active\{height:100%;overflow:hidden/);
   assert.match(css, /\.gal-root\{[\s\S]*?position:fixed/);

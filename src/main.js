@@ -190,6 +190,11 @@ function initialGalDialogue(after = null) {
   return true;
 }
 
+function requestedGalPreviewDialogue() {
+  const dialogueId = new URLSearchParams(window.location.search).get('gal-preview');
+  return dialogueId && getDialogue(dialogueId) ? dialogueId : null;
+}
+
 function editableKeyTarget(target) {
   return target instanceof Element
     && Boolean(target.closest('input, textarea, select, [contenteditable="true"]'));
@@ -1473,7 +1478,8 @@ async function boot() {
   hydratePortraits();
   bindControls();
   updateHud();
-  autoSave();
+  const previewDialogueId = requestedGalPreviewDialogue();
+  if (!previewDialogueId) autoSave();
   let canvasAssetsPending = false;
   let startCanvasAssetsNow = null;
   const startCanvasAssets = () => {
@@ -1501,7 +1507,9 @@ async function boot() {
   // Keep the procedural game frame available immediately, but do not let the
   // opening story compete with the bulk gameplay-art preload. The authored
   // atlases begin loading as soon as the prologue ends or is skipped.
-  const openingDialogueActive = initialGalDialogue(startCanvasAssets);
+  const openingDialogueActive = previewDialogueId
+    ? (showDialogue(previewDialogueId, startCanvasAssets), true)
+    : initialGalDialogue(startCanvasAssets);
 
   try {
     const Phaser = await ensurePhaser();
