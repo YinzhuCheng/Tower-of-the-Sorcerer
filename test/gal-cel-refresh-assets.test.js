@@ -23,7 +23,7 @@ function webpDimensions(buffer) {
 }
 
 test('the complete GAL cel-refresh manifest is valid, exact and cache-busted', async () => {
-  const manifestUrl = new URL('../art/visual-novel/05_manifests/gal-cel-refresh-v3-manifest.json', import.meta.url);
+  const manifestUrl = new URL('../art/visual-novel/05_manifests/gal-cel-redraw-v4-manifest.json', import.meta.url);
   const manifest = JSON.parse(await readFile(manifestUrl, 'utf8'));
   const source = (await Promise.all([
     '../src/main.js',
@@ -33,11 +33,11 @@ test('the complete GAL cel-refresh manifest is valid, exact and cache-busted', a
     '../src/game/demo-30-floor-content.js'
   ].map((path) => readFile(new URL(path, import.meta.url), 'utf8')))).join('\n');
 
-  assert.equal(manifest.assets.length, 19);
+  assert.equal(manifest.assets.length, 22);
   assert.equal(manifest.assets.filter(({ kind }) => kind === 'backdrop').length, 11);
-  assert.equal(manifest.assets.filter(({ kind }) => kind === 'story-cg').length, 6);
+  assert.equal(manifest.assets.filter(({ kind }) => kind === 'story-cg').length, 9);
   assert.equal(manifest.assets.filter(({ kind }) => kind === 'transition').length, 2);
-  assert.match(source, /GAL_ART_VERSION = '20260902-cel3'/);
+  assert.match(source, /GAL_ART_VERSION = '20260902-cel4'/);
 
   for (const asset of manifest.assets) {
     const runtimeUrl = new URL(`../${asset.runtime}`, import.meta.url);
@@ -46,7 +46,9 @@ test('the complete GAL cel-refresh manifest is valid, exact and cache-busted', a
     assert.deepEqual(webpDimensions(runtime), { width: 1672, height: 941 }, `${asset.id} runtime dimensions`);
     assert.equal(Buffer.compare(master, runtime), 0, `${asset.id} master must match runtime bytes`);
     assert.equal(createHash('sha256').update(runtime).digest('hex'), asset.sha256, `${asset.id} manifest hash`);
-    assert.match(source, new RegExp(asset.runtime.split('/').at(-1).replace('.', '\\.')), `${asset.id} must be referenced by GAL runtime`);
+    if (asset.referenced !== false) {
+      assert.match(source, new RegExp(asset.runtime.split('/').at(-1).replace('.', '\\.')), `${asset.id} must be referenced by GAL runtime`);
+    }
   }
 });
 

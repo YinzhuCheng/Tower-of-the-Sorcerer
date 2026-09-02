@@ -10,6 +10,25 @@ import { applyDemoTwentyFloorContent } from '../src/game/demo-20-floor-content.j
 import { applyDemoThirtyFloorContent } from '../src/game/demo-30-floor-content.js';
 import { DIALOGUE_CAST, dialoguePresentation } from '../src/game/anime-portraits.js';
 
+function webpDimensions(buffer) {
+  assert.equal(buffer.subarray(0, 4).toString('ascii'), 'RIFF');
+  assert.equal(buffer.subarray(8, 12).toString('ascii'), 'WEBP');
+  const chunk = buffer.subarray(12, 16).toString('ascii');
+  if (chunk === 'VP8 ') return { width: buffer.readUInt16LE(26) & 0x3fff, height: buffer.readUInt16LE(28) & 0x3fff };
+  if (chunk === 'VP8L') {
+    const bits = buffer.readUInt32LE(21);
+    return { width: (bits & 0x3fff) + 1, height: ((bits >> 14) & 0x3fff) + 1 };
+  }
+  if (chunk === 'VP8X') return { width: buffer.readUIntLE(24, 3) + 1, height: buffer.readUIntLE(27, 3) + 1 };
+  throw new Error(`unsupported WebP chunk ${JSON.stringify(chunk)}`);
+}
+
+function assertScenePlate(buffer, label) {
+  const { width, height } = webpDimensions(buffer);
+  assert.ok(buffer.length > 5_000, `${label} must contain substantive image data`);
+  assert.ok(width >= 1_600 && height >= 900, `${label} must be a high-resolution plate, got ${width}x${height}`);
+}
+
 test('battle results retain an authoritative pre-combat hero snapshot for the cinematic layer', () => {
   const state = createInitialState();
   const before = { ...state.stats };
@@ -31,15 +50,15 @@ test('cinematic UI ships working Gal controls, story CGs, character expressions,
     readFile(new URL('../index.html', import.meta.url), 'utf8'),
     readFile(new URL('../src/main.js', import.meta.url), 'utf8'),
     readFile(new URL('../ui-v10-cinematics.css', import.meta.url), 'utf8'),
-    stat(new URL('../public/assets/anime/cg/liyue-critical-cg.webp', import.meta.url)),
-    stat(new URL('../public/assets/anime/cg/liyue-defeat-cg.webp', import.meta.url)),
-    stat(new URL('../public/assets/anime/cg/liyue-prologue-tower-cg.webp', import.meta.url)),
-    stat(new URL('../public/assets/anime/cg/liyue-noctia-truth-cg.webp', import.meta.url)),
-    stat(new URL('../public/assets/anime/cg/liyue-noctia-afterlight-cg.webp', import.meta.url)),
-    stat(new URL('../public/assets/anime/themes/theme-night-tower.webp', import.meta.url)),
-    stat(new URL('../public/assets/anime/themes/theme-sun-sanctum.webp', import.meta.url)),
-    stat(new URL('../public/assets/anime/themes/theme-ocean-archive.webp', import.meta.url)),
-    stat(new URL('../public/assets/anime/themes/theme-forest-sanctuary.webp', import.meta.url)),
+    readFile(new URL('../public/assets/anime/cg/liyue-critical-cg.webp', import.meta.url)),
+    readFile(new URL('../public/assets/anime/cg/liyue-defeat-cg.webp', import.meta.url)),
+    readFile(new URL('../public/assets/anime/cg/liyue-prologue-tower-cg.webp', import.meta.url)),
+    readFile(new URL('../public/assets/anime/cg/liyue-noctia-truth-cg.webp', import.meta.url)),
+    readFile(new URL('../public/assets/anime/cg/liyue-noctia-afterlight-cg.webp', import.meta.url)),
+    readFile(new URL('../public/assets/anime/themes/theme-night-tower.webp', import.meta.url)),
+    readFile(new URL('../public/assets/anime/themes/theme-sun-sanctum.webp', import.meta.url)),
+    readFile(new URL('../public/assets/anime/themes/theme-ocean-archive.webp', import.meta.url)),
+    readFile(new URL('../public/assets/anime/themes/theme-forest-sanctuary.webp', import.meta.url)),
     stat(new URL('../public/assets/anime/characters/liyue-dialogue-resolve.webp', import.meta.url)),
     stat(new URL('../public/assets/anime/characters/noctia-dialogue-sorrow.webp', import.meta.url)),
     stat(new URL('../public/assets/anime/characters/shawu-dialogue-gentle.webp', import.meta.url))
@@ -78,10 +97,10 @@ test('cinematic UI ships working Gal controls, story CGs, character expressions,
   assert.match(css, /\.gal-root \.gal-textbox\{[\s\S]*?min-height:0/);
   assert.match(css, /height:100svh/);
   assert.match(css, /\.battle-cinematic/);
-  assert.ok(critical.size > 80_000, 'critical-health CG should be a real runtime asset');
-  assert.ok(defeat.size > 80_000, 'defeat CG should be a real runtime asset');
-  for (const cg of [prologue, truth, afterlight]) assert.ok(cg.size > 100_000, 'story CG should be a real runtime asset');
-  for (const environment of [night, sun, ocean, forest]) assert.ok(environment.size > 90_000, 'every theme needs a real environment image');
+  assertScenePlate(critical, 'critical-health CG');
+  assertScenePlate(defeat, 'defeat CG');
+  for (const [index, cg] of [prologue, truth, afterlight].entries()) assertScenePlate(cg, `story CG ${index + 1}`);
+  for (const [index, environment] of [night, sun, ocean, forest].entries()) assertScenePlate(environment, `theme environment ${index + 1}`);
   for (const expression of [liyue, noctia, shawu]) assert.ok(expression.size > 100_000, 'every lead dialogue expression should be a real runtime asset');
   for (const filename of ['theme-night-tower.webp', 'theme-sun-sanctum.webp', 'theme-ocean-archive.webp', 'theme-forest-sanctuary.webp']) {
     assert.match(css, new RegExp(filename.replace('.', '\\.')));
