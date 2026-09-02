@@ -53,6 +53,8 @@ test('art audit page ships review persistence, filters, lightbox and JSON export
   assert.match(html, /id="status-filter"/);
   assert.match(html, /id="lightbox"/);
   assert.match(html, /导出审核 JSON/);
+  assert.match(html, /href="\/art-audit\/styles\.css"/);
+  assert.match(html, /src="\/art-audit\/app\.js"/);
   assert.match(app, /localStorage\.setItem\(STORAGE_KEY/);
   assert.match(app, /new Blob/);
   assert.match(app, /data-record-key/);
