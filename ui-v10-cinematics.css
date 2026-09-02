@@ -270,7 +270,7 @@
 }
 .gal-dialogue.has-cg::before{opacity:.18}
 .gal-dialogue.has-cg .gal-stage::before{display:none}
-.gal-dialogue.has-cg .gal-portrait,.gal-dialogue.has-cg .gal-narration-mark{display:none}
+.gal-dialogue.has-cg .gal-actor,.gal-dialogue.has-cg .gal-narration-mark{display:none}
 .gal-dialogue.has-cg .gal-lens{background:linear-gradient(90deg,rgba(3,6,17,.58),rgba(4,7,19,.08) 52%,rgba(4,6,18,.48)),linear-gradient(0deg,rgba(3,5,15,.76),transparent 58%)}
 .gal-dialogue.has-cg .gal-textbox{background:linear-gradient(90deg,rgba(5,9,22,.96),rgba(9,13,30,.89) 64%,rgba(7,10,27,.79));box-shadow:0 14px 48px rgba(0,0,0,.55),inset 0 0 0 1px rgba(255,255,255,.06),inset 0 0 35px rgba(92,110,221,.12)}
 @keyframes galCgReveal{from{opacity:0;transform:scale(1.055)}to{opacity:.88;transform:scale(1.018)}}

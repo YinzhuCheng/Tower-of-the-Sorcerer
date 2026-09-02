@@ -49,3 +49,47 @@ test('the complete GAL cel-refresh manifest is valid, exact and cache-busted', a
     assert.match(source, new RegExp(asset.runtime.split('/').at(-1).replace('.', '\\.')), `${asset.id} must be referenced by GAL runtime`);
   }
 });
+
+function gitBlobSha(buffer) {
+  return createHash('sha1')
+    .update(`blob ${buffer.length}\0`)
+    .update(buffer)
+    .digest('hex');
+}
+
+test('the pre-refresh archive manifest traces every replaced runtime blob', async () => {
+  const archiveManifestUrl = new URL('../art/visual-novel/07_archive/2026-09-02-pre-cel-gal-refresh/manifest.json', import.meta.url);
+  const archive = JSON.parse(await readFile(archiveManifestUrl, 'utf8'));
+
+  assert.equal(archive.baseline_commit, '613cd0de6e2634919884cfb0f57720776a15a9e9');
+  assert.equal(archive.assets.length, 19);
+  assert.equal(archive.assets.filter(({ classification }) => classification === 'BG').length, 11);
+  assert.equal(archive.assets.filter(({ classification }) => classification === 'CG').length, 6);
+  assert.equal(archive.assets.filter(({ classification }) => classification === 'TRANSITION').length, 2);
+
+  for (const asset of archive.assets) {
+    const archivedRuntime = await readFile(new URL(`../${asset.archived_runtime_path}`, import.meta.url));
+    assert.equal(gitBlobSha(archivedRuntime), asset.original_runtime_blob_sha, `${asset.logical_asset_id} archived runtime blob`);
+    assert.equal(asset.original_runtime_path, asset.replacement_runtime_path, `${asset.logical_asset_id} must replace the runtime slot in place`);
+
+    if (!asset.original_master_path) {
+      assert.equal(asset.original_master_blob_sha, null);
+      assert.equal(asset.archived_master_path, null);
+      continue;
+    }
+    const archivedMaster = await readFile(new URL(`../${asset.archived_master_path}`, import.meta.url));
+    assert.equal(gitBlobSha(archivedMaster), asset.original_master_blob_sha, `${asset.logical_asset_id} archived master blob`);
+  }
+});
+
+test('event CG turns suppress standing sprites while ordinary turns retain the actor layer', async () => {
+  const [main, css] = await Promise.all([
+    readFile(new URL('../src/main.js', import.meta.url), 'utf8'),
+    readFile(new URL('../ui-v10-cinematics.css', import.meta.url), 'utf8')
+  ]);
+
+  assert.match(main, /gal-dialogue \$\{isNarration \? 'is-narration' : ''\} \$\{cg \? 'has-cg' : ''\}/);
+  assert.match(main, /\$\{cg \? `<div class="gal-cg"/);
+  assert.match(css, /\.gal-dialogue\.has-cg \.gal-actor[^\{]*\{display:none\}/);
+  assert.doesNotMatch(css, /\.gal-dialogue\.has-cg \.gal-portrait[^\{]*\{display:none\}/);
+});
