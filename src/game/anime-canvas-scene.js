@@ -43,12 +43,16 @@ function cssColor(value, alpha = 1) {
   return `rgba(${r},${g},${b},${alpha})`;
 }
 
-export function createCanvasTowerScene(bridge, parent = document.getElementById('game-container')) {
-  return new AnimeCanvasTowerScene(bridge, parent);
+export function createCanvasTowerScene(
+  bridge,
+  parent = document.getElementById('game-container'),
+  { autoStart = true, notifyReady = true } = {}
+) {
+  return new AnimeCanvasTowerScene(bridge, parent, { autoStart, notifyReady });
 }
 
 class AnimeCanvasTowerScene {
-  constructor(bridge, parent) {
+  constructor(bridge, parent, { autoStart = true, notifyReady = true } = {}) {
     this.bridge = bridge;
     this.parent = parent;
     this.images = new Map();
@@ -68,8 +72,8 @@ class AnimeCanvasTowerScene {
     window.addEventListener('keydown', this.handleKeydown);
     this.canvas.addEventListener('pointerdown', this.handlePointer);
     this.renderFloor();
-    this.bridge.onReady(this);
-    void this.start();
+    if (notifyReady) this.bridge.onReady(this);
+    if (autoStart) void this.start();
   }
 
   async start() {

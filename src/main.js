@@ -1424,7 +1424,6 @@ async function boot() {
       if (readyScene?.ctx) {
         applySceneThemeV8(readyScene);
         applyV83RenderFixes(readyScene);
-        readyScene.refresh?.();
       }
     },
     onAssetsReady: (readyScene) => {

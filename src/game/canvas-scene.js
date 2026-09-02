@@ -368,7 +368,11 @@ function wallAssetForMask(mask) {
 }
 
 export function createCanvasTowerScene(bridge, parent = document.getElementById('game-container')) {
-  const scene = createBaseCanvasTowerScene(bridge, parent);
+  // The base constructor paints a playable procedural frame, but the public
+  // scene is not ready until every renderer wrapper below is installed.  This
+  // keeps main.js from patching an intermediate renderToken implementation and
+  // prevents the first background repaint from falling through to legacy art.
+  const scene = createBaseCanvasTowerScene(bridge, parent, { autoStart: false, notifyReady: false });
   const cleanedItemCells = new Map();
   const cleanedChibiCells = new Map();
   const cleanedTileCells = new Map();
@@ -542,5 +546,7 @@ export function createCanvasTowerScene(bridge, parent = document.getElementById(
   };
 
   applyWallMaterialV6(scene);
+  bridge.onReady(scene);
+  void scene.start();
   return scene;
 }
