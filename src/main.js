@@ -451,18 +451,19 @@ function showDialogue(dialogueId, after = null, { finalLabel = null } = {}) {
             <button type="button" data-gal-control="backlog" aria-pressed="false">历史</button>
             <button type="button" data-gal-control="auto" aria-pressed="false">自动</button>
             <button type="button" data-gal-control="fast" aria-pressed="false">快进</button>
-            <button type="button" data-gal-control="hide">隐藏</button>
             <button type="button" data-gal-control="skip" class="gal-skip">跳过叙事</button>
           </nav>
+          ${choices.length ? `<div class="gal-choice-overlay" role="group" aria-label="选择回应">${choices.map((choice, choiceIndex) => `<button class="gal-choice" data-dialogue-choice="${choiceIndex}">${escapeHtml(choice.label)}</button>`).join('')}</div>` : ''}
           <article class="gal-textbox" role="button" tabindex="0" aria-label="点击显示全文或继续">
             ${nameplate}
+            <button type="button" class="gal-icon-button gal-textbox-close" data-gal-control="hide" aria-label="隐藏对话框" data-tooltip="隐藏对话框（H）"><span aria-hidden="true">×</span></button>
             <p class="gal-typewriter"></p>
-            ${choices.length ? `<div class="gal-choices">${choices.map((choice, choiceIndex) => `<button class="gal-choice" data-dialogue-choice="${choiceIndex}">${escapeHtml(choice.label)}</button>`).join('')}</div><p class="gal-choice-response" aria-live="polite"></p>` : ''}
+            ${choices.length ? '<p class="gal-choice-response" aria-live="polite"></p>' : ''}
             <div class="gal-dialogue-footer">
               <div class="gal-advance-hint">点击舞台 / 空格 / Enter　·　B 历史　A 自动　H 隐藏</div>
               <div class="gal-text-actions">
-                <button type="button" class="gal-previous" ${index === 0 ? 'disabled' : ''}>上一句</button>
-                <button type="button" class="primary gal-advance">${choices.length ? '选择一句回应' : '显示全文'}</button>
+                <button type="button" class="gal-icon-button gal-previous" aria-label="上一句" data-tooltip="上一句" ${index === 0 ? 'disabled' : ''}><span aria-hidden="true">‹</span></button>
+                <button type="button" class="primary gal-icon-button gal-advance" aria-label="${choices.length ? '请先选择回应' : '显示全文'}" data-tooltip="${choices.length ? '请先选择回应' : '显示全文'}"><span aria-hidden="true">${choices.length ? '…' : '▤'}</span></button>
               </div>
             </div>
           </article>
@@ -485,6 +486,7 @@ function showDialogue(dialogueId, after = null, { finalLabel = null } = {}) {
         const dialogueRoot = elements.galRoot.querySelector('.gal-dialogue');
         const advanceButton = elements.galRoot.querySelector('.gal-advance');
         const previousButton = elements.galRoot.querySelector('.gal-previous');
+        const choiceOverlay = elements.galRoot.querySelector('.gal-choice-overlay');
         const backlog = elements.galRoot.querySelector('.gal-backlog');
         const source = String(turn.text ?? '');
         let count = 0;
@@ -493,11 +495,21 @@ function showDialogue(dialogueId, after = null, { finalLabel = null } = {}) {
 
         const setAdvanceLabel = () => {
           if (!advanceButton) return;
-          if (choices.length && !chosen) advanceButton.textContent = '选择一句回应';
-          else if (!revealed) advanceButton.textContent = '显示全文';
-          else advanceButton.textContent = finalTurn
-            ? (finalLabel ?? (state.victory ? '查看通关结算' : '结束对话'))
-            : '下一句';
+          let icon = '›';
+          let label = '下一句';
+          if (choices.length && !chosen) {
+            icon = '…';
+            label = '请先选择回应';
+          } else if (!revealed) {
+            icon = '▤';
+            label = '显示全文';
+          } else if (finalTurn) {
+            icon = '✓';
+            label = finalLabel ?? (state.victory ? '查看通关结算' : '结束对话');
+          }
+          advanceButton.innerHTML = `<span aria-hidden="true">${icon}</span>`;
+          advanceButton.setAttribute('aria-label', label);
+          advanceButton.dataset.tooltip = label;
           advanceButton.disabled = Boolean(choices.length && !chosen);
         };
         const renderText = () => { textNode.innerHTML = textToHtml(source.slice(0, count)); };
@@ -581,7 +593,7 @@ function showDialogue(dialogueId, after = null, { finalLabel = null } = {}) {
           advance();
         });
         dialogueRoot.addEventListener('click', (event) => {
-          if (event.target.closest('.gal-textbox, .gal-toolbar, .gal-backlog, .gal-ui-restore')) return;
+          if (event.target.closest('.gal-textbox, .gal-choice-overlay, .gal-toolbar, .gal-backlog, .gal-ui-restore')) return;
           advance();
         });
         textbox.addEventListener('keydown', (event) => {
@@ -617,6 +629,7 @@ function showDialogue(dialogueId, after = null, { finalLabel = null } = {}) {
               item.disabled = true;
               item.classList.toggle('selected', item === button);
             });
+            choiceOverlay?.classList.add('is-resolved');
             const response = elements.galRoot.querySelector('.gal-choice-response');
             if (response) response.textContent = choice.response ?? '璃记下这句话，迈向高塔深处。';
             rememberGalLine(historyKey, narratorName, source, choice.label);
