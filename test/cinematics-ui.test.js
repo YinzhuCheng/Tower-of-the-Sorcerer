@@ -55,6 +55,8 @@ test('cinematic UI ships working Gal controls, story CGs, character expressions,
   assert.match(main, /galActorHtml/);
   assert.match(main, /gal-speaker-avatar/);
   assert.match(main, /galNameplateHtml/);
+  assert.match(main, /preloadGalDialogueArt/);
+  assert.match(main, /image\.fetchPriority = 'high'/);
   assert.match(css, /\.gal-dialogue/);
   assert.match(css, /\.gal-cg/);
   assert.match(css, /\.gal-toolbar/);
@@ -63,6 +65,8 @@ test('cinematic UI ships working Gal controls, story CGs, character expressions,
   assert.match(css, /\.gal-portrait-right/);
   assert.match(css, /\.gal-speaker-avatar/);
   assert.match(css, /\.gal-dialogue-footer\{display:grid/);
+  assert.match(css, /\.gal-root \.gal-typewriter\{min-height:0/);
+  assert.match(css, /\.gal-root \.gal-textbox\{[\s\S]*?min-height:0/);
   assert.match(css, /height:100svh/);
   assert.match(css, /\.battle-cinematic/);
   assert.ok(critical.size > 80_000, 'critical-health CG should be a real runtime asset');
@@ -83,11 +87,13 @@ test('production build publishes the isolated Gal stylesheet and scene input loc
     readFile(new URL('../scripts/build.mjs', import.meta.url), 'utf8')
   ]);
 
-  assert.match(html, /ui-v10-cinematics\.css\?v=14/);
+  assert.match(html, /ui-v10-cinematics\.css\?v=15/);
   assert.match(build, /copyFile\(join\(root, 'ui-v10-cinematics\.css'\), join\(root, 'dist\/ui-v10-cinematics\.css'\)\)/);
   assert.match(main, /document\.body\.classList\.add\('gal-active'\)/);
   assert.match(main, /\$\('#app-shell'\)\.inert = true/);
   assert.match(main, /dialogueRoot\.addEventListener\('click'/);
+  assert.match(main, /const openingDialogueActive = initialGalDialogue\(startCanvasAssets\)/);
+  assert.match(main, /createCanvasTowerScene\(bridge, undefined, \{ autoStart: !openingDialogueActive \}\)/);
   assert.match(css, /body\.gal-active\{height:100%;overflow:hidden/);
   assert.match(css, /\.gal-root\{[\s\S]*?position:fixed/);
 });

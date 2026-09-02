@@ -85,6 +85,7 @@ let cinematicControls = null;
 let galTransitionTimer = null;
 const GAL_HISTORY_LIMIT = 80;
 const galHistory = [];
+const galImagePreloads = new Map();
 const galSettings = { auto: false, fast: false };
 const KEYBOARD_DIRECTIONS = Object.freeze({
   arrowup: 'up', w: 'up',
@@ -177,13 +178,14 @@ function showToast(message, duration = 1700) {
   toastTimer = setTimeout(() => elements.loading.classList.add('hidden'), duration);
 }
 
-function initialGalDialogue() {
+function initialGalDialogue(after = null) {
   const dialogueId = initialDialogue(state);
-  if (!dialogueId) return;
+  if (!dialogueId) return false;
   // Persist the presentation marker immediately.  Otherwise a refresh after
   // the first line would make the prologue look randomly absent or replay it.
   autoSave();
-  showDialogue(dialogueId);
+  showDialogue(dialogueId, after);
+  return true;
 }
 
 function editableKeyTarget(target) {
@@ -319,12 +321,41 @@ function galSideFor(portrait, turn) {
   return portrait === 'hero' ? 'left' : 'right';
 }
 
+function preloadGalImage(url) {
+  if (!url || galImagePreloads.has(url)) return;
+  const image = new Image();
+  image.decoding = 'async';
+  image.fetchPriority = 'high';
+  image.src = url;
+  galImagePreloads.set(url, image);
+}
+
+function preloadGalDialogueArt(dialogueId, dialogue, turns) {
+  const urls = new Set([GAL_TRANSITIONS[galTransitionFor(dialogueId, dialogue)]]);
+  for (const turn of turns) {
+    urls.add(galBackdropFor(dialogueId, dialogue, turn));
+    if (typeof turn.cg === 'string') urls.add(turn.cg);
+    if (!turn.portrait) continue;
+    const visual = dialoguePresentation(turn.portrait, turn.expression);
+    urls.add(visual.stage);
+    urls.add(visual.avatar);
+  }
+  // The heroine remains on the left side of every spoken scene, including
+  // turns where the guide speaks first.
+  if (turns.some((turn) => turn.portrait)) {
+    const heroine = dialoguePresentation('hero');
+    urls.add(heroine.stage);
+    urls.add(heroine.avatar);
+  }
+  urls.forEach(preloadGalImage);
+}
+
 function galActorHtml(side, actor, speakerId, speakerName) {
   if (!actor) return '';
   const speaking = actor.id === speakerId;
   const visual = dialoguePresentation(actor.id, actor.expression);
   return `<figure class="gal-actor gal-actor-${side} expression-${escapeHtml(visual.expression)} ${visual.hasPaintedExpression ? 'has-painted-expression' : ''} ${speaking ? 'is-speaking' : 'is-listening'}" data-expression="${escapeHtml(visual.expression)}">
-    <img class="gal-standing" src="${visual.stage}" alt="${escapeHtml(speaking ? speakerName : '')}" />
+    <img class="gal-standing" src="${visual.stage}" alt="${escapeHtml(speaking ? speakerName : '')}" decoding="async" fetchpriority="high" />
   </figure>`;
 }
 
@@ -334,7 +365,7 @@ function galNameplateHtml(turn, speakerName, isNarration) {
   }
   const visual = dialoguePresentation(turn.portrait, turn.expression);
   return `<div class="gal-nameplate" data-expression="${escapeHtml(visual.expression)}">
-    <span class="gal-speaker-avatar ${visual.hasAvatarArt ? 'has-avatar-art' : ''} ${visual.hasPaintedExpression ? 'has-painted-expression' : ''}" aria-hidden="true"><img src="${visual.avatar}" alt="" /></span>
+    <span class="gal-speaker-avatar ${visual.hasAvatarArt ? 'has-avatar-art' : ''} ${visual.hasPaintedExpression ? 'has-painted-expression' : ''}" aria-hidden="true"><img src="${visual.avatar}" alt="" decoding="async" fetchpriority="high" /></span>
     <span class="gal-nameplate-copy"><small>${escapeHtml(visual.label)} · DIALOGUE</small><strong>${escapeHtml(speakerName)}</strong></span>
   </div>`;
 }
@@ -353,6 +384,7 @@ function showDialogue(dialogueId, after = null, { finalLabel = null } = {}) {
   const dialogue = getDialogue(dialogueId);
   if (!dialogue) return;
   const turns = dialogueTurns(dialogue);
+  preloadGalDialogueArt(dialogueId, dialogue, turns);
   let index = 0;
   let finished = false;
   let historyOpen = false;
@@ -1426,6 +1458,12 @@ async function boot() {
   bindControls();
   updateHud();
   autoSave();
+  let canvasAssetsPending = false;
+  let startCanvasAssetsNow = null;
+  const startCanvasAssets = () => {
+    if (startCanvasAssetsNow) startCanvasAssetsNow();
+    else canvasAssetsPending = true;
+  };
   const bridge = {
     getState: () => state,
     canMove: () => elements.modalRoot.classList.contains('hidden') && elements.galRoot.classList.contains('hidden') && !state.victory,
@@ -1444,10 +1482,10 @@ async function boot() {
     }
   };
 
-  // Story and input must never wait for optional artwork. The Canvas scene is
-  // registered synchronously with a procedural first frame; authored atlases
-  // replace that frame in the background as soon as they finish decoding.
-  initialGalDialogue();
+  // Keep the procedural game frame available immediately, but do not let the
+  // opening story compete with the bulk gameplay-art preload. The authored
+  // atlases begin loading as soon as the prologue ends or is skipped.
+  const openingDialogueActive = initialGalDialogue(startCanvasAssets);
 
   try {
     const Phaser = await ensurePhaser();
@@ -1466,7 +1504,14 @@ async function boot() {
       return;
     }
     console.info('Phaser CDN unavailable or Canvas explicitly requested; using the local Canvas renderer.');
-    createCanvasTowerScene(bridge);
+    const canvasScene = createCanvasTowerScene(bridge, undefined, { autoStart: !openingDialogueActive });
+    if (openingDialogueActive) {
+      startCanvasAssetsNow = () => { void canvasScene.start(); };
+      if (canvasAssetsPending) {
+        canvasAssetsPending = false;
+        startCanvasAssetsNow();
+      }
+    }
   } catch (error) {
     console.error(error);
     elements.loading.textContent = `启动失败：${error.message}`;
