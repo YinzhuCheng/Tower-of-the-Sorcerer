@@ -454,6 +454,7 @@ await copyFile(join(root, 'styles.css'), join(outDir, 'styles.css'));
 await copyFile(join(root, 'anime.css'), join(outDir, 'anime.css'));
 await copyFile(join(root, 'ui-v8-4.css'), join(root, 'dist/ui-v8-4.css'));
 await copyFile(join(root, 'ui-v8-5.css'), join(root, 'dist/ui-v8-5.css'));
+await copyFile(join(root, 'ui-v10-cinematics.css'), join(root, 'dist/ui-v10-cinematics.css'));
 await cp(join(root, 'src'), join(outDir, 'src'), { recursive: true });
 await cp(join(root, 'public'), outDir, { recursive: true });
 await applyEngineProductionPatch();

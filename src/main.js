@@ -201,6 +201,8 @@ function clearCinematic() {
   elements.galRoot.classList.remove('is-entering', 'is-exiting');
   elements.galRoot.classList.add('hidden');
   elements.galRoot.classList.remove('gal-ui-hidden');
+  document.body.classList.remove('gal-active');
+  $('#app-shell').inert = false;
   delete elements.galRoot.dataset.transition;
   elements.galRoot.replaceChildren();
 }
@@ -214,6 +216,8 @@ function beginGalScene(transition) {
   window.clearTimeout(galTransitionTimer);
   galTransitionTimer = null;
   elements.galRoot.dataset.transition = transition;
+  document.body.classList.add('gal-active');
+  $('#app-shell').inert = true;
   elements.galRoot.classList.remove('hidden', 'is-exiting');
   elements.galRoot.classList.add('is-entering');
   galTransitionTimer = window.setTimeout(() => {
@@ -542,6 +546,10 @@ function showDialogue(dialogueId, after = null, { finalLabel = null } = {}) {
           if (event.target.closest('button')) return;
           advance();
         });
+        dialogueRoot.addEventListener('click', (event) => {
+          if (event.target.closest('.gal-textbox, .gal-toolbar, .gal-backlog, .gal-ui-restore')) return;
+          advance();
+        });
         textbox.addEventListener('keydown', (event) => {
           if (event.key === 'Enter' || event.key === ' ') {
             event.preventDefault();
@@ -587,6 +595,7 @@ function showDialogue(dialogueId, after = null, { finalLabel = null } = {}) {
           clearAutoAdvance();
         };
         cinematicControls = { advance, skip: finish, toggleBacklog, toggleAuto, toggleFast, toggleUi };
+        window.requestAnimationFrame(() => textbox.focus({ preventScroll: true }));
     }
   };
 

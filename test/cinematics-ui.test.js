@@ -73,6 +73,23 @@ test('cinematic UI ships working Gal controls, story CGs, character expressions,
   }
 });
 
+test('production build publishes the isolated Gal stylesheet and scene input lock', async () => {
+  const [html, main, css, build] = await Promise.all([
+    readFile(new URL('../index.html', import.meta.url), 'utf8'),
+    readFile(new URL('../src/main.js', import.meta.url), 'utf8'),
+    readFile(new URL('../ui-v10-cinematics.css', import.meta.url), 'utf8'),
+    readFile(new URL('../scripts/build.mjs', import.meta.url), 'utf8')
+  ]);
+
+  assert.match(html, /ui-v10-cinematics\.css\?v=14/);
+  assert.match(build, /copyFile\(join\(root, 'ui-v10-cinematics\.css'\), join\(root, 'dist\/ui-v10-cinematics\.css'\)\)/);
+  assert.match(main, /document\.body\.classList\.add\('gal-active'\)/);
+  assert.match(main, /\$\('#app-shell'\)\.inert = true/);
+  assert.match(main, /dialogueRoot\.addEventListener\('click'/);
+  assert.match(css, /body\.gal-active\{height:100%;overflow:hidden/);
+  assert.match(css, /\.gal-root\{[\s\S]*?position:fixed/);
+});
+
 test('every speaking character receives a shipped Gal avatar and a declared expression state', async () => {
   applyDemoTenFloorContent({ enemies: ENEMIES, floors: FLOORS, dialogues: DIALOGUES, gridSize: GRID_SIZE });
   applyDemoTenFloorProgressionGrammar({ enemies: ENEMIES, floors: FLOORS, dialogues: DIALOGUES });

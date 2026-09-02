@@ -585,6 +585,8 @@ body[data-theme="forest"]::after{opacity:.23;background-image:radial-gradient(ci
   color:#eef3ff;
   isolation:isolate;
 }
+body.gal-active{height:100%;overflow:hidden;overscroll-behavior:none}
+body.gal-active #app-shell{pointer-events:none;user-select:none}
 .gal-root.hidden{display:none!important}
 .gal-root .gal-shell{
   position:relative;
@@ -602,6 +604,7 @@ body[data-theme="forest"]::after{opacity:.23;background-image:radial-gradient(ci
   min-height:0;
   overflow:hidden;
   background:#071020;
+  cursor:pointer;
 }
 .gal-root .gal-dialogue::before,
 .gal-root .gal-dialogue::after,
@@ -719,6 +722,7 @@ body[data-theme="forest"]::after{opacity:.23;background-image:radial-gradient(ci
   letter-spacing:.05em;
   text-shadow:0 1px 4px #000;
   backdrop-filter:blur(8px);
+  cursor:pointer;
 }
 .gal-root .gal-toolbar button:hover,.gal-root .gal-text-actions button:hover{border-color:rgba(246,231,183,.84);background:rgba(39,58,103,.85)}
 .gal-root .gal-toolbar button.is-active{border-color:rgba(250,221,148,.9);background:linear-gradient(135deg,rgba(125,86,43,.85),rgba(77,54,129,.85));color:#fff5d6}
@@ -742,6 +746,7 @@ body[data-theme="forest"]::after{opacity:.23;background-image:radial-gradient(ci
   color:#f3f7ff;
   text-align:left;
   transition:opacity .18s ease,transform .18s ease;
+  cursor:pointer;
 }
 .gal-root .gal-textbox::before{content:"";position:absolute;top:-2px;left:0;width:32%;height:2px;background:linear-gradient(90deg,#f7e0a0,#b7caff,#7d6ddd,transparent)}
 .gal-root .gal-textbox:focus-visible{outline:2px solid #e7efff;outline-offset:-4px}
