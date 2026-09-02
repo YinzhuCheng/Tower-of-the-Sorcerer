@@ -87,6 +87,8 @@ const GAL_HISTORY_LIMIT = 80;
 const galHistory = [];
 const galImagePreloads = new Map();
 const galSettings = { auto: false, fast: false };
+const GAL_ART_VERSION = '20260902-cel3';
+const galArtUrl = (path) => `${path}?v=${GAL_ART_VERSION}`;
 const KEYBOARD_DIRECTIONS = Object.freeze({
   arrowup: 'up', w: 'up',
   arrowdown: 'down', s: 'down',
@@ -95,23 +97,23 @@ const KEYBOARD_DIRECTIONS = Object.freeze({
 });
 
 const GAL_BACKDROPS = Object.freeze({
-  night: '/assets/anime/themes/theme-night-tower.webp',
-  sun: '/assets/anime/themes/theme-sun-sanctum.webp',
-  ocean: '/assets/anime/themes/theme-ocean-archive.webp',
-  forest: '/assets/anime/themes/theme-forest-approach.webp',
-  redVein: '/assets/anime/themes/theme-red-vein.webp',
-  starMirror: '/assets/anime/themes/theme-star-mirror.webp',
-  echoCourt: '/assets/anime/themes/theme-echo-court.webp',
-  originCore: '/assets/anime/themes/theme-origin-core.webp',
-  ashRegistry: '/assets/anime/themes/theme-ash-registry.webp',
-  archiveStorm: '/assets/anime/themes/theme-archive-storm.webp',
-  emberLighthouse: '/assets/anime/themes/theme-ember-lighthouse.webp'
+  night: galArtUrl('/assets/anime/themes/theme-night-tower.webp'),
+  sun: galArtUrl('/assets/anime/themes/theme-sun-sanctum.webp'),
+  ocean: galArtUrl('/assets/anime/themes/theme-ocean-archive.webp'),
+  forest: galArtUrl('/assets/anime/themes/theme-forest-approach.webp'),
+  redVein: galArtUrl('/assets/anime/themes/theme-red-vein.webp'),
+  starMirror: galArtUrl('/assets/anime/themes/theme-star-mirror.webp'),
+  echoCourt: galArtUrl('/assets/anime/themes/theme-echo-court.webp'),
+  originCore: galArtUrl('/assets/anime/themes/theme-origin-core.webp'),
+  ashRegistry: galArtUrl('/assets/anime/themes/theme-ash-registry.webp'),
+  archiveStorm: galArtUrl('/assets/anime/themes/theme-archive-storm.webp'),
+  emberLighthouse: galArtUrl('/assets/anime/themes/theme-ember-lighthouse.webp')
 });
 
 const GAL_TRANSITIONS = Object.freeze({
-  witness: '/assets/anime/transitions/witness-entry.webp',
-  boss: '/assets/anime/transitions/seal-shatter.webp',
-  return: '/assets/anime/transitions/witness-entry.webp'
+  witness: galArtUrl('/assets/anime/transitions/witness-entry.webp'),
+  boss: galArtUrl('/assets/anime/transitions/seal-shatter.webp'),
+  return: galArtUrl('/assets/anime/transitions/witness-entry.webp')
 });
 
 const GAL_BOSS_SCENES = new Set([
@@ -334,7 +336,7 @@ function preloadGalDialogueArt(dialogueId, dialogue, turns) {
   const urls = new Set([GAL_TRANSITIONS[galTransitionFor(dialogueId, dialogue)]]);
   for (const turn of turns) {
     urls.add(galBackdropFor(dialogueId, dialogue, turn));
-    if (typeof turn.cg === 'string') urls.add(turn.cg);
+    if (typeof turn.cg === 'string') urls.add(galArtUrl(turn.cg));
     if (!turn.portrait) continue;
     const visual = dialoguePresentation(turn.portrait, turn.expression);
     urls.add(visual.stage);
@@ -412,7 +414,7 @@ function showDialogue(dialogueId, after = null, { finalLabel = null } = {}) {
     let revealed = false;
     let chosen = null;
     const narratorName = turn.speaker ?? '旁白';
-    const cg = typeof turn.cg === 'string' && turn.cg ? turn.cg : null;
+    const cg = typeof turn.cg === 'string' && turn.cg ? galArtUrl(turn.cg) : null;
     const backdrop = galBackdropFor(dialogueId, dialogue, turn);
     if (!isNarration) {
       stage[galSideFor(turn.portrait, turn)] = {

@@ -51,7 +51,7 @@
       "kind": "background",
       "path": "public/assets/anime/themes/theme-forest-approach.webp",
       "scene_use": ["prologue", "forest", "tower-approach"],
-      "status": "approved-2026-09-01",
+      "status": "approved-2026-09-02-cel-v3",
       "replaces_runtime_slot": "forest"
     },
     {
@@ -59,21 +59,21 @@
       "kind": "background",
       "path": "public/assets/anime/themes/theme-night-tower.webp",
       "scene_use": ["night"],
-      "status": "approved-existing"
+      "status": "approved-2026-09-02-cel-v3"
     },
     {
       "id": "theme-sun-sanctum",
       "kind": "background",
       "path": "public/assets/anime/themes/theme-sun-sanctum.webp",
       "scene_use": ["sun"],
-      "status": "approved-existing"
+      "status": "approved-2026-09-02-cel-v3"
     },
     {
       "id": "theme-ocean-archive",
       "kind": "background",
       "path": "public/assets/anime/themes/theme-ocean-archive.webp",
       "scene_use": ["ocean"],
-      "status": "approved-existing"
+      "status": "approved-2026-09-02-cel-v3"
     },
     {
       "id": "theme-forest-sanctuary",

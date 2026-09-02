@@ -1,0 +1,35 @@
+{
+  "batch": "gal-cel-refresh-v3-2026-09-02",
+  "status": "approved-runtime",
+  "style_lock": "03_intermediate/prompt_packets/gal-cel-refresh-v3.md",
+  "archive": "07_archive/2026-09-02-pre-cel-gal-refresh",
+  "dimensions": "1672x941",
+  "assets": [
+    {"id":"BG-00","kind":"backdrop","runtime":"public/assets/anime/themes/theme-forest-approach.webp","master":"art/visual-novel/04_cg/final/BG_00_forest-approach_v3.webp","sha256":"c7a2e411b7a90b044b17e18b819946a6e13233dd812d4d640e77202f7f0bff02"},
+    {"id":"BG-08","kind":"backdrop","runtime":"public/assets/anime/themes/theme-night-tower.webp","master":"art/visual-novel/04_cg/final/BG_08_night-tower_v3.webp","sha256":"4b0ae9c7c403a96e6ea18d43348a70f8fb4628b2558f814db1c91c8f0577e9fd"},
+    {"id":"BG-09","kind":"backdrop","runtime":"public/assets/anime/themes/theme-sun-sanctum.webp","master":"art/visual-novel/04_cg/final/BG_09_sun-sanctum_v3.webp","sha256":"4964bc770a37e0e8fdff86516aa6e1d4e9c06f00418f71ea9c403965566b6ca6"},
+    {"id":"BG-10","kind":"backdrop","runtime":"public/assets/anime/themes/theme-ocean-archive.webp","master":"art/visual-novel/04_cg/final/BG_10_ocean-archive_v3.webp","sha256":"bccf38d153148621b7e4de1233ae29876f45fc1f329363aca66a43b581006b16"},
+    {"id":"BG-01","kind":"backdrop","runtime":"public/assets/anime/themes/theme-red-vein.webp","master":"art/visual-novel/04_cg/final/BG_01_red-vein_furnace_v3.webp","sha256":"5895f25d26b4b18ff245721a735d943e7289ed4d09472cd3acd71c0ce3bd1905"},
+    {"id":"BG-02","kind":"backdrop","runtime":"public/assets/anime/themes/theme-star-mirror.webp","master":"art/visual-novel/04_cg/final/BG_02_star-mirror_archive_v3.webp","sha256":"fc54219e4139fc18b67454b25b87b44e623ef3eb95f3ee07088cb795a37f61a8"},
+    {"id":"BG-03","kind":"backdrop","runtime":"public/assets/anime/themes/theme-echo-court.webp","master":"art/visual-novel/04_cg/final/BG_03_echo-court_v3.webp","sha256":"de9703e872628a86c76d93a0ec49b0a29fa4c84563ddf7d8ede42c9908b40679"},
+    {"id":"BG-04","kind":"backdrop","runtime":"public/assets/anime/themes/theme-origin-core.webp","master":"art/visual-novel/04_cg/final/BG_04_origin-core_v3.webp","sha256":"d69ebf73efde87cd1f18bea589710d1caee68472ab2a78611aceef09d5d02f30"},
+    {"id":"BG-05","kind":"backdrop","runtime":"public/assets/anime/themes/theme-ash-registry.webp","master":"art/visual-novel/04_cg/final/BG_05_ash-registry_v3.webp","sha256":"f03aac99fe9b8ac1f7fe2f969ce21f21c1d727914fb579834ca4bdddfd7d7d65"},
+    {"id":"BG-06","kind":"backdrop","runtime":"public/assets/anime/themes/theme-archive-storm.webp","master":"art/visual-novel/04_cg/final/BG_06_archive-storm_v3.webp","sha256":"015155c1d65732bff7e7f008c31b8eac4a0c0a48647e555476c1d655d3f1c4ab"},
+    {"id":"BG-07","kind":"backdrop","runtime":"public/assets/anime/themes/theme-ember-lighthouse.webp","master":"art/visual-novel/04_cg/final/BG_07_ember-lighthouse_v3.webp","sha256":"b55f4781dd809cad3806823a20d055f4cac2d11feb56a6c406b736e328345dc8"},
+    {"id":"CG-01","kind":"story-cg","runtime":"public/assets/anime/cg/liyue-prologue-tower-cg.webp","master":"art/visual-novel/04_cg/final/CG_01_prologue-tower_v3.webp","sha256":"fa4673f84a585b52bc1934d50d19f9407389ca8d5ff7380e77ea92f2e8dcd60d"},
+    {"id":"CG-02","kind":"story-cg","runtime":"public/assets/anime/cg/liyue-noctia-truth-cg.webp","master":"art/visual-novel/04_cg/final/CG_02_f10_truth_v3.webp","sha256":"de6886617a60e58f61439b9d9514eb0c9ab28ab0ac9e6f89e6b5490c31e70514"},
+    {"id":"CG-08","kind":"story-cg","runtime":"public/assets/anime/cg/liyue-noctia-seal-cg.webp","master":"art/visual-novel/04_cg/final/CG_08_f10_shared-seal-break_v3.webp","sha256":"20d2a81ecf9f35fec0c4b765e24d1fc9af1e433facace9fc113d8f0879e21b91"},
+    {"id":"CG-06","kind":"story-cg","runtime":"public/assets/anime/cg/liyue-echo-ledger-cg.webp","master":"art/visual-novel/04_cg/final/CG_06_f19_ledger-return_v3.webp","sha256":"4c243586f88999d1aad333b4f75852b71ef83b751033d0645e0104227061c1fc"},
+    {"id":"CG-09","kind":"story-cg","runtime":"public/assets/anime/cg/liyue-noctia-sovereign-cg.webp","master":"art/visual-novel/04_cg/final/CG_09_f20_signet-accountability_v3.webp","sha256":"1a55be6caadefe7685c4eab5bb9a2ba202bf17fce278a0b3f4e86d6ac3c2116c"},
+    {"id":"CG-07","kind":"story-cg","runtime":"public/assets/anime/cg/liyue-lighthouse-archive-cg.webp","master":"art/visual-novel/04_cg/final/CG_07_f30_lighthouse-archive_v3.webp","sha256":"df5e6c6329f6833773c760e909c3a4dd8da27ab32193969880099d4d9bd799f7"},
+    {"id":"TRANS-01","kind":"transition","runtime":"public/assets/anime/transitions/witness-entry.webp","master":"art/visual-novel/04_cg/final/TRANS_01_witness-entry_v3.webp","sha256":"19dce5cd104f762ba87a473f62956b9ad8f3f252359d5579e6a6c4c6f7598bf5"},
+    {"id":"TRANS-02","kind":"transition","runtime":"public/assets/anime/transitions/seal-shatter.webp","master":"art/visual-novel/04_cg/final/TRANS_02_seal-shatter_v3.webp","sha256":"c058ebc16988471663fdb050320540829af045c77943f8f00ff8818a6d92de43"}
+  ],
+  "protected": ["public/assets/anime/characters", "public/assets/anime/avatars"],
+  "excluded": [
+    "public/assets/anime/cg/liyue-critical-cg.webp",
+    "public/assets/anime/cg/liyue-defeat-cg.webp",
+    "public/assets/anime/cg/liyue-noctia-afterlight-cg.webp",
+    "public/assets/anime/themes/theme-forest-sanctuary.webp"
+  ]
+}

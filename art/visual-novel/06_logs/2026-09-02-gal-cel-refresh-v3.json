@@ -1,0 +1,12 @@
+{
+  "batch": "gal-cel-refresh-v3-2026-09-02",
+  "tool": "built-in image generation",
+  "generated": {"backdrops": 11, "story_cg": 6, "transitions": 2},
+  "style_anchor": "BG_00_forest-approach_v3",
+  "identity_references": "existing approved standing sprites; no standing sprite or avatar files changed",
+  "runtime_dimensions": "1672x941",
+  "runtime_encoding": "WebP q90, yuv420p",
+  "archive": "art/visual-novel/07_archive/2026-09-02-pre-cel-gal-refresh",
+  "cache_version": "20260902-cel3",
+  "quality_gate": "valid WebP; exact dimensions; manifest hash; GAL runtime reference; cel-shaded low-noise prompt contract"
+}

@@ -4,16 +4,35 @@ import test from 'node:test';
 
 import { dialoguePresentation } from '../src/game/anime-portraits.js';
 
+function webpDimensions(buffer) {
+  assert.equal(buffer.subarray(0, 4).toString('ascii'), 'RIFF');
+  assert.equal(buffer.subarray(8, 12).toString('ascii'), 'WEBP');
+  const chunk = buffer.subarray(12, 16).toString('ascii');
+  if (chunk === 'VP8 ') {
+    assert.equal(buffer.subarray(23, 26).toString('hex'), '9d012a');
+    return { width: buffer.readUInt16LE(26) & 0x3fff, height: buffer.readUInt16LE(28) & 0x3fff };
+  }
+  if (chunk === 'VP8L') {
+    assert.equal(buffer[20], 0x2f);
+    const bits = buffer.readUInt32LE(21);
+    return { width: (bits & 0x3fff) + 1, height: ((bits >> 14) & 0x3fff) + 1 };
+  }
+  if (chunk === 'VP8X') {
+    return { width: buffer.readUIntLE(24, 3) + 1, height: buffer.readUIntLE(27, 3) + 1 };
+  }
+  throw new Error(`unsupported WebP chunk ${JSON.stringify(chunk)}`);
+}
+
 test('Gal scenes bridge into and out of the same Tower instead of hard-cutting from the tactical UI', async () => {
   const [main, css, witness, seal] = await Promise.all([
     readFile(new URL('../src/main.js', import.meta.url), 'utf8'),
     readFile(new URL('../ui-v10-cinematics.css', import.meta.url), 'utf8'),
-    stat(new URL('../public/assets/anime/transitions/witness-entry.webp', import.meta.url)),
-    stat(new URL('../public/assets/anime/transitions/seal-shatter.webp', import.meta.url))
+    readFile(new URL('../public/assets/anime/transitions/witness-entry.webp', import.meta.url)),
+    readFile(new URL('../public/assets/anime/transitions/seal-shatter.webp', import.meta.url))
   ]);
 
-  assert.ok(witness.size > 120_000, 'witness entry must be a real illustrated transition plate');
-  assert.ok(seal.size > 120_000, 'Boss entry must be a real illustrated transition plate');
+  assert.deepEqual(webpDimensions(witness), { width: 1672, height: 941 });
+  assert.deepEqual(webpDimensions(seal), { width: 1672, height: 941 });
   for (const token of ['GAL_TRANSITIONS', 'GAL_BOSS_SCENES', 'beginGalScene', 'closeGalScene', 'gal-witness-transition', 'is-entering', 'is-exiting']) {
     assert.match(main, new RegExp(token));
   }
@@ -45,12 +64,12 @@ test('F10 and F20 climax beats bind authored CG rather than falling back to a ge
   const [f10, f20, seal, sovereign] = await Promise.all([
     readFile(new URL('../src/game/demo-10-floor-content.js', import.meta.url), 'utf8'),
     readFile(new URL('../src/game/demo-20-floor-content.js', import.meta.url), 'utf8'),
-    stat(new URL('../public/assets/anime/cg/liyue-noctia-seal-cg.webp', import.meta.url)),
-    stat(new URL('../public/assets/anime/cg/liyue-noctia-sovereign-cg.webp', import.meta.url))
+    readFile(new URL('../public/assets/anime/cg/liyue-noctia-seal-cg.webp', import.meta.url)),
+    readFile(new URL('../public/assets/anime/cg/liyue-noctia-sovereign-cg.webp', import.meta.url))
   ]);
 
-  assert.ok(seal.size > 250_000, 'F10 seal-break CG must be a full illustrated plate');
-  assert.ok(sovereign.size > 300_000, 'F20 accountability CG must be a full illustrated plate');
+  assert.deepEqual(webpDimensions(seal), { width: 1672, height: 941 });
+  assert.deepEqual(webpDimensions(sovereign), { width: 1672, height: 941 });
   assert.match(f10, /queenPhaseDemo[\s\S]*?liyue-noctia-seal-cg\.webp/);
   assert.match(f20, /floor20[\s\S]*?liyue-noctia-sovereign-cg\.webp/);
 });
