@@ -426,11 +426,13 @@ function showDialogue(dialogueId, after = null, { finalLabel = null } = {}) {
             ${nameplate}
             <p class="gal-typewriter"></p>
             ${choices.length ? `<div class="gal-choices">${choices.map((choice, choiceIndex) => `<button class="gal-choice" data-dialogue-choice="${choiceIndex}">${escapeHtml(choice.label)}</button>`).join('')}</div><p class="gal-choice-response" aria-live="polite"></p>` : ''}
-            <div class="gal-text-actions">
-              <button type="button" class="gal-previous" ${index === 0 ? 'disabled' : ''}>上一句</button>
-              <button type="button" class="primary gal-advance">${choices.length ? '选择一句回应' : '显示全文'}</button>
+            <div class="gal-dialogue-footer">
+              <div class="gal-advance-hint">点击舞台 / 空格 / Enter　·　B 历史　A 自动　H 隐藏</div>
+              <div class="gal-text-actions">
+                <button type="button" class="gal-previous" ${index === 0 ? 'disabled' : ''}>上一句</button>
+                <button type="button" class="primary gal-advance">${choices.length ? '选择一句回应' : '显示全文'}</button>
+              </div>
             </div>
-            <div class="gal-advance-hint">点击文本框 / 空格 / Enter　·　B 历史　A 自动　H 隐藏</div>
           </article>
           <aside class="gal-backlog" aria-label="对话历史" ${historyOpen ? '' : 'hidden'}>
             <header><span>BACKLOG · 已读记录</span><button type="button" data-gal-control="backlog-close" aria-label="关闭历史">×</button></header>

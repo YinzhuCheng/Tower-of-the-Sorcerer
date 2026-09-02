@@ -50,6 +50,7 @@ test('cinematic UI ships working Gal controls, story CGs, character expressions,
   for (const label of ['历史', '自动', '快进', '隐藏', 'data-gal-control']) assert.match(main, new RegExp(label));
   assert.match(main, /跳过战斗演出/);
   assert.match(main, /gal-choices/);
+  assert.match(main, /gal-dialogue-footer/);
   assert.match(main, /gal-cg/);
   assert.match(main, /galActorHtml/);
   assert.match(main, /gal-speaker-avatar/);
@@ -61,6 +62,7 @@ test('cinematic UI ships working Gal controls, story CGs, character expressions,
   assert.match(css, /\.gal-portrait-left/);
   assert.match(css, /\.gal-portrait-right/);
   assert.match(css, /\.gal-speaker-avatar/);
+  assert.match(css, /\.gal-dialogue-footer\{display:grid/);
   assert.match(css, /height:100svh/);
   assert.match(css, /\.battle-cinematic/);
   assert.ok(critical.size > 80_000, 'critical-health CG should be a real runtime asset');
