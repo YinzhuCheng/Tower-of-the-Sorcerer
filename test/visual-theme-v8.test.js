@@ -15,7 +15,7 @@ test('V8 installs four UI themes and keeps the compact HUD structure', async () 
   assert.match(html, /id="btn-theme"/);
   assert.match(html, /data-theme="night"/);
   assert.doesNotMatch(html, /visual-cleanup-v7\.js/);
-  assert.match(html, /v8-atlas-fetch-shim\.js/);
+  assert.doesNotMatch(html, /v8-atlas-fetch-shim\.js/);
   assert.match(main, /installV8VisualLayer/);
   assert.match(main, /applySceneThemeV8/);
   assert.match(main, /installV83UiFixes/);
@@ -32,7 +32,6 @@ test('V8 installs four UI themes and keeps the compact HUD structure', async () 
 test('V8 generated UI atlas remains exact while V10 supplies gameplay pickups and cards', async () => {
   const source = await readFile(join(root, 'src/game/visual-theme-v8.js'), 'utf8');
   const patch = await readFile(join(root, 'src/game/visual-patch-v83.js'), 'utf8');
-  const shim = await readFile(join(root, 'src/game/v8-atlas-fetch-shim.js'), 'utf8');
   const chunkNames = [
     'generated-v8-01a.b64',
     'generated-v8-01b.b64',
@@ -56,12 +55,10 @@ test('V8 generated UI atlas remains exact while V10 supplies gameplay pickups an
     createHash('sha256').update(data).digest('hex'),
     '857a56998c8d6c625f1a343bf9bac29084b899be04f19cc2d77a3678d246e4ec'
   );
-
-  for (const name of ['generated-v8-01a.b64', 'generated-v8-01b.b64', 'generated-v8-02a.b64', 'generated-v8-02b.b64']) {
-    assert.match(shim, new RegExp(name.replace('.', '\\.')));
-  }
-  assert.match(shim, /cache: 'reload'/);
-  assert.match(shim, /rev=\$\{revision\}/);
+  const runtime = await readFile(join(root, 'public/assets/anime/map/atlases/runtime/ui-v8.webp'));
+  assert.deepEqual(runtime, data);
+  assert.match(source, /atlases\/runtime\/ui-v8\.webp/);
+  assert.doesNotMatch(source, /decodeBase64Bytes|atob\(/);
 
   assert.match(source, /floor-main-v8/);
   assert.match(source, /floor-alt-v8/);

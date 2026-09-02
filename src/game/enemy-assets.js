@@ -1,3 +1,5 @@
+import { loadImage } from './asset-loading.js';
+
 const MANIFEST_URL = '/assets/anime/enemies/manifest.json';
 const DEFAULT_BASE_PATH = '/assets/anime/';
 
@@ -17,16 +19,6 @@ async function fetchText(url) {
   const response = await fetch(url, { cache: 'force-cache' });
   if (!response.ok) throw new Error(`素材加载失败：${url} (HTTP ${response.status})`);
   return (await response.text()).trim();
-}
-
-function loadImage(url) {
-  return new Promise((resolve) => {
-    const image = new Image();
-    image.decoding = 'async';
-    image.onload = () => resolve(image);
-    image.onerror = () => resolve(null);
-    image.src = url;
-  });
 }
 
 function resolvePath(path) {

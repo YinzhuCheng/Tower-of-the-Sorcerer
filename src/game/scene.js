@@ -60,6 +60,7 @@ export function createMagicTowerScene(Phaser, bridge) {
 
       this.renderFloor();
       bridge.onReady(this);
+      bridge.onAssetsReady?.(this);
     }
 
     move(direction) {

@@ -6,26 +6,32 @@
   "basePath": "/assets/anime/map/",
   "atlases": {
     "environment": {
-      "base64Chunks": ["atlases/environment-1.b64","atlases/environment-2a.b64","atlases/environment-2b.b64","atlases/environment-3.b64","atlases/environment-4.b64","atlases/environment-5.b64"],
+      "file": "atlases/runtime/environment.webp",
+      "base64Chunks": ["atlases/environment-1.b64","atlases/environment-2.b64","atlases/environment-3.b64","atlases/environment-4.b64","atlases/environment-5.b64"],
       "mime": "image/webp", "cols": 5, "rows": 4
     },
     "hero": {
+      "file": "atlases/runtime/hero.webp",
       "base64Chunks": ["atlases/hero-1.b64","atlases/hero-2a.b64","atlases/hero-2b.b64","atlases/hero-3a.b64","atlases/hero-3b.b64"],
       "mime": "image/webp", "cols": 2, "rows": 2
     },
     "featuredV2": {
+      "file": "atlases/runtime/featured-v2.webp",
       "base64Chunks": ["atlases/featured-v2-01.b64","atlases/featured-v2-02.b64","atlases/featured-v2-03.b64","atlases/featured-v2-04.b64","atlases/featured-v2-05a1.b64","atlases/featured-v2-05a2.b64","atlases/featured-v2-05b.b64","atlases/featured-v2-06.b64","atlases/featured-v2-07a.b64","atlases/featured-v2-08.b64"],
       "mime": "image/webp", "cols": 5, "rows": 2
     },
     "v4Combined": {
+      "file": "atlases/runtime/v4-combined.webp",
       "base64Chunks": ["atlases/v4/combined-01.b64","atlases/v4/combined-02.b64","atlases/v4/combined-03.b64","atlases/v4/combined-04.b64","atlases/v4/combined-05.b64","atlases/v4/combined-06.b64","atlases/v4/combined-07.b64"],
       "mime": "image/webp", "cols": 5, "rows": 4
     },
     "heroPortraitV4": {
+      "file": "atlases/runtime/hero-portrait-v4.webp",
       "base64Chunks": ["atlases/v4/portrait-01.b64","atlases/v4/portrait-02.b64","atlases/v4/portrait-03.b64"],
       "mime": "image/webp", "cols": 1, "rows": 1
     },
     "wallMaterialsV6": {
+      "file": "atlases/runtime/wall-materials-v6.webp",
       "base64Chunks": [
         "atlases/v6/wall-materials-v6-01.b64",
         "atlases/v6/wall-materials-v6-02.b64",
@@ -45,6 +51,7 @@
       "mime": "image/webp", "cols": 3, "rows": 2
     },
     "gameplayV10": {
+      "file": "atlases/runtime/gameplay-v10.webp",
       "base64Chunks": [
         "atlases/v10/gameplay-v10-ultra-01.b64",
         "atlases/v10/gameplay-v10-ultra-02-fixed.b64"

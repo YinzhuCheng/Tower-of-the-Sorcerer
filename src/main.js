@@ -1426,10 +1426,18 @@ async function boot() {
         applyV83RenderFixes(readyScene);
         readyScene.refresh?.();
       }
+    },
+    onAssetsReady: (readyScene) => {
+      hydratePortraits();
+      readyScene?.refresh?.();
       elements.loading.classList.add('hidden');
-      initialGalDialogue();
     }
   };
+
+  // Story and input must never wait for optional artwork. The Canvas scene is
+  // registered synchronously with a procedural first frame; authored atlases
+  // replace that frame in the background as soon as they finish decoding.
+  initialGalDialogue();
 
   try {
     const Phaser = await ensurePhaser();

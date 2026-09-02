@@ -2,9 +2,10 @@ import { GRID_SIZE, ITEMS, TILE_SIZE } from './data.js';
 import { parseToken } from './engine.js';
 import { portraitIndex } from './anime-portraits.js';
 import { getMapAsset } from './map-assets.js';
+import { loadImage } from './asset-loading.js';
 
 const THEME_KEY = 'lost-magic-tower:theme:v8';
-const GENERATED_ATLAS_URL = '/assets/anime/map/atlases/v8/generated-v8-01.b64';
+const GENERATED_ATLAS_URL = '/assets/anime/map/atlases/runtime/ui-v8.webp';
 const GENERATED_COLS = 3;
 const GENERATED_ROWS = 2;
 const GENERATED_INDEX = Object.freeze({
@@ -63,16 +64,6 @@ function roundRectPath(ctx, x, y, width, height, radius) {
   ctx.closePath();
 }
 
-function loadImage(url) {
-  return new Promise((resolve) => {
-    const image = new Image();
-    image.decoding = 'async';
-    image.onload = () => resolve(image);
-    image.onerror = () => resolve(null);
-    image.src = url;
-  });
-}
-
 function activeThemeId() {
   return document.body?.dataset?.theme in THEME_ENVIRONMENT_URLS
     ? document.body.dataset.theme
@@ -86,13 +77,6 @@ function preloadThemeEnvironmentAssets() {
     if (image) themeEnvironmentAssets.set(id, image);
   })).then(() => themeEnvironmentAssets);
   return themeEnvironmentPromise;
-}
-
-function decodeBase64Bytes(payload) {
-  const binary = atob(payload.replace(/\s+/g, ''));
-  const bytes = new Uint8Array(binary.length);
-  for (let i = 0; i < binary.length; i += 1) bytes[i] = binary.charCodeAt(i);
-  return bytes;
 }
 
 function cropAtlasCell(image, index) {
@@ -139,20 +123,12 @@ function trimTransparent(source, alphaThreshold = 20) {
 export async function preloadV8GeneratedAssets() {
   if (generatedPromise) return generatedPromise;
   generatedPromise = (async () => {
-    const response = await fetch(GENERATED_ATLAS_URL, { cache: 'force-cache' });
-    if (!response.ok) throw new Error(`V8 生成素材加载失败：HTTP ${response.status}`);
-    const bytes = decodeBase64Bytes(await response.text());
-    const blobUrl = URL.createObjectURL(new Blob([bytes], { type: 'image/webp' }));
-    try {
-      const image = await loadImage(blobUrl);
-      if (!image) throw new Error('V8 生成素材图集无法解码');
-      for (const [name, index] of Object.entries(GENERATED_INDEX)) {
-        let cell = cropAtlasCell(image, index);
-        if (!name.startsWith('floor-')) cell = trimTransparent(cell);
-        generatedAssets.set(name, cell);
-      }
-    } finally {
-      URL.revokeObjectURL(blobUrl);
+    const image = await loadImage(GENERATED_ATLAS_URL);
+    if (!image) throw new Error('V8 生成素材图集无法解码');
+    for (const [name, index] of Object.entries(GENERATED_INDEX)) {
+      let cell = cropAtlasCell(image, index);
+      if (!name.startsWith('floor-')) cell = trimTransparent(cell);
+      generatedAssets.set(name, cell);
     }
     return generatedAssets;
   })().catch((error) => {

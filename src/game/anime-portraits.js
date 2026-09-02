@@ -1,7 +1,5 @@
-import { getAnimeAsset, preloadAnimeAssets } from './anime-assets.js';
-import { getMapAsset, preloadMapAssets } from './map-assets.js';
-
-await Promise.all([preloadAnimeAssets(), preloadMapAssets()]);
+import { getAnimeAsset, legacyAnimeFallbackUrl } from './anime-assets.js';
+import { getMapAsset } from './map-assets.js';
 
 const ARCHETYPES = {
   hero: 0, merchant: 1, cat_guard: 2, fox_shrine: 3,
@@ -242,7 +240,9 @@ export function portraitUrl(id, expression = null) {
   const index = ARCHETYPES[key] ?? 0;
   const col = index % 4;
   const row = Math.floor(index / 4);
-  const sheet = getAnimeAsset('portraits');
+  let sheet;
+  try { sheet = getAnimeAsset('portraits'); }
+  catch { sheet = legacyAnimeFallbackUrl('portraits'); }
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80"><image href="${sheet}" x="${-col * 80}" y="${-row * 80}" width="320" height="240" preserveAspectRatio="none"/></svg>`;
   const url = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
   urlCache.set(key, url);

@@ -6,6 +6,7 @@ import { getEnemyAsset, getEnemyAssetMeta, preloadEnemyAssets } from './enemy-as
 import { preloadItemAssets } from './item-assets.js';
 import { getMapAsset, preloadMapAssets } from './map-assets.js';
 import { WALL_BITS, selectWallVisual } from './autotile.js';
+import { loadImage } from './asset-loading.js';
 
 const SIZE = GRID_SIZE * TILE_SIZE;
 
@@ -42,16 +43,6 @@ function cssColor(value, alpha = 1) {
   return `rgba(${r},${g},${b},${alpha})`;
 }
 
-function imagePromise(src) {
-  return new Promise((resolve) => {
-    const image = new Image();
-    image.decoding = 'async';
-    image.onload = () => resolve(image);
-    image.onerror = () => resolve(null);
-    image.src = src;
-  });
-}
-
 export function createCanvasTowerScene(bridge, parent = document.getElementById('game-container')) {
   return new AnimeCanvasTowerScene(bridge, parent);
 }
@@ -76,28 +67,34 @@ class AnimeCanvasTowerScene {
     this.handlePointer = this.handlePointer.bind(this);
     window.addEventListener('keydown', this.handleKeydown);
     this.canvas.addEventListener('pointerdown', this.handlePointer);
-    this.start();
+    this.renderFloor();
+    this.bridge.onReady(this);
+    void this.start();
   }
 
   async start() {
-    await Promise.all([
-      preloadAnimeAssets(),
-      preloadEnemyAssets(),
-      preloadItemAssets(),
-      preloadMapAssets()
-    ]);
+    try {
+      await Promise.allSettled([
+        preloadAnimeAssets(),
+        preloadEnemyAssets(),
+        preloadItemAssets(),
+        preloadMapAssets()
+      ]);
 
-    this.itemSheet = getAnimeAsset('items');
-    this.tileSheet = getAnimeAsset('tiles');
-    this.chibiSheet = getAnimeAsset('chibi');
-    const urls = new Set([this.itemSheet, this.tileSheet, this.chibiSheet]);
-    await Promise.all([...urls].map(async (url) => {
-      const image = await imagePromise(url);
-      if (image) this.images.set(url, image);
-    }));
-
-    this.renderFloor();
-    this.bridge.onReady(this);
+      this.itemSheet = getAnimeAsset('items');
+      this.tileSheet = getAnimeAsset('tiles');
+      this.chibiSheet = getAnimeAsset('chibi');
+      const urls = new Set([this.itemSheet, this.tileSheet, this.chibiSheet]);
+      await Promise.all([...urls].map(async (url) => {
+        const image = await loadImage(url);
+        if (image) this.images.set(url, image);
+      }));
+      this.renderFloor();
+    } catch (error) {
+      console.warn('Canvas artwork initialization failed; gameplay remains active.', error);
+    } finally {
+      this.bridge.onAssetsReady?.(this);
+    }
   }
 
   destroy() {

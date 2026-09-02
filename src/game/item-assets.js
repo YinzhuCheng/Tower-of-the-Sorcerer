@@ -1,3 +1,5 @@
+import { loadImage } from './asset-loading.js';
+
 const MANIFEST_URL = '/assets/anime/items/manifest.json';
 const DEFAULT_BASE_PATH = '/assets/anime/items/';
 
@@ -15,16 +17,6 @@ function normalizeBasePath(value) {
 function resolvePath(path) {
   if (/^(?:https?:|data:|\/)/.test(path)) return path;
   return `${basePath}${path}`;
-}
-
-function loadImage(url) {
-  return new Promise((resolve) => {
-    const image = new Image();
-    image.decoding = 'async';
-    image.onload = () => resolve(image);
-    image.onerror = () => resolve(null);
-    image.src = url;
-  });
 }
 
 async function loadManifest() {

@@ -11,7 +11,8 @@ const manifestPath = join(mapRoot, 'manifest.json');
 
 async function decodeChunks(paths) {
   const parts = await Promise.all(paths.map(async (path) => (await readFile(join(mapRoot, path), 'utf8')).trim()));
-  return Buffer.from(parts.join(''), 'base64');
+  const binary = atob(parts.join('').replace(/\s+/g, ''));
+  return Buffer.from(binary, 'latin1');
 }
 
 const CORE_ENVIRONMENT = [
@@ -34,5 +35,9 @@ test('moonlit star map manifest preserves the core environment and hero assets w
     const buffer = await decodeChunks(atlas.base64Chunks);
     assert.equal(buffer.subarray(0, 4).toString('ascii'), 'RIFF', `${atlasName} must decode as RIFF`);
     assert.equal(buffer.subarray(8, 12).toString('ascii'), 'WEBP', `${atlasName} must decode as WEBP`);
+    assert.equal(buffer.readUInt32LE(4) + 8, buffer.length, `${atlasName} source fragments must reconstruct the complete RIFF payload`);
+    assert.equal(typeof atlas.file, 'string', `${atlasName} must expose a binary runtime WebP`);
+    const runtime = await readFile(join(mapRoot, atlas.file));
+    assert.deepEqual(runtime, buffer, `${atlasName} runtime WebP must match its source fragments exactly`);
   }
 });

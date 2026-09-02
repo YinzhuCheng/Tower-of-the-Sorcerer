@@ -1,3 +1,5 @@
+import { loadImage } from './asset-loading.js';
+
 const MANIFEST_URL = '/assets/anime/map/manifest.json';
 const DEFAULT_BASE_PATH = '/assets/anime/map/';
 
@@ -22,16 +24,6 @@ async function fetchText(url) {
   const response = await fetch(url, { cache: 'force-cache' });
   if (!response.ok) throw new Error(`地图素材加载失败：${url} (HTTP ${response.status})`);
   return (await response.text()).trim();
-}
-
-function loadImage(url) {
-  return new Promise((resolve) => {
-    const image = new Image();
-    image.decoding = 'async';
-    image.onload = () => resolve(image);
-    image.onerror = () => resolve(null);
-    image.src = url;
-  });
 }
 
 function decodeBase64Bytes(payload) {
