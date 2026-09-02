@@ -11,22 +11,22 @@ import { applyDemoThirtyFloorContent } from '../src/game/demo-30-floor-content.j
 import { DIALOGUE_CAST, dialoguePresentation } from '../src/game/anime-portraits.js';
 
 function webpDimensions(buffer) {
-  assert.equal(buffer.subarray(0, 4).toString('ascii'), 'RIFF');
-  assert.equal(buffer.subarray(8, 12).toString('ascii'), 'WEBP');
+  assert.equal(buffer.subarray(0, 4).toString('ascii'), 'RIFF', 'asset must be RIFF');
+  assert.equal(buffer.subarray(8, 12).toString('ascii'), 'WEBP', 'asset must be WebP');
   const chunk = buffer.subarray(12, 16).toString('ascii');
-  if (chunk === 'VP8 ') return { width: buffer.readUInt16LE(26) & 0x3fff, height: buffer.readUInt16LE(28) & 0x3fff };
+  if (chunk === 'VP8 ') {
+    assert.equal(buffer.subarray(23, 26).toString('hex'), '9d012a', 'VP8 frame header missing');
+    return { width: buffer.readUInt16LE(26) & 0x3fff, height: buffer.readUInt16LE(28) & 0x3fff };
+  }
   if (chunk === 'VP8L') {
+    assert.equal(buffer[20], 0x2f, 'VP8L signature missing');
     const bits = buffer.readUInt32LE(21);
     return { width: (bits & 0x3fff) + 1, height: ((bits >> 14) & 0x3fff) + 1 };
   }
-  if (chunk === 'VP8X') return { width: buffer.readUIntLE(24, 3) + 1, height: buffer.readUIntLE(27, 3) + 1 };
+  if (chunk === 'VP8X') {
+    return { width: buffer.readUIntLE(24, 3) + 1, height: buffer.readUIntLE(27, 3) + 1 };
+  }
   throw new Error(`unsupported WebP chunk ${JSON.stringify(chunk)}`);
-}
-
-function assertScenePlate(buffer, label) {
-  const { width, height } = webpDimensions(buffer);
-  assert.ok(buffer.length > 5_000, `${label} must contain substantive image data`);
-  assert.ok(width >= 1_600 && height >= 900, `${label} must be a high-resolution plate, got ${width}x${height}`);
 }
 
 test('battle results retain an authoritative pre-combat hero snapshot for the cinematic layer', () => {
@@ -97,10 +97,21 @@ test('cinematic UI ships working Gal controls, story CGs, character expressions,
   assert.match(css, /\.gal-root \.gal-textbox\{[\s\S]*?min-height:0/);
   assert.match(css, /height:100svh/);
   assert.match(css, /\.battle-cinematic/);
-  assertScenePlate(critical, 'critical-health CG');
-  assertScenePlate(defeat, 'defeat CG');
-  for (const [index, cg] of [prologue, truth, afterlight].entries()) assertScenePlate(cg, `story CG ${index + 1}`);
-  for (const [index, environment] of [night, sun, ocean, forest].entries()) assertScenePlate(environment, `theme environment ${index + 1}`);
+  for (const [filename, asset] of [
+    ['liyue-critical-cg.webp', critical],
+    ['liyue-defeat-cg.webp', defeat],
+    ['liyue-prologue-tower-cg.webp', prologue],
+    ['liyue-noctia-truth-cg.webp', truth],
+    ['liyue-noctia-afterlight-cg.webp', afterlight],
+    ['theme-night-tower.webp', night],
+    ['theme-sun-sanctum.webp', sun],
+    ['theme-ocean-archive.webp', ocean],
+    ['theme-forest-sanctuary.webp', forest]
+  ]) {
+    const { width, height } = webpDimensions(asset);
+    assert.ok(asset.length > 10_000, `${filename} must contain substantive art`);
+    assert.ok(width >= 1600 && height >= 900, `${filename} must be at least 1600x900, got ${width}x${height}`);
+  }
   for (const expression of [liyue, noctia, shawu]) assert.ok(expression.size > 100_000, 'every lead dialogue expression should be a real runtime asset');
   for (const filename of ['theme-night-tower.webp', 'theme-sun-sanctum.webp', 'theme-ocean-archive.webp', 'theme-forest-sanctuary.webp']) {
     assert.match(css, new RegExp(filename.replace('.', '\\.')));

@@ -5,6 +5,8 @@ import { getMapAsset } from './map-assets.js';
 import { loadImage } from './asset-loading.js';
 
 const THEME_KEY = 'lost-magic-tower:theme:v8';
+const GAL_ART_VERSION = '20260902-cel4';
+const galArtUrl = (path) => `${path}?v=${GAL_ART_VERSION}`;
 const GENERATED_ATLAS_URL = '/assets/anime/map/atlases/runtime/ui-v8.webp';
 const GENERATED_COLS = 3;
 const GENERATED_ROWS = 2;
@@ -25,10 +27,10 @@ const THEMES = Object.freeze([
 ]);
 
 const THEME_ENVIRONMENT_URLS = Object.freeze({
-  night: '/assets/anime/themes/theme-night-tower.webp',
-  sun: '/assets/anime/themes/theme-sun-sanctum.webp',
-  ocean: '/assets/anime/themes/theme-ocean-archive.webp',
-  forest: '/assets/anime/themes/theme-forest-sanctuary.webp'
+  night: galArtUrl('/assets/anime/themes/theme-night-tower.webp'),
+  sun: galArtUrl('/assets/anime/themes/theme-sun-sanctum.webp'),
+  ocean: galArtUrl('/assets/anime/themes/theme-ocean-archive.webp'),
+  forest: galArtUrl('/assets/anime/themes/theme-forest-sanctuary.webp')
 });
 
 const THEME_FLOOR_PALETTES = Object.freeze({

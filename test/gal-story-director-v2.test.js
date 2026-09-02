@@ -83,8 +83,8 @@ test('witness-field story direction ships real scene art and stage art for the d
   for (const filename of ['liyue-echo-ledger-cg.webp', 'liyue-lighthouse-archive-cg.webp']) {
     const asset = await readFile(new URL(`../public/assets/anime/cg/${filename}`, import.meta.url));
     const { width, height } = webpDimensions(asset);
-    assert.ok(asset.length > 5_000, `${filename} must contain substantive story art`);
-    assert.ok(width >= 1_600 && height >= 900, `${filename} must be a high-resolution story CG, got ${width}x${height}`);
+    assert.ok(asset.length > 10_000, `${filename} must contain substantive story art`);
+    assert.ok(width >= 1600 && height >= 900, `${filename} must be at least 1600x900, got ${width}x${height}`);
   }
 });
 

@@ -1,6 +1,7 @@
 {
-  "version": "2026-09-01-v2",
-  "series_style_lock": "Japanese 2D anime cel-shaded visual novel art, shoujo Galgame aesthetic; clean fine linework, controlled cel shading, delicate luminous eyes, graceful fantasy costume design, cinematic but readable composition. No 3D render, no painterly photorealism, no western comic style, no text, no logo, no watermark.",
+  "version": "2026-09-02-v4",
+  "series_style_lock": "Japanese 2D anime cel-shaded visual novel art, classic Japanese shoujo Galgame aesthetic; clean gentle fine linework, broad flat color planes, restrained two-step cel shading, television-anime level detail, quiet low-noise finish, cinematic but readable composition. No photorealism, no painterly realism, no 3D render, no western comic style, no mobile-game splash art, no hyper-detail, no micro-texture, no gritty texture, no film grain, no oversharpening, no HDR, no text, no logo, no watermark.",
+  "render_limits": ["two shadow tones maximum", "one simple highlight per material", "moderate contrast", "no crushed blacks", "no built-in UI or textbox"],
   "tower_anchors": ["a dark obsidian tower arch", "small brass registration seals", "blue-white index lights", "hairline violet seal fractures"],
   "backdrops": [
     {"id":"forest-approach","file":"theme-forest-approach.webp","floors":[1,2,3,4],"mood":"cold dawn, first threshold"},

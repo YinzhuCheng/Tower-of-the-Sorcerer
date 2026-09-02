@@ -1,5 +1,5 @@
 {
-  "version": "2026-09-01",
+  "version": "2026-09-02-cel-v4",
   "release_target": "public/assets/anime",
   "assets": [
     {
@@ -51,7 +51,7 @@
       "kind": "background",
       "path": "public/assets/anime/themes/theme-forest-approach.webp",
       "scene_use": ["prologue", "forest", "tower-approach"],
-      "status": "approved-2026-09-02-cel-v3",
+      "status": "approved-2026-09-02-cel-v4",
       "replaces_runtime_slot": "forest"
     },
     {
@@ -59,28 +59,28 @@
       "kind": "background",
       "path": "public/assets/anime/themes/theme-night-tower.webp",
       "scene_use": ["night"],
-      "status": "approved-2026-09-02-cel-v3"
+      "status": "approved-2026-09-02-cel-v4"
     },
     {
       "id": "theme-sun-sanctum",
       "kind": "background",
       "path": "public/assets/anime/themes/theme-sun-sanctum.webp",
       "scene_use": ["sun"],
-      "status": "approved-2026-09-02-cel-v3"
+      "status": "approved-2026-09-02-cel-v4"
     },
     {
       "id": "theme-ocean-archive",
       "kind": "background",
       "path": "public/assets/anime/themes/theme-ocean-archive.webp",
       "scene_use": ["ocean"],
-      "status": "approved-2026-09-02-cel-v3"
+      "status": "approved-2026-09-02-cel-v4"
     },
     {
       "id": "theme-forest-sanctuary",
       "kind": "background",
       "path": "public/assets/anime/themes/theme-forest-sanctuary.webp",
       "scene_use": ["forest"],
-      "status": "approved-existing"
+      "status": "approved-2026-09-02-cel-v4"
     }
   ]
 }

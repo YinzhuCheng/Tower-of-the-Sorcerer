@@ -668,9 +668,9 @@ function showBattleCinematic(battle, after = null) {
   const predictedDefeat = !battle.winnable;
   const critical = !predictedDefeat && battle.remainingHp / Math.max(1, hero.maxHp) <= 0.3;
   const cg = predictedDefeat
-    ? '/assets/anime/cg/liyue-defeat-cg.webp'
+    ? galArtUrl('/assets/anime/cg/liyue-defeat-cg.webp')
     : critical
-      ? '/assets/anime/cg/liyue-critical-cg.webp'
+      ? galArtUrl('/assets/anime/cg/liyue-critical-cg.webp')
       : null;
   const special = specialLabel(enemy);
   const heroStart = Math.max(0, hero.hp);
