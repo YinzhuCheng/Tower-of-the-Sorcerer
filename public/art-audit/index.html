@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="color-scheme" content="dark" />
+  <meta name="description" content="《失落魔法阵：少女魔塔》运行时美术身份与引用关系审计台。" />
+  <title>美术身份审计台 · 失落魔法阵</title>
+  <link rel="icon" href="/favicon.svg" />
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true">✦</span>
+      <div>
+        <p>LOST MAGIC TOWER · ART INDEX</p>
+        <h1>美术身份审计台</h1>
+      </div>
+    </div>
+    <a class="game-link" href="/">返回游戏</a>
+  </header>
+
+  <main>
+    <section class="summary" aria-labelledby="summary-title">
+      <div class="summary-copy">
+        <p class="eyebrow">运行时映射 · 人工终审</p>
+        <h2 id="summary-title">把同一个人放在同一行</h2>
+        <p>默认立绘是身份基准候选。逐列核对头像、表情立绘和 CG 出场；发现发色、瞳色、服装或人物身份漂移时标记异常。</p>
+      </div>
+      <div class="summary-stats" id="summary-stats" aria-label="审核统计"></div>
+    </section>
+
+    <section class="audit-toolbar" aria-label="审计筛选">
+      <label class="search-field">
+        <span>搜索</span>
+        <input id="search" type="search" placeholder="角色、场景、路径或台词 ID" autocomplete="off" />
+      </label>
+      <div class="segmented" id="kind-filter" aria-label="资源分类">
+        <button type="button" class="is-active" data-kind="all">全部</button>
+        <button type="button" data-kind="character">角色对应</button>
+        <button type="button" data-kind="cg">CG</button>
+        <button type="button" data-kind="environment">环境与转场</button>
+      </div>
+      <label class="status-field">
+        <span>审核状态</span>
+        <select id="status-filter">
+          <option value="all">全部状态</option>
+          <option value="pending">待审核</option>
+          <option value="issue">仅异常</option>
+          <option value="pass">仅通过</option>
+        </select>
+      </label>
+      <div class="toolbar-actions">
+        <button type="button" id="export-review">导出审核 JSON</button>
+        <button type="button" id="reset-review" class="quiet">清空本机记录</button>
+      </div>
+    </section>
+
+    <div id="audit-root" class="audit-root" aria-live="polite"></div>
+    <p id="empty-state" class="empty-state" hidden>当前筛选下没有资源。</p>
+  </main>
+
+  <dialog id="lightbox" class="lightbox">
+    <button type="button" class="lightbox-close" aria-label="关闭大图">×</button>
+    <div class="lightbox-stage"><img alt="" /></div>
+    <div class="lightbox-meta">
+      <strong></strong>
+      <code></code>
+    </div>
+  </dialog>
+
+  <template id="review-controls-template">
+    <div class="review-box">
+      <div class="review-actions" role="group" aria-label="人工审核状态">
+        <button type="button" data-review="pass">通过</button>
+        <button type="button" data-review="issue">异常</button>
+        <button type="button" data-review="pending">待定</button>
+      </div>
+      <label>
+        <span>备注</span>
+        <textarea rows="2" placeholder="记录发色、服装、人物数量等具体问题"></textarea>
+      </label>
+    </div>
+  </template>
+
+  <script type="module" src="./app.js"></script>
+</body>
+</html>
