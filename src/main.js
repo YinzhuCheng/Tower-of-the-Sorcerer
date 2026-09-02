@@ -458,7 +458,6 @@ function showDialogue(dialogueId, after = null, { finalLabel = null } = {}) {
             ${nameplate}
             <button type="button" class="gal-icon-button gal-textbox-close" data-gal-control="hide" aria-label="隐藏对话框" data-tooltip="隐藏对话框（H）"><span aria-hidden="true">×</span></button>
             <p class="gal-typewriter"></p>
-            ${choices.length ? '<p class="gal-choice-response" aria-live="polite"></p>' : ''}
             <div class="gal-dialogue-footer">
               <div class="gal-advance-hint">点击舞台 / 空格 / Enter　·　B 历史　A 自动　H 隐藏</div>
               <div class="gal-text-actions">
@@ -489,6 +488,7 @@ function showDialogue(dialogueId, after = null, { finalLabel = null } = {}) {
         const choiceOverlay = elements.galRoot.querySelector('.gal-choice-overlay');
         const backlog = elements.galRoot.querySelector('.gal-backlog');
         const source = String(turn.text ?? '');
+        let displaySource = source;
         let count = 0;
         let timer = null;
         let autoTimer = null;
@@ -512,7 +512,7 @@ function showDialogue(dialogueId, after = null, { finalLabel = null } = {}) {
           advanceButton.dataset.tooltip = label;
           advanceButton.disabled = Boolean(choices.length && !chosen);
         };
-        const renderText = () => { textNode.innerHTML = textToHtml(source.slice(0, count)); };
+        const renderText = () => { textNode.innerHTML = textToHtml(displaySource.slice(0, count)); };
         const clearAutoAdvance = () => {
           window.clearTimeout(autoTimer);
           autoTimer = null;
@@ -526,7 +526,7 @@ function showDialogue(dialogueId, after = null, { finalLabel = null } = {}) {
           if (revealed) return;
           clearInterval(timer);
           timer = null;
-          count = source.length;
+          count = displaySource.length;
           revealed = true;
           renderText();
           setAdvanceLabel();
@@ -581,7 +581,7 @@ function showDialogue(dialogueId, after = null, { finalLabel = null } = {}) {
 
         timer = window.setInterval(() => {
           count += galSettings.fast ? 12 : 2;
-          if (count >= source.length) revealAll();
+          if (count >= displaySource.length) revealAll();
           else renderText();
         }, galSettings.fast ? 5 : 16);
         renderText();
@@ -630,9 +630,10 @@ function showDialogue(dialogueId, after = null, { finalLabel = null } = {}) {
               item.classList.toggle('selected', item === button);
             });
             choiceOverlay?.classList.add('is-resolved');
-            const response = elements.galRoot.querySelector('.gal-choice-response');
-            if (response) response.textContent = choice.response ?? '璃记下这句话，迈向高塔深处。';
             rememberGalLine(historyKey, narratorName, source, choice.label);
+            displaySource = choice.response ?? '璃记下这句话，迈向高塔深处。';
+            count = 0;
+            revealed = false;
             revealAll();
             setAdvanceLabel();
           });
