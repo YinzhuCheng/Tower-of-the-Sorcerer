@@ -27,11 +27,48 @@ const keyStageStates = [
   ['act3_archive_warden', 'duty', 'archive-warden-dialogue-duty.webp']
 ];
 
+function webpDimensions(buffer) {
+  assert.equal(buffer.subarray(0, 4).toString('ascii'), 'RIFF', 'scene asset must be RIFF');
+  assert.equal(buffer.subarray(8, 12).toString('ascii'), 'WEBP', 'scene asset must be WebP');
+  const chunk = buffer.subarray(12, 16).toString('ascii');
+
+  if (chunk === 'VP8 ') {
+    assert.equal(buffer.subarray(23, 26).toString('hex'), '9d012a', 'VP8 frame header missing');
+    return {
+      width: buffer.readUInt16LE(26) & 0x3fff,
+      height: buffer.readUInt16LE(28) & 0x3fff
+    };
+  }
+
+  if (chunk === 'VP8L') {
+    assert.equal(buffer[20], 0x2f, 'VP8L signature missing');
+    const bits = buffer.readUInt32LE(21);
+    return {
+      width: (bits & 0x3fff) + 1,
+      height: ((bits >> 14) & 0x3fff) + 1
+    };
+  }
+
+  if (chunk === 'VP8X') {
+    return {
+      width: buffer.readUIntLE(24, 3) + 1,
+      height: buffer.readUIntLE(27, 3) + 1
+    };
+  }
+
+  throw new Error(`unsupported WebP chunk ${JSON.stringify(chunk)}`);
+}
+
 test('witness-field story direction ships real scene art and stage art for the decisive Boss scenes', async () => {
   const main = await readFile(new URL('../src/main.js', import.meta.url), 'utf8');
   for (const filename of shippedScenes) {
-    const asset = await stat(new URL(`../public/assets/anime/themes/${filename}`, import.meta.url));
-    assert.ok(asset.size > 120_000, `${filename} must be a real Gal background`);
+    const assetUrl = new URL(`../public/assets/anime/themes/${filename}`, import.meta.url);
+    const asset = await readFile(assetUrl);
+    const { width, height } = webpDimensions(asset);
+    // Flat cel-shaded art compresses dramatically better than the previous
+    // painterly/noisy backgrounds, so byte size is no longer a quality proxy.
+    assert.ok(asset.length > 5_000, `${filename} must contain substantive scene art`);
+    assert.ok(width >= 640 && height >= 360, `${filename} must be at least 640x360, got ${width}x${height}`);
     assert.match(main, new RegExp(filename.replace('.', '\\.')));
   }
 
