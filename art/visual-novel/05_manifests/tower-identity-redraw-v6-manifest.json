@@ -1,0 +1,83 @@
+{
+  "batch": "tower-identity-redraw-v6-2026-09-03",
+  "status": "internally-approved-runtime",
+  "auditSource": "art/visual-novel/00_source/tower-art-audit-2026-09-03-human-round-2.json",
+  "promptPacket": "art/visual-novel/03_intermediate/prompt_packets/2026-09-03-tower-identity-redraw-v6.md",
+  "archive": "art/visual-novel/07_archive/2026-09-03-pre-tower-identity-redraw",
+  "styleLock": "clean Gal cel shading; broad shapes; restrained detail; low noise; stable character identity",
+  "assets": [
+    {
+      "id": "MAP-HERO-LIYUE-4DIR",
+      "kind": "four-direction-map-atlas",
+      "runtime": "public/assets/anime/map/atlases/runtime/hero-v6.webp",
+      "working": "art/visual-novel/04_cg/working/2026-09-03-tower-identity-redraw/characters/liyue-map-4dir.png",
+      "final": "art/visual-novel/04_cg/final/2026-09-03-tower-identity-redraw/characters/liyue-map-4dir.webp",
+      "dimensions": [1024, 1024],
+      "alphaRequired": true,
+      "sha256": "6746d5421f40362aea990ac9e807eab1632c10bf68edc0a57c12ca717a8c814f"
+    },
+    {
+      "id": "AVATAR-LANYIN-LAMENT-V6",
+      "kind": "dialogue-avatar",
+      "runtime": "public/assets/anime/avatars/whale-boss-avatar-lament-v6.webp",
+      "working": "art/visual-novel/04_cg/working/2026-09-03-tower-identity-redraw/avatars/whale-boss-avatar-lament.png",
+      "final": "art/visual-novel/04_cg/final/2026-09-03-tower-identity-redraw/avatars/whale-boss-avatar-lament.webp",
+      "dimensions": [512, 512],
+      "alphaRequired": false,
+      "sha256": "bb30d11f27d855482f6fbff4e394a816a7fdee5351942442d370a216265de8b4"
+    },
+    {
+      "id": "AVATAR-YANLI-EMBERS-V6",
+      "kind": "dialogue-avatar",
+      "runtime": "public/assets/anime/avatars/dragon-boss-avatar-embers-v6.webp",
+      "working": "art/visual-novel/04_cg/working/2026-09-03-tower-identity-redraw/avatars/dragon-boss-avatar-embers.png",
+      "final": "art/visual-novel/04_cg/final/2026-09-03-tower-identity-redraw/avatars/dragon-boss-avatar-embers.webp",
+      "dimensions": [512, 512],
+      "alphaRequired": false,
+      "sha256": "69a62292c367df30ac0b7abf7aa119f3cf1aa5a98c4e131868755780adc23e1e"
+    },
+    {
+      "id": "PORTRAIT-YAYU-COMBAT-V6",
+      "kind": "battle-portrait",
+      "runtime": "public/assets/anime/portraits/v6/shadow-boss-portrait-runtime.webp",
+      "working": "art/visual-novel/04_cg/working/2026-09-03-tower-identity-redraw/characters/shadow-boss-combat.png",
+      "final": "art/visual-novel/04_cg/final/2026-09-03-tower-identity-redraw/characters/shadow-boss-combat.webp",
+      "dimensions": [512, 768],
+      "alphaRequired": true,
+      "sha256": "e041ab826d830d0643f4cfff6987ef1e0b8b0a6de7896f80806dde0ce5c5f4cd"
+    },
+    {
+      "id": "PORTRAIT-ECHO-REGENT-MAP-V6",
+      "kind": "canonical-map-derivative",
+      "runtime": "public/assets/anime/portraits/v6/echo-regent-portrait-runtime.webp",
+      "identitySource": "public/assets/anime/characters/echo-regent-dialogue-grave.webp",
+      "dimensions": [512, 768],
+      "alphaRequired": true,
+      "sha256": "4dc81e19da8ef5a2f79e4fb77cd2761496030bcbe97cf88bdf3d97b09c1f22f5"
+    },
+    {
+      "id": "PORTRAIT-ARCANE-SOVEREIGN-MAP-V6",
+      "kind": "canonical-map-derivative",
+      "runtime": "public/assets/anime/portraits/v6/arcane-sovereign-portrait-runtime.webp",
+      "identitySource": "public/assets/anime/characters/arcane-sovereign-dialogue-regret.webp",
+      "dimensions": [512, 768],
+      "alphaRequired": true,
+      "sha256": "5ddc74ef3313f8974a12b87e4230f1c62e3518da2973438e2c3724d13bee42eb"
+    },
+    {
+      "id": "PORTRAIT-ARCHIVE-WARDEN-MAP-V6",
+      "kind": "canonical-map-derivative",
+      "runtime": "public/assets/anime/portraits/v6/archive-warden-portrait-runtime.webp",
+      "identitySource": "public/assets/anime/characters/archive-warden-dialogue-duty.webp",
+      "dimensions": [512, 768],
+      "alphaRequired": true,
+      "sha256": "b5fdb520f9c830fa63f7aed8704e426a2561e620a7df4bc011221099532a87bf"
+    }
+  ],
+  "mapUpgrade": {
+    "legacy128Entries": 48,
+    "activeSource": "matching portraits/v1/*-portrait-runtime.webp",
+    "fallbackSource": "legacy enemies/v1/*-map-128.webp",
+    "excludedFromHumanIdentityAudit": ["void_core", "origin_core", "act3_errata_core"]
+  }
+}

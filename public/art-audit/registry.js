@@ -1,10 +1,6 @@
-export const AUDIT_VERSION = '2026-09-03-tower-units-v6';
+export const AUDIT_VERSION = '2026-09-03-tower-identity-redraw-v7';
 
-export const KNOWN_SIGNALS = Object.freeze({
-  'tower-unit:hero': Object.freeze([
-    '人工已知：主角的魔塔地图形象与当前 GAL 身份基准存在明显漂移，请重点核对发色、服装、武器与年龄感。'
-  ])
-});
+export const KNOWN_SIGNALS = Object.freeze({});
 
 // These are combat mechanisms rather than living or character-like units.
 // They remain in the game manifests, but are deliberately outside the human

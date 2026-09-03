@@ -1,0 +1,957 @@
+{
+  "auditVersion": "2026-09-03-tower-units-v6",
+  "exportedAt": "2026-09-03T16:12:23.800Z",
+  "source": "https://tower-of-the-sorcerer.vercel.app/art-audit",
+  "summary": {
+    "pending": 113,
+    "pass": 0,
+    "issue": 5
+  },
+  "reviews": [
+    {
+      "key": "character:hero",
+      "title": "绫星·璃",
+      "kind": "character",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "character:guide",
+      "title": "残响精灵·纱雾",
+      "kind": "character",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "character:final_queen",
+      "title": "无声女王·诺克缇娅",
+      "kind": "character",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "character:cat_boss",
+      "title": "猫卫长·米露",
+      "kind": "character",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "character:fox_boss",
+      "title": "狐祝·绯叶",
+      "kind": "character",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "character:whale_boss",
+      "title": "深蓝歌姬·澜音",
+      "kind": "character",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "character:sword_boss",
+      "title": "剑圣·塞蕾娜",
+      "kind": "character",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "character:dragon_boss",
+      "title": "龙姬·焰璃",
+      "kind": "character",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "character:astral_boss",
+      "title": "天穹魔女·露米",
+      "kind": "character",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "character:shadow_boss",
+      "title": "影织姬·鸦羽",
+      "kind": "character",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "character:merchant",
+      "title": "阵间商人·珂珂",
+      "kind": "character",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "character:echo_regent",
+      "title": "回声摄政官",
+      "kind": "character",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "character:arcane_sovereign",
+      "title": "奥术主权者",
+      "kind": "character",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "character:crown_magus",
+      "title": "最后保管人",
+      "kind": "character",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "character:act3_archive_warden",
+      "title": "档案守望者",
+      "kind": "character",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "tower-unit:hero",
+      "title": "绫星·璃",
+      "kind": "tower-unit",
+      "status": "issue",
+      "note": "01\n魔塔地图形象全部与gal形象不一致，其中头像可以复用gal的 但是四个方向必须重新绘制",
+      "updatedAt": "2026-09-03T16:06:08.081Z",
+      "source": "known-signal"
+    },
+    {
+      "key": "tower-unit:mote",
+      "title": "符文软泥娘",
+      "kind": "tower-unit",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "tower-unit:catMage",
+      "title": "铃术猫娘",
+      "kind": "tower-unit",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "tower-unit:catBoss",
+      "title": "猫卫长·米露",
+      "kind": "tower-unit",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "tower-unit:catScout",
+      "title": "月影猫娘",
+      "kind": "tower-unit",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "tower-unit:foxArcher",
+      "title": "赤羽狐弓",
+      "kind": "tower-unit",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "tower-unit:foxBoss",
+      "title": "狐祝·绯叶",
+      "kind": "tower-unit",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "tower-unit:foxAcolyte",
+      "title": "青叶狐巫",
+      "kind": "tower-unit",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "tower-unit:vineDruid",
+      "title": "藤冠祭司",
+      "kind": "tower-unit",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "tower-unit:shellGuard",
+      "title": "贝甲鲸娘",
+      "kind": "tower-unit",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "tower-unit:tideLancer",
+      "title": "潮汐枪姬",
+      "kind": "tower-unit",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "tower-unit:whaleSinger",
+      "title": "鲸歌术士",
+      "kind": "tower-unit",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "tower-unit:whaleBoss",
+      "title": "深蓝歌姬·澜音",
+      "kind": "tower-unit",
+      "status": "issue",
+      "note": "这里低回 · 头像\n/assets/anime/avatars/whale-boss-avatar-lament.web和深蓝歌姬·澜音 · 默认立绘\n/assets/anime/portraits/v1/whale-boss-portrait-runtime.webp细节不一致 请以立绘为准重新绘制gal头像",
+      "updatedAt": "2026-09-03T16:07:04.316Z"
+    },
+    {
+      "key": "tower-unit:swordBoss",
+      "title": "剑圣·塞蕾娜",
+      "kind": "tower-unit",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "tower-unit:swordKnight",
+      "title": "蔷薇剑士",
+      "kind": "tower-unit",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "tower-unit:bladePriestess",
+      "title": "双刃祷姬",
+      "kind": "tower-unit",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "tower-unit:swordApprentice",
+      "title": "银锋学徒",
+      "kind": "tower-unit",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "tower-unit:flameCaster",
+      "title": "赤炎术姬",
+      "kind": "tower-unit",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "tower-unit:dragonBoss",
+      "title": "龙姬·焰璃",
+      "kind": "tower-unit",
+      "status": "issue",
+      "note": "炽烈 · 头像\n/assets/anime/avatars/dragon-boss-avatar-embers.webp与龙姬·焰璃 · 默认立绘\n/assets/anime/characters/yanli-dialogue-embers.webp细节不一致 请以龙姬·焰璃 · 默认立绘\n/assets/anime/characters/yanli-dialogue-embers.webp为基准重新绘制Gal头像",
+      "updatedAt": "2026-09-03T16:08:10.576Z"
+    },
+    {
+      "key": "tower-unit:dragonGuard",
+      "title": "熔甲龙卫",
+      "kind": "tower-unit",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "tower-unit:dragonWhelp",
+      "title": "幼焰龙娘",
+      "kind": "tower-unit",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "tower-unit:cometArcher",
+      "title": "彗矢术姬",
+      "kind": "tower-unit",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "tower-unit:mirrorDoll",
+      "title": "镜界人偶",
+      "kind": "tower-unit",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "tower-unit:astralBoss",
+      "title": "天穹魔女·露米",
+      "kind": "tower-unit",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "tower-unit:starWitch",
+      "title": "星图魔女",
+      "kind": "tower-unit",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "tower-unit:duskDragon",
+      "title": "暮色龙娘",
+      "kind": "tower-unit",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "tower-unit:voidPriestess",
+      "title": "虚空祭司",
+      "kind": "tower-unit",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "tower-unit:shadowNinja",
+      "title": "影缝忍姬",
+      "kind": "tower-unit",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "tower-unit:shadowBoss",
+      "title": "影织姬·鸦羽",
+      "kind": "tower-unit",
+      "status": "issue",
+      "note": "游戏／战斗肖像与GAL形象不一致，请以GAL 身份基准为准重新绘制魔塔形象",
+      "updatedAt": "2026-09-03T16:09:02.779Z"
+    },
+    {
+      "key": "tower-unit:hushVaultBlade",
+      "title": "寂光双卫·刃",
+      "kind": "tower-unit",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "tower-unit:hushVaultCantor",
+      "title": "寂光双卫·咏",
+      "kind": "tower-unit",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "tower-unit:muteGuard",
+      "title": "缄默近卫",
+      "kind": "tower-unit",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "tower-unit:palaceWarden",
+      "title": "静默执剑官·维拉",
+      "kind": "tower-unit",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "tower-unit:outerCrown",
+      "title": "外环冠剑姬",
+      "kind": "tower-unit",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "tower-unit:hushCantor",
+      "title": "止声咏唱者",
+      "kind": "tower-unit",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "tower-unit:blackSealKeeper",
+      "title": "黯印观测官·塞芙",
+      "kind": "tower-unit",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "tower-unit:crownShade",
+      "title": "冠影巡猎姬",
+      "kind": "tower-unit",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "tower-unit:nullCantor",
+      "title": "空谱咏唱者",
+      "kind": "tower-unit",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "tower-unit:starSentinel",
+      "title": "逆星守望者",
+      "kind": "tower-unit",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "tower-unit:silenceGuard",
+      "title": "寂静近卫",
+      "kind": "tower-unit",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "tower-unit:eclipseMage",
+      "title": "蚀月法师",
+      "kind": "tower-unit",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "tower-unit:crownKnight",
+      "title": "王冠剑姬",
+      "kind": "tower-unit",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "tower-unit:finalQueen",
+      "title": "无声女王·诺克缇娅",
+      "kind": "tower-unit",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "tower-unit:aetherWarden",
+      "title": "高防阈值",
+      "kind": "tower-unit",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "tower-unit:manaWisp",
+      "title": "轻型附刃教学",
+      "kind": "tower-unit",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "tower-unit:runeCantor",
+      "title": "固定魔法伤害",
+      "kind": "tower-unit",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "tower-unit:resonanceBlade",
+      "title": "双谱宝库近战",
+      "kind": "tower-unit",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "tower-unit:resonanceCantor",
+      "title": "双谱宝库咏唱",
+      "kind": "tower-unit",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "tower-unit:spellbladeDuelist",
+      "title": "先制型附刃取舍",
+      "kind": "tower-unit",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "tower-unit:triuneArbiter",
+      "title": "三矢竞技场",
+      "kind": "tower-unit",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "tower-unit:arcaneGatekeeper",
+      "title": "三矢竞技场守门人",
+      "kind": "tower-unit",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "tower-unit:spectrumMarshal",
+      "title": "三矢竞技场中翼",
+      "kind": "tower-unit",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "tower-unit:manaSentinel",
+      "title": "中后段厚重",
+      "kind": "tower-unit",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "tower-unit:prismArchivist",
+      "title": "卡片与宝物侧室",
+      "kind": "tower-unit",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "tower-unit:mirrorHuntress",
+      "title": "镜界机动威胁",
+      "kind": "tower-unit",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "tower-unit:mirrorDuelist",
+      "title": "镜轮宝库",
+      "kind": "tower-unit",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "tower-unit:mirrorCantor",
+      "title": "镜轮宝库",
+      "kind": "tower-unit",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "tower-unit:crownBlade",
+      "title": "三冠阶庭",
+      "kind": "tower-unit",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "tower-unit:crownCantor",
+      "title": "三冠阶庭",
+      "kind": "tower-unit",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "tower-unit:crownMagus",
+      "title": "三冠阶庭",
+      "kind": "tower-unit",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "tower-unit:voidHerald",
+      "title": "终局前魔法高压",
+      "kind": "tower-unit",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "tower-unit:echoRegent",
+      "title": "回声摄政官",
+      "kind": "tower-unit",
+      "status": "issue",
+      "note": "魔塔形象与gal形象不一致 请采用回声摄政官 · 默认立绘\n/assets/anime/characters/echo-regent-dialogue-grave.webp作为魔塔形象",
+      "updatedAt": "2026-09-03T16:10:22.570Z"
+    },
+    {
+      "key": "tower-unit:arcaneSovereign",
+      "title": "奥术主权者",
+      "kind": "tower-unit",
+      "status": "pending",
+      "note": "魔塔形象与gal形象不一致 请采用奥术主权者 · 默认立绘\n/assets/anime/characters/arcane-sovereign-dialogue-regret.webp作为魔塔形象",
+      "updatedAt": "2026-09-03T16:10:40.714Z"
+    },
+    {
+      "key": "tower-unit:cinderScribe",
+      "title": "余烬抄写员",
+      "kind": "tower-unit",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "tower-unit:ashCustodian",
+      "title": "灰烬保管人",
+      "kind": "tower-unit",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "tower-unit:shelterWarden",
+      "title": "夜航守柜人",
+      "kind": "tower-unit",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "tower-unit:auditBailiff",
+      "title": "持簿执行官",
+      "kind": "tower-unit",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "tower-unit:relayConductor",
+      "title": "接力导体",
+      "kind": "tower-unit",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "tower-unit:relayRunner",
+      "title": "接力信使",
+      "kind": "tower-unit",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "tower-unit:shelfWarden",
+      "title": "书架守卫",
+      "kind": "tower-unit",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "tower-unit:ledgerMage",
+      "title": "账页术士",
+      "kind": "tower-unit",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "tower-unit:archiveLancer",
+      "title": "折页枪卫",
+      "kind": "tower-unit",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "tower-unit:triageKnight",
+      "title": "分诊骑士",
+      "kind": "tower-unit",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "tower-unit:marginDuelist",
+      "title": "边注决斗者",
+      "kind": "tower-unit",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "tower-unit:archiveMarshal",
+      "title": "接力总管",
+      "kind": "tower-unit",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "tower-unit:errataCantor",
+      "title": "勘误咏唱者",
+      "kind": "tower-unit",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "tower-unit:indexBeast",
+      "title": "索引兽",
+      "kind": "tower-unit",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "tower-unit:lastCustodian",
+      "title": "最后保管人",
+      "kind": "tower-unit",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "tower-unit:archiveWarden",
+      "title": "档案守望者",
+      "kind": "tower-unit",
+      "status": "pending",
+      "note": "魔塔形象与gal形象不一致 请以档案守望者 · 默认立绘\n/assets/anime/characters/archive-warden-dialogue-duty.webp为基准修改魔塔形象",
+      "updatedAt": "2026-09-03T16:11:15.835Z"
+    },
+    {
+      "key": "tower-unit:merchant",
+      "title": "阵间商人·珂珂",
+      "kind": "tower-unit",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "cg:critical",
+      "title": "危急战斗预演",
+      "kind": "cg",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "cg:defeat",
+      "title": "战败预演",
+      "kind": "cg",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "cg:prologue-tower",
+      "title": "序章：被夺去的咏唱",
+      "kind": "cg",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "cg:noctia-truth",
+      "title": "十阵真相对谈",
+      "kind": "cg",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "cg:noctia-afterlight",
+      "title": "黎明余光候选帧",
+      "kind": "cg",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "cg:noctia-seal",
+      "title": "十阵共同破封",
+      "kind": "cg",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "cg:echo-ledger",
+      "title": "十九阵名簿归还",
+      "kind": "cg",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "cg:noctia-sovereign",
+      "title": "二十阵签名承担",
+      "kind": "cg",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "cg:lighthouse-archive",
+      "title": "终章灯塔归档",
+      "kind": "cg",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "backdrop:forest-approach",
+      "title": "森林进塔口",
+      "kind": "environment",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "backdrop:forest-sanctuary",
+      "title": "森林视觉主题",
+      "kind": "environment",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "backdrop:red-vein",
+      "title": "赤脉炉室",
+      "kind": "environment",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "backdrop:ocean-archive",
+      "title": "潮汐档案",
+      "kind": "environment",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "backdrop:star-mirror",
+      "title": "星镜档案",
+      "kind": "environment",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "backdrop:night-tower",
+      "title": "暗夜王庭",
+      "kind": "environment",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "backdrop:sun-sanctum",
+      "title": "日轮圣所",
+      "kind": "environment",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "backdrop:echo-court",
+      "title": "回响王庭",
+      "kind": "environment",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "backdrop:origin-core",
+      "title": "起源魔源",
+      "kind": "environment",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "backdrop:ash-registry",
+      "title": "余烬登记库",
+      "kind": "environment",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "backdrop:archive-storm",
+      "title": "档案风暴",
+      "kind": "environment",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "backdrop:ember-lighthouse",
+      "title": "余烬灯塔",
+      "kind": "environment",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "transition:witness-entry",
+      "title": "见证场进入／返回",
+      "kind": "environment",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "transition:seal-shatter",
+      "title": "Boss 封印解锁",
+      "kind": "environment",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    }
+  ]
+}

@@ -26,6 +26,17 @@ function resolvePath(path) {
   return `${basePath}${path}`;
 }
 
+// The original v1 map tokens are only 128×128. Every one of them has a
+// transparent 320×480 battle portrait with the same basename, so the map can
+// render the authored high-resolution identity while keeping the small token
+// as a decode fallback. Later batches may opt into another canonical source
+// explicitly (for example a corrected GAL standing sprite).
+function preferredMapFile(meta) {
+  if (meta.highResFile) return meta.highResFile;
+  const match = meta.file?.match(/^enemies\/v1\/(.+)-map-128\.webp$/);
+  return match ? `portraits/v1/${match[1]}-portrait-runtime.webp` : meta.file;
+}
+
 async function loadManifest() {
   if (manifestPromise) return manifestPromise;
   manifestPromise = fetch(MANIFEST_URL, { cache: 'no-cache' })
@@ -36,7 +47,7 @@ async function loadManifest() {
     .then((manifest) => {
       basePath = normalizeBasePath(manifest?.basePath);
       for (const [portrait, meta] of Object.entries(manifest?.assets ?? {})) {
-        if (!meta || (!meta.file && !meta.base64File && !meta.bundle)) continue;
+        if (!meta || (!meta.file && !meta.highResFile && !meta.base64File && !meta.bundle)) continue;
         entries.set(portrait, Object.freeze({ ...meta }));
       }
       return manifest;
@@ -54,8 +65,9 @@ async function resolveUrls() {
 
   await Promise.all([...entries].map(async ([portrait, meta]) => {
     try {
-      if (meta.file) {
-        urls.set(portrait, resolvePath(meta.file));
+      const preferredFile = preferredMapFile(meta);
+      if (preferredFile) {
+        urls.set(portrait, resolvePath(preferredFile));
         return;
       }
 
@@ -87,7 +99,13 @@ export async function preloadEnemyAssets() {
   preloadPromise = (async () => {
     await resolveUrls();
     await Promise.all([...urls].map(async ([portrait, url]) => {
-      const image = await loadImage(url);
+      let image = await loadImage(url);
+      const fallbackFile = entries.get(portrait)?.file;
+      const fallbackUrl = fallbackFile ? resolvePath(fallbackFile) : null;
+      if (!image && fallbackUrl && fallbackUrl !== url) {
+        image = await loadImage(fallbackUrl);
+        if (image) urls.set(portrait, fallbackUrl);
+      }
       if (image) images.set(portrait, image);
       else console.warn(`敌人素材 ${portrait} 解码失败，将使用旧贴图。`);
     }));

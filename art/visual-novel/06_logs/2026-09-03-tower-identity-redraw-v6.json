@@ -1,0 +1,24 @@
+{
+  "date": "2026-09-03",
+  "batch": "tower-identity-redraw-v6",
+  "mode": "reference-guided image edit plus deterministic canonical derivatives",
+  "generated": [
+    "MAP-HERO-LIYUE-4DIR",
+    "AVATAR-LANYIN-LAMENT-V6",
+    "AVATAR-YANLI-EMBERS-V6",
+    "PORTRAIT-YAYU-COMBAT-V6"
+  ],
+  "derived": [
+    "PORTRAIT-ECHO-REGENT-MAP-V6",
+    "PORTRAIT-ARCANE-SOVEREIGN-MAP-V6",
+    "PORTRAIT-ARCHIVE-WARDEN-MAP-V6"
+  ],
+  "rejected": [],
+  "alphaChecks": {
+    "heroAtlas": "0..1",
+    "yayuBattle": "0..1",
+    "echoRegent": "0..1",
+    "arcaneSovereign": "0..1",
+    "archiveWarden": "0..1"
+  }
+}

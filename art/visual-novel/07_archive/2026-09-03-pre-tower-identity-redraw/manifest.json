@@ -1,0 +1,31 @@
+{
+  "batch": "tower-identity-redraw-v6-2026-09-03",
+  "baselineCommit": "b32fc975561c87aaa166e252e1e5b5a92a571bc2",
+  "reason": "Human audit found tower/GAL identity drift and two dialogue avatar mismatches.",
+  "files": [
+    {
+      "runtime": "public/assets/anime/map/atlases/runtime/hero.webp",
+      "archive": "art/visual-novel/07_archive/2026-09-03-pre-tower-identity-redraw/public/assets/anime/map/atlases/runtime/hero.webp",
+      "gitBlob": "7bde49bc6daa9b0e7a8d127b925c5d766887a58f",
+      "replacementReason": "Purple-haired staff user did not match Li's current GAL identity; all four directions required redraw."
+    },
+    {
+      "runtime": "public/assets/anime/avatars/whale-boss-avatar-lament.webp",
+      "archive": "art/visual-novel/07_archive/2026-09-03-pre-tower-identity-redraw/public/assets/anime/avatars/whale-boss-avatar-lament.webp",
+      "gitBlob": "e01bd36d09e9237688e1b00a02f3c0a1fc5adc7f",
+      "replacementReason": "Face, ornaments, and costume details drifted from Lanyin's canonical standing portrait."
+    },
+    {
+      "runtime": "public/assets/anime/avatars/dragon-boss-avatar-embers.webp",
+      "archive": "art/visual-novel/07_archive/2026-09-03-pre-tower-identity-redraw/public/assets/anime/avatars/dragon-boss-avatar-embers.webp",
+      "gitBlob": "d9fb8bd0fbcb20b8528eb2798c6b59087088a864",
+      "replacementReason": "Horn crown, face, and armor details drifted from Yanli's canonical standing portrait."
+    },
+    {
+      "runtime": "public/assets/anime/portraits/v1/shadow-boss-portrait-runtime.webp",
+      "archive": "art/visual-novel/07_archive/2026-09-03-pre-tower-identity-redraw/public/assets/anime/portraits/v1/shadow-boss-portrait-runtime.webp",
+      "gitBlob": "eb3097aaf2c687c16fb91a3022586e8fe87a13e8",
+      "replacementReason": "Hooded male battle design was a different identity from Yayu's canonical GAL sprite."
+    }
+  ]
+}

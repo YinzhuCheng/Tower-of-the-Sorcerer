@@ -44,9 +44,9 @@ test('art audit page covers every speaking character and every authored CG mappi
     await access(new URL(`../public${asset.path}`, import.meta.url));
   }
 
-  assert.equal(AUDIT_VERSION, '2026-09-03-tower-units-v6');
+  assert.equal(AUDIT_VERSION, '2026-09-03-tower-identity-redraw-v7');
   assert.deepEqual(NON_LIVING_UNIT_PORTRAITS, ['void_core', 'origin_core', 'act3_errata_core']);
-  assert.match(KNOWN_SIGNALS['tower-unit:hero'][0], /主角.*地图形象.*GAL/);
+  assert.deepEqual(KNOWN_SIGNALS, {});
 });
 
 test('art audit page covers every living combat unit, the hero and the merchant', async () => {
@@ -59,18 +59,36 @@ test('art audit page covers every living combat unit, the hero and the merchant'
   assert.equal(livingEnemies.length, 78);
   assert.equal(portraitName('arcane_sovereign'), '奥术主权者');
   assert.equal(portraitName('act3_archive_warden'), '档案守望者');
-  assert.ok(mapManifest.atlases.hero.file);
+  assert.equal(mapManifest.atlases.hero.file, 'atlases/runtime/hero-v6.webp');
   assert.ok(mapManifest.atlases.heroPortraitV4.file);
   assert.ok(enemyManifest.assets.merchant.file);
 
   for (const enemy of livingEnemies) {
-    const mapFile = enemyManifest.assets[enemy.portrait]?.file;
+    const entry = enemyManifest.assets[enemy.portrait];
+    const lowResolutionMatch = entry?.file?.match(/^enemies\/v1\/(.+)-map-128\.webp$/);
+    const mapFile = entry?.highResFile
+      ?? (lowResolutionMatch ? `portraits/v1/${lowResolutionMatch[1]}-portrait-runtime.webp` : entry?.file);
     assert.ok(mapFile, `${enemy.portrait} must have a direct map-unit image`);
     await access(new URL(`../public/assets/anime/${mapFile}`, import.meta.url));
     const runtimePortrait = portraitUrl(enemy.portrait);
     assert.match(runtimePortrait, /^\/assets\//, `${enemy.portrait} must expose an auditable runtime portrait`);
     await access(new URL(`../public${runtimePortrait}`, import.meta.url));
   }
+
+  const lowResolutionEntries = Object.values(enemyManifest.assets)
+    .filter(({ file }) => /-map-128\.webp$/.test(file));
+  assert.equal(lowResolutionEntries.length, 48);
+  for (const entry of lowResolutionEntries) {
+    const highResolutionFile = entry.highResFile
+      ?? entry.file.replace(/^enemies\/v1\//, 'portraits/v1/').replace(/-map-128\.webp$/, '-portrait-runtime.webp');
+    assert.notEqual(highResolutionFile, entry.file);
+    await access(new URL(`../public/assets/anime/${highResolutionFile}`, import.meta.url));
+  }
+
+  assert.equal(enemyManifest.assets.shadow_boss.highResFile, 'portraits/v6/shadow-boss-portrait-runtime.webp');
+  assert.equal(enemyManifest.assets.echo_regent.highResFile, 'portraits/v6/echo-regent-portrait-runtime.webp');
+  assert.equal(enemyManifest.assets.arcane_sovereign.highResFile, 'portraits/v6/arcane-sovereign-portrait-runtime.webp');
+  assert.equal(enemyManifest.assets.act3_archive_warden.highResFile, 'portraits/v6/archive-warden-portrait-runtime.webp');
 });
 
 test('art audit page ships review persistence, filters, lightbox and JSON export', async () => {
@@ -94,6 +112,7 @@ test('art audit page ships review persistence, filters, lightbox and JSON export
   assert.match(app, /data-record-key/);
   assert.match(app, /dialoguePresentation\(id, expression\)/);
   assert.match(app, /buildTowerUnits/);
+  assert.match(app, /highResFile/);
   assert.match(app, /assets\/anime\/enemies\/manifest\.json/);
   assert.match(app, /tower-unit-card/);
   assert.match(css, /\.identity-grid/);

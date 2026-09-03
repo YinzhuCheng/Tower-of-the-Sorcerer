@@ -138,7 +138,7 @@ const RUNTIME_PORTRAITS = Object.freeze({
   palace_warden: '/assets/anime/portraits/v1/palace-warden-portrait-runtime.webp',
   black_seal_keeper: '/assets/anime/portraits/v1/black-seal-keeper-portrait-runtime.webp',
   astral_boss: '/assets/anime/portraits/v1/astral-boss-portrait-runtime.webp',
-  shadow_boss: '/assets/anime/portraits/v1/shadow-boss-portrait-runtime.webp',
+  shadow_boss: '/assets/anime/portraits/v6/shadow-boss-portrait-runtime.webp',
   merchant: '/assets/anime/portraits/v1/merchant-keke-portrait-runtime.webp'
 });
 
@@ -208,9 +208,9 @@ export const DIALOGUE_CAST = Object.freeze({
   final_queen: { expression: 'sorrow', label: '哀伤', avatar: '/assets/anime/avatars/noctia-avatar-sorrow-cel.webp' },
   cat_boss: { expression: 'alert', label: '警惕', avatar: '/assets/anime/avatars/cat-boss-avatar-alert.webp' },
   fox_boss: { expression: 'watchful', label: '审视', avatar: '/assets/anime/avatars/fox-boss-avatar-watchful.webp' },
-  whale_boss: { expression: 'lament', label: '低回', avatar: '/assets/anime/avatars/whale-boss-avatar-lament.webp' },
+  whale_boss: { expression: 'lament', label: '低回', avatar: '/assets/anime/avatars/whale-boss-avatar-lament-v6.webp' },
   sword_boss: { expression: 'stern', label: '肃然', avatar: '/assets/anime/avatars/sword-boss-avatar-stern.webp' },
-  dragon_boss: { expression: 'embers', label: '炽烈', avatar: '/assets/anime/avatars/dragon-boss-avatar-embers.webp' },
+  dragon_boss: { expression: 'embers', label: '炽烈', avatar: '/assets/anime/avatars/dragon-boss-avatar-embers-v6.webp' },
   astral_boss: { expression: 'focus', label: '推演', avatar: '/assets/anime/avatars/astral-boss-avatar-focus.webp' },
   shadow_boss: { expression: 'guarded', label: '戒备', avatar: '/assets/anime/avatars/shadow-boss-avatar-guarded.webp' },
   merchant: { expression: 'knowing', label: '了然', avatar: '/assets/anime/avatars/merchant-avatar-knowing.webp' },

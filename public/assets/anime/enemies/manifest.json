@@ -1,5 +1,5 @@
 {
-  "version": 8,
+  "version": 9,
   "basePath": "/assets/anime/",
   "assets": {
     "mana_wisp": {
@@ -203,10 +203,12 @@
     },
     "echo_regent": {
       "file": "enemies/v2/echo-regent-map-384.webp",
+      "highResFile": "portraits/v6/echo-regent-portrait-runtime.webp",
       "scale": 1.12
     },
     "arcane_sovereign": {
       "file": "enemies/v2/arcane-sovereign-map-384.webp",
+      "highResFile": "portraits/v6/arcane-sovereign-portrait-runtime.webp",
       "scale": 1.12
     },
     "astral_boss": {
@@ -215,6 +217,7 @@
     },
     "shadow_boss": {
       "file": "enemies/v1/shadow-boss-map-128.webp",
+      "highResFile": "portraits/v6/shadow-boss-portrait-runtime.webp",
       "scale": 1.08
     },
     "final_queen": {
@@ -286,6 +289,7 @@
     },
     "act3_archive_warden": {
       "file": "enemies/act3/archive-warden-map-384.webp",
+      "highResFile": "portraits/v6/archive-warden-portrait-runtime.webp",
       "scale": 1.15
     },
     "act3_errata_core": {

@@ -190,6 +190,12 @@ async function buildTowerUnits() {
   const enemyBase = enemyManifest.basePath ?? '/assets/anime/';
   const mapBase = mapManifest.basePath ?? '/assets/anime/map/';
   const nonLiving = new Set(NON_LIVING_UNIT_PORTRAITS);
+  const activeMapFile = (entry) => {
+    if (!entry) return null;
+    if (entry.highResFile) return entry.highResFile;
+    const match = entry.file?.match(/^enemies\/v1\/(.+)-map-128\.webp$/);
+    return match ? `portraits/v1/${match[1]}-portrait-runtime.webp` : entry.file;
+  };
 
   const heroMap = mapManifest.atlases?.hero;
   const heroPortrait = mapManifest.atlases?.heroPortraitV4;
@@ -213,7 +219,7 @@ async function buildTowerUnits() {
     .filter(([, enemy]) => !nonLiving.has(enemy.portrait))
     .map(([enemyId, enemy]) => {
       const manifestEntry = enemyManifest.assets?.[enemy.portrait];
-      const mapPath = resolveManifestPath(enemyBase, manifestEntry?.file);
+      const mapPath = resolveManifestPath(enemyBase, activeMapFile(manifestEntry));
       const runtimePortrait = cleanAssetPath(portraitUrl(enemy.portrait));
       const registeredName = portraitName(enemy.portrait);
       return towerUnitRecord({
@@ -222,7 +228,7 @@ async function buildTowerUnits() {
         title: registeredName === enemy.portrait ? enemy.name : registeredName,
         subtitle: `${enemy.floor ? `${enemy.floor}F` : '楼层未标注'} · ${enemy.faction ?? '阵营未标注'} · ${enemy.boss ? 'Boss' : '普通敌人'}`,
         portraitId: enemy.portrait,
-        mapAssets: [{ path: mapPath, label: '地图战斗单位' }],
+        mapAssets: [{ path: mapPath, label: '地图战斗单位（高清运行源）' }],
         portraitAssets: [{ path: runtimePortrait, label: '战斗资料肖像' }],
         galCharacter: characterRecords.find(({ id }) => id === enemy.portrait),
         signals: mapPath ? [] : ['自动线索：敌人素材清单中没有地图贴图。']
@@ -241,7 +247,7 @@ async function buildTowerUnits() {
     title: portraitName('merchant'),
     subtitle: '全塔商店 · 友方地图 NPC',
     portraitId: 'merchant',
-    mapAssets: [{ path: resolveManifestPath(enemyBase, merchantEntry?.file), label: '地图 NPC' }],
+    mapAssets: [{ path: resolveManifestPath(enemyBase, activeMapFile(merchantEntry)), label: '地图 NPC（高清运行源）' }],
     portraitAssets: [{ path: cleanAssetPath(portraitUrl('merchant')), label: '游戏资料肖像' }],
     galCharacter: characterRecords.find(({ id }) => id === 'merchant'),
     signals: merchantEntry?.file ? [] : ['自动线索：商人缺少地图贴图。']

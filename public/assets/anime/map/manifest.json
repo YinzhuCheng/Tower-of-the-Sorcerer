@@ -1,6 +1,7 @@
 {
-  "version": 4,
+  "version": 5,
   "revision": "generated-gameplay-v10.1",
+  "heroRevision": "identity-audited-hero-v6",
   "wallRevision": "wall-materials-v6",
   "theme": "moonlit-star-tower",
   "basePath": "/assets/anime/map/",
@@ -11,8 +12,23 @@
       "mime": "image/webp", "cols": 5, "rows": 4
     },
     "hero": {
-      "file": "atlases/runtime/hero.webp",
-      "base64Chunks": ["atlases/hero-1.b64","atlases/hero-2a.b64","atlases/hero-2b.b64","atlases/hero-3a.b64","atlases/hero-3b.b64"],
+      "file": "atlases/runtime/hero-v6.webp",
+      "base64Chunks": [
+        "atlases/v6/hero/hero-v6-00.b64",
+        "atlases/v6/hero/hero-v6-01.b64",
+        "atlases/v6/hero/hero-v6-02.b64",
+        "atlases/v6/hero/hero-v6-03.b64",
+        "atlases/v6/hero/hero-v6-04.b64",
+        "atlases/v6/hero/hero-v6-05.b64",
+        "atlases/v6/hero/hero-v6-06.b64",
+        "atlases/v6/hero/hero-v6-07.b64",
+        "atlases/v6/hero/hero-v6-08.b64",
+        "atlases/v6/hero/hero-v6-09.b64",
+        "atlases/v6/hero/hero-v6-10.b64",
+        "atlases/v6/hero/hero-v6-11.b64",
+        "atlases/v6/hero/hero-v6-12.b64",
+        "atlases/v6/hero/hero-v6-13.b64"
+      ],
       "mime": "image/webp", "cols": 2, "rows": 2
     },
     "featuredV2": {

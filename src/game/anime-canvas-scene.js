@@ -211,6 +211,22 @@ class AnimeCanvasTowerScene {
     return true;
   }
 
+  drawMapUnitImage(image, cx, cy, size) {
+    const sourceWidth = image?.naturalWidth || image?.width || 1;
+    const sourceHeight = image?.naturalHeight || image?.height || 1;
+    if (sourceHeight <= sourceWidth * 1.14) {
+      return this.drawMapImage(image, cx, cy, size, size);
+    }
+
+    const maxWidth = size * 0.94;
+    const maxHeight = size * 1.28;
+    const scale = Math.min(maxWidth / sourceWidth, maxHeight / sourceHeight);
+    const width = sourceWidth * scale;
+    const height = sourceHeight * scale;
+    const footY = cy + size * 0.47;
+    return this.drawMapImage(image, cx, footY - height / 2, width, height);
+  }
+
   drawMapAsset(name, x, y, scale = 1, rotation = 0, alpha = 1, offsetY = 0) {
     const image = getMapAsset(name);
     if (!image) return false;
@@ -363,7 +379,7 @@ class AnimeCanvasTowerScene {
     }
 
     if (image) {
-      this.drawMapImage(image, cx + offsetX, cy + offsetY, size, size);
+      this.drawMapUnitImage(image, cx + offsetX, cy + offsetY, size);
     } else {
       this.drawLegacySprite(enemy.portrait, cx, cy + 1, enemy.boss ? 54 : 50);
     }
