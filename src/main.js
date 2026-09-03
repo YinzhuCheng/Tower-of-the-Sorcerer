@@ -87,7 +87,7 @@ const GAL_HISTORY_LIMIT = 80;
 const galHistory = [];
 const galImagePreloads = new Map();
 const galSettings = { auto: false, fast: false };
-const GAL_ART_VERSION = '20260903-story-art-v8';
+const GAL_ART_VERSION = '20260903-story-art-v8-native-alpha';
 const galArtUrl = (path) => `${path}?v=${GAL_ART_VERSION}`;
 const KEYBOARD_DIRECTIONS = Object.freeze({
   arrowup: 'up', w: 'up',
