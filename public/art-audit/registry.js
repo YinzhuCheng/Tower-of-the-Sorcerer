@@ -1,10 +1,6 @@
-export const AUDIT_VERSION = '2026-09-02-character-identity-v1';
+export const AUDIT_VERSION = '2026-09-03-audit-redraw-v5';
 
-export const KNOWN_SIGNALS = Object.freeze({
-  arcane_sovereign: [
-    '已确认线索：当前头像是银白短发人物；默认立绘与 F20 CG 中的主权者为青黑长发男性。'
-  ]
-});
+export const KNOWN_SIGNALS = Object.freeze({});
 
 export const CG_SCENES = Object.freeze([
   {

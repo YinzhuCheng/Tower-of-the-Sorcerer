@@ -6,7 +6,7 @@ import { applyDemoThirtyFloorContent } from '/src/game/demo-30-floor-content.js'
 import { DIALOGUE_CAST, dialoguePresentation } from '/src/game/anime-portraits.js';
 import { AUDIT_VERSION, BACKDROPS, CG_SCENES, KNOWN_SIGNALS, TRANSITIONS } from './registry.js';
 
-const STORAGE_KEY = 'lost-magic-tower:art-audit:reviews:v1';
+const STORAGE_KEY = 'lost-magic-tower:art-audit:reviews:v2';
 const STATUS_LABELS = Object.freeze({ pending: '待审核', pass: '通过', issue: '异常' });
 
 applyDemoTenFloorContent({ enemies: ENEMIES, floors: FLOORS, dialogues: DIALOGUES, gridSize: GRID_SIZE });

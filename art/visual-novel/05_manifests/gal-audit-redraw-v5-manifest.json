@@ -1,0 +1,178 @@
+{
+  "batch": "gal-audit-redraw-v5-2026-09-03",
+  "status": "internally-approved-runtime",
+  "baseline_commit": "e79fd7f60913c59959e348451cfb889cccca1d1f",
+  "style_lock": "clean Gal cel-shading; restrained detail; no texture noise; stable character identity",
+  "archive": "art/visual-novel/07_archive/2026-09-03-pre-audit-redraw",
+  "assets": [
+    {
+      "id": "CHAR-NOCTIA-SORROW",
+      "kind": "standing-sprite",
+      "character": "final_queen",
+      "runtime": "public/assets/anime/characters/noctia-dialogue-sorrow.webp",
+      "working": "art/visual-novel/04_cg/working/2026-09-03-audit-redraw/characters/noctia-dialogue-sorrow.png",
+      "final": "art/visual-novel/04_cg/final/2026-09-03-audit-redraw/characters/noctia-dialogue-sorrow.webp",
+      "dimensions": [941, 1672],
+      "alpha_required": true,
+      "sha256": "ab9bec66f40d1329ecf096aa581d4c1777f6237ec3753a4656405e19d2c49f3c"
+    },
+    {
+      "id": "CHAR-NOCTIA-RUNTIME",
+      "kind": "runtime-derivative",
+      "character": "final_queen",
+      "runtime": "public/assets/anime/characters/noctia-runtime.webp",
+      "working": "art/visual-novel/04_cg/working/2026-09-03-audit-redraw/characters/noctia-dialogue-sorrow.png",
+      "final": null,
+      "dimensions": [256, 384],
+      "alpha_required": true,
+      "sha256": "3dab954b9c178f72825408ef003413a661b265a56b8eb968572cd62526135ba8"
+    },
+    {
+      "id": "CHAR-LUMI-FOCUS",
+      "kind": "standing-sprite",
+      "character": "astral_boss",
+      "runtime": "public/assets/anime/portraits/v1/astral-boss-portrait-runtime.webp",
+      "working": "art/visual-novel/04_cg/working/2026-09-03-audit-redraw/characters/astral-boss-lumi-focus.png",
+      "final": "art/visual-novel/04_cg/final/2026-09-03-audit-redraw/characters/astral-boss-lumi-focus.webp",
+      "dimensions": [1024, 1536],
+      "alpha_required": true,
+      "sha256": "15943d6b00672f444ae51018abb8a60462258668dec3ad95a34a70d13f166936"
+    },
+    {
+      "id": "CHAR-LUMI-MAP",
+      "kind": "map-derivative",
+      "character": "astral_boss",
+      "runtime": "public/assets/anime/enemies/v1/astral-boss-map-128.webp",
+      "working": "art/visual-novel/04_cg/working/2026-09-03-audit-redraw/characters/astral-boss-lumi-focus.png",
+      "final": null,
+      "dimensions": [128, 128],
+      "alpha_required": true,
+      "sha256": "ba20f165baebd0da2d59d2863ccd3356e3dbf395a3a244b67ebaa6ad1e478bc3"
+    },
+    {
+      "id": "AVATAR-YAYU-GUARDED",
+      "kind": "avatar",
+      "character": "shadow_boss",
+      "runtime": "public/assets/anime/avatars/shadow-boss-avatar-guarded.webp",
+      "working": "art/visual-novel/04_cg/working/2026-09-03-audit-redraw/avatars/shadow-boss-avatar-guarded.png",
+      "final": "art/visual-novel/04_cg/final/2026-09-03-audit-redraw/avatars/shadow-boss-avatar-guarded.webp",
+      "dimensions": [512, 512],
+      "alpha_required": false,
+      "sha256": "c36bf7f325c003962756805dcade5b8ca5acd35cd412f8af0a228634501b8e28"
+    },
+    {
+      "id": "AVATAR-LUMI-FOCUS",
+      "kind": "avatar",
+      "character": "astral_boss",
+      "runtime": "public/assets/anime/avatars/astral-boss-avatar-focus.webp",
+      "working": "art/visual-novel/04_cg/working/2026-09-03-audit-redraw/avatars/astral-boss-avatar-focus.png",
+      "final": "art/visual-novel/04_cg/final/2026-09-03-audit-redraw/avatars/astral-boss-avatar-focus.webp",
+      "dimensions": [512, 512],
+      "alpha_required": false,
+      "sha256": "ad2b2982e45fc891fe0c9e04ece43dcf8b7c8eeaa0ea2c578fcc85287809d0ef"
+    },
+    {
+      "id": "AVATAR-ECHO-REGENT-GRAVE",
+      "kind": "avatar",
+      "character": "echo_regent",
+      "runtime": "public/assets/anime/avatars/echo-regent-avatar-grave.webp",
+      "working": "art/visual-novel/04_cg/working/2026-09-03-audit-redraw/avatars/echo-regent-avatar-grave.png",
+      "final": "art/visual-novel/04_cg/final/2026-09-03-audit-redraw/avatars/echo-regent-avatar-grave.webp",
+      "dimensions": [512, 512],
+      "alpha_required": false,
+      "sha256": "7ad0b1a3faeb289198695419f76fcce34944e92494e033f157174d4b6998fafb"
+    },
+    {
+      "id": "AVATAR-ARCANE-SOVEREIGN-REGRET",
+      "kind": "avatar",
+      "character": "arcane_sovereign",
+      "runtime": "public/assets/anime/avatars/arcane-sovereign-avatar-regret.webp",
+      "working": "art/visual-novel/04_cg/working/2026-09-03-audit-redraw/avatars/arcane-sovereign-avatar-regret.png",
+      "final": "art/visual-novel/04_cg/final/2026-09-03-audit-redraw/avatars/arcane-sovereign-avatar-regret.webp",
+      "dimensions": [512, 512],
+      "alpha_required": false,
+      "sha256": "08f7c0bf18bfec7d0c79ada0224179f6ac1cfd286bb69ef42b9a8a7361f74644"
+    },
+    {
+      "id": "AVATAR-ARCHIVE-WARDEN-DUTY",
+      "kind": "avatar",
+      "character": "act3_archive_warden",
+      "runtime": "public/assets/anime/avatars/archive-warden-avatar-duty.webp",
+      "working": "art/visual-novel/04_cg/working/2026-09-03-audit-redraw/avatars/archive-warden-avatar-duty.png",
+      "final": "art/visual-novel/04_cg/final/2026-09-03-audit-redraw/avatars/archive-warden-avatar-duty.webp",
+      "dimensions": [512, 512],
+      "alpha_required": false,
+      "sha256": "8066252750cc0b3db46aa5b017f38dd837bc5e12465170ebdcbeeb94506c7de4"
+    },
+    {
+      "id": "CG-PROLOGUE-TOWER",
+      "kind": "story-cg",
+      "runtime": "public/assets/anime/cg/liyue-prologue-tower-cg.webp",
+      "working": "art/visual-novel/04_cg/working/2026-09-03-audit-redraw/cg/liyue-prologue-tower-cg.png",
+      "final": "art/visual-novel/04_cg/final/2026-09-03-audit-redraw/cg/liyue-prologue-tower-cg.webp",
+      "dimensions": [1672, 941],
+      "alpha_required": false,
+      "sha256": "30f3acd38965cd43b197ad89fa00af589c10ed1eaaeca1639d1d7cdd45d4625d"
+    },
+    {
+      "id": "CG-NOCTIA-TRUTH",
+      "kind": "story-cg",
+      "runtime": "public/assets/anime/cg/liyue-noctia-truth-cg.webp",
+      "working": "art/visual-novel/04_cg/working/2026-09-03-audit-redraw/cg/liyue-noctia-truth-cg.png",
+      "final": "art/visual-novel/04_cg/final/2026-09-03-audit-redraw/cg/liyue-noctia-truth-cg.webp",
+      "dimensions": [1672, 941],
+      "alpha_required": false,
+      "sha256": "90f31bad0fd7c180ca68990889be8b5afe5a180b6b389c1e9fed4aeae60099e4"
+    },
+    {
+      "id": "CG-NOCTIA-AFTERLIGHT",
+      "kind": "candidate-cg",
+      "runtime": "public/assets/anime/cg/liyue-noctia-afterlight-cg.webp",
+      "working": "art/visual-novel/04_cg/working/2026-09-03-audit-redraw/cg/liyue-noctia-afterlight-cg.png",
+      "final": "art/visual-novel/04_cg/final/2026-09-03-audit-redraw/cg/liyue-noctia-afterlight-cg.webp",
+      "dimensions": [1672, 941],
+      "alpha_required": false,
+      "sha256": "e7b3f13faafe4c904feb15cfd8323ff195ca78223fe33a1d9e5bbce555c5f18e"
+    },
+    {
+      "id": "CG-NOCTIA-SEAL",
+      "kind": "story-cg",
+      "runtime": "public/assets/anime/cg/liyue-noctia-seal-cg.webp",
+      "working": "art/visual-novel/04_cg/working/2026-09-03-audit-redraw/cg/liyue-noctia-seal-cg.png",
+      "final": "art/visual-novel/04_cg/final/2026-09-03-audit-redraw/cg/liyue-noctia-seal-cg.webp",
+      "dimensions": [1672, 941],
+      "alpha_required": false,
+      "sha256": "b90cea8f5423be522159632fbf2730253ae33a413f7e37b5246042b5fe66d3c9"
+    },
+    {
+      "id": "CG-ECHO-LEDGER",
+      "kind": "story-cg",
+      "runtime": "public/assets/anime/cg/liyue-echo-ledger-cg.webp",
+      "working": "art/visual-novel/04_cg/working/2026-09-03-audit-redraw/cg/liyue-echo-ledger-cg.png",
+      "final": "art/visual-novel/04_cg/final/2026-09-03-audit-redraw/cg/liyue-echo-ledger-cg.webp",
+      "dimensions": [1672, 941],
+      "alpha_required": false,
+      "sha256": "8ac6b978d390bd74a67b721f5d664ee371c891f6c841e4495cfb87b61d0964b4"
+    },
+    {
+      "id": "CG-NOCTIA-SOVEREIGN",
+      "kind": "story-cg",
+      "runtime": "public/assets/anime/cg/liyue-noctia-sovereign-cg.webp",
+      "working": "art/visual-novel/04_cg/working/2026-09-03-audit-redraw/cg/liyue-noctia-sovereign-cg.png",
+      "final": "art/visual-novel/04_cg/final/2026-09-03-audit-redraw/cg/liyue-noctia-sovereign-cg.webp",
+      "dimensions": [1672, 941],
+      "alpha_required": false,
+      "sha256": "3aeda263f914316d04e7eb2a5564ca1fa957522b23a97a8e4d2cdccf8f8f29d2"
+    },
+    {
+      "id": "CG-LIGHTHOUSE-ARCHIVE",
+      "kind": "story-cg",
+      "runtime": "public/assets/anime/cg/liyue-lighthouse-archive-cg.webp",
+      "working": "art/visual-novel/04_cg/working/2026-09-03-audit-redraw/cg/liyue-lighthouse-archive-cg.png",
+      "final": "art/visual-novel/04_cg/final/2026-09-03-audit-redraw/cg/liyue-lighthouse-archive-cg.webp",
+      "dimensions": [1672, 941],
+      "alpha_required": false,
+      "sha256": "fcf2f59c2ea3e3bdd05f2725d8c8653f47426d185e78d799b55a9df96ee4c131"
+    }
+  ]
+}

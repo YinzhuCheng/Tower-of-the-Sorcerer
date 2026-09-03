@@ -1,5 +1,5 @@
 {
-  "version": "2026-09-02-cel-v4",
+  "version": "2026-09-03-audit-redraw-v5",
   "release_target": "public/assets/anime",
   "assets": [
     {
@@ -44,7 +44,7 @@
       "character": "final_queen",
       "path": "public/assets/anime/characters/noctia-dialogue-sorrow.webp",
       "scene_use": ["queen-encounter", "finale"],
-      "status": "approved-existing"
+      "status": "approved-2026-09-03-audit-redraw-v5"
     },
     {
       "id": "theme-forest-approach",

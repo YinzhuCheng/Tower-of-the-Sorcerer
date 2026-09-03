@@ -8,7 +8,7 @@ import { applyDemoTenFloorProgressionGrammar } from '../src/game/demo-10-floor-p
 import { applyDemoTwentyFloorContent } from '../src/game/demo-20-floor-content.js';
 import { applyDemoThirtyFloorContent } from '../src/game/demo-30-floor-content.js';
 import { DIALOGUE_CAST } from '../src/game/anime-portraits.js';
-import { BACKDROPS, CG_SCENES, KNOWN_SIGNALS, TRANSITIONS } from '../public/art-audit/registry.js';
+import { AUDIT_VERSION, BACKDROPS, CG_SCENES, KNOWN_SIGNALS, TRANSITIONS } from '../public/art-audit/registry.js';
 
 applyDemoTenFloorContent({ enemies: ENEMIES, floors: FLOORS, dialogues: DIALOGUES, gridSize: GRID_SIZE });
 applyDemoTenFloorProgressionGrammar({ enemies: ENEMIES, floors: FLOORS, dialogues: DIALOGUES });
@@ -37,8 +37,8 @@ test('art audit page covers every speaking character and every authored CG mappi
     await access(new URL(`../public${asset.path}`, import.meta.url));
   }
 
-  assert.match(KNOWN_SIGNALS.arcane_sovereign.join(' '), /银白短发/);
-  assert.match(KNOWN_SIGNALS.arcane_sovereign.join(' '), /青黑长发/);
+  assert.equal(AUDIT_VERSION, '2026-09-03-audit-redraw-v5');
+  assert.deepEqual(KNOWN_SIGNALS, {});
 });
 
 test('art audit page ships review persistence, filters, lightbox and JSON export', async () => {
@@ -56,6 +56,7 @@ test('art audit page ships review persistence, filters, lightbox and JSON export
   assert.match(html, /href="\/art-audit\/styles\.css"/);
   assert.match(html, /src="\/art-audit\/app\.js"/);
   assert.match(app, /localStorage\.setItem\(STORAGE_KEY/);
+  assert.match(app, /art-audit:reviews:v2/);
   assert.match(app, /new Blob/);
   assert.match(app, /data-record-key/);
   assert.match(app, /dialoguePresentation\(id, expression\)/);

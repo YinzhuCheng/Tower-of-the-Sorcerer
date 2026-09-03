@@ -1,0 +1,90 @@
+{
+  "version": "2026-09-03-audit-redraw-v4",
+  "source_audit": "art/visual-novel/00_source/tower-art-audit-2026-09-03.json",
+  "character_outputs": {
+    "CHAR-01": {
+      "target": "public/assets/anime/characters/noctia-dialogue-sorrow.webp",
+      "references": [
+        "public/assets/anime/characters/noctia-dialogue-sorrow.webp"
+      ]
+    },
+    "CHAR-02": {
+      "target": "public/assets/anime/portraits/v1/astral-boss-portrait-runtime.webp",
+      "references": [
+        "public/assets/anime/characters/yayu-dialogue-guarded.webp"
+      ]
+    }
+  },
+  "avatar_derivations": {
+    "shadow_boss": "public/assets/anime/characters/yayu-dialogue-guarded.webp",
+    "echo_regent": "public/assets/anime/characters/echo-regent-dialogue-grave.webp",
+    "arcane_sovereign": "public/assets/anime/characters/arcane-sovereign-dialogue-regret.webp",
+    "act3_archive_warden": "public/assets/anime/characters/archive-warden-dialogue-duty.webp",
+    "astral_boss": "public/assets/anime/portraits/v1/astral-boss-portrait-runtime.webp"
+  },
+  "cg_outputs": {
+    "CG-01": {
+      "target": "public/assets/anime/cg/liyue-prologue-tower-cg.webp",
+      "references": [
+        "public/assets/anime/cg/liyue-prologue-tower-cg.webp",
+        "public/assets/anime/themes/theme-forest-approach.webp"
+      ]
+    },
+    "CG-02": {
+      "target": "public/assets/anime/cg/liyue-noctia-truth-cg.webp",
+      "references": [
+        "public/assets/anime/cg/liyue-noctia-truth-cg.webp",
+        "public/assets/anime/characters/liyue-dialogue-resolve.webp",
+        "public/assets/anime/characters/noctia-dialogue-sorrow.webp",
+        "public/assets/anime/themes/theme-night-tower.webp"
+      ]
+    },
+    "CG-03": {
+      "target": "public/assets/anime/cg/liyue-noctia-afterlight-cg.webp",
+      "references": [
+        "public/assets/anime/cg/liyue-noctia-afterlight-cg.webp",
+        "public/assets/anime/characters/liyue-dialogue-resolve.webp",
+        "public/assets/anime/characters/noctia-dialogue-sorrow.webp"
+      ]
+    },
+    "CG-04": {
+      "target": "public/assets/anime/cg/liyue-noctia-seal-cg.webp",
+      "references": [
+        "public/assets/anime/cg/liyue-noctia-seal-cg.webp",
+        "public/assets/anime/characters/liyue-dialogue-resolve.webp",
+        "public/assets/anime/characters/noctia-dialogue-sorrow.webp",
+        "public/assets/anime/themes/theme-night-tower.webp"
+      ]
+    },
+    "CG-05": {
+      "target": "public/assets/anime/cg/liyue-echo-ledger-cg.webp",
+      "references": [
+        "public/assets/anime/cg/liyue-echo-ledger-cg.webp",
+        "public/assets/anime/characters/liyue-dialogue-resolve.webp",
+        "public/assets/anime/characters/noctia-dialogue-sorrow.webp",
+        "public/assets/anime/characters/echo-regent-dialogue-grave.webp",
+        "public/assets/anime/themes/theme-echo-court.webp"
+      ]
+    },
+    "CG-06": {
+      "target": "public/assets/anime/cg/liyue-noctia-sovereign-cg.webp",
+      "references": [
+        "public/assets/anime/cg/liyue-noctia-sovereign-cg.webp",
+        "public/assets/anime/characters/liyue-dialogue-resolve.webp",
+        "public/assets/anime/characters/noctia-dialogue-sorrow.webp",
+        "public/assets/anime/characters/arcane-sovereign-dialogue-regret.webp",
+        "public/assets/anime/themes/theme-origin-core.webp"
+      ]
+    },
+    "CG-07": {
+      "target": "public/assets/anime/cg/liyue-lighthouse-archive-cg.webp",
+      "references": [
+        "public/assets/anime/cg/liyue-lighthouse-archive-cg.webp",
+        "public/assets/anime/characters/liyue-dialogue-resolve.webp",
+        "public/assets/anime/characters/shawu-dialogue-gentle.webp",
+        "public/assets/anime/characters/noctia-dialogue-sorrow.webp",
+        "public/assets/anime/themes/theme-ember-lighthouse.webp"
+      ]
+    }
+  }
+}

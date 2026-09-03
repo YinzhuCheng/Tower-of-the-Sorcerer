@@ -1,0 +1,317 @@
+{
+  "auditVersion": "2026-09-02-character-identity-v1",
+  "exportedAt": "2026-09-03T12:04:03.032Z",
+  "source": "https://tower-of-the-sorcerer.vercel.app/art-audit",
+  "summary": {
+    "pending": 25,
+    "pass": 0,
+    "issue": 13
+  },
+  "reviews": [
+    {
+      "key": "character:hero",
+      "title": "绫星·璃",
+      "kind": "character",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "character:guide",
+      "title": "残响精灵·纱雾",
+      "kind": "character",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "character:final_queen",
+      "title": "无声女王·诺克缇娅",
+      "kind": "character",
+      "status": "issue",
+      "note": "身份基础候选抠图不良 头发间很多多余的白色",
+      "updatedAt": "2026-09-03T11:58:48.780Z"
+    },
+    {
+      "key": "character:cat_boss",
+      "title": "猫卫长·米露",
+      "kind": "character",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "character:fox_boss",
+      "title": "狐祝·绯叶",
+      "kind": "character",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "character:whale_boss",
+      "title": "深蓝歌姬·澜音",
+      "kind": "character",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "character:sword_boss",
+      "title": "剑圣·塞蕾娜",
+      "kind": "character",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "character:dragon_boss",
+      "title": "龙姬·焰璃",
+      "kind": "character",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "character:astral_boss",
+      "title": "天穹魔女·露米",
+      "kind": "character",
+      "status": "issue",
+      "note": "名字是天穹魔女·露米 但是形象是男性",
+      "updatedAt": "2026-09-03T11:59:24.350Z"
+    },
+    {
+      "key": "character:shadow_boss",
+      "title": "影织姬·鸦羽",
+      "kind": "character",
+      "status": "issue",
+      "note": "戒备状态和立绘形象不一致（建议以基础候选为准）",
+      "updatedAt": "2026-09-03T12:00:24.679Z"
+    },
+    {
+      "key": "character:merchant",
+      "title": "阵间商人·珂珂",
+      "kind": "character",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "character:echo_regent",
+      "title": "回声摄政官",
+      "kind": "character",
+      "status": "issue",
+      "note": "头像和身份基础候选不一致（建议以基础候选为准）",
+      "updatedAt": "2026-09-03T12:00:18.483Z"
+    },
+    {
+      "key": "character:arcane_sovereign",
+      "title": "奥术主权者",
+      "kind": "character",
+      "status": "issue",
+      "note": "头像和身份基础候选不一致（建议以基础候选为准）",
+      "updatedAt": "2026-09-03T12:00:54.642Z",
+      "source": "known-signal"
+    },
+    {
+      "key": "character:crown_magus",
+      "title": "最后保管人",
+      "kind": "character",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "character:act3_archive_warden",
+      "title": "档案守望者",
+      "kind": "character",
+      "status": "issue",
+      "note": "头像和身份基础候选不一致（建议以基础候选为准）",
+      "updatedAt": "2026-09-03T12:01:13.521Z"
+    },
+    {
+      "key": "cg:critical",
+      "title": "危急战斗预演",
+      "kind": "cg",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "cg:defeat",
+      "title": "战败预演",
+      "kind": "cg",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "cg:prologue-tower",
+      "title": "序章：被夺去的咏唱",
+      "kind": "cg",
+      "status": "issue",
+      "note": "过于细节化 噪点很多 非赛璐璐gal画风 结合背景和人物立绘重新绘制 避免过细节化 避免噪点 走赛璐璐gal画风",
+      "updatedAt": "2026-09-03T12:03:27.863Z"
+    },
+    {
+      "key": "cg:noctia-truth",
+      "title": "十阵真相对谈",
+      "kind": "cg",
+      "status": "issue",
+      "note": "过于细节化 噪点很多 非赛璐璐gal画风 结合背景和人物立绘重新绘制 避免过细节化 避免噪点 走赛璐璐gal画风",
+      "updatedAt": "2026-09-03T12:03:26.316Z"
+    },
+    {
+      "key": "cg:noctia-afterlight",
+      "title": "黎明余光候选帧",
+      "kind": "cg",
+      "status": "issue",
+      "note": "过于细节化 噪点很多 非赛璐璐gal画风 结合背景和人物立绘重新绘制 避免过细节化 避免噪点 走赛璐璐gal画风",
+      "updatedAt": "2026-09-03T12:03:24.532Z"
+    },
+    {
+      "key": "cg:noctia-seal",
+      "title": "十阵共同破封",
+      "kind": "cg",
+      "status": "issue",
+      "note": "过于细节化 噪点很多 非赛璐璐gal画风 结合背景和人物立绘重新绘制 避免过细节化 避免噪点 走赛璐璐gal画风",
+      "updatedAt": "2026-09-03T12:03:23.082Z"
+    },
+    {
+      "key": "cg:echo-ledger",
+      "title": "十九阵名簿归还",
+      "kind": "cg",
+      "status": "issue",
+      "note": "过于细节化 噪点很多 非赛璐璐gal画风 结合背景和人物立绘重新绘制 避免过细节化 避免噪点 走赛璐璐gal画风",
+      "updatedAt": "2026-09-03T12:03:21.146Z"
+    },
+    {
+      "key": "cg:noctia-sovereign",
+      "title": "二十阵签名承担",
+      "kind": "cg",
+      "status": "issue",
+      "note": "过于细节化 噪点很多 非赛璐璐gal画风 结合背景和人物立绘重新绘制 避免过细节化 避免噪点 走赛璐璐gal画风",
+      "updatedAt": "2026-09-03T12:03:19.288Z"
+    },
+    {
+      "key": "cg:lighthouse-archive",
+      "title": "终章灯塔归档",
+      "kind": "cg",
+      "status": "issue",
+      "note": "过于细节化 噪点很多 非赛璐璐gal画风 结合背景和人物立绘重新绘制 避免过细节化 避免噪点 走赛璐璐gal画风",
+      "updatedAt": "2026-09-03T12:03:14.874Z"
+    },
+    {
+      "key": "backdrop:forest-approach",
+      "title": "森林进塔口",
+      "kind": "environment",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "backdrop:forest-sanctuary",
+      "title": "森林视觉主题",
+      "kind": "environment",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "backdrop:red-vein",
+      "title": "赤脉炉室",
+      "kind": "environment",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "backdrop:ocean-archive",
+      "title": "潮汐档案",
+      "kind": "environment",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "backdrop:star-mirror",
+      "title": "星镜档案",
+      "kind": "environment",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "backdrop:night-tower",
+      "title": "暗夜王庭",
+      "kind": "environment",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "backdrop:sun-sanctum",
+      "title": "日轮圣所",
+      "kind": "environment",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "backdrop:echo-court",
+      "title": "回响王庭",
+      "kind": "environment",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "backdrop:origin-core",
+      "title": "起源魔源",
+      "kind": "environment",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "backdrop:ash-registry",
+      "title": "余烬登记库",
+      "kind": "environment",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "backdrop:archive-storm",
+      "title": "档案风暴",
+      "kind": "environment",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "backdrop:ember-lighthouse",
+      "title": "余烬灯塔",
+      "kind": "environment",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "transition:witness-entry",
+      "title": "见证场进入／返回",
+      "kind": "environment",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    },
+    {
+      "key": "transition:seal-shatter",
+      "title": "Boss 封印解锁",
+      "kind": "environment",
+      "status": "pending",
+      "note": "",
+      "updatedAt": null
+    }
+  ]
+}
