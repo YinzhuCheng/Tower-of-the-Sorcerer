@@ -208,7 +208,7 @@ async function buildTowerUnits() {
     portraitId: 'hero',
     mapAssets: [
       { path: resolveManifestPath(mapBase, heroMap?.file), label: '地图四向图集（下／上／左／右）' },
-      { path: resolveManifestPath(mapBase, heroPortrait?.file), label: '地图角色肖像' }
+      { path: cleanAssetPath(portraitUrl('hero')), label: '地图角色肖像' }
     ],
     portraitAssets: [{ path: cleanAssetPath(portraitUrl('hero')), label: '游戏资料肖像' }],
     galCharacter: heroCharacter,

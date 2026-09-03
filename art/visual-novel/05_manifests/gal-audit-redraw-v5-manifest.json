@@ -122,6 +122,7 @@
       "final": "art/visual-novel/04_cg/final/2026-09-03-audit-redraw/cg/liyue-noctia-truth-cg.webp",
       "dimensions": [1672, 941],
       "alpha_required": false,
+      "superseded_by": "art-audit-v7-2026-09-03",
       "sha256": "90f31bad0fd7c180ca68990889be8b5afe5a180b6b389c1e9fed4aeae60099e4"
     },
     {
@@ -142,6 +143,7 @@
       "final": "art/visual-novel/04_cg/final/2026-09-03-audit-redraw/cg/liyue-noctia-seal-cg.webp",
       "dimensions": [1672, 941],
       "alpha_required": false,
+      "superseded_by": "art-audit-v7-2026-09-03",
       "sha256": "b90cea8f5423be522159632fbf2730253ae33a413f7e37b5246042b5fe66d3c9"
     },
     {
@@ -152,6 +154,7 @@
       "final": "art/visual-novel/04_cg/final/2026-09-03-audit-redraw/cg/liyue-echo-ledger-cg.webp",
       "dimensions": [1672, 941],
       "alpha_required": false,
+      "superseded_by": "art-audit-v7-2026-09-03",
       "sha256": "8ac6b978d390bd74a67b721f5d664ee371c891f6c841e4495cfb87b61d0964b4"
     },
     {
@@ -162,6 +165,7 @@
       "final": "art/visual-novel/04_cg/final/2026-09-03-audit-redraw/cg/liyue-noctia-sovereign-cg.webp",
       "dimensions": [1672, 941],
       "alpha_required": false,
+      "superseded_by": "art-audit-v7-2026-09-03",
       "sha256": "3aeda263f914316d04e7eb2a5564ca1fa957522b23a97a8e4d2cdccf8f8f29d2"
     },
     {

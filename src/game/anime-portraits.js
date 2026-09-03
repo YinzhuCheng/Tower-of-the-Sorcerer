@@ -51,11 +51,11 @@ const cardUiAssets = Object.freeze({ sun: 'card-sun-v10', moon: 'card-moon-v10',
 // repository; these 256×384 WebPs are only used by dialogue, codex, and HUD
 // portraits.  Map pieces keep their dedicated transparent sprite pipeline.
 const RUNTIME_PORTRAITS = Object.freeze({
-  hero: '/assets/anime/characters/liyue-runtime.webp',
+  hero: '/assets/anime/avatars/liyue-avatar-embers-cel.webp',
   guide: '/assets/anime/characters/shawu-runtime.webp',
   final_queen: '/assets/anime/portraits/v1/final-queen-combat-portrait-runtime.webp',
-  echo_regent: '/assets/anime/characters/echo-regent-runtime.webp',
-  arcane_sovereign: '/assets/anime/characters/arcane-sovereign-runtime.webp',
+  echo_regent: '/assets/anime/characters/echo-regent-dialogue-grave.webp',
+  arcane_sovereign: '/assets/anime/characters/arcane-sovereign-dialogue-regret.webp',
   void_core: '/assets/anime/enemies/v2/void-core-map-384.webp',
   palace_warden_v2: '/assets/anime/enemies/v2/palace-warden-map-384.webp',
   black_seal_keeper_v2: '/assets/anime/enemies/v2/black-seal-keeper-map-384.webp',
@@ -89,7 +89,7 @@ const RUNTIME_PORTRAITS = Object.freeze({
   act3_archive_marshal: '/assets/anime/enemies/act3/archive-marshal-map-384.webp',
   act3_index_beast: '/assets/anime/enemies/act3/index-beast-map-384.webp',
   act3_last_custodian: '/assets/anime/enemies/act3/last-custodian-map-384.webp',
-  act3_archive_warden: '/assets/anime/enemies/act3/archive-warden-map-384.webp',
+  act3_archive_warden: '/assets/anime/characters/archive-warden-dialogue-duty.webp',
   act3_errata_core: '/assets/anime/enemies/act3/errata-core-map-384.webp',
   mana_wisp: '/assets/anime/portraits/v1/mana-wisp-portrait-runtime.webp',
   aether_warden: '/assets/anime/portraits/v1/aether-warden-portrait-runtime.webp',
@@ -138,7 +138,7 @@ const RUNTIME_PORTRAITS = Object.freeze({
   palace_warden: '/assets/anime/portraits/v1/palace-warden-portrait-runtime.webp',
   black_seal_keeper: '/assets/anime/portraits/v1/black-seal-keeper-portrait-runtime.webp',
   astral_boss: '/assets/anime/portraits/v1/astral-boss-portrait-runtime.webp',
-  shadow_boss: '/assets/anime/portraits/v6/shadow-boss-portrait-runtime.webp',
+  shadow_boss: '/assets/anime/characters/yayu-dialogue-guarded.webp',
   merchant: '/assets/anime/portraits/v1/merchant-keke-portrait-runtime.webp'
 });
 
@@ -208,9 +208,9 @@ export const DIALOGUE_CAST = Object.freeze({
   final_queen: { expression: 'sorrow', label: '哀伤', avatar: '/assets/anime/avatars/noctia-avatar-sorrow-cel.webp' },
   cat_boss: { expression: 'alert', label: '警惕', avatar: '/assets/anime/avatars/cat-boss-avatar-alert.webp' },
   fox_boss: { expression: 'watchful', label: '审视', avatar: '/assets/anime/avatars/fox-boss-avatar-watchful.webp' },
-  whale_boss: { expression: 'lament', label: '低回', avatar: '/assets/anime/avatars/whale-boss-avatar-lament-v6.webp' },
+  whale_boss: { expression: 'lament', label: '低回', avatar: '/assets/anime/avatars/whale-boss-avatar-lament-v7.webp' },
   sword_boss: { expression: 'stern', label: '肃然', avatar: '/assets/anime/avatars/sword-boss-avatar-stern.webp' },
-  dragon_boss: { expression: 'embers', label: '炽烈', avatar: '/assets/anime/avatars/dragon-boss-avatar-embers-v6.webp' },
+  dragon_boss: { expression: 'embers', label: '炽烈', avatar: '/assets/anime/avatars/dragon-boss-avatar-embers-v7.webp' },
   astral_boss: { expression: 'focus', label: '推演', avatar: '/assets/anime/avatars/astral-boss-avatar-focus.webp' },
   shadow_boss: { expression: 'guarded', label: '戒备', avatar: '/assets/anime/avatars/shadow-boss-avatar-guarded.webp' },
   merchant: { expression: 'knowing', label: '了然', avatar: '/assets/anime/avatars/merchant-avatar-knowing.webp' },
