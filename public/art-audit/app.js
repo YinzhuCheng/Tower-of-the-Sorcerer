@@ -3,8 +3,15 @@ import { applyDemoTenFloorContent } from '/src/game/demo-10-floor-content.js';
 import { applyDemoTenFloorProgressionGrammar } from '/src/game/demo-10-floor-progression.js';
 import { applyDemoTwentyFloorContent } from '/src/game/demo-20-floor-content.js';
 import { applyDemoThirtyFloorContent } from '/src/game/demo-30-floor-content.js';
-import { DIALOGUE_CAST, dialoguePresentation } from '/src/game/anime-portraits.js';
-import { AUDIT_VERSION, BACKDROPS, CG_SCENES, KNOWN_SIGNALS, TRANSITIONS } from './registry.js';
+import { DIALOGUE_CAST, dialoguePresentation, portraitName, portraitUrl } from '/src/game/anime-portraits.js';
+import {
+  AUDIT_VERSION,
+  BACKDROPS,
+  CG_SCENES,
+  KNOWN_SIGNALS,
+  NON_LIVING_UNIT_PORTRAITS,
+  TRANSITIONS
+} from './registry.js';
 
 const STORAGE_KEY = 'lost-magic-tower:art-audit:reviews:v2';
 const STATUS_LABELS = Object.freeze({ pending: '待审核', pass: '通过', issue: '异常' });
@@ -107,7 +114,7 @@ function buildCharacters() {
       avatars,
       stages,
       cgScenes,
-      signals: KNOWN_SIGNALS[id] ?? []
+      signals: [...(KNOWN_SIGNALS[id] ?? [])]
     };
   });
 }
@@ -144,7 +151,102 @@ const environmentRecords = [
   ...TRANSITIONS.map((asset) => ({ ...asset, key: `transition:${asset.id}`, kind: 'environment', subtype: '转场' }))
 ];
 
-const records = [...characterRecords, ...cgRecords, ...environmentRecords];
+let towerUnitRecords = [];
+let records = [...characterRecords, ...cgRecords, ...environmentRecords];
+
+function resolveManifestPath(basePath, path) {
+  if (!path) return '';
+  if (/^(?:https?:|data:|\/)/.test(path)) return path;
+  const base = String(basePath ?? '').endsWith('/') ? basePath : `${basePath}/`;
+  return `${base}${path}`;
+}
+
+async function fetchManifest(path) {
+  const response = await fetch(path, { cache: 'no-cache' });
+  if (!response.ok) throw new Error(`${path} 加载失败：HTTP ${response.status}`);
+  return response.json();
+}
+
+function towerUnitRecord({ key, id, title, subtitle, portraitId, mapAssets, portraitAssets, galCharacter, signals = [] }) {
+  return {
+    key: `tower-unit:${key}`,
+    kind: 'tower-unit',
+    id,
+    title,
+    subtitle,
+    portraitId,
+    mapAssets: uniqueBy(mapAssets, ({ path }) => path),
+    portraitAssets: uniqueBy(portraitAssets, ({ path }) => path),
+    galCharacter,
+    signals: [...signals, ...(KNOWN_SIGNALS[`tower-unit:${key}`] ?? [])]
+  };
+}
+
+async function buildTowerUnits() {
+  const [enemyManifest, mapManifest] = await Promise.all([
+    fetchManifest('/assets/anime/enemies/manifest.json'),
+    fetchManifest('/assets/anime/map/manifest.json')
+  ]);
+  const enemyBase = enemyManifest.basePath ?? '/assets/anime/';
+  const mapBase = mapManifest.basePath ?? '/assets/anime/map/';
+  const nonLiving = new Set(NON_LIVING_UNIT_PORTRAITS);
+
+  const heroMap = mapManifest.atlases?.hero;
+  const heroPortrait = mapManifest.atlases?.heroPortraitV4;
+  const heroCharacter = characterRecords.find(({ id }) => id === 'hero');
+  const units = [towerUnitRecord({
+    key: 'hero',
+    id: 'hero',
+    title: portraitName('hero'),
+    subtitle: '玩家角色 · 全塔移动单位 · 优先核对项',
+    portraitId: 'hero',
+    mapAssets: [
+      { path: resolveManifestPath(mapBase, heroMap?.file), label: '地图四向图集（下／上／左／右）' },
+      { path: resolveManifestPath(mapBase, heroPortrait?.file), label: '地图角色肖像' }
+    ],
+    portraitAssets: [{ path: cleanAssetPath(portraitUrl('hero')), label: '游戏资料肖像' }],
+    galCharacter: heroCharacter,
+    signals: !heroMap?.file || !heroPortrait?.file ? ['自动线索：主角地图图集或肖像缺少运行时文件。'] : []
+  })];
+
+  const enemyUnits = Object.entries(ENEMIES)
+    .filter(([, enemy]) => !nonLiving.has(enemy.portrait))
+    .map(([enemyId, enemy]) => {
+      const manifestEntry = enemyManifest.assets?.[enemy.portrait];
+      const mapPath = resolveManifestPath(enemyBase, manifestEntry?.file);
+      const runtimePortrait = cleanAssetPath(portraitUrl(enemy.portrait));
+      return towerUnitRecord({
+        key: enemyId,
+        id: enemyId,
+        title: enemy.name || portraitName(enemy.portrait),
+        subtitle: `${enemy.floor ? `${enemy.floor}F` : '楼层未标注'} · ${enemy.faction ?? '阵营未标注'} · ${enemy.boss ? 'Boss' : '普通敌人'}`,
+        portraitId: enemy.portrait,
+        mapAssets: [{ path: mapPath, label: '地图战斗单位' }],
+        portraitAssets: [{ path: runtimePortrait, label: '战斗资料肖像' }],
+        galCharacter: characterRecords.find(({ id }) => id === enemy.portrait),
+        signals: mapPath ? [] : ['自动线索：敌人素材清单中没有地图贴图。']
+      });
+    })
+    .sort((a, b) => {
+      const floorA = Number(a.subtitle.match(/^(\d+)F/)?.[1] ?? 999);
+      const floorB = Number(b.subtitle.match(/^(\d+)F/)?.[1] ?? 999);
+      return floorA - floorB || a.title.localeCompare(b.title, 'zh-CN');
+    });
+
+  const merchantEntry = enemyManifest.assets?.merchant;
+  units.push(...enemyUnits, towerUnitRecord({
+    key: 'merchant',
+    id: 'merchant',
+    title: portraitName('merchant'),
+    subtitle: '全塔商店 · 友方地图 NPC',
+    portraitId: 'merchant',
+    mapAssets: [{ path: resolveManifestPath(enemyBase, merchantEntry?.file), label: '地图 NPC' }],
+    portraitAssets: [{ path: cleanAssetPath(portraitUrl('merchant')), label: '游戏资料肖像' }],
+    galCharacter: characterRecords.find(({ id }) => id === 'merchant'),
+    signals: merchantEntry?.file ? [] : ['自动线索：商人缺少地图贴图。']
+  }));
+  return units;
+}
 
 function escapeHtml(value) {
   return String(value ?? '')
@@ -158,7 +260,7 @@ function escapeHtml(value) {
 function reviewFor(key) {
   if (reviews[key]) return reviews[key];
   const characterId = key.startsWith('character:') ? key.slice('character:'.length) : null;
-  const knownSignal = characterId ? KNOWN_SIGNALS[characterId]?.join('\n') : null;
+  const knownSignal = (KNOWN_SIGNALS[key] ?? (characterId ? KNOWN_SIGNALS[characterId] : null))?.join('\n');
   return knownSignal
     ? { status: 'issue', note: knownSignal, updatedAt: null, source: 'known-signal' }
     : { status: 'pending', note: '', updatedAt: null };
@@ -230,6 +332,59 @@ function characterCard(character, index) {
     </article>`;
 }
 
+function towerUnitCard(unit, index) {
+  const galStage = unit.galCharacter?.stages?.[0];
+  const galAvatars = unit.galCharacter?.avatars ?? [];
+  const galCgs = unit.galCharacter?.cgScenes ?? [];
+  const searchText = [
+    unit.id,
+    unit.portraitId,
+    unit.title,
+    unit.subtitle,
+    ...unit.mapAssets.flatMap(({ path, label }) => [path, label]),
+    ...unit.portraitAssets.flatMap(({ path, label }) => [path, label]),
+    ...(unit.galCharacter?.appearances ?? []).flatMap(({ dialogueId, title }) => [dialogueId, title])
+  ].join(' ').toLowerCase();
+  return `
+    <article class="audit-card tower-unit-card" data-record-key="${unit.key}" data-kind="tower-unit" data-search="${escapeHtml(searchText)}">
+      <header class="card-header">
+        <div><p class="record-id">${escapeHtml(unit.id)} · portrait:${escapeHtml(unit.portraitId)}</p><h3>${escapeHtml(unit.title)}</h3><p>${escapeHtml(unit.subtitle)}</p></div>
+        ${statusBadge(unit.key)}
+      </header>
+      ${unit.signals.length ? `<div class="signal-list">${unit.signals.map((signal) => `<p>⚠ ${escapeHtml(signal)}</p>`).join('')}</div>` : ''}
+      <div class="unit-identity-grid">
+        <section class="unit-map-panel">
+          <div class="panel-title"><span>01</span><strong>魔塔地图形象</strong><small>${unit.mapAssets.length} 张</small></div>
+          <div class="asset-strip unit-maps">${unit.mapAssets.map((asset) => imageFigure({ path: asset.path, label: asset.label, className: 'unit-map-figure', eager: index < 3 })).join('')}</div>
+        </section>
+        <section>
+          <div class="panel-title"><span>02</span><strong>游戏／战斗肖像</strong><small>${unit.portraitAssets.length} 张</small></div>
+          <div class="asset-strip unit-portraits">${unit.portraitAssets.map((asset) => imageFigure({ path: asset.path, label: asset.label, className: 'unit-portrait-figure' })).join('')}</div>
+        </section>
+        <section>
+          <div class="panel-title"><span>03</span><strong>GAL 身份基准</strong><small>${unit.galCharacter ? '已关联' : '无台词映射'}</small></div>
+          <div class="asset-strip unit-gal">
+            ${galStage ? imageFigure({ path: galStage.path, label: `${unit.galCharacter.title} · 默认立绘`, className: 'unit-stage-figure' }) : '<div class="asset-missing">该单位没有 GAL 立绘</div>'}
+            ${galAvatars.map((asset) => imageFigure({ path: asset.path, label: `${asset.label} · 头像`, className: 'unit-avatar-figure' })).join('')}
+          </div>
+        </section>
+        <section>
+          <div class="panel-title"><span>04</span><strong>CG 出场</strong><small>${galCgs.length} 张</small></div>
+          <div class="asset-strip unit-cgs">${galCgs.length ? galCgs.map((scene) => imageFigure({ path: scene.path, label: scene.title })).join('') : '<div class="asset-missing">未进入人物 CG</div>'}</div>
+        </section>
+      </div>
+      <details class="mapping-details">
+        <summary>查看运行时对应关系</summary>
+        <div class="mapping-list">
+          <span><code>enemy/unit</code> ${escapeHtml(unit.id)}</span>
+          <span><code>portrait</code> ${escapeHtml(unit.portraitId)}</span>
+          ${unit.galCharacter ? `<span><code>GAL</code> ${escapeHtml(unit.galCharacter.id)} · ${unit.galCharacter.appearances.length} 句台词</span>` : '<span><code>GAL</code> 无对应台词角色</span>'}
+        </div>
+      </details>
+      ${reviewControls(unit.key)}
+    </article>`;
+}
+
 function cgCard(scene) {
   const names = scene.cast.map((id) => characterRecords.find((item) => item.id === id)?.title ?? id);
   const searchText = [scene.id, scene.title, scene.path, ...scene.cast, ...names, ...scene.scenes].join(' ').toLowerCase();
@@ -254,12 +409,19 @@ function environmentCard(asset) {
 }
 
 function section(title, description, kind, content) {
-  return `<section class="record-section" data-section-kind="${kind}"><header class="section-header"><div><p class="eyebrow">${kind === 'character' ? 'IDENTITY MATRIX' : kind === 'cg' ? 'SCENE CAST' : 'WORLD PLATES'}</p><h2>${title}</h2></div><p>${description}</p></header><div class="record-grid">${content}</div></section>`;
+  const eyebrow = {
+    character: 'GAL IDENTITY MATRIX',
+    'tower-unit': 'TOWER UNIT CAST',
+    cg: 'SCENE CAST',
+    environment: 'WORLD PLATES'
+  }[kind];
+  return `<section class="record-section" data-section-kind="${kind}"><header class="section-header"><div><p class="eyebrow">${eyebrow}</p><h2>${title}</h2></div><p>${description}</p></header><div class="record-grid">${content}</div></section>`;
 }
 
 function render() {
   elements.root.innerHTML = [
-    section('角色身份矩阵', '基准候选、头像、立绘差分与 CG 同行比对。', 'character', characterRecords.map(characterCard).join('')),
+    section('魔塔生命与角色单位', '逐个核对主角、敌人、Boss 与地图 NPC；已排除门、道具、机关和非生命核心。', 'tower-unit', towerUnitRecords.map(towerUnitCard).join('')),
+    section('GAL 角色身份矩阵', '基准候选、头像、立绘差分与 CG 同行比对。', 'character', characterRecords.map(characterCard).join('')),
     section('事件与战斗 CG', '核对人物数量、演员身份、服装和叙事用途。', 'cg', cgRecords.map(cgCard).join('')),
     section('背景与转场', '核对无人背景、场景用途及错误人物混入。', 'environment', environmentRecords.map(environmentCard).join(''))
   ].join('');
@@ -307,7 +469,8 @@ function updateStats() {
     return result;
   }, { pending: 0, pass: 0, issue: 0 });
   elements.stats.innerHTML = `
-    <div><strong>${characterRecords.length}</strong><span>台词角色</span></div>
+    <div><strong>${characterRecords.length}</strong><span>GAL 角色</span></div>
+    <div><strong>${towerUnitRecords.length}</strong><span>魔塔单位</span></div>
     <div><strong>${records.length}</strong><span>审核项目</span></div>
     <div class="issue"><strong>${counts.issue}</strong><span>异常</span></div>
     <div><strong>${counts.pending}</strong><span>待审核</span></div>`;
@@ -410,4 +573,16 @@ elements.lightbox.addEventListener('click', (event) => {
   if (event.target === elements.lightbox) elements.lightbox.close();
 });
 
-render();
+async function initialize() {
+  elements.root.innerHTML = '<p class="loading-state">正在读取魔塔运行时单位映射…</p>';
+  try {
+    towerUnitRecords = await buildTowerUnits();
+    records = [...characterRecords, ...towerUnitRecords, ...cgRecords, ...environmentRecords];
+    render();
+  } catch (error) {
+    console.error(error);
+    elements.root.innerHTML = `<div class="load-error"><strong>魔塔单位清单加载失败</strong><p>${escapeHtml(error.message)}</p><button type="button" onclick="location.reload()">重新加载</button></div>`;
+  }
+}
+
+initialize();

@@ -1,6 +1,19 @@
-export const AUDIT_VERSION = '2026-09-03-audit-redraw-v5';
+export const AUDIT_VERSION = '2026-09-03-tower-units-v6';
 
-export const KNOWN_SIGNALS = Object.freeze({});
+export const KNOWN_SIGNALS = Object.freeze({
+  'tower-unit:hero': Object.freeze([
+    '人工已知：主角的魔塔地图形象与当前 GAL 身份基准存在明显漂移，请重点核对发色、服装、武器与年龄感。'
+  ])
+});
+
+// These are combat mechanisms rather than living or character-like units.
+// They remain in the game manifests, but are deliberately outside the human
+// identity review requested for protagonist, enemies and visible NPCs.
+export const NON_LIVING_UNIT_PORTRAITS = Object.freeze([
+  'void_core',
+  'origin_core',
+  'act3_errata_core'
+]);
 
 export const CG_SCENES = Object.freeze([
   {

@@ -26,7 +26,7 @@
       <div class="summary-copy">
         <p class="eyebrow">运行时映射 · 人工终审</p>
         <h2 id="summary-title">把同一个人放在同一行</h2>
-        <p>默认立绘是身份基准候选。逐列核对头像、表情立绘和 CG 出场；发现发色、瞳色、服装或人物身份漂移时标记异常。</p>
+        <p>把 GAL 身份、魔塔地图单位、战斗肖像与 CG 放在一起核对；发现发色、服装、武器、物种或人物身份漂移时标记异常。门、道具、机关和非生命核心不进入审核。</p>
       </div>
       <div class="summary-stats" id="summary-stats" aria-label="审核统计"></div>
     </section>
@@ -34,11 +34,12 @@
     <section class="audit-toolbar" aria-label="审计筛选">
       <label class="search-field">
         <span>搜索</span>
-        <input id="search" type="search" placeholder="角色、场景、路径或台词 ID" autocomplete="off" />
+        <input id="search" type="search" placeholder="角色、楼层、单位 ID、场景或文件路径" autocomplete="off" />
       </label>
       <div class="segmented" id="kind-filter" aria-label="资源分类">
         <button type="button" class="is-active" data-kind="all">全部</button>
-        <button type="button" data-kind="character">角色对应</button>
+        <button type="button" data-kind="character">GAL 角色</button>
+        <button type="button" data-kind="tower-unit">魔塔单位</button>
         <button type="button" data-kind="cg">CG</button>
         <button type="button" data-kind="environment">环境与转场</button>
       </div>
@@ -79,7 +80,7 @@
       </div>
       <label>
         <span>备注</span>
-        <textarea rows="2" placeholder="记录发色、服装、人物数量等具体问题"></textarea>
+        <textarea rows="2" placeholder="记录发色、服装、武器、物种、人物数量等具体问题"></textarea>
       </label>
     </div>
   </template>

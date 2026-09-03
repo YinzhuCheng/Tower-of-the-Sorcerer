@@ -7,8 +7,15 @@ import { applyDemoTenFloorContent } from '../src/game/demo-10-floor-content.js';
 import { applyDemoTenFloorProgressionGrammar } from '../src/game/demo-10-floor-progression.js';
 import { applyDemoTwentyFloorContent } from '../src/game/demo-20-floor-content.js';
 import { applyDemoThirtyFloorContent } from '../src/game/demo-30-floor-content.js';
-import { DIALOGUE_CAST } from '../src/game/anime-portraits.js';
-import { AUDIT_VERSION, BACKDROPS, CG_SCENES, KNOWN_SIGNALS, TRANSITIONS } from '../public/art-audit/registry.js';
+import { DIALOGUE_CAST, portraitUrl } from '../src/game/anime-portraits.js';
+import {
+  AUDIT_VERSION,
+  BACKDROPS,
+  CG_SCENES,
+  KNOWN_SIGNALS,
+  NON_LIVING_UNIT_PORTRAITS,
+  TRANSITIONS
+} from '../public/art-audit/registry.js';
 
 applyDemoTenFloorContent({ enemies: ENEMIES, floors: FLOORS, dialogues: DIALOGUES, gridSize: GRID_SIZE });
 applyDemoTenFloorProgressionGrammar({ enemies: ENEMIES, floors: FLOORS, dialogues: DIALOGUES });
@@ -37,8 +44,31 @@ test('art audit page covers every speaking character and every authored CG mappi
     await access(new URL(`../public${asset.path}`, import.meta.url));
   }
 
-  assert.equal(AUDIT_VERSION, '2026-09-03-audit-redraw-v5');
-  assert.deepEqual(KNOWN_SIGNALS, {});
+  assert.equal(AUDIT_VERSION, '2026-09-03-tower-units-v6');
+  assert.deepEqual(NON_LIVING_UNIT_PORTRAITS, ['void_core', 'origin_core', 'act3_errata_core']);
+  assert.match(KNOWN_SIGNALS['tower-unit:hero'][0], /主角.*地图形象.*GAL/);
+});
+
+test('art audit page covers every living combat unit, the hero and the merchant', async () => {
+  const enemyManifest = JSON.parse(await readFile(new URL('../public/assets/anime/enemies/manifest.json', import.meta.url), 'utf8'));
+  const mapManifest = JSON.parse(await readFile(new URL('../public/assets/anime/map/manifest.json', import.meta.url), 'utf8'));
+  const excluded = new Set(NON_LIVING_UNIT_PORTRAITS);
+  const livingEnemies = Object.values(ENEMIES).filter(({ portrait }) => !excluded.has(portrait));
+
+  assert.equal(Object.keys(ENEMIES).length, 81);
+  assert.equal(livingEnemies.length, 78);
+  assert.ok(mapManifest.atlases.hero.file);
+  assert.ok(mapManifest.atlases.heroPortraitV4.file);
+  assert.ok(enemyManifest.assets.merchant.file);
+
+  for (const enemy of livingEnemies) {
+    const mapFile = enemyManifest.assets[enemy.portrait]?.file;
+    assert.ok(mapFile, `${enemy.portrait} must have a direct map-unit image`);
+    await access(new URL(`../public/assets/anime/${mapFile}`, import.meta.url));
+    const runtimePortrait = portraitUrl(enemy.portrait);
+    assert.match(runtimePortrait, /^\/assets\//, `${enemy.portrait} must expose an auditable runtime portrait`);
+    await access(new URL(`../public${runtimePortrait}`, import.meta.url));
+  }
 });
 
 test('art audit page ships review persistence, filters, lightbox and JSON export', async () => {
@@ -53,6 +83,7 @@ test('art audit page ships review persistence, filters, lightbox and JSON export
   assert.match(html, /id="status-filter"/);
   assert.match(html, /id="lightbox"/);
   assert.match(html, /导出审核 JSON/);
+  assert.match(html, /data-kind="tower-unit">魔塔单位/);
   assert.match(html, /href="\/art-audit\/styles\.css"/);
   assert.match(html, /src="\/art-audit\/app\.js"/);
   assert.match(app, /localStorage\.setItem\(STORAGE_KEY/);
@@ -60,7 +91,11 @@ test('art audit page ships review persistence, filters, lightbox and JSON export
   assert.match(app, /new Blob/);
   assert.match(app, /data-record-key/);
   assert.match(app, /dialoguePresentation\(id, expression\)/);
+  assert.match(app, /buildTowerUnits/);
+  assert.match(app, /assets\/anime\/enemies\/manifest\.json/);
+  assert.match(app, /tower-unit-card/);
   assert.match(css, /\.identity-grid/);
+  assert.match(css, /\.unit-identity-grid/);
   assert.match(css, /@media \(max-width: 840px\)/);
   assert.match(build, /cp\(join\(root, 'public'\), outDir/);
 });
