@@ -1,7 +1,7 @@
 {
   "version": 5,
   "revision": "generated-gameplay-v10.1",
-  "heroRevision": "identity-audited-hero-v6",
+  "heroRevision": "identity-audited-hero-v7",
   "wallRevision": "wall-materials-v6",
   "theme": "moonlit-star-tower",
   "basePath": "/assets/anime/map/",

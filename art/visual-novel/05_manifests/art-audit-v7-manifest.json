@@ -1,0 +1,52 @@
+{
+  "batch": "art-audit-v7-2026-09-03",
+  "status": "runtime-ready",
+  "auditSource": "art/visual-novel/00_source/tower-art-audit-2026-09-03-human-round-3.json",
+  "promptPacket": "art/visual-novel/03_intermediate/prompt_packets/2026-09-03-art-audit-v7.md",
+  "qa": "art/visual-novel/03_intermediate/qa/2026-09-03-art-audit-v7.md",
+  "generatedAssets": [
+    {
+      "id": "AVATAR-LANYIN-LAMENT-V7",
+      "runtime": "public/assets/anime/avatars/whale-boss-avatar-lament-v7.webp",
+      "dimensions": [512, 512],
+      "sha256": "adaf15c6f695ded11c6c30916817f0bc77cd41c9826afe36dac1d0502e26e709"
+    },
+    {
+      "id": "AVATAR-YANLI-EMBERS-V7",
+      "runtime": "public/assets/anime/avatars/dragon-boss-avatar-embers-v7.webp",
+      "dimensions": [512, 512],
+      "sha256": "8baa9d56b5a411732786c2ba72b672e88cbad0f314ae6bed1f41eff8916501cb"
+    },
+    {
+      "id": "CG-NOCTIA-TRUTH-V7",
+      "runtime": "public/assets/anime/cg/liyue-noctia-truth-cg.webp",
+      "dimensions": [1672, 941],
+      "sha256": "5fbd752e5575343aa97c9841b71dc2335cc1e5e95f6a4f4f96b1234ccb09bb90"
+    },
+    {
+      "id": "CG-NOCTIA-SEAL-V7",
+      "runtime": "public/assets/anime/cg/liyue-noctia-seal-cg.webp",
+      "dimensions": [1672, 941],
+      "sha256": "4878a31a1f1f8c1c44a30c0954fa6421e749d0c98f28e4341a22d54b09cb01ca"
+    },
+    {
+      "id": "CG-ECHO-LEDGER-V7",
+      "runtime": "public/assets/anime/cg/liyue-echo-ledger-cg.webp",
+      "dimensions": [1672, 941],
+      "sha256": "b18707d90eb8babcba7c75a916f187f8d794a5c06dd9bfed7d8eb380a844c5df"
+    },
+    {
+      "id": "CG-NOCTIA-SOVEREIGN-V7",
+      "runtime": "public/assets/anime/cg/liyue-noctia-sovereign-cg.webp",
+      "dimensions": [1672, 941],
+      "sha256": "143e20fad829a1b5631cf288bd7523a90a9ddf4d375040ecaa7a1c066e71627e"
+    }
+  ],
+  "canonicalMappings": {
+    "heroProfile": "public/assets/anime/avatars/liyue-avatar-embers-cel.webp",
+    "shadowBoss": "public/assets/anime/characters/yayu-dialogue-guarded.webp",
+    "echoRegent": "public/assets/anime/characters/echo-regent-dialogue-grave.webp",
+    "arcaneSovereign": "public/assets/anime/characters/arcane-sovereign-dialogue-regret.webp",
+    "archiveWarden": "public/assets/anime/characters/archive-warden-dialogue-duty.webp"
+  }
+}

@@ -45,7 +45,7 @@ test('audit redraw v5 ships every approved replacement with exact dimensions, ha
   for (const asset of manifest.assets) {
     const runtime = await readFile(new URL(`../${asset.runtime}`, import.meta.url));
     assert.deepEqual(webpDimensions(runtime), asset.dimensions, `${asset.id} dimensions`);
-    assert.equal(sha256(runtime), asset.sha256, `${asset.id} runtime hash`);
+    if (!asset.superseded_by) assert.equal(sha256(runtime), asset.sha256, `${asset.id} runtime hash`);
     if (asset.alpha_required) {
       assert.ok(runtime.includes(Buffer.from('ALPH')), `${asset.id} must contain a real WebP alpha chunk`);
     }
@@ -54,7 +54,8 @@ test('audit redraw v5 ships every approved replacement with exact dimensions, ha
     assert.ok(working.length > 0, `${asset.id} working master`);
     if (asset.final) {
       const final = await readFile(new URL(`../${asset.final}`, import.meta.url));
-      assert.equal(sha256(final), asset.sha256, `${asset.id} final and runtime must match`);
+      assert.equal(sha256(final), asset.sha256, `${asset.id} approved final hash`);
+      if (!asset.superseded_by) assert.deepEqual(final, runtime, `${asset.id} final and runtime must match`);
     }
   }
 });
@@ -83,5 +84,5 @@ test('Lumi and Noctia derivatives remain identity-synchronized across runtime ro
   assert.match(portraits, /astral_boss: '\/assets\/anime\/portraits\/v1\/astral-boss-portrait-runtime\.webp'/);
   assert.match(portraits, /'final_queen:sorrow': '\/assets\/anime\/characters\/noctia-dialogue-sorrow\.webp'/);
   assert.equal(enemyManifest.assets.astral_boss.file, 'enemies/v1/astral-boss-map-128.webp');
-  assert.match(source, /GAL_ART_VERSION = '20260903-audit-redraw-v5'/);
+  assert.match(source, /GAL_ART_VERSION = '20260903-art-audit-v7'/);
 });

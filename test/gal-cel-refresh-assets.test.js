@@ -38,13 +38,15 @@ test('the complete GAL cel-refresh manifest is valid, exact and cache-busted', a
   assert.equal(manifest.assets.filter(({ kind }) => kind === 'backdrop').length, 12);
   assert.equal(manifest.assets.filter(({ kind }) => kind === 'story-cg').length, 9);
   assert.equal(manifest.assets.filter(({ kind }) => kind === 'transition').length, 2);
-  assert.match(source, /GAL_ART_VERSION = '20260903-audit-redraw-v5'/);
+  assert.match(source, /GAL_ART_VERSION = '20260903-art-audit-v7'/);
 
   for (const asset of manifest.assets) {
     const runtimeUrl = new URL(`../${asset.runtime}`, import.meta.url);
     const runtime = await readFile(runtimeUrl);
     assert.deepEqual(webpDimensions(runtime), { width: 1672, height: 941 }, `${asset.id} runtime dimensions`);
-    assert.equal(createHash('sha256').update(runtime).digest('hex'), asset.sha256, `${asset.id} manifest hash`);
+    if (!asset.superseded_by) {
+      assert.equal(createHash('sha256').update(runtime).digest('hex'), asset.sha256, `${asset.id} manifest hash`);
+    }
     if (asset.runtime_referenced !== false) {
       assert.match(source, new RegExp(asset.runtime.split('/').at(-1).replace('.', '\\.')), `${asset.id} must be referenced by GAL runtime`);
     }

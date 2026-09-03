@@ -60,7 +60,8 @@ test('art audit page covers every living combat unit, the hero and the merchant'
   assert.equal(portraitName('arcane_sovereign'), '奥术主权者');
   assert.equal(portraitName('act3_archive_warden'), '档案守望者');
   assert.equal(mapManifest.atlases.hero.file, 'atlases/runtime/hero-v6.webp');
-  assert.ok(mapManifest.atlases.heroPortraitV4.file);
+  assert.equal(mapManifest.atlases.heroPortraitV4.file, 'atlases/runtime/hero-portrait-v4.webp');
+  assert.equal(portraitUrl('hero'), '/assets/anime/avatars/liyue-avatar-embers-cel.webp');
   assert.ok(enemyManifest.assets.merchant.file);
 
   for (const enemy of livingEnemies) {
@@ -85,10 +86,10 @@ test('art audit page covers every living combat unit, the hero and the merchant'
     await access(new URL(`../public/assets/anime/${highResolutionFile}`, import.meta.url));
   }
 
-  assert.equal(enemyManifest.assets.shadow_boss.highResFile, 'portraits/v6/shadow-boss-portrait-runtime.webp');
-  assert.equal(enemyManifest.assets.echo_regent.highResFile, 'portraits/v6/echo-regent-portrait-runtime.webp');
-  assert.equal(enemyManifest.assets.arcane_sovereign.highResFile, 'portraits/v6/arcane-sovereign-portrait-runtime.webp');
-  assert.equal(enemyManifest.assets.act3_archive_warden.highResFile, 'portraits/v6/archive-warden-portrait-runtime.webp');
+  assert.equal(enemyManifest.assets.shadow_boss.highResFile, 'characters/yayu-dialogue-guarded.webp');
+  assert.equal(enemyManifest.assets.echo_regent.highResFile, 'characters/echo-regent-dialogue-grave.webp');
+  assert.equal(enemyManifest.assets.arcane_sovereign.highResFile, 'characters/arcane-sovereign-dialogue-regret.webp');
+  assert.equal(enemyManifest.assets.act3_archive_warden.highResFile, 'characters/archive-warden-dialogue-duty.webp');
 });
 
 test('art audit page ships review persistence, filters, lightbox and JSON export', async () => {
