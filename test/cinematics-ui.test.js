@@ -66,14 +66,16 @@ test('cinematic UI ships working Gal controls, story CGs, character expressions,
 
   assert.match(html, /ui-v10-cinematics\.css/);
   assert.match(main, /跳过叙事/);
-  for (const label of ['历史', '自动', '快进', '隐藏对话框', 'data-gal-control']) assert.match(main, new RegExp(label));
+  for (const label of ['快捷键', '历史对话', '自动', '快进', '隐藏对话框', 'data-gal-control']) assert.match(main, new RegExp(label));
+  assert.match(main, /data-gal-control="shortcuts"/);
+  assert.match(main, /event\.deltaY >= -12/);
+  assert.doesNotMatch(main, /gal-advance-hint|gal-text-actions|gal-previous|class="[^"]*gal-advance/);
   assert.match(main, /跳过战斗演出/);
   assert.match(main, /gal-choice-overlay/);
   assert.match(main, /gal-textbox-close/);
   assert.match(main, /data-tooltip/);
   assert.match(main, /displaySource = choice\.response/);
   assert.doesNotMatch(main, /gal-choice-response/);
-  assert.match(main, /gal-dialogue-footer/);
   assert.match(main, /gal-cg/);
   assert.match(main, /galActorHtml/);
   assert.match(main, /gal-speaker-avatar/);
@@ -87,14 +89,13 @@ test('cinematic UI ships working Gal controls, story CGs, character expressions,
   assert.match(css, /\.gal-portrait-left/);
   assert.match(css, /\.gal-portrait-right/);
   assert.match(css, /\.gal-speaker-avatar/);
-  assert.match(css, /\.gal-dialogue-footer\{display:grid/);
+  assert.match(css, /\.gal-root \.gal-shortcuts\{/);
   assert.match(css, /\.gal-root \.gal-choice-overlay\{position:absolute/);
   assert.match(css, /\.gal-root \.gal-icon-button::after\{content:attr\(data-tooltip\)/);
-  assert.match(css, /\.gal-root \.gal-text-actions \.gal-icon-button\{width:18px/);
   assert.doesNotMatch(css, /gal-choice-response/);
-  assert.match(css, /\.gal-root \.gal-actor\{[\s\S]*?bottom:0/);
+  assert.match(css, /\.gal-root \.gal-actor\{[\s\S]*?bottom:0;[\s\S]*?width:35\.2%;[\s\S]*?height:75\.2%/);
   assert.match(css, /\.gal-root \.gal-typewriter\{min-height:0/);
-  assert.match(css, /\.gal-root \.gal-textbox\{[\s\S]*?right:4\.6%;[\s\S]*?bottom:3\.8%;[\s\S]*?left:4\.6%;[\s\S]*?min-height:27%/);
+  assert.match(css, /\.gal-root \.gal-textbox\{[\s\S]*?right:4\.6%;[\s\S]*?bottom:3\.8%;[\s\S]*?left:4\.6%;[\s\S]*?min-height:21\.6%/);
   assert.match(css, /height:100svh/);
   assert.match(css, /\.battle-cinematic/);
   for (const [filename, asset] of [
@@ -126,7 +127,7 @@ test('production build publishes the isolated Gal stylesheet and scene input loc
     readFile(new URL('../scripts/build.mjs', import.meta.url), 'utf8')
   ]);
 
-  assert.match(html, /ui-v10-cinematics\.css\?v=18/);
+  assert.match(html, /ui-v10-cinematics\.css\?v=19/);
   assert.match(build, /copyFile\(join\(root, 'ui-v10-cinematics\.css'\), join\(root, 'dist\/ui-v10-cinematics\.css'\)\)/);
   assert.match(main, /document\.body\.classList\.add\('gal-active'\)/);
   assert.match(main, /\$\('#app-shell'\)\.inert = true/);

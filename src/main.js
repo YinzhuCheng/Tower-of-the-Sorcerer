@@ -395,6 +395,7 @@ function showDialogue(dialogueId, after = null, { finalLabel = null } = {}) {
   let index = 0;
   let finished = false;
   let historyOpen = false;
+  let shortcutsOpen = false;
   let sceneOpened = false;
   const transition = galTransitionFor(dialogueId, dialogue);
   // Keep the player on stage. A new speaker replaces only their own side,
@@ -455,23 +456,25 @@ function showDialogue(dialogueId, after = null, { finalLabel = null } = {}) {
           </div>
           <div class="gal-scene-label" aria-hidden="true"><span>LOST MAGIC TOWER</span><strong>${escapeHtml(dialogue.title)}</strong><small>SCENE ${String(index + 1).padStart(2, '0')} / ${String(turns.length).padStart(2, '0')}</small></div>
           <nav class="gal-toolbar" aria-label="剧情控制">
-            <button type="button" data-gal-control="backlog" aria-pressed="false">历史</button>
+            <button type="button" data-gal-control="shortcuts" aria-pressed="${String(shortcutsOpen)}">快捷键</button>
             <button type="button" data-gal-control="auto" aria-pressed="false">自动</button>
             <button type="button" data-gal-control="fast" aria-pressed="false">快进</button>
             <button type="button" data-gal-control="skip" class="gal-skip">跳过叙事</button>
           </nav>
+          <aside class="gal-shortcuts" aria-label="快捷键说明" ${shortcutsOpen ? '' : 'hidden'}>
+            <header>SHORTCUTS · 操作</header>
+            <dl>
+              <div><dt>点击 / 空格 / Enter</dt><dd>显示全文或下一句</dd></div>
+              <div><dt>B / 鼠标滚轮向上</dt><dd>查看历史对话</dd></div>
+              <div><dt>A / S</dt><dd>自动播放 / 快进</dd></div>
+              <div><dt>H / Esc</dt><dd>隐藏界面 / 跳过叙事</dd></div>
+            </dl>
+          </aside>
           ${choices.length ? `<div class="gal-choice-overlay" role="group" aria-label="选择回应">${choices.map((choice, choiceIndex) => `<button class="gal-choice" data-dialogue-choice="${choiceIndex}">${escapeHtml(choice.label)}</button>`).join('')}</div>` : ''}
           <article class="gal-textbox" role="button" tabindex="0" aria-label="点击显示全文或继续">
             ${nameplate}
             <button type="button" class="gal-icon-button gal-textbox-close" data-gal-control="hide" aria-label="隐藏对话框" data-tooltip="隐藏对话框（H）"><span aria-hidden="true">×</span></button>
             <p class="gal-typewriter"></p>
-            <div class="gal-dialogue-footer">
-              <div class="gal-advance-hint">点击舞台 / 空格 / Enter　·　B 历史　A 自动　H 隐藏</div>
-              <div class="gal-text-actions">
-                <button type="button" class="gal-icon-button gal-previous" aria-label="上一句" data-tooltip="上一句" ${index === 0 ? 'disabled' : ''}><span aria-hidden="true">‹</span></button>
-                <button type="button" class="primary gal-icon-button gal-advance" aria-label="${choices.length ? '请先选择回应' : '显示全文'}" data-tooltip="${choices.length ? '请先选择回应' : '显示全文'}"><span aria-hidden="true">${choices.length ? '…' : '▤'}</span></button>
-              </div>
-            </div>
           </article>
           <aside class="gal-backlog" aria-label="对话历史" ${historyOpen ? '' : 'hidden'}>
             <header><span>BACKLOG · 已读记录</span><button type="button" data-gal-control="backlog-close" aria-label="关闭历史">×</button></header>
@@ -490,35 +493,15 @@ function showDialogue(dialogueId, after = null, { finalLabel = null } = {}) {
         const textNode = elements.galRoot.querySelector('.gal-typewriter');
         const textbox = elements.galRoot.querySelector('.gal-textbox');
         const dialogueRoot = elements.galRoot.querySelector('.gal-dialogue');
-        const advanceButton = elements.galRoot.querySelector('.gal-advance');
-        const previousButton = elements.galRoot.querySelector('.gal-previous');
         const choiceOverlay = elements.galRoot.querySelector('.gal-choice-overlay');
         const backlog = elements.galRoot.querySelector('.gal-backlog');
+        const shortcuts = elements.galRoot.querySelector('.gal-shortcuts');
         const source = String(turn.text ?? '');
         let displaySource = source;
         let count = 0;
         let timer = null;
         let autoTimer = null;
 
-        const setAdvanceLabel = () => {
-          if (!advanceButton) return;
-          let icon = '›';
-          let label = '下一句';
-          if (choices.length && !chosen) {
-            icon = '…';
-            label = '请先选择回应';
-          } else if (!revealed) {
-            icon = '▤';
-            label = '显示全文';
-          } else if (finalTurn) {
-            icon = '✓';
-            label = finalLabel ?? (state.victory ? '查看通关结算' : '结束对话');
-          }
-          advanceButton.innerHTML = `<span aria-hidden="true">${icon}</span>`;
-          advanceButton.setAttribute('aria-label', label);
-          advanceButton.dataset.tooltip = label;
-          advanceButton.disabled = Boolean(choices.length && !chosen);
-        };
         const renderText = () => { textNode.innerHTML = textToHtml(displaySource.slice(0, count)); };
         const clearAutoAdvance = () => {
           window.clearTimeout(autoTimer);
@@ -536,7 +519,6 @@ function showDialogue(dialogueId, after = null, { finalLabel = null } = {}) {
           count = displaySource.length;
           revealed = true;
           renderText();
-          setAdvanceLabel();
           scheduleAutoAdvance();
         };
         const advance = () => {
@@ -549,10 +531,16 @@ function showDialogue(dialogueId, after = null, { finalLabel = null } = {}) {
         const toggleBacklog = (force = null) => {
           historyOpen = force ?? !historyOpen;
           backlog.hidden = !historyOpen;
-          const button = elements.galRoot.querySelector('[data-gal-control="backlog"]');
-          button?.classList.toggle('is-active', historyOpen);
-          button?.setAttribute('aria-pressed', String(historyOpen));
+          if (historyOpen && shortcutsOpen) toggleShortcuts(false);
           if (historyOpen) backlog.querySelector('[data-gal-control="backlog-close"]')?.focus();
+        };
+        const toggleShortcuts = (force = null) => {
+          shortcutsOpen = force ?? !shortcutsOpen;
+          shortcuts.hidden = !shortcutsOpen;
+          const button = elements.galRoot.querySelector('[data-gal-control="shortcuts"]');
+          button?.classList.toggle('is-active', shortcutsOpen);
+          button?.setAttribute('aria-pressed', String(shortcutsOpen));
+          if (shortcutsOpen && historyOpen) toggleBacklog(false);
         };
         const refreshToolbar = () => {
           const autoButton = elements.galRoot.querySelector('[data-gal-control="auto"]');
@@ -592,8 +580,8 @@ function showDialogue(dialogueId, after = null, { finalLabel = null } = {}) {
           else renderText();
         }, galSettings.fast ? 5 : 16);
         renderText();
-        setAdvanceLabel();
         refreshToolbar();
+        toggleShortcuts(shortcutsOpen);
 
         textbox.addEventListener('click', (event) => {
           if (event.target.closest('button')) return;
@@ -610,15 +598,15 @@ function showDialogue(dialogueId, after = null, { finalLabel = null } = {}) {
             advance();
           }
         });
-        previousButton?.addEventListener('click', () => {
-          clearAutoAdvance();
-          if (index > 0) { index -= 1; renderTurn(); }
-        });
-        advanceButton?.addEventListener('click', advance);
+        dialogueRoot.addEventListener('wheel', (event) => {
+          if (event.deltaY >= -12 || event.target.closest('.gal-backlog, .gal-shortcuts')) return;
+          event.preventDefault();
+          if (!historyOpen) toggleBacklog(true);
+        }, { passive: false });
         elements.galRoot.querySelectorAll('[data-gal-control]').forEach((button) => {
           button.addEventListener('click', () => {
             const control = button.dataset.galControl;
-            if (control === 'backlog') toggleBacklog();
+            if (control === 'shortcuts') toggleShortcuts();
             if (control === 'backlog-close') toggleBacklog(false);
             if (control === 'auto') toggleAuto();
             if (control === 'fast') toggleFast();
@@ -642,14 +630,13 @@ function showDialogue(dialogueId, after = null, { finalLabel = null } = {}) {
             count = 0;
             revealed = false;
             revealAll();
-            setAdvanceLabel();
           });
         });
         cinematicCleanup = () => {
           clearInterval(timer);
           clearAutoAdvance();
         };
-        cinematicControls = { advance, skip: finish, toggleBacklog, toggleAuto, toggleFast, toggleUi };
+        cinematicControls = { advance, skip: finish, toggleBacklog, toggleShortcuts, toggleAuto, toggleFast, toggleUi };
         window.requestAnimationFrame(() => textbox.focus({ preventScroll: true }));
     }
   };

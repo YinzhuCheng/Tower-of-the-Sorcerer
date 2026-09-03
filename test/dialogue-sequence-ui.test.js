@@ -9,8 +9,9 @@ const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 test('the dialogue modal renders authored exchanges one turn at a time', async () => {
   const source = await readFile(join(root, 'src/main.js'), 'utf8');
   assert.match(source, /Array\.isArray\(dialogue\.turns\) && dialogue\.turns\.length > 0/);
-  assert.match(source, /下一句/);
-  assert.match(source, /上一句/);
+  assert.match(source, /textbox\.addEventListener\('click'/);
+  assert.match(source, /B \/ 鼠标滚轮向上/);
+  assert.doesNotMatch(source, /gal-previous|gal-advance-hint|gal-text-actions/);
   assert.match(source, /turn\.portrait/);
   assert.match(source, /after\?\.\(\)/);
 });
