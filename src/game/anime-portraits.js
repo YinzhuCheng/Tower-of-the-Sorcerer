@@ -162,7 +162,12 @@ const DIALOGUE_EXPRESSIONS = Object.freeze({
   // Key witness encounters receive true visual-novel standing art.  These
   // remain distinct from the small combat/codex portraits below, so bringing
   // a Boss onto the Gal stage never scales a 58px map token into a sprite.
+  'cat_boss:alert': '/assets/anime/characters/milu-dialogue-alert-v8.webp',
+  'fox_boss:watchful': '/assets/anime/characters/feiye-dialogue-watchful-v8.webp',
+  'whale_boss:lament': '/assets/anime/characters/lanyin-dialogue-lament-v8.webp',
+  'sword_boss:stern': '/assets/anime/characters/serena-dialogue-stern-v8.webp',
   'dragon_boss:embers': '/assets/anime/characters/yanli-dialogue-embers.webp',
+  'astral_boss:focus': '/assets/anime/characters/lumi-dialogue-focus-v8.webp',
   'shadow_boss:guarded': '/assets/anime/characters/yayu-dialogue-guarded.webp',
   'echo_regent:grave': '/assets/anime/characters/echo-regent-dialogue-grave.webp',
   'echo_regent:release': '/assets/anime/characters/echo-regent-dialogue-release.webp',
@@ -206,10 +211,10 @@ export const DIALOGUE_CAST = Object.freeze({
   hero: { expression: 'resolve', label: '决意', avatar: '/assets/anime/avatars/liyue-avatar-resolve-cel.webp' },
   guide: { expression: 'gentle', label: '温柔', avatar: '/assets/anime/avatars/shawu-avatar-gentle-cel.webp' },
   final_queen: { expression: 'sorrow', label: '哀伤', avatar: '/assets/anime/avatars/noctia-avatar-sorrow-cel.webp' },
-  cat_boss: { expression: 'alert', label: '警惕', avatar: '/assets/anime/avatars/cat-boss-avatar-alert.webp' },
-  fox_boss: { expression: 'watchful', label: '审视', avatar: '/assets/anime/avatars/fox-boss-avatar-watchful.webp' },
-  whale_boss: { expression: 'lament', label: '低回', avatar: '/assets/anime/avatars/whale-boss-avatar-lament-v7.webp' },
-  sword_boss: { expression: 'stern', label: '肃然', avatar: '/assets/anime/avatars/sword-boss-avatar-stern.webp' },
+  cat_boss: { expression: 'alert', label: '警惕', avatar: '/assets/anime/avatars/cat-boss-avatar-alert-v8.webp' },
+  fox_boss: { expression: 'watchful', label: '审视', avatar: '/assets/anime/avatars/fox-boss-avatar-watchful-v8.webp' },
+  whale_boss: { expression: 'lament', label: '低回', avatar: '/assets/anime/avatars/whale-boss-avatar-lament-v8.webp' },
+  sword_boss: { expression: 'stern', label: '肃然', avatar: '/assets/anime/avatars/sword-boss-avatar-stern-v8.webp' },
   dragon_boss: { expression: 'embers', label: '炽烈', avatar: '/assets/anime/avatars/dragon-boss-avatar-embers-v7.webp' },
   astral_boss: { expression: 'focus', label: '推演', avatar: '/assets/anime/avatars/astral-boss-avatar-focus.webp' },
   shadow_boss: { expression: 'guarded', label: '戒备', avatar: '/assets/anime/avatars/shadow-boss-avatar-guarded.webp' },

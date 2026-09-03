@@ -38,7 +38,7 @@ test('the complete GAL cel-refresh manifest is valid, exact and cache-busted', a
   assert.equal(manifest.assets.filter(({ kind }) => kind === 'backdrop').length, 12);
   assert.equal(manifest.assets.filter(({ kind }) => kind === 'story-cg').length, 9);
   assert.equal(manifest.assets.filter(({ kind }) => kind === 'transition').length, 2);
-  assert.match(source, /GAL_ART_VERSION = '20260903-art-audit-v7'/);
+  assert.match(source, /GAL_ART_VERSION = '20260903-story-art-v8'/);
 
   for (const asset of manifest.assets) {
     const runtimeUrl = new URL(`../${asset.runtime}`, import.meta.url);

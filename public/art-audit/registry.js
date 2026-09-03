@@ -1,4 +1,4 @@
-export const AUDIT_VERSION = '2026-09-03-tower-identity-redraw-v7';
+export const AUDIT_VERSION = '2026-09-03-story-art-v8';
 
 export const KNOWN_SIGNALS = Object.freeze({});
 
@@ -45,6 +45,14 @@ export const CG_SCENES = Object.freeze([
     role: 'story-cg'
   },
   {
+    id: 'northstar-arrival',
+    title: '三阵：北辰七号抵岸原音',
+    path: '/assets/anime/cg/liyue-lanyin-northstar-arrival-cg-v8.webp',
+    cast: ['hero', 'whale_boss'],
+    scenes: ['bossWhalePostDemo'],
+    role: 'story-cg'
+  },
+  {
     id: 'noctia-afterlight',
     title: '黎明余光候选帧',
     path: '/assets/anime/cg/liyue-noctia-afterlight-cg.webp',
@@ -67,6 +75,14 @@ export const CG_SCENES = Object.freeze([
     path: '/assets/anime/cg/liyue-echo-ledger-cg.webp',
     cast: ['hero', 'final_queen', 'echo_regent'],
     scenes: ['floor19 · 03/05'],
+    role: 'story-cg'
+  },
+  {
+    id: 'seventeen-minute-splice',
+    title: '十七阵：确认时序错位',
+    path: '/assets/anime/cg/liyue-lumi-seventeen-minute-splice-cg-v8.webp',
+    cast: ['hero', 'astral_boss'],
+    scenes: ['floor17'],
     role: 'story-cg'
   },
   {
@@ -97,7 +113,11 @@ export const BACKDROPS = Object.freeze([
   { id: 'sun-sanctum', title: '日轮圣所', path: '/assets/anime/themes/theme-sun-sanctum.webp', usage: '11F、12F、14F、17F' },
   { id: 'echo-court', title: '回响王庭', path: '/assets/anime/themes/theme-echo-court.webp', usage: '19F' },
   { id: 'origin-core', title: '起源魔源', path: '/assets/anime/themes/theme-origin-core.webp', usage: '20F' },
-  { id: 'ash-registry', title: '余烬登记库', path: '/assets/anime/themes/theme-ash-registry.webp', usage: '21–27F' },
+  { id: 'ash-registry', title: '余烬登记库', path: '/assets/anime/themes/theme-ash-registry.webp', usage: '21F' },
+  { id: 'night-shelter', title: '夜航侧库', path: '/assets/anime/themes/theme-night-shelter-v8.webp', usage: '22F' },
+  { id: 'audit-chamber', title: '逐页校验室', path: '/assets/anime/themes/theme-audit-chamber-v8.webp', usage: '23F' },
+  { id: 'relay-gallery', title: '灯塔接力室', path: '/assets/anime/themes/theme-relay-gallery-v8.webp', usage: '24F' },
+  { id: 'triage-index', title: '归档作业庭', path: '/assets/anime/themes/theme-triage-index-v8.webp', usage: '25–27F' },
   { id: 'archive-storm', title: '档案风暴', path: '/assets/anime/themes/theme-archive-storm.webp', usage: '28–29F' },
   { id: 'ember-lighthouse', title: '余烬灯塔', path: '/assets/anime/themes/theme-ember-lighthouse.webp', usage: '30F、终章' }
 ]);

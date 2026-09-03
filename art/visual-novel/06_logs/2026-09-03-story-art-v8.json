@@ -1,0 +1,29 @@
+{
+  "batch": "story-art-v8-2026-09-03",
+  "purpose": "Close visual coverage gaps introduced by the uncapped three-act story expansion.",
+  "decisions": [
+    "Reused nine accepted story CGs and eleven accepted backgrounds where the story beat and physical location already matched.",
+    "Replaced scaled 320x480 dialogue portraits for four early guardians with 1024x1536 standing art.",
+    "Reused the accepted 1024x1536 Lumi focus standing art instead of generating a redundant identity variant.",
+    "Split F22, F23 and F24 into functional locations; kept F25-F27 as one continuous reconfigurable work court.",
+    "Added event CGs only for the recovered Northstar Seven arrival message and the 17-minute splice reveal."
+  ],
+  "generation": {
+    "standingAttempts": 6,
+    "backgroundAttempts": 4,
+    "cgAttempts": 2,
+    "acceptedStanding": 4,
+    "reusedStanding": 1,
+    "acceptedBackgrounds": 4,
+    "acceptedCg": 2
+  },
+  "rejections": [
+    {"file":"04_cg/rejected/2026-09-03-story-art-v8/characters/CHAR_milu_alert_v8_r1_opaque.webp","reason":"baked checkerboard and excess small ornament"},
+    {"file":"04_cg/rejected/2026-09-03-story-art-v8/characters/CHAR_feiye_watchful_v8_r1_four-tails.webp","reason":"four tails, pseudo-writing and baked checkerboard"},
+    {"file":"04_cg/rejected/2026-09-03-story-art-v8/characters/CHAR_milu_alert_v8_r2_opaque.webp","reason":"accepted drawing but opaque baked checkerboard; used only as source for deterministic alpha recovery"},
+    {"file":"04_cg/rejected/2026-09-03-story-art-v8/characters/CHAR_feiye_watchful_v8_r2_opaque.webp","reason":"accepted corrected drawing but opaque baked checkerboard; used only as source for deterministic alpha recovery"},
+    {"file":"04_cg/rejected/2026-09-03-story-art-v8/characters/CHAR_lanyin_lament_v8_r1_opaque.webp","reason":"accepted drawing but opaque baked checkerboard; used only as source for deterministic alpha recovery"},
+    {"file":"04_cg/rejected/2026-09-03-story-art-v8/characters/CHAR_serena_stern_v8_r1_opaque.webp","reason":"accepted drawing but opaque baked checkerboard; used only as source for deterministic alpha recovery"}
+  ],
+  "alphaRecovery": "Connected grey-white checkerboard pixels were flood-selected from the outer canvas only; the recovered cutouts were composited over a saturated green diagnostic plate and inspected for residual squares, missing white costume regions and edge damage before WebP export."
+}

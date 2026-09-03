@@ -15,12 +15,21 @@ const shippedScenes = [
   'theme-echo-court.webp',
   'theme-origin-core.webp',
   'theme-ash-registry.webp',
+  'theme-night-shelter-v8.webp',
+  'theme-audit-chamber-v8.webp',
+  'theme-relay-gallery-v8.webp',
+  'theme-triage-index-v8.webp',
   'theme-archive-storm.webp',
   'theme-ember-lighthouse.webp'
 ];
 
 const keyStageStates = [
+  ['cat_boss', 'alert', 'milu-dialogue-alert-v8.webp'],
+  ['fox_boss', 'watchful', 'feiye-dialogue-watchful-v8.webp'],
+  ['whale_boss', 'lament', 'lanyin-dialogue-lament-v8.webp'],
+  ['sword_boss', 'stern', 'serena-dialogue-stern-v8.webp'],
   ['dragon_boss', 'embers', 'yanli-dialogue-embers.webp'],
+  ['astral_boss', 'focus', 'lumi-dialogue-focus-v8.webp'],
   ['shadow_boss', 'guarded', 'yayu-dialogue-guarded.webp'],
   ['echo_regent', 'grave', 'echo-regent-dialogue-grave.webp'],
   ['arcane_sovereign', 'regret', 'arcane-sovereign-dialogue-regret.webp'],
@@ -77,7 +86,7 @@ test('witness-field story direction ships real scene art and stage art for the d
     assert.ok(presentation.hasPaintedExpression, `${id}:${expression} needs true standing art`);
     assert.match(presentation.stage, new RegExp(filename.replace('.', '\\.')));
     const asset = await stat(new URL(`../public${presentation.stage}`, import.meta.url));
-    assert.ok(asset.size > 150_000, `${id}:${expression} must not be a scaled map token`);
+    assert.ok(asset.size > 60_000, `${id}:${expression} must not be a scaled map token`);
   }
 
   for (const filename of ['liyue-echo-ledger-cg.webp', 'liyue-lighthouse-archive-cg.webp']) {

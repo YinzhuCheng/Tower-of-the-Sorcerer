@@ -74,7 +74,7 @@ test('Act II turns the frozen 11–20 topology into a complete runtime campaign'
   }
 });
 
-test('Act II story scenes expose complete, bounded exchanges for the gameplay UI', () => {
+test('Act II story scenes expose complete exchanges with no authored turn cap', () => {
   const sequenceIds = [
     'floor11', 'floor12', 'floor13', 'floor14', 'floor15', 'floor16', 'floor17', 'floor18', 'floor19', 'floor20',
     'warCouncil', 'bossEchoRegentPost', 'bossArcaneSovereignPost', 'bossOriginCorePost'
@@ -83,7 +83,7 @@ test('Act II story scenes expose complete, bounded exchanges for the gameplay UI
   for (const id of sequenceIds) {
     const dialogue = DIALOGUES[id];
     assert.ok(Array.isArray(dialogue?.turns), `${id} must be an interactive dialogue sequence`);
-    assert.ok(dialogue.turns.length >= 2 && dialogue.turns.length <= 5, `${id} must stay concise and readable`);
+    assert.ok(dialogue.turns.length > 0, `${id} must contain authored dialogue`);
     assert.ok(dialogue.turns.every((turn) => turn.speaker && turn.text && (turn.portrait || turn.kind === 'narration')), `${id} turns must be complete`);
   }
 

@@ -336,7 +336,7 @@ async function validateProductionDemoBuild() {
 
   const demoSequences = Object.entries(data.DIALOGUES).filter(([id, dialogue]) => id.endsWith('Demo') && Array.isArray(dialogue?.turns));
   assertBuild(demoSequences.length >= 20, 'Every floor must provide pre/post boss dialogue sequences.');
-  assertBuild(demoSequences.every(([, dialogue]) => dialogue.turns.length >= 2 && dialogue.turns.length <= 5), 'Boss dialogue sequences must stay within 2-5 turns.');
+  assertBuild(demoSequences.every(([, dialogue]) => dialogue.turns.length > 0 && dialogue.turns.every((turn) => turn.speaker && turn.text)), 'Boss dialogue sequences must contain complete authored turns.');
 
   // The screenshot gallery is a topology-review tool. It must load the same
   // browser build but cannot be allowed to pull a solver verdict forward into

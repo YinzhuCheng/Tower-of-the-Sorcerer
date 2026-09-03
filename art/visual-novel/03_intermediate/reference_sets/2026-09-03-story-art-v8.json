@@ -1,0 +1,19 @@
+{
+  "batch": "story-art-v8-2026-09-03",
+  "standing": {
+    "cat_boss": ["public/assets/anime/portraits/v1/cat-boss-portrait-runtime.webp", "public/assets/anime/characters/yanli-dialogue-embers.webp"],
+    "fox_boss": ["public/assets/anime/portraits/v1/fox-boss-portrait-runtime.webp", "public/assets/anime/characters/yanli-dialogue-embers.webp"],
+    "whale_boss": ["public/assets/anime/portraits/v1/whale-boss-portrait-runtime.webp", "public/assets/anime/characters/shawu-dialogue-gentle.webp"],
+    "sword_boss": ["public/assets/anime/portraits/v1/sword-boss-portrait-runtime.webp", "public/assets/anime/characters/liyue-dialogue-resolve.webp"],
+    "astral_boss": ["art/visual-novel/04_cg/final/2026-09-03-audit-redraw/characters/astral-boss-lumi-focus.webp"]
+  },
+  "backgrounds": [
+    "public/assets/anime/themes/theme-ash-registry.webp",
+    "public/assets/anime/themes/theme-ocean-archive.webp",
+    "public/assets/anime/themes/theme-star-mirror.webp"
+  ],
+  "cg": {
+    "northstar_arrival": ["public/assets/anime/characters/liyue-dialogue-resolve.webp", "public/assets/anime/portraits/v1/whale-boss-portrait-runtime.webp", "public/assets/anime/themes/theme-ocean-archive.webp"],
+    "seventeen_minute_splice": ["public/assets/anime/characters/liyue-dialogue-guarded-v2.webp", "art/visual-novel/04_cg/final/2026-09-03-audit-redraw/characters/astral-boss-lumi-focus.webp", "public/assets/anime/themes/theme-star-mirror.webp"]
+  }
+}

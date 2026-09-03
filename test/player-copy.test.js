@@ -51,7 +51,7 @@ test('internal floor metadata stays concise without leaking solver terminology i
   assert.doesNotMatch(source[1], /主路可上行/);
 });
 
-test('assembled 30F campaign keeps automatic story and objectives scannable', () => {
+test('assembled 30F campaign keeps objectives scannable without capping story length', () => {
   applyDemoTenFloorContent({ enemies: ENEMIES, floors: FLOORS, dialogues: DIALOGUES, gridSize: GRID_SIZE });
   applyDemoTenFloorProgressionTopology({ enemies: ENEMIES, floors: FLOORS });
   applyDemoTenFloorSpatialRedesign({ floors: FLOORS, gridSize: GRID_SIZE });
@@ -63,10 +63,11 @@ test('assembled 30F campaign keeps automatic story and objectives scannable', ()
 
   assert.equal(FLOORS.length, 30);
   assert.ok(FLOORS.every((floor) => [...floor.objective].length <= 40));
-  const automaticLines = Object.values(DIALOGUES)
+  const authoredStory = Object.values(DIALOGUES)
     .flatMap((dialogue) => dialogue.turns ?? [dialogue])
     .map((turn) => String(turn.text ?? '').replaceAll('\n', ''));
-  assert.ok(automaticLines.every((line) => [...line].length <= 70));
+  assert.ok(authoredStory.every((line) => line.trim().length > 0));
+  assert.ok(authoredStory.some((line) => [...line].length > 100), 'story text may span multiple dialogue boxes instead of obeying a character cap');
 });
 
 test('production copy does not present the starting codex as a combat-intel gate', async () => {

@@ -83,7 +83,7 @@ test('F8/F9 expose distinct checkpoint mechanics without reintroducing a late sh
   assert.equal(fixture.enemies.blackSealKeeper.reward?.core ?? 0, 0);
 });
 
-test('every boss encounter dialogue sequence stays interactive and within five turns', () => {
+test('every boss encounter dialogue sequence stays interactive without an authored turn cap', () => {
   const fixture = baseFixture();
   applyDemoTenFloorContent(fixture);
   const sequences = Object.entries(fixture.dialogues)
@@ -91,8 +91,7 @@ test('every boss encounter dialogue sequence stays interactive and within five t
 
   assert.ok(sequences.length >= 20);
   for (const [id, dialogue] of sequences) {
-    assert.ok(dialogue.turns.length >= 2, `${id} should contain at least two turns.`);
-    assert.ok(dialogue.turns.length <= 5, `${id} must stay within the five-turn interaction limit.`);
+    assert.ok(dialogue.turns.length > 0, `${id} should contain authored turns.`);
     assert.ok(dialogue.turns.every((turn) => turn.speaker && turn.text && (turn.portrait || turn.kind === 'narration')), `${id} turns must be complete.`);
   }
   assert.equal(fixture.enemies.finalQueen.preBattleDialogue, 'bossQueenPreDemo');

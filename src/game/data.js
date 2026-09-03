@@ -210,17 +210,82 @@ export const DIALOGUES = {
         kind: 'narration',
         speaker: '旁白',
         cg: '/assets/anime/cg/liyue-prologue-tower-cg.webp',
-        text: '停战夜，高塔封闭。无声女王把璃的咏唱拆成七枚核心，嵌进了守卫的术式。'
+        text: '三年前的停战夜，魔力风暴逼近海港避难城“灰港”。高塔本该为撤离船导航，最后一艘船驶出后，塔门却再也没有打开。'
+      },
+      {
+        kind: 'narration',
+        speaker: '旁白',
+        text: '灰港建在低于海堤的旧船坞里。战乱中的伤员、失去住处的孩子和来不及返回故乡的船工都暂住在那里；风暴一旦越过堤岸，海水与失控魔力会先灌进他们的屋子。'
+      },
+      {
+        kind: 'narration',
+        speaker: '旁白',
+        text: '因此高塔承担了撤离的全部联络：月白门廊清点登船者，森罗回廊保管名册，深蓝导航台为船队引路。最后一艘船抵达北岸后，船长必须把带有船号、人数与时间的回执送回塔内，登记网才会宣布救援结束。'
+      },
+      {
+        kind: 'narration',
+        speaker: '旁白',
+        text: '如今风暴早已散去，港口也重建了。只有塔里的警钟还停在那一夜，像是从未听见船队离岸后的回答。'
+      },
+      {
+        speaker: '绫星·璃',
+        portrait: 'hero', expression: 'guarded',
+        text: '北岸的纪念册上连最后一艘船的乘员都在，说明撤离成功了。可塔里的名单仍把他们写成“下落未确认”。同一群人不可能既已经抵达，又仍困在港里。'
+      },
+      {
+        speaker: '残响精灵·纱雾',
+        portrait: 'guide', expression: 'watchful',
+        text: '塔的守护者诺克缇娅没等到“全员离港”的回执。她以为灰港还有人求救，便把紧急登记网和整座塔一起封住。'
+      },
+      {
+        speaker: '残响精灵·纱雾',
+        portrait: 'guide', expression: 'watchful',
+        text: '她先下令封门，是为了阻止魔力风暴追着船队进入塔内；这本来只该持续到回执抵达。问题在于回执明明进入了导航回路，却没有完成最后的结案。'
       },
       {
         speaker: '残响精灵·纱雾',
         portrait: 'guide', expression: 'gentle',
-        text: '她们不是自愿敌对。术式把任何靠近核心的人都登记为入侵者，连女王自己也停不下来。'
+        text: '重建后的港务档案能证明船队抵达了北岸，可高塔只承认当夜带签名的原始回执。那份回执进过塔，却在登记网里失去了踪影。'
+      },
+      {
+        speaker: '残响精灵·纱雾',
+        portrait: 'guide', expression: 'lament',
+        text: '你当时赶来接应，她却强行拆走你的七段咏唱，做成七枚魔力核心维持封锁。如今七名守护者都被绑在命令里，靠近的人一律会被当成入侵者。'
+      },
+      {
+        speaker: '残响精灵·纱雾',
+        portrait: 'guide', expression: 'lament',
+        text: '那套咏唱原本是一首完整的护航术：月影辨认来者，森罗记住姓名，潮汐传递回音，锋刃保护通道，赤焰维持避难所，天穹校验记录，虚影追踪权限。诺克缇娅把七段分别嵌进七层阵眼，登记网才得以在她耗尽魔力后继续运转。'
+      },
+      {
+        kind: 'narration',
+        speaker: '旁白',
+        text: '七枚核心也把七名守护者锁进了各自的职责。她们仍能说话、记得璃，甚至知道命令已经错了；可只要登记网判定有人妨碍救援，核心就会接管她们的手脚，逼她们迎战。'
+      },
+      {
+        speaker: '绫星·璃',
+        portrait: 'hero', expression: 'stern',
+        text: '我还记得那一下。声音、火焰、星光都被从身体里扯走，分别锁进七层阵眼。她不是想杀我，她只是急着找来足够的魔力，让登记网永远别停。'
+      },
+      {
+        kind: 'narration',
+        speaker: '旁白',
+        text: '璃把手按在喉间。那里没有伤口，但她至今无法唱完当年的护航咏唱；每当她试着接上缺失的音节，塔内七层便会依次传来微弱回声。'
+      },
+      {
+        speaker: '绫星·璃',
+        portrait: 'hero', expression: 'guarded',
+        text: '所以我不是来屠塔的。我要逐层解开守卫的强制契约，收回七枚核心，再拿着灰港的真正回执去见女王。'
+      },
+      {
+        speaker: '绫星·璃',
+        portrait: 'hero', expression: 'guarded',
+        text: '每取回一段咏唱，我也会得到那一层保存的记录。我要按时间把事情重新拼起来：谁发出了撤离确认，谁删掉了封锁的终止时间，又是谁让诺克缇娅连想停都停不下来。'
       },
       {
         speaker: '绫星·璃',
         portrait: 'hero', expression: 'resolve',
-        text: '我会取回咏唱，也会问清她为什么把所有人困在这里。先从第一枚核心开始。',
+        text: '第一枚月影核心就在楼上。卡牌、药露和每场战斗的耗血都要先看清；走错一步，后面就可能没有力量救人。',
         choices: [
           { label: '“先确认每场战斗的损伤。”', response: '璃握紧剑柄：看清代价，再决定这一击值不值得。' },
           { label: '“先找能回收的资源。”', response: '璃抬头望向塔顶：力量要留给真正无法绕开的地方。' }
@@ -231,55 +296,79 @@ export const DIALOGUES = {
   floor2: {
     title: '第二阵：森罗双钥',
     turns: [
-      { speaker: '旁白', portrait: null, text: '月影核心复苏时，一段求援录音也钻进璃的耳中：灰港撤离，请确认名单。' },
-      { speaker: '残响精灵·纱雾', portrait: 'guide', expression: 'watchful', text: '那份紧急登记本该在三日后封存，却在塔里重复了三年。女王没有让它结束。' },
-      { speaker: '绫星·璃', portrait: 'hero', expression: 'guarded', text: '她把守卫和门锁都接进登记网，只为不让这句求援消失。我要找到她。' }
+      { speaker: '旁白', portrait: null, text: '月影核心回到璃手中，一段被封了三年的录音也随之响起：“灰港撤离船已全部出发，请确认名单。”' },
+      { speaker: '旁白', portrait: null, text: '森罗回廊的藤叶随录音亮起，却唯独空出名册最后一页。璃伸手碰去，叶面只留下“等待船队回签”几个淡字。' },
+      { speaker: '旁白', portrait: null, text: '回廊两侧摆着当年用过的登船牌。前六艘船的木牌都被翻到绿色一面，只有“北辰七号”仍朝外露着红漆；牌下却压着一张北岸发来的平安信，日期正是撤离后的第二天。' },
+      { speaker: '残响精灵·纱雾', portrait: 'guide', expression: 'watchful', text: '有人发出了离港消息，登记网却没有把它当成“撤离完成”。原定三日的封锁，就这样重复了三年。' },
+      { speaker: '绫星·璃', portrait: 'hero', expression: 'guarded', text: '米露留下的是“船已出发”，这里缺的是“船已抵达”。两份记录不是一回事。只有找到北辰七号船长的回签，才能证明最后一批人没有留在风暴里。' },
+      { speaker: '绫星·璃', portrait: 'hero', expression: 'guarded', text: '月影核心证明灰港确实撤离过。下一枚森罗核心管理门锁和人员名册，我要查清是回执丢了，还是被人拦了。' },
+      { speaker: '残响精灵·纱雾', portrait: 'guide', expression: 'gentle', text: '森罗回廊的藤门要先踩亮开关。日曜、月辉卡只开对应的门，别把退路用掉。' }
     ]
   },
   floor3: {
     title: '第三阵：深蓝回廊',
     turns: [
-      { speaker: '旁白', portrait: null, text: '回廊里反复响起撤离号角。真正的出口提示，却被更响的鲸歌盖住。' },
-      { speaker: '深蓝歌姬·澜音', portrait: 'whale_boss', text: '术式要我唱下去。只要歌不停，名单就不会被标成“无人回应”。' },
-      { speaker: '绫星·璃', portrait: 'hero', expression: 'stern', text: '求救该被听见，不该被无限重播。澜音，我会先让你停下来。' }
+      { speaker: '旁白', portrait: null, text: '深蓝回廊曾是灰港的导航台。如今撤离号角一遍遍重播，真正的船队回答却被鲸歌压在水声下。' },
+      { speaker: '深蓝歌姬·澜音', portrait: 'whale_boss', text: '我听得见船长在回话，可术式命令我继续发出警报。它说，只要歌停了，没被找到的人就会被遗忘。' },
+      { speaker: '深蓝歌姬·澜音', portrait: 'whale_boss', text: '北辰七号离开礁群时，船长先报了船号，又报了四十七名乘员。她说第三遍时，潮汐回路忽然把最后半句切走，只留下“等待复核”。这三年，我每唱一次导航歌，那半句就被水声压下一次。' },
+      { speaker: '旁白', portrait: null, text: '澜音每说一个字，脚下水纹便收紧一圈。她按住喉咙，下一声警报仍不由自主地从回廊深处响起。' },
+      { speaker: '绫星·璃', portrait: 'hero', expression: 'guarded', text: '你不是忘了回话，是潮汐核心不许你把它唱完。等我收回核心，先把原音交给森罗名册，再去查是谁把复核状态钉在封锁令上。' },
+      { speaker: '绫星·璃', portrait: 'hero', expression: 'stern', text: '你的歌本来是带人回家的，不是拿来盖住回答。我会解开潮汐门，取回第三枚核心，让船长的原话重新响起。' },
+      { speaker: '残响精灵·纱雾', portrait: 'guide', expression: 'focus', text: '两枚潮汐开关都要激活。这一层能找到层间罗盘，以后可以回已打通的楼层补拿资源。' }
     ]
   },
   floor4: {
     title: '第四阵：锋刃庭院',
     turns: [
-      { speaker: '剑圣·塞蕾娜', portrait: 'sword_boss', text: '我曾教巡卫按规程护送伤者。现在规程只有一条：阻止所有人上楼。' },
-      { speaker: '残响精灵·纱雾', portrait: 'guide', expression: 'lament', text: '女王把一条临时封锁令写成了永久命令。守卫们只能照做。' },
-      { speaker: '绫星·璃', portrait: 'hero', expression: 'embers', text: '规则可以写清代价，不能替人决定一辈子。让我替你们切断它。' }
+      { speaker: '旁白', portrait: null, text: '剑痕把庭院分成数条狭路。墙上的旧告示仍写着：“撤离期间，巡卫护送伤者下塔。”' },
+      { speaker: '剑圣·塞蕾娜', portrait: 'sword_boss', text: '我曾教她们如何护住伤者。封塔后，指令被改成“阻止任何人上楼”，却没有写终止时间。' },
+      { speaker: '剑圣·塞蕾娜', portrait: 'sword_boss', text: '原命令有两段：风暴期间阻止无关人员上行，撤离确认后护送巡卫下塔。后半段还在原件上，登记网交给我的副本却只剩前半段。' },
+      { speaker: '旁白', portrait: null, text: '塞蕾娜侧身让出半步，锋刃核心却立刻在她腕上勒出光痕。她只能重新横剑，封住通往上层的路。' },
+      { speaker: '旁白', portrait: null, text: '璃看见她握剑的指节已经磨出旧伤。塞蕾娜显然尝试过无数次放人通过，而核心也无数次把剑重新塞回她手里。' },
+      { speaker: '绫星·璃', portrait: 'hero', expression: 'embers', text: '潮汐核心里的船长已经回答了，所以这道封锁本该结束。塞蕾娜，我会取回锋刃核心，再查出是谁删掉了终止栏。' },
+      { speaker: '残响精灵·纱雾', portrait: 'guide', expression: 'focus', text: '先开启锻炉机关。辉月魔刃能永久提升攻击，但取它的路也要付出耗血和卡牌。' }
     ]
   },
   floor5: {
     title: '第五阵：赤焰龙脉',
     turns: [
-      { speaker: '龙姬·焰璃', portrait: 'dragon_boss', text: '我守着供暖炉。登记网说外面仍有避难者，所以炉火不准熄。' },
-      { speaker: '绫星·璃', portrait: 'hero', expression: 'guarded', text: '可炉火已经在烧空房间。你们被旧消息困住了。' },
-      { speaker: '龙姬·焰璃', portrait: 'dragon_boss', text: '若你真能找到女王，就问她：名单里的名字，后来怎样了？' }
+      { speaker: '旁白', portrait: null, text: '赤焰龙脉为灰港的避难屋供暖。三年过去，管道仍然滚烫，出口处却没有一个等待领取热食的人。' },
+      { speaker: '龙姬·焰璃', portrait: 'dragon_boss', text: '登记网说避难者仍在等待，所以炉火不准熄。我每天问一次“还有谁在？”，回答永远只有上一天的名单。' },
+      { speaker: '龙姬·焰璃', portrait: 'dragon_boss', text: '我不敢直接停炉。万一真的还有伤员躲在没有传讯的房间里，骤冷会先要了她的命。于是我逐间敲门、逐段检查管道，三年里没有得到过一次回应。' },
+      { speaker: '旁白', portrait: null, text: '焰璃踢开一只空汤锅，火星沿铁壁滚落。她望着整齐摆放、却三年无人触碰的碗，尾音比炉火低了下去。' },
+      { speaker: '绫星·璃', portrait: 'hero', expression: 'guarded', text: '所以不能只拔掉核心让炉子骤停。我先斩断强制契约，你再把空屋的阀门逐一关小。炉心的能耗日志会告诉我们，登记网从什么时候开始给不存在的人供暖。' },
+      { speaker: '绫星·璃', portrait: 'hero', expression: 'guarded', text: '炉火没有错，是名单没有收到结案。我会解开两道龙焰封锁，拿回第五枚核心，找到那份被压住的回执。' },
+      { speaker: '龙姬·焰璃', portrait: 'dragon_boss', text: '那就别只说好听的话。站到我面前，证明你有力气把答案带回来。' }
     ]
   },
   floor6: {
     title: '第六阵：星镜书库',
     turns: [
-      { speaker: '天穹魔女·露米', portrait: 'astral_boss', text: '星镜推演过千次：停掉登记网，档案会被清空；维持它，塔会继续伤人。' },
-      { speaker: '残响精灵·纱雾', portrait: 'guide', expression: 'focus', text: '女王只看见了这两个结果，便把整座塔冻结在“仍在救援”的那一天。' },
-      { speaker: '绫星·璃', portrait: 'hero', text: '一定还有第三种做法：留下记录，结束错误的命令。' }
+      { speaker: '旁白', portrait: null, text: '星镜书库保存着塔的运行记录。一面面镜子里，都是同一天的灰港：船已出港，警报仍在鸣响。' },
+      { speaker: '天穹魔女·露米', portrait: 'astral_boss', text: '我演算过一千次。关闭登记网，旧程序会把灰港档案一起清空；维持它，守卫就会继续攻击所有来人。' },
+      { speaker: '天穹魔女·露米', portrait: 'astral_boss', text: '诺克缇娅看到的也是这两种结果。她问我有没有第三种，我当时只能摇头。因为每次演算走到“单独保存档案”，起源魔源都会拒绝访问，仿佛有人提前锁死了归档权限。' },
+      { speaker: '旁白', portrait: null, text: '露米挥手散去演算。镜中一边是被抹成空白的姓名，一边是倒在门前的守卫；她已经看过这两个结局太多次。' },
+      { speaker: '绫星·璃', portrait: 'hero', expression: 'guarded', text: '潮汐原音证明最后一船抵达，锋刃记录证明终止栏被改，赤焰日志证明塔一直在为无人使用的房间供能。把三份证据放进同一次演算，再追查是谁拒绝了归档。' },
+      { speaker: '绫星·璃', portrait: 'hero', expression: 'resolve', text: '诺克缇娅怕删掉档案，所以选择不关。但如果能让记录留下、错误命令结束，就不必再拿守卫去填这道二选一。' },
+      { speaker: '残响精灵·纱雾', portrait: 'guide', expression: 'focus', text: '按新月、半月、满月的顺序启动星镜。第六枚核心会告诉我们，是谁把离港回执标成了“不可结案”。' }
     ]
   },
   floor7: {
     title: '第七阵：虚影织界',
     turns: [
-      { speaker: '影织姬·鸦羽', portrait: 'shadow_boss', text: '女王听见“撤销登记”时，以为那些名字也会一起消失。于是她封住了整座塔。' },
-      { speaker: '绫星·璃', portrait: 'hero', expression: 'stern', text: '她想守住名字，却让活着的人变成了工具。王庭里，我会亲口告诉她。' }
+      { speaker: '旁白', portrait: null, text: '第六枚核心恢复后，星镜显示了一条被遮住的批注：“离港确认有效，结案权限被上层锁定。”' },
+      { speaker: '影织姬·鸦羽', portrait: 'shadow_boss', text: '陛下听见“撤销登记”时，以为那些名字也会一起消失。她划掉自己的离塔许可，留在王座上等一份永远不会送到的答复。' },
+      { speaker: '绫星·璃', portrait: 'hero', expression: 'stern', text: '她想守住灰港的名字，却让活着的守卫成了命令的工具。我要取回第七枚核心，让王庭的门承认我们带来的证据。' },
+      { speaker: '影织姬·鸦羽', portrait: 'shadow_boss', text: '那就带着月辉卡和星蚀卡来解双相结界。日曜卡留好——女王的王座只认它。' }
     ]
   },
   floor8: {
     title: '终阵：无声王座',
     turns: [
-      { speaker: '无声女王·诺克缇娅', portrait: 'final_queen', expression: 'grave', text: '我没有忘记每一个名字。只要登记还在，他们就还在等着回家。' },
-      { speaker: '绫星·璃', portrait: 'hero', expression: 'embers', text: '你守住的是一份记录，不是他们本人。让我替你把这条命令停下。' }
+      { speaker: '旁白', portrait: null, text: '七枚核心的光在王座前汇拢。灰港的姓名铺满墙面，每个名字后都闪着同一句：“等待确认。”' },
+      { speaker: '无声女王·诺克缇娅', portrait: 'final_queen', expression: 'grave', text: '我没有忘记他们。如果关掉登记，旧程序就会删掉所有没有结案的名字。我不能让灰港消失第二次。' },
+      { speaker: '绫星·璃', portrait: 'hero', expression: 'embers', text: '七枚核心已经证明，人们离港了，回执是被更高权限拦下的。你守住的是记录，不是一道必须永远执行的求援令。' },
+      { speaker: '残响精灵·纱雾', portrait: 'guide', expression: 'gentle', text: '诺克缇娅，让我们查读原始签名。只要找到归档方式，记录可以留下，命令也可以结束。' }
     ]
   },
   bossCat: {

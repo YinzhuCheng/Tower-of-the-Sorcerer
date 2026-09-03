@@ -87,7 +87,7 @@ const GAL_HISTORY_LIMIT = 80;
 const galHistory = [];
 const galImagePreloads = new Map();
 const galSettings = { auto: false, fast: false };
-const GAL_ART_VERSION = '20260903-art-audit-v7';
+const GAL_ART_VERSION = '20260903-story-art-v8';
 const galArtUrl = (path) => `${path}?v=${GAL_ART_VERSION}`;
 const KEYBOARD_DIRECTIONS = Object.freeze({
   arrowup: 'up', w: 'up',
@@ -107,7 +107,11 @@ const GAL_BACKDROPS = Object.freeze({
   originCore: galArtUrl('/assets/anime/themes/theme-origin-core.webp'),
   ashRegistry: galArtUrl('/assets/anime/themes/theme-ash-registry.webp'),
   archiveStorm: galArtUrl('/assets/anime/themes/theme-archive-storm.webp'),
-  emberLighthouse: galArtUrl('/assets/anime/themes/theme-ember-lighthouse.webp')
+  emberLighthouse: galArtUrl('/assets/anime/themes/theme-ember-lighthouse.webp'),
+  nightShelter: galArtUrl('/assets/anime/themes/theme-night-shelter-v8.webp'),
+  auditChamber: galArtUrl('/assets/anime/themes/theme-audit-chamber-v8.webp'),
+  relayGallery: galArtUrl('/assets/anime/themes/theme-relay-gallery-v8.webp'),
+  triageIndex: galArtUrl('/assets/anime/themes/theme-triage-index-v8.webp')
 });
 
 const GAL_TRANSITIONS = Object.freeze({
@@ -152,8 +156,8 @@ const GAL_FLOOR_BACKDROPS = Object.freeze({
   5: 'redVein', 6: 'ocean', 7: 'starMirror', 8: 'night', 9: 'night', 10: 'night',
   11: 'sun', 12: 'sun', 13: 'redVein', 14: 'sun', 15: 'starMirror', 16: 'ocean', 17: 'sun',
   18: 'ocean', 19: 'echoCourt', 20: 'originCore',
-  21: 'ashRegistry', 22: 'ashRegistry', 23: 'ashRegistry', 24: 'ashRegistry', 25: 'ashRegistry',
-  26: 'ashRegistry', 27: 'ashRegistry', 28: 'archiveStorm', 29: 'archiveStorm', 30: 'emberLighthouse'
+  21: 'ashRegistry', 22: 'nightShelter', 23: 'auditChamber', 24: 'relayGallery', 25: 'triageIndex',
+  26: 'triageIndex', 27: 'triageIndex', 28: 'archiveStorm', 29: 'archiveStorm', 30: 'emberLighthouse'
 });
 
 function escapeHtml(value) {

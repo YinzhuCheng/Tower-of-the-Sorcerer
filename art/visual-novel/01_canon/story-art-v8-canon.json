@@ -1,0 +1,46 @@
+{
+  "version": "2026-09-03-story-art-v8",
+  "inherits": [
+    "art/visual-novel/01_canon/character-canon.json",
+    "art/visual-novel/01_canon/visual-canon-v2.json"
+  ],
+  "styleLock": "Japanese 2D anime cel-shaded visual novel art, classic shoujo Galgame aesthetic; clean simple linework, broad flat color planes, restrained two-step cel shading, gentle atmospheric depth, controlled highlights, low visual noise, no micro-texture, no painterly rendering, no 3D, no text, logo, UI or watermark.",
+  "standingCharacters": [
+    {
+      "id": "cat_boss",
+      "name": "猫卫长·米露",
+      "identity": "young adult anthropomorphic cat knight, short charcoal hair, moon-white feline ears, muzzle and tail, alert amber eyes, deep navy guard coat, silver bell cuirass, crescent buckler and one curved guard sword",
+      "expression": "alert but humane",
+      "forbiddenDrift": ["human catgirl", "extra tail", "ornate mobile-game armor", "oversized weapon"]
+    },
+    {
+      "id": "fox_boss",
+      "name": "狐祝·绯叶",
+      "identity": "young adult fox shrine officiant, long chestnut-red hair, fox ears, exactly three distinct tails, sharp green eyes, white crimson and deep-green ceremonial robes, paper seals and a folding fan",
+      "expression": "watchful, testing, not hostile",
+      "forbiddenDrift": ["nine tails", "different hair colour", "busy embroidery", "extra weapons"]
+    },
+    {
+      "id": "whale_boss",
+      "name": "深蓝歌姬·澜音",
+      "identity": "young adult ocean singer, long deep-blue hair with teal tips, sea-blue eyes, navy and pearl-white musician dress, small shell harp and broad wave-ribbon sleeves",
+      "expression": "quiet lament turning to hope",
+      "forbiddenDrift": ["staff replacing harp", "short hair", "mermaid tail", "dense jewelry"]
+    },
+    {
+      "id": "sword_boss",
+      "name": "剑圣·塞蕾娜",
+      "identity": "young adult sword saint, long black-blue hair tied low, grey-blue eyes, tailored white and midnight-blue duelist uniform, one slender silver rapier and disciplined posture",
+      "expression": "stern restraint and earned respect",
+      "forbiddenDrift": ["silver hair", "broadsword", "heavy plate armor", "red cape"]
+    }
+  ],
+  "reusedStanding": {
+    "astral_boss": "art/visual-novel/04_cg/final/2026-09-03-audit-redraw/characters/astral-boss-lumi-focus.webp"
+  },
+  "sceneContinuity": {
+    "act3Palette": ["ink violet", "moon blue", "aged ivory", "copper registration seals", "blue-white index light"],
+    "towerAnchors": ["obsidian tower arches", "small brass registration seals", "blue-white index lights", "hairline violet seal fractures"],
+    "textboxSafeArea": "lower 30 percent low detail"
+  }
+}
