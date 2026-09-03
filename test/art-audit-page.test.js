@@ -7,7 +7,7 @@ import { applyDemoTenFloorContent } from '../src/game/demo-10-floor-content.js';
 import { applyDemoTenFloorProgressionGrammar } from '../src/game/demo-10-floor-progression.js';
 import { applyDemoTwentyFloorContent } from '../src/game/demo-20-floor-content.js';
 import { applyDemoThirtyFloorContent } from '../src/game/demo-30-floor-content.js';
-import { DIALOGUE_CAST, portraitUrl } from '../src/game/anime-portraits.js';
+import { DIALOGUE_CAST, portraitName, portraitUrl } from '../src/game/anime-portraits.js';
 import {
   AUDIT_VERSION,
   BACKDROPS,
@@ -57,6 +57,8 @@ test('art audit page covers every living combat unit, the hero and the merchant'
 
   assert.equal(Object.keys(ENEMIES).length, 81);
   assert.equal(livingEnemies.length, 78);
+  assert.equal(portraitName('arcane_sovereign'), '奥术主权者');
+  assert.equal(portraitName('act3_archive_warden'), '档案守望者');
   assert.ok(mapManifest.atlases.hero.file);
   assert.ok(mapManifest.atlases.heroPortraitV4.file);
   assert.ok(enemyManifest.assets.merchant.file);

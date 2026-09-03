@@ -215,10 +215,11 @@ async function buildTowerUnits() {
       const manifestEntry = enemyManifest.assets?.[enemy.portrait];
       const mapPath = resolveManifestPath(enemyBase, manifestEntry?.file);
       const runtimePortrait = cleanAssetPath(portraitUrl(enemy.portrait));
+      const registeredName = portraitName(enemy.portrait);
       return towerUnitRecord({
         key: enemyId,
         id: enemyId,
-        title: enemy.name || portraitName(enemy.portrait),
+        title: registeredName === enemy.portrait ? enemy.name : registeredName,
         subtitle: `${enemy.floor ? `${enemy.floor}F` : '楼层未标注'} · ${enemy.faction ?? '阵营未标注'} · ${enemy.boss ? 'Boss' : '普通敌人'}`,
         portraitId: enemy.portrait,
         mapAssets: [{ path: mapPath, label: '地图战斗单位' }],
