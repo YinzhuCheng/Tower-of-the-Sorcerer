@@ -94,7 +94,7 @@ test('cinematic UI ships working Gal controls, story CGs, character expressions,
   assert.doesNotMatch(css, /gal-choice-response/);
   assert.match(css, /\.gal-root \.gal-actor\{[\s\S]*?bottom:0/);
   assert.match(css, /\.gal-root \.gal-typewriter\{min-height:0/);
-  assert.match(css, /\.gal-root \.gal-textbox\{[\s\S]*?min-height:0/);
+  assert.match(css, /\.gal-root \.gal-textbox\{[\s\S]*?right:4\.6%;[\s\S]*?bottom:3\.8%;[\s\S]*?left:4\.6%;[\s\S]*?min-height:27%/);
   assert.match(css, /height:100svh/);
   assert.match(css, /\.battle-cinematic/);
   for (const [filename, asset] of [
@@ -126,7 +126,7 @@ test('production build publishes the isolated Gal stylesheet and scene input loc
     readFile(new URL('../scripts/build.mjs', import.meta.url), 'utf8')
   ]);
 
-  assert.match(html, /ui-v10-cinematics\.css\?v=17/);
+  assert.match(html, /ui-v10-cinematics\.css\?v=18/);
   assert.match(build, /copyFile\(join\(root, 'ui-v10-cinematics\.css'\), join\(root, 'dist\/ui-v10-cinematics\.css'\)\)/);
   assert.match(main, /document\.body\.classList\.add\('gal-active'\)/);
   assert.match(main, /\$\('#app-shell'\)\.inert = true/);
