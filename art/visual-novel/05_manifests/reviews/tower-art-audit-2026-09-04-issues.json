@@ -1,0 +1,192 @@
+{
+  "auditVersion": "2026-09-04-native-alpha-standees-v2",
+  "exportedAt": "2026-09-04T07:10:41.726Z",
+  "source": "https://tower-of-the-sorcerer.vercel.app/art-audit",
+  "issueCount": 23,
+  "issues": [
+    {
+      "key": "tower-unit:hero",
+      "title": "绫星·璃",
+      "kind": "tower-unit",
+      "status": "issue",
+      "note": "地图角色肖像\n/assets/anime/map/atlases/runtime/hero-portrait-v4.webp换成战意 · 头像\n/assets/anime/avatars/liyue-avatar-embers-cel.webp",
+      "updatedAt": "2026-09-03T17:26:33.141Z"
+    },
+    {
+      "key": "tower-unit:whaleBoss",
+      "title": "深蓝歌姬·澜音",
+      "kind": "tower-unit",
+      "status": "issue",
+      "note": "这里低回 · 头像\n/assets/anime/avatars/whale-boss-avatar-lament.web和深蓝歌姬·澜音 · 默认立绘\n/assets/anime/portraits/v1/whale-boss-portrait-runtime.webp细节不一致 请以立绘为准重新绘制gal头像",
+      "updatedAt": "2026-09-03T16:07:04.316Z"
+    },
+    {
+      "key": "tower-unit:swordBoss",
+      "title": "剑圣·塞蕾娜",
+      "kind": "tower-unit",
+      "status": "pending",
+      "note": "GAL立绘稍微增加细节和光影 但不要添加噪点 仍然保持日本gal画风",
+      "updatedAt": "2026-09-04T07:10:26.249Z"
+    },
+    {
+      "key": "tower-unit:dragonBoss",
+      "title": "龙姬·焰璃",
+      "kind": "tower-unit",
+      "status": "issue",
+      "note": "炽烈 · 头像\n/assets/anime/avatars/dragon-boss-avatar-embers.webp与龙姬·焰璃 · 默认立绘\n/assets/anime/characters/yanli-dialogue-embers.webp细节不一致 请以龙姬·焰璃 · 默认立绘\n/assets/anime/characters/yanli-dialogue-embers.webp为基准重新绘制Gal头像",
+      "updatedAt": "2026-09-03T16:08:10.576Z"
+    },
+    {
+      "key": "tower-unit:shadowBoss",
+      "title": "影织姬·鸦羽",
+      "kind": "tower-unit",
+      "status": "issue",
+      "note": "游戏／战斗肖像与GAL形象不一致，请以GAL 身份基准为准重新绘制魔塔形象",
+      "updatedAt": "2026-09-03T16:09:02.779Z"
+    },
+    {
+      "key": "tower-unit:palaceWarden",
+      "title": "静默执剑官·维拉",
+      "kind": "tower-unit",
+      "status": "issue",
+      "note": "GAL立绘稍微增加细节和光影 但不要添加噪点 仍然保持日本gal画风",
+      "updatedAt": "2026-09-04T07:10:01.927Z"
+    },
+    {
+      "key": "tower-unit:blackSealKeeper",
+      "title": "黯印观测官·塞芙",
+      "kind": "tower-unit",
+      "status": "issue",
+      "note": "GAL立绘稍微增加细节和光影 但不要添加噪点 仍然保持日本gal画风",
+      "updatedAt": "2026-09-04T07:09:55.175Z"
+    },
+    {
+      "key": "tower-unit:echoRegent",
+      "title": "回声摄政官",
+      "kind": "tower-unit",
+      "status": "issue",
+      "note": "战斗资料肖像应该换成/assets/anime/characters/echo-regent-dialogue-grave.webp",
+      "updatedAt": "2026-09-03T17:23:50.113Z"
+    },
+    {
+      "key": "tower-unit:arcaneSovereign",
+      "title": "奥术主权者",
+      "kind": "tower-unit",
+      "status": "issue",
+      "note": "战斗资料肖像应该换成/assets/anime/characters/arcane-sovereign-dialogue-regret.webp",
+      "updatedAt": "2026-09-03T17:24:03.811Z"
+    },
+    {
+      "key": "tower-unit:lastCustodian",
+      "title": "最后保管人",
+      "kind": "tower-unit",
+      "status": "issue",
+      "note": "GAL立绘稍微增加细节和光影 但不要添加噪点 仍然保持日本gal画风",
+      "updatedAt": "2026-09-04T07:09:39.239Z"
+    },
+    {
+      "key": "tower-unit:archiveWarden",
+      "title": "档案守望者",
+      "kind": "tower-unit",
+      "status": "issue",
+      "note": "战斗资料肖像应该换成/assets/anime/characters/archive-warden-dialogue-duty.webp",
+      "updatedAt": "2026-09-03T17:24:32.192Z"
+    },
+    {
+      "key": "cg:noctia-truth",
+      "title": "十阵真相对谈",
+      "kind": "cg",
+      "status": "issue",
+      "note": "两个女性角色的衣服仍然太多细节 看上去刺眼 换成更符合赛璐璐画风 噪点更少的版本",
+      "updatedAt": "2026-09-03T17:25:43.815Z"
+    },
+    {
+      "key": "cg:noctia-seal",
+      "title": "十阵共同破封",
+      "kind": "cg",
+      "status": "issue",
+      "note": "两个女性角色的衣服仍然太多细节 看上去刺眼 换成更符合赛璐璐画风 噪点更少的版本",
+      "updatedAt": "2026-09-03T17:25:51.431Z"
+    },
+    {
+      "key": "cg:echo-ledger",
+      "title": "十九阵名簿归还",
+      "kind": "cg",
+      "status": "issue",
+      "note": "三个角色的衣服仍然太多细节 看上去刺眼 换成更符合赛璐璐画风 噪点更少的版本",
+      "updatedAt": "2026-09-03T17:25:56.618Z"
+    },
+    {
+      "key": "cg:noctia-sovereign",
+      "title": "二十阵签名承担",
+      "kind": "cg",
+      "status": "issue",
+      "note": "三个角色的衣服仍然太多细节 看上去刺眼 换成更符合赛璐璐画风 噪点更少的版本",
+      "updatedAt": "2026-09-03T17:26:02.699Z"
+    },
+    {
+      "key": "cg:seven-cantos-severed",
+      "title": "序章：七段咏唱被拆分",
+      "kind": "cg",
+      "status": "issue",
+      "note": "稍微增加细节和光影 但不要添加噪点 仍然保持日本gal画风",
+      "updatedAt": "2026-09-04T07:08:19.231Z"
+    },
+    {
+      "key": "cg:seven-core-network",
+      "title": "七阵：七核契约网络",
+      "kind": "cg",
+      "status": "issue",
+      "note": "稍微增加细节和光影 但不要添加噪点 仍然保持日本gal画风",
+      "updatedAt": "2026-09-04T07:08:16.599Z"
+    },
+    {
+      "key": "cg:missing-fourth-step",
+      "title": "十一阵：缺失的第四步",
+      "kind": "cg",
+      "status": "issue",
+      "note": "稍微增加细节和光影 但不要添加噪点 仍然保持日本gal画风",
+      "updatedAt": "2026-09-04T07:08:12.039Z"
+    },
+    {
+      "key": "cg:intercepted-receipt",
+      "title": "十八阵：截留回执",
+      "kind": "cg",
+      "status": "issue",
+      "note": "稍微增加细节和光影 但不要添加噪点 仍然保持日本gal画风",
+      "updatedAt": "2026-09-04T07:08:09.520Z"
+    },
+    {
+      "key": "cg:missing-page-restored",
+      "title": "二十五阵：归档缺页复原",
+      "kind": "cg",
+      "status": "issue",
+      "note": "稍微增加细节和光影 但不要添加噪点 仍然保持日本gal画风",
+      "updatedAt": "2026-09-04T07:08:07.742Z"
+    },
+    {
+      "key": "cg:letters-held-in-storm",
+      "title": "二十八阵：风暴中护住原信",
+      "kind": "cg",
+      "status": "issue",
+      "note": "稍微增加细节和光影 但不要添加噪点 仍然保持日本gal画风",
+      "updatedAt": "2026-09-04T07:08:05.095Z"
+    },
+    {
+      "key": "cg:originals-enter-lighthouse",
+      "title": "三十阵：原卷进入灯塔",
+      "kind": "cg",
+      "status": "issue",
+      "note": "稍微增加细节和光影 但不要添加噪点 仍然保持日本gal画风",
+      "updatedAt": "2026-09-04T07:08:02.103Z"
+    },
+    {
+      "key": "cg:traceable-revocation",
+      "title": "灯塔：可追溯撤销写入",
+      "kind": "cg",
+      "status": "issue",
+      "note": "稍微增加细节和光影 但不要添加噪点 仍然保持日本gal画风",
+      "updatedAt": "2026-09-04T07:07:44.986Z"
+    }
+  ]
+}
