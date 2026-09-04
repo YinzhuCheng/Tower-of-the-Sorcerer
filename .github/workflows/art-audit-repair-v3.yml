@@ -16,7 +16,7 @@ permissions:
 
 concurrency:
   group: art-audit-repair-v3-${{ github.ref }}
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   repair:
@@ -72,6 +72,7 @@ jobs:
             scripts/run-art-audit-repair-v3.py \
             art/visual-novel/04_cg/final/2026-09-04-art-audit-repair-v3 \
             art/visual-novel/05_manifests/art-audit-repair-v3-manifest.json \
+            art/visual-novel/05_manifests/gal-cel-refresh-v4-manifest.json \
             public/assets/anime \
             public/art-audit \
             src \
