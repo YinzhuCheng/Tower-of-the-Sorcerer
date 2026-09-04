@@ -41,7 +41,27 @@ jobs:
         run: python scripts/run-art-audit-repair-v3.py
 
       - name: Run repository test suite
-        run: npm test
+        shell: bash
+        run: |
+          set +e
+          npm test 2>&1 | tee test-output.log
+          status=${PIPESTATUS[0]}
+          printf '%s\n' "$status" > test-exit-code.txt
+          exit "$status"
+
+      - name: Upload test diagnostics
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: art-audit-v3-test-diagnostics
+          path: |
+            test-output.log
+            test-exit-code.txt
+            test/art-audit-repair-v3.test.js
+            test/art-audit-review-session-v3.test.js
+            art/visual-novel/05_manifests/art-audit-repair-v3-manifest.json
+          if-no-files-found: warn
+          retention-days: 3
 
       - name: Commit repaired runtime assets
         run: |
