@@ -1,4 +1,4 @@
-export const AUDIT_VERSION = '2026-09-03-story-art-v8';
+export const AUDIT_VERSION = '2026-09-04-continuity-completion-v1';
 
 export const KNOWN_SIGNALS = Object.freeze({});
 
@@ -54,12 +54,11 @@ export const CG_SCENES = Object.freeze([
   },
   {
     id: 'noctia-afterlight',
-    title: '黎明余光候选帧',
+    title: '终章：摘下警报石',
     path: '/assets/anime/cg/liyue-noctia-afterlight-cg.webp',
     cast: ['hero', 'final_queen'],
-    scenes: ['当前无运行时剧情引用'],
-    role: 'candidate-cg',
-    referenced: false
+    scenes: ['ending'],
+    role: 'story-cg'
   },
   {
     id: 'noctia-seal',
@@ -100,6 +99,70 @@ export const CG_SCENES = Object.freeze([
     cast: ['hero', 'guide', 'final_queen'],
     scenes: ['ending · 01/04'],
     role: 'story-cg'
+  },
+  {
+    id: 'seven-cantos-severed',
+    title: '序章：七段咏唱被拆分',
+    path: '/assets/anime/cg/liyue-seven-cantos-severed-cg.webp',
+    cast: ['hero', 'guide'],
+    scenes: ['prologue'],
+    role: 'story-cg'
+  },
+  {
+    id: 'seven-core-network',
+    title: '七阵：七核契约网络',
+    path: '/assets/anime/cg/liyue-yayu-seven-core-network-cg.webp',
+    cast: ['hero', 'shadow_boss'],
+    scenes: ['floor7'],
+    role: 'story-cg'
+  },
+  {
+    id: 'missing-fourth-step',
+    title: '十一阵：缺失的第四步',
+    path: '/assets/anime/cg/liyue-noctia-missing-fourth-step-cg.webp',
+    cast: ['hero', 'final_queen'],
+    scenes: ['floor11'],
+    role: 'story-cg'
+  },
+  {
+    id: 'intercepted-receipt',
+    title: '十八阵：截留回执',
+    path: '/assets/anime/cg/liyue-yayu-intercepted-receipt-cg.webp',
+    cast: ['hero', 'shadow_boss'],
+    scenes: ['floor18'],
+    role: 'story-cg'
+  },
+  {
+    id: 'missing-page-restored',
+    title: '二十五阵：归档缺页复原',
+    path: '/assets/anime/cg/liyue-noctia-missing-page-cg.webp',
+    cast: ['hero', 'final_queen', 'arcane_sovereign'],
+    scenes: ['floor25'],
+    role: 'story-cg'
+  },
+  {
+    id: 'letters-held-in-storm',
+    title: '二十八阵：风暴中护住原信',
+    path: '/assets/anime/cg/liyue-noctia-archive-storm-cg.webp',
+    cast: ['hero', 'final_queen'],
+    scenes: ['floor28'],
+    role: 'story-cg'
+  },
+  {
+    id: 'originals-enter-lighthouse',
+    title: '三十阵：原卷进入灯塔',
+    path: '/assets/anime/cg/liyue-archive-warden-entry-cg.webp',
+    cast: ['hero', 'final_queen', 'arcane_sovereign'],
+    scenes: ['floor30'],
+    role: 'story-cg'
+  },
+  {
+    id: 'traceable-revocation',
+    title: '灯塔：可追溯撤销写入',
+    path: '/assets/anime/cg/liyue-traceable-revocation-cg.webp',
+    cast: ['guide', 'final_queen', 'arcane_sovereign'],
+    scenes: ['bossArchiveWardenPost'],
+    role: 'story-cg'
   }
 ]);
 
@@ -107,19 +170,24 @@ export const BACKDROPS = Object.freeze([
   { id: 'forest-approach', title: '森林进塔口', path: '/assets/anime/themes/theme-forest-approach.webp', usage: '序章、1–4F、早期守护者' },
   { id: 'forest-sanctuary', title: '森林视觉主题', path: '/assets/anime/themes/theme-forest-sanctuary.webp', usage: '玩法森林主题环境层' },
   { id: 'red-vein', title: '赤脉炉室', path: '/assets/anime/themes/theme-red-vein.webp', usage: '5F、13F、焰璃场景' },
-  { id: 'ocean-archive', title: '潮汐档案', path: '/assets/anime/themes/theme-ocean-archive.webp', usage: '6F、16F、18F、澜音场景' },
-  { id: 'star-mirror', title: '星镜档案', path: '/assets/anime/themes/theme-star-mirror.webp', usage: '7F、15F、星图与影织场景' },
+  { id: 'ocean-archive', title: '潮汐档案', path: '/assets/anime/themes/theme-ocean-archive.webp', usage: '3F、16F、18F、澜音场景' },
+  { id: 'star-mirror', title: '星镜档案', path: '/assets/anime/themes/theme-star-mirror.webp', usage: '6–7F、星图与影织场景' },
   { id: 'night-tower', title: '暗夜王庭', path: '/assets/anime/themes/theme-night-tower.webp', usage: '8–10F、女王场景' },
-  { id: 'sun-sanctum', title: '日轮圣所', path: '/assets/anime/themes/theme-sun-sanctum.webp', usage: '11F、12F、14F、17F' },
+  { id: 'sun-sanctum', title: '日轮圣所', path: '/assets/anime/themes/theme-sun-sanctum.webp', usage: '11F、14F、17F' },
   { id: 'echo-court', title: '回响王庭', path: '/assets/anime/themes/theme-echo-court.webp', usage: '19F' },
   { id: 'origin-core', title: '起源魔源', path: '/assets/anime/themes/theme-origin-core.webp', usage: '20F' },
   { id: 'ash-registry', title: '余烬登记库', path: '/assets/anime/themes/theme-ash-registry.webp', usage: '21F' },
   { id: 'night-shelter', title: '夜航侧库', path: '/assets/anime/themes/theme-night-shelter-v8.webp', usage: '22F' },
   { id: 'audit-chamber', title: '逐页校验室', path: '/assets/anime/themes/theme-audit-chamber-v8.webp', usage: '23F' },
   { id: 'relay-gallery', title: '灯塔接力室', path: '/assets/anime/themes/theme-relay-gallery-v8.webp', usage: '24F' },
-  { id: 'triage-index', title: '归档作业庭', path: '/assets/anime/themes/theme-triage-index-v8.webp', usage: '25–27F' },
-  { id: 'archive-storm', title: '档案风暴', path: '/assets/anime/themes/theme-archive-storm.webp', usage: '28–29F' },
-  { id: 'ember-lighthouse', title: '余烬灯塔', path: '/assets/anime/themes/theme-ember-lighthouse.webp', usage: '30F、终章' }
+  { id: 'triage-index', title: '归档作业庭', path: '/assets/anime/themes/theme-triage-index-v8.webp', usage: '25F、27F' },
+  { id: 'archive-storm', title: '档案风暴', path: '/assets/anime/themes/theme-archive-storm.webp', usage: '28F' },
+  { id: 'ember-lighthouse', title: '余烬灯塔外景', path: '/assets/anime/themes/theme-ember-lighthouse.webp', usage: '终章出门' },
+  { id: 'moon-white-vestibule', title: '月白门廊', path: '/assets/anime/themes/theme-moon-white-vestibule.webp', usage: '米露战前／战后' },
+  { id: 'twin-score-greenhouse', title: '双谱温室', path: '/assets/anime/themes/theme-twin-score-greenhouse.webp', usage: '12F、米露信物' },
+  { id: 'folded-archive-market', title: '折页档案与折角集市', path: '/assets/anime/themes/theme-folded-archive-market.webp', usage: '15F、26F' },
+  { id: 'final-index-room', title: '最后索引室', path: '/assets/anime/themes/theme-final-index-room.webp', usage: '29F' },
+  { id: 'ember-lighthouse-writein', title: '余烬灯塔写入口', path: '/assets/anime/themes/theme-ember-lighthouse-writein.webp', usage: '30F、终章室内' }
 ]);
 
 export const TRANSITIONS = Object.freeze([

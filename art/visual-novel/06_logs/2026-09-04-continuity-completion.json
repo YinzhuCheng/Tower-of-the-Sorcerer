@@ -1,0 +1,33 @@
+{
+  "batch": "continuity-completion-v1-2026-09-04",
+  "purpose": "Fill audited CG and location gaps while preserving the Japanese Gal cel-shaded visual canon.",
+  "generation": {
+    "acceptedCg": 8,
+    "acceptedBackdrops": 5,
+    "acceptedCheckerboardStandeeSources": 5,
+    "rejectedCg": 14,
+    "rejectedOverDetailedStandees": 5,
+    "rejectedOpaqueAlphaCandidates": 5
+  },
+  "canonDecisions": [
+    "Arcane Sovereign keeps the accepted male visual identity and all conflicting pronouns are normalized to 他.",
+    "Noctia uses seal magic rather than a sword; the F10 action text now matches the established costume and CG language.",
+    "Last Custodian uses the female deep-teal-haired act3_last_custodian identity rather than crown_magus.",
+    "Vela and Seph dialogue rows use their own runtime IDs instead of borrowing Serena and Lumi art."
+  ],
+  "runtimeDecisions": [
+    "Eight new CGs and five new empty backgrounds are exported as 1672x941 WebP and bound to exact story beats.",
+    "CG hold spans keep a decisive illustration visible across the complete text beat without duplicating file references.",
+    "Checkerboard standee sources are not runtime referenced; existing transparent identity-correct map art remains the safe fallback until native alpha extraction is supplied.",
+    "All eight initially accepted CG compositions received a second simplification pass; temporary redraws with baked blank dialogue panels were rejected, and the final v3 images contain no UI.",
+    "F3, F6, F12, F15, F26, F29 and F30 background mappings were corrected to match their written locations."
+  ],
+  "rejections": [
+    {"file":"CG_13_f28-letters-held-in-storm_v1_weak-cape-action.png","reason":"the cape did not visibly shelter the letters"},
+    {"file":"CG_16_f7-seven-core-network_v1_wrong-count.png","reason":"guardian network count was not exactly seven"},
+    {"pattern":"CG_*_over-detailed.png","reason":"story and identity were correct, but costume ornament and material detail exceeded the requested restrained Gal cel finish"},
+    {"pattern":"CG_*_v2_baked-ui.png","reason":"simplified drawing was acceptable but the generator painted a blank dialogue panel into the image"},
+    {"pattern":"CHAR_*_checker_v1_over-detailed.png","reason":"excess ornament and effect noise exceeded the series render limits"},
+    {"pattern":"CHAR_*_alpha-candidate_v3_opaque-fake-alpha.png","reason":"generator returned baked opaque backgrounds rather than a native alpha channel"}
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "version": "2026-09-04-continuity-completion-v1",
+  "inherits": [
+    "art/visual-novel/01_canon/character-canon.json",
+    "art/visual-novel/01_canon/visual-canon-v2.json",
+    "art/visual-novel/01_canon/story-art-v8-canon.json"
+  ],
+  "series_style_lock": "Japanese 2D shoujo Galgame cel animation art; clean simple linework, broad flat color planes, restrained two-step cel shading, one controlled highlight per material, readable silhouettes, quiet atmospheric depth and low visual noise. Never use painterly rendering, photorealism, 3D, mobile-game splash-art density, micro-texture, film grain, HDR, oversharpening, text, logo or watermark.",
+  "decisions": {
+    "arcane_sovereign": {
+      "gender": "male",
+      "reason": "Keep the accepted standing art, avatar and F20 CG as the identity source; normalize Chinese pronouns in the script to 他.",
+      "identity_lock": "young adult man, dark teal hair, tired gold eyes, formal black-and-ivory magistrate coat, restrained cobalt sigils, broken signet ring, remorseful authority"
+    },
+    "noctia_combat_language": {
+      "choice": "seal magic, not swordplay",
+      "reason": "All accepted Noctia standing art and CGs use chained red crystal sigils and no sword; normalize the F10 action text to tearing the binding sigil."
+    },
+    "last_custodian": {
+      "gender": "female",
+      "identity_source": "public/assets/anime/enemies/act3/last-custodian-map-384.webp",
+      "identity_lock": "young adult woman, very long dark teal-blue hair, black and aged-ivory layered archivist gown with page-shaped panels, small black-gold headpiece, one tall staff carrying an amber spiral archive lantern, weary honest expression"
+    }
+  },
+  "standing_output": {
+    "size": "1024x1536",
+    "background": "opaque regular large-cell lime-green and hot-magenta checkerboard for later manual cutout",
+    "rules": [
+      "full body head to toe",
+      "both feet and every prop inside canvas",
+      "no floor, contact shadow, reflection or light spill",
+      "hard clean separable silhouette",
+      "avatar must be cropped from the accepted full-body master"
+    ]
+  },
+  "cg_output": {
+    "runtime_size": "1672x941",
+    "composition": "cinematic 16:9 with lower 24 percent kept quiet for dialogue UI"
+  }
+}

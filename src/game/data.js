@@ -210,6 +210,7 @@ export const DIALOGUES = {
         kind: 'narration',
         speaker: '旁白',
         cg: '/assets/anime/cg/liyue-prologue-tower-cg.webp',
+        cgHold: 4,
         text: '三年前的停战夜，魔力风暴逼近海港避难城“灰港”。高塔本该为撤离船导航，最后一艘船驶出后，塔门却再也没有打开。'
       },
       {
@@ -250,6 +251,8 @@ export const DIALOGUES = {
       {
         speaker: '残响精灵·纱雾',
         portrait: 'guide', expression: 'lament',
+        cg: '/assets/anime/cg/liyue-seven-cantos-severed-cg.webp',
+        cgHold: 5,
         text: '你当时赶来接应，她却强行拆走你的七段咏唱，做成七枚魔力核心维持封锁。如今七名守护者都被绑在命令里，靠近的人一律会被当成入侵者。'
       },
       {

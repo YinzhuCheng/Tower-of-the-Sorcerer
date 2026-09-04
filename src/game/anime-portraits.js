@@ -159,6 +159,7 @@ const DIALOGUE_EXPRESSIONS = Object.freeze({
   'final_queen:grave': '/assets/anime/characters/noctia-dialogue-sorrow.webp',
   'final_queen:knowing': '/assets/anime/characters/noctia-dialogue-knowing-v2.webp',
   'final_queen:cold': '/assets/anime/characters/noctia-dialogue-cold-v2.webp',
+  'final_queen:resolve': '/assets/anime/characters/noctia-dialogue-cold-v2.webp',
   // Key witness encounters receive true visual-novel standing art.  These
   // remain distinct from the small combat/codex portraits below, so bringing
   // a Boss onto the Gal stage never scales a 58px map token into a sprite.
@@ -190,7 +191,8 @@ const LEAD_EXPRESSION_AVATARS = Object.freeze({
   'final_queen:sorrow': { label: '哀伤', avatar: '/assets/anime/avatars/noctia-avatar-sorrow-cel.webp' },
   'final_queen:grave': { label: '威仪', avatar: '/assets/anime/avatars/noctia-avatar-grave-cel.webp' },
   'final_queen:knowing': { label: '了然', avatar: '/assets/anime/avatars/noctia-avatar-knowing-cel.webp' },
-  'final_queen:cold': { label: '冷峻', avatar: '/assets/anime/avatars/noctia-avatar-cold-cel.webp' }
+  'final_queen:cold': { label: '冷峻', avatar: '/assets/anime/avatars/noctia-avatar-cold-cel.webp' },
+  'final_queen:resolve': { label: '决意', avatar: '/assets/anime/avatars/noctia-avatar-cold-cel.webp' }
 });
 
 const EXPRESSION_LABELS = Object.freeze({
@@ -221,7 +223,9 @@ export const DIALOGUE_CAST = Object.freeze({
   merchant: { expression: 'knowing', label: '了然', avatar: '/assets/anime/avatars/merchant-avatar-knowing.webp' },
   echo_regent: { expression: 'grave', label: '肃穆', avatar: '/assets/anime/avatars/echo-regent-avatar-grave.webp' },
   arcane_sovereign: { expression: 'regret', label: '愧悔', avatar: '/assets/anime/avatars/arcane-sovereign-avatar-regret.webp' },
-  crown_magus: { expression: 'certain', label: '执念', avatar: '/assets/anime/avatars/crown-magus-avatar-certain.webp' },
+  palace_warden_v2: { expression: 'duty', label: '校验', avatar: '/assets/anime/avatars/palace-warden-avatar-duty.webp' },
+  black_seal_keeper_v2: { expression: 'watchful', label: '观测', avatar: '/assets/anime/avatars/black-seal-keeper-avatar-watchful.webp' },
+  act3_last_custodian: { expression: 'grave', label: '固守', avatar: '/assets/anime/avatars/last-custodian-avatar-grave.webp' },
   act3_archive_warden: { expression: 'duty', label: '执行', avatar: '/assets/anime/avatars/archive-warden-avatar-duty.webp' }
 });
 
