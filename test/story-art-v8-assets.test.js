@@ -23,6 +23,14 @@ function webpDimensions(buffer) {
   throw new Error(`unsupported WebP chunk ${JSON.stringify(chunk)}`);
 }
 
+function pngDimensionsAndColorType(buffer) {
+  assert.deepEqual(buffer.subarray(0, 8), Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]));
+  return {
+    dimensions: [buffer.readUInt32BE(16), buffer.readUInt32BE(20)],
+    colorType: buffer.readUInt8(25)
+  };
+}
+
 test('story art v8 manifest locks every approved runtime file', async () => {
   const manifest = JSON.parse(await readFile(new URL('art/visual-novel/05_manifests/story-art-v8-manifest.json', ROOT), 'utf8'));
   assert.equal(manifest.status, 'runtime-ready');
@@ -41,6 +49,12 @@ test('story art v8 manifest locks every approved runtime file', async () => {
     assert.equal(createHash('sha256').update(runtime).digest('hex'), asset.sha256, `${asset.id} hash`);
     if (asset.alphaRequired) {
       assert.ok(runtime.includes(Buffer.from('ALPH')) || runtime.subarray(12, 16).toString('ascii') === 'VP8L', `${asset.id} alpha`);
+    }
+    if (asset.sourceMode === 'user-provided-native-alpha') {
+      const source = await readFile(new URL(asset.source, ROOT));
+      const png = pngDimensionsAndColorType(source);
+      assert.deepEqual(png.dimensions, asset.dimensions, `${asset.id} source dimensions`);
+      assert.equal(png.colorType, 6, `${asset.id} source must be RGBA PNG`);
     }
   }
 });
@@ -70,5 +84,5 @@ test('new explanatory CGs bind to their story beats and act-three floors use fun
   const main = await readFile(new URL('src/main.js', ROOT), 'utf8');
   assert.match(main, /22: 'nightShelter', 23: 'auditChamber', 24: 'relayGallery', 25: 'triageIndex'/);
   assert.match(main, /26: 'triageIndex', 27: 'triageIndex'/);
-  assert.match(main, /GAL_ART_VERSION = '20260903-story-art-v8'/);
+  assert.match(main, /GAL_ART_VERSION = '20260903-story-art-v8-native-alpha'/);
 });

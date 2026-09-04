@@ -5,7 +5,7 @@ import { getMapAsset } from './map-assets.js';
 import { loadImage } from './asset-loading.js';
 
 const THEME_KEY = 'lost-magic-tower:theme:v8';
-const GAL_ART_VERSION = '20260903-story-art-v8';
+const GAL_ART_VERSION = '20260903-story-art-v8-native-alpha';
 const galArtUrl = (path) => `${path}?v=${GAL_ART_VERSION}`;
 const GENERATED_ATLAS_URL = '/assets/anime/map/atlases/runtime/ui-v8.webp';
 const GENERATED_COLS = 3;
