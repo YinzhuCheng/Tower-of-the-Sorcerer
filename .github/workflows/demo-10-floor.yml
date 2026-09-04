@@ -161,14 +161,14 @@ jobs:
           server_path = Path('/tmp/tower-demo-server.log')
           dom = dom_path.read_text(errors='replace') if dom_path.exists() else ''
           checks = {
-              'demo_header': '20F TWO-ACT CAMPAIGN' in dom,
+              'campaign_header': '30F THREE-ACT CAMPAIGN' in dom,
               'game_container': 'id="game-container"' in dom,
               'hud_floor_number': '第 1 阵' in dom,
               'hud_floor_title': '月白门廊' in dom,
               'renderer_canvas': '<canvas' in dom,
               'tactical_tooltip_layer': 'enemy-hover-card' in dom,
               'guardian_marker_layer': 'guardian-marker-layer' in dom,
-              'bossless_tutorial_contract': '本层不设 Boss 税' in dom,
+              'gal_prologue_contract': '序章：被夺去的咏唱' in dom,
               'no_legacy_f1_guardian': '结界守护者' not in dom,
               'no_boot_failure': '启动失败：' not in dom,
           }
@@ -183,4 +183,4 @@ jobs:
               raise SystemExit(1)
           PY
 
-          echo '10F browser smoke passed with rendered canvas, tactical hover layer, and the bossless F1 contract.'
+          echo '10F browser smoke passed with the 30F campaign shell, rendered canvas, tactical hover layer, and GAL prologue.'
