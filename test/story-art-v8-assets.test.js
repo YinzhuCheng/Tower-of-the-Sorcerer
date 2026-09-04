@@ -84,5 +84,5 @@ test('new explanatory CGs bind to their story beats and act-three floors use fun
   const main = await readFile(new URL('src/main.js', ROOT), 'utf8');
   assert.match(main, /22: 'nightShelter', 23: 'auditChamber', 24: 'relayGallery', 25: 'triageIndex'/);
   assert.match(main, /26: 'foldedArchiveMarket', 27: 'triageIndex'/);
-  assert.match(main, /GAL_ART_VERSION = '20260904-continuity-completion-v1'/);
+  assert.match(main, /GAL_ART_VERSION = '20260904-native-alpha-standees-v2'/);
 });

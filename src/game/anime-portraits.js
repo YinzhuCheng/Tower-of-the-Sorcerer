@@ -154,12 +154,12 @@ const DIALOGUE_EXPRESSIONS = Object.freeze({
   'guide:gentle': '/assets/anime/characters/shawu-dialogue-gentle.webp',
   'guide:watchful': '/assets/anime/characters/shawu-dialogue-gentle.webp',
   'guide:lament': '/assets/anime/characters/shawu-dialogue-gentle.webp',
-  'guide:focus': '/assets/anime/characters/shawu-dialogue-gentle.webp',
+  'guide:focus': '/assets/anime/characters/shawu-dialogue-focus.webp',
   'final_queen:sorrow': '/assets/anime/characters/noctia-dialogue-sorrow.webp',
   'final_queen:grave': '/assets/anime/characters/noctia-dialogue-sorrow.webp',
   'final_queen:knowing': '/assets/anime/characters/noctia-dialogue-knowing-v2.webp',
   'final_queen:cold': '/assets/anime/characters/noctia-dialogue-cold-v2.webp',
-  'final_queen:resolve': '/assets/anime/characters/noctia-dialogue-cold-v2.webp',
+  'final_queen:resolve': '/assets/anime/characters/noctia-dialogue-resolve.webp',
   // Key witness encounters receive true visual-novel standing art.  These
   // remain distinct from the small combat/codex portraits below, so bringing
   // a Boss onto the Gal stage never scales a 58px map token into a sprite.
@@ -174,7 +174,11 @@ const DIALOGUE_EXPRESSIONS = Object.freeze({
   'echo_regent:release': '/assets/anime/characters/echo-regent-dialogue-release.webp',
   'arcane_sovereign:regret': '/assets/anime/characters/arcane-sovereign-dialogue-regret.webp',
   'arcane_sovereign:acceptance': '/assets/anime/characters/arcane-sovereign-dialogue-acceptance.webp',
-  'act3_archive_warden:duty': '/assets/anime/characters/archive-warden-dialogue-duty.webp'
+  'act3_archive_warden:duty': '/assets/anime/characters/archive-warden-dialogue-duty.webp',
+  'palace_warden_v2:duty': '/assets/anime/characters/vela-dialogue-duty.webp',
+  'black_seal_keeper_v2:watchful': '/assets/anime/characters/seph-dialogue-watchful.webp',
+  'act3_last_custodian:grave': '/assets/anime/characters/last-custodian-dialogue-release.webp',
+  'act3_last_custodian:release': '/assets/anime/characters/last-custodian-dialogue-release.webp'
 });
 
 // The three recurring leads use a real painted face for each dialogue state,

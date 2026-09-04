@@ -1,0 +1,72 @@
+{
+  "batch": "native-alpha-standees-v2-2026-09-04",
+  "status": "runtime-ready",
+  "runtimeArtVersion": "20260904-native-alpha-standees-v2",
+  "assets": [
+    {
+      "id": "CHAR-21-VELA-DUTY-ALPHA",
+      "character": "palace_warden_v2",
+      "expression": "duty",
+      "kind": "standing",
+      "sourceMode": "user-provided-native-alpha",
+      "source": "art/visual-novel/04_cg/final/2026-09-04-continuity-completion/characters/CHAR_21_vela-duty_alpha.png",
+      "runtime": "public/assets/anime/characters/vela-dialogue-duty.webp",
+      "dimensions": [1024, 1536],
+      "sourceSha256": "bcf6d6bbe76ac4f22676f126ee0bdbf84c48d3fe81035597eb851dfa585c20b8",
+      "runtimeSha256": "3eb328a7c87e83ea7f223e15ebfec11c6ede7aeec445a066215ddb11edd9b104",
+      "alphaRequired": true
+    },
+    {
+      "id": "CHAR-22-SEPH-WATCHFUL-ALPHA",
+      "character": "black_seal_keeper_v2",
+      "expression": "watchful",
+      "kind": "standing",
+      "sourceMode": "user-provided-native-alpha",
+      "source": "art/visual-novel/04_cg/final/2026-09-04-continuity-completion/characters/CHAR_22_seph-watchful_alpha.png",
+      "runtime": "public/assets/anime/characters/seph-dialogue-watchful.webp",
+      "dimensions": [1024, 1536],
+      "sourceSha256": "3f8163ea2403ccce2628d841c01c7f69d5991c6c6828527e4eb063ccdf7823c9",
+      "runtimeSha256": "2d4f89d78b3bfb2653dc3782f94e3d52169b5fe32b0e8110973222cd873674ab",
+      "alphaRequired": true
+    },
+    {
+      "id": "CHAR-23-LAST-CUSTODIAN-RELEASE-ALPHA",
+      "character": "act3_last_custodian",
+      "expression": "grave",
+      "kind": "standing",
+      "sourceMode": "user-provided-native-alpha",
+      "source": "art/visual-novel/04_cg/final/2026-09-04-continuity-completion/characters/CHAR_23_last-custodian-release_alpha.png",
+      "runtime": "public/assets/anime/characters/last-custodian-dialogue-release.webp",
+      "dimensions": [1024, 1536],
+      "sourceSha256": "1b52250ceaf6cb8374857618e184ee69afbda63c4eb437b0a78725be1947bac2",
+      "runtimeSha256": "ba56f9ad38b566a24c2453563fdc620a43d091b5f1587ad90919e426ab07abe3",
+      "alphaRequired": true
+    },
+    {
+      "id": "CHAR-24-NOCTIA-RESOLVE-ALPHA",
+      "character": "final_queen",
+      "expression": "resolve",
+      "kind": "standing",
+      "sourceMode": "user-provided-native-alpha",
+      "source": "art/visual-novel/04_cg/final/2026-09-04-continuity-completion/characters/CHAR_24_noctia-resolve_alpha.png",
+      "runtime": "public/assets/anime/characters/noctia-dialogue-resolve.webp",
+      "dimensions": [1024, 1536],
+      "sourceSha256": "c26cf8f2d8264ea3532d1fae1d23d1c186fcd505304564879d984929065a9a1d",
+      "runtimeSha256": "d5d154faa1111d8ed88d5f02c1554c0d33097cfb7febc1514c9d77fc8bf1d081",
+      "alphaRequired": true
+    },
+    {
+      "id": "CHAR-25-SHAWU-FOCUS-ALPHA",
+      "character": "guide",
+      "expression": "focus",
+      "kind": "standing",
+      "sourceMode": "user-provided-native-alpha",
+      "source": "art/visual-novel/04_cg/final/2026-09-04-continuity-completion/characters/CHAR_25_shawu-focus_alpha.png",
+      "runtime": "public/assets/anime/characters/shawu-dialogue-focus.webp",
+      "dimensions": [1024, 1536],
+      "sourceSha256": "d89f963c4a2f28fb9242554b3f4e26284a3d25de50be7f0ee639fadf0f1d855c",
+      "runtimeSha256": "7e831ae863d281d4dee63a5a66d1acb4d2d4ff5095847310d794b6677099a200",
+      "alphaRequired": true
+    }
+  ]
+}
