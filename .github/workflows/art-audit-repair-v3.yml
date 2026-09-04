@@ -1,0 +1,64 @@
+name: Repair art audit v3
+
+on:
+  push:
+    branches:
+      - codex/alpha-standees-20260904
+    paths:
+      - scripts/repair-art-audit-v3.py
+      - scripts/run-art-audit-repair-v3.py
+      - art/visual-novel/05_manifests/reviews/tower-art-audit-2026-09-04-issues.json
+      - .github/workflows/art-audit-repair-v3.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: art-audit-repair-v3-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  repair:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out requested branch
+        uses: actions/checkout@v4
+        with:
+          ref: codex/alpha-standees-20260904
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install deterministic image toolchain
+        run: python -m pip install --disable-pip-version-check pillow==10.4.0 numpy==1.26.4 opencv-python-headless==4.10.0.84
+
+      - name: Generate transparent standees and reviewed derivatives
+        run: python scripts/run-art-audit-repair-v3.py
+
+      - name: Run repository test suite
+        run: npm test
+
+      - name: Commit repaired runtime assets
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add \
+            scripts/repair-art-audit-v3.py \
+            scripts/run-art-audit-repair-v3.py \
+            art/visual-novel/04_cg/final/2026-09-04-art-audit-repair-v3 \
+            art/visual-novel/05_manifests/art-audit-repair-v3-manifest.json \
+            public/assets/anime \
+            public/art-audit \
+            src \
+            test
+          if git diff --cached --quiet; then
+            echo "No repair output changed."
+            exit 0
+          fi
+          git commit -m "art: apply audit repair v3 with transparent standees"
+          git push origin HEAD:codex/alpha-standees-20260904
