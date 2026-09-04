@@ -7,6 +7,7 @@ on:
     paths:
       - scripts/repair-art-audit-v3.py
       - scripts/run-art-audit-repair-v3.py
+      - scripts/execute-art-audit-repair-v3.py
       - art/visual-novel/05_manifests/reviews/tower-art-audit-2026-09-04-issues.json
       - .github/workflows/art-audit-repair-v3.yml
   workflow_dispatch:
@@ -38,7 +39,7 @@ jobs:
         run: python -m pip install --disable-pip-version-check pillow==10.4.0 numpy==1.26.4 opencv-python-headless==4.10.0.84
 
       - name: Generate transparent standees and reviewed derivatives
-        run: python scripts/run-art-audit-repair-v3.py
+        run: python scripts/execute-art-audit-repair-v3.py
 
       - name: Run repository test suite
         shell: bash
@@ -70,6 +71,7 @@ jobs:
           git add \
             scripts/repair-art-audit-v3.py \
             scripts/run-art-audit-repair-v3.py \
+            scripts/execute-art-audit-repair-v3.py \
             art/visual-novel/04_cg/final/2026-09-04-art-audit-repair-v3 \
             art/visual-novel/05_manifests/art-audit-repair-v3-manifest.json \
             art/visual-novel/05_manifests/gal-cel-refresh-v4-manifest.json \
