@@ -44,7 +44,7 @@ test('art audit page covers every speaking character and every authored CG mappi
     await access(new URL(`../public${asset.path}`, import.meta.url));
   }
 
-  assert.equal(AUDIT_VERSION, '2026-09-04-continuity-completion-v1');
+  assert.equal(AUDIT_VERSION, '2026-09-04-native-alpha-standees-v2');
   assert.deepEqual(NON_LIVING_UNIT_PORTRAITS, ['void_core', 'origin_core', 'act3_errata_core']);
   assert.deepEqual(KNOWN_SIGNALS, {});
 });

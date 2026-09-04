@@ -84,5 +84,5 @@ test('Lumi and Noctia derivatives remain identity-synchronized across runtime ro
   assert.match(portraits, /astral_boss: '\/assets\/anime\/portraits\/v1\/astral-boss-portrait-runtime\.webp'/);
   assert.match(portraits, /'final_queen:sorrow': '\/assets\/anime\/characters\/noctia-dialogue-sorrow\.webp'/);
   assert.equal(enemyManifest.assets.astral_boss.file, 'enemies/v1/astral-boss-map-128.webp');
-  assert.match(source, /GAL_ART_VERSION = '20260904-continuity-completion-v1'/);
+  assert.match(source, /GAL_ART_VERSION = '20260904-native-alpha-standees-v2'/);
 });

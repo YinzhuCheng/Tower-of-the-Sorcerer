@@ -1,4 +1,4 @@
-export const AUDIT_VERSION = '2026-09-04-continuity-completion-v1';
+export const AUDIT_VERSION = '2026-09-04-native-alpha-standees-v2';
 
 export const KNOWN_SIGNALS = Object.freeze({});
 

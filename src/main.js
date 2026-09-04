@@ -87,7 +87,7 @@ const GAL_HISTORY_LIMIT = 80;
 const galHistory = [];
 const galImagePreloads = new Map();
 const galSettings = { auto: false, fast: false };
-const GAL_ART_VERSION = '20260904-continuity-completion-v1';
+const GAL_ART_VERSION = '20260904-native-alpha-standees-v2';
 const galArtUrl = (path) => `${path}?v=${GAL_ART_VERSION}`;
 const KEYBOARD_DIRECTIONS = Object.freeze({
   arrowup: 'up', w: 'up',
