@@ -151,7 +151,7 @@ test('every speaking character receives a shipped Gal avatar and a declared expr
     .map((turn) => turn.portrait)
     .filter(Boolean));
 
-  assert.equal(speakers.size, 15, 'the shipped 30F story has fifteen named speakers');
+  assert.equal(speakers.size, 17, 'the shipped 30F story has seventeen named speakers');
   for (const portrait of speakers) {
     assert.ok(DIALOGUE_CAST[portrait], `${portrait} needs a dialogue avatar + expression definition`);
     assert.ok(DIALOGUE_CAST[portrait].expression, `${portrait} needs an expression key`);

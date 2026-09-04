@@ -87,7 +87,7 @@ const GAL_HISTORY_LIMIT = 80;
 const galHistory = [];
 const galImagePreloads = new Map();
 const galSettings = { auto: false, fast: false };
-const GAL_ART_VERSION = '20260903-story-art-v8-native-alpha';
+const GAL_ART_VERSION = '20260904-continuity-completion-v1';
 const galArtUrl = (path) => `${path}?v=${GAL_ART_VERSION}`;
 const KEYBOARD_DIRECTIONS = Object.freeze({
   arrowup: 'up', w: 'up',
@@ -111,7 +111,12 @@ const GAL_BACKDROPS = Object.freeze({
   nightShelter: galArtUrl('/assets/anime/themes/theme-night-shelter-v8.webp'),
   auditChamber: galArtUrl('/assets/anime/themes/theme-audit-chamber-v8.webp'),
   relayGallery: galArtUrl('/assets/anime/themes/theme-relay-gallery-v8.webp'),
-  triageIndex: galArtUrl('/assets/anime/themes/theme-triage-index-v8.webp')
+  triageIndex: galArtUrl('/assets/anime/themes/theme-triage-index-v8.webp'),
+  moonWhiteVestibule: galArtUrl('/assets/anime/themes/theme-moon-white-vestibule.webp'),
+  twinScoreGreenhouse: galArtUrl('/assets/anime/themes/theme-twin-score-greenhouse.webp'),
+  foldedArchiveMarket: galArtUrl('/assets/anime/themes/theme-folded-archive-market.webp'),
+  finalIndexRoom: galArtUrl('/assets/anime/themes/theme-final-index-room.webp'),
+  emberLighthouseWritein: galArtUrl('/assets/anime/themes/theme-ember-lighthouse-writein.webp')
 });
 
 const GAL_TRANSITIONS = Object.freeze({
@@ -132,8 +137,8 @@ const GAL_BOSS_SCENES = new Set([
 
 const GAL_DIALOGUE_BACKDROPS = Object.freeze({
   prologue: 'night',
-  ending: 'emberLighthouse',
-  bossCatPreDemo: 'forest', bossCatPostDemo: 'forest',
+  ending: 'emberLighthouseWritein',
+  bossCatPreDemo: 'moonWhiteVestibule', bossCatPostDemo: 'moonWhiteVestibule',
   bossFoxPreDemo: 'forest', bossFoxPostDemo: 'forest',
   bossWhalePreDemo: 'ocean', bossWhalePostDemo: 'ocean',
   bossSwordPreDemo: 'forest', bossSwordPostDemo: 'forest',
@@ -145,19 +150,22 @@ const GAL_DIALOGUE_BACKDROPS = Object.freeze({
   bossQueenPreDemo: 'night', queenPhaseDemo: 'night', bossQueenPostDemo: 'night',
   bossEchoRegentPost: 'echoCourt',
   bossArcaneSovereignPost: 'originCore', bossOriginCorePost: 'originCore',
-  bossArchiveWardenPost: 'emberLighthouse'
+  bossArchiveWardenPost: 'emberLighthouseWritein',
+  warCouncil: 'originCore',
+  bondMilu: 'twinScoreGreenhouse', bondLanin: 'ocean',
+  bondYanli: 'redVein', bondYayu: 'ocean'
 });
 
 // A floor is a chapter of the same physical Tower, not a random world map.
 // This table makes that rule executable: each witness-field owns one specific
 // visual-novel scene, while stairs and the usual tower anchors bridge scenes.
 const GAL_FLOOR_BACKDROPS = Object.freeze({
-  1: 'forest', 2: 'forest', 3: 'forest', 4: 'forest',
-  5: 'redVein', 6: 'ocean', 7: 'starMirror', 8: 'night', 9: 'night', 10: 'night',
-  11: 'sun', 12: 'sun', 13: 'redVein', 14: 'sun', 15: 'starMirror', 16: 'ocean', 17: 'sun',
+  1: 'forest', 2: 'forest', 3: 'ocean', 4: 'forest',
+  5: 'redVein', 6: 'starMirror', 7: 'starMirror', 8: 'night', 9: 'night', 10: 'night',
+  11: 'sun', 12: 'twinScoreGreenhouse', 13: 'redVein', 14: 'sun', 15: 'foldedArchiveMarket', 16: 'ocean', 17: 'sun',
   18: 'ocean', 19: 'echoCourt', 20: 'originCore',
   21: 'ashRegistry', 22: 'nightShelter', 23: 'auditChamber', 24: 'relayGallery', 25: 'triageIndex',
-  26: 'triageIndex', 27: 'triageIndex', 28: 'archiveStorm', 29: 'archiveStorm', 30: 'emberLighthouse'
+  26: 'foldedArchiveMarket', 27: 'triageIndex', 28: 'archiveStorm', 29: 'finalIndexRoom', 30: 'emberLighthouseWritein'
 });
 
 function escapeHtml(value) {
@@ -361,6 +369,16 @@ function preloadGalDialogueArt(dialogueId, dialogue, turns) {
   urls.forEach(preloadGalImage);
 }
 
+function galCgFor(turns, index) {
+  for (let cursor = index; cursor >= 0; cursor -= 1) {
+    const source = turns[cursor];
+    if (typeof source.cg !== 'string' || !source.cg) continue;
+    const hold = Math.max(1, Number(source.cgHold) || 1);
+    if (index - cursor < hold) return galArtUrl(source.cg);
+  }
+  return null;
+}
+
 function galActorHtml(side, actor, speakerId, speakerName) {
   if (!actor) return '';
   const speaking = actor.id === speakerId;
@@ -424,7 +442,7 @@ function showDialogue(dialogueId, after = null, { finalLabel = null } = {}) {
     let revealed = false;
     let chosen = null;
     const narratorName = turn.speaker ?? '旁白';
-    const cg = typeof turn.cg === 'string' && turn.cg ? galArtUrl(turn.cg) : null;
+    const cg = galCgFor(turns, index);
     const backdrop = galBackdropFor(dialogueId, dialogue, turn);
     if (!isNarration) {
       stage[galSideFor(turn.portrait, turn)] = {

@@ -29,8 +29,8 @@ test('art audit page covers every speaking character and every authored CG mappi
     .filter(Boolean));
 
   assert.deepEqual([...spokenIds].sort(), Object.keys(DIALOGUE_CAST).sort());
-  assert.equal(CG_SCENES.length, 11);
-  assert.equal(BACKDROPS.length, 16);
+  assert.equal(CG_SCENES.length, 19);
+  assert.equal(BACKDROPS.length, 21);
   assert.equal(TRANSITIONS.length, 2);
 
   const dialogueCgs = new Set(Object.values(DIALOGUES)
@@ -44,7 +44,7 @@ test('art audit page covers every speaking character and every authored CG mappi
     await access(new URL(`../public${asset.path}`, import.meta.url));
   }
 
-  assert.equal(AUDIT_VERSION, '2026-09-03-story-art-v8');
+  assert.equal(AUDIT_VERSION, '2026-09-04-continuity-completion-v1');
   assert.deepEqual(NON_LIVING_UNIT_PORTRAITS, ['void_core', 'origin_core', 'act3_errata_core']);
   assert.deepEqual(KNOWN_SIGNALS, {});
 });

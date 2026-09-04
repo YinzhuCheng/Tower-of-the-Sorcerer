@@ -136,7 +136,7 @@ export function applyDemoTenFloorContent({ enemies, floors, dialogues, gridSize 
       turns: [
         dialogueTurn('旁白', null, '星镜里的批注一闪而过：离港确认有效，结案权限却被上层锁定。', { kind: 'narration' }),
         dialogueTurn('旁白', null, '第七层没有窗，只有成千上万根影线穿过墙壁。每根线都牵着一道权限，也牵着一名无法违令的守卫。', { kind: 'narration' }),
-        dialogueTurn('旁白', null, '璃走近时，七束颜色不同的光从她胸前分向各层。那是尚未取回的最后一段咏唱在呼唤其余六段，也让她第一次看清：七名守护者的契约都系在同一个结案锁上。', { kind: 'narration' }),
+        dialogueTurn('旁白', null, '璃走近时，七束颜色不同的光从她胸前分向各层。那是尚未取回的最后一段咏唱在呼唤其余六段，也让她第一次看清：七名守护者的契约都系在同一个结案锁上。', { cg: '/assets/anime/cg/liyue-yayu-seven-core-network-cg.webp', cgHold: 4, kind: 'narration' }),
         dialogueTurn('影织姬·鸦羽', 'shadow_boss', '女王以为“撤销登记”就是删掉名字。她把自己也留在塔里，一等就是三年。'),
         dialogueTurn('影织姬·鸦羽', 'shadow_boss', '我负责沿影线追查每道命令从哪里来。可延长令落下的那一刻，有人反过来借虚影核心遮住了源头；我明明看见异常，却连报告都送不出。', { expression: 'guarded' }),
         dialogueTurn('绫星·璃', 'hero', '她想守住灰港，却让守卫们成了命令的工具。我会带着证据去见她。', { expression: 'guarded' }),
@@ -173,9 +173,9 @@ export function applyDemoTenFloorContent({ enemies, floors, dialogues, gridSize 
       turns: [
         dialogueTurn('旁白', null, '王座上没有胜利庆典，只有一封不断重播的求援。七枚核心在璃身边同时亮起。', { kind: 'narration' }),
         dialogueTurn('旁白', null, '殿墙刻着灰港全部撤离者的名字。多数人已在北岸成家，有人经营面包房，有人成了领航员；可登记网不知道他们后来的生活，只把每个人冻结成三年前等待救援的一行字。', { kind: 'narration' }),
-        dialogueTurn('无声女王·诺克缇娅', 'final_queen', '三年里，我每天都听见同一句“等待确认”。若我关掉它，谁来记得灰港的人？', { cg: '/assets/anime/cg/liyue-noctia-truth-cg.webp', expression: 'sorrow' }),
+        dialogueTurn('无声女王·诺克缇娅', 'final_queen', '三年里，我每天都听见同一句“等待确认”。若我关掉它，谁来记得灰港的人？', { cg: '/assets/anime/cg/liyue-noctia-truth-cg.webp', cgHold: 3, expression: 'sorrow' }),
         dialogueTurn('无声女王·诺克缇娅', 'final_queen', '我亲眼见过旧登记被关闭后整批档案化成空白。那天之后，我宁可让警钟继续，也不敢赌灰港会不会被抹掉。我知道这个选择困住了所有人，也知道自己没有勇气改。', { expression: 'sorrow' }),
-        dialogueTurn('旁白', null, '诺克缇娅说得很轻，握剑的手却没有松开。黯星纹路正沿着她的手腕向上蔓延，替她拒绝一切结案请求。', { kind: 'narration' }),
+        dialogueTurn('旁白', null, '诺克缇娅说得很轻，按住封印链的手却没有松开。黯星纹路正沿着她的手腕向上蔓延，替她拒绝一切结案请求。', { kind: 'narration' }),
         dialogueTurn('绫星·璃', 'hero', '七名守护者都记得。离港回执也存在，只是被更高的权限拦下了。', { expression: 'resolve' }),
         dialogueTurn('绫星·璃', 'hero', '我们已经找到另一种做法：把姓名、船号和抵达时间转进只读档案，保留记录；再从登记网中解除救援状态，停止命令。这样没有名字会消失，也没有守卫需要继续为一场早已结束的撤离流血。', { expression: 'resolve' }),
         dialogueTurn('绫星·璃', 'hero', '让她们永远互相伤害，不会把任何人送回家。我会留下记录，也会停下错误的命令。', { expression: 'embers' }),
@@ -325,42 +325,42 @@ export function applyDemoTenFloorContent({ enemies, floors, dialogues, gridSize 
     bossPalacePreDemo: dialogueSequence('第八阵守护者：静默执剑官·维拉', [
       dialogueTurn('旁白', null, '维拉站在王庭外环的密闭门前。门上的文字表明，它封锁的不是一间宫殿。', { kind: 'narration' }),
       dialogueTurn('旁白', null, '七个凹槽围着门锁排列，恰好对应璃失去的七段咏唱。每个凹槽下都刻着一句旧规：“单一记录可以出错，彼此独立的见证必须核对。”', { kind: 'narration' }),
-      dialogueTurn('静默执剑官·维拉', 'sword_boss', '我的职责是校验进入王庭的证据，防止有人伪造撤离结果、擅改起源魔源。你带来的七枚核心必须逐一应答。'),
-      dialogueTurn('静默执剑官·维拉', 'sword_boss', '月影要证明谁经过门廊，森罗要证明名单完整，潮汐要复述船长原音；锋刃、赤焰、天穹与虚影则要说明回执进入王庭后发生了什么。任何一份时间不合，我都不能开门。'),
-      dialogueTurn('静默执剑官·维拉', 'sword_boss', '这道门封住起源魔源的访问权。没有它，就连女王也只能维持登记，不能修改底层命令。'),
+      dialogueTurn('静默执剑官·维拉', 'palace_warden_v2', '我的职责是校验进入王庭的证据，防止有人伪造撤离结果、擅改起源魔源。你带来的七枚核心必须逐一应答。'),
+      dialogueTurn('静默执剑官·维拉', 'palace_warden_v2', '月影要证明谁经过门廊，森罗要证明名单完整，潮汐要复述船长原音；锋刃、赤焰、天穹与虚影则要说明回执进入王庭后发生了什么。任何一份时间不合，我都不能开门。'),
+      dialogueTurn('静默执剑官·维拉', 'palace_warden_v2', '这道门封住起源魔源的访问权。没有它，就连女王也只能维持登记，不能修改底层命令。'),
       dialogueTurn('绫星·璃', 'hero', '所以她不只是不愿意关闭，也没有真正的关闭权。但她封住所有人的选择，仍然必须回答。', { expression: 'guarded' }),
       dialogueTurn('旁白', null, '七枚核心依次亮起，门锁仍将维拉的剑推离剑鞘。校验完成以前，她同样没有让路的权限。', { kind: 'narration' }),
-      dialogueTurn('静默执剑官·维拉', 'sword_boss', '我的剑会逐段检验咏唱。你若在中途倒下，外环会把证据重新判为无效；不是我怀疑你，而是这套校验只承认完整通过的结果。'),
-      dialogueTurn('静默执剑官·维拉', 'sword_boss', '先让七枚核心通过我的剑。若它们的见证一致，我会把外环权限交给你。')
+      dialogueTurn('静默执剑官·维拉', 'palace_warden_v2', '我的剑会逐段检验咏唱。你若在中途倒下，外环会把证据重新判为无效；不是我怀疑你，而是这套校验只承认完整通过的结果。'),
+      dialogueTurn('静默执剑官·维拉', 'palace_warden_v2', '先让七枚核心通过我的剑。若它们的见证一致，我会把外环权限交给你。')
     ]),
     bossPalacePostDemo: dialogueSequence('王庭外环解除', [
       dialogueTurn('旁白', null, '维拉将剑插回门锁。七道光沿剑脊汇成同一个时间戳，密闭门随之退开半尺。', { kind: 'narration' }),
-      dialogueTurn('静默执剑官·维拉', 'sword_boss', '七份见证完全一致：灰港撤离已完成。我解除王庭外环。'),
+      dialogueTurn('静默执剑官·维拉', 'palace_warden_v2', '七份见证完全一致：灰港撤离已完成。我解除王庭外环。'),
       dialogueTurn('旁白', null, '门上的“等待确认”逐字熄灭，换成清晰的结论：“北辰七号，四十七人，于停战夜抵达北岸；灰港撤离完成。”这是三年来，高塔第一次正式承认那场救援已经结束。', { kind: 'narration' }),
       dialogueTurn('残响精灵·纱雾', 'guide', '我还是无法读取延长令的签名。有一枚黯星印遮住了发令者。', { expression: 'watchful' }),
-      dialogueTurn('静默执剑官·维拉', 'sword_boss', '外环只能确认事实，不能解除高于王座的命令。现在我们知道灰港平安，也知道诺克缇娅收到的是被篡改后的结果；最后缺的是谁下令无限延长。'),
-      dialogueTurn('静默执剑官·维拉', 'sword_boss', '第九层的观测官塞芙保管那枚印。她守的是进入王座前最后一道校准。'),
+      dialogueTurn('静默执剑官·维拉', 'palace_warden_v2', '外环只能确认事实，不能解除高于王座的命令。现在我们知道灰港平安，也知道诺克缇娅收到的是被篡改后的结果；最后缺的是谁下令无限延长。'),
+      dialogueTurn('静默执剑官·维拉', 'palace_warden_v2', '第九层的观测官塞芙保管那枚印。她守的是进入王座前最后一道校准。'),
       dialogueTurn('绫星·璃', 'hero', '我要那枚印，也要签署人的名字。诺克缇娅不该继续替一个藏起来的人承担一切。', { expression: 'resolve' })
     ]),
     bossBlackSealPreDemo: dialogueSequence('第九阵守护者：黯印观测官·塞芙', [
       dialogueTurn('旁白', null, '黯星印悬在塞芙身后。印面将延长令的签名涂成一团黑色，只留下“无限”二字。', { kind: 'narration' }),
       dialogueTurn('旁白', null, '塞芙脚边散着没有送出的异常报告。第一封写于封塔当天：“撤离回执早于封锁，状态冲突”；最后一封写于今晨，内容完全相同，纸张却已叠了厚厚一摞。', { kind: 'narration' }),
-      dialogueTurn('黯印观测官·塞芙', 'astral_boss', '我负责观测上层指令是否越过王座，也守着唯一能揭开签名的通行印。三年来，它不许我向任何人交付异常报告。'),
-      dialogueTurn('黯印观测官·塞芙', 'astral_boss', '我每天都记录同一个矛盾：灰港已经撤离，救援命令却仍有效。每当我把报告送向王庭，黯印就会将收件人改成我自己。诺克缇娅因此从未看见完整警告。'),
-      dialogueTurn('黯印观测官·塞芙', 'astral_boss', '这枚印来自王座之外。它把延长令写进底层，女王可以继续执行，却无权撤销。'),
+      dialogueTurn('黯印观测官·塞芙', 'black_seal_keeper_v2', '我负责观测上层指令是否越过王座，也守着唯一能揭开签名的通行印。三年来，它不许我向任何人交付异常报告。'),
+      dialogueTurn('黯印观测官·塞芙', 'black_seal_keeper_v2', '我每天都记录同一个矛盾：灰港已经撤离，救援命令却仍有效。每当我把报告送向王庭，黯印就会将收件人改成我自己。诺克缇娅因此从未看见完整警告。'),
+      dialogueTurn('黯印观测官·塞芙', 'black_seal_keeper_v2', '这枚印来自王座之外。它把延长令写进底层，女王可以继续执行，却无权撤销。'),
       dialogueTurn('绫星·璃', 'hero', '她仍然应该为封住守卫道歉，但她不应替真正的发令者背上全部责任。', { expression: 'guarded' }),
       dialogueTurn('旁白', null, '塞芙伸手触碰黯印，手指立刻被黑光弹开。她转而举起法杖——通行印只承认能击破校准术式的人。', { kind: 'narration' }),
-      dialogueTurn('黯印观测官·塞芙', 'astral_boss', '开战后，黑印会把我的观察术改成攻击术。我会标出它最薄弱的三个校准点，但无法替你踩亮。击破它，报告和签名才能同时解封。'),
+      dialogueTurn('黯印观测官·塞芙', 'black_seal_keeper_v2', '开战后，黑印会把我的观察术改成攻击术。我会标出它最薄弱的三个校准点，但无法替你踩亮。击破它，报告和签名才能同时解封。'),
       dialogueTurn('绫星·璃', 'hero', '塞芙，把印交给我。我会带着它去见女王，让被藏起来的人也留下姓名。', { expression: 'resolve' })
     ]),
     bossBlackSealPostDemo: dialogueSequence('黯星通行印解除', [
       dialogueTurn('旁白', null, '黑光剥落，印面第一次显出完整字迹。塞芙没有立刻开口，只把三年前没能递出的异常报告交到璃手中。', { kind: 'narration' }),
-      dialogueTurn('黯印观测官·塞芙', 'astral_boss', '黯印解除了。签名写着：奥术主权者；指令是“灰港紧急登记，无限延长”。'),
-      dialogueTurn('黯印观测官·塞芙', 'astral_boss', '签署时间在诺克缇娅封塔后七息。她下的是临时命令，奥术主权者随后把它写入起源魔源，删除终止条件，并拦住所有异常报告。'),
-      dialogueTurn('残响精灵·纱雾', 'guide', '奥术主权者管理起源魔源，身份高于王座。可她现在不在这十层之内。', { expression: 'watchful' }),
+      dialogueTurn('黯印观测官·塞芙', 'black_seal_keeper_v2', '黯印解除了。签名写着：奥术主权者；指令是“灰港紧急登记，无限延长”。'),
+      dialogueTurn('黯印观测官·塞芙', 'black_seal_keeper_v2', '签署时间在诺克缇娅封塔后七息。她下的是临时命令，奥术主权者随后把它写入起源魔源，删除终止条件，并拦住所有异常报告。'),
+      dialogueTurn('残响精灵·纱雾', 'guide', '奥术主权者管理起源魔源，身份高于王座。可他现在不在这十层之内。', { expression: 'watchful' }),
       dialogueTurn('残响精灵·纱雾', 'guide', '这个称号不是姓名。要知道她是谁、为什么把一次已完成的撤离无限延长，我们必须进入王座后的上层档案区。那会是下一段旅程，不是今晚在十层内能查完的答案。', { expression: 'watchful' }),
       dialogueTurn('绫星·璃', 'hero', '那就先去王座。女王必须看见离港回执和这枚印，才能明白自己守了什么。', { expression: 'resolve' }),
-      dialogueTurn('黯印观测官·塞芙', 'astral_boss', '带好日曜卡。王座结界后没有商店，进去以后，你就得用现有的一切走到底。')
+      dialogueTurn('黯印观测官·塞芙', 'black_seal_keeper_v2', '带好日曜卡。王座结界后没有商店，进去以后，你就得用现有的一切走到底。')
     ]),
     bossQueenPreDemo: dialogueSequence('第十阵：无声女王', 'night', [
       dialogueTurn('旁白', null, '王座前没有庆典，只有一封被反复播放、始终没有落款的求援讯息。', { kind: 'narration' }),
@@ -382,8 +382,8 @@ export function applyDemoTenFloorContent({ enemies, floors, dialogues, gridSize 
       dialogueTurn('旁白', null, '核心把四十七枚姓名牌投成燃烧的幻象，又在每一枚下方写出“关闭即删除”。诺克缇娅下意识伸手护住它们，锁链便趁机缠上她的手腕。', { kind: 'narration' }),
       dialogueTurn('无声女王·诺克缇娅', 'final_queen', '原来它从没有受我控制。它锁住原始签名，也不许我承认撤离已经结束。', { expression: 'sorrow' }),
       dialogueTurn('无声女王·诺克缇娅', 'final_queen', '我仍然是做出封塔选择的人，但我不会再让这份恐惧替我挥剑。璃，姓名牌只是幻象，真正的档案已经由七枚核心保存。攻击核心。', { expression: 'resolve' }),
-      dialogueTurn('旁白', null, '诺克缇娅反手将剑刺进束缚自己的黑纹，为璃撕开一道狭窄缺口。七枚核心沿缺口照亮黯星的裂缝。', { kind: 'narration' }),
-      dialogueTurn('绫星·璃', 'hero', '那就一起打破它。第二阶段的反击无视防御，我会用留下的生命撑过去。', { cg: '/assets/anime/cg/liyue-noctia-seal-cg.webp', expression: 'embers' })
+      dialogueTurn('旁白', null, '诺克缇娅反手扯断束缚自己的黑纹，为璃撕开一道狭窄缺口。七枚核心沿缺口照亮黯星的裂缝。', { cg: '/assets/anime/cg/liyue-noctia-seal-cg.webp', cgHold: 2, kind: 'narration' }),
+      dialogueTurn('绫星·璃', 'hero', '那就一起打破它。第二阶段的反击无视防御，我会用留下的生命撑过去。', { expression: 'embers' })
     ]),
     bossQueenPostDemo: dialogueSequence('终章：魔法重新被选择', 'night', [
       dialogueTurn('旁白', null, '黯星核心碎裂，王庭的警报终于停下。墙上的灰港名字没有消失，只是不再闪烁。', { kind: 'narration' }),
@@ -393,7 +393,7 @@ export function applyDemoTenFloorContent({ enemies, floors, dialogues, gridSize 
       dialogueTurn('无声女王·诺克缇娅', 'final_queen', '我封住了你们，还用你的魔力维持这一切。我会道歉，也会和你们一起找到真正的结案。', { expression: 'sorrow' }),
       dialogueTurn('无声女王·诺克缇娅', 'final_queen', '我不会用“受人操纵”替自己开脱。等我们回来，我会把封塔经过、七名守护者遭受的强制契约和我作出的每个决定公开记录。她们愿不愿继续留在塔里，由她们自己选择。', { expression: 'sorrow' }),
       dialogueTurn('残响精灵·纱雾', 'guide', '王座开启了上层阶梯。下一段路要查明奥术主权者为何签下无限延长，以及如何安全归档。', { expression: 'focus' }),
-      dialogueTurn('残响精灵·纱雾', 'guide', '十层之上的档案把“奥术主权者”与一座失联的魔源中枢相连。第二章要做三件事：确认签署者身份，查清她为何需要灰港永远处于紧急状态，再让只读归档脱离黯星核心也能长期保存。', { expression: 'watchful' }),
+      dialogueTurn('残响精灵·纱雾', 'guide', '十层之上的档案把“奥术主权者”与一座失联的魔源中枢相连。第二章要做三件事：确认签署者身份，查清他为何需要灰港永远处于紧急状态，再让只读归档脱离黯星核心也能长期保存。', { expression: 'watchful' }),
       dialogueTurn('旁白', null, '石阶在王座后方一节节亮起，通向从未出现在高塔图纸上的上层。璃回头看了一眼不再鸣警的十层：灰港的撤离终于结案，但篡改命令的人仍在更高处留下了一扇门。', { kind: 'narration' }),
       dialogueTurn('绫星·璃', 'hero', '那就一起上去。这次不是追责后就算结束，我们要把三年前没做完的事真正做完。', { expression: 'resolve' })
     ])
