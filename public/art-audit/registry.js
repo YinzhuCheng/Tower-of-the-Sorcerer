@@ -1,4 +1,4 @@
-export const AUDIT_VERSION = '2026-09-04-native-alpha-standees-v2';
+export const AUDIT_VERSION = '2026-09-04-art-audit-repair-v3';
 
 export const KNOWN_SIGNALS = Object.freeze({});
 
@@ -39,7 +39,7 @@ export const CG_SCENES = Object.freeze([
   {
     id: 'noctia-truth',
     title: '十阵真相对谈',
-    path: '/assets/anime/cg/liyue-noctia-truth-cg.webp',
+    path: '/assets/anime/cg/liyue-noctia-truth-cg-audit-v3.webp',
     cast: ['hero', 'final_queen'],
     scenes: ['bossQueenPreDemo'],
     role: 'story-cg'
@@ -63,7 +63,7 @@ export const CG_SCENES = Object.freeze([
   {
     id: 'noctia-seal',
     title: '十阵共同破封',
-    path: '/assets/anime/cg/liyue-noctia-seal-cg.webp',
+    path: '/assets/anime/cg/liyue-noctia-seal-cg-audit-v3.webp',
     cast: ['hero', 'final_queen'],
     scenes: ['queenPhaseDemo'],
     role: 'story-cg'
@@ -71,7 +71,7 @@ export const CG_SCENES = Object.freeze([
   {
     id: 'echo-ledger',
     title: '十九阵名簿归还',
-    path: '/assets/anime/cg/liyue-echo-ledger-cg.webp',
+    path: '/assets/anime/cg/liyue-echo-ledger-cg-audit-v3.webp',
     cast: ['hero', 'final_queen', 'echo_regent'],
     scenes: ['floor19 · 03/05'],
     role: 'story-cg'
@@ -87,7 +87,7 @@ export const CG_SCENES = Object.freeze([
   {
     id: 'noctia-sovereign',
     title: '二十阵签名承担',
-    path: '/assets/anime/cg/liyue-noctia-sovereign-cg.webp',
+    path: '/assets/anime/cg/liyue-noctia-sovereign-cg-audit-v3.webp',
     cast: ['hero', 'final_queen', 'arcane_sovereign'],
     scenes: ['floor20 · 05/05'],
     role: 'story-cg'
@@ -103,7 +103,7 @@ export const CG_SCENES = Object.freeze([
   {
     id: 'seven-cantos-severed',
     title: '序章：七段咏唱被拆分',
-    path: '/assets/anime/cg/liyue-seven-cantos-severed-cg.webp',
+    path: '/assets/anime/cg/liyue-seven-cantos-severed-cg-audit-v3.webp',
     cast: ['hero', 'guide'],
     scenes: ['prologue'],
     role: 'story-cg'
@@ -111,7 +111,7 @@ export const CG_SCENES = Object.freeze([
   {
     id: 'seven-core-network',
     title: '七阵：七核契约网络',
-    path: '/assets/anime/cg/liyue-yayu-seven-core-network-cg.webp',
+    path: '/assets/anime/cg/liyue-yayu-seven-core-network-cg-audit-v3.webp',
     cast: ['hero', 'shadow_boss'],
     scenes: ['floor7'],
     role: 'story-cg'
@@ -119,7 +119,7 @@ export const CG_SCENES = Object.freeze([
   {
     id: 'missing-fourth-step',
     title: '十一阵：缺失的第四步',
-    path: '/assets/anime/cg/liyue-noctia-missing-fourth-step-cg.webp',
+    path: '/assets/anime/cg/liyue-noctia-missing-fourth-step-cg-audit-v3.webp',
     cast: ['hero', 'final_queen'],
     scenes: ['floor11'],
     role: 'story-cg'
@@ -127,7 +127,7 @@ export const CG_SCENES = Object.freeze([
   {
     id: 'intercepted-receipt',
     title: '十八阵：截留回执',
-    path: '/assets/anime/cg/liyue-yayu-intercepted-receipt-cg.webp',
+    path: '/assets/anime/cg/liyue-yayu-intercepted-receipt-cg-audit-v3.webp',
     cast: ['hero', 'shadow_boss'],
     scenes: ['floor18'],
     role: 'story-cg'
@@ -135,7 +135,7 @@ export const CG_SCENES = Object.freeze([
   {
     id: 'missing-page-restored',
     title: '二十五阵：归档缺页复原',
-    path: '/assets/anime/cg/liyue-noctia-missing-page-cg.webp',
+    path: '/assets/anime/cg/liyue-noctia-missing-page-cg-audit-v3.webp',
     cast: ['hero', 'final_queen', 'arcane_sovereign'],
     scenes: ['floor25'],
     role: 'story-cg'
@@ -143,7 +143,7 @@ export const CG_SCENES = Object.freeze([
   {
     id: 'letters-held-in-storm',
     title: '二十八阵：风暴中护住原信',
-    path: '/assets/anime/cg/liyue-noctia-archive-storm-cg.webp',
+    path: '/assets/anime/cg/liyue-noctia-archive-storm-cg-audit-v3.webp',
     cast: ['hero', 'final_queen'],
     scenes: ['floor28'],
     role: 'story-cg'
@@ -151,7 +151,7 @@ export const CG_SCENES = Object.freeze([
   {
     id: 'originals-enter-lighthouse',
     title: '三十阵：原卷进入灯塔',
-    path: '/assets/anime/cg/liyue-archive-warden-entry-cg.webp',
+    path: '/assets/anime/cg/liyue-archive-warden-entry-cg-audit-v3.webp',
     cast: ['hero', 'final_queen', 'arcane_sovereign'],
     scenes: ['floor30'],
     role: 'story-cg'
@@ -159,7 +159,7 @@ export const CG_SCENES = Object.freeze([
   {
     id: 'traceable-revocation',
     title: '灯塔：可追溯撤销写入',
-    path: '/assets/anime/cg/liyue-traceable-revocation-cg.webp',
+    path: '/assets/anime/cg/liyue-traceable-revocation-cg-audit-v3.webp',
     cast: ['guide', 'final_queen', 'arcane_sovereign'],
     scenes: ['bossArchiveWardenPost'],
     role: 'story-cg'

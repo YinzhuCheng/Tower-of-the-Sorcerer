@@ -44,13 +44,13 @@ test('tower identity redraw v7 uses canonical transparent GAL identities directl
   }
 
   await access(new URL('public/assets/anime/avatars/whale-boss-avatar-lament-v7.webp', ROOT));
-  await access(new URL('public/assets/anime/avatars/dragon-boss-avatar-embers-v7.webp', ROOT));
+  await access(new URL('public/assets/anime/avatars/dragon-boss-avatar-embers-audit-v3.webp', ROOT));
 });
 
 test('v7 avatars and low-noise CG redraws keep their runtime dimensions', async () => {
   for (const path of [
     'public/assets/anime/avatars/whale-boss-avatar-lament-v7.webp',
-    'public/assets/anime/avatars/dragon-boss-avatar-embers-v7.webp'
+    'public/assets/anime/avatars/dragon-boss-avatar-embers-audit-v3.webp'
   ]) {
     const buffer = await bytes(path);
     assert.deepEqual(webpDimensions(buffer), { width: 512, height: 512 }, `${path} must remain a square avatar`);
@@ -58,10 +58,10 @@ test('v7 avatars and low-noise CG redraws keep their runtime dimensions', async 
   }
 
   for (const path of [
-    'public/assets/anime/cg/liyue-noctia-truth-cg.webp',
-    'public/assets/anime/cg/liyue-noctia-seal-cg.webp',
-    'public/assets/anime/cg/liyue-echo-ledger-cg.webp',
-    'public/assets/anime/cg/liyue-noctia-sovereign-cg.webp'
+    'public/assets/anime/cg/liyue-noctia-truth-cg-audit-v3.webp',
+    'public/assets/anime/cg/liyue-noctia-seal-cg-audit-v3.webp',
+    'public/assets/anime/cg/liyue-echo-ledger-cg-audit-v3.webp',
+    'public/assets/anime/cg/liyue-noctia-sovereign-cg-audit-v3.webp'
   ]) {
     const buffer = await bytes(path);
     assert.deepEqual(webpDimensions(buffer), { width: 1672, height: 941 }, `${path} must preserve the 16:9 runtime frame`);

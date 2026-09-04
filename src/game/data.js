@@ -251,7 +251,7 @@ export const DIALOGUES = {
       {
         speaker: '残响精灵·纱雾',
         portrait: 'guide', expression: 'lament',
-        cg: '/assets/anime/cg/liyue-seven-cantos-severed-cg.webp',
+        cg: '/assets/anime/cg/liyue-seven-cantos-severed-cg-audit-v3.webp',
         cgHold: 5,
         text: '你当时赶来接应，她却强行拆走你的七段咏唱，做成七枚魔力核心维持封锁。如今七名守护者都被绑在命令里，靠近的人一律会被当成入侵者。'
       },

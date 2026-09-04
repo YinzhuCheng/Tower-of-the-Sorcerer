@@ -63,8 +63,8 @@ test('early guardians and Lumi resolve to production standing art and matching a
   const states = [
     ['cat_boss', 'alert', 'milu-dialogue-alert-v8.webp', 'cat-boss-avatar-alert-v8.webp'],
     ['fox_boss', 'watchful', 'feiye-dialogue-watchful-v8.webp', 'fox-boss-avatar-watchful-v8.webp'],
-    ['whale_boss', 'lament', 'lanyin-dialogue-lament-v8.webp', 'whale-boss-avatar-lament-v8.webp'],
-    ['sword_boss', 'stern', 'serena-dialogue-stern-v8.webp', 'sword-boss-avatar-stern-v8.webp'],
+    ['whale_boss', 'lament', 'lanyin-dialogue-lament-v8.webp', 'whale-boss-avatar-lament-audit-v3.webp'],
+    ['sword_boss', 'stern', 'serena-dialogue-stern-audit-v3.webp', 'sword-boss-avatar-stern-v8.webp'],
     ['astral_boss', 'focus', 'lumi-dialogue-focus-v8.webp', 'astral-boss-avatar-focus.webp']
   ];
   for (const [id, expression, standing, avatar] of states) {
@@ -84,5 +84,5 @@ test('new explanatory CGs bind to their story beats and act-three floors use fun
   const main = await readFile(new URL('src/main.js', ROOT), 'utf8');
   assert.match(main, /22: 'nightShelter', 23: 'auditChamber', 24: 'relayGallery', 25: 'triageIndex'/);
   assert.match(main, /26: 'foldedArchiveMarket', 27: 'triageIndex'/);
-  assert.match(main, /GAL_ART_VERSION = '20260904-native-alpha-standees-v2'/);
+  assert.match(main, /GAL_ART_VERSION = '20260904-art-audit-repair-v3'/);
 });

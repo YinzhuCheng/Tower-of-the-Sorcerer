@@ -1,5 +1,5 @@
 {
-  "version": 9,
+  "version": 10,
   "basePath": "/assets/anime/",
   "assets": {
     "mana_wisp": {
@@ -216,7 +216,7 @@
       "scale": 1.08
     },
     "shadow_boss": {
-      "file": "enemies/v1/shadow-boss-map-128.webp",
+      "file": "enemies/v3/shadow-boss-map-audit-v3.webp",
       "highResFile": "characters/yayu-dialogue-guarded.webp",
       "scale": 1.08
     },

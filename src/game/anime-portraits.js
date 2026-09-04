@@ -166,7 +166,7 @@ const DIALOGUE_EXPRESSIONS = Object.freeze({
   'cat_boss:alert': '/assets/anime/characters/milu-dialogue-alert-v8.webp',
   'fox_boss:watchful': '/assets/anime/characters/feiye-dialogue-watchful-v8.webp',
   'whale_boss:lament': '/assets/anime/characters/lanyin-dialogue-lament-v8.webp',
-  'sword_boss:stern': '/assets/anime/characters/serena-dialogue-stern-v8.webp',
+  'sword_boss:stern': '/assets/anime/characters/serena-dialogue-stern-audit-v3.webp',
   'dragon_boss:embers': '/assets/anime/characters/yanli-dialogue-embers.webp',
   'astral_boss:focus': '/assets/anime/characters/lumi-dialogue-focus-v8.webp',
   'shadow_boss:guarded': '/assets/anime/characters/yayu-dialogue-guarded.webp',
@@ -175,10 +175,10 @@ const DIALOGUE_EXPRESSIONS = Object.freeze({
   'arcane_sovereign:regret': '/assets/anime/characters/arcane-sovereign-dialogue-regret.webp',
   'arcane_sovereign:acceptance': '/assets/anime/characters/arcane-sovereign-dialogue-acceptance.webp',
   'act3_archive_warden:duty': '/assets/anime/characters/archive-warden-dialogue-duty.webp',
-  'palace_warden_v2:duty': '/assets/anime/characters/vela-dialogue-duty.webp',
-  'black_seal_keeper_v2:watchful': '/assets/anime/characters/seph-dialogue-watchful.webp',
-  'act3_last_custodian:grave': '/assets/anime/characters/last-custodian-dialogue-release.webp',
-  'act3_last_custodian:release': '/assets/anime/characters/last-custodian-dialogue-release.webp'
+  'palace_warden_v2:duty': '/assets/anime/characters/vela-dialogue-duty-audit-v3.webp',
+  'black_seal_keeper_v2:watchful': '/assets/anime/characters/seph-dialogue-watchful-audit-v3.webp',
+  'act3_last_custodian:grave': '/assets/anime/characters/last-custodian-dialogue-release-audit-v3.webp',
+  'act3_last_custodian:release': '/assets/anime/characters/last-custodian-dialogue-release-audit-v3.webp'
 });
 
 // The three recurring leads use a real painted face for each dialogue state,
@@ -219,9 +219,9 @@ export const DIALOGUE_CAST = Object.freeze({
   final_queen: { expression: 'sorrow', label: '哀伤', avatar: '/assets/anime/avatars/noctia-avatar-sorrow-cel.webp' },
   cat_boss: { expression: 'alert', label: '警惕', avatar: '/assets/anime/avatars/cat-boss-avatar-alert-v8.webp' },
   fox_boss: { expression: 'watchful', label: '审视', avatar: '/assets/anime/avatars/fox-boss-avatar-watchful-v8.webp' },
-  whale_boss: { expression: 'lament', label: '低回', avatar: '/assets/anime/avatars/whale-boss-avatar-lament-v8.webp' },
+  whale_boss: { expression: 'lament', label: '低回', avatar: '/assets/anime/avatars/whale-boss-avatar-lament-audit-v3.webp' },
   sword_boss: { expression: 'stern', label: '肃然', avatar: '/assets/anime/avatars/sword-boss-avatar-stern-v8.webp' },
-  dragon_boss: { expression: 'embers', label: '炽烈', avatar: '/assets/anime/avatars/dragon-boss-avatar-embers-v7.webp' },
+  dragon_boss: { expression: 'embers', label: '炽烈', avatar: '/assets/anime/avatars/dragon-boss-avatar-embers-audit-v3.webp' },
   astral_boss: { expression: 'focus', label: '推演', avatar: '/assets/anime/avatars/astral-boss-avatar-focus.webp' },
   shadow_boss: { expression: 'guarded', label: '戒备', avatar: '/assets/anime/avatars/shadow-boss-avatar-guarded.webp' },
   merchant: { expression: 'knowing', label: '了然', avatar: '/assets/anime/avatars/merchant-avatar-knowing.webp' },

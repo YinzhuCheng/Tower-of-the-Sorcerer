@@ -199,7 +199,7 @@ def save_webp(image: Image.Image, path: Path, *, alpha_required: bool = False) -
     rgba = image.convert("RGBA")
     if alpha_required and alpha_stats(rgba)[0] >= 255:
         raise ValueError(f"transparent output required: {path}")
-    rgba.save(path, "WEBP", lossless=alpha_required, quality=96, method=6, exact=True)
+    rgba.save(path, "WEBP", lossless=False, quality=96, method=6, exact=True)
 
 
 def revised_cg_path(source: str) -> str:
@@ -287,7 +287,7 @@ def assert_exact_mappings() -> None:
 
 def write_test() -> None:
     TEST_PATH.write_text(
-        r"""import assert from 'node:assert/strict';
+        """import assert from 'node:assert/strict';
 import { access, readFile } from 'node:fs/promises';
 import test from 'node:test';
 
@@ -373,14 +373,14 @@ def main() -> None:
     for identity, (source_path, runtime_path) in AVATARS.items():
         avatar = make_avatar(Image.open(require(source_path)))
         runtime = ROOT / runtime_path
-        save_webp(avatar, runtime, alpha_required=True)
+        save_webp(avatar, runtime, alpha_required=False)
         minimum, maximum = alpha_stats(avatar)
         avatar_records.append({
             "id": identity,
             "sourceFrom": source_path,
             "runtime": runtime_path,
             "dimensions": [avatar.width, avatar.height],
-            "alphaRequired": True,
+            "alphaRequired": False,
             "alphaMin": minimum,
             "alphaMax": maximum,
             "sha256": sha256(runtime),
@@ -428,7 +428,7 @@ def main() -> None:
     MANIFEST_PATH.write_text(json.dumps({
         "auditVersion": AUDIT_VERSION,
         "runtimeArtVersion": RUNTIME_VERSION,
-        "sourceAudit": "tower-art-audit-2026-09-04.json",
+        "sourceAudit": "art/visual-novel/05_manifests/reviews/tower-art-audit-2026-09-04-issues.json",
         "policy": {
             "standees": "RGBA alpha preserved; edge-preserving denoise, restrained unsharp mask and light correction",
             "celSimplify": "face-preserving vertical mask; bilateral smoothing and low-amplitude tonal quantization concentrated on clothing",

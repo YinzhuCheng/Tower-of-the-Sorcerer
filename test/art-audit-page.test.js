@@ -44,7 +44,7 @@ test('art audit page covers every speaking character and every authored CG mappi
     await access(new URL(`../public${asset.path}`, import.meta.url));
   }
 
-  assert.equal(AUDIT_VERSION, '2026-09-04-native-alpha-standees-v2');
+  assert.equal(AUDIT_VERSION, '2026-09-04-art-audit-repair-v3');
   assert.deepEqual(NON_LIVING_UNIT_PORTRAITS, ['void_core', 'origin_core', 'act3_errata_core']);
   assert.deepEqual(KNOWN_SIGNALS, {});
 });
@@ -78,7 +78,7 @@ test('art audit page covers every living combat unit, the hero and the merchant'
 
   const lowResolutionEntries = Object.values(enemyManifest.assets)
     .filter(({ file }) => /-map-128\.webp$/.test(file));
-  assert.equal(lowResolutionEntries.length, 48);
+  assert.equal(lowResolutionEntries.length, 47);
   for (const entry of lowResolutionEntries) {
     const highResolutionFile = entry.highResFile
       ?? entry.file.replace(/^enemies\/v1\//, 'portraits/v1/').replace(/-map-128\.webp$/, '-portrait-runtime.webp');
@@ -108,7 +108,7 @@ test('art audit page ships review persistence, filters, lightbox and JSON export
   assert.match(html, /href="\/art-audit\/styles\.css"/);
   assert.match(html, /src="\/art-audit\/app\.js"/);
   assert.match(app, /localStorage\.setItem\(STORAGE_KEY/);
-  assert.match(app, /art-audit:reviews:v2/);
+  assert.match(app, /art-audit:reviews:v3/);
   assert.match(app, /new Blob/);
   assert.match(app, /data-record-key/);
   assert.match(app, /dialoguePresentation\(id, expression\)/);
