@@ -5,7 +5,7 @@ on:
     branches:
       - codex/alpha-standees-20260904
     paths:
-      - '.art-upload/round2/**'
+      - '.art-upload/round2/READY'
   workflow_dispatch:
 
 permissions:
