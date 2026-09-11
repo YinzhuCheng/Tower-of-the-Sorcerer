@@ -5,7 +5,7 @@ on:
     branches:
       - codex/alpha-standees-20260904
     paths:
-      - '.art-upload/round2/READY'
+      - '.art-upload/round2/source-url.txt'
   workflow_dispatch:
 
 permissions:
@@ -26,29 +26,43 @@ jobs:
           ref: codex/alpha-standees-20260904
           fetch-depth: 0
 
-      - name: Decode reviewed art payloads
+      - name: Download reviewed art archive
+        shell: bash
+        run: |
+          set -euo pipefail
+          SOURCE_URL="$(tr -d '\r\n' < .art-upload/round2/source-url.txt)"
+          test -n "$SOURCE_URL"
+          curl --fail --location --retry 3 --retry-delay 2 "$SOURCE_URL" -o /tmp/tower-round2.zip
+          rm -rf /tmp/tower-round2
+          mkdir -p /tmp/tower-round2
+          unzip -q /tmp/tower-round2.zip -d /tmp/tower-round2
+          test -f /tmp/tower-round2/manifest.json
+
+      - name: Install reviewed CGs and standees
         shell: bash
         run: |
           python - <<'PY'
-          import base64
           import hashlib
           import json
+          import shutil
           from pathlib import Path
 
           root = Path('.')
-          upload_root = root / '.art-upload/round2'
-          payload = json.loads((upload_root / 'manifest.json').read_text(encoding='utf-8'))
+          source = Path('/tmp/tower-round2')
+          payload = json.loads((source / 'manifest.json').read_text(encoding='utf-8'))
 
           for item in payload['files']:
-              encoded = ''.join((root / chunk).read_text(encoding='ascii').strip() for chunk in item['chunks'])
-              data = base64.b64decode(encoded, validate=True)
+              src = source / item['archive']
+              if not src.is_file():
+                  raise RuntimeError(f"missing archive member for {item['id']}: {src.name}")
+              data = src.read_bytes()
               digest = hashlib.sha256(data).hexdigest()
               if digest != item['sha256']:
                   raise RuntimeError(f"sha256 mismatch for {item['id']}: {digest} != {item['sha256']}")
               target = root / item['target']
               target.parent.mkdir(parents=True, exist_ok=True)
               target.write_bytes(data)
-              print(f"decoded {item['id']} -> {target} ({len(data)} bytes)")
+              print(f"installed {item['id']} -> {target} ({len(data)} bytes)")
 
           audit_manifest_path = root / 'art/visual-novel/05_manifests/art-audit-repair-v3-manifest.json'
           audit_manifest = json.loads(audit_manifest_path.read_text(encoding='utf-8'))
@@ -58,18 +72,21 @@ jobs:
                   indexed[record['id']] = record
 
           for item in payload['files']:
+              if item.get('sourceMaster'):
+                  continue
               record = indexed.get(item['id'])
               if not record:
                   continue
               if record.get('runtime') != item['target']:
                   raise RuntimeError(f"runtime target mismatch for {item['id']}: {record.get('runtime')} != {item['target']}")
               record['sha256'] = item['sha256']
-              record['profile'] = 'user-selected-round2-lighting-reference'
+              record['profile'] = 'user-selected-round2-final'
 
           audit_manifest['round2Import'] = {
               'date': '2026-09-11',
               'count': len(payload['files']),
-              'policy': 'Eight user-selected CG replacements plus three round-two transparent standees.'
+              'runtimeCount': len([item for item in payload['files'] if not item.get('sourceMaster')]),
+              'policy': 'Eight user-selected CG replacements plus three round-two transparent standees; transparent PNG masters retained under art/visual-novel.'
           }
           audit_manifest_path.write_text(json.dumps(audit_manifest, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
           PY
@@ -80,9 +97,10 @@ jobs:
       - name: Commit reviewed art replacements
         shell: bash
         run: |
+          set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add public/assets/anime/cg public/assets/anime/characters art/visual-novel/05_manifests/art-audit-repair-v3-manifest.json
+          git add public/assets/anime/cg public/assets/anime/characters art/visual-novel/04_cg/final/2026-09-11-user-round2 art/visual-novel/05_manifests/art-audit-repair-v3-manifest.json
           git rm -r .art-upload/round2
           git commit -m "art: replace 8 reviewed CGs and 3 round2 standees"
           git push origin HEAD:codex/alpha-standees-20260904
