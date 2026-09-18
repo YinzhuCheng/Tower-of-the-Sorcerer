@@ -1,0 +1,77 @@
+{
+  "version": "GAL-SIMPLE-1.2",
+  "batch": "CG-R0-BATCH01",
+  "date_utc": "2026-09-18",
+  "generation_mode": "built-in-imagegen",
+  "scope": {
+    "cg_ids": ["CG_001_critical", "CG_002_defeat", "CG_003_prologue-tower"],
+    "accepted_r0": 3,
+    "rejected_iterations": 1,
+    "final_cg": 0,
+    "runtime_replacements": 0
+  },
+  "assets": [
+    {
+      "cg_id": "CG_001_critical",
+      "iteration": "R0_layout_v1",
+      "status": "accepted-r0-layout",
+      "path": "04_cg/working/CG_001_critical_R0_layout_v1.png",
+      "sha256": "1dd44397a0a8f8d2601769841f741d8ef5ed4180e065997f25de124783bb7a40",
+      "width": 1672,
+      "height": 941,
+      "mode": "RGB",
+      "prompt": "03_intermediate/prompt_packets/CG_001_critical_R0.json",
+      "reference_set": "03_intermediate/reference_sets/CG_001_critical_R0.json",
+      "qa": "03_intermediate/qa/CG_001_critical_R0_qa.md"
+    },
+    {
+      "cg_id": "CG_002_defeat",
+      "iteration": "R0_layout_v1",
+      "status": "accepted-r0-layout",
+      "path": "04_cg/working/CG_002_defeat_R0_layout_v1.png",
+      "sha256": "4e54df8f39b9d8b055fb781ac2e489315b3326c17dbbe7489adcd15766c8cd12",
+      "width": 1672,
+      "height": 941,
+      "mode": "RGB",
+      "prompt": "03_intermediate/prompt_packets/CG_002_defeat_R0.json",
+      "reference_set": "03_intermediate/reference_sets/CG_002_defeat_R0.json",
+      "qa": "03_intermediate/qa/CG_002_defeat_R0_qa.md"
+    },
+    {
+      "cg_id": "CG_003_prologue-tower",
+      "iteration": "R0_layout_v1",
+      "status": "rejected-scale",
+      "path": "04_cg/rejected/R0-layout/CG_003_prologue-tower_R0_layout_v1_rejected-scale.png",
+      "sha256": "adf017d79ae2b897665f86cb9a8dadfcf05ec97b761406e631d5888bde430f35",
+      "width": 1672,
+      "height": 941,
+      "mode": "RGB",
+      "prompt": "03_intermediate/prompt_packets/CG_003_prologue-tower_R0.json",
+      "reference_set": "03_intermediate/reference_sets/CG_003_prologue-tower_R0.json",
+      "qa": "03_intermediate/qa/CG_003_prologue-tower_R0_qa.md",
+      "reason": "foreground heroine too large for tower-dominant scale"
+    },
+    {
+      "cg_id": "CG_003_prologue-tower",
+      "iteration": "R0_layout_v2",
+      "status": "accepted-r0-with-carry",
+      "path": "04_cg/working/CG_003_prologue-tower_R0_layout_v2.png",
+      "sha256": "c4761fef9dba03a44b53dbe6f01185bbf1f3356aaa057158154a75baf189431d",
+      "width": 1672,
+      "height": 941,
+      "mode": "RGB",
+      "prompt": "03_intermediate/prompt_packets/CG_003_prologue-tower_R0_v2_edit.json",
+      "reference_set": "03_intermediate/reference_sets/CG_003_prologue-tower_R0.json",
+      "qa": "03_intermediate/qa/CG_003_prologue-tower_R0_qa.md",
+      "carry": "If retained in later passes, reduce heroine to roughly 12 percent or less of frame height."
+    }
+  ],
+  "preview": {
+    "path": "PREVIEW_CG_R0_BATCH01_v1.2.jpg",
+    "sha256": "237b1e4ab14f57efe30d310238a022ebe25988865bcee5ebb3627ea453bd233d",
+    "width": 1032,
+    "height": 1857,
+    "mode": "RGB"
+  },
+  "next_gate": "Generate R0 layouts for CG_004 through CG_019 in scene order; R1 identity work may begin on CG_001 through CG_003 without treating them as final CGs."
+}

@@ -1,0 +1,118 @@
+{
+  "version": "GAL-SIMPLE-1.2",
+  "cg_id": "CG_009_missing-fourth-step",
+  "semantic_id": "missing-fourth-step",
+  "title": "十一阵：缺失的第四步",
+  "status": "ready-for-layout",
+  "source_locator": {
+    "repository_commit": "b05bc623b7c1ef8b93cfa1fca253ad2119a52f68",
+    "file": "src/game/demo-20-floor-content.js",
+    "line": 165
+  },
+  "source_passage": "完整流程的第四格本应是封存原件，却只剩撕裂白痕；有人把归档步骤拆掉，造成执行或删除的假二选一。",
+  "narrative_beat": "揭示无限命令之所以无法正常撤销的第一处结构性缺口。",
+  "point_of_view": "third-person visual-novel camera aligned with protagonist understanding",
+  "cast": [
+    "hero",
+    "final_queen"
+  ],
+  "expressions": {
+    "hero": "quiet resolve",
+    "final_queen": "shaken realization"
+  },
+  "environment_id": "sun-sanctum",
+  "props": [
+    "four-step wall with missing fourth slot",
+    "archival seal fragments",
+    "hero lowered sword"
+  ],
+  "composition": "16:9 三分构图；墙面四格流程只用抽象符号，第四格为空白撕裂痕；女王手悬在空位前，璃在侧后方观察。",
+  "must_show": [
+    "exactly four positions",
+    "fourth is missing",
+    "queen hand stops before gap"
+  ],
+  "must_not_show": [
+    "readable button text",
+    "computer UI",
+    "combat",
+    "extra people"
+  ],
+  "project_inference": null,
+  "character_reference_order": {
+    "hero": [
+      {
+        "role": "canonical_text",
+        "path": "01_canon/characters/hero.md",
+        "sha256": "6eada62d7bfc82c639b25fe2387de9a51f4adc6009b46d55080c26fcd2193d50"
+      },
+      {
+        "role": "accepted_turnaround",
+        "path": "01_canon/turnarounds/CHAR_hero_turnaround_v2.png",
+        "sha256": "d1385fe1798271e05e608204fe6d6cc99daa7961587d2e188cef7e62693cfe1b"
+      },
+      {
+        "role": "accepted_detail_board",
+        "path": "01_canon/details/DETAIL_hero_v2.png",
+        "sha256": "8f42611ee44f012b256262a251c67c5713d4056c8c3af5391e6c6976d337bfa1"
+      },
+      {
+        "role": "accepted_expression_board",
+        "path": "01_canon/expressions/EXPR_hero_v1.png",
+        "sha256": "d1571b7c18c3fbd902109a575619a40b1ecd4d9d84180fe6e9eb585a5eb1f3f8"
+      },
+      {
+        "role": "accepted_transparent_standee",
+        "path": "01_canon/standees/STANDEE_hero_neutral_v1.png",
+        "sha256": "bc7e81506ad41225bfe5ef548889d66e67d4c8db963c64650ebb601737d49b76"
+      }
+    ],
+    "final_queen": [
+      {
+        "role": "canonical_text",
+        "path": "01_canon/characters/final_queen.md",
+        "sha256": "43aeaa019c35531c5cc46f1460cdcac0ba77e6f612f6fdd898419d8e1a676bed"
+      },
+      {
+        "role": "accepted_turnaround",
+        "path": "01_canon/turnarounds/CHAR_final-queen_turnaround_v1.png",
+        "sha256": "9ad06627d33b9188616d9cbc9fa547a762e8933733026c101b33e8f349ef92e8"
+      },
+      {
+        "role": "accepted_detail_board",
+        "path": "01_canon/details/DETAIL_final-queen_v1.png",
+        "sha256": "647725e528e53392fe07ebc32bb4a112b0253d788609b1b7d92fc8e410e1077c"
+      },
+      {
+        "role": "accepted_expression_board",
+        "path": "01_canon/expressions/EXPR_final-queen_v1.png",
+        "sha256": "58c9121b08aadb699e5a47e964c30317326ae227c90ed9d292f67d0f866db2a7"
+      },
+      {
+        "role": "accepted_transparent_standee",
+        "path": "01_canon/standees/STANDEE_final-queen_neutral_v1.png",
+        "sha256": "99dbc41344f553a14356aeef6e7fc71ae4a3e30fba10aca5b86ba5cba47671ef"
+      }
+    ]
+  },
+  "environment_reference": "01_canon/environments/ENV_sun-sanctum_v1.png",
+  "runtime_target": "public/assets/anime/cg/liyue-noctia-missing-fourth-step-cg-audit-v3.webp",
+  "archive_only_aliases": [
+    "public/assets/anime/cg/liyue-noctia-missing-fourth-step-cg.webp"
+  ],
+  "iteration_ladder": [
+    "R0_layout",
+    "R1_identity",
+    "R2_costume",
+    "R3_scene",
+    "R4_final"
+  ],
+  "output_contract": "04_cg/final/CG_009_missing-fourth-step_v1.png",
+  "environment_reference_asset": {
+    "path": "01_canon/environments/ENV_sun-sanctum_v1.png",
+    "sha256": "5f115bd5dffdcb7c6ac9260e55cf6996a0de4cfaee8c1e7f970a418eb4f13675",
+    "width": 1672,
+    "height": 941,
+    "mode": "RGB"
+  }
+}

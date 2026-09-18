@@ -1,0 +1,34 @@
+{
+  "version": "GAL-SIMPLE-1.2",
+  "environment_id": "ember-lighthouse-writein",
+  "title": "余烬灯塔写入口",
+  "usage": "30F、终章室内",
+  "status": "gal-redraw",
+  "source_facts": "灯塔内部写入口、蓝白索引环、光笔座、旧卷只读架与新终卷工作台；原件和新状态并列保存。",
+  "composition_contract": "16:9 empty visual-novel stage; clean standing-figure zones at both sides; bottom 30% low detail",
+  "series_anchors": [
+    "obsidian arch",
+    "small brass registration seal",
+    "blue-white index lamp",
+    "one thin violet seal fissure when applicable"
+  ],
+  "must_not": [
+    "people",
+    "readable text",
+    "UI",
+    "logo",
+    "watermark",
+    "photorealism",
+    "dense micro-texture"
+  ],
+  "target_asset": "01_canon/environments/ENV_ember-lighthouse-writein_v2.png",
+  "asset_status": "accepted",
+  "asset": {
+    "path": "01_canon/environments/ENV_ember-lighthouse-writein_v2.png",
+    "sha256": "7f044bfcfb871198c08f29a86117d1df1a0d3bd487cf10588868c20f59c78ac8",
+    "width": 1672,
+    "height": 941,
+    "mode": "RGB"
+  },
+  "prompt_packet": "03_intermediate/prompt_packets/environments/ember-lighthouse-writein_r2.json"
+}

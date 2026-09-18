@@ -13,7 +13,7 @@ import {
   TRANSITIONS
 } from './registry.js';
 
-const STORAGE_KEY = 'lost-magic-tower:art-audit:reviews:v2';
+const STORAGE_KEY = 'lost-magic-tower:art-audit:reviews:v3';
 const STATUS_LABELS = Object.freeze({ pending: '待审核', pass: '通过', issue: '异常' });
 
 applyDemoTenFloorContent({ enemies: ENEMIES, floors: FLOORS, dialogues: DIALOGUES, gridSize: GRID_SIZE });
@@ -280,10 +280,11 @@ function statusBadge(key) {
 
 function imageFigure({ path, label, className = '', eager = false }) {
   if (!path) return '<div class="asset-missing">没有映射文件</div>';
+  const imageSrc = `${path}${path.includes('?') ? '&' : '?'}v=${encodeURIComponent(AUDIT_VERSION)}`;
   return `
     <figure class="asset-figure ${className}">
-      <button type="button" class="asset-open" data-image-path="${escapeHtml(path)}" data-image-label="${escapeHtml(label)}">
-        <img src="${escapeHtml(path)}" alt="${escapeHtml(label)}" loading="${eager ? 'eager' : 'lazy'}" />
+      <button type="button" class="asset-open" data-image-path="${escapeHtml(imageSrc)}" data-image-label="${escapeHtml(label)}">
+        <img src="${escapeHtml(imageSrc)}" alt="${escapeHtml(label)}" loading="${eager ? 'eager' : 'lazy'}" />
         <span class="image-error" hidden>加载失败</span>
       </button>
       <figcaption><strong>${escapeHtml(label)}</strong><code>${escapeHtml(path)}</code></figcaption>

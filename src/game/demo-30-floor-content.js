@@ -392,7 +392,7 @@ function installDialogues(dialogues) {
     ]),
     floor25: sequence('第二十五阵：缺页庭', [
       turn('旁白', null, '接力导体停止拦截后，一号哨站的回音被收进灯塔索引。可当索引尝试写入“已收到”，登记库立即报错：主卷中找不到允许改写状态的条款。错误指向了上方的缺页庭。', { kind: 'narration' }),
-      turn('旁白', null, '庭院中央的协议缺了最后一页。断口不是刀痕：勘误核心判定“归档”与“持续救援”冲突后，自动把这一页拆出了主卷。', { cg: '/assets/anime/cg/liyue-noctia-missing-page-cg.webp', cgHold: 8, kind: 'narration' }),
+      turn('旁白', null, '庭院中央的协议缺了最后一页。断口不是刀痕：勘误核心判定“归档”与“持续救援”冲突后，自动把这一页拆出了主卷。', { cg: '/assets/anime/cg/liyue-noctia-missing-page-cg-audit-v3.webp', cgHold: 8, kind: 'narration' }),
       turn('旁白', null, '散落的页角上还能辨认出几句话：“警报停止不影响原件保管”“结案后仍可追加新证据”“撤销命令须保留签署人和日期”。正是这些句子，能让“结束执行”与“继续记住”同时成立。', { kind: 'narration' }),
       turn('奥术主权者', 'arcane_sovereign', '是我删掉三日期限，也是我的命令触发了这次拆页。我当时只想多等一条求援，没想到核心会把临时命令当成永远。', { expression: 'regret' }),
       turn('奥术主权者', 'arcane_sovereign', '勘误核心的任务是保证同一卷不能同时命令“永久救援”和“完成归档”。它没有权限否决我的主权命令，就把权限较低的归档页判成异常附件，从主卷里剥了出来。从那一刻起，整套系统只剩下启动，没有安全收尾。', { expression: 'regret' }),
@@ -445,7 +445,7 @@ function installDialogues(dialogues) {
       turn('无声女王·诺克缇娅', 'final_queen', '系统把没有回执的句子一律当成新求援，再拿它们驱动守卫。连一句报平安，也会变成下一次警报。', { expression: 'sorrow' }),
       turn('无声女王·诺克缇娅', 'final_queen', '我在王座上听到这些句子时，以为它们一次次证明灰港还有人。我没有看到空白的投递栏，也不知道同一封信每晚都会被当成新信重播。我把重复当成了人还在等。', { expression: 'sorrow' }),
       turn('旁白', null, '一张写给孩子的短信擦过诺克缇娅肩头。她伸手去接，纸页却再次卷回风里；那动作和三年前守在王座时一模一样。', { kind: 'narration' }),
-      turn('旁白', null, '这一次，诺克缇娅没有追着那张纸走进风里。她解下披风，和璃一起把近处的信挡在墙角，又用封条将它们按原有编号排好。抓住一封信不能让它完成投递，但至少能先防止它又被撕成新的警报。', { cg: '/assets/anime/cg/liyue-noctia-archive-storm-cg.webp', cgHold: 3, kind: 'narration' }),
+      turn('旁白', null, '这一次，诺克缇娅没有追着那张纸走进风里。她解下披风，和璃一起把近处的信挡在墙角，又用封条将它们按原有编号排好。抓住一封信不能让它完成投递，但至少能先防止它又被撕成新的警报。', { cg: '/assets/anime/cg/liyue-noctia-archive-storm-cg-audit-v3.webp', cgHold: 3, kind: 'narration' }),
       turn('残响精灵·纱雾', 'guide', '我们把“写了什么”和“送到哪里”分开保存：原文不改，另标已收到、待重送或收件人不明，并给每次重送留下记录。', { expression: 'focus' }),
       turn('残响精灵·纱雾', 'guide', '例如这封写给孩子的信：原文永久保留；收件地先记为灰港旧址；因旧址已经迁移，状态改为“收件人不明”；接着由新码头查询家属去向，每次查询都留日期和经手人。找不到的时候，它是一封尚未送达的信，不是一条新求援。', { expression: 'focus' }),
       turn('绫星·璃', 'hero', '这样没人替写信的人改口，也不会让一句旧话永远拉响警钟。无法送达可以诚实写明，不能假装它从未存在。', { expression: 'resolve' }),
@@ -468,7 +468,7 @@ function installDialogues(dialogues) {
       turn('旁白', null, '左侧索引守卫驱使重影书页连续夹击，右侧最后保管人则以先制封印护住钥匙。两道阻拦都是灯塔前的必经校验：前者检验新索引能否承受重复记录，后者确认开启者真的知道钥匙会释放什么。', { kind: 'narration' })
     ]),
     floor30: sequence('第三十阵：余烬灯塔', [
-      turn('旁白', null, '最后保管人的封底钥匙转动时，整座索引室向两侧打开。新索引、缺失的归档页、离港回执和死亡名簿被同一道升降轨送向灯塔。璃走在最前，奥术主权者与诺克缇娅亲自抬着最重的原卷。', { cg: '/assets/anime/cg/liyue-archive-warden-entry-cg.webp', cgHold: 5, kind: 'narration' }),
+      turn('旁白', null, '最后保管人的封底钥匙转动时，整座索引室向两侧打开。新索引、缺失的归档页、离港回执和死亡名簿被同一道升降轨送向灯塔。璃走在最前，奥术主权者与诺克缇娅亲自抬着最重的原卷。', { cg: '/assets/anime/cg/liyue-archive-warden-entry-cg-audit-v3.webp', cgHold: 5, kind: 'narration' }),
       turn('旁白', null, '灯塔镜面朝向灰港，镜中仍是三年前的暴风夜。旧协议只给矛盾记录三步：冻结、清零、重建；每次重建都会再次发出求援。', { kind: 'narration' }),
       turn('旁白', null, '镜面下方有两具守卫机构。档案守望者站在外环，确保任何人不能在战斗中偷换原件；勘误核心藏在内环，一旦守望者停机，它就会立即开始清理所有与“无限救援”冲突的状态。两者是连续的两道程序，中间不会留出休整时间。', { kind: 'narration' }),
       turn('档案守望者', 'act3_archive_warden', '我按旧协议保护原件。只要仍有一项矛盾，勘误核心就会清零重算；若整塔断电，它会在复电时从命令副本恢复“持续救援”。', { expression: 'duty' }),
@@ -494,7 +494,7 @@ function installDialogues(dialogues) {
       turn('旁白', null, '璃单膝撑在写入口前，先摸到胸前硬皮夹里的回执，再解开背后两条封带。死亡名簿的页码连续，缺失的归档页也仍在透明封袋中。守望者的检验已经结束，她没有丢掉任何一份原件。', { kind: 'narration' }),
       turn('档案守望者', 'act3_archive_warden', '原件验证通过，守望协议结束。勘误核心已接管；倒计时结束时，它仍会清空冲突状态并从旧副本重建。', { expression: 'duty' }),
       turn('档案守望者', 'act3_archive_warden', '我的长枪不会再指向你们。但我也无法代替你们写入新状态：我只能证明进入写入口的东西与你们开战前带来的原件一致。接下来的每一个字，都必须由真正承担它的人填写。', { expression: 'duty' }),
-      turn('旁白', null, '纱雾把光笔插进写入口：记录编号、来源、当前状态、经手人、修改时间、修改理由。旧版本全部转为只读，不再覆盖。', { cg: '/assets/anime/cg/liyue-traceable-revocation-cg.webp', cgHold: 9, kind: 'narration' }),
+      turn('旁白', null, '纱雾把光笔插进写入口：记录编号、来源、当前状态、经手人、修改时间、修改理由。旧版本全部转为只读，不再覆盖。', { cg: '/assets/anime/cg/liyue-traceable-revocation-cg-audit-v3.webp', cgHold: 9, kind: 'narration' }),
       turn('旁白', null, '蓝白色的索引线从光笔下展开。“灰港-终卷”作为新编号建立，离港回执标为船长原件，死亡名簿标为回响王庭原件，三段校验时序与澜音的水镜证言分别挂在来源栏下。原卷中的每一行仍保持原样。', { kind: 'narration' }),
       turn('残响精灵·纱雾', 'guide', '状态栏开始逐名分流：有离港与到岸双重记录的，标为“已离港”；死亡名簿中已确认身份的，标为“已罹难”；两份名单仍有冲突的，标为“待核实，七日后复查”；家书则按收件地进入“待投递”。', { expression: 'focus' }),
       turn('奥术主权者', 'arcane_sovereign', '我用原签名撤销无限延长，只撤强制命令，不撤档案。今后的新求援另编新号，不能再冒充灰港旧案。', { expression: 'acceptance' }),

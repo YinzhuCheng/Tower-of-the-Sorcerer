@@ -1,0 +1,20 @@
+{
+  "version": "GAL-SIMPLE-1.1",
+  "cg_id": "fill-me",
+  "required_reference_order": [
+    "character_1 canonical text",
+    "character_1 accepted turnaround",
+    "character_1 accepted detail board",
+    "character_1 accepted expression board",
+    "character_1 accepted transparent standee",
+    "repeat the same five entries for each additional character",
+    "scene-specific accepted prop board",
+    "up to two accepted new CG identity/style anchors",
+    "accepted environment design"
+  ],
+  "input_files_with_sha256": [],
+  "prompt_path": "",
+  "output_sha256": "",
+  "qa_result": "pending",
+  "missing_reference_policy": "stop_generation_and_complete_missing_canon_asset"
+}

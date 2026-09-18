@@ -1,0 +1,32 @@
+{
+  "version": "GAL-SIMPLE-1.1",
+  "character_id": "merchant",
+  "series_style_lock": "GAL-SIMPLE clean cel transparent standee",
+  "identity_lock": [
+    "前辫2条",
+    "蓝头巾",
+    "方背包1",
+    "顶部卷毯1",
+    "灯为方形琥珀",
+    "钱袋右腰"
+  ],
+  "prop_lock": "One small square brass hand lantern with amber glass, one palm-size brown sales ledger with ONE leather strap, one round brown coin purse tied at RIGHT waist. Backpack has TWO leather vertical straps and one large plain flap.",
+  "pose": "Friendly neutral stance wearing the one square backpack with one rolled blanket. LEFT hand carries one square amber lantern low; RIGHT hand relaxed beside the one coin purse at RIGHT waist.",
+  "negative_constraints": [
+    "background pixels",
+    "ground shadow",
+    "extra accessory",
+    "duplicate prop",
+    "wrong side",
+    "wrong count",
+    "watermark",
+    "cropped feet or prop"
+  ],
+  "prompt": "Use case: background-extraction. Asset type: canonical full-body transparent visual-novel standing figure. Create ONE isolated full-body character cutout in polished Japanese 2D visual-novel cel style matching GAL-SIMPLE: fine clean dark outlines, large solid local colors, one hard-edged shadow per material, restrained highlights, adult proportions. Image 1 is the accepted turnaround and has highest visual authority for identity, anatomy, silhouette and costume. Image 2 is the accepted detail board and controls exact accessory, clothing and prop counts and side placement. Image 3 is the accepted expression sheet and controls only the face; use its first neutral expression. Portrait 2:3 composition, centered, entire hair, all props and both feet inside canvas with 8 percent transparent padding. Natural relaxed three-quarter pose facing camera, anatomically plausible hands, readable silhouette. ACTUAL TRANSPARENT RGBA BACKGROUND: no white or checkerboard background, no scenery, floor, cast shadow, glow, aura, particles, frame, text, logo, watermark or signature. Only the character and explicitly required carried items may have visible pixels. Do not redesign, beautify with extra jewelry, duplicate props, change sides, change counts, or merge objects into hands. CANON IDENTITY: Adult traveling merchant woman, 162 cm, warm brown hair in exactly TWO front braids, warm brown eyes, plain blue headscarf. Blue knee-length travel coat, cream blouse, mustard waist sash, dark brown trousers and practical brown boots. ONE rectangular wood-frame canvas backpack with ONE rolled blanket strapped horizontally on top. Friendly shrewd expression. No jewelry, feather, dangling bottle collection, stars or extra bags. CANON PROP: One small square brass hand lantern with amber glass, one palm-size brown sales ledger with ONE leather strap, one round brown coin purse tied at RIGHT waist. Backpack has TWO leather vertical straps and one large plain flap. HARD LOCKS: 前辫2条, 蓝头巾, 方背包1, 顶部卷毯1, 灯为方形琥珀, 钱袋右腰. POSE AND OWNERSHIP: Friendly neutral stance wearing the one square backpack with one rolled blanket. LEFT hand carries one square amber lantern low; RIGHT hand relaxed beside the one coin purse at RIGHT waist.",
+  "referenced_image_paths": [
+    "/workspace/scratch/0645849eb5a5/gal-design-v1/01_canon/turnarounds/CHAR_merchant_turnaround_v1.png",
+    "/workspace/scratch/0645849eb5a5/gal-design-v1/01_canon/details/DETAIL_merchant_v1.png",
+    "/workspace/scratch/0645849eb5a5/gal-design-v1/01_canon/expressions/EXPR_merchant_v1.png"
+  ],
+  "output_contract": "01_canon/standees/STANDEE_merchant_neutral_v1.png"
+}

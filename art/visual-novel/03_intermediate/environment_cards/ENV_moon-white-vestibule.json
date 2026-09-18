@@ -1,0 +1,34 @@
+{
+  "version": "GAL-SIMPLE-1.2",
+  "environment_id": "moon-white-vestibule",
+  "title": "月白门廊",
+  "usage": "米露战前／战后",
+  "status": "gal-redraw",
+  "source_facts": "白灰月石门廊、低矮守卫台、单一月牙徽记与通往上层的楼梯；清爽、适合对话站位。",
+  "composition_contract": "16:9 empty visual-novel stage; clean standing-figure zones at both sides; bottom 30% low detail",
+  "series_anchors": [
+    "obsidian arch",
+    "small brass registration seal",
+    "blue-white index lamp",
+    "one thin violet seal fissure when applicable"
+  ],
+  "must_not": [
+    "people",
+    "readable text",
+    "UI",
+    "logo",
+    "watermark",
+    "photorealism",
+    "dense micro-texture"
+  ],
+  "target_asset": "01_canon/environments/ENV_moon-white-vestibule_v1.png",
+  "asset_status": "accepted",
+  "asset": {
+    "path": "01_canon/environments/ENV_moon-white-vestibule_v1.png",
+    "sha256": "889460b313c9478071a7d6215cb673d824767835dff3c4eaede455661e9afb98",
+    "width": 1672,
+    "height": 941,
+    "mode": "RGB"
+  },
+  "prompt_packet": "03_intermediate/prompt_packets/environments/moon-white-vestibule.json"
+}

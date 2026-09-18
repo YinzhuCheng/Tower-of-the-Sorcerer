@@ -1,0 +1,12 @@
+{
+  "path": "00_source/technical-tests/transparent-interface-test.png",
+  "sha256": "67f82d58c7119b9dcbc19d765ba606e5882df7a86081ef3674b05a066ebea946",
+  "width": 1254,
+  "height": 1254,
+  "mode": "RGBA",
+  "alpha_min": 0,
+  "alpha_max": 255,
+  "pixels_with_alpha_below_255": 1571816,
+  "transparent_pixel_ratio": 0.999555,
+  "result": "PASS: image-generation interface produced real RGBA transparency"
+}

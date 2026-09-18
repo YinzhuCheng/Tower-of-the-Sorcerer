@@ -52,7 +52,7 @@ test('new CG beats, locations and identity routes are wired without checkerboard
     'seven-cantos-severed', 'yayu-seven-core-network', 'noctia-missing-fourth-step',
     'yayu-intercepted-receipt', 'noctia-missing-page', 'noctia-archive-storm',
     'archive-warden-entry', 'traceable-revocation'
-  ]) assert.match(source, new RegExp(`liyue-${stem}-cg\\.webp`));
+  ]) assert.match(source, new RegExp(`liyue-${stem}-cg-audit-v3\\.webp`));
 
   for (const backdrop of [
     'theme-moon-white-vestibule.webp', 'theme-twin-score-greenhouse.webp',
@@ -61,7 +61,7 @@ test('new CG beats, locations and identity routes are wired without checkerboard
   ]) assert.match(main, new RegExp(backdrop.replace('.', '\\.')));
 
   assert.match(main, /function galCgFor\(turns, index\)/);
-  assert.match(main, /GAL_ART_VERSION = '20260904-native-alpha-standees-v2'/);
+  assert.match(main, /GAL_ART_VERSION = '20260904-art-audit-repair-v3'/);
   assert.match(actOne, /静默执剑官·维拉', 'palace_warden_v2'/);
   assert.match(actOne, /黯印观测官·塞芙', 'black_seal_keeper_v2'/);
   assert.match(actThree, /最后保管人', 'act3_last_custodian'/);

@@ -1,0 +1,232 @@
+{
+  "version": "GAL-SIMPLE-1.2",
+  "rule": "All listed character canon references and the exact environment master must be accepted and hash-locked before layout generation.",
+  "ready": 19,
+  "total": 19,
+  "r0_layout_accepted": 3,
+  "r0_layout_remaining": 16,
+  "scenes": [
+    {
+      "cg_id": "CG_001_critical",
+      "card": "03_intermediate/scene_cards/CG_001_critical.json",
+      "environment_id": null,
+      "environment_asset": null,
+      "layout_status": "accepted-r0-layout",
+      "layout_asset": {"path": "04_cg/working/CG_001_critical_R0_layout_v1.png", "sha256": "1dd44397a0a8f8d2601769841f741d8ef5ed4180e065997f25de124783bb7a40", "width": 1672, "height": 941, "mode": "RGB"}
+    },
+    {
+      "cg_id": "CG_002_defeat",
+      "card": "03_intermediate/scene_cards/CG_002_defeat.json",
+      "environment_id": null,
+      "environment_asset": null,
+      "layout_status": "accepted-r0-layout",
+      "layout_asset": {"path": "04_cg/working/CG_002_defeat_R0_layout_v1.png", "sha256": "4e54df8f39b9d8b055fb781ac2e489315b3326c17dbbe7489adcd15766c8cd12", "width": 1672, "height": 941, "mode": "RGB"}
+    },
+    {
+      "cg_id": "CG_003_prologue-tower",
+      "card": "03_intermediate/scene_cards/CG_003_prologue-tower.json",
+      "environment_id": "night-tower",
+      "environment_asset": {
+        "path": "01_canon/environments/ENV_night-tower_v1.png",
+        "sha256": "b2bf4f703f327dfcc09a8ae0f35b8705884d9e6ccde45ade0c93c82d66db3b8d",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
+      },
+      "layout_status": "accepted-r0-with-carry",
+      "layout_asset": {"path": "04_cg/working/CG_003_prologue-tower_R0_layout_v2.png", "sha256": "c4761fef9dba03a44b53dbe6f01185bbf1f3356aaa057158154a75baf189431d", "width": 1672, "height": 941, "mode": "RGB"}
+    },
+    {
+      "cg_id": "CG_004_seven-cantos-severed",
+      "card": "03_intermediate/scene_cards/CG_004_seven-cantos-severed.json",
+      "environment_id": "night-tower",
+      "environment_asset": {
+        "path": "01_canon/environments/ENV_night-tower_v1.png",
+        "sha256": "b2bf4f703f327dfcc09a8ae0f35b8705884d9e6ccde45ade0c93c82d66db3b8d",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
+      }
+    },
+    {
+      "cg_id": "CG_005_northstar-arrival",
+      "card": "03_intermediate/scene_cards/CG_005_northstar-arrival.json",
+      "environment_id": "ocean-archive",
+      "environment_asset": {
+        "path": "01_canon/environments/ENV_ocean-archive_v1.png",
+        "sha256": "c28f63ca054607c74afa896f3c857c1f5f121d6722e3f710626d85a9cd863a33",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
+      }
+    },
+    {
+      "cg_id": "CG_006_seven-core-network",
+      "card": "03_intermediate/scene_cards/CG_006_seven-core-network.json",
+      "environment_id": "star-mirror",
+      "environment_asset": {
+        "path": "01_canon/environments/ENV_star-mirror_v1.png",
+        "sha256": "c883140e892bf68cddc090c5a6fc66ba99f961c78ee0d953dabbabbd4fc032a5",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
+      }
+    },
+    {
+      "cg_id": "CG_007_noctia-truth",
+      "card": "03_intermediate/scene_cards/CG_007_noctia-truth.json",
+      "environment_id": "night-tower",
+      "environment_asset": {
+        "path": "01_canon/environments/ENV_night-tower_v1.png",
+        "sha256": "b2bf4f703f327dfcc09a8ae0f35b8705884d9e6ccde45ade0c93c82d66db3b8d",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
+      }
+    },
+    {
+      "cg_id": "CG_008_noctia-seal",
+      "card": "03_intermediate/scene_cards/CG_008_noctia-seal.json",
+      "environment_id": "night-tower",
+      "environment_asset": {
+        "path": "01_canon/environments/ENV_night-tower_v1.png",
+        "sha256": "b2bf4f703f327dfcc09a8ae0f35b8705884d9e6ccde45ade0c93c82d66db3b8d",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
+      }
+    },
+    {
+      "cg_id": "CG_009_missing-fourth-step",
+      "card": "03_intermediate/scene_cards/CG_009_missing-fourth-step.json",
+      "environment_id": "sun-sanctum",
+      "environment_asset": {
+        "path": "01_canon/environments/ENV_sun-sanctum_v1.png",
+        "sha256": "5f115bd5dffdcb7c6ac9260e55cf6996a0de4cfaee8c1e7f970a418eb4f13675",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
+      }
+    },
+    {
+      "cg_id": "CG_010_seventeen-minute-splice",
+      "card": "03_intermediate/scene_cards/CG_010_seventeen-minute-splice.json",
+      "environment_id": "sun-sanctum",
+      "environment_asset": {
+        "path": "01_canon/environments/ENV_sun-sanctum_v1.png",
+        "sha256": "5f115bd5dffdcb7c6ac9260e55cf6996a0de4cfaee8c1e7f970a418eb4f13675",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
+      }
+    },
+    {
+      "cg_id": "CG_011_intercepted-receipt",
+      "card": "03_intermediate/scene_cards/CG_011_intercepted-receipt.json",
+      "environment_id": "ocean-archive",
+      "environment_asset": {
+        "path": "01_canon/environments/ENV_ocean-archive_v1.png",
+        "sha256": "c28f63ca054607c74afa896f3c857c1f5f121d6722e3f710626d85a9cd863a33",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
+      }
+    },
+    {
+      "cg_id": "CG_012_echo-ledger",
+      "card": "03_intermediate/scene_cards/CG_012_echo-ledger.json",
+      "environment_id": "echo-court",
+      "environment_asset": {
+        "path": "01_canon/environments/ENV_echo-court_v1.png",
+        "sha256": "beabf39cbfef14d6eec1b5e0b9b74874d1c74376e0288ebf5e0a2b86d3130ef5",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
+      }
+    },
+    {
+      "cg_id": "CG_013_noctia-sovereign",
+      "card": "03_intermediate/scene_cards/CG_013_noctia-sovereign.json",
+      "environment_id": "origin-core",
+      "environment_asset": {
+        "path": "01_canon/environments/ENV_origin-core_v1.png",
+        "sha256": "e84683fdb87978a3bf91bd51f68ca44063d7f37f868f04a5f8f9b4dcc7ff1da6",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
+      }
+    },
+    {
+      "cg_id": "CG_014_missing-page-restored",
+      "card": "03_intermediate/scene_cards/CG_014_missing-page-restored.json",
+      "environment_id": "triage-index",
+      "environment_asset": {
+        "path": "01_canon/environments/ENV_triage-index_v1.png",
+        "sha256": "2395828352d4d31412fb2ecf9c42c129ff6ee0784db6001164a7a6babd1a7bfc",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
+      }
+    },
+    {
+      "cg_id": "CG_015_letters-held-in-storm",
+      "card": "03_intermediate/scene_cards/CG_015_letters-held-in-storm.json",
+      "environment_id": "archive-storm",
+      "environment_asset": {
+        "path": "01_canon/environments/ENV_archive-storm_v1.png",
+        "sha256": "8dfdc13aec2ae78f6533e5322f5134fcfe9421989b5a95ed254232c2c0ecb561",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
+      }
+    },
+    {
+      "cg_id": "CG_016_originals-enter-lighthouse",
+      "card": "03_intermediate/scene_cards/CG_016_originals-enter-lighthouse.json",
+      "environment_id": "final-index-room",
+      "environment_asset": {
+        "path": "01_canon/environments/ENV_final-index-room_v1.png",
+        "sha256": "7629653ba1666c296167df6712574f1aea5d1d220ac5de4bd6bf6fba205b82dc",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
+      }
+    },
+    {
+      "cg_id": "CG_017_traceable-revocation",
+      "card": "03_intermediate/scene_cards/CG_017_traceable-revocation.json",
+      "environment_id": "ember-lighthouse-writein",
+      "environment_asset": {
+        "path": "01_canon/environments/ENV_ember-lighthouse-writein_v2.png",
+        "sha256": "7f044bfcfb871198c08f29a86117d1df1a0d3bd487cf10588868c20f59c78ac8",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
+      }
+    },
+    {
+      "cg_id": "CG_018_noctia-afterlight",
+      "card": "03_intermediate/scene_cards/CG_018_noctia-afterlight.json",
+      "environment_id": "ember-lighthouse-writein",
+      "environment_asset": {
+        "path": "01_canon/environments/ENV_ember-lighthouse-writein_v2.png",
+        "sha256": "7f044bfcfb871198c08f29a86117d1df1a0d3bd487cf10588868c20f59c78ac8",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
+      }
+    },
+    {
+      "cg_id": "CG_019_lighthouse-archive",
+      "card": "03_intermediate/scene_cards/CG_019_lighthouse-archive.json",
+      "environment_id": "ember-lighthouse",
+      "environment_asset": {
+        "path": "01_canon/environments/ENV_ember-lighthouse_v1.png",
+        "sha256": "e856ff4d6b4264599e030c472f9c4883643b9ee4f8f64fd3861c1ae6f90528bb",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
+      }
+    }
+  ]
+}

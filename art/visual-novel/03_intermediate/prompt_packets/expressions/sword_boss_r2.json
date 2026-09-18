@@ -1,0 +1,36 @@
+{
+  "version": "GAL-SIMPLE-1.1",
+  "character_id": "sword_boss",
+  "series_style_lock": "GAL-SIMPLE clean cel reference art",
+  "identity_lock": [
+    "银白低马尾",
+    "灰紫眼",
+    "白外套蓝长裤",
+    "银菱胸徽1枚",
+    "右手直剑左腰鞘",
+    "无冠"
+  ],
+  "expression_order": [
+    "stern composure",
+    "challenging confidence",
+    "anger",
+    "caught off guard",
+    "restrained regret",
+    "earned respect"
+  ],
+  "negative_constraints": [
+    "identity drift",
+    "hair or accessory count drift",
+    "costume redesign",
+    "text",
+    "hands or props",
+    "watermark"
+  ],
+  "prompt": "Use case: precise-object-edit. Asset type: canonical visual-novel expression reference sheet. Correct the supplied six-panel Serena expression sheet while preserving the SAME face, silver-white low ponytail, blue eyes, navy ribbon, six expressions, panel layout, white coat and rendering. Image 1 is the rejected sheet to correct. Image 2 is the accepted turnaround and Image 3 is the accepted detail board. REMOVE the small diamond at the throat/collar. Keep EXACTLY ONE silver diamond badge total, centered on the upper chest. Do not add any other necklace, clasp, gem, badge or ornament. Keep a landscape 3-by-2 grid, one same character in all six panels, warm pale-grey opaque background, no text, labels, hands, props, watermark or signature.",
+  "referenced_image_paths": [
+    "/workspace/scratch/0645849eb5a5/gal-design-v1/04_cg/rejected/EXPR_sword-boss_v1_extra-collar-diamond.png",
+    "/workspace/scratch/0645849eb5a5/gal-design-v1/01_canon/turnarounds/CHAR_sword-boss_turnaround_v2.png",
+    "/workspace/scratch/0645849eb5a5/gal-design-v1/01_canon/details/DETAIL_sword-boss_v1.png"
+  ],
+  "output_contract": "01_canon/expressions/EXPR_sword-boss_v2.png"
+}

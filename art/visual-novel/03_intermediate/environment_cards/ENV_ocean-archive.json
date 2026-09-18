@@ -1,0 +1,34 @@
+{
+  "version": "GAL-SIMPLE-1.2",
+  "environment_id": "ocean-archive",
+  "title": "潮汐档案",
+  "usage": "3F、16F、18F、澜音场景",
+  "status": "gal-redraw",
+  "source_facts": "浅水档案厅、空白档案牌、远处撤离信标与上行阶梯；蓝绿水光清楚映出登记设施。",
+  "composition_contract": "16:9 empty visual-novel stage; clean standing-figure zones at both sides; bottom 30% low detail",
+  "series_anchors": [
+    "obsidian arch",
+    "small brass registration seal",
+    "blue-white index lamp",
+    "one thin violet seal fissure when applicable"
+  ],
+  "must_not": [
+    "people",
+    "readable text",
+    "UI",
+    "logo",
+    "watermark",
+    "photorealism",
+    "dense micro-texture"
+  ],
+  "target_asset": "01_canon/environments/ENV_ocean-archive_v1.png",
+  "asset_status": "accepted",
+  "asset": {
+    "path": "01_canon/environments/ENV_ocean-archive_v1.png",
+    "sha256": "c28f63ca054607c74afa896f3c857c1f5f121d6722e3f710626d85a9cd863a33",
+    "width": 1672,
+    "height": 941,
+    "mode": "RGB"
+  },
+  "prompt_packet": "03_intermediate/prompt_packets/environments/ocean-archive.json"
+}

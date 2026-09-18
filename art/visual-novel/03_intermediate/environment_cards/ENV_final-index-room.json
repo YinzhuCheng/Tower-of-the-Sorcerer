@@ -1,0 +1,34 @@
+{
+  "version": "GAL-SIMPLE-1.2",
+  "environment_id": "final-index-room",
+  "title": "最后索引室",
+  "usage": "29F",
+  "status": "gal-redraw",
+  "source_facts": "高索引柜向两侧展开，中央封底钥匙座和通往灯塔的升降轨；冷蓝灯与少量琥珀灯分层。",
+  "composition_contract": "16:9 empty visual-novel stage; clean standing-figure zones at both sides; bottom 30% low detail",
+  "series_anchors": [
+    "obsidian arch",
+    "small brass registration seal",
+    "blue-white index lamp",
+    "one thin violet seal fissure when applicable"
+  ],
+  "must_not": [
+    "people",
+    "readable text",
+    "UI",
+    "logo",
+    "watermark",
+    "photorealism",
+    "dense micro-texture"
+  ],
+  "target_asset": "01_canon/environments/ENV_final-index-room_v1.png",
+  "asset_status": "accepted",
+  "asset": {
+    "path": "01_canon/environments/ENV_final-index-room_v1.png",
+    "sha256": "7629653ba1666c296167df6712574f1aea5d1d220ac5de4bd6bf6fba205b82dc",
+    "width": 1672,
+    "height": 941,
+    "mode": "RGB"
+  },
+  "prompt_packet": "03_intermediate/prompt_packets/environments/final-index-room.json"
+}

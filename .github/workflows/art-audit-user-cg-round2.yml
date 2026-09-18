@@ -1,0 +1,106 @@
+name: Import user CG round2
+
+on:
+  push:
+    branches:
+      - codex/alpha-standees-20260904
+    paths:
+      - '.art-upload/round2/source-url.txt'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: user-cg-round2-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  import:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out target branch
+        uses: actions/checkout@v4
+        with:
+          ref: codex/alpha-standees-20260904
+          fetch-depth: 0
+
+      - name: Download reviewed art archive
+        shell: bash
+        run: |
+          set -euo pipefail
+          SOURCE_URL="$(tr -d '\r\n' < .art-upload/round2/source-url.txt)"
+          test -n "$SOURCE_URL"
+          curl --fail --location --retry 3 --retry-delay 2 "$SOURCE_URL" -o /tmp/tower-round2.zip
+          rm -rf /tmp/tower-round2
+          mkdir -p /tmp/tower-round2
+          unzip -q /tmp/tower-round2.zip -d /tmp/tower-round2
+          test -f /tmp/tower-round2/manifest.json
+
+      - name: Install reviewed CGs and standees
+        shell: bash
+        run: |
+          python - <<'PY'
+          import hashlib
+          import json
+          import shutil
+          from pathlib import Path
+
+          root = Path('.')
+          source = Path('/tmp/tower-round2')
+          payload = json.loads((source / 'manifest.json').read_text(encoding='utf-8'))
+
+          for item in payload['files']:
+              src = source / item['archive']
+              if not src.is_file():
+                  raise RuntimeError(f"missing archive member for {item['id']}: {src.name}")
+              data = src.read_bytes()
+              digest = hashlib.sha256(data).hexdigest()
+              if digest != item['sha256']:
+                  raise RuntimeError(f"sha256 mismatch for {item['id']}: {digest} != {item['sha256']}")
+              target = root / item['target']
+              target.parent.mkdir(parents=True, exist_ok=True)
+              target.write_bytes(data)
+              print(f"installed {item['id']} -> {target} ({len(data)} bytes)")
+
+          audit_manifest_path = root / 'art/visual-novel/05_manifests/art-audit-repair-v3-manifest.json'
+          audit_manifest = json.loads(audit_manifest_path.read_text(encoding='utf-8'))
+          indexed = {}
+          for section in ('cgs', 'standees'):
+              for record in audit_manifest.get(section, []):
+                  indexed[record['id']] = record
+
+          for item in payload['files']:
+              if item.get('sourceMaster'):
+                  continue
+              record = indexed.get(item['id'])
+              if not record:
+                  continue
+              if record.get('runtime') != item['target']:
+                  raise RuntimeError(f"runtime target mismatch for {item['id']}: {record.get('runtime')} != {item['target']}")
+              record['sha256'] = item['sha256']
+              record['profile'] = 'user-selected-round2-final'
+
+          audit_manifest['round2Import'] = {
+              'date': '2026-09-11',
+              'count': len(payload['files']),
+              'runtimeCount': len([item for item in payload['files'] if not item.get('sourceMaster')]),
+              'policy': 'Eight user-selected CG replacements plus three round-two transparent standees; transparent PNG masters retained under art/visual-novel.'
+          }
+          audit_manifest_path.write_text(json.dumps(audit_manifest, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+          PY
+
+      - name: Validate repository tests
+        run: npm test
+
+      - name: Commit reviewed art replacements
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/assets/anime/cg public/assets/anime/characters art/visual-novel/04_cg/final/2026-09-11-user-round2 art/visual-novel/05_manifests/art-audit-repair-v3-manifest.json
+          git rm -r .art-upload/round2
+          git commit -m "art: replace 8 reviewed CGs and 3 round2 standees"
+          git push origin HEAD:codex/alpha-standees-20260904

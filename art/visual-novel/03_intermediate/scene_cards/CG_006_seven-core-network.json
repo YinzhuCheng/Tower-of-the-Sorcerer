@@ -1,0 +1,118 @@
+{
+  "version": "GAL-SIMPLE-1.2",
+  "cg_id": "CG_006_seven-core-network",
+  "semantic_id": "seven-core-network",
+  "title": "七阵：七核契约网络",
+  "status": "ready-for-layout",
+  "source_locator": {
+    "repository_commit": "b05bc623b7c1ef8b93cfa1fca253ad2119a52f68",
+    "file": "src/game/demo-10-floor-content.js",
+    "line": 139
+  },
+  "source_passage": "七束不同颜色的光从璃胸前分向各层，显示七名守护者的契约都系在同一个结案锁上。",
+  "narrative_beat": "把七层看似独立的战斗合并为同一个制度性锁链。",
+  "point_of_view": "third-person visual-novel camera aligned with protagonist understanding",
+  "cast": [
+    "hero",
+    "shadow_boss"
+  ],
+  "expressions": {
+    "hero": "startled realization",
+    "shadow_boss": "wary attention"
+  },
+  "environment_id": "star-mirror",
+  "props": [
+    "exactly seven colored light paths",
+    "single closure lock",
+    "shadow needle and spool"
+  ],
+  "composition": "16:9 高位中广角；璃居中，七束光清楚分向七个层级节点；鸦羽在侧方以针线追踪其中一束。",
+  "must_show": [
+    "exactly seven paths",
+    "one shared lock",
+    "shadow_boss owns needle/spool"
+  ],
+  "must_not_show": [
+    "seven duplicate characters",
+    "extra jewelry",
+    "readable UI",
+    "random constellation"
+  ],
+  "project_inference": null,
+  "character_reference_order": {
+    "hero": [
+      {
+        "role": "canonical_text",
+        "path": "01_canon/characters/hero.md",
+        "sha256": "6eada62d7bfc82c639b25fe2387de9a51f4adc6009b46d55080c26fcd2193d50"
+      },
+      {
+        "role": "accepted_turnaround",
+        "path": "01_canon/turnarounds/CHAR_hero_turnaround_v2.png",
+        "sha256": "d1385fe1798271e05e608204fe6d6cc99daa7961587d2e188cef7e62693cfe1b"
+      },
+      {
+        "role": "accepted_detail_board",
+        "path": "01_canon/details/DETAIL_hero_v2.png",
+        "sha256": "8f42611ee44f012b256262a251c67c5713d4056c8c3af5391e6c6976d337bfa1"
+      },
+      {
+        "role": "accepted_expression_board",
+        "path": "01_canon/expressions/EXPR_hero_v1.png",
+        "sha256": "d1571b7c18c3fbd902109a575619a40b1ecd4d9d84180fe6e9eb585a5eb1f3f8"
+      },
+      {
+        "role": "accepted_transparent_standee",
+        "path": "01_canon/standees/STANDEE_hero_neutral_v1.png",
+        "sha256": "bc7e81506ad41225bfe5ef548889d66e67d4c8db963c64650ebb601737d49b76"
+      }
+    ],
+    "shadow_boss": [
+      {
+        "role": "canonical_text",
+        "path": "01_canon/characters/shadow_boss.md",
+        "sha256": "26b7ad6e0a3139fbc9cc7ae6ff41e1ae1142474857ae75d8cd0187b1e885bbdf"
+      },
+      {
+        "role": "accepted_turnaround",
+        "path": "01_canon/turnarounds/CHAR_shadow-boss_turnaround_v2.png",
+        "sha256": "131fc0f668cc5493e9fbd6f277ae42753ba2c17e58178ab91768bf6221e2eebf"
+      },
+      {
+        "role": "accepted_detail_board",
+        "path": "01_canon/details/DETAIL_shadow-boss_v1.png",
+        "sha256": "016452ddc9ab04e521dc186a85371ccd0c8705c88c7a5fef495b9085f4a91203"
+      },
+      {
+        "role": "accepted_expression_board",
+        "path": "01_canon/expressions/EXPR_shadow-boss_v1.png",
+        "sha256": "bd80e789b1a2e6fa748dde895e170fb220081803fe78e1ef63f24d0fc4e776a5"
+      },
+      {
+        "role": "accepted_transparent_standee",
+        "path": "01_canon/standees/STANDEE_shadow-boss_neutral_v1.png",
+        "sha256": "86a51f5b9ff6ea9982b809329da5bd34f663d09d5f3bc343736ec905beaa5f03"
+      }
+    ]
+  },
+  "environment_reference": "01_canon/environments/ENV_star-mirror_v1.png",
+  "runtime_target": "public/assets/anime/cg/liyue-yayu-seven-core-network-cg-audit-v3.webp",
+  "archive_only_aliases": [
+    "public/assets/anime/cg/liyue-yayu-seven-core-network-cg.webp"
+  ],
+  "iteration_ladder": [
+    "R0_layout",
+    "R1_identity",
+    "R2_costume",
+    "R3_scene",
+    "R4_final"
+  ],
+  "output_contract": "04_cg/final/CG_006_seven-core-network_v1.png",
+  "environment_reference_asset": {
+    "path": "01_canon/environments/ENV_star-mirror_v1.png",
+    "sha256": "c883140e892bf68cddc090c5a6fc66ba99f961c78ee0d953dabbabbd4fc032a5",
+    "width": 1672,
+    "height": 941,
+    "mode": "RGB"
+  }
+}

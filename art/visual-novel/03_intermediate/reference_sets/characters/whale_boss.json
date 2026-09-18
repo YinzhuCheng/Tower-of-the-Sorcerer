@@ -1,0 +1,39 @@
+{
+  "version": "GAL-SIMPLE-1.1",
+  "character_id": "whale_boss",
+  "reference_order": [
+    {
+      "role": "canonical_text",
+      "path": "01_canon/characters/whale_boss.md",
+      "sha256": "c000cafbc30c8671ec28e0fe6a50aefe9e7c024856de4f7a90723491349331fc"
+    },
+    {
+      "role": "accepted_turnaround",
+      "path": "01_canon/turnarounds/CHAR_whale-boss_turnaround_v1.png",
+      "sha256": "bc155fcc809ae9b5f27fea5872105a2791267ebf521969f46e2a277812775812"
+    },
+    {
+      "role": "accepted_detail_board",
+      "path": "01_canon/details/DETAIL_whale-boss_v1.png",
+      "sha256": "f32d409424a5627098d6b060c232b9a33f703905f47f473962838f4a0c49ed40"
+    },
+    {
+      "role": "accepted_expression_board",
+      "path": "01_canon/expressions/EXPR_whale-boss_v1.png",
+      "sha256": "53f5bb5f14b6122a4fb4de6444b42977bae35346eb10a05b8a44b9e7233b64bb"
+    },
+    {
+      "role": "accepted_transparent_standee",
+      "path": "01_canon/standees/STANDEE_whale-boss_neutral_v1.png",
+      "sha256": "a6695cbfbe2114b798fda9d464f338fb20126dd83f0637c07e820fd22bbb10d4"
+    }
+  ],
+  "hard_locks": [
+    "蓝发青尾海蓝眼",
+    "左鬓贝夹1枚",
+    "双袖片各1",
+    "贝壳竖琴5弦",
+    "无鱼尾法杖"
+  ],
+  "missing_reference_policy": "stop_generation_and_complete_missing_canon_asset"
+}

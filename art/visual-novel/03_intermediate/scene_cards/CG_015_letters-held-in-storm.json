@@ -1,0 +1,119 @@
+{
+  "version": "GAL-SIMPLE-1.2",
+  "cg_id": "CG_015_letters-held-in-storm",
+  "semantic_id": "letters-held-in-storm",
+  "title": "二十八阵：风暴中护住原信",
+  "status": "ready-for-layout",
+  "source_locator": {
+    "repository_commit": "b05bc623b7c1ef8b93cfa1fca253ad2119a52f68",
+    "file": "src/game/demo-30-floor-content.js",
+    "line": 448
+  },
+  "source_passage": "诺克缇娅不再追逐单封信，而是解下披风，与璃把近处的信挡在墙角并按原编号封住。",
+  "narrative_beat": "从徒劳追逐单一警报转向先保护全部原件和顺序。",
+  "point_of_view": "third-person visual-novel camera aligned with protagonist understanding",
+  "cast": [
+    "hero",
+    "final_queen"
+  ],
+  "expressions": {
+    "hero": "quiet resolve",
+    "final_queen": "unyielding resolve"
+  },
+  "environment_id": "archive-storm",
+  "props": [
+    "queen cape",
+    "numbered but unreadable letters",
+    "plain sealing strips"
+  ],
+  "composition": "16:9 低广角；女王的酒红内衬披风与璃共同形成挡风面，二人跪地把信件压在墙角，纸流方向清楚。",
+  "must_show": [
+    "cooperative sheltering action",
+    "letters stay ordered",
+    "queen crown remains",
+    "hero sword sheathed or safely aside"
+  ],
+  "must_not_show": [
+    "chasing one letter",
+    "readable mail",
+    "romantic embrace",
+    "paper obscures faces"
+  ],
+  "project_inference": null,
+  "character_reference_order": {
+    "hero": [
+      {
+        "role": "canonical_text",
+        "path": "01_canon/characters/hero.md",
+        "sha256": "6eada62d7bfc82c639b25fe2387de9a51f4adc6009b46d55080c26fcd2193d50"
+      },
+      {
+        "role": "accepted_turnaround",
+        "path": "01_canon/turnarounds/CHAR_hero_turnaround_v2.png",
+        "sha256": "d1385fe1798271e05e608204fe6d6cc99daa7961587d2e188cef7e62693cfe1b"
+      },
+      {
+        "role": "accepted_detail_board",
+        "path": "01_canon/details/DETAIL_hero_v2.png",
+        "sha256": "8f42611ee44f012b256262a251c67c5713d4056c8c3af5391e6c6976d337bfa1"
+      },
+      {
+        "role": "accepted_expression_board",
+        "path": "01_canon/expressions/EXPR_hero_v1.png",
+        "sha256": "d1571b7c18c3fbd902109a575619a40b1ecd4d9d84180fe6e9eb585a5eb1f3f8"
+      },
+      {
+        "role": "accepted_transparent_standee",
+        "path": "01_canon/standees/STANDEE_hero_neutral_v1.png",
+        "sha256": "bc7e81506ad41225bfe5ef548889d66e67d4c8db963c64650ebb601737d49b76"
+      }
+    ],
+    "final_queen": [
+      {
+        "role": "canonical_text",
+        "path": "01_canon/characters/final_queen.md",
+        "sha256": "43aeaa019c35531c5cc46f1460cdcac0ba77e6f612f6fdd898419d8e1a676bed"
+      },
+      {
+        "role": "accepted_turnaround",
+        "path": "01_canon/turnarounds/CHAR_final-queen_turnaround_v1.png",
+        "sha256": "9ad06627d33b9188616d9cbc9fa547a762e8933733026c101b33e8f349ef92e8"
+      },
+      {
+        "role": "accepted_detail_board",
+        "path": "01_canon/details/DETAIL_final-queen_v1.png",
+        "sha256": "647725e528e53392fe07ebc32bb4a112b0253d788609b1b7d92fc8e410e1077c"
+      },
+      {
+        "role": "accepted_expression_board",
+        "path": "01_canon/expressions/EXPR_final-queen_v1.png",
+        "sha256": "58c9121b08aadb699e5a47e964c30317326ae227c90ed9d292f67d0f866db2a7"
+      },
+      {
+        "role": "accepted_transparent_standee",
+        "path": "01_canon/standees/STANDEE_final-queen_neutral_v1.png",
+        "sha256": "99dbc41344f553a14356aeef6e7fc71ae4a3e30fba10aca5b86ba5cba47671ef"
+      }
+    ]
+  },
+  "environment_reference": "01_canon/environments/ENV_archive-storm_v1.png",
+  "runtime_target": "public/assets/anime/cg/liyue-noctia-archive-storm-cg-audit-v3.webp",
+  "archive_only_aliases": [
+    "public/assets/anime/cg/liyue-noctia-archive-storm-cg.webp"
+  ],
+  "iteration_ladder": [
+    "R0_layout",
+    "R1_identity",
+    "R2_costume",
+    "R3_scene",
+    "R4_final"
+  ],
+  "output_contract": "04_cg/final/CG_015_letters-held-in-storm_v1.png",
+  "environment_reference_asset": {
+    "path": "01_canon/environments/ENV_archive-storm_v1.png",
+    "sha256": "8dfdc13aec2ae78f6533e5322f5134fcfe9421989b5a95ed254232c2c0ecb561",
+    "width": 1672,
+    "height": 941,
+    "mode": "RGB"
+  }
+}

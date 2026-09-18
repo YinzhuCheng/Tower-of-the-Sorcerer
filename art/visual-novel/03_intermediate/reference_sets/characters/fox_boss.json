@@ -1,0 +1,39 @@
+{
+  "version": "GAL-SIMPLE-1.1",
+  "character_id": "fox_boss",
+  "reference_order": [
+    {
+      "role": "canonical_text",
+      "path": "01_canon/characters/fox_boss.md",
+      "sha256": "c414d656c344c8f6ed993eb815eb39f7be7e23339683fe5b99d75576e3dcdcba"
+    },
+    {
+      "role": "accepted_turnaround",
+      "path": "01_canon/turnarounds/CHAR_fox-boss_turnaround_v1.png",
+      "sha256": "fd5ce82b9db8afc1db64ee50648a614b8a39141ced2a4e3289d945c2a9c2029b"
+    },
+    {
+      "role": "accepted_detail_board",
+      "path": "01_canon/details/DETAIL_fox-boss_v2.png",
+      "sha256": "bcdfb78194d8dbb71b45b316c49c9418d918daeb1064750b7e6f830f99b8b39e"
+    },
+    {
+      "role": "accepted_expression_board",
+      "path": "01_canon/expressions/EXPR_fox-boss_v1.png",
+      "sha256": "6bc4608b0041028ff299c0fefe93946f43e7908454a57799cf562878d3d895b8"
+    },
+    {
+      "role": "accepted_transparent_standee",
+      "path": "01_canon/standees/STANDEE_fox-boss_neutral_v3.png",
+      "sha256": "4a009a4cf82599ac4cbe9e13355c8433b5e89399c2b48e243c8045baba8b7c71"
+    }
+  ],
+  "hard_locks": [
+    "绿眼栗红发",
+    "尾3条白尖",
+    "右鬓叶片1枚",
+    "折扇1把",
+    "纸符3张"
+  ],
+  "missing_reference_policy": "stop_generation_and_complete_missing_canon_asset"
+}

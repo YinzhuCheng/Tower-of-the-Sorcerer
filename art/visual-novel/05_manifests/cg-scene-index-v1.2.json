@@ -1,0 +1,385 @@
+{
+  "version": "GAL-SIMPLE-1.2",
+  "repository_commit": "b05bc623b7c1ef8b93cfa1fca253ad2119a52f68",
+  "scenes": [
+    {
+      "order": 1,
+      "cg_id": "CG_001_critical",
+      "semantic_id": "critical",
+      "card": "03_intermediate/scene_cards/CG_001_critical.json",
+      "runtime_target": "public/assets/anime/cg/liyue-critical-cg.webp",
+      "environment": null,
+      "cast": [
+        "hero"
+      ],
+      "status": "r0-layout-accepted",
+      "environment_asset": null,
+      "layout_asset": {"path": "04_cg/working/CG_001_critical_R0_layout_v1.png", "sha256": "1dd44397a0a8f8d2601769841f741d8ef5ed4180e065997f25de124783bb7a40", "width": 1672, "height": 941, "mode": "RGB"},
+      "layout_qa": "03_intermediate/qa/CG_001_critical_R0_qa.md"
+    },
+    {
+      "order": 2,
+      "cg_id": "CG_002_defeat",
+      "semantic_id": "defeat",
+      "card": "03_intermediate/scene_cards/CG_002_defeat.json",
+      "runtime_target": "public/assets/anime/cg/liyue-defeat-cg.webp",
+      "environment": null,
+      "cast": [
+        "hero"
+      ],
+      "status": "r0-layout-accepted",
+      "environment_asset": null,
+      "layout_asset": {"path": "04_cg/working/CG_002_defeat_R0_layout_v1.png", "sha256": "4e54df8f39b9d8b055fb781ac2e489315b3326c17dbbe7489adcd15766c8cd12", "width": 1672, "height": 941, "mode": "RGB"},
+      "layout_qa": "03_intermediate/qa/CG_002_defeat_R0_qa.md"
+    },
+    {
+      "order": 3,
+      "cg_id": "CG_003_prologue-tower",
+      "semantic_id": "prologue-tower",
+      "card": "03_intermediate/scene_cards/CG_003_prologue-tower.json",
+      "runtime_target": "public/assets/anime/cg/liyue-prologue-tower-cg.webp",
+      "environment": "night-tower",
+      "cast": [
+        "hero"
+      ],
+      "status": "r0-layout-accepted-with-carry",
+      "environment_asset": {
+        "path": "01_canon/environments/ENV_night-tower_v1.png",
+        "sha256": "b2bf4f703f327dfcc09a8ae0f35b8705884d9e6ccde45ade0c93c82d66db3b8d",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
+      },
+      "layout_asset": {"path": "04_cg/working/CG_003_prologue-tower_R0_layout_v2.png", "sha256": "c4761fef9dba03a44b53dbe6f01185bbf1f3356aaa057158154a75baf189431d", "width": 1672, "height": 941, "mode": "RGB"},
+      "layout_qa": "03_intermediate/qa/CG_003_prologue-tower_R0_qa.md"
+    },
+    {
+      "order": 4,
+      "cg_id": "CG_004_seven-cantos-severed",
+      "semantic_id": "seven-cantos-severed",
+      "card": "03_intermediate/scene_cards/CG_004_seven-cantos-severed.json",
+      "runtime_target": "public/assets/anime/cg/liyue-seven-cantos-severed-cg-audit-v3.webp",
+      "environment": "night-tower",
+      "cast": [
+        "hero",
+        "final_queen"
+      ],
+      "status": "ready-for-layout",
+      "environment_asset": {
+        "path": "01_canon/environments/ENV_night-tower_v1.png",
+        "sha256": "b2bf4f703f327dfcc09a8ae0f35b8705884d9e6ccde45ade0c93c82d66db3b8d",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
+      }
+    },
+    {
+      "order": 5,
+      "cg_id": "CG_005_northstar-arrival",
+      "semantic_id": "northstar-arrival",
+      "card": "03_intermediate/scene_cards/CG_005_northstar-arrival.json",
+      "runtime_target": "public/assets/anime/cg/liyue-lanyin-northstar-arrival-cg-v8.webp",
+      "environment": "ocean-archive",
+      "cast": [
+        "hero",
+        "whale_boss"
+      ],
+      "status": "ready-for-layout",
+      "environment_asset": {
+        "path": "01_canon/environments/ENV_ocean-archive_v1.png",
+        "sha256": "c28f63ca054607c74afa896f3c857c1f5f121d6722e3f710626d85a9cd863a33",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
+      }
+    },
+    {
+      "order": 6,
+      "cg_id": "CG_006_seven-core-network",
+      "semantic_id": "seven-core-network",
+      "card": "03_intermediate/scene_cards/CG_006_seven-core-network.json",
+      "runtime_target": "public/assets/anime/cg/liyue-yayu-seven-core-network-cg-audit-v3.webp",
+      "environment": "star-mirror",
+      "cast": [
+        "hero",
+        "shadow_boss"
+      ],
+      "status": "ready-for-layout",
+      "environment_asset": {
+        "path": "01_canon/environments/ENV_star-mirror_v1.png",
+        "sha256": "c883140e892bf68cddc090c5a6fc66ba99f961c78ee0d953dabbabbd4fc032a5",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
+      }
+    },
+    {
+      "order": 7,
+      "cg_id": "CG_007_noctia-truth",
+      "semantic_id": "noctia-truth",
+      "card": "03_intermediate/scene_cards/CG_007_noctia-truth.json",
+      "runtime_target": "public/assets/anime/cg/liyue-noctia-truth-cg-audit-v3.webp",
+      "environment": "night-tower",
+      "cast": [
+        "hero",
+        "final_queen"
+      ],
+      "status": "ready-for-layout",
+      "environment_asset": {
+        "path": "01_canon/environments/ENV_night-tower_v1.png",
+        "sha256": "b2bf4f703f327dfcc09a8ae0f35b8705884d9e6ccde45ade0c93c82d66db3b8d",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
+      }
+    },
+    {
+      "order": 8,
+      "cg_id": "CG_008_noctia-seal",
+      "semantic_id": "noctia-seal",
+      "card": "03_intermediate/scene_cards/CG_008_noctia-seal.json",
+      "runtime_target": "public/assets/anime/cg/liyue-noctia-seal-cg-audit-v3.webp",
+      "environment": "night-tower",
+      "cast": [
+        "hero",
+        "final_queen"
+      ],
+      "status": "ready-for-layout",
+      "environment_asset": {
+        "path": "01_canon/environments/ENV_night-tower_v1.png",
+        "sha256": "b2bf4f703f327dfcc09a8ae0f35b8705884d9e6ccde45ade0c93c82d66db3b8d",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
+      }
+    },
+    {
+      "order": 9,
+      "cg_id": "CG_009_missing-fourth-step",
+      "semantic_id": "missing-fourth-step",
+      "card": "03_intermediate/scene_cards/CG_009_missing-fourth-step.json",
+      "runtime_target": "public/assets/anime/cg/liyue-noctia-missing-fourth-step-cg-audit-v3.webp",
+      "environment": "sun-sanctum",
+      "cast": [
+        "hero",
+        "final_queen"
+      ],
+      "status": "ready-for-layout",
+      "environment_asset": {
+        "path": "01_canon/environments/ENV_sun-sanctum_v1.png",
+        "sha256": "5f115bd5dffdcb7c6ac9260e55cf6996a0de4cfaee8c1e7f970a418eb4f13675",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
+      }
+    },
+    {
+      "order": 10,
+      "cg_id": "CG_010_seventeen-minute-splice",
+      "semantic_id": "seventeen-minute-splice",
+      "card": "03_intermediate/scene_cards/CG_010_seventeen-minute-splice.json",
+      "runtime_target": "public/assets/anime/cg/liyue-lumi-seventeen-minute-splice-cg-v8.webp",
+      "environment": "sun-sanctum",
+      "cast": [
+        "hero",
+        "astral_boss"
+      ],
+      "status": "ready-for-layout",
+      "environment_asset": {
+        "path": "01_canon/environments/ENV_sun-sanctum_v1.png",
+        "sha256": "5f115bd5dffdcb7c6ac9260e55cf6996a0de4cfaee8c1e7f970a418eb4f13675",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
+      }
+    },
+    {
+      "order": 11,
+      "cg_id": "CG_011_intercepted-receipt",
+      "semantic_id": "intercepted-receipt",
+      "card": "03_intermediate/scene_cards/CG_011_intercepted-receipt.json",
+      "runtime_target": "public/assets/anime/cg/liyue-yayu-intercepted-receipt-cg-audit-v3.webp",
+      "environment": "ocean-archive",
+      "cast": [
+        "hero",
+        "shadow_boss"
+      ],
+      "status": "ready-for-layout",
+      "environment_asset": {
+        "path": "01_canon/environments/ENV_ocean-archive_v1.png",
+        "sha256": "c28f63ca054607c74afa896f3c857c1f5f121d6722e3f710626d85a9cd863a33",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
+      }
+    },
+    {
+      "order": 12,
+      "cg_id": "CG_012_echo-ledger",
+      "semantic_id": "echo-ledger",
+      "card": "03_intermediate/scene_cards/CG_012_echo-ledger.json",
+      "runtime_target": "public/assets/anime/cg/liyue-echo-ledger-cg-audit-v3.webp",
+      "environment": "echo-court",
+      "cast": [
+        "hero",
+        "final_queen",
+        "echo_regent"
+      ],
+      "status": "ready-for-layout",
+      "environment_asset": {
+        "path": "01_canon/environments/ENV_echo-court_v1.png",
+        "sha256": "beabf39cbfef14d6eec1b5e0b9b74874d1c74376e0288ebf5e0a2b86d3130ef5",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
+      }
+    },
+    {
+      "order": 13,
+      "cg_id": "CG_013_noctia-sovereign",
+      "semantic_id": "noctia-sovereign",
+      "card": "03_intermediate/scene_cards/CG_013_noctia-sovereign.json",
+      "runtime_target": "public/assets/anime/cg/liyue-noctia-sovereign-cg-audit-v3.webp",
+      "environment": "origin-core",
+      "cast": [
+        "hero",
+        "final_queen",
+        "arcane_sovereign"
+      ],
+      "status": "ready-for-layout",
+      "environment_asset": {
+        "path": "01_canon/environments/ENV_origin-core_v1.png",
+        "sha256": "e84683fdb87978a3bf91bd51f68ca44063d7f37f868f04a5f8f9b4dcc7ff1da6",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
+      }
+    },
+    {
+      "order": 14,
+      "cg_id": "CG_014_missing-page-restored",
+      "semantic_id": "missing-page-restored",
+      "card": "03_intermediate/scene_cards/CG_014_missing-page-restored.json",
+      "runtime_target": "public/assets/anime/cg/liyue-noctia-missing-page-cg-audit-v3.webp",
+      "environment": "triage-index",
+      "cast": [
+        "hero",
+        "final_queen",
+        "arcane_sovereign"
+      ],
+      "status": "ready-for-layout",
+      "environment_asset": {
+        "path": "01_canon/environments/ENV_triage-index_v1.png",
+        "sha256": "2395828352d4d31412fb2ecf9c42c129ff6ee0784db6001164a7a6babd1a7bfc",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
+      }
+    },
+    {
+      "order": 15,
+      "cg_id": "CG_015_letters-held-in-storm",
+      "semantic_id": "letters-held-in-storm",
+      "card": "03_intermediate/scene_cards/CG_015_letters-held-in-storm.json",
+      "runtime_target": "public/assets/anime/cg/liyue-noctia-archive-storm-cg-audit-v3.webp",
+      "environment": "archive-storm",
+      "cast": [
+        "hero",
+        "final_queen"
+      ],
+      "status": "ready-for-layout",
+      "environment_asset": {
+        "path": "01_canon/environments/ENV_archive-storm_v1.png",
+        "sha256": "8dfdc13aec2ae78f6533e5322f5134fcfe9421989b5a95ed254232c2c0ecb561",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
+      }
+    },
+    {
+      "order": 16,
+      "cg_id": "CG_016_originals-enter-lighthouse",
+      "semantic_id": "originals-enter-lighthouse",
+      "card": "03_intermediate/scene_cards/CG_016_originals-enter-lighthouse.json",
+      "runtime_target": "public/assets/anime/cg/liyue-archive-warden-entry-cg-audit-v3.webp",
+      "environment": "final-index-room",
+      "cast": [
+        "hero",
+        "final_queen",
+        "arcane_sovereign",
+        "act3_last_custodian"
+      ],
+      "status": "ready-for-layout",
+      "environment_asset": {
+        "path": "01_canon/environments/ENV_final-index-room_v1.png",
+        "sha256": "7629653ba1666c296167df6712574f1aea5d1d220ac5de4bd6bf6fba205b82dc",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
+      }
+    },
+    {
+      "order": 17,
+      "cg_id": "CG_017_traceable-revocation",
+      "semantic_id": "traceable-revocation",
+      "card": "03_intermediate/scene_cards/CG_017_traceable-revocation.json",
+      "runtime_target": "public/assets/anime/cg/liyue-traceable-revocation-cg-audit-v3.webp",
+      "environment": "ember-lighthouse-writein",
+      "cast": [
+        "guide",
+        "final_queen",
+        "arcane_sovereign"
+      ],
+      "status": "ready-for-layout",
+      "environment_asset": {
+        "path": "01_canon/environments/ENV_ember-lighthouse-writein_v2.png",
+        "sha256": "7f044bfcfb871198c08f29a86117d1df1a0d3bd487cf10588868c20f59c78ac8",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
+      }
+    },
+    {
+      "order": 18,
+      "cg_id": "CG_018_noctia-afterlight",
+      "semantic_id": "noctia-afterlight",
+      "card": "03_intermediate/scene_cards/CG_018_noctia-afterlight.json",
+      "runtime_target": "public/assets/anime/cg/liyue-noctia-afterlight-cg.webp",
+      "environment": "ember-lighthouse-writein",
+      "cast": [
+        "hero",
+        "final_queen"
+      ],
+      "status": "ready-for-layout",
+      "environment_asset": {
+        "path": "01_canon/environments/ENV_ember-lighthouse-writein_v2.png",
+        "sha256": "7f044bfcfb871198c08f29a86117d1df1a0d3bd487cf10588868c20f59c78ac8",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
+      }
+    },
+    {
+      "order": 19,
+      "cg_id": "CG_019_lighthouse-archive",
+      "semantic_id": "lighthouse-archive",
+      "card": "03_intermediate/scene_cards/CG_019_lighthouse-archive.json",
+      "runtime_target": "public/assets/anime/cg/liyue-lighthouse-archive-cg.webp",
+      "environment": "ember-lighthouse",
+      "cast": [
+        "hero",
+        "guide",
+        "final_queen",
+        "arcane_sovereign"
+      ],
+      "status": "ready-for-layout",
+      "environment_asset": {
+        "path": "01_canon/environments/ENV_ember-lighthouse_v1.png",
+        "sha256": "e856ff4d6b4264599e030c472f9c4883643b9ee4f8f64fd3861c1ae6f90528bb",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
+      }
+    }
+  ]
+}

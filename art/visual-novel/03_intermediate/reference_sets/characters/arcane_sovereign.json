@@ -1,0 +1,39 @@
+{
+  "version": "GAL-SIMPLE-1.1",
+  "character_id": "arcane_sovereign",
+  "reference_order": [
+    {
+      "role": "canonical_text",
+      "path": "01_canon/characters/arcane_sovereign.md",
+      "sha256": "449498a310eec8c47ea0c2fb1a9ba74cd34ee38b06593b12b1b5e35102d702f7"
+    },
+    {
+      "role": "accepted_turnaround",
+      "path": "01_canon/turnarounds/CHAR_arcane-sovereign_turnaround_v1.png",
+      "sha256": "50f15906516064571100c2bd96e226dfe30b518ded723fb3c3b7f90582b115c6"
+    },
+    {
+      "role": "accepted_detail_board",
+      "path": "01_canon/details/DETAIL_arcane-sovereign_v1.png",
+      "sha256": "3e3d14b1ad69aa083be5932f39827510aa7d766e942e304614a8f5bf32c4d8cd"
+    },
+    {
+      "role": "accepted_expression_board",
+      "path": "01_canon/expressions/EXPR_arcane-sovereign_v1.png",
+      "sha256": "353344f864bc97b07edcb4785766a96e1cf3076b1773e153428b25d8d72630e4"
+    },
+    {
+      "role": "accepted_transparent_standee",
+      "path": "01_canon/standees/STANDEE_arcane-sovereign_neutral_v1.png",
+      "sha256": "79fc599bcc1df521e53dbc6e125b1982cd8d441ca52fc3cbcb3a6a6ddbd8f622"
+    }
+  ],
+  "hard_locks": [
+    "男性深青发金眼",
+    "白前衣片2条",
+    "蓝菱领扣1",
+    "椭圆印戒斜裂纹1道",
+    "无冠无剑"
+  ],
+  "missing_reference_policy": "stop_generation_and_complete_missing_canon_asset"
+}

@@ -1,0 +1,14 @@
+{
+  "version": "GAL-SIMPLE-1.2",
+  "cg_id": "CG_003_prologue-tower",
+  "iteration": "R0_layout_v2",
+  "use_case": "precise-object-edit",
+  "status": "accepted-r0-with-carry",
+  "parent_generation": {
+    "path": "04_cg/rejected/R0-layout/CG_003_prologue-tower_R0_layout_v1_rejected-scale.png",
+    "sha256": "adf017d79ae2b897665f86cb9a8dadfcf05ec97b761406e631d5888bde430f35",
+    "rejection_reason": "Foreground heroine occupied roughly one third of frame height, weakening the tower-dominant scale relationship."
+  },
+  "prompt": "Use case: precise-object-edit\nAsset type: visual-novel CG R0 layout correction\nInput images: Image 1 is the edit target and the entire accepted layout foundation.\nPrimary request: Change only the foreground heroine's scale. Reduce the same back-facing heroine to approximately ONE THIRD of her current pixel height, so she is a tiny witness under 12 percent of the full frame height. Keep her feet anchored on the same lower-left quay area and keep her looking at the tower. Reconstruct the wet quay naturally where her former larger silhouette was.\nInvariants: Keep the canvas 16:9. Keep the tower, sealed gate, exactly seven vertical blue-violet facade lights, beacon, single far-left evacuation ship, sea, storm front, architecture, camera, horizon, lighting, palette and all other geometry unchanged. Keep exactly one heroine and exactly one ship. Preserve her back-facing long midnight-blue hair, navy-and-ivory mantle silhouette and adult proportions at the smaller scale.\nConstraints: edit only heroine scale and the immediately exposed background; no new characters, no new ships, no text, no logo, no watermark.",
+  "output_contract": "04_cg/working/CG_003_prologue-tower_R0_layout_v2.png"
+}

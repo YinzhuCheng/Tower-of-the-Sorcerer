@@ -1,0 +1,25 @@
+{
+  "version": "GAL-SIMPLE-1.2",
+  "cg_id": "CG_001_critical",
+  "iteration": "R0_layout",
+  "required_reference_order": [
+    "hero canonical text",
+    "hero accepted turnaround",
+    "hero accepted detail board",
+    "hero accepted expression board",
+    "hero accepted transparent standee"
+  ],
+  "input_files_with_sha256": [
+    {"order": 0, "role": "canonical_text", "path": "01_canon/characters/hero.md", "sha256": "6eada62d7bfc82c639b25fe2387de9a51f4adc6009b46d55080c26fcd2193d50", "tool_input": false},
+    {"order": 1, "role": "accepted_turnaround", "path": "01_canon/turnarounds/CHAR_hero_turnaround_v2.png", "sha256": "d1385fe1798271e05e608204fe6d6cc99daa7961587d2e188cef7e62693cfe1b", "tool_input": true},
+    {"order": 2, "role": "accepted_detail_board", "path": "01_canon/details/DETAIL_hero_v2.png", "sha256": "8f42611ee44f012b256262a251c67c5713d4056c8c3af5391e6c6976d337bfa1", "tool_input": true},
+    {"order": 3, "role": "accepted_expression_board", "path": "01_canon/expressions/EXPR_hero_v1.png", "sha256": "d1571b7c18c3fbd902109a575619a40b1ecd4d9d84180fe6e9eb585a5eb1f3f8", "tool_input": true},
+    {"order": 4, "role": "accepted_transparent_standee", "path": "01_canon/standees/STANDEE_hero_neutral_v1.png", "sha256": "bc7e81506ad41225bfe5ef548889d66e67d4c8db963c64650ebb601737d49b76", "tool_input": true}
+  ],
+  "prompt_path": "03_intermediate/prompt_packets/CG_001_critical_R0.json",
+  "output_path": "04_cg/working/CG_001_critical_R0_layout_v1.png",
+  "output_sha256": "1dd44397a0a8f8d2601769841f741d8ef5ed4180e065997f25de124783bb7a40",
+  "qa_result": "accepted-r0-layout",
+  "qa_path": "03_intermediate/qa/CG_001_critical_R0_qa.md",
+  "missing_reference_policy": "stop_generation_and_complete_missing_canon_asset"
+}

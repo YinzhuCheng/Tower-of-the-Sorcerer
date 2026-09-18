@@ -1,0 +1,40 @@
+{
+  "version": "GAL-SIMPLE-1.1",
+  "character_id": "black_seal_keeper_v2",
+  "reference_order": [
+    {
+      "role": "canonical_text",
+      "path": "01_canon/characters/black_seal_keeper_v2.md",
+      "sha256": "8551d266ae0daa7a3d8a97d91e70b8a69e3bc758efebe327995cb00e9da92bf3"
+    },
+    {
+      "role": "accepted_turnaround",
+      "path": "01_canon/turnarounds/CHAR_black-seal-keeper-v2_turnaround_v2.png",
+      "sha256": "fc05cb14a6dba2404c8fe9501f8620abc5aeb69217799920d9de93b718c036ba"
+    },
+    {
+      "role": "accepted_detail_board",
+      "path": "01_canon/details/DETAIL_black-seal-keeper-v2_v1.png",
+      "sha256": "610c5c1a0fd46fa94bea2d462c5d3953d5b70b6dc9b1795818561e67d97c27b7"
+    },
+    {
+      "role": "accepted_expression_board",
+      "path": "01_canon/expressions/EXPR_black-seal-keeper-v2_v1.png",
+      "sha256": "7d43a55a49c31c32f5df2a655774a30613036fb5ce6e725690081ace53a796db"
+    },
+    {
+      "role": "accepted_transparent_standee",
+      "path": "01_canon/standees/STANDEE_black-seal-keeper-v2_neutral_v1.png",
+      "sha256": "9bb348f84192b69e0ac26878364e2ec197a7d0d4d3d9a201a453aac0b033b7c1"
+    }
+  ],
+  "hard_locks": [
+    "午夜紫长直发",
+    "琥珀眼",
+    "圆铜腰扣1",
+    "断圆盘右上缺口1",
+    "黑薄册红圆印1",
+    "无剑矛杖"
+  ],
+  "missing_reference_policy": "stop_generation_and_complete_missing_canon_asset"
+}

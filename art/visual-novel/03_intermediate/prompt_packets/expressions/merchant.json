@@ -1,0 +1,35 @@
+{
+  "version": "GAL-SIMPLE-1.1",
+  "character_id": "merchant",
+  "series_style_lock": "GAL-SIMPLE clean cel reference art",
+  "identity_lock": [
+    "前辫2条",
+    "蓝头巾",
+    "方背包1",
+    "顶部卷毯1",
+    "灯为方形琥珀",
+    "钱袋右腰"
+  ],
+  "expression_order": [
+    "knowing smile",
+    "bright sales cheer",
+    "worried calculation",
+    "playful bargaining",
+    "startled",
+    "sincere kindness"
+  ],
+  "negative_constraints": [
+    "identity drift",
+    "hair or accessory count drift",
+    "costume redesign",
+    "text",
+    "hands or props",
+    "watermark"
+  ],
+  "prompt": "Use case: stylized-concept. Asset type: canonical visual-novel expression reference sheet. Professional Japanese 2D visual-novel cel illustration matching the accepted GAL-SIMPLE series: fine clean dark outlines, large solid local colors, one hard-edged shadow per material, tiny restrained highlights, adult proportions, no painterly texture and no dense rendering. Image 1 is the accepted turnaround and controls identity, face, hair, anatomy and costume. Image 2 is the accepted detail board and controls every accessory count, side and construction. The written canon below overrides any accidental reference error. Create a landscape 3-column by 2-row grid of SIX equal-size chest-up portraits of the SAME character. Panel order is left-to-right across the top row, then left-to-right across the bottom row. Keep face proportions, hairstyle, hair accessories, eye color, neckwear and visible shoulder clothing IDENTICAL in all six panels. Expressions must be readable through eyebrows, eyes and mouth while remaining in-character; no theatrical distortion. Warm pale-grey opaque background, even flat reference lighting. No labels, text, panel numbers, borders, scenery, hands, held props, weapons, magic, watermark or signature. No extra jewelry or costume redesign. CANON IDENTITY: Adult traveling merchant woman, 162 cm, warm brown hair in exactly TWO front braids, warm brown eyes, plain blue headscarf. Blue knee-length travel coat, cream blouse, mustard waist sash, dark brown trousers and practical brown boots. ONE rectangular wood-frame canvas backpack with ONE rolled blanket strapped horizontally on top. Friendly shrewd expression. No jewelry, feather, dangling bottle collection, stars or extra bags. HARD LOCKS: 前辫2条, 蓝头巾, 方背包1, 顶部卷毯1, 灯为方形琥珀, 钱袋右腰. EXPRESSIONS IN EXACT PANEL ORDER: 1: knowing smile; 2: bright sales cheer; 3: worried calculation; 4: playful bargaining; 5: startled; 6: sincere kindness.",
+  "referenced_image_paths": [
+    "/workspace/scratch/0645849eb5a5/gal-design-v1/01_canon/turnarounds/CHAR_merchant_turnaround_v1.png",
+    "/workspace/scratch/0645849eb5a5/gal-design-v1/01_canon/details/DETAIL_merchant_v1.png"
+  ],
+  "output_contract": "01_canon/expressions/EXPR_merchant_v1.png"
+}

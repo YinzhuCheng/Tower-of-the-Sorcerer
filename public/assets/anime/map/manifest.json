@@ -8,8 +8,16 @@
   "atlases": {
     "environment": {
       "file": "atlases/runtime/environment.webp",
-      "base64Chunks": ["atlases/environment-1.b64","atlases/environment-2.b64","atlases/environment-3.b64","atlases/environment-4.b64","atlases/environment-5.b64"],
-      "mime": "image/webp", "cols": 5, "rows": 4
+      "base64Chunks": [
+        "atlases/environment-1.b64",
+        "atlases/environment-2.b64",
+        "atlases/environment-3.b64",
+        "atlases/environment-4.b64",
+        "atlases/environment-5.b64"
+      ],
+      "mime": "image/webp",
+      "cols": 5,
+      "rows": 4
     },
     "hero": {
       "file": "atlases/runtime/hero-v6.webp",
@@ -29,22 +37,53 @@
         "atlases/v6/hero/hero-v6-12.b64",
         "atlases/v6/hero/hero-v6-13.b64"
       ],
-      "mime": "image/webp", "cols": 2, "rows": 2
+      "mime": "image/webp",
+      "cols": 2,
+      "rows": 2
     },
     "featuredV2": {
       "file": "atlases/runtime/featured-v2.webp",
-      "base64Chunks": ["atlases/featured-v2-01.b64","atlases/featured-v2-02.b64","atlases/featured-v2-03.b64","atlases/featured-v2-04.b64","atlases/featured-v2-05a1.b64","atlases/featured-v2-05a2.b64","atlases/featured-v2-05b.b64","atlases/featured-v2-06.b64","atlases/featured-v2-07a.b64","atlases/featured-v2-08.b64"],
-      "mime": "image/webp", "cols": 5, "rows": 2
+      "base64Chunks": [
+        "atlases/featured-v2-01.b64",
+        "atlases/featured-v2-02.b64",
+        "atlases/featured-v2-03.b64",
+        "atlases/featured-v2-04.b64",
+        "atlases/featured-v2-05a1.b64",
+        "atlases/featured-v2-05a2.b64",
+        "atlases/featured-v2-05b.b64",
+        "atlases/featured-v2-06.b64",
+        "atlases/featured-v2-07a.b64",
+        "atlases/featured-v2-08.b64"
+      ],
+      "mime": "image/webp",
+      "cols": 5,
+      "rows": 2
     },
     "v4Combined": {
       "file": "atlases/runtime/v4-combined.webp",
-      "base64Chunks": ["atlases/v4/combined-01.b64","atlases/v4/combined-02.b64","atlases/v4/combined-03.b64","atlases/v4/combined-04.b64","atlases/v4/combined-05.b64","atlases/v4/combined-06.b64","atlases/v4/combined-07.b64"],
-      "mime": "image/webp", "cols": 5, "rows": 4
+      "base64Chunks": [
+        "atlases/v4/combined-01.b64",
+        "atlases/v4/combined-02.b64",
+        "atlases/v4/combined-03.b64",
+        "atlases/v4/combined-04.b64",
+        "atlases/v4/combined-05.b64",
+        "atlases/v4/combined-06.b64",
+        "atlases/v4/combined-07.b64"
+      ],
+      "mime": "image/webp",
+      "cols": 5,
+      "rows": 4
     },
     "heroPortraitV4": {
       "file": "atlases/runtime/hero-portrait-v4.webp",
-      "base64Chunks": ["atlases/v4/portrait-01.b64","atlases/v4/portrait-02.b64","atlases/v4/portrait-03.b64"],
-      "mime": "image/webp", "cols": 1, "rows": 1
+      "base64Chunks": [
+        "atlases/v4/portrait-01.b64",
+        "atlases/v4/portrait-02.b64",
+        "atlases/v4/portrait-03.b64"
+      ],
+      "mime": "image/webp",
+      "cols": 1,
+      "rows": 1
     },
     "wallMaterialsV6": {
       "file": "atlases/runtime/wall-materials-v6.webp",
@@ -64,7 +103,9 @@
         "atlases/v6/wall-materials-v6-09a.b64",
         "atlases/v6/wall-materials-v6-09b.b64"
       ],
-      "mime": "image/webp", "cols": 3, "rows": 2
+      "mime": "image/webp",
+      "cols": 3,
+      "rows": 2
     },
     "gameplayV10": {
       "file": "atlases/runtime/gameplay-v10.webp",
@@ -72,107 +113,475 @@
         "atlases/v10/gameplay-v10-ultra-01.b64",
         "atlases/v10/gameplay-v10-ultra-02-fixed.b64"
       ],
-      "mime": "image/webp", "cols": 4, "rows": 4
+      "mime": "image/webp",
+      "cols": 4,
+      "rows": 4
     }
   },
   "assets": {
-    "wall-body": {"atlas":"environment","index":0,"role":"wall"},
-    "wall-edge": {"atlas":"environment","index":1,"role":"wall"},
-    "wall-outer-corner-alt": {"atlas":"environment","index":2,"role":"wall"},
-    "wall-inner-corner-alt": {"atlas":"environment","index":3,"role":"wall"},
-    "floor-main": {"atlas":"environment","index":4,"role":"floor"},
-    "gate-sun": {"atlas":"environment","index":5,"role":"door"},
-    "gate-moon": {"atlas":"environment","index":6,"role":"door"},
-    "gate-star": {"atlas":"environment","index":7,"role":"door"},
-    "stairs-legacy": {"atlas":"environment","index":8,"role":"stairs"},
-    "portal-transfer": {"atlas":"environment","index":9,"role":"portal"},
-    "wall-horizontal": {"atlas":"environment","index":10,"role":"wall"},
-    "wall-vertical": {"atlas":"environment","index":11,"role":"wall"},
-    "wall-outer-corner": {"atlas":"environment","index":12,"role":"wall"},
-    "wall-inner-corner": {"atlas":"environment","index":13,"role":"wall"},
-    "wall-t-junction": {"atlas":"environment","index":14,"role":"wall"},
-    "wall-end-cap": {"atlas":"environment","index":15,"role":"wall"},
-    "wall-pillar": {"atlas":"environment","index":16,"role":"wall"},
-    "stairs-up": {"atlas":"environment","index":17,"role":"stairs"},
-    "stairs-down": {"atlas":"environment","index":18,"role":"stairs"},
-    "floor-alt": {"atlas":"environment","index":19,"role":"floor"},
-    "hero-down": {"atlas":"hero","index":0,"role":"hero"},
-    "hero-up": {"atlas":"hero","index":1,"role":"hero"},
-    "hero-left": {"atlas":"hero","index":2,"role":"hero"},
-    "hero-right": {"atlas":"hero","index":3,"role":"hero"},
-    "featured-cat-scout": {"atlas":"featuredV2","index":0,"role":"enemy"},
-    "featured-cat-mage": {"atlas":"featuredV2","index":1,"role":"enemy"},
-    "featured-sword-apprentice": {"atlas":"featuredV2","index":2,"role":"enemy"},
-    "featured-cat-boss": {"atlas":"featuredV2","index":3,"role":"boss"},
-    "featured-shop": {"atlas":"featuredV2","index":4,"role":"prop"},
-    "featured-codex-shrine": {"atlas":"featuredV2","index":5,"role":"prop"},
-    "featured-treasure": {"atlas":"featuredV2","index":6,"role":"prop"},
-    "featured-switch-single": {"atlas":"featuredV2","index":7,"role":"puzzle"},
-    "featured-switch-dual": {"atlas":"featuredV2","index":8,"role":"puzzle"},
-    "featured-rune-sequence": {"atlas":"featuredV2","index":9,"role":"puzzle"},
-    "wall-body-v4": {"atlas":"v4Combined","index":0,"role":"wall"},
-    "wall-outer-corner-v4": {"atlas":"v4Combined","index":1,"role":"wall"},
-    "wall-inner-corner-v4": {"atlas":"v4Combined","index":2,"role":"wall"},
-    "wall-pillar-v4": {"atlas":"v4Combined","index":3,"role":"wall"},
-    "floor-main-v4": {"atlas":"v4Combined","index":4,"role":"floor"},
-    "floor-altar-v4": {"atlas":"v4Combined","index":5,"role":"floor-special"},
-    "gate-sun-v4": {"atlas":"v4Combined","index":6,"role":"door"},
-    "gate-moon-v4": {"atlas":"v4Combined","index":7,"role":"door"},
-    "gate-star-v4": {"atlas":"v4Combined","index":8,"role":"door"},
-    "stairs-up-v4": {"atlas":"v4Combined","index":9,"role":"stairs"},
-    "stairs-down-v4": {"atlas":"v4Combined","index":10,"role":"stairs"},
-    "gate-boss-v4": {"atlas":"v4Combined","index":11,"role":"boss-gate"},
-    "card-sun-drop-v4": {"atlas":"v4Combined","index":12,"role":"card-drop"},
-    "card-moon-drop-v4": {"atlas":"v4Combined","index":13,"role":"card-drop"},
-    "card-star-drop-v4": {"atlas":"v4Combined","index":14,"role":"card-drop"},
-    "card-sun-ui-v4": {"atlas":"v4Combined","index":15,"role":"card-ui"},
-    "card-moon-ui-v4": {"atlas":"v4Combined","index":16,"role":"card-ui"},
-    "card-star-ui-v4": {"atlas":"v4Combined","index":17,"role":"card-ui"},
-    "hero-portrait-v4": {"atlas":"heroPortraitV4","index":0,"role":"portrait"},
-    "wall-surface-v6": {"atlas":"wallMaterialsV6","index":0,"role":"wall-surface"},
-    "wall-edge-horizontal-v6": {"atlas":"wallMaterialsV6","index":1,"role":"wall-edge"},
-    "wall-edge-vertical-v6": {"atlas":"wallMaterialsV6","index":2,"role":"wall-edge"},
-    "wall-outer-corner-v6": {"atlas":"wallMaterialsV6","index":3,"role":"wall-corner"},
-    "wall-inner-corner-v6": {"atlas":"wallMaterialsV6","index":4,"role":"wall-corner"},
-    "wall-end-pillar-v6": {"atlas":"wallMaterialsV6","index":5,"role":"wall-node"},
-    "gem-atk-v10": {"atlas":"gameplayV10","index":0,"role":"gem"},
-    "gem-def-v10": {"atlas":"gameplayV10","index":1,"role":"gem"},
-    "potion-red-v10": {"atlas":"gameplayV10","index":2,"role":"potion"},
-    "potion-blue-v10": {"atlas":"gameplayV10","index":3,"role":"potion"},
-    "card-sun-v10": {"atlas":"gameplayV10","index":4,"role":"card-drop"},
-    "card-moon-v10": {"atlas":"gameplayV10","index":5,"role":"card-drop"},
-    "card-star-v10": {"atlas":"gameplayV10","index":6,"role":"card-drop"},
-    "barrier-sun-v10": {"atlas":"gameplayV10","index":7,"role":"barrier"},
-    "barrier-moon-v10": {"atlas":"gameplayV10","index":8,"role":"barrier"},
-    "barrier-star-v10": {"atlas":"gameplayV10","index":9,"role":"barrier"},
-    "rune-floor-barrier-v10": {"atlas":"gameplayV10","index":10,"role":"floor-special"},
-    "rune-stairs-up-v10": {"atlas":"gameplayV10","index":11,"role":"stairs"},
-    "rune-stairs-down-v10": {"atlas":"gameplayV10","index":12,"role":"stairs"},
-    "seal-guardian-vault": {"file":"interactables/guardian-vault-seal.webp","role":"guardian-vault"},
-    "switch-vine": {"file":"interactables/vine-switch.webp","role":"switch"},
-    "switch-tide": {"file":"interactables/switch-tide.webp","role":"switch"},
-    "switch-forge": {"file":"interactables/switch-forge.webp","role":"switch"},
-    "switch-ember": {"file":"interactables/switch-ember.webp","role":"switch"},
-    "switch-hush": {"file":"interactables/switch-hush.webp","role":"switch"},
-    "seal-vine": {"file":"interactables/vine-seal.webp","role":"switch-seal"},
-    "seal-switch-single": {"file":"interactables/single-switch-seal.webp","role":"switch-seal"},
-    "seal-switch-dual": {"file":"interactables/dual-switch-seal.webp","role":"switch-seal"},
-    "seal-rune-sequence": {"file":"interactables/rune-sequence-seal.webp","role":"rune-seal"},
-    "seal-archive-index": {"file":"interactables/archive-index-seal.webp","role":"archive-seal"},
-    "seal-charter-archive": {"file":"interactables/seal-charter-archive.webp","role":"charter-seal"},
-    "seal-protocol": {"file":"interactables/seal-protocol.webp","role":"protocol-seal"},
-    "relic-lucky-coin": {"file":"interactables/lucky-coin.webp","role":"relic"},
-    "relic-moon-blade": {"file":"interactables/moon-blade.webp","role":"relic"},
-    "relic-dragon-scale-talisman": {"file":"interactables/dragon-scale-talisman.webp","role":"relic"},
-    "relic-silent-ward-earring": {"file":"interactables/silent-ward-earring.webp","role":"relic"},
-    "relic-aether-prism": {"file":"interactables/aether-prism.webp","role":"relic"},
-    "relic-conduit-codex": {"file":"interactables/conduit-codex.webp","role":"relic"},
-    "relic-arcane-battery": {"file":"interactables/arcane-battery.webp","role":"relic"},
-    "relic-mirror-reservoir": {"file":"interactables/mirror-reservoir.webp","role":"relic"},
-    "relic-crown-capacitor": {"file":"interactables/crown-capacitor.webp","role":"relic"},
-    "relic-origin-focus": {"file":"interactables/origin-focus.webp","role":"relic"},
-    "relic-shelter-aegis": {"file":"interactables/shelter-aegis.webp","role":"relic"},
-    "relic-audit-ledger": {"file":"interactables/audit-ledger.webp","role":"relic"},
-    "relic-relay-capacitor": {"file":"interactables/relay-capacitor.webp","role":"relic"}
+    "wall-body": {
+      "atlas": "environment",
+      "index": 0,
+      "role": "wall"
+    },
+    "wall-edge": {
+      "atlas": "environment",
+      "index": 1,
+      "role": "wall"
+    },
+    "wall-outer-corner-alt": {
+      "atlas": "environment",
+      "index": 2,
+      "role": "wall"
+    },
+    "wall-inner-corner-alt": {
+      "atlas": "environment",
+      "index": 3,
+      "role": "wall"
+    },
+    "floor-main": {
+      "atlas": "environment",
+      "index": 4,
+      "role": "floor"
+    },
+    "gate-sun": {
+      "atlas": "environment",
+      "index": 5,
+      "role": "door"
+    },
+    "gate-moon": {
+      "atlas": "environment",
+      "index": 6,
+      "role": "door"
+    },
+    "gate-star": {
+      "atlas": "environment",
+      "index": 7,
+      "role": "door"
+    },
+    "stairs-legacy": {
+      "atlas": "environment",
+      "index": 8,
+      "role": "stairs"
+    },
+    "portal-transfer": {
+      "atlas": "environment",
+      "index": 9,
+      "role": "portal"
+    },
+    "wall-horizontal": {
+      "atlas": "environment",
+      "index": 10,
+      "role": "wall"
+    },
+    "wall-vertical": {
+      "atlas": "environment",
+      "index": 11,
+      "role": "wall"
+    },
+    "wall-outer-corner": {
+      "atlas": "environment",
+      "index": 12,
+      "role": "wall"
+    },
+    "wall-inner-corner": {
+      "atlas": "environment",
+      "index": 13,
+      "role": "wall"
+    },
+    "wall-t-junction": {
+      "atlas": "environment",
+      "index": 14,
+      "role": "wall"
+    },
+    "wall-end-cap": {
+      "atlas": "environment",
+      "index": 15,
+      "role": "wall"
+    },
+    "wall-pillar": {
+      "atlas": "environment",
+      "index": 16,
+      "role": "wall"
+    },
+    "stairs-up": {
+      "atlas": "environment",
+      "index": 17,
+      "role": "stairs"
+    },
+    "stairs-down": {
+      "atlas": "environment",
+      "index": 18,
+      "role": "stairs"
+    },
+    "floor-alt": {
+      "atlas": "environment",
+      "index": 19,
+      "role": "floor"
+    },
+    "hero-down": {
+      "atlas": "hero",
+      "index": 0,
+      "role": "hero"
+    },
+    "hero-up": {
+      "atlas": "hero",
+      "index": 1,
+      "role": "hero"
+    },
+    "hero-left": {
+      "atlas": "hero",
+      "index": 2,
+      "role": "hero"
+    },
+    "hero-right": {
+      "atlas": "hero",
+      "index": 3,
+      "role": "hero"
+    },
+    "featured-cat-scout": {
+      "atlas": "featuredV2",
+      "index": 0,
+      "role": "enemy"
+    },
+    "featured-cat-mage": {
+      "atlas": "featuredV2",
+      "index": 1,
+      "role": "enemy"
+    },
+    "featured-sword-apprentice": {
+      "atlas": "featuredV2",
+      "index": 2,
+      "role": "enemy"
+    },
+    "featured-cat-boss": {
+      "atlas": "featuredV2",
+      "index": 3,
+      "role": "boss"
+    },
+    "featured-shop": {
+      "atlas": "featuredV2",
+      "index": 4,
+      "role": "prop"
+    },
+    "featured-codex-shrine": {
+      "atlas": "featuredV2",
+      "index": 5,
+      "role": "prop"
+    },
+    "featured-treasure": {
+      "atlas": "featuredV2",
+      "index": 6,
+      "role": "prop"
+    },
+    "featured-switch-single": {
+      "atlas": "featuredV2",
+      "index": 7,
+      "role": "puzzle"
+    },
+    "featured-switch-dual": {
+      "atlas": "featuredV2",
+      "index": 8,
+      "role": "puzzle"
+    },
+    "featured-rune-sequence": {
+      "atlas": "featuredV2",
+      "index": 9,
+      "role": "puzzle"
+    },
+    "wall-body-v4": {
+      "atlas": "v4Combined",
+      "index": 0,
+      "role": "wall"
+    },
+    "wall-outer-corner-v4": {
+      "atlas": "v4Combined",
+      "index": 1,
+      "role": "wall"
+    },
+    "wall-inner-corner-v4": {
+      "atlas": "v4Combined",
+      "index": 2,
+      "role": "wall"
+    },
+    "wall-pillar-v4": {
+      "atlas": "v4Combined",
+      "index": 3,
+      "role": "wall"
+    },
+    "floor-main-v4": {
+      "atlas": "v4Combined",
+      "index": 4,
+      "role": "floor"
+    },
+    "floor-altar-v4": {
+      "atlas": "v4Combined",
+      "index": 5,
+      "role": "floor-special"
+    },
+    "gate-sun-v4": {
+      "atlas": "v4Combined",
+      "index": 6,
+      "role": "door"
+    },
+    "gate-moon-v4": {
+      "atlas": "v4Combined",
+      "index": 7,
+      "role": "door"
+    },
+    "gate-star-v4": {
+      "atlas": "v4Combined",
+      "index": 8,
+      "role": "door"
+    },
+    "stairs-up-v4": {
+      "atlas": "v4Combined",
+      "index": 9,
+      "role": "stairs"
+    },
+    "stairs-down-v4": {
+      "atlas": "v4Combined",
+      "index": 10,
+      "role": "stairs"
+    },
+    "gate-boss-v4": {
+      "atlas": "v4Combined",
+      "index": 11,
+      "role": "boss-gate"
+    },
+    "card-sun-drop-v4": {
+      "atlas": "v4Combined",
+      "index": 12,
+      "role": "card-drop"
+    },
+    "card-moon-drop-v4": {
+      "atlas": "v4Combined",
+      "index": 13,
+      "role": "card-drop"
+    },
+    "card-star-drop-v4": {
+      "atlas": "v4Combined",
+      "index": 14,
+      "role": "card-drop"
+    },
+    "card-sun-ui-v4": {
+      "atlas": "v4Combined",
+      "index": 15,
+      "role": "card-ui"
+    },
+    "card-moon-ui-v4": {
+      "atlas": "v4Combined",
+      "index": 16,
+      "role": "card-ui"
+    },
+    "card-star-ui-v4": {
+      "atlas": "v4Combined",
+      "index": 17,
+      "role": "card-ui"
+    },
+    "hero-portrait-v4": {
+      "atlas": "heroPortraitV4",
+      "index": 0,
+      "role": "portrait"
+    },
+    "wall-surface-v6": {
+      "atlas": "wallMaterialsV6",
+      "index": 0,
+      "role": "wall-surface"
+    },
+    "wall-edge-horizontal-v6": {
+      "atlas": "wallMaterialsV6",
+      "index": 1,
+      "role": "wall-edge"
+    },
+    "wall-edge-vertical-v6": {
+      "atlas": "wallMaterialsV6",
+      "index": 2,
+      "role": "wall-edge"
+    },
+    "wall-outer-corner-v6": {
+      "atlas": "wallMaterialsV6",
+      "index": 3,
+      "role": "wall-corner"
+    },
+    "wall-inner-corner-v6": {
+      "atlas": "wallMaterialsV6",
+      "index": 4,
+      "role": "wall-corner"
+    },
+    "wall-end-pillar-v6": {
+      "atlas": "wallMaterialsV6",
+      "index": 5,
+      "role": "wall-node"
+    },
+    "gem-atk-v10": {
+      "atlas": "gameplayV10",
+      "index": 0,
+      "role": "gem"
+    },
+    "gem-def-v10": {
+      "atlas": "gameplayV10",
+      "index": 1,
+      "role": "gem"
+    },
+    "potion-red-v10": {
+      "atlas": "gameplayV10",
+      "index": 2,
+      "role": "potion"
+    },
+    "potion-blue-v10": {
+      "atlas": "gameplayV10",
+      "index": 3,
+      "role": "potion"
+    },
+    "card-sun-v10": {
+      "atlas": "gameplayV10",
+      "index": 4,
+      "role": "card-drop"
+    },
+    "card-moon-v10": {
+      "atlas": "gameplayV10",
+      "index": 5,
+      "role": "card-drop"
+    },
+    "card-star-v10": {
+      "atlas": "gameplayV10",
+      "index": 6,
+      "role": "card-drop"
+    },
+    "barrier-sun-v10": {
+      "atlas": "gameplayV10",
+      "index": 7,
+      "role": "barrier"
+    },
+    "barrier-moon-v10": {
+      "atlas": "gameplayV10",
+      "index": 8,
+      "role": "barrier"
+    },
+    "barrier-star-v10": {
+      "atlas": "gameplayV10",
+      "index": 9,
+      "role": "barrier"
+    },
+    "rune-floor-barrier-v10": {
+      "atlas": "gameplayV10",
+      "index": 10,
+      "role": "floor-special"
+    },
+    "rune-stairs-up-v10": {
+      "atlas": "gameplayV10",
+      "index": 11,
+      "role": "stairs"
+    },
+    "rune-stairs-down-v10": {
+      "atlas": "gameplayV10",
+      "index": 12,
+      "role": "stairs"
+    },
+    "seal-guardian-vault": {
+      "file": "interactables/guardian-vault-seal.webp",
+      "role": "guardian-vault"
+    },
+    "switch-vine": {
+      "file": "interactables/vine-switch.webp",
+      "role": "switch"
+    },
+    "switch-tide": {
+      "file": "interactables/switch-tide.webp",
+      "role": "switch"
+    },
+    "switch-forge": {
+      "file": "interactables/switch-forge.webp",
+      "role": "switch"
+    },
+    "switch-ember": {
+      "file": "interactables/switch-ember.webp",
+      "role": "switch"
+    },
+    "switch-hush": {
+      "file": "interactables/switch-hush.webp",
+      "role": "switch"
+    },
+    "seal-vine": {
+      "file": "interactables/vine-seal.webp",
+      "role": "switch-seal"
+    },
+    "seal-switch-single": {
+      "file": "interactables/single-switch-seal.webp",
+      "role": "switch-seal"
+    },
+    "seal-switch-dual": {
+      "file": "interactables/dual-switch-seal.webp",
+      "role": "switch-seal"
+    },
+    "seal-rune-sequence": {
+      "file": "interactables/rune-sequence-seal.webp",
+      "role": "rune-seal"
+    },
+    "seal-archive-index": {
+      "file": "interactables/archive-index-seal.webp",
+      "role": "archive-seal"
+    },
+    "seal-charter-archive": {
+      "file": "interactables/seal-charter-archive.webp",
+      "role": "charter-seal"
+    },
+    "seal-protocol": {
+      "file": "interactables/seal-protocol.webp",
+      "role": "protocol-seal"
+    },
+    "relic-lucky-coin": {
+      "file": "interactables/lucky-coin.webp",
+      "role": "relic"
+    },
+    "relic-moon-blade": {
+      "file": "interactables/moon-blade.webp",
+      "role": "relic"
+    },
+    "relic-dragon-scale-talisman": {
+      "file": "interactables/dragon-scale-talisman.webp",
+      "role": "relic"
+    },
+    "relic-silent-ward-earring": {
+      "file": "interactables/silent-ward-earring.webp",
+      "role": "relic"
+    },
+    "relic-aether-prism": {
+      "file": "interactables/aether-prism.webp",
+      "role": "relic"
+    },
+    "relic-conduit-codex": {
+      "file": "interactables/conduit-codex.webp",
+      "role": "relic"
+    },
+    "relic-arcane-battery": {
+      "file": "interactables/arcane-battery.webp",
+      "role": "relic"
+    },
+    "relic-mirror-reservoir": {
+      "file": "interactables/mirror-reservoir.webp",
+      "role": "relic"
+    },
+    "relic-crown-capacitor": {
+      "file": "interactables/crown-capacitor.webp",
+      "role": "relic"
+    },
+    "relic-origin-focus": {
+      "file": "interactables/origin-focus.webp",
+      "role": "relic"
+    },
+    "relic-shelter-aegis": {
+      "file": "interactables/shelter-aegis.webp",
+      "role": "relic"
+    },
+    "relic-audit-ledger": {
+      "file": "interactables/audit-ledger.webp",
+      "role": "relic"
+    },
+    "relic-relay-capacitor": {
+      "file": "interactables/relay-capacitor.webp",
+      "role": "relic"
+    }
   }
 }

@@ -1,0 +1,98 @@
+{
+  "version": "GAL-SIMPLE-1.2",
+  "cg_id": "CG_003_prologue-tower",
+  "semantic_id": "prologue-tower",
+  "title": "序章：被夺去的咏唱",
+  "status": "r0-layout-accepted-with-carry",
+  "current_iteration": "R0_layout_v2",
+  "layout_asset": {
+    "path": "04_cg/working/CG_003_prologue-tower_R0_layout_v2.png",
+    "sha256": "c4761fef9dba03a44b53dbe6f01185bbf1f3356aaa057158154a75baf189431d",
+    "width": 1672,
+    "height": 941,
+    "mode": "RGB"
+  },
+  "layout_qa": "03_intermediate/qa/CG_003_prologue-tower_R0_qa.md",
+  "layout_carry": "If the heroine remains in R1/R3, reduce her to roughly 12% or less of frame height without changing tower, seven lights, ship, sealed gate or storm direction.",
+  "source_locator": {
+    "repository_commit": "b05bc623b7c1ef8b93cfa1fca253ad2119a52f68",
+    "file": "src/game/data.js",
+    "line": 212
+  },
+  "source_passage": "三年前的停战夜，魔力风暴逼近灰港；高塔本应为撤离船导航，最后一艘船驶出后塔门再未打开。",
+  "narrative_beat": "建立灰港、封塔与未结案危机。",
+  "point_of_view": "third-person visual-novel camera aligned with protagonist understanding",
+  "cast": [
+    "hero"
+  ],
+  "expressions": {
+    "hero": "guarded suspicion"
+  },
+  "environment_id": "night-tower",
+  "props": [
+    "sealed obsidian tower gate",
+    "seven faint core lights",
+    "distant evacuation ship"
+  ],
+  "composition": "16:9 超广角；暴风海港与高塔占主体，璃作为背向镜头的小型前景人物，塔门刚封闭。",
+  "must_show": [
+    "tower-dominant shot",
+    "storm approaching harbor",
+    "seven restrained core lights",
+    "hero small and back-facing"
+  ],
+  "must_not_show": [
+    "celebration",
+    "large hero portrait",
+    "readable signs",
+    "modern city"
+  ],
+  "project_inference": "源码首句没有写璃入画；审计 registry 把 hero 列为 cast，因此仅安排小型背影，不增加动作。",
+  "character_reference_order": {
+    "hero": [
+      {
+        "role": "canonical_text",
+        "path": "01_canon/characters/hero.md",
+        "sha256": "6eada62d7bfc82c639b25fe2387de9a51f4adc6009b46d55080c26fcd2193d50"
+      },
+      {
+        "role": "accepted_turnaround",
+        "path": "01_canon/turnarounds/CHAR_hero_turnaround_v2.png",
+        "sha256": "d1385fe1798271e05e608204fe6d6cc99daa7961587d2e188cef7e62693cfe1b"
+      },
+      {
+        "role": "accepted_detail_board",
+        "path": "01_canon/details/DETAIL_hero_v2.png",
+        "sha256": "8f42611ee44f012b256262a251c67c5713d4056c8c3af5391e6c6976d337bfa1"
+      },
+      {
+        "role": "accepted_expression_board",
+        "path": "01_canon/expressions/EXPR_hero_v1.png",
+        "sha256": "d1571b7c18c3fbd902109a575619a40b1ecd4d9d84180fe6e9eb585a5eb1f3f8"
+      },
+      {
+        "role": "accepted_transparent_standee",
+        "path": "01_canon/standees/STANDEE_hero_neutral_v1.png",
+        "sha256": "bc7e81506ad41225bfe5ef548889d66e67d4c8db963c64650ebb601737d49b76"
+      }
+    ]
+  },
+  "environment_reference": "01_canon/environments/ENV_night-tower_v1.png",
+  "runtime_target": "public/assets/anime/cg/liyue-prologue-tower-cg.webp",
+  "archive_only_aliases": [],
+  "iteration_ladder": [
+    "R0_layout",
+    "R1_identity",
+    "R2_costume",
+    "R3_scene",
+    "R4_final"
+  ],
+  "output_contract": "04_cg/final/CG_003_prologue-tower_v1.png",
+  "environment_reference_asset": {
+    "path": "01_canon/environments/ENV_night-tower_v1.png",
+    "sha256": "b2bf4f703f327dfcc09a8ae0f35b8705884d9e6ccde45ade0c93c82d66db3b8d",
+    "width": 1672,
+    "height": 941,
+    "mode": "RGB"
+  }
+}

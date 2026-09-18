@@ -1,0 +1,11 @@
+{
+  "version": "GAL-SIMPLE-1.1",
+  "character_id": "fox_boss",
+  "operation": "precise tail-count edit",
+  "prompt": "Use case: precise-object-edit and background-extraction. Edit Image 1 only. Preserve the fox woman pixel-for-pixel in face, hair, ears, single red leaf clip, kimono, green hakama, pose, hands, one fan, exactly three paper seals, feet, cel rendering and true RGBA transparency. Change ONLY the tails. Current problem: Image 1 has FOUR tails. Final result must have EXACTLY THREE tails total. Keep the upper-left tail and upper-right tail. Completely erase the lower-left tail including its red base, white tip, glow and outline. Move the remaining lower-right tail to a centered position directly behind the lower skirt, creating one centered lower tail. The final count visible from base to white tip must be: left upper tail 1, centered lower tail 2, right upper tail 3. Nothing else may look like a tail. No background, halo, aura, floor, cast shadow, text, logo or watermark. Entire three-tail silhouette and both feet remain inside canvas.",
+  "referenced_image_paths": [
+    "/workspace/scratch/0645849eb5a5/gal-design-v1/04_cg/working/standees/raw/STANDEE_fox-boss_neutral_raw_v2.png",
+    "/workspace/scratch/0645849eb5a5/gal-design-v1/01_canon/turnarounds/CHAR_fox-boss_turnaround_v1.png"
+  ],
+  "output_contract": "01_canon/standees/STANDEE_fox-boss_neutral_v3.png"
+}

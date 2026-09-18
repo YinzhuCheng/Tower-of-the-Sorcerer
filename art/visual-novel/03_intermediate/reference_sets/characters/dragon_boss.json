@@ -1,0 +1,39 @@
+{
+  "version": "GAL-SIMPLE-1.1",
+  "character_id": "dragon_boss",
+  "reference_order": [
+    {
+      "role": "canonical_text",
+      "path": "01_canon/characters/dragon_boss.md",
+      "sha256": "791055f373ea48319922efbd2885b4c25473517426a3e9364c92785ce0fa3c8e"
+    },
+    {
+      "role": "accepted_turnaround",
+      "path": "01_canon/turnarounds/CHAR_dragon-boss_turnaround_v1.png",
+      "sha256": "579890599c069c25594cf99e870aeaa66eaa5c54eee0d53c94bb2864c66ed3a3"
+    },
+    {
+      "role": "accepted_detail_board",
+      "path": "01_canon/details/DETAIL_dragon-boss_v1.png",
+      "sha256": "c3e501050ba2a109e85cf256ba558f399394ba2be800b4eb0939ee38a0068e71"
+    },
+    {
+      "role": "accepted_expression_board",
+      "path": "01_canon/expressions/EXPR_dragon-boss_v1.png",
+      "sha256": "5912770003929075cb67cd320fe15eef2bc5a7bfd38a6d90ac56835209af68fc"
+    },
+    {
+      "role": "accepted_transparent_standee",
+      "path": "01_canon/standees/STANDEE_dragon-boss_neutral_v1.png",
+      "sha256": "69c3fd9656d40970acfec31f51e0540a54f4faf4e4738301cc6715e22fcae08d"
+    }
+  ],
+  "hard_locks": [
+    "角2尾1",
+    "黑角金尖",
+    "翼形披肩2片非肉翅",
+    "长枪1杆",
+    "枪缨1束"
+  ],
+  "missing_reference_policy": "stop_generation_and_complete_missing_canon_asset"
+}

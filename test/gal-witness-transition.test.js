@@ -68,12 +68,12 @@ test('F10 and F20 climax beats bind authored CG rather than falling back to a ge
   const [f10, f20, seal, sovereign] = await Promise.all([
     readFile(new URL('../src/game/demo-10-floor-content.js', import.meta.url), 'utf8'),
     readFile(new URL('../src/game/demo-20-floor-content.js', import.meta.url), 'utf8'),
-    readFile(new URL('../public/assets/anime/cg/liyue-noctia-seal-cg.webp', import.meta.url)),
-    readFile(new URL('../public/assets/anime/cg/liyue-noctia-sovereign-cg.webp', import.meta.url))
+    readFile(new URL('../public/assets/anime/cg/liyue-noctia-seal-cg-audit-v3.webp', import.meta.url)),
+    readFile(new URL('../public/assets/anime/cg/liyue-noctia-sovereign-cg-audit-v3.webp', import.meta.url))
   ]);
 
   assertHighResolutionWebp(seal, 'F10 seal-break CG');
   assertHighResolutionWebp(sovereign, 'F20 accountability CG');
-  assert.match(f10, /queenPhaseDemo[\s\S]*?liyue-noctia-seal-cg\.webp/);
-  assert.match(f20, /floor20[\s\S]*?liyue-noctia-sovereign-cg\.webp/);
+  assert.match(f10, /queenPhaseDemo[\s\S]*?liyue-noctia-seal-cg-audit-v3\.webp/);
+  assert.match(f20, /floor20[\s\S]*?liyue-noctia-sovereign-cg-audit-v3\.webp/);
 });

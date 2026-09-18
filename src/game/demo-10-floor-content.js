@@ -136,7 +136,7 @@ export function applyDemoTenFloorContent({ enemies, floors, dialogues, gridSize 
       turns: [
         dialogueTurn('旁白', null, '星镜里的批注一闪而过：离港确认有效，结案权限却被上层锁定。', { kind: 'narration' }),
         dialogueTurn('旁白', null, '第七层没有窗，只有成千上万根影线穿过墙壁。每根线都牵着一道权限，也牵着一名无法违令的守卫。', { kind: 'narration' }),
-        dialogueTurn('旁白', null, '璃走近时，七束颜色不同的光从她胸前分向各层。那是尚未取回的最后一段咏唱在呼唤其余六段，也让她第一次看清：七名守护者的契约都系在同一个结案锁上。', { cg: '/assets/anime/cg/liyue-yayu-seven-core-network-cg.webp', cgHold: 4, kind: 'narration' }),
+        dialogueTurn('旁白', null, '璃走近时，七束颜色不同的光从她胸前分向各层。那是尚未取回的最后一段咏唱在呼唤其余六段，也让她第一次看清：七名守护者的契约都系在同一个结案锁上。', { cg: '/assets/anime/cg/liyue-yayu-seven-core-network-cg-audit-v3.webp', cgHold: 4, kind: 'narration' }),
         dialogueTurn('影织姬·鸦羽', 'shadow_boss', '女王以为“撤销登记”就是删掉名字。她把自己也留在塔里，一等就是三年。'),
         dialogueTurn('影织姬·鸦羽', 'shadow_boss', '我负责沿影线追查每道命令从哪里来。可延长令落下的那一刻，有人反过来借虚影核心遮住了源头；我明明看见异常，却连报告都送不出。', { expression: 'guarded' }),
         dialogueTurn('绫星·璃', 'hero', '她想守住灰港，却让守卫们成了命令的工具。我会带着证据去见她。', { expression: 'guarded' }),
@@ -173,7 +173,7 @@ export function applyDemoTenFloorContent({ enemies, floors, dialogues, gridSize 
       turns: [
         dialogueTurn('旁白', null, '王座上没有胜利庆典，只有一封不断重播的求援。七枚核心在璃身边同时亮起。', { kind: 'narration' }),
         dialogueTurn('旁白', null, '殿墙刻着灰港全部撤离者的名字。多数人已在北岸成家，有人经营面包房，有人成了领航员；可登记网不知道他们后来的生活，只把每个人冻结成三年前等待救援的一行字。', { kind: 'narration' }),
-        dialogueTurn('无声女王·诺克缇娅', 'final_queen', '三年里，我每天都听见同一句“等待确认”。若我关掉它，谁来记得灰港的人？', { cg: '/assets/anime/cg/liyue-noctia-truth-cg.webp', cgHold: 3, expression: 'sorrow' }),
+        dialogueTurn('无声女王·诺克缇娅', 'final_queen', '三年里，我每天都听见同一句“等待确认”。若我关掉它，谁来记得灰港的人？', { cg: '/assets/anime/cg/liyue-noctia-truth-cg-audit-v3.webp', cgHold: 3, expression: 'sorrow' }),
         dialogueTurn('无声女王·诺克缇娅', 'final_queen', '我亲眼见过旧登记被关闭后整批档案化成空白。那天之后，我宁可让警钟继续，也不敢赌灰港会不会被抹掉。我知道这个选择困住了所有人，也知道自己没有勇气改。', { expression: 'sorrow' }),
         dialogueTurn('旁白', null, '诺克缇娅说得很轻，按住封印链的手却没有松开。黯星纹路正沿着她的手腕向上蔓延，替她拒绝一切结案请求。', { kind: 'narration' }),
         dialogueTurn('绫星·璃', 'hero', '七名守护者都记得。离港回执也存在，只是被更高的权限拦下了。', { expression: 'resolve' }),
@@ -382,7 +382,7 @@ export function applyDemoTenFloorContent({ enemies, floors, dialogues, gridSize 
       dialogueTurn('旁白', null, '核心把四十七枚姓名牌投成燃烧的幻象，又在每一枚下方写出“关闭即删除”。诺克缇娅下意识伸手护住它们，锁链便趁机缠上她的手腕。', { kind: 'narration' }),
       dialogueTurn('无声女王·诺克缇娅', 'final_queen', '原来它从没有受我控制。它锁住原始签名，也不许我承认撤离已经结束。', { expression: 'sorrow' }),
       dialogueTurn('无声女王·诺克缇娅', 'final_queen', '我仍然是做出封塔选择的人，但我不会再让这份恐惧替我挥剑。璃，姓名牌只是幻象，真正的档案已经由七枚核心保存。攻击核心。', { expression: 'resolve' }),
-      dialogueTurn('旁白', null, '诺克缇娅反手扯断束缚自己的黑纹，为璃撕开一道狭窄缺口。七枚核心沿缺口照亮黯星的裂缝。', { cg: '/assets/anime/cg/liyue-noctia-seal-cg.webp', cgHold: 2, kind: 'narration' }),
+      dialogueTurn('旁白', null, '诺克缇娅反手扯断束缚自己的黑纹，为璃撕开一道狭窄缺口。七枚核心沿缺口照亮黯星的裂缝。', { cg: '/assets/anime/cg/liyue-noctia-seal-cg-audit-v3.webp', cgHold: 2, kind: 'narration' }),
       dialogueTurn('绫星·璃', 'hero', '那就一起打破它。第二阶段的反击无视防御，我会用留下的生命撑过去。', { expression: 'embers' })
     ]),
     bossQueenPostDemo: dialogueSequence('终章：魔法重新被选择', 'night', [

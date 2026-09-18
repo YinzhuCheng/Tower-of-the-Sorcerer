@@ -1,0 +1,269 @@
+{
+  "auditVersion": "2026-09-04-art-audit-repair-v3",
+  "runtimeArtVersion": "20260904-art-audit-repair-v3",
+  "sourceAudit": "art/visual-novel/05_manifests/reviews/tower-art-audit-2026-09-04-issues.json",
+  "policy": {
+    "standees": "RGBA alpha preserved; edge-preserving denoise, restrained unsharp mask and light correction",
+    "celSimplify": "face-preserving vertical mask; bilateral smoothing and low-amplitude tonal quantization concentrated on clothing",
+    "detailLight": "bilateral cleanup before low-amplitude sharpening and light lift; no procedural grain"
+  },
+  "standees": [
+    {
+      "id": "sword_boss",
+      "sourceFrom": "user-selected round2 transparent master",
+      "source": "art/visual-novel/04_cg/final/2026-09-11-user-round2/characters/CHAR_41_serena-round2-alpha.png",
+      "runtime": "public/assets/anime/characters/serena-dialogue-stern-audit-v3.webp",
+      "dimensions": [
+        1024,
+        1536
+      ],
+      "alphaRequired": true,
+      "alphaMin": 0,
+      "alphaMax": 254,
+      "sha256": "c55f464d83f07b96de59e3d0e39769660cb0b5f33535456adbb72ba9866d9c81",
+      "profile": "user-selected-round2-2026-09-11"
+    },
+    {
+      "id": "palace_warden_v2",
+      "sourceFrom": "public/assets/anime/characters/vela-dialogue-duty.webp",
+      "source": "art/visual-novel/04_cg/final/2026-09-04-art-audit-repair-v3/characters/CHAR_32_vela-duty-alpha.png",
+      "runtime": "public/assets/anime/characters/vela-dialogue-duty-audit-v3.webp",
+      "dimensions": [
+        1024,
+        1536
+      ],
+      "alphaRequired": true,
+      "alphaMin": 0,
+      "alphaMax": 254,
+      "sha256": "63dd3a0ca914ec942f899924981c7bb05cd0fc88ee538fc2eb9ac5b51c065172"
+    },
+    {
+      "id": "black_seal_keeper_v2",
+      "sourceFrom": "user-selected round2 transparent master",
+      "source": "art/visual-novel/04_cg/final/2026-09-11-user-round2/characters/CHAR_42_seph-round2-alpha.png",
+      "runtime": "public/assets/anime/characters/seph-dialogue-watchful-audit-v3.webp",
+      "dimensions": [
+        1024,
+        1536
+      ],
+      "alphaRequired": true,
+      "alphaMin": 0,
+      "alphaMax": 254,
+      "sha256": "a40d5a065f0184caca3086afaa9c819aa5efb254d9b348d559847b279dcbc6a8",
+      "profile": "user-selected-round2-2026-09-11"
+    },
+    {
+      "id": "act3_last_custodian",
+      "sourceFrom": "user-selected round2 transparent master",
+      "source": "art/visual-novel/04_cg/final/2026-09-11-user-round2/characters/CHAR_43_last-custodian-round2-alpha.png",
+      "runtime": "public/assets/anime/characters/last-custodian-dialogue-release-audit-v3.webp",
+      "dimensions": [
+        1024,
+        1536
+      ],
+      "alphaRequired": true,
+      "alphaMin": 0,
+      "alphaMax": 254,
+      "sha256": "ef680899d45718f3c3ed24de11c2d39b18f8ca428e7205ebf60581f9a8be0c7e",
+      "profile": "user-selected-round2-2026-09-11"
+    }
+  ],
+  "avatars": [
+    {
+      "id": "whale_boss",
+      "sourceFrom": "public/assets/anime/portraits/v1/whale-boss-portrait-runtime.webp",
+      "runtime": "public/assets/anime/avatars/whale-boss-avatar-lament-audit-v3.webp",
+      "dimensions": [
+        512,
+        512
+      ],
+      "alphaRequired": false,
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "59746b4a604e65eab7baa54ad2304f5380f6760147ff33304ed7af2b2e9f9421"
+    },
+    {
+      "id": "dragon_boss",
+      "sourceFrom": "public/assets/anime/characters/yanli-dialogue-embers.webp",
+      "runtime": "public/assets/anime/avatars/dragon-boss-avatar-embers-audit-v3.webp",
+      "dimensions": [
+        512,
+        512
+      ],
+      "alphaRequired": false,
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "a7ca77d523a428830e36e0e8b6e3ee1a2d21a84b51eafaa8416f74087462e11d"
+    }
+  ],
+  "mapUnits": [
+    {
+      "id": "shadow_boss",
+      "sourceFrom": "public/assets/anime/characters/yayu-dialogue-guarded.webp",
+      "runtime": "public/assets/anime/enemies/v3/shadow-boss-map-audit-v3.webp",
+      "dimensions": [
+        384,
+        384
+      ],
+      "alphaRequired": true,
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "b8bf9918e2ce71d6e649cb8cf5b3863d21446ce1faa1f4d5160d3e2cb442dfe7"
+    },
+    {
+      "id": "hero",
+      "sourceFrom": "public/assets/anime/avatars/liyue-avatar-embers-cel.webp",
+      "runtime": "public/assets/anime/map/atlases/runtime/hero-portrait-v4.webp",
+      "dimensions": [
+        256,
+        256
+      ],
+      "alphaRequired": true,
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "3dc585ee37e29044d886718a9471b7519ba8f7bd2274b7edf465ea562e907f46",
+      "runtimeSlotPreserved": true,
+      "derivation": "audited avatar with transparent one-pixel perimeter"
+    }
+  ],
+  "cgs": [
+    {
+      "id": "noctia-truth",
+      "profile": "cel-simplify",
+      "sourceFrom": "public/assets/anime/cg/liyue-noctia-truth-cg.webp",
+      "runtime": "public/assets/anime/cg/liyue-noctia-truth-cg-audit-v3.webp",
+      "dimensions": [
+        1672,
+        941
+      ],
+      "sha256": "f7bde0b7e338da88d4c8b2bef27ec5ca0d8e6456844752cb83fc4ac35fe58c85"
+    },
+    {
+      "id": "noctia-seal",
+      "profile": "cel-simplify",
+      "sourceFrom": "public/assets/anime/cg/liyue-noctia-seal-cg.webp",
+      "runtime": "public/assets/anime/cg/liyue-noctia-seal-cg-audit-v3.webp",
+      "dimensions": [
+        1672,
+        941
+      ],
+      "sha256": "83eb403b6f45c7724dfc30a8d32cf18e211f5d501200872dcd17fe4bb39c30bf"
+    },
+    {
+      "id": "echo-ledger",
+      "profile": "cel-simplify",
+      "sourceFrom": "public/assets/anime/cg/liyue-echo-ledger-cg.webp",
+      "runtime": "public/assets/anime/cg/liyue-echo-ledger-cg-audit-v3.webp",
+      "dimensions": [
+        1672,
+        941
+      ],
+      "sha256": "02f9feb30734fb59a63d3f5c7ced610ae57a2cae6185ee3f5a884ceac09abe75"
+    },
+    {
+      "id": "noctia-sovereign",
+      "profile": "cel-simplify",
+      "sourceFrom": "public/assets/anime/cg/liyue-noctia-sovereign-cg.webp",
+      "runtime": "public/assets/anime/cg/liyue-noctia-sovereign-cg-audit-v3.webp",
+      "dimensions": [
+        1672,
+        941
+      ],
+      "sha256": "bda16f780cd4a379b526982ba2587f59e7f0f777e2eb2eaca5a5c39d1749eca6"
+    },
+    {
+      "id": "seven-cantos-severed",
+      "profile": "user-selected-round2-2026-09-11",
+      "sourceFrom": "public/assets/anime/cg/liyue-seven-cantos-severed-cg.webp",
+      "runtime": "public/assets/anime/cg/liyue-seven-cantos-severed-cg-audit-v3.webp",
+      "dimensions": [
+        1672,
+        941
+      ],
+      "sha256": "83b6570a445e27308f1da9995a2f2c96f9b25571511332e4b94005c896a2bbb6"
+    },
+    {
+      "id": "seven-core-network",
+      "profile": "user-selected-round2-2026-09-11",
+      "sourceFrom": "public/assets/anime/cg/liyue-yayu-seven-core-network-cg.webp",
+      "runtime": "public/assets/anime/cg/liyue-yayu-seven-core-network-cg-audit-v3.webp",
+      "dimensions": [
+        1672,
+        941
+      ],
+      "sha256": "de5066673159b58093a4c5e5d743e90a72cc603c4a60085f392e8ff6f8b2e5e6"
+    },
+    {
+      "id": "missing-fourth-step",
+      "profile": "user-selected-round2-2026-09-11",
+      "sourceFrom": "public/assets/anime/cg/liyue-noctia-missing-fourth-step-cg.webp",
+      "runtime": "public/assets/anime/cg/liyue-noctia-missing-fourth-step-cg-audit-v3.webp",
+      "dimensions": [
+        1672,
+        941
+      ],
+      "sha256": "24e603a5591e253eab7065938a37477ae75ad2b63ab9e3c844d6a9a9a584533d"
+    },
+    {
+      "id": "intercepted-receipt",
+      "profile": "user-selected-round2-2026-09-11",
+      "sourceFrom": "public/assets/anime/cg/liyue-yayu-intercepted-receipt-cg.webp",
+      "runtime": "public/assets/anime/cg/liyue-yayu-intercepted-receipt-cg-audit-v3.webp",
+      "dimensions": [
+        1672,
+        941
+      ],
+      "sha256": "5523d51a0801e50be299747b110e53acc22bfeaa41b6dfcf5dabf950c8ec9d03"
+    },
+    {
+      "id": "missing-page-restored",
+      "profile": "user-selected-round2-2026-09-11",
+      "sourceFrom": "public/assets/anime/cg/liyue-noctia-missing-page-cg.webp",
+      "runtime": "public/assets/anime/cg/liyue-noctia-missing-page-cg-audit-v3.webp",
+      "dimensions": [
+        1672,
+        941
+      ],
+      "sha256": "b2a6bae9b18c3f7231487c6a9019b66a7b8f935b034ed12f568ebe42c23d9487"
+    },
+    {
+      "id": "letters-held-in-storm",
+      "profile": "user-selected-round2-2026-09-11",
+      "sourceFrom": "public/assets/anime/cg/liyue-noctia-archive-storm-cg.webp",
+      "runtime": "public/assets/anime/cg/liyue-noctia-archive-storm-cg-audit-v3.webp",
+      "dimensions": [
+        1672,
+        941
+      ],
+      "sha256": "03fd19c5aaefaa0ac47d41a0d52b7f3430c74fadab2fb66b0ac96c0800725d71"
+    },
+    {
+      "id": "originals-enter-lighthouse",
+      "profile": "user-selected-round2-2026-09-11",
+      "sourceFrom": "public/assets/anime/cg/liyue-archive-warden-entry-cg.webp",
+      "runtime": "public/assets/anime/cg/liyue-archive-warden-entry-cg-audit-v3.webp",
+      "dimensions": [
+        1672,
+        941
+      ],
+      "sha256": "f76226461511b5ed0fee449596245062d6718818f758d937ef5bbc38595508a8"
+    },
+    {
+      "id": "traceable-revocation",
+      "profile": "user-selected-round2-2026-09-11",
+      "sourceFrom": "public/assets/anime/cg/liyue-traceable-revocation-cg.webp",
+      "runtime": "public/assets/anime/cg/liyue-traceable-revocation-cg-audit-v3.webp",
+      "dimensions": [
+        1672,
+        941
+      ],
+      "sha256": "1cd036a5ae34bdbadd2c75f3e40d4ec91961f47f11006f66261ce1d3b9fcf4ee"
+    }
+  ],
+  "round2Import": {
+    "date": "2026-09-11",
+    "countRuntime": 11,
+    "countSourceMasters": 3,
+    "policy": "Eight user-selected CG replacements plus three round-two transparent standees. Existing runtime paths preserved."
+  }
+}

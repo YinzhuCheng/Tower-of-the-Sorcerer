@@ -1,0 +1,32 @@
+{
+  "version": "GAL-SIMPLE-1.1",
+  "character_id": "cat_boss",
+  "series_style_lock": "GAL-SIMPLE clean cel transparent standee",
+  "identity_lock": [
+    "猫脸非人脸猫娘",
+    "耳2尾1",
+    "帽无羽毛",
+    "胸前铃1枚",
+    "盾月牙1枚",
+    "左盾右弯刀"
+  ],
+  "prop_lock": "One round navy buckler on LEFT arm with plain brass rim and ONE large gold crescent, no stars; one short curved silver sabre in RIGHT hand with simple brass knuckle guard; plain brown belt and navy scabbard at LEFT hip. Hat is plain navy without insignia.",
+  "pose": "Alert neutral stance. LEFT arm carries the single round shield low; RIGHT hand carries the single curved sabre pointed down. Exactly one tail visible.",
+  "negative_constraints": [
+    "background pixels",
+    "ground shadow",
+    "extra accessory",
+    "duplicate prop",
+    "wrong side",
+    "wrong count",
+    "watermark",
+    "cropped feet or prop"
+  ],
+  "prompt": "Use case: background-extraction. Asset type: canonical full-body transparent visual-novel standing figure. Create ONE isolated full-body character cutout in polished Japanese 2D visual-novel cel style matching GAL-SIMPLE: fine clean dark outlines, large solid local colors, one hard-edged shadow per material, restrained highlights, adult proportions. Image 1 is the accepted turnaround and has highest visual authority for identity, anatomy, silhouette and costume. Image 2 is the accepted detail board and controls exact accessory, clothing and prop counts and side placement. Image 3 is the accepted expression sheet and controls only the face; use its first neutral expression. Portrait 2:3 composition, centered, entire hair, all props and both feet inside canvas with 8 percent transparent padding. Natural relaxed three-quarter pose facing camera, anatomically plausible hands, readable silhouette. ACTUAL TRANSPARENT RGBA BACKGROUND: no white or checkerboard background, no scenery, floor, cast shadow, glow, aura, particles, frame, text, logo, watermark or signature. Only the character and explicitly required carried items may have visible pixels. Do not redesign, beautify with extra jewelry, duplicate props, change sides, change counts, or merge objects into hands. CANON IDENTITY: Adult anthropomorphic feline guard, 162 cm, actual grey-and-white CAT FACE with short muzzle and whiskers, amber eyes, two triangular ears and exactly ONE grey tail with white tip. Not a human catgirl. Plain navy bicorne hat WITHOUT feather, navy knee-length uniform coat, simple silver breastplate, black trousers, navy gaiters leaving white feline paws visible. ONE small silver bell at collar. No medals, tassels, epaulettes, embroidery or extra tails. CANON PROP: One round navy buckler on LEFT arm with plain brass rim and ONE large gold crescent, no stars; one short curved silver sabre in RIGHT hand with simple brass knuckle guard; plain brown belt and navy scabbard at LEFT hip. Hat is plain navy without insignia. HARD LOCKS: 猫脸非人脸猫娘, 耳2尾1, 帽无羽毛, 胸前铃1枚, 盾月牙1枚, 左盾右弯刀. POSE AND OWNERSHIP: Alert neutral stance. LEFT arm carries the single round shield low; RIGHT hand carries the single curved sabre pointed down. Exactly one tail visible.",
+  "referenced_image_paths": [
+    "/workspace/scratch/0645849eb5a5/gal-design-v1/01_canon/turnarounds/CHAR_cat-boss_turnaround_v1.png",
+    "/workspace/scratch/0645849eb5a5/gal-design-v1/01_canon/details/DETAIL_cat-boss_v1.png",
+    "/workspace/scratch/0645849eb5a5/gal-design-v1/01_canon/expressions/EXPR_cat-boss_v1.png"
+  ],
+  "output_contract": "01_canon/standees/STANDEE_cat-boss_neutral_v1.png"
+}

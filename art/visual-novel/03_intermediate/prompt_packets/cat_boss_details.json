@@ -1,0 +1,6 @@
+{
+  "prompt": "Use case: stylized-concept. Professional Japanese 2D visual-novel PRODUCTION DETAIL SHEET on a uniform warm very pale grey OPAQUE background. Match Image 1 exactly for colors, shapes and simplified low-noise cel rendering. Clean dark line, large flat colors, one hard shadow per material. Show separate isolated orthographic detail drawings with generous spacing; no character full body, no invisible mannequin, no scenery, no effects. NO text, letters, numbers, labels, UI, logos or watermarks.\nDETAILS: cat muzzle/ears and tail root, plain bicorne hat, bell and cuirass, round crescent buckler front/back grip, curved sabre and scabbard.\nEXACT RULES: One round navy buckler on LEFT arm with plain brass rim and ONE large gold crescent, no stars; one short curved silver sabre in RIGHT hand with simple brass knuckle guard; plain brown belt and navy scabbard at LEFT hip. Hat is plain navy without insignia.\nHARD LOCKS: 猫脸非人脸猫娘; 耳2尾1; 帽无羽毛; 胸前铃1枚; 盾月牙1枚; 左盾右弯刀. Every physical object appears once; alternate front/back or open/closed views are clearly the same design. No extra decorative filler.",
+  "referenced_image_paths": [
+    "/workspace/scratch/0645849eb5a5/gal-design-v1/01_canon/turnarounds/CHAR_cat-boss_turnaround_v1.png"
+  ]
+}

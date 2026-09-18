@@ -1,0 +1,34 @@
+{
+  "version": "GAL-SIMPLE-1.2",
+  "environment_id": "night-shelter",
+  "title": "夜航侧库",
+  "usage": "22F",
+  "status": "gal-redraw",
+  "source_facts": "深夜避难侧库，整齐床卷、药箱、空白夜班簿与琥珀值夜灯；安全、克制、仍在轮值。",
+  "composition_contract": "16:9 empty visual-novel stage; clean standing-figure zones at both sides; bottom 30% low detail",
+  "series_anchors": [
+    "obsidian arch",
+    "small brass registration seal",
+    "blue-white index lamp",
+    "one thin violet seal fissure when applicable"
+  ],
+  "must_not": [
+    "people",
+    "readable text",
+    "UI",
+    "logo",
+    "watermark",
+    "photorealism",
+    "dense micro-texture"
+  ],
+  "target_asset": "01_canon/environments/ENV_night-shelter_v1.png",
+  "asset_status": "accepted",
+  "asset": {
+    "path": "01_canon/environments/ENV_night-shelter_v1.png",
+    "sha256": "89a65d43503a287164c847e118b970d2508f47a3c96ea7839808afcb2709222a",
+    "width": 1672,
+    "height": 941,
+    "mode": "RGB"
+  },
+  "prompt_packet": "03_intermediate/prompt_packets/environments/night-shelter.json"
+}

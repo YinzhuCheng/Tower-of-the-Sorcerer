@@ -1,0 +1,210 @@
+{
+  "version": "GAL-SIMPLE-1.1",
+  "panel_order": "top-left to top-right, then bottom-left to bottom-right",
+  "characters": {
+    "hero": {
+      "name": "绫星·璃",
+      "expressions": [
+        "neutral attentive",
+        "guarded suspicion",
+        "quiet resolve",
+        "stern warning",
+        "controlled anger like banked embers",
+        "hurt but conscious"
+      ],
+      "packet": "03_intermediate/prompt_packets/expressions/hero.json"
+    },
+    "guide": {
+      "name": "残响精灵·纱雾",
+      "expressions": [
+        "gentle reassurance",
+        "intense focus",
+        "watchful concern",
+        "open lament",
+        "startled alarm",
+        "newfound resolve"
+      ],
+      "packet": "03_intermediate/prompt_packets/expressions/guide.json"
+    },
+    "final_queen": {
+      "name": "无声女王·诺克缇娅",
+      "expressions": [
+        "cold authority",
+        "knowing half-smile",
+        "contained sorrow",
+        "grave stillness",
+        "shaken realization",
+        "unyielding resolve"
+      ],
+      "packet": "03_intermediate/prompt_packets/expressions/final_queen.json"
+    },
+    "cat_boss": {
+      "name": "猫卫长·米露",
+      "expressions": [
+        "alert",
+        "proud confidence",
+        "angry command",
+        "embarrassed annoyance",
+        "hurt surprise",
+        "relieved grin"
+      ],
+      "packet": "03_intermediate/prompt_packets/expressions/cat_boss.json"
+    },
+    "fox_boss": {
+      "name": "狐祝·绯叶",
+      "expressions": [
+        "watchful calm",
+        "serene ritual focus",
+        "suspicion",
+        "controlled anger",
+        "private sorrow",
+        "protective resolve"
+      ],
+      "packet": "03_intermediate/prompt_packets/expressions/fox_boss.json"
+    },
+    "whale_boss": {
+      "name": "深蓝歌姬·澜音",
+      "expressions": [
+        "gentle welcome",
+        "lament",
+        "musical concentration",
+        "startled silence",
+        "brave resolve",
+        "quiet relief"
+      ],
+      "packet": "03_intermediate/prompt_packets/expressions/whale_boss.json"
+    },
+    "sword_boss": {
+      "name": "剑圣·塞蕾娜",
+      "expressions": [
+        "stern composure",
+        "challenging confidence",
+        "anger",
+        "caught off guard",
+        "restrained regret",
+        "earned respect"
+      ],
+      "packet": "03_intermediate/prompt_packets/expressions/sword_boss_r2.json"
+    },
+    "dragon_boss": {
+      "name": "龙姬·焰璃",
+      "expressions": [
+        "proud embers",
+        "confident smirk",
+        "open anger",
+        "shock",
+        "painful regret",
+        "fierce resolve"
+      ],
+      "packet": "03_intermediate/prompt_packets/expressions/dragon_boss.json"
+    },
+    "astral_boss": {
+      "name": "天穹魔女·露米",
+      "expressions": [
+        "calm observation",
+        "deep focus",
+        "worried calculation",
+        "startled",
+        "sorrow",
+        "clear resolve"
+      ],
+      "packet": "03_intermediate/prompt_packets/expressions/astral_boss.json"
+    },
+    "shadow_boss": {
+      "name": "影织姬·鸦羽",
+      "expressions": [
+        "guarded",
+        "wary attention",
+        "dry annoyance",
+        "sudden pain",
+        "guilt",
+        "quiet resolve"
+      ],
+      "packet": "03_intermediate/prompt_packets/expressions/shadow_boss.json"
+    },
+    "merchant": {
+      "name": "阵间商人·珂珂",
+      "expressions": [
+        "knowing smile",
+        "bright sales cheer",
+        "worried calculation",
+        "playful bargaining",
+        "startled",
+        "sincere kindness"
+      ],
+      "packet": "03_intermediate/prompt_packets/expressions/merchant.json"
+    },
+    "echo_regent": {
+      "name": "回声摄政官",
+      "expressions": [
+        "grave neutrality",
+        "release and relief",
+        "regret",
+        "stern judgment",
+        "shocked recognition",
+        "peaceful acceptance"
+      ],
+      "packet": "03_intermediate/prompt_packets/expressions/echo_regent.json"
+    },
+    "arcane_sovereign": {
+      "name": "奥术主权者",
+      "expressions": [
+        "formal authority",
+        "regret",
+        "acceptance",
+        "controlled anger",
+        "shaken certainty",
+        "exhausted honesty"
+      ],
+      "packet": "03_intermediate/prompt_packets/expressions/arcane_sovereign.json"
+    },
+    "palace_warden_v2": {
+      "name": "静默执剑官·维拉",
+      "expressions": [
+        "dutiful neutrality",
+        "stern command",
+        "alarm",
+        "inner conflict",
+        "oath-bound resolve",
+        "subtle relief"
+      ],
+      "packet": "03_intermediate/prompt_packets/expressions/palace_warden_v2.json"
+    },
+    "black_seal_keeper_v2": {
+      "name": "黯印观测官·塞芙",
+      "expressions": [
+        "watchful neutrality",
+        "analytical focus",
+        "alarm",
+        "doubt",
+        "regret",
+        "decisive resolve"
+      ],
+      "packet": "03_intermediate/prompt_packets/expressions/black_seal_keeper_v2.json"
+    },
+    "act3_last_custodian": {
+      "name": "最后保管人",
+      "expressions": [
+        "grave weariness",
+        "patient attention",
+        "release",
+        "deep sorrow",
+        "final resolve",
+        "quiet peace"
+      ],
+      "packet": "03_intermediate/prompt_packets/expressions/act3_last_custodian.json"
+    },
+    "act3_archive_warden": {
+      "name": "档案守望者",
+      "expressions": [
+        "dutiful neutrality",
+        "watchful focus",
+        "stern warning",
+        "concern",
+        "decisive resolve",
+        "restrained relief"
+      ],
+      "packet": "03_intermediate/prompt_packets/expressions/act3_archive_warden.json"
+    }
+  }
+}

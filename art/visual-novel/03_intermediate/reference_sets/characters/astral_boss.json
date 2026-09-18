@@ -1,0 +1,39 @@
+{
+  "version": "GAL-SIMPLE-1.1",
+  "character_id": "astral_boss",
+  "reference_order": [
+    {
+      "role": "canonical_text",
+      "path": "01_canon/characters/astral_boss.md",
+      "sha256": "d14cbcd9eb8bcd23371f1c8c75bfc93b335331eb6a77d72bd200dd53cec06ecb"
+    },
+    {
+      "role": "accepted_turnaround",
+      "path": "01_canon/turnarounds/CHAR_astral-boss_turnaround_v1.png",
+      "sha256": "0f0106b196e4d21a06ad0b4d15173f83d78085bf8609af6cc419cecda77ba702"
+    },
+    {
+      "role": "accepted_detail_board",
+      "path": "01_canon/details/DETAIL_astral-boss_v1.png",
+      "sha256": "539702c86da9fa2b2b868137a88424190e482725716e8b0a1337a1b1c6881f80"
+    },
+    {
+      "role": "accepted_expression_board",
+      "path": "01_canon/expressions/EXPR_astral-boss_v1.png",
+      "sha256": "d112a76ca10182b1ce62df4293ad19969755b3404e491062935ba368392acc6a"
+    },
+    {
+      "role": "accepted_transparent_standee",
+      "path": "01_canon/standees/STANDEE_astral-boss_neutral_v1.png",
+      "sha256": "21e65b1141072c5cef67b6602ebe3e0fa4a7c22e83eb79cae19123084cd060ad"
+    }
+  ],
+  "hard_locks": [
+    "灰紫及肩发",
+    "右鬓四角星夹1",
+    "胸四角星扣1",
+    "黄铜月牙星盘",
+    "无星座满印"
+  ],
+  "missing_reference_policy": "stop_generation_and_complete_missing_canon_asset"
+}

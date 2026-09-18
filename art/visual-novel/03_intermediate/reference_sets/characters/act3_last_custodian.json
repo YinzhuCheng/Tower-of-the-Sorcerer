@@ -1,0 +1,40 @@
+{
+  "version": "GAL-SIMPLE-1.1",
+  "character_id": "act3_last_custodian",
+  "reference_order": [
+    {
+      "role": "canonical_text",
+      "path": "01_canon/characters/act3_last_custodian.md",
+      "sha256": "83d9e4f5f4aadb54d08d9279dfe27f0415a4f6e53e42d0ac3de2ad96917d2325"
+    },
+    {
+      "role": "accepted_turnaround",
+      "path": "01_canon/turnarounds/CHAR_act3-last-custodian_turnaround_v1.png",
+      "sha256": "98bfa4d2d54d2e2063a71a92d75438cbb302f5ecd79df02cb53985a9b41e344b"
+    },
+    {
+      "role": "accepted_detail_board",
+      "path": "01_canon/details/DETAIL_act3-last-custodian_v1.png",
+      "sha256": "ef020e8f666c33df0c1aa2bd2cf1275d3c8015d6d27e110e5a098492ef590267"
+    },
+    {
+      "role": "accepted_expression_board",
+      "path": "01_canon/expressions/EXPR_act3-last-custodian_v1.png",
+      "sha256": "d4046a27abc812d3587fcf4f2c741ff5b6e210c60afee9d645f27a429c0c0d78"
+    },
+    {
+      "role": "accepted_transparent_standee",
+      "path": "01_canon/standees/STANDEE_act3-last-custodian_neutral_v1.png",
+      "sha256": "a0fd82e413ec41ae3dea46293b58a15620d7b6c336a2d05189460eb8da30318e"
+    }
+  ],
+  "hard_locks": [
+    "深青及小腿长发",
+    "浅金眼",
+    "页形外片4片",
+    "黑金矩形发夹1",
+    "琥珀灯杖1",
+    "无白发蓝灯"
+  ],
+  "missing_reference_policy": "stop_generation_and_complete_missing_canon_asset"
+}

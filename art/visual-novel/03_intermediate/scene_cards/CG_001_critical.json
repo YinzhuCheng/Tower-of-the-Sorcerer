@@ -1,0 +1,91 @@
+{
+  "version": "GAL-SIMPLE-1.2",
+  "cg_id": "CG_001_critical",
+  "semantic_id": "critical",
+  "title": "危急战斗预演",
+  "status": "r0-layout-accepted",
+  "current_iteration": "R0_layout",
+  "layout_asset": {
+    "path": "04_cg/working/CG_001_critical_R0_layout_v1.png",
+    "sha256": "1dd44397a0a8f8d2601769841f741d8ef5ed4180e065997f25de124783bb7a40",
+    "width": 1672,
+    "height": 941,
+    "mode": "RGB"
+  },
+  "layout_qa": "03_intermediate/qa/CG_001_critical_R0_qa.md",
+  "source_locator": {
+    "repository_commit": "b05bc623b7c1ef8b93cfa1fca253ad2119a52f68",
+    "file": "src/main.js",
+    "line": 682
+  },
+  "source_passage": "可胜但战后剩余生命不超过最大生命的 30%，进入危急战斗预演。",
+  "narrative_beat": "让玩家确认这场战斗能赢但代价危险。",
+  "point_of_view": "third-person visual-novel camera aligned with protagonist understanding",
+  "cast": [
+    "hero"
+  ],
+  "expressions": {
+    "hero": "hurt but conscious"
+  },
+  "environment_id": null,
+  "props": [
+    "hero sword",
+    "left-waist scabbard",
+    "record pouch"
+  ],
+  "composition": "16:9 中近景，璃单膝触地后用右手剑撑住身体，视线仍锁定前方；敌人不入画。",
+  "must_show": [
+    "hurt but conscious",
+    "right-hand sword",
+    "both feet/legs readable",
+    "portable dark tower vignette"
+  ],
+  "must_not_show": [
+    "blood or open wound",
+    "defeated unconscious pose",
+    "specific enemy",
+    "text or HUD"
+  ],
+  "project_inference": null,
+  "character_reference_order": {
+    "hero": [
+      {
+        "role": "canonical_text",
+        "path": "01_canon/characters/hero.md",
+        "sha256": "6eada62d7bfc82c639b25fe2387de9a51f4adc6009b46d55080c26fcd2193d50"
+      },
+      {
+        "role": "accepted_turnaround",
+        "path": "01_canon/turnarounds/CHAR_hero_turnaround_v2.png",
+        "sha256": "d1385fe1798271e05e608204fe6d6cc99daa7961587d2e188cef7e62693cfe1b"
+      },
+      {
+        "role": "accepted_detail_board",
+        "path": "01_canon/details/DETAIL_hero_v2.png",
+        "sha256": "8f42611ee44f012b256262a251c67c5713d4056c8c3af5391e6c6976d337bfa1"
+      },
+      {
+        "role": "accepted_expression_board",
+        "path": "01_canon/expressions/EXPR_hero_v1.png",
+        "sha256": "d1571b7c18c3fbd902109a575619a40b1ecd4d9d84180fe6e9eb585a5eb1f3f8"
+      },
+      {
+        "role": "accepted_transparent_standee",
+        "path": "01_canon/standees/STANDEE_hero_neutral_v1.png",
+        "sha256": "bc7e81506ad41225bfe5ef548889d66e67d4c8db963c64650ebb601737d49b76"
+      }
+    ]
+  },
+  "environment_reference": null,
+  "runtime_target": "public/assets/anime/cg/liyue-critical-cg.webp",
+  "archive_only_aliases": [],
+  "iteration_ladder": [
+    "R0_layout",
+    "R1_identity",
+    "R2_costume",
+    "R3_scene",
+    "R4_final"
+  ],
+  "output_contract": "04_cg/final/CG_001_critical_v1.png",
+  "environment_reference_asset": null
+}

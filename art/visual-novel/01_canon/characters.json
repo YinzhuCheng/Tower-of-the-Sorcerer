@@ -1,0 +1,412 @@
+{
+  "version": "GAL-SIMPLE-1.1",
+  "status": "complete-character-reference-pack",
+  "scope": "GAL only; map art retained",
+  "decisions_are_new_design": true,
+  "characters": [
+    {
+      "id": "hero",
+      "name": "绫星·璃",
+      "key": "璃",
+      "height": 166,
+      "palette": [
+        "#222A52",
+        "#F2EEE3",
+        "#657BE3"
+      ],
+      "source": "hero",
+      "zh": "深蓝长发至臀，末端钴蓝；紫蓝眼。一个低半髻，一枚银月发夹固定在本人右侧；本人左肩一枚银月披肩扣。深蓝长袖旅行裙，象牙白胸片与内裙，短前长后的裙摆，藏蓝披肩露出白衬里；腰部两枚横扣；双腿同样的黑色过膝袜、深蓝及膝靴、黑手套。取消星座刺绣、垂链、腿带和多余挂坠。本人左腰一本掌心宽的扁平黑色记录包。右手用剑、左手施法。",
+      "en": "Adult woman, 166 cm, long midnight-blue hair to hips with cobalt tips, violet-blue eyes, small half-up braided bun. Exactly one silver crescent hair clip on HER RIGHT temple; exactly one silver crescent mantle clasp on HER LEFT shoulder. Navy long-sleeved traveling dress with ivory front blouse inset and ivory underskirt, short front hem just above knees and two long rear panels to calves. Navy short mantle with broad ivory lining, no embroidery. Black fitted waist with exactly two horizontal silver buckle straps. Symmetric opaque black thigh-high stockings, navy knee-high low-heel boots and black gloves. One flat palm-sized black record pouch at HER LEFT waist. No chains, tassels, thigh garters, filigree or extra jewels.",
+      "prop": "One straight silver-blue one-handed sword, length 85 cm, narrow double-edge blade, simple silver FOUR-point diamond-star guard with ONE blue diamond center, navy grip, plain silver pommel; one plain navy scabbard at LEFT hip, right hand wielding. Pouch is a plain black rectangle with ONE silver diamond clasp; crescent hair clip and crescent shoulder clasp have no dangling pieces.",
+      "locks": [
+        "蓝发紫蓝眼",
+        "本人右侧月牙发夹1枚",
+        "本人左肩月牙扣1枚",
+        "腰横扣2枚",
+        "记录包在左腰",
+        "右手剑左手法术",
+        "双腿服装对称"
+      ],
+      "detail": "large front and rear mantle construction, hair clip on head front/back, shoulder clasp close-up, sword front and thin side view with scabbard, record pouch closed and open"
+    },
+    {
+      "id": "guide",
+      "name": "残响精灵·纱雾",
+      "key": "纱雾",
+      "height": 160,
+      "palette": [
+        "#EFEFFA",
+        "#B8A5DA",
+        "#A9DFEA"
+      ],
+      "source": "guide",
+      "zh": "银紫及下巴短发，浅紫眼；本人左鬓一枚五瓣白花。白色无袖长裙，浅紫腰带，裙前到膝、后摆到踝；分离式白长袖固定在上臂。背腰仅两条冰蓝半透明飘带。低跟白鞋，无腿链。随身器物为完整银环星盘，不能换成月牙或断环。",
+      "en": "Adult woman, 160 cm, chin-length silver-lilac bob haircut with soft fringe, violet eyes; exactly ONE white five-petal flower at HER LEFT temple. White sleeveless high-neck dress with lavender waist sash; front hem reaches knees, back hem reaches ankles; separate long white sleeves attached with plain lavender upper-arm cuffs. Exactly TWO broad translucent ice-blue ribbons attached at back waist. White low-heel closed shoes, bare lower legs. No long hair, crown, earrings, jewelry chains or patterned fabric.",
+      "prop": "One floating silver astrolabe: a COMPLETE circular flat ring 24 cm across, ONE fixed simple four-point silver star at center and ONE blue round center stone. No crescent, no broken ring, no orbiting crystals. One thin plain ivory notebook with lavender spine used only in writing scenes.",
+      "locks": [
+        "银紫短发",
+        "本人左鬓白花1朵",
+        "背腰冰蓝飘带2条",
+        "完整银圆环星盘",
+        "无长发与腿链"
+      ],
+      "detail": "flower close-up on head, upper-arm sleeve attachment, dress front and back waist construction, two ribbon attachment points, complete circular silver astrolabe front/side and notebook"
+    },
+    {
+      "id": "final_queen",
+      "name": "无声女王·诺克缇娅",
+      "key": "诺克缇娅",
+      "height": 172,
+      "palette": [
+        "#24212D",
+        "#6B233B",
+        "#AD3951"
+      ],
+      "source": "final_queen",
+      "zh": "及小腿黑发、末端暗酒红，深红眼。黑银细冠仅三个主尖峰，中央一枚红菱石。黑色露肩长礼服，酒红内裙与披风；本人左腿一处开衩。领口一枚红菱胸针、裙腰一条简洁银线；取消玫瑰串、满身荆棘链、密集蕾丝。施法使用三枚红菱封印片；无剑。",
+      "en": "Adult regal woman, 172 cm, calf-length loose black hair with dark burgundy ends, crimson eyes. One thin dark silver crown with exactly THREE main points and ONE central ruby diamond. Black off-shoulder floor-length gown with broad burgundy inset, one slit over HER LEFT leg; burgundy-lined black cape fastened behind the collar, simple detachable plain clasp. One ruby diamond throat brooch, one thin silver waist trim. Simple black closed boots. Remove all rose garlands, dangling chains, lace, thorn embroidery and little jewels. Hair is not bright red; she has NO sword.",
+      "prop": "Exactly THREE identical flat elongated red diamond seal tablets in an active spell, each dark silver framed with ONE small circular center mark, joined by ONE plain dark chain when bound. In neutral turnarounds tablets are detached prop samples, not floating around body. Cape fastening and THREE-point crown front/back shown clearly.",
+      "locks": [
+        "黑发暗酒红发尾",
+        "红眼",
+        "王冠3主尖峰",
+        "冠中央红菱石1枚",
+        "喉部红菱胸针1枚",
+        "施法封印片3枚",
+        "无剑"
+      ],
+      "detail": "crown front/side/back, throat brooch, detachable cape neck fastening and back drape, gown layered hem/slit, three seal tablets bound/unbound"
+    },
+    {
+      "id": "cat_boss",
+      "name": "猫卫长·米露",
+      "key": "米露",
+      "height": 162,
+      "palette": [
+        "#253758",
+        "#D2D8DF",
+        "#B59856"
+      ],
+      "source": "cat_boss",
+      "zh": "拟人猫卫士，灰白猫脸与口鼻，琥珀眼，两耳一尾。藏蓝双角帽，无羽毛；银胸甲、蓝短卫兵外套、黑长裤。胸前一枚小银铃；左臂圆盾一弯金月，右手短弯刀。取消肩穗、勋章串与帽上多层纹章。",
+      "en": "Adult anthropomorphic feline guard, 162 cm, actual grey-and-white CAT FACE with short muzzle and whiskers, amber eyes, two triangular ears and exactly ONE grey tail with white tip. Not a human catgirl. Plain navy bicorne hat WITHOUT feather, navy knee-length uniform coat, simple silver breastplate, black trousers, navy gaiters leaving white feline paws visible. ONE small silver bell at collar. No medals, tassels, epaulettes, embroidery or extra tails.",
+      "prop": "One round navy buckler on LEFT arm with plain brass rim and ONE large gold crescent, no stars; one short curved silver sabre in RIGHT hand with simple brass knuckle guard; plain brown belt and navy scabbard at LEFT hip. Hat is plain navy without insignia.",
+      "locks": [
+        "猫脸非人脸猫娘",
+        "耳2尾1",
+        "帽无羽毛",
+        "胸前铃1枚",
+        "盾月牙1枚",
+        "左盾右弯刀"
+      ],
+      "detail": "cat muzzle/ears and tail root, plain bicorne hat, bell and cuirass, round crescent buckler front/back grip, curved sabre and scabbard"
+    },
+    {
+      "id": "fox_boss",
+      "name": "狐祝·绯叶",
+      "key": "绯叶",
+      "height": 168,
+      "palette": [
+        "#F1EADA",
+        "#963A37",
+        "#2E5746"
+      ],
+      "source": "fox_boss",
+      "zh": "栗红长发、绿眼、狐耳与三条白尖红尾。白色交领宽袖祭服，赤红领缘、深绿长裙、深绿腰带；本人右鬓一枚赤红叶形发饰。折扇与三张纸符收在腰袋。删去铃铛串、花结与火焰满印。",
+      "en": "Adult fox shrine officiant, 168 cm, long chestnut-red hair to hips, green eyes, two fox ears and exactly THREE separate red fox tails with white tips. White cross-collar wide-sleeved ceremonial top, crimson collar and cuff borders, ankle-length deep-green skirt, plain deep-green waist sash. ONE simple red leaf-shaped hair clip at HER RIGHT temple. Flat sandals. No flower clusters, bells, chains, flame embroidery or extra tails. All three tails originate at lower back, separated for counting in rear view.",
+      "prop": "One folding fan with dark wood ribs, plain ivory paper and ONE red disk, no written characters. Exactly THREE rectangular ivory paper seals carried in a plain green belt pocket; each marked by one simple red vertical stroke only, no decorative script. Fan stored at HER LEFT waist.",
+      "locks": [
+        "绿眼栗红发",
+        "尾3条白尖",
+        "右鬓叶片1枚",
+        "折扇1把",
+        "纸符3张"
+      ],
+      "detail": "three tail roots and white tip proportions, cross-collar and waist sash front/back, leaf clip, fan open/closed and three blank-style paper seals with pocket"
+    },
+    {
+      "id": "whale_boss",
+      "name": "深蓝歌姬·澜音",
+      "key": "澜音",
+      "height": 169,
+      "palette": [
+        "#243E67",
+        "#E8F1F1",
+        "#6AC3CE"
+      ],
+      "source": "whale_boss",
+      "zh": "深蓝长发、青色发尾、海蓝眼；本人左侧一枚白贝发夹。海军蓝长裙、珍珠白前片；袖口各一条浅青波形长袖片。脚为人类双脚，蓝低跟凉鞋。唯一乐器为五弦贝壳小竖琴；无鱼尾、法杖或环绕海豚。",
+      "en": "Adult ocean singer, 169 cm, long deep-blue hair to thighs with teal ends, sea-blue eyes. ONE ivory shell hair clip on HER LEFT temple. Navy sleeveless high-collar ankle-length dress with broad pearl-white front inset. Separate sleeves have exactly ONE broad pale-aqua wave-shaped drape per arm. Plain blue low-heel sandals, HUMAN LEGS. No mermaid tail, dolphins, floating sea creatures, pearls chains or ornate embroidery.",
+      "prop": "One small handheld shell harp 32 cm tall, pale ivory shell-shaped lower soundbox, simple pale-brass U-shaped frame and exactly FIVE straight strings. No long handle and no staff. One plain aqua cloth carrying sling worn across back only when traveling; harp stored at RIGHT hip.",
+      "locks": [
+        "蓝发青尾海蓝眼",
+        "左鬓贝夹1枚",
+        "双袖片各1",
+        "贝壳竖琴5弦",
+        "无鱼尾法杖"
+      ],
+      "detail": "shell hair clip, sleeve cuff attachment and back dress seam, shell harp front/back and five strings, simple carrying sling"
+    },
+    {
+      "id": "sword_boss",
+      "name": "剑圣·塞蕾娜",
+      "key": "塞蕾娜",
+      "height": 174,
+      "palette": [
+        "#ECEDEB",
+        "#253657",
+        "#9D424B"
+      ],
+      "source": "sword_boss",
+      "zh": "银白长发、灰紫眼，低马尾用藏蓝带束起。象牙白剑士长外套、藏蓝腰身及长裤、银色护腕与护胫；小块暗红内衬保留地图印象。胸前一个银菱徽，完全取消星形垂链。单手直剑、左腰剑鞘；与维拉的黑甲和额冠区分。",
+      "en": "Adult female sword saint, 174 cm, long SILVER-WHITE hair in ONE low ponytail tied with one navy ribbon, cool grey-violet eyes. This unified version intentionally supersedes old black-haired text. Ivory long duelist coat with navy fitted waist, dark muted-red lining visible only at coat opening, navy trousers, plain silver forearm guards and shin plates, navy boots. ONE silver diamond chest badge. No crown, no shoulder cape, no hanging jewelry or filigree. Athletic elegant adult proportions.",
+      "prop": "One slim straight silver one-handed sword 95 cm long with a plain symmetric silver crossguard, navy leather grip and small round pommel; no blue flame and no large gem. One plain navy scabbard at HER LEFT hip. RIGHT-handed. Guards are practical simple plates, not ornate spikes.",
+      "locks": [
+        "银白低马尾",
+        "灰紫眼",
+        "白外套蓝长裤",
+        "银菱胸徽1枚",
+        "右手直剑左腰鞘",
+        "无冠"
+      ],
+      "detail": "low ponytail tie and chest diamond badge, coat front/back and muted-red lining, forearm/shin plates, straight sword front/side and scabbard"
+    },
+    {
+      "id": "dragon_boss",
+      "name": "龙姬·焰璃",
+      "key": "焰璃",
+      "height": 175,
+      "palette": [
+        "#302B2C",
+        "#B54439",
+        "#BE9751"
+      ],
+      "source": "dragon_boss",
+      "zh": "火红长发、琥珀眼，两只黑角有金尖；一条黑红龙尾。黑色铠裙、红色内裙、窄金边；背后短披肩裁成两片翼形，不画实体翅膀。护甲使用大块整片。唯一武器为红缨长枪，取消龙头肩甲与多余角冠。",
+      "en": "Adult dragon knight woman, 175 cm, long flame-red hair, amber eyes, exactly TWO short black swept-back horns with gold tips, exactly ONE black-red dragon tail. Black armored dress with broad red inset skirt and narrow muted-gold trim, simple black boots and gauntlets, two smooth shoulder plates. Short red mantle cut into TWO wing-shaped cloth panels, NOT anatomical wings. No crown, fur trim, dragon-head pauldrons, extra horns, scales engraved into every surface or multiple gemstones.",
+      "prop": "One slim spear, overall length 190 cm, straight black shaft, simple gold-edged red leaf-shaped spearhead and ONE short crimson tassel beneath blade. Tail has plain smooth segments and one dark red leaf-shaped tip; not a weapon carried in hand.",
+      "locks": [
+        "角2尾1",
+        "黑角金尖",
+        "翼形披肩2片非肉翅",
+        "长枪1杆",
+        "枪缨1束"
+      ],
+      "detail": "horn side/front and tail tip, armor main plates and mantle attachment, spear full side/front and spearhead/tassel enlargement"
+    },
+    {
+      "id": "astral_boss",
+      "name": "天穹魔女·露米",
+      "key": "露米",
+      "height": 164,
+      "palette": [
+        "#44406B",
+        "#F0EBD9",
+        "#B99A5D"
+      ],
+      "source": "astral_boss",
+      "zh": "灰紫披肩发、金紫眼；本人右鬓一枚四角星夹。靛蓝短披肩、象牙白长袖衬衣、蓝裙到小腿；胸口一枚金四角星扣。完整黄铜月牙星盘与一张折叠星图。去除星座满印、金链与裙摆挂坠。",
+      "en": "Adult astrologer woman, 164 cm, shoulder-length ash-violet hair, gold-violet eyes. ONE brass four-point star clip at HER RIGHT temple. Indigo short capelet, ivory long-sleeved blouse, calf-length indigo skirt, black tights and simple indigo ankle boots. ONE brass four-point star cape clasp at center collar. Plain fabric with no constellation embroidery, dangling stars or chains.",
+      "prop": "One 22 cm brass CRESCENT astrolabe: broad brass crescent around a smaller complete circular sighting ring with ONE straight pointer. Clearly distinct from Shawu's silver full-circle star. One folded ivory star chart with three large circles, no readable script. Star chart travels in a plain navy cylindrical case at LEFT waist.",
+      "locks": [
+        "灰紫及肩发",
+        "右鬓四角星夹1",
+        "胸四角星扣1",
+        "黄铜月牙星盘",
+        "无星座满印"
+      ],
+      "detail": "star clip and cape clasp, capelet/blouse/skirt seams, crescent astrolabe front/side and single pointer, folded chart and plain case"
+    },
+    {
+      "id": "shadow_boss",
+      "name": "影织姬·鸦羽",
+      "key": "鸦羽",
+      "height": 167,
+      "palette": [
+        "#292831",
+        "#544064",
+        "#B8B9CB"
+      ],
+      "source": "shadow_boss",
+      "zh": "黑紫短发到下巴、灰紫眼；本人右鬓一枚银羽夹。黑色高领无袖上衣、梅紫短裙和两片及膝后摆，黑长手套，双腿同款黑袜与短靴。左腰一只针盒；右手针、左手线轴。去掉长袖披帛、项链和多串腿带。",
+      "en": "Adult shadow weaver woman, 167 cm, chin-length raven-black bob with subtle violet sheen, grey-violet eyes. ONE small silver feather hair clip at HER RIGHT temple. Black high-neck sleeveless fitted tunic, plum knee-length split overskirt with exactly TWO rear panels over black fitted shorts; long black gloves, symmetric opaque black stockings, flat black ankle boots. ONE small needle case at LEFT belt. No flowing sleeves, transparent trains, jewelry chains or thigh garters.",
+      "prop": "One palm-length silver sewing needle with a clearly visible eye, one compact dark wooden spool of violet thread, one rectangular black needle case with plain silver clasp. RIGHT hand uses needle, LEFT hand feeds spool. In neutral model sheet thread is wound, not floating. In casting only one continuous thread is visible, never a sword.",
+      "locks": [
+        "黑紫短发",
+        "右鬓银羽1枚",
+        "后摆2片",
+        "针盒左腰",
+        "右针左线轴",
+        "无剑"
+      ],
+      "detail": "feather clip, back skirt split and glove cuff, needle front/side with eye, spool wound/unwound and needle case"
+    },
+    {
+      "id": "merchant",
+      "name": "阵间商人·珂珂",
+      "key": "珂珂",
+      "height": 162,
+      "palette": [
+        "#294F77",
+        "#B88445",
+        "#E8DEBF"
+      ],
+      "source": "merchant",
+      "zh": "暖棕发、棕眼，两条前辫；蓝头巾，无花冠。蓝色及膝旅行外套、米白衬衣、芥末黄腰带、深棕长裤和靴子。背后一个方形木框背包，顶端一卷床垫；手提琥珀灯和小账本。删除包上杂乱瓶罐与星形首饰。",
+      "en": "Adult traveling merchant woman, 162 cm, warm brown hair in exactly TWO front braids, warm brown eyes, plain blue headscarf. Blue knee-length travel coat, cream blouse, mustard waist sash, dark brown trousers and practical brown boots. ONE rectangular wood-frame canvas backpack with ONE rolled blanket strapped horizontally on top. Friendly shrewd expression. No jewelry, feather, dangling bottle collection, stars or extra bags.",
+      "prop": "One small square brass hand lantern with amber glass, one palm-size brown sales ledger with ONE leather strap, one round brown coin purse tied at RIGHT waist. Backpack has TWO leather vertical straps and one large plain flap.",
+      "locks": [
+        "前辫2条",
+        "蓝头巾",
+        "方背包1",
+        "顶部卷毯1",
+        "灯为方形琥珀",
+        "钱袋右腰"
+      ],
+      "detail": "headscarf and two braids, backpack front/back harness and blanket straps, square lantern, pocket ledger open/closed, coin purse"
+    },
+    {
+      "id": "echo_regent",
+      "name": "回声摄政官",
+      "key": "摄政官",
+      "height": 181,
+      "palette": [
+        "#353642",
+        "#4A526E",
+        "#E4DFD3"
+      ],
+      "source": "echo_regent",
+      "zh": "灰金及肩发，低束发，灰紫眼，中性清瘦成年外形。炭灰及踝礼服外套、米白衬衣、蓝灰斜绶带。只保留一枚方银领扣。怀抱黑色名簿，无王冠、武器或满身勋章。",
+      "en": "Androgynous adult court regent, 181 cm, slender adult masculine silhouette, shoulder-length ash-blond hair gathered in ONE low tie, muted violet eyes. Charcoal ankle-length formal coat, ivory shirt, muted blue-grey diagonal sash from HER/HIS RIGHT shoulder to LEFT hip, charcoal trousers and plain black boots. ONE square silver collar clasp. Calm grave face. No crown, no medals, tassels, decorative chains or weapon.",
+      "prop": "One black rectangular memorial ledger 28x20 cm, plain cover with ONE vertical blue-grey cloth band and ONE square silver closure. Pages ivory; no readable names in generation. The sash remains separate clothing and never becomes a book strap.",
+      "locks": [
+        "灰金低束发",
+        "灰紫眼",
+        "蓝灰绶带右肩至左腰",
+        "方银领扣1",
+        "黑名簿1",
+        "无冠无武器"
+      ],
+      "detail": "low hair tie and square collar clasp, diagonal sash front/back route, coat lining, memorial ledger cover/spine/open/closure"
+    },
+    {
+      "id": "arcane_sovereign",
+      "name": "奥术主权者",
+      "key": "主权者",
+      "height": 184,
+      "palette": [
+        "#202B32",
+        "#ECE6D6",
+        "#35518B"
+      ],
+      "source": "arcane_sovereign",
+      "zh": "成年男性，深青及肩发、疲倦金眼。黑色长官服、象牙白宽翻领及两条前衣片、钴蓝腰带、黑长裤。领口一枚蓝菱扣。唯一标志物为有裂口的黄铜印戒；无冠、不佩剑，取消肩链与流苏。",
+      "en": "Adult MAN, 184 cm, dark teal shoulder-length hair tied loosely at nape, tired gold eyes. Black calf-length magistrate coat with broad ivory lapels and TWO ivory front panels, plain cobalt waist sash, black trousers and polished plain black shoes. ONE blue diamond collar clasp. No crown, sword, chain, medal or tassel. Keep clearly male adult face and anatomy.",
+      "prop": "One brass signet ring with a flat OVAL cobalt seal face and one obvious diagonal crack through that face. Ring band remains intact. Normally held between RIGHT thumb and index finger during accountability scenes, stored in a small plain black ring box otherwise. Do not put the ring on multiple fingers or turn it into a necklace.",
+      "locks": [
+        "男性深青发金眼",
+        "白前衣片2条",
+        "蓝菱领扣1",
+        "椭圆印戒斜裂纹1道",
+        "无冠无剑"
+      ],
+      "detail": "collar clasp and lapel/front-panel construction, waist sash back, signet ring front/side and cracked face, open ring box, simple correct right-hand pinch grip"
+    },
+    {
+      "id": "palace_warden_v2",
+      "name": "静默执剑官·维拉",
+      "key": "维拉",
+      "height": 176,
+      "palette": [
+        "#262B34",
+        "#C6CDD8",
+        "#3F559B"
+      ],
+      "source": "palace_warden_v2",
+      "zh": "珍珠白直长发、冷蓝眼。黑色额冠只留中央单尖；黑色整片胸甲、银细边、钴蓝前裙片、黑长裤与长靴。左右肩甲对称。直银剑带一条蓝槽，左腰黑鞘。去掉悬浮星晶、裙侧大开衩与尖刺堆叠。",
+      "en": "Adult female oath auditor, 176 cm, straight pearl-white hair to hips, cool blue eyes. ONE simple black forehead circlet with ONE central upward point. Smooth black breastplate and matching symmetric shoulder plates with narrow silver edging, cobalt rectangular front tabard to knees, black fitted trousers and black tall boots. No floating blue crystals, thigh cutouts, jewelry or layered spikes. Her dark armored silhouette must differ from Serena's ivory coat.",
+      "prop": "One straight silver verification sword, 100 cm overall, ONE narrow blue groove along center blade, simple black straight crossguard and black grip, no gem. One plain black scabbard at LEFT waist; RIGHT-handed.",
+      "locks": [
+        "白发冷蓝眼",
+        "额冠中央1尖",
+        "黑甲蓝前裙片",
+        "双肩甲对称",
+        "银剑中央蓝槽1",
+        "无浮晶"
+      ],
+      "detail": "single-point forehead circlet, armor plate shapes and tabard attachment/back belt, sword front/side single blue groove and scabbard"
+    },
+    {
+      "id": "black_seal_keeper_v2",
+      "name": "黯印观测官·塞芙",
+      "key": "塞芙",
+      "height": 170,
+      "palette": [
+        "#27283E",
+        "#50417C",
+        "#AD874B"
+      ],
+      "source": "black_seal_keeper_v2_map",
+      "zh": "午夜紫长直发、琥珀眼。靛黑长袍、紫内裙、宽象牙白领片；平顶小兜帽向后垂。腰一条黑皮带及圆铜扣。观测器为缺口黄铜圆盘，另携黑封印薄册；不带剑或尖矛。",
+      "en": "Adult female seal observer, 170 cm, long straight midnight-violet hair to hips, amber eyes. Indigo-black ankle-length observer robe, broad ivory collar insert, plum inner skirt, simple folded-back hood, plain black belt with ONE round brass buckle, black closed boots. No crown, hair flowers, chains, thigh garters or ornate shoulder pieces. Identity derives from supplied dark-haired observer, but outfit intentionally simplified.",
+      "prop": "One handheld dark-brass BROKEN circular observation disk, 30 cm diameter, with one clean missing wedge at top-right when viewed from its face, ONE central crosshair, no stars or orbiting crystals. One thin BLACK seal notebook with ONE dull red circular seal on cover. No sword, spear or staff.",
+      "locks": [
+        "午夜紫长直发",
+        "琥珀眼",
+        "圆铜腰扣1",
+        "断圆盘右上缺口1",
+        "黑薄册红圆印1",
+        "无剑矛杖"
+      ],
+      "detail": "hood folded down and collar front/back, round belt buckle, broken brass disk front/side with missing wedge, black seal notebook and red circular seal"
+    },
+    {
+      "id": "act3_last_custodian",
+      "name": "最后保管人",
+      "key": "保管人",
+      "height": 173,
+      "palette": [
+        "#273C43",
+        "#DED5BB",
+        "#BE8C3C"
+      ],
+      "source": "act3_last_custodian_map",
+      "zh": "成年女性，深青长发到小腿、浅金眼。黑色长档案裙，旧象牙白页形外片仅四片，头顶一枚黑金长方夹。手持高灯杖，琥珀灯罩中一个卷曲光芯。保留旧地图身份，淘汰近期白发立绘。",
+      "en": "Adult female final custodian, 173 cm, VERY LONG dark teal hair to calves, pale gold eyes, weary honest face. Long black archivist gown with exactly FOUR broad aged-ivory page-shaped outer panels: front-left, front-right, back-left, back-right. ONE small rectangular black hair clasp with narrow brass edge at crown. Plain dark sleeves, dark closed shoes. No silver-white hair, tiara, star ornaments, book chains or ornate lace. Follow teal-haired map identity.",
+      "prop": "One tall straight dark staff, 185 cm, holding ONE rectangular amber-glass archive lantern at top, brass cap/base, ONE simple spiral-shaped amber light inside. No cold-blue lantern. One flat ivory index tag on LEFT waist belt; no separate hand lantern.",
+      "locks": [
+        "深青及小腿长发",
+        "浅金眼",
+        "页形外片4片",
+        "黑金矩形发夹1",
+        "琥珀灯杖1",
+        "无白发蓝灯"
+      ],
+      "detail": "hair clasp, four outer gown panels front/back and attachment belt, entire lantern staff front/side, amber lantern and spiral core, waist index tag"
+    },
+    {
+      "id": "act3_archive_warden",
+      "name": "档案守望者",
+      "key": "守望者",
+      "height": 178,
+      "palette": [
+        "#303540",
+        "#E6E3DD",
+        "#B78D5D"
+      ],
+      "source": "act3_archive_warden",
+      "zh": "银黑双色长发，单条粗辫放在本人右肩前，青蓝眼。黑色及踝档案长外套、白前片、铜扣三枚、窄蓝腰带。持冷蓝圆筒灯杖，三张索引卡装在腰盒。与保管人的深青散发、琥珀方灯区分。",
+      "en": "Adult archive warden woman, 178 cm, silver-and-black two-tone hair in exactly ONE thick braid hanging over HER RIGHT shoulder to waist, calm cyan eyes. Black ankle-length archivist coat, broad ivory front inset, exactly THREE rectangular copper front clasps, narrow blue waist belt, plain black boots and gloves. No flower clip, crown, necklaces or tassels. Braid is not duplicated on back or left side.",
+      "prop": "One dark straight staff with ONE cylindrical brass lantern at top and a cold BLUE-WHITE vertical light inside; no amber spiral. Exactly THREE plain ivory index cards carried in one rectangular copper-edged waist case at LEFT hip. Cards remain in case unless actively used.",
+      "locks": [
+        "银黑双色单辫",
+        "辫在本人右肩",
+        "铜前扣3枚",
+        "冷蓝圆筒灯杖",
+        "索引卡3张",
+        "腰盒在左"
+      ],
+      "detail": "single braid routing from back to right shoulder, three copper coat clasps and waist case, cylindrical blue-white lantern staff front/side, three index cards"
+    }
+  ]
+}

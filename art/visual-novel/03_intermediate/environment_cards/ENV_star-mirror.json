@@ -1,0 +1,34 @@
+{
+  "version": "GAL-SIMPLE-1.2",
+  "environment_id": "star-mirror",
+  "title": "星镜档案",
+  "usage": "6–7F、星图与影织场景",
+  "status": "gal-redraw",
+  "source_facts": "月光星镜、无字证据页与三道月相刻痕；镜面用于校验记录，不是宇宙奇观。",
+  "composition_contract": "16:9 empty visual-novel stage; clean standing-figure zones at both sides; bottom 30% low detail",
+  "series_anchors": [
+    "obsidian arch",
+    "small brass registration seal",
+    "blue-white index lamp",
+    "one thin violet seal fissure when applicable"
+  ],
+  "must_not": [
+    "people",
+    "readable text",
+    "UI",
+    "logo",
+    "watermark",
+    "photorealism",
+    "dense micro-texture"
+  ],
+  "target_asset": "01_canon/environments/ENV_star-mirror_v1.png",
+  "asset_status": "accepted",
+  "asset": {
+    "path": "01_canon/environments/ENV_star-mirror_v1.png",
+    "sha256": "c883140e892bf68cddc090c5a6fc66ba99f961c78ee0d953dabbabbd4fc032a5",
+    "width": 1672,
+    "height": 941,
+    "mode": "RGB"
+  },
+  "prompt_packet": "03_intermediate/prompt_packets/environments/star-mirror.json"
+}

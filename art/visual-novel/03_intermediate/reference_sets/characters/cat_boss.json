@@ -1,0 +1,40 @@
+{
+  "version": "GAL-SIMPLE-1.1",
+  "character_id": "cat_boss",
+  "reference_order": [
+    {
+      "role": "canonical_text",
+      "path": "01_canon/characters/cat_boss.md",
+      "sha256": "e271eaa838e922af2942a4c64d65d27941d46283998283b9bac10d9e633b2aa6"
+    },
+    {
+      "role": "accepted_turnaround",
+      "path": "01_canon/turnarounds/CHAR_cat-boss_turnaround_v1.png",
+      "sha256": "fccf853bfd7a0ccac64c42c9f1984f18ccc07e86612aae42a38c93b13b23496a"
+    },
+    {
+      "role": "accepted_detail_board",
+      "path": "01_canon/details/DETAIL_cat-boss_v1.png",
+      "sha256": "d703797aa5e78de6d11b5081929a2cda650595b4ab3ad0a78504ea74fde95b91"
+    },
+    {
+      "role": "accepted_expression_board",
+      "path": "01_canon/expressions/EXPR_cat-boss_v1.png",
+      "sha256": "7f6a579ce4ba231a569c09d96105b332dccee1ed31201f561ab563de58c0402b"
+    },
+    {
+      "role": "accepted_transparent_standee",
+      "path": "01_canon/standees/STANDEE_cat-boss_neutral_v1.png",
+      "sha256": "fbd31715933f60c4eb29d57881306ec82db8ee2ad04ab5622f62043cd1a4f18f"
+    }
+  ],
+  "hard_locks": [
+    "猫脸非人脸猫娘",
+    "耳2尾1",
+    "帽无羽毛",
+    "胸前铃1枚",
+    "盾月牙1枚",
+    "左盾右弯刀"
+  ],
+  "missing_reference_policy": "stop_generation_and_complete_missing_canon_asset"
+}

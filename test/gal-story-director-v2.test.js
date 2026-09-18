@@ -27,7 +27,7 @@ const keyStageStates = [
   ['cat_boss', 'alert', 'milu-dialogue-alert-v8.webp'],
   ['fox_boss', 'watchful', 'feiye-dialogue-watchful-v8.webp'],
   ['whale_boss', 'lament', 'lanyin-dialogue-lament-v8.webp'],
-  ['sword_boss', 'stern', 'serena-dialogue-stern-v8.webp'],
+  ['sword_boss', 'stern', 'serena-dialogue-stern-audit-v3.webp'],
   ['dragon_boss', 'embers', 'yanli-dialogue-embers.webp'],
   ['astral_boss', 'focus', 'lumi-dialogue-focus-v8.webp'],
   ['shadow_boss', 'guarded', 'yayu-dialogue-guarded.webp'],
@@ -89,7 +89,7 @@ test('witness-field story direction ships real scene art and stage art for the d
     assert.ok(asset.size > 60_000, `${id}:${expression} must not be a scaled map token`);
   }
 
-  for (const filename of ['liyue-echo-ledger-cg.webp', 'liyue-lighthouse-archive-cg.webp']) {
+  for (const filename of ['liyue-echo-ledger-cg-audit-v3.webp', 'liyue-lighthouse-archive-cg.webp']) {
     const asset = await readFile(new URL(`../public/assets/anime/cg/${filename}`, import.meta.url));
     const { width, height } = webpDimensions(asset);
     assert.ok(asset.length > 10_000, `${filename} must contain substantive story art`);
@@ -116,6 +116,6 @@ test('F5, F19, F20 and F30 use authored long Gal scenes with visual beats', () =
     assert.ok(turns.some((turn) => turn.portrait === witness), `${sceneId} must stage its decisive witness`);
   }
 
-  assert.equal(DIALOGUES.floor19.turns.some((turn) => turn.cg === '/assets/anime/cg/liyue-echo-ledger-cg.webp'), true);
+  assert.equal(DIALOGUES.floor19.turns.some((turn) => turn.cg === '/assets/anime/cg/liyue-echo-ledger-cg-audit-v3.webp'), true);
   assert.equal(DIALOGUES.ending.turns.some((turn) => turn.cg === '/assets/anime/cg/liyue-lighthouse-archive-cg.webp'), true);
 });

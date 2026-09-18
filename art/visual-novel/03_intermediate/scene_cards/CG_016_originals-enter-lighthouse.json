@@ -1,0 +1,178 @@
+{
+  "version": "GAL-SIMPLE-1.2",
+  "cg_id": "CG_016_originals-enter-lighthouse",
+  "semantic_id": "originals-enter-lighthouse",
+  "title": "三十阵：原卷进入灯塔",
+  "status": "ready-for-layout",
+  "source_locator": {
+    "repository_commit": "b05bc623b7c1ef8b93cfa1fca253ad2119a52f68",
+    "file": "src/game/demo-30-floor-content.js",
+    "line": 471
+  },
+  "source_passage": "最后保管人转动封底钥匙，索引室打开；璃走最前，主权者与女王亲自抬最重原卷，全部证据沿升降轨送向灯塔。",
+  "narrative_beat": "所有分散证据第一次作为同一套原件进入最终写入空间。",
+  "point_of_view": "third-person visual-novel camera aligned with protagonist understanding",
+  "cast": [
+    "hero",
+    "final_queen",
+    "arcane_sovereign",
+    "act3_last_custodian"
+  ],
+  "expressions": {
+    "hero": "quiet resolve",
+    "final_queen": "grave stillness",
+    "arcane_sovereign": "acceptance",
+    "act3_last_custodian": "grave weariness"
+  },
+  "environment_id": "final-index-room",
+  "props": [
+    "custodian amber spiral lantern",
+    "cover key",
+    "lift rail",
+    "one heavy archive volume"
+  ],
+  "composition": "16:9 深纵深群像；保管人在后方钥匙座，璃在轨道前端引路，女王和主权者并肩抬一卷大型原卷。",
+  "must_show": [
+    "four source-grounded characters",
+    "queen and sovereign share the heavy volume",
+    "hero leads",
+    "custodian operates key"
+  ],
+  "must_not_show": [
+    "archive warden substituted for custodian",
+    "floating random books",
+    "combat",
+    "readable text"
+  ],
+  "project_inference": "registry 只列三人，但源码明确写最后保管人的钥匙动作，因此把他作为后景第四人。",
+  "character_reference_order": {
+    "hero": [
+      {
+        "role": "canonical_text",
+        "path": "01_canon/characters/hero.md",
+        "sha256": "6eada62d7bfc82c639b25fe2387de9a51f4adc6009b46d55080c26fcd2193d50"
+      },
+      {
+        "role": "accepted_turnaround",
+        "path": "01_canon/turnarounds/CHAR_hero_turnaround_v2.png",
+        "sha256": "d1385fe1798271e05e608204fe6d6cc99daa7961587d2e188cef7e62693cfe1b"
+      },
+      {
+        "role": "accepted_detail_board",
+        "path": "01_canon/details/DETAIL_hero_v2.png",
+        "sha256": "8f42611ee44f012b256262a251c67c5713d4056c8c3af5391e6c6976d337bfa1"
+      },
+      {
+        "role": "accepted_expression_board",
+        "path": "01_canon/expressions/EXPR_hero_v1.png",
+        "sha256": "d1571b7c18c3fbd902109a575619a40b1ecd4d9d84180fe6e9eb585a5eb1f3f8"
+      },
+      {
+        "role": "accepted_transparent_standee",
+        "path": "01_canon/standees/STANDEE_hero_neutral_v1.png",
+        "sha256": "bc7e81506ad41225bfe5ef548889d66e67d4c8db963c64650ebb601737d49b76"
+      }
+    ],
+    "final_queen": [
+      {
+        "role": "canonical_text",
+        "path": "01_canon/characters/final_queen.md",
+        "sha256": "43aeaa019c35531c5cc46f1460cdcac0ba77e6f612f6fdd898419d8e1a676bed"
+      },
+      {
+        "role": "accepted_turnaround",
+        "path": "01_canon/turnarounds/CHAR_final-queen_turnaround_v1.png",
+        "sha256": "9ad06627d33b9188616d9cbc9fa547a762e8933733026c101b33e8f349ef92e8"
+      },
+      {
+        "role": "accepted_detail_board",
+        "path": "01_canon/details/DETAIL_final-queen_v1.png",
+        "sha256": "647725e528e53392fe07ebc32bb4a112b0253d788609b1b7d92fc8e410e1077c"
+      },
+      {
+        "role": "accepted_expression_board",
+        "path": "01_canon/expressions/EXPR_final-queen_v1.png",
+        "sha256": "58c9121b08aadb699e5a47e964c30317326ae227c90ed9d292f67d0f866db2a7"
+      },
+      {
+        "role": "accepted_transparent_standee",
+        "path": "01_canon/standees/STANDEE_final-queen_neutral_v1.png",
+        "sha256": "99dbc41344f553a14356aeef6e7fc71ae4a3e30fba10aca5b86ba5cba47671ef"
+      }
+    ],
+    "arcane_sovereign": [
+      {
+        "role": "canonical_text",
+        "path": "01_canon/characters/arcane_sovereign.md",
+        "sha256": "449498a310eec8c47ea0c2fb1a9ba74cd34ee38b06593b12b1b5e35102d702f7"
+      },
+      {
+        "role": "accepted_turnaround",
+        "path": "01_canon/turnarounds/CHAR_arcane-sovereign_turnaround_v1.png",
+        "sha256": "50f15906516064571100c2bd96e226dfe30b518ded723fb3c3b7f90582b115c6"
+      },
+      {
+        "role": "accepted_detail_board",
+        "path": "01_canon/details/DETAIL_arcane-sovereign_v1.png",
+        "sha256": "3e3d14b1ad69aa083be5932f39827510aa7d766e942e304614a8f5bf32c4d8cd"
+      },
+      {
+        "role": "accepted_expression_board",
+        "path": "01_canon/expressions/EXPR_arcane-sovereign_v1.png",
+        "sha256": "353344f864bc97b07edcb4785766a96e1cf3076b1773e153428b25d8d72630e4"
+      },
+      {
+        "role": "accepted_transparent_standee",
+        "path": "01_canon/standees/STANDEE_arcane-sovereign_neutral_v1.png",
+        "sha256": "79fc599bcc1df521e53dbc6e125b1982cd8d441ca52fc3cbcb3a6a6ddbd8f622"
+      }
+    ],
+    "act3_last_custodian": [
+      {
+        "role": "canonical_text",
+        "path": "01_canon/characters/act3_last_custodian.md",
+        "sha256": "83d9e4f5f4aadb54d08d9279dfe27f0415a4f6e53e42d0ac3de2ad96917d2325"
+      },
+      {
+        "role": "accepted_turnaround",
+        "path": "01_canon/turnarounds/CHAR_act3-last-custodian_turnaround_v1.png",
+        "sha256": "98bfa4d2d54d2e2063a71a92d75438cbb302f5ecd79df02cb53985a9b41e344b"
+      },
+      {
+        "role": "accepted_detail_board",
+        "path": "01_canon/details/DETAIL_act3-last-custodian_v1.png",
+        "sha256": "ef020e8f666c33df0c1aa2bd2cf1275d3c8015d6d27e110e5a098492ef590267"
+      },
+      {
+        "role": "accepted_expression_board",
+        "path": "01_canon/expressions/EXPR_act3-last-custodian_v1.png",
+        "sha256": "d4046a27abc812d3587fcf4f2c741ff5b6e210c60afee9d645f27a429c0c0d78"
+      },
+      {
+        "role": "accepted_transparent_standee",
+        "path": "01_canon/standees/STANDEE_act3-last-custodian_neutral_v1.png",
+        "sha256": "a0fd82e413ec41ae3dea46293b58a15620d7b6c336a2d05189460eb8da30318e"
+      }
+    ]
+  },
+  "environment_reference": "01_canon/environments/ENV_final-index-room_v1.png",
+  "runtime_target": "public/assets/anime/cg/liyue-archive-warden-entry-cg-audit-v3.webp",
+  "archive_only_aliases": [
+    "public/assets/anime/cg/liyue-archive-warden-entry-cg.webp"
+  ],
+  "iteration_ladder": [
+    "R0_layout",
+    "R1_identity",
+    "R2_costume",
+    "R3_scene",
+    "R4_final"
+  ],
+  "output_contract": "04_cg/final/CG_016_originals-enter-lighthouse_v1.png",
+  "environment_reference_asset": {
+    "path": "01_canon/environments/ENV_final-index-room_v1.png",
+    "sha256": "7629653ba1666c296167df6712574f1aea5d1d220ac5de4bd6bf6fba205b82dc",
+    "width": 1672,
+    "height": 941,
+    "mode": "RGB"
+  }
+}

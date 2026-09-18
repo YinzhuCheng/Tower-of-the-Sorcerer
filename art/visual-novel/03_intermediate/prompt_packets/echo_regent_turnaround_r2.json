@@ -1,0 +1,6 @@
+{
+  "prompt": "Edit and regenerate this professional Japanese 2D visual novel three-view model sheet while preserving the same character, face, palette, coat and simple rendering. Keep three equal-scale full-body orthographic views left-to-right FRONT, HER RIGHT SIDE, BACK on a warm pale-grey opaque background, no text or props. Make the ash-blond hair truly shoulder length, gathered in one SHORT low tie ending at upper shoulders. Correct the ONE continuous blue-grey sash so it stays on the same anatomical route in every view: from HER RIGHT SHOULDER to HER LEFT HIP. In the FRONT view this means high on VIEWER LEFT and low on VIEWER RIGHT. In the BACK view this means high on VIEWER RIGHT and low on VIEWER LEFT. One square silver collar clasp. Empty hands. No crown, medals, chains, tassels or weapon.",
+  "referenced_image_paths": [
+    "/workspace/scratch/0645849eb5a5/gal-design-v1/04_cg/rejected/CHAR_echo-regent_turnaround_v1_reversed-back-sash.png"
+  ]
+}

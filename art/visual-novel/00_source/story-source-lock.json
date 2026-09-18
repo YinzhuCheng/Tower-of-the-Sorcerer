@@ -1,0 +1,37 @@
+{
+  "version": "GAL-SIMPLE-1.2",
+  "repository": "YinzhuCheng/Tower-of-the-Sorcerer",
+  "branch": "codex/alpha-standees-20260904",
+  "commit": "b05bc623b7c1ef8b93cfa1fca253ad2119a52f68",
+  "files": [
+    {
+      "path": "public/art-audit/registry.js",
+      "sha256": "8ba99cb58966a4adc1ed49ad47b997c7a78386539abdeb90ed05fb4a4f3b50a6"
+    },
+    {
+      "path": "src/game/anime-portraits.js",
+      "sha256": "5aecf76d40e872fdfad53a82a800dc05d2a02765a63a6fb24bf2fc3987f26197"
+    },
+    {
+      "path": "src/game/data.js",
+      "sha256": "5181c2a37c0cf83f680b6bd1a1898325941347ef39eb01f75651bbdc4776bd5e"
+    },
+    {
+      "path": "src/game/demo-10-floor-content.js",
+      "sha256": "89d2801b39c17eed4cd2b5cc61d1ecbe197375a8d7a639ac3ab0278e3d75b63d"
+    },
+    {
+      "path": "src/game/demo-20-floor-content.js",
+      "sha256": "aba3e0972aeb418c479adb8c3bff6f20f4f2135f163459aae13ab0eea58ea9d4"
+    },
+    {
+      "path": "src/game/demo-30-floor-content.js",
+      "sha256": "8bdbe6e5509d032129477fb73e63790671344cd2da5db257069c953280154daa"
+    },
+    {
+      "path": "src/main.js",
+      "sha256": "165e8c93eeaf3af9480ac7f71b27a2885d816a7a7f90889c9de90802e21778ea"
+    }
+  ],
+  "authority": "runtime story source and art registry; higher priority than legacy artwork"
+}

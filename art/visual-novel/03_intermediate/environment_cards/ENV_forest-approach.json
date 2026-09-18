@@ -1,0 +1,34 @@
+{
+  "version": "GAL-SIMPLE-1.2",
+  "environment_id": "forest-approach",
+  "title": "森林进塔口",
+  "usage": "序章、1–4F、早期守护者",
+  "status": "gal-redraw",
+  "source_facts": "冷色黎明森林入口，远处同一座失落高塔；蜿蜒石路、黑曜石拱门、少量蓝白索引灯，纯环境。",
+  "composition_contract": "16:9 empty visual-novel stage; clean standing-figure zones at both sides; bottom 30% low detail",
+  "series_anchors": [
+    "obsidian arch",
+    "small brass registration seal",
+    "blue-white index lamp",
+    "one thin violet seal fissure when applicable"
+  ],
+  "must_not": [
+    "people",
+    "readable text",
+    "UI",
+    "logo",
+    "watermark",
+    "photorealism",
+    "dense micro-texture"
+  ],
+  "target_asset": "01_canon/environments/ENV_forest-approach_v1.png",
+  "asset_status": "accepted",
+  "asset": {
+    "path": "01_canon/environments/ENV_forest-approach_v1.png",
+    "sha256": "5ff560307cd79da449aa42c26d3ad4c18391bb6894ca203a81b13664857dd06a",
+    "width": 1672,
+    "height": 941,
+    "mode": "RGBA"
+  },
+  "prompt_packet": "03_intermediate/prompt_packets/environments/forest-approach.json"
+}

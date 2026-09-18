@@ -49,9 +49,9 @@ test('five user-cut standees preserve native alpha and match the production mani
 
 test('the five accepted standees are active in Gal presentation and visible to the audit page', () => {
   const mappings = [
-    ['palace_warden_v2', 'duty', 'vela-dialogue-duty.webp'],
-    ['black_seal_keeper_v2', 'watchful', 'seph-dialogue-watchful.webp'],
-    ['act3_last_custodian', 'grave', 'last-custodian-dialogue-release.webp'],
+    ['palace_warden_v2', 'duty', 'vela-dialogue-duty-audit-v3.webp'],
+    ['black_seal_keeper_v2', 'watchful', 'seph-dialogue-watchful-audit-v3.webp'],
+    ['act3_last_custodian', 'grave', 'last-custodian-dialogue-release-audit-v3.webp'],
     ['final_queen', 'resolve', 'noctia-dialogue-resolve.webp'],
     ['guide', 'focus', 'shawu-dialogue-focus.webp']
   ];

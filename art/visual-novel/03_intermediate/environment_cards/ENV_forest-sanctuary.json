@@ -1,0 +1,26 @@
+{
+  "version": "GAL-SIMPLE-1.2",
+  "environment_id": "forest-sanctuary",
+  "title": "森林视觉主题",
+  "usage": "玩法森林主题环境层",
+  "status": "preserve-gameplay",
+  "source_facts": "玩法地图环境层，不属于 GAL 舞台背景。",
+  "composition_contract": "16:9 empty visual-novel stage; clean standing-figure zones at both sides; bottom 30% low detail",
+  "series_anchors": [
+    "obsidian arch",
+    "small brass registration seal",
+    "blue-white index lamp",
+    "one thin violet seal fissure when applicable"
+  ],
+  "must_not": [
+    "people",
+    "readable text",
+    "UI",
+    "logo",
+    "watermark",
+    "photorealism",
+    "dense micro-texture"
+  ],
+  "target_asset": null,
+  "asset_status": "preserve-existing-gameplay-art"
+}

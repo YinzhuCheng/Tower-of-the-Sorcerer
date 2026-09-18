@@ -1,0 +1,40 @@
+{
+  "version": "GAL-SIMPLE-1.1",
+  "character_id": "merchant",
+  "reference_order": [
+    {
+      "role": "canonical_text",
+      "path": "01_canon/characters/merchant.md",
+      "sha256": "798f62cafd961a9b7d46f70ed1a0ad452b674b2c47d667d74bc7471a3f7a752f"
+    },
+    {
+      "role": "accepted_turnaround",
+      "path": "01_canon/turnarounds/CHAR_merchant_turnaround_v1.png",
+      "sha256": "8640cc48ab47d1c3f77dc8f1310c1240ef88a68419cce35bf94cfcc97f7d923e"
+    },
+    {
+      "role": "accepted_detail_board",
+      "path": "01_canon/details/DETAIL_merchant_v1.png",
+      "sha256": "25b23cfc17f0db3294f4be10e1738142df5a4cef152240a93c5d7bec3b21a3cc"
+    },
+    {
+      "role": "accepted_expression_board",
+      "path": "01_canon/expressions/EXPR_merchant_v1.png",
+      "sha256": "68a29aef0d0640ac0506b437e955fafff302cb7c0a3f64af49c0d1b8972a3579"
+    },
+    {
+      "role": "accepted_transparent_standee",
+      "path": "01_canon/standees/STANDEE_merchant_neutral_v1.png",
+      "sha256": "cdc3635eff68d08f011574bd958150db228bb0d4d86c96282af0de93b63b9ac5"
+    }
+  ],
+  "hard_locks": [
+    "前辫2条",
+    "蓝头巾",
+    "方背包1",
+    "顶部卷毯1",
+    "灯为方形琥珀",
+    "钱袋右腰"
+  ],
+  "missing_reference_policy": "stop_generation_and_complete_missing_canon_asset"
+}

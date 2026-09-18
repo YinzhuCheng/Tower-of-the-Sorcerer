@@ -1,0 +1,176 @@
+{
+  "version": "GAL-SIMPLE-1.2",
+  "cg_id": "CG_019_lighthouse-archive",
+  "semantic_id": "lighthouse-archive",
+  "title": "终章灯塔归档",
+  "status": "ready-for-layout",
+  "source_locator": {
+    "repository_commit": "b05bc623b7c1ef8b93cfa1fca253ad2119a52f68",
+    "file": "src/game/demo-30-floor-content.js",
+    "line": 523
+  },
+  "source_passage": "清晨前灯塔大门打开，湿石路通向新码头，第一辆邮车抵达；众人开始交接第一批信。",
+  "narrative_beat": "结案不是静止终点，而是重新开始可被记录的投递工作。",
+  "point_of_view": "third-person visual-novel camera aligned with protagonist understanding",
+  "cast": [
+    "hero",
+    "guide",
+    "final_queen",
+    "arcane_sovereign"
+  ],
+  "expressions": {
+    "hero": "quiet resolve",
+    "guide": "gentle reassurance",
+    "final_queen": "peaceful acceptance",
+    "arcane_sovereign": "acceptance"
+  },
+  "environment_id": "ember-lighthouse",
+  "props": [
+    "two mail crates",
+    "blank handover form",
+    "first review lamp",
+    "mail coach"
+  ],
+  "composition": "16:9 外景群像；灯塔门框住破晓，新邮车停在湿石路；璃和女王各抱一只信匣，主权者拿空白签收表，纱雾点亮复查灯。",
+  "must_show": [
+    "four characters have distinct tasks",
+    "calm dawn",
+    "wet road",
+    "mail coach driver unarmed"
+  ],
+  "must_not_show": [
+    "victory fireworks",
+    "readable form",
+    "weapons raised",
+    "crowded festival"
+  ],
+  "project_inference": null,
+  "character_reference_order": {
+    "hero": [
+      {
+        "role": "canonical_text",
+        "path": "01_canon/characters/hero.md",
+        "sha256": "6eada62d7bfc82c639b25fe2387de9a51f4adc6009b46d55080c26fcd2193d50"
+      },
+      {
+        "role": "accepted_turnaround",
+        "path": "01_canon/turnarounds/CHAR_hero_turnaround_v2.png",
+        "sha256": "d1385fe1798271e05e608204fe6d6cc99daa7961587d2e188cef7e62693cfe1b"
+      },
+      {
+        "role": "accepted_detail_board",
+        "path": "01_canon/details/DETAIL_hero_v2.png",
+        "sha256": "8f42611ee44f012b256262a251c67c5713d4056c8c3af5391e6c6976d337bfa1"
+      },
+      {
+        "role": "accepted_expression_board",
+        "path": "01_canon/expressions/EXPR_hero_v1.png",
+        "sha256": "d1571b7c18c3fbd902109a575619a40b1ecd4d9d84180fe6e9eb585a5eb1f3f8"
+      },
+      {
+        "role": "accepted_transparent_standee",
+        "path": "01_canon/standees/STANDEE_hero_neutral_v1.png",
+        "sha256": "bc7e81506ad41225bfe5ef548889d66e67d4c8db963c64650ebb601737d49b76"
+      }
+    ],
+    "guide": [
+      {
+        "role": "canonical_text",
+        "path": "01_canon/characters/guide.md",
+        "sha256": "b6389693de0a4f56df83f4ad33f8436e140b178167c9ad5eecaaa01c9465e7af"
+      },
+      {
+        "role": "accepted_turnaround",
+        "path": "01_canon/turnarounds/CHAR_guide_turnaround_v1.png",
+        "sha256": "21324cb96a2a3cd44a6c53d2f1dd5a323b7caf3f25d9d118604120f3f7209af7"
+      },
+      {
+        "role": "accepted_detail_board",
+        "path": "01_canon/details/DETAIL_guide_v1.png",
+        "sha256": "b2eb5407d1e074d9aa18524558bd2788f62f5b1aa047be82d05e5febf53819c2"
+      },
+      {
+        "role": "accepted_expression_board",
+        "path": "01_canon/expressions/EXPR_guide_v1.png",
+        "sha256": "4695959e1553f64ee090108c719ca33194dfb6f2a78d5e49c6f75b90e5a24204"
+      },
+      {
+        "role": "accepted_transparent_standee",
+        "path": "01_canon/standees/STANDEE_guide_neutral_v1.png",
+        "sha256": "355727eeacf878c2001f771ed932b220e29232a6d8eec2fe2960585bbee3f0fb"
+      }
+    ],
+    "final_queen": [
+      {
+        "role": "canonical_text",
+        "path": "01_canon/characters/final_queen.md",
+        "sha256": "43aeaa019c35531c5cc46f1460cdcac0ba77e6f612f6fdd898419d8e1a676bed"
+      },
+      {
+        "role": "accepted_turnaround",
+        "path": "01_canon/turnarounds/CHAR_final-queen_turnaround_v1.png",
+        "sha256": "9ad06627d33b9188616d9cbc9fa547a762e8933733026c101b33e8f349ef92e8"
+      },
+      {
+        "role": "accepted_detail_board",
+        "path": "01_canon/details/DETAIL_final-queen_v1.png",
+        "sha256": "647725e528e53392fe07ebc32bb4a112b0253d788609b1b7d92fc8e410e1077c"
+      },
+      {
+        "role": "accepted_expression_board",
+        "path": "01_canon/expressions/EXPR_final-queen_v1.png",
+        "sha256": "58c9121b08aadb699e5a47e964c30317326ae227c90ed9d292f67d0f866db2a7"
+      },
+      {
+        "role": "accepted_transparent_standee",
+        "path": "01_canon/standees/STANDEE_final-queen_neutral_v1.png",
+        "sha256": "99dbc41344f553a14356aeef6e7fc71ae4a3e30fba10aca5b86ba5cba47671ef"
+      }
+    ],
+    "arcane_sovereign": [
+      {
+        "role": "canonical_text",
+        "path": "01_canon/characters/arcane_sovereign.md",
+        "sha256": "449498a310eec8c47ea0c2fb1a9ba74cd34ee38b06593b12b1b5e35102d702f7"
+      },
+      {
+        "role": "accepted_turnaround",
+        "path": "01_canon/turnarounds/CHAR_arcane-sovereign_turnaround_v1.png",
+        "sha256": "50f15906516064571100c2bd96e226dfe30b518ded723fb3c3b7f90582b115c6"
+      },
+      {
+        "role": "accepted_detail_board",
+        "path": "01_canon/details/DETAIL_arcane-sovereign_v1.png",
+        "sha256": "3e3d14b1ad69aa083be5932f39827510aa7d766e942e304614a8f5bf32c4d8cd"
+      },
+      {
+        "role": "accepted_expression_board",
+        "path": "01_canon/expressions/EXPR_arcane-sovereign_v1.png",
+        "sha256": "353344f864bc97b07edcb4785766a96e1cf3076b1773e153428b25d8d72630e4"
+      },
+      {
+        "role": "accepted_transparent_standee",
+        "path": "01_canon/standees/STANDEE_arcane-sovereign_neutral_v1.png",
+        "sha256": "79fc599bcc1df521e53dbc6e125b1982cd8d441ca52fc3cbcb3a6a6ddbd8f622"
+      }
+    ]
+  },
+  "environment_reference": "01_canon/environments/ENV_ember-lighthouse_v1.png",
+  "runtime_target": "public/assets/anime/cg/liyue-lighthouse-archive-cg.webp",
+  "archive_only_aliases": [],
+  "iteration_ladder": [
+    "R0_layout",
+    "R1_identity",
+    "R2_costume",
+    "R3_scene",
+    "R4_final"
+  ],
+  "output_contract": "04_cg/final/CG_019_lighthouse-archive_v1.png",
+  "environment_reference_asset": {
+    "path": "01_canon/environments/ENV_ember-lighthouse_v1.png",
+    "sha256": "e856ff4d6b4264599e030c472f9c4883643b9ee4f8f64fd3861c1ae6f90528bb",
+    "width": 1672,
+    "height": 941,
+    "mode": "RGB"
+  }
+}

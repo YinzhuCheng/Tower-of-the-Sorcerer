@@ -1,0 +1,149 @@
+{
+  "version": "GAL-SIMPLE-1.2",
+  "cg_id": "CG_012_echo-ledger",
+  "semantic_id": "echo-ledger",
+  "title": "十九阵名簿归还",
+  "status": "ready-for-layout",
+  "source_locator": {
+    "repository_commit": "b05bc623b7c1ef8b93cfa1fca253ad2119a52f68",
+    "file": "src/game/demo-20-floor-content.js",
+    "line": 286
+  },
+  "source_passage": "诺克缇娅承认自己把待核实误解为整座灰港仍在求援；她把第七船名牌对准回执，离港状态变绿而死者牌仍保留。",
+  "narrative_beat": "说明分类一个人不需要覆盖另一个人的真实状态。",
+  "point_of_view": "third-person visual-novel camera aligned with protagonist understanding",
+  "cast": [
+    "hero",
+    "final_queen",
+    "echo_regent"
+  ],
+  "expressions": {
+    "hero": "quiet resolve",
+    "final_queen": "shaken realization",
+    "echo_regent": "grave neutrality"
+  },
+  "environment_id": "echo-court",
+  "props": [
+    "one ship nameplate",
+    "captain receipt",
+    "single black ledger",
+    "separate mourning tag"
+  ],
+  "composition": "16:9 三人见证场；女王蹲身将单块名牌对准封印回执，璃与摄政官分立两侧，黑名簿置于低台。",
+  "must_show": [
+    "three people readable",
+    "one green status light",
+    "mourning tag remains",
+    "ledger owned by regent"
+  ],
+  "must_not_show": [
+    "readable names",
+    "all tags turn green",
+    "combat poster",
+    "floating duplicate books"
+  ],
+  "project_inference": null,
+  "character_reference_order": {
+    "hero": [
+      {
+        "role": "canonical_text",
+        "path": "01_canon/characters/hero.md",
+        "sha256": "6eada62d7bfc82c639b25fe2387de9a51f4adc6009b46d55080c26fcd2193d50"
+      },
+      {
+        "role": "accepted_turnaround",
+        "path": "01_canon/turnarounds/CHAR_hero_turnaround_v2.png",
+        "sha256": "d1385fe1798271e05e608204fe6d6cc99daa7961587d2e188cef7e62693cfe1b"
+      },
+      {
+        "role": "accepted_detail_board",
+        "path": "01_canon/details/DETAIL_hero_v2.png",
+        "sha256": "8f42611ee44f012b256262a251c67c5713d4056c8c3af5391e6c6976d337bfa1"
+      },
+      {
+        "role": "accepted_expression_board",
+        "path": "01_canon/expressions/EXPR_hero_v1.png",
+        "sha256": "d1571b7c18c3fbd902109a575619a40b1ecd4d9d84180fe6e9eb585a5eb1f3f8"
+      },
+      {
+        "role": "accepted_transparent_standee",
+        "path": "01_canon/standees/STANDEE_hero_neutral_v1.png",
+        "sha256": "bc7e81506ad41225bfe5ef548889d66e67d4c8db963c64650ebb601737d49b76"
+      }
+    ],
+    "final_queen": [
+      {
+        "role": "canonical_text",
+        "path": "01_canon/characters/final_queen.md",
+        "sha256": "43aeaa019c35531c5cc46f1460cdcac0ba77e6f612f6fdd898419d8e1a676bed"
+      },
+      {
+        "role": "accepted_turnaround",
+        "path": "01_canon/turnarounds/CHAR_final-queen_turnaround_v1.png",
+        "sha256": "9ad06627d33b9188616d9cbc9fa547a762e8933733026c101b33e8f349ef92e8"
+      },
+      {
+        "role": "accepted_detail_board",
+        "path": "01_canon/details/DETAIL_final-queen_v1.png",
+        "sha256": "647725e528e53392fe07ebc32bb4a112b0253d788609b1b7d92fc8e410e1077c"
+      },
+      {
+        "role": "accepted_expression_board",
+        "path": "01_canon/expressions/EXPR_final-queen_v1.png",
+        "sha256": "58c9121b08aadb699e5a47e964c30317326ae227c90ed9d292f67d0f866db2a7"
+      },
+      {
+        "role": "accepted_transparent_standee",
+        "path": "01_canon/standees/STANDEE_final-queen_neutral_v1.png",
+        "sha256": "99dbc41344f553a14356aeef6e7fc71ae4a3e30fba10aca5b86ba5cba47671ef"
+      }
+    ],
+    "echo_regent": [
+      {
+        "role": "canonical_text",
+        "path": "01_canon/characters/echo_regent.md",
+        "sha256": "bbabccd8558c20fc06f5c907c4e498b8168570e579fa13ae6680905b02d867ff"
+      },
+      {
+        "role": "accepted_turnaround",
+        "path": "01_canon/turnarounds/CHAR_echo-regent_turnaround_v2.png",
+        "sha256": "36e67ccb88fe90016c7f10016e2bc60292e301e296d290c88db166369cd1b835"
+      },
+      {
+        "role": "accepted_detail_board",
+        "path": "01_canon/details/DETAIL_echo-regent_v1.png",
+        "sha256": "b8c7bee8fd2810cf0648274ba8380d7c5311e1bae5644fdec3e2e6e1c2cbd1a7"
+      },
+      {
+        "role": "accepted_expression_board",
+        "path": "01_canon/expressions/EXPR_echo-regent_v1.png",
+        "sha256": "1fc8dadbf1cd4a089da30614ec5f65fa769248f0b19f9c011057a7d1e0bbe416"
+      },
+      {
+        "role": "accepted_transparent_standee",
+        "path": "01_canon/standees/STANDEE_echo-regent_neutral_v1.png",
+        "sha256": "eb06020a0da8b8632ab3894e1c53c6dde4b7683a45569d24018b3d0791658869"
+      }
+    ]
+  },
+  "environment_reference": "01_canon/environments/ENV_echo-court_v1.png",
+  "runtime_target": "public/assets/anime/cg/liyue-echo-ledger-cg-audit-v3.webp",
+  "archive_only_aliases": [
+    "public/assets/anime/cg/liyue-echo-ledger-cg.webp"
+  ],
+  "iteration_ladder": [
+    "R0_layout",
+    "R1_identity",
+    "R2_costume",
+    "R3_scene",
+    "R4_final"
+  ],
+  "output_contract": "04_cg/final/CG_012_echo-ledger_v1.png",
+  "environment_reference_asset": {
+    "path": "01_canon/environments/ENV_echo-court_v1.png",
+    "sha256": "beabf39cbfef14d6eec1b5e0b9b74874d1c74376e0288ebf5e0a2b86d3130ef5",
+    "width": 1672,
+    "height": 941,
+    "mode": "RGB"
+  }
+}

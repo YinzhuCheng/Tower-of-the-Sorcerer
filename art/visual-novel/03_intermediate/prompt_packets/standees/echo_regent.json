@@ -1,0 +1,32 @@
+{
+  "version": "GAL-SIMPLE-1.1",
+  "character_id": "echo_regent",
+  "series_style_lock": "GAL-SIMPLE clean cel transparent standee",
+  "identity_lock": [
+    "灰金低束发",
+    "灰紫眼",
+    "蓝灰绶带右肩至左腰",
+    "方银领扣1",
+    "黑名簿1",
+    "无冠无武器"
+  ],
+  "prop_lock": "One black rectangular memorial ledger 28x20 cm, plain cover with ONE vertical blue-grey cloth band and ONE square silver closure. Pages ivory; no readable names in generation. The sash remains separate clothing and never becomes a book strap.",
+  "pose": "Grave neutral stance. Hold one black memorial ledger closed against the torso with LEFT forearm; RIGHT hand relaxed. Sash remains from anatomical RIGHT shoulder to LEFT hip. No crown or weapon.",
+  "negative_constraints": [
+    "background pixels",
+    "ground shadow",
+    "extra accessory",
+    "duplicate prop",
+    "wrong side",
+    "wrong count",
+    "watermark",
+    "cropped feet or prop"
+  ],
+  "prompt": "Use case: background-extraction. Asset type: canonical full-body transparent visual-novel standing figure. Create ONE isolated full-body character cutout in polished Japanese 2D visual-novel cel style matching GAL-SIMPLE: fine clean dark outlines, large solid local colors, one hard-edged shadow per material, restrained highlights, adult proportions. Image 1 is the accepted turnaround and has highest visual authority for identity, anatomy, silhouette and costume. Image 2 is the accepted detail board and controls exact accessory, clothing and prop counts and side placement. Image 3 is the accepted expression sheet and controls only the face; use its first neutral expression. Portrait 2:3 composition, centered, entire hair, all props and both feet inside canvas with 8 percent transparent padding. Natural relaxed three-quarter pose facing camera, anatomically plausible hands, readable silhouette. ACTUAL TRANSPARENT RGBA BACKGROUND: no white or checkerboard background, no scenery, floor, cast shadow, glow, aura, particles, frame, text, logo, watermark or signature. Only the character and explicitly required carried items may have visible pixels. Do not redesign, beautify with extra jewelry, duplicate props, change sides, change counts, or merge objects into hands. CANON IDENTITY: Androgynous adult court regent, 181 cm, slender adult masculine silhouette, shoulder-length ash-blond hair gathered in ONE low tie, muted violet eyes. Charcoal ankle-length formal coat, ivory shirt, muted blue-grey diagonal sash from HER/HIS RIGHT shoulder to LEFT hip, charcoal trousers and plain black boots. ONE square silver collar clasp. Calm grave face. No crown, no medals, tassels, decorative chains or weapon. CANON PROP: One black rectangular memorial ledger 28x20 cm, plain cover with ONE vertical blue-grey cloth band and ONE square silver closure. Pages ivory; no readable names in generation. The sash remains separate clothing and never becomes a book strap. HARD LOCKS: 灰金低束发, 灰紫眼, 蓝灰绶带右肩至左腰, 方银领扣1, 黑名簿1, 无冠无武器. POSE AND OWNERSHIP: Grave neutral stance. Hold one black memorial ledger closed against the torso with LEFT forearm; RIGHT hand relaxed. Sash remains from anatomical RIGHT shoulder to LEFT hip. No crown or weapon.",
+  "referenced_image_paths": [
+    "/workspace/scratch/0645849eb5a5/gal-design-v1/01_canon/turnarounds/CHAR_echo-regent_turnaround_v2.png",
+    "/workspace/scratch/0645849eb5a5/gal-design-v1/01_canon/details/DETAIL_echo-regent_v1.png",
+    "/workspace/scratch/0645849eb5a5/gal-design-v1/01_canon/expressions/EXPR_echo-regent_v1.png"
+  ],
+  "output_contract": "01_canon/standees/STANDEE_echo-regent_neutral_v1.png"
+}

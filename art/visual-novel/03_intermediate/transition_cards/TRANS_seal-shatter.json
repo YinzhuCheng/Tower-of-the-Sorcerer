@@ -1,0 +1,29 @@
+{
+  "version": "GAL-SIMPLE-1.2",
+  "transition_id": "seal-shatter",
+  "title": "Boss 封印解锁",
+  "runtime_target": "public/assets/anime/transitions/seal-shatter.webp",
+  "usage": "守护者、破封与高潮场景切入",
+  "source_facts": "黑色圆形登记封印分成少量宽阔碎片，红紫裂光从中心打开；表达解除封锁而非灾难爆炸。",
+  "composition": "16:9 centered graphic transition; one circular seal; clean silhouette readable during short display",
+  "must_not": [
+    "characters",
+    "many tiny shards",
+    "explosion",
+    "readable text",
+    "UI",
+    "logo",
+    "watermark"
+  ],
+  "status": "accepted",
+  "asset_status": "accepted",
+  "target_asset": "01_canon/transitions/TRANS_seal-shatter_v1.png",
+  "asset": {
+    "path": "01_canon/transitions/TRANS_seal-shatter_v1.png",
+    "sha256": "9276971019193379d3e1c8e43461e3351cce311f682fdcb66ed29093fd2af2ef",
+    "width": 1672,
+    "height": 941,
+    "mode": "RGB"
+  },
+  "prompt_packet": "03_intermediate/prompt_packets/transitions/seal-shatter.json"
+}
