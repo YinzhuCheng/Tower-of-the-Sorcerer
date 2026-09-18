@@ -2,6 +2,8 @@
 
 本包重新建立GAL美术的权威起点。魔塔地图、敌人战斗形象、物品与地图机制素材保留，不在本轮重绘范围。
 
+后续生产、QA、Git LFS/Release 分流和远端验收统一遵循 [`CG_PRODUCTION_AND_UPLOAD_GUIDE.md`](CG_PRODUCTION_AND_UPLOAD_GUIDE.md)。
+
 ## 当前工作流
 
 `文字定稿 → 三视图 → 服饰/武器/物件细节板 → 表情表 → 透明立绘 → 场景卡 → CG布局稿 → CG身份稿 → 最终CG`
