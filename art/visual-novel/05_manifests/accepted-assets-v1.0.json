@@ -1,0 +1,532 @@
+{
+  "version": "GAL-SIMPLE-1.0",
+  "characters": [
+    {
+      "id": "hero",
+      "name": "绫星·璃",
+      "status": "accepted",
+      "text": "01_canon/characters/hero.md",
+      "turnaround": {
+        "path": "01_canon/turnarounds/CHAR_hero_turnaround_v2.png",
+        "sha256": "d1385fe1798271e05e608204fe6d6cc99daa7961587d2e188cef7e62693cfe1b",
+        "width": 1448,
+        "height": 1086,
+        "mode": "RGB",
+        "has_real_transparency": false
+      },
+      "detail": {
+        "path": "01_canon/details/DETAIL_hero_v2.png",
+        "sha256": "8f42611ee44f012b256262a251c67c5713d4056c8c3af5391e6c6976d337bfa1",
+        "width": 1448,
+        "height": 1086,
+        "mode": "RGB",
+        "has_real_transparency": false
+      },
+      "hard_locks": [
+        "蓝发紫蓝眼",
+        "本人右侧月牙发夹1枚",
+        "本人左肩月牙扣1枚",
+        "腰横扣2枚",
+        "记录包在左腰",
+        "右手剑左手法术",
+        "双腿服装对称"
+      ],
+      "qa_note": "v2补回左腰剑鞘；月牙夹、肩扣、双腰扣和记录袋位置通过。"
+    },
+    {
+      "id": "guide",
+      "name": "残响精灵·纱雾",
+      "status": "accepted",
+      "text": "01_canon/characters/guide.md",
+      "turnaround": {
+        "path": "01_canon/turnarounds/CHAR_guide_turnaround_v1.png",
+        "sha256": "21324cb96a2a3cd44a6c53d2f1dd5a323b7caf3f25d9d118604120f3f7209af7",
+        "width": 1448,
+        "height": 1086,
+        "mode": "RGB",
+        "has_real_transparency": false
+      },
+      "detail": {
+        "path": "01_canon/details/DETAIL_guide_v1.png",
+        "sha256": "b2eb5407d1e074d9aa18524558bd2788f62f5b1aa047be82d05e5febf53819c2",
+        "width": 1448,
+        "height": 1086,
+        "mode": "RGB",
+        "has_real_transparency": false
+      },
+      "hard_locks": [
+        "银紫短发",
+        "本人左鬓白花1朵",
+        "背腰冰蓝飘带2条",
+        "完整银圆环星盘",
+        "无长发与腿链"
+      ],
+      "qa_note": "左侧白花、双带与银色整圆星盘通过。"
+    },
+    {
+      "id": "final_queen",
+      "name": "无声女王·诺克缇娅",
+      "status": "accepted",
+      "text": "01_canon/characters/final_queen.md",
+      "turnaround": {
+        "path": "01_canon/turnarounds/CHAR_final-queen_turnaround_v1.png",
+        "sha256": "9ad06627d33b9188616d9cbc9fa547a762e8933733026c101b33e8f349ef92e8",
+        "width": 1448,
+        "height": 1086,
+        "mode": "RGB",
+        "has_real_transparency": false
+      },
+      "detail": {
+        "path": "01_canon/details/DETAIL_final-queen_v1.png",
+        "sha256": "647725e528e53392fe07ebc32bb4a112b0253d788609b1b7d92fc8e410e1077c",
+        "width": 1448,
+        "height": 1086,
+        "mode": "RGB",
+        "has_real_transparency": false
+      },
+      "hard_locks": [
+        "黑发暗酒红发尾",
+        "红眼",
+        "王冠3主尖峰",
+        "冠中央红菱石1枚",
+        "喉部红菱胸针1枚",
+        "施法封印片3枚",
+        "无剑"
+      ],
+      "qa_note": "三尖冠、两枚单独红宝石与三块封印板通过；板的展开/收束图为同一组三板的状态示意。"
+    },
+    {
+      "id": "cat_boss",
+      "name": "猫卫长·米露",
+      "status": "accepted",
+      "text": "01_canon/characters/cat_boss.md",
+      "turnaround": {
+        "path": "01_canon/turnarounds/CHAR_cat-boss_turnaround_v1.png",
+        "sha256": "fccf853bfd7a0ccac64c42c9f1984f18ccc07e86612aae42a38c93b13b23496a",
+        "width": 1448,
+        "height": 1086,
+        "mode": "RGB",
+        "has_real_transparency": false
+      },
+      "detail": {
+        "path": "01_canon/details/DETAIL_cat-boss_v1.png",
+        "sha256": "d703797aa5e78de6d11b5081929a2cda650595b4ab3ad0a78504ea74fde95b91",
+        "width": 1448,
+        "height": 1086,
+        "mode": "RGB",
+        "has_real_transparency": false
+      },
+      "hard_locks": [
+        "猫脸非人脸猫娘",
+        "耳2尾1",
+        "帽无羽毛",
+        "胸前铃1枚",
+        "盾月牙1枚",
+        "左盾右弯刀"
+      ],
+      "qa_note": "猫脸、两耳一尾、单铃、左盾右刀通过。"
+    },
+    {
+      "id": "fox_boss",
+      "name": "狐祝·绯叶",
+      "status": "accepted",
+      "text": "01_canon/characters/fox_boss.md",
+      "turnaround": {
+        "path": "01_canon/turnarounds/CHAR_fox-boss_turnaround_v1.png",
+        "sha256": "fd5ce82b9db8afc1db64ee50648a614b8a39141ced2a4e3289d945c2a9c2029b",
+        "width": 1448,
+        "height": 1086,
+        "mode": "RGB",
+        "has_real_transparency": false
+      },
+      "detail": {
+        "path": "01_canon/details/DETAIL_fox-boss_v2.png",
+        "sha256": "bcdfb78194d8dbb71b45b316c49c9418d918daeb1064750b7e6f830f99b8b39e",
+        "width": 1448,
+        "height": 1086,
+        "mode": "RGB",
+        "has_real_transparency": false
+      },
+      "hard_locks": [
+        "绿眼栗红发",
+        "尾3条白尖",
+        "右鬓叶片1枚",
+        "折扇1把",
+        "纸符3张"
+      ],
+      "qa_note": "三尾、单红叶发夹、单扇与三张符纸通过；v2移除过度雕花发饰。"
+    },
+    {
+      "id": "whale_boss",
+      "name": "深蓝歌姬·澜音",
+      "status": "accepted",
+      "text": "01_canon/characters/whale_boss.md",
+      "turnaround": {
+        "path": "01_canon/turnarounds/CHAR_whale-boss_turnaround_v1.png",
+        "sha256": "bc155fcc809ae9b5f27fea5872105a2791267ebf521969f46e2a277812775812",
+        "width": 1448,
+        "height": 1086,
+        "mode": "RGB",
+        "has_real_transparency": false
+      },
+      "detail": {
+        "path": "01_canon/details/DETAIL_whale-boss_v1.png",
+        "sha256": "f32d409424a5627098d6b060c232b9a33f703905f47f473962838f4a0c49ed40",
+        "width": 1448,
+        "height": 1086,
+        "mode": "RGB",
+        "has_real_transparency": false
+      },
+      "hard_locks": [
+        "蓝发青尾海蓝眼",
+        "左鬓贝夹1枚",
+        "双袖片各1",
+        "贝壳竖琴5弦",
+        "无鱼尾法杖"
+      ],
+      "qa_note": "左侧贝壳夹、双袖垂片与五弦贝壳琴通过。"
+    },
+    {
+      "id": "sword_boss",
+      "name": "剑圣·塞蕾娜",
+      "status": "accepted",
+      "text": "01_canon/characters/sword_boss.md",
+      "turnaround": {
+        "path": "01_canon/turnarounds/CHAR_sword-boss_turnaround_v2.png",
+        "sha256": "f86ecb72e8e6d19db15e098a83a1b162525c3495a73a8e8c735498873ec2843e",
+        "width": 1448,
+        "height": 1086,
+        "mode": "RGB",
+        "has_real_transparency": false
+      },
+      "detail": {
+        "path": "01_canon/details/DETAIL_sword-boss_v1.png",
+        "sha256": "c934c6e5dc0684813370f57371e87cfd64c4ce89acdb67930b3340d3f2605688",
+        "width": 1448,
+        "height": 1086,
+        "mode": "RGB",
+        "has_real_transparency": false
+      },
+      "hard_locks": [
+        "银白低马尾",
+        "灰紫眼",
+        "白外套蓝长裤",
+        "银菱胸徽1枚",
+        "右手直剑左腰鞘",
+        "无冠"
+      ],
+      "qa_note": "银白低马尾、单胸菱徽、右剑左鞘通过；v2移除多余腿带。"
+    },
+    {
+      "id": "dragon_boss",
+      "name": "龙姬·焰璃",
+      "status": "accepted",
+      "text": "01_canon/characters/dragon_boss.md",
+      "turnaround": {
+        "path": "01_canon/turnarounds/CHAR_dragon-boss_turnaround_v1.png",
+        "sha256": "579890599c069c25594cf99e870aeaa66eaa5c54eee0d53c94bb2864c66ed3a3",
+        "width": 1448,
+        "height": 1086,
+        "mode": "RGB",
+        "has_real_transparency": false
+      },
+      "detail": {
+        "path": "01_canon/details/DETAIL_dragon-boss_v1.png",
+        "sha256": "c3e501050ba2a109e85cf256ba558f399394ba2be800b4eb0939ee38a0068e71",
+        "width": 1448,
+        "height": 1086,
+        "mode": "RGB",
+        "has_real_transparency": false
+      },
+      "hard_locks": [
+        "角2尾1",
+        "黑角金尖",
+        "翼形披肩2片非肉翅",
+        "长枪1杆",
+        "枪缨1束"
+      ],
+      "qa_note": "双角、单尾、两片布质翼形披片与单长枪通过。"
+    },
+    {
+      "id": "astral_boss",
+      "name": "天穹魔女·露米",
+      "status": "accepted",
+      "text": "01_canon/characters/astral_boss.md",
+      "turnaround": {
+        "path": "01_canon/turnarounds/CHAR_astral-boss_turnaround_v1.png",
+        "sha256": "0f0106b196e4d21a06ad0b4d15173f83d78085bf8609af6cc419cecda77ba702",
+        "width": 1448,
+        "height": 1086,
+        "mode": "RGBA",
+        "alpha_min": 0,
+        "alpha_max": 255,
+        "has_real_transparency": true
+      },
+      "detail": {
+        "path": "01_canon/details/DETAIL_astral-boss_v1.png",
+        "sha256": "539702c86da9fa2b2b868137a88424190e482725716e8b0a1337a1b1c6881f80",
+        "width": 1448,
+        "height": 1086,
+        "mode": "RGB",
+        "has_real_transparency": false
+      },
+      "hard_locks": [
+        "灰紫及肩发",
+        "右鬓四角星夹1",
+        "胸四角星扣1",
+        "黄铜月牙星盘",
+        "无星座满印"
+      ],
+      "qa_note": "本人右侧单星夹、单胸星扣与黄铜月牙星盘通过。"
+    },
+    {
+      "id": "shadow_boss",
+      "name": "影织姬·鸦羽",
+      "status": "accepted",
+      "text": "01_canon/characters/shadow_boss.md",
+      "turnaround": {
+        "path": "01_canon/turnarounds/CHAR_shadow-boss_turnaround_v2.png",
+        "sha256": "131fc0f668cc5493e9fbd6f277ae42753ba2c17e58178ab91768bf6221e2eebf",
+        "width": 1448,
+        "height": 1086,
+        "mode": "RGB",
+        "has_real_transparency": false
+      },
+      "detail": {
+        "path": "01_canon/details/DETAIL_shadow-boss_v1.png",
+        "sha256": "016452ddc9ab04e521dc186a85371ccd0c8705c88c7a5fef495b9085f4a91203",
+        "width": 1448,
+        "height": 1086,
+        "mode": "RGB",
+        "has_real_transparency": false
+      },
+      "hard_locks": [
+        "黑紫短发",
+        "右鬓银羽1枚",
+        "后摆2片",
+        "针盒左腰",
+        "右针左线轴",
+        "无剑"
+      ],
+      "qa_note": "双腿对称、两片后摆、左腰单针盒与针/线轴通过；v2修正腿部不对称。"
+    },
+    {
+      "id": "merchant",
+      "name": "阵间商人·珂珂",
+      "status": "accepted",
+      "text": "01_canon/characters/merchant.md",
+      "turnaround": {
+        "path": "01_canon/turnarounds/CHAR_merchant_turnaround_v1.png",
+        "sha256": "8640cc48ab47d1c3f77dc8f1310c1240ef88a68419cce35bf94cfcc97f7d923e",
+        "width": 1448,
+        "height": 1086,
+        "mode": "RGB",
+        "has_real_transparency": false
+      },
+      "detail": {
+        "path": "01_canon/details/DETAIL_merchant_v1.png",
+        "sha256": "25b23cfc17f0db3294f4be10e1738142df5a4cef152240a93c5d7bec3b21a3cc",
+        "width": 1448,
+        "height": 1086,
+        "mode": "RGB",
+        "has_real_transparency": false
+      },
+      "hard_locks": [
+        "前辫2条",
+        "蓝头巾",
+        "方背包1",
+        "顶部卷毯1",
+        "灯为方形琥珀",
+        "钱袋右腰"
+      ],
+      "qa_note": "双辫、单方背包、单卷毯、右腰钱袋与方形琥珀灯通过。"
+    },
+    {
+      "id": "echo_regent",
+      "name": "回声摄政官",
+      "status": "accepted",
+      "text": "01_canon/characters/echo_regent.md",
+      "turnaround": {
+        "path": "01_canon/turnarounds/CHAR_echo-regent_turnaround_v2.png",
+        "sha256": "36e67ccb88fe90016c7f10016e2bc60292e301e296d290c88db166369cd1b835",
+        "width": 1448,
+        "height": 1086,
+        "mode": "RGB",
+        "has_real_transparency": false
+      },
+      "detail": {
+        "path": "01_canon/details/DETAIL_echo-regent_v1.png",
+        "sha256": "b8c7bee8fd2810cf0648274ba8380d7c5311e1bae5644fdec3e2e6e1c2cbd1a7",
+        "width": 1536,
+        "height": 1024,
+        "mode": "RGB",
+        "has_real_transparency": false
+      },
+      "hard_locks": [
+        "灰金低束发",
+        "灰紫眼",
+        "蓝灰绶带右肩至左腰",
+        "方银领扣1",
+        "黑名簿1",
+        "无冠无武器"
+      ],
+      "qa_note": "短低束发、单方银领扣、右肩至左腰绶带与单黑名簿通过；v2修正背面绶带方向。"
+    },
+    {
+      "id": "arcane_sovereign",
+      "name": "奥术主权者",
+      "status": "accepted",
+      "text": "01_canon/characters/arcane_sovereign.md",
+      "turnaround": {
+        "path": "01_canon/turnarounds/CHAR_arcane-sovereign_turnaround_v1.png",
+        "sha256": "50f15906516064571100c2bd96e226dfe30b518ded723fb3c3b7f90582b115c6",
+        "width": 1448,
+        "height": 1086,
+        "mode": "RGB",
+        "has_real_transparency": false
+      },
+      "detail": {
+        "path": "01_canon/details/DETAIL_arcane-sovereign_v1.png",
+        "sha256": "3e3d14b1ad69aa083be5932f39827510aa7d766e942e304614a8f5bf32c4d8cd",
+        "width": 1448,
+        "height": 1086,
+        "mode": "RGB",
+        "has_real_transparency": false
+      },
+      "hard_locks": [
+        "男性深青发金眼",
+        "白前衣片2条",
+        "蓝菱领扣1",
+        "椭圆印戒斜裂纹1道",
+        "无冠无剑"
+      ],
+      "qa_note": "男性轮廓、两条白前片、单蓝菱领扣与单裂纹椭圆印戒通过。"
+    },
+    {
+      "id": "palace_warden_v2",
+      "name": "静默执剑官·维拉",
+      "status": "accepted",
+      "text": "01_canon/characters/palace_warden_v2.md",
+      "turnaround": {
+        "path": "01_canon/turnarounds/CHAR_palace-warden-v2_turnaround_v1.png",
+        "sha256": "91c1ca08896aea26800b29f1ec54f78ed68e40cd655fb1471bb822deda666803",
+        "width": 1448,
+        "height": 1086,
+        "mode": "RGB",
+        "has_real_transparency": false
+      },
+      "detail": {
+        "path": "01_canon/details/DETAIL_palace-warden-v2_v1.png",
+        "sha256": "7a0b4807065ee74f4eecf1eb05ab9b7d0caddb9524fc93b85388bf9e51f107bf",
+        "width": 1448,
+        "height": 1086,
+        "mode": "RGB",
+        "has_real_transparency": false
+      },
+      "hard_locks": [
+        "白发冷蓝眼",
+        "额冠中央1尖",
+        "黑甲蓝前裙片",
+        "双肩甲对称",
+        "银剑中央蓝槽1",
+        "无浮晶"
+      ],
+      "qa_note": "单尖额冠、对称肩甲、黑甲蓝前片与单槽直剑通过。"
+    },
+    {
+      "id": "black_seal_keeper_v2",
+      "name": "黯印观测官·塞芙",
+      "status": "accepted",
+      "text": "01_canon/characters/black_seal_keeper_v2.md",
+      "turnaround": {
+        "path": "01_canon/turnarounds/CHAR_black-seal-keeper-v2_turnaround_v2.png",
+        "sha256": "fc05cb14a6dba2404c8fe9501f8620abc5aeb69217799920d9de93b718c036ba",
+        "width": 1448,
+        "height": 1086,
+        "mode": "RGB",
+        "has_real_transparency": false
+      },
+      "detail": {
+        "path": "01_canon/details/DETAIL_black-seal-keeper-v2_v1.png",
+        "sha256": "610c5c1a0fd46fa94bea2d462c5d3953d5b70b6dc9b1795818561e67d97c27b7",
+        "width": 1448,
+        "height": 1086,
+        "mode": "RGBA",
+        "alpha_min": 0,
+        "alpha_max": 255,
+        "has_real_transparency": true
+      },
+      "hard_locks": [
+        "午夜紫长直发",
+        "琥珀眼",
+        "圆铜腰扣1",
+        "断圆盘右上缺口1",
+        "黑薄册红圆印1",
+        "无剑矛杖"
+      ],
+      "qa_note": "圆铜腰扣、正面右上缺口断圆盘与单红印黑册通过；v2移除衣摆混淆环纹。"
+    },
+    {
+      "id": "act3_last_custodian",
+      "name": "最后保管人",
+      "status": "accepted",
+      "text": "01_canon/characters/act3_last_custodian.md",
+      "turnaround": {
+        "path": "01_canon/turnarounds/CHAR_act3-last-custodian_turnaround_v1.png",
+        "sha256": "98bfa4d2d54d2e2063a71a92d75438cbb302f5ecd79df02cb53985a9b41e344b",
+        "width": 1448,
+        "height": 1086,
+        "mode": "RGB",
+        "has_real_transparency": false
+      },
+      "detail": {
+        "path": "01_canon/details/DETAIL_act3-last-custodian_v1.png",
+        "sha256": "ef020e8f666c33df0c1aa2bd2cf1275d3c8015d6d27e110e5a098492ef590267",
+        "width": 1448,
+        "height": 1086,
+        "mode": "RGB",
+        "has_real_transparency": false
+      },
+      "hard_locks": [
+        "深青及小腿长发",
+        "浅金眼",
+        "页形外片4片",
+        "黑金矩形发夹1",
+        "琥珀灯杖1",
+        "无白发蓝灯"
+      ],
+      "qa_note": "深青及小腿长发、单黑金发夹、四片页形衣片与琥珀螺旋方灯通过。"
+    },
+    {
+      "id": "act3_archive_warden",
+      "name": "档案守望者",
+      "status": "accepted",
+      "text": "01_canon/characters/act3_archive_warden.md",
+      "turnaround": {
+        "path": "01_canon/turnarounds/CHAR_act3-archive-warden_turnaround_v1.png",
+        "sha256": "96f94b9a8903453aebd65c709ec708f3961e890e5a5667c482921a0f3cecba85",
+        "width": 1448,
+        "height": 1086,
+        "mode": "RGB",
+        "has_real_transparency": false
+      },
+      "detail": {
+        "path": "01_canon/details/DETAIL_act3-archive-warden_v1.png",
+        "sha256": "d8188e884e8c3600ce2a53b5ab7e94f92de1848270f0a857478be87d2d5b2af5",
+        "width": 1448,
+        "height": 1086,
+        "mode": "RGB",
+        "has_real_transparency": false
+      },
+      "hard_locks": [
+        "银黑双色单辫",
+        "辫在本人右肩",
+        "铜前扣3枚",
+        "冷蓝圆筒灯杖",
+        "索引卡3张",
+        "腰盒在左"
+      ],
+      "qa_note": "本人右肩单辫、三枚铜扣、左腰卡盒、三张索引卡与冷蓝圆筒灯通过。"
+    }
+  ]
+}

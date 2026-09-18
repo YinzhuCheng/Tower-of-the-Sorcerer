@@ -1,0 +1,305 @@
+{
+  "version": "GAL-SIMPLE-1.2",
+  "assets": [
+    {
+      "id": "archive-storm",
+      "title": "档案风暴",
+      "card": "03_intermediate/environment_cards/ENV_archive-storm.json",
+      "status": "gal-redraw",
+      "asset_status": "accepted",
+      "asset": {
+        "path": "01_canon/environments/ENV_archive-storm_v1.png",
+        "sha256": "8dfdc13aec2ae78f6533e5322f5134fcfe9421989b5a95ed254232c2c0ecb561",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
+      },
+      "prompt_packet": "03_intermediate/prompt_packets/environments/archive-storm.json"
+    },
+    {
+      "id": "ash-registry",
+      "title": "余烬登记库",
+      "card": "03_intermediate/environment_cards/ENV_ash-registry.json",
+      "status": "gal-redraw",
+      "asset_status": "accepted",
+      "asset": {
+        "path": "01_canon/environments/ENV_ash-registry_v1.png",
+        "sha256": "ae2b51dc5b4c8f6ca9c4330f892084ad2cc10313f7c948e0c499f387eb9e4478",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
+      },
+      "prompt_packet": "03_intermediate/prompt_packets/environments/ash-registry.json"
+    },
+    {
+      "id": "audit-chamber",
+      "title": "逐页校验室",
+      "card": "03_intermediate/environment_cards/ENV_audit-chamber.json",
+      "status": "gal-redraw",
+      "asset_status": "accepted",
+      "asset": {
+        "path": "01_canon/environments/ENV_audit-chamber_v1.png",
+        "sha256": "539f8f9cf95bd91e4e3ac82b98ab35d997e913e1553c1a75afea9b24d40b6c79",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
+      },
+      "prompt_packet": "03_intermediate/prompt_packets/environments/audit-chamber.json"
+    },
+    {
+      "id": "echo-court",
+      "title": "回响王庭",
+      "card": "03_intermediate/environment_cards/ENV_echo-court.json",
+      "status": "gal-redraw",
+      "asset_status": "accepted",
+      "asset": {
+        "path": "01_canon/environments/ENV_echo-court_v1.png",
+        "sha256": "beabf39cbfef14d6eec1b5e0b9b74874d1c74376e0288ebf5e0a2b86d3130ef5",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
+      },
+      "prompt_packet": "03_intermediate/prompt_packets/environments/echo-court.json"
+    },
+    {
+      "id": "ember-lighthouse-writein",
+      "title": "余烬灯塔写入口",
+      "card": "03_intermediate/environment_cards/ENV_ember-lighthouse-writein.json",
+      "status": "gal-redraw",
+      "asset_status": "accepted",
+      "asset": {
+        "path": "01_canon/environments/ENV_ember-lighthouse-writein_v2.png",
+        "sha256": "7f044bfcfb871198c08f29a86117d1df1a0d3bd487cf10588868c20f59c78ac8",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
+      },
+      "prompt_packet": "03_intermediate/prompt_packets/environments/ember-lighthouse-writein_r2.json"
+    },
+    {
+      "id": "ember-lighthouse",
+      "title": "余烬灯塔外景",
+      "card": "03_intermediate/environment_cards/ENV_ember-lighthouse.json",
+      "status": "gal-redraw",
+      "asset_status": "accepted",
+      "asset": {
+        "path": "01_canon/environments/ENV_ember-lighthouse_v1.png",
+        "sha256": "e856ff4d6b4264599e030c472f9c4883643b9ee4f8f64fd3861c1ae6f90528bb",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
+      },
+      "prompt_packet": "03_intermediate/prompt_packets/environments/ember-lighthouse.json"
+    },
+    {
+      "id": "final-index-room",
+      "title": "最后索引室",
+      "card": "03_intermediate/environment_cards/ENV_final-index-room.json",
+      "status": "gal-redraw",
+      "asset_status": "accepted",
+      "asset": {
+        "path": "01_canon/environments/ENV_final-index-room_v1.png",
+        "sha256": "7629653ba1666c296167df6712574f1aea5d1d220ac5de4bd6bf6fba205b82dc",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
+      },
+      "prompt_packet": "03_intermediate/prompt_packets/environments/final-index-room.json"
+    },
+    {
+      "id": "folded-archive-market",
+      "title": "折页档案与折角集市",
+      "card": "03_intermediate/environment_cards/ENV_folded-archive-market.json",
+      "status": "gal-redraw",
+      "asset_status": "accepted",
+      "asset": {
+        "path": "01_canon/environments/ENV_folded-archive-market_v1.png",
+        "sha256": "51c5e0ba2d4ed9922e5db4f48a52f779b35e2650c29cdad81d058d3c31c73482",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
+      },
+      "prompt_packet": "03_intermediate/prompt_packets/environments/folded-archive-market.json"
+    },
+    {
+      "id": "forest-approach",
+      "title": "森林进塔口",
+      "card": "03_intermediate/environment_cards/ENV_forest-approach.json",
+      "status": "gal-redraw",
+      "asset_status": "accepted",
+      "asset": {
+        "path": "01_canon/environments/ENV_forest-approach_v1.png",
+        "sha256": "5ff560307cd79da449aa42c26d3ad4c18391bb6894ca203a81b13664857dd06a",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGBA"
+      },
+      "prompt_packet": "03_intermediate/prompt_packets/environments/forest-approach.json"
+    },
+    {
+      "id": "moon-white-vestibule",
+      "title": "月白门廊",
+      "card": "03_intermediate/environment_cards/ENV_moon-white-vestibule.json",
+      "status": "gal-redraw",
+      "asset_status": "accepted",
+      "asset": {
+        "path": "01_canon/environments/ENV_moon-white-vestibule_v1.png",
+        "sha256": "889460b313c9478071a7d6215cb673d824767835dff3c4eaede455661e9afb98",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
+      },
+      "prompt_packet": "03_intermediate/prompt_packets/environments/moon-white-vestibule.json"
+    },
+    {
+      "id": "night-shelter",
+      "title": "夜航侧库",
+      "card": "03_intermediate/environment_cards/ENV_night-shelter.json",
+      "status": "gal-redraw",
+      "asset_status": "accepted",
+      "asset": {
+        "path": "01_canon/environments/ENV_night-shelter_v1.png",
+        "sha256": "89a65d43503a287164c847e118b970d2508f47a3c96ea7839808afcb2709222a",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
+      },
+      "prompt_packet": "03_intermediate/prompt_packets/environments/night-shelter.json"
+    },
+    {
+      "id": "night-tower",
+      "title": "暗夜王庭",
+      "card": "03_intermediate/environment_cards/ENV_night-tower.json",
+      "status": "gal-redraw",
+      "asset_status": "accepted",
+      "asset": {
+        "path": "01_canon/environments/ENV_night-tower_v1.png",
+        "sha256": "b2bf4f703f327dfcc09a8ae0f35b8705884d9e6ccde45ade0c93c82d66db3b8d",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
+      },
+      "prompt_packet": "03_intermediate/prompt_packets/environments/night-tower.json"
+    },
+    {
+      "id": "ocean-archive",
+      "title": "潮汐档案",
+      "card": "03_intermediate/environment_cards/ENV_ocean-archive.json",
+      "status": "gal-redraw",
+      "asset_status": "accepted",
+      "asset": {
+        "path": "01_canon/environments/ENV_ocean-archive_v1.png",
+        "sha256": "c28f63ca054607c74afa896f3c857c1f5f121d6722e3f710626d85a9cd863a33",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
+      },
+      "prompt_packet": "03_intermediate/prompt_packets/environments/ocean-archive.json"
+    },
+    {
+      "id": "origin-core",
+      "title": "起源魔源",
+      "card": "03_intermediate/environment_cards/ENV_origin-core.json",
+      "status": "gal-redraw",
+      "asset_status": "accepted",
+      "asset": {
+        "path": "01_canon/environments/ENV_origin-core_v1.png",
+        "sha256": "e84683fdb87978a3bf91bd51f68ca44063d7f37f868f04a5f8f9b4dcc7ff1da6",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
+      },
+      "prompt_packet": "03_intermediate/prompt_packets/environments/origin-core.json"
+    },
+    {
+      "id": "red-vein",
+      "title": "赤脉炉室",
+      "card": "03_intermediate/environment_cards/ENV_red-vein.json",
+      "status": "gal-redraw",
+      "asset_status": "accepted",
+      "asset": {
+        "path": "01_canon/environments/ENV_red-vein_v1.png",
+        "sha256": "6657bda75ceae232d5562c2ad56097fd4f911a10842d388976751141c4986ffb",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
+      },
+      "prompt_packet": "03_intermediate/prompt_packets/environments/red-vein.json"
+    },
+    {
+      "id": "relay-gallery",
+      "title": "灯塔接力室",
+      "card": "03_intermediate/environment_cards/ENV_relay-gallery.json",
+      "status": "gal-redraw",
+      "asset_status": "accepted",
+      "asset": {
+        "path": "01_canon/environments/ENV_relay-gallery_v1.png",
+        "sha256": "b616ad234d0fe56a8df21b6fc99d118f6efbda57227b085e5a8f2cfe1f70f4a9",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
+      },
+      "prompt_packet": "03_intermediate/prompt_packets/environments/relay-gallery.json"
+    },
+    {
+      "id": "star-mirror",
+      "title": "星镜档案",
+      "card": "03_intermediate/environment_cards/ENV_star-mirror.json",
+      "status": "gal-redraw",
+      "asset_status": "accepted",
+      "asset": {
+        "path": "01_canon/environments/ENV_star-mirror_v1.png",
+        "sha256": "c883140e892bf68cddc090c5a6fc66ba99f961c78ee0d953dabbabbd4fc032a5",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
+      },
+      "prompt_packet": "03_intermediate/prompt_packets/environments/star-mirror.json"
+    },
+    {
+      "id": "sun-sanctum",
+      "title": "日轮圣所",
+      "card": "03_intermediate/environment_cards/ENV_sun-sanctum.json",
+      "status": "gal-redraw",
+      "asset_status": "accepted",
+      "asset": {
+        "path": "01_canon/environments/ENV_sun-sanctum_v1.png",
+        "sha256": "5f115bd5dffdcb7c6ac9260e55cf6996a0de4cfaee8c1e7f970a418eb4f13675",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
+      },
+      "prompt_packet": "03_intermediate/prompt_packets/environments/sun-sanctum.json"
+    },
+    {
+      "id": "triage-index",
+      "title": "归档作业庭",
+      "card": "03_intermediate/environment_cards/ENV_triage-index.json",
+      "status": "gal-redraw",
+      "asset_status": "accepted",
+      "asset": {
+        "path": "01_canon/environments/ENV_triage-index_v1.png",
+        "sha256": "2395828352d4d31412fb2ecf9c42c129ff6ee0784db6001164a7a6babd1a7bfc",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
+      },
+      "prompt_packet": "03_intermediate/prompt_packets/environments/triage-index.json"
+    },
+    {
+      "id": "twin-score-greenhouse",
+      "title": "双谱温室",
+      "card": "03_intermediate/environment_cards/ENV_twin-score-greenhouse.json",
+      "status": "gal-redraw",
+      "asset_status": "accepted",
+      "asset": {
+        "path": "01_canon/environments/ENV_twin-score-greenhouse_v1.png",
+        "sha256": "0a17d9d612aaf97b5cbaaca742fe07197092d010bff1706e93cc973bc1c353c7",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
+      },
+      "prompt_packet": "03_intermediate/prompt_packets/environments/twin-score-greenhouse.json"
+    }
+  ]
+}

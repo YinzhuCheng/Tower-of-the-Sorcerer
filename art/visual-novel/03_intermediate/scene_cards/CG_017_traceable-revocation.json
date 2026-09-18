@@ -1,0 +1,149 @@
+{
+  "version": "GAL-SIMPLE-1.2",
+  "cg_id": "CG_017_traceable-revocation",
+  "semantic_id": "traceable-revocation",
+  "title": "灯塔：可追溯撤销写入",
+  "status": "ready-for-layout",
+  "source_locator": {
+    "repository_commit": "b05bc623b7c1ef8b93cfa1fca253ad2119a52f68",
+    "file": "src/game/demo-30-floor-content.js",
+    "line": 497
+  },
+  "source_passage": "纱雾把光笔插入写入口，建立编号、来源、状态、经手人、时间与理由；旧版本转只读，不再覆盖。",
+  "narrative_beat": "把撤销从抹除旧记录改造成可追溯的新状态写入。",
+  "point_of_view": "third-person visual-novel camera aligned with protagonist understanding",
+  "cast": [
+    "guide",
+    "final_queen",
+    "arcane_sovereign"
+  ],
+  "expressions": {
+    "guide": "intense focus",
+    "final_queen": "grave stillness",
+    "arcane_sovereign": "acceptance"
+  },
+  "environment_id": "ember-lighthouse-writein",
+  "props": [
+    "guide light pen",
+    "complete silver astrolabe",
+    "old read-only volume",
+    "new index ring"
+  ],
+  "composition": "16:9 操作型中景；纱雾居中持光笔，完整银环星盘在侧；女王和主权者分别托住原卷两端，蓝白索引线分层展开。",
+  "must_show": [
+    "guide owns pen and astrolabe",
+    "old and new records coexist",
+    "three people",
+    "layers are visually distinct"
+  ],
+  "must_not_show": [
+    "readable UI",
+    "old pages erased",
+    "queen sword",
+    "modern keyboard"
+  ],
+  "project_inference": null,
+  "character_reference_order": {
+    "guide": [
+      {
+        "role": "canonical_text",
+        "path": "01_canon/characters/guide.md",
+        "sha256": "b6389693de0a4f56df83f4ad33f8436e140b178167c9ad5eecaaa01c9465e7af"
+      },
+      {
+        "role": "accepted_turnaround",
+        "path": "01_canon/turnarounds/CHAR_guide_turnaround_v1.png",
+        "sha256": "21324cb96a2a3cd44a6c53d2f1dd5a323b7caf3f25d9d118604120f3f7209af7"
+      },
+      {
+        "role": "accepted_detail_board",
+        "path": "01_canon/details/DETAIL_guide_v1.png",
+        "sha256": "b2eb5407d1e074d9aa18524558bd2788f62f5b1aa047be82d05e5febf53819c2"
+      },
+      {
+        "role": "accepted_expression_board",
+        "path": "01_canon/expressions/EXPR_guide_v1.png",
+        "sha256": "4695959e1553f64ee090108c719ca33194dfb6f2a78d5e49c6f75b90e5a24204"
+      },
+      {
+        "role": "accepted_transparent_standee",
+        "path": "01_canon/standees/STANDEE_guide_neutral_v1.png",
+        "sha256": "355727eeacf878c2001f771ed932b220e29232a6d8eec2fe2960585bbee3f0fb"
+      }
+    ],
+    "final_queen": [
+      {
+        "role": "canonical_text",
+        "path": "01_canon/characters/final_queen.md",
+        "sha256": "43aeaa019c35531c5cc46f1460cdcac0ba77e6f612f6fdd898419d8e1a676bed"
+      },
+      {
+        "role": "accepted_turnaround",
+        "path": "01_canon/turnarounds/CHAR_final-queen_turnaround_v1.png",
+        "sha256": "9ad06627d33b9188616d9cbc9fa547a762e8933733026c101b33e8f349ef92e8"
+      },
+      {
+        "role": "accepted_detail_board",
+        "path": "01_canon/details/DETAIL_final-queen_v1.png",
+        "sha256": "647725e528e53392fe07ebc32bb4a112b0253d788609b1b7d92fc8e410e1077c"
+      },
+      {
+        "role": "accepted_expression_board",
+        "path": "01_canon/expressions/EXPR_final-queen_v1.png",
+        "sha256": "58c9121b08aadb699e5a47e964c30317326ae227c90ed9d292f67d0f866db2a7"
+      },
+      {
+        "role": "accepted_transparent_standee",
+        "path": "01_canon/standees/STANDEE_final-queen_neutral_v1.png",
+        "sha256": "99dbc41344f553a14356aeef6e7fc71ae4a3e30fba10aca5b86ba5cba47671ef"
+      }
+    ],
+    "arcane_sovereign": [
+      {
+        "role": "canonical_text",
+        "path": "01_canon/characters/arcane_sovereign.md",
+        "sha256": "449498a310eec8c47ea0c2fb1a9ba74cd34ee38b06593b12b1b5e35102d702f7"
+      },
+      {
+        "role": "accepted_turnaround",
+        "path": "01_canon/turnarounds/CHAR_arcane-sovereign_turnaround_v1.png",
+        "sha256": "50f15906516064571100c2bd96e226dfe30b518ded723fb3c3b7f90582b115c6"
+      },
+      {
+        "role": "accepted_detail_board",
+        "path": "01_canon/details/DETAIL_arcane-sovereign_v1.png",
+        "sha256": "3e3d14b1ad69aa083be5932f39827510aa7d766e942e304614a8f5bf32c4d8cd"
+      },
+      {
+        "role": "accepted_expression_board",
+        "path": "01_canon/expressions/EXPR_arcane-sovereign_v1.png",
+        "sha256": "353344f864bc97b07edcb4785766a96e1cf3076b1773e153428b25d8d72630e4"
+      },
+      {
+        "role": "accepted_transparent_standee",
+        "path": "01_canon/standees/STANDEE_arcane-sovereign_neutral_v1.png",
+        "sha256": "79fc599bcc1df521e53dbc6e125b1982cd8d441ca52fc3cbcb3a6a6ddbd8f622"
+      }
+    ]
+  },
+  "environment_reference": "01_canon/environments/ENV_ember-lighthouse-writein_v2.png",
+  "runtime_target": "public/assets/anime/cg/liyue-traceable-revocation-cg-audit-v3.webp",
+  "archive_only_aliases": [
+    "public/assets/anime/cg/liyue-traceable-revocation-cg.webp"
+  ],
+  "iteration_ladder": [
+    "R0_layout",
+    "R1_identity",
+    "R2_costume",
+    "R3_scene",
+    "R4_final"
+  ],
+  "output_contract": "04_cg/final/CG_017_traceable-revocation_v1.png",
+  "environment_reference_asset": {
+    "path": "01_canon/environments/ENV_ember-lighthouse-writein_v2.png",
+    "sha256": "7f044bfcfb871198c08f29a86117d1df1a0d3bd487cf10588868c20f59c78ac8",
+    "width": 1672,
+    "height": 941,
+    "mode": "RGB"
+  }
+}

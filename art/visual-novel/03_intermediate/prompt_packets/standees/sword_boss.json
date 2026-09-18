@@ -1,0 +1,32 @@
+{
+  "version": "GAL-SIMPLE-1.1",
+  "character_id": "sword_boss",
+  "series_style_lock": "GAL-SIMPLE clean cel transparent standee",
+  "identity_lock": [
+    "银白低马尾",
+    "灰紫眼",
+    "白外套蓝长裤",
+    "银菱胸徽1枚",
+    "右手直剑左腰鞘",
+    "无冠"
+  ],
+  "prop_lock": "One slim straight silver one-handed sword 95 cm long with a plain symmetric silver crossguard, navy leather grip and small round pommel; no blue flame and no large gem. One plain navy scabbard at HER LEFT hip. RIGHT-handed. Guards are practical simple plates, not ornate spikes.",
+  "pose": "Stern neutral stance. RIGHT hand holds one straight sword pointed safely down; the one scabbard stays at LEFT waist. No thigh strap and no second weapon.",
+  "negative_constraints": [
+    "background pixels",
+    "ground shadow",
+    "extra accessory",
+    "duplicate prop",
+    "wrong side",
+    "wrong count",
+    "watermark",
+    "cropped feet or prop"
+  ],
+  "prompt": "Use case: background-extraction. Asset type: canonical full-body transparent visual-novel standing figure. Create ONE isolated full-body character cutout in polished Japanese 2D visual-novel cel style matching GAL-SIMPLE: fine clean dark outlines, large solid local colors, one hard-edged shadow per material, restrained highlights, adult proportions. Image 1 is the accepted turnaround and has highest visual authority for identity, anatomy, silhouette and costume. Image 2 is the accepted detail board and controls exact accessory, clothing and prop counts and side placement. Image 3 is the accepted expression sheet and controls only the face; use its first neutral expression. Portrait 2:3 composition, centered, entire hair, all props and both feet inside canvas with 8 percent transparent padding. Natural relaxed three-quarter pose facing camera, anatomically plausible hands, readable silhouette. ACTUAL TRANSPARENT RGBA BACKGROUND: no white or checkerboard background, no scenery, floor, cast shadow, glow, aura, particles, frame, text, logo, watermark or signature. Only the character and explicitly required carried items may have visible pixels. Do not redesign, beautify with extra jewelry, duplicate props, change sides, change counts, or merge objects into hands. CANON IDENTITY: Adult female sword saint, 174 cm, long SILVER-WHITE hair in ONE low ponytail tied with one navy ribbon, cool grey-violet eyes. This unified version intentionally supersedes old black-haired text. Ivory long duelist coat with navy fitted waist, dark muted-red lining visible only at coat opening, navy trousers, plain silver forearm guards and shin plates, navy boots. ONE silver diamond chest badge. No crown, no shoulder cape, no hanging jewelry or filigree. Athletic elegant adult proportions. CANON PROP: One slim straight silver one-handed sword 95 cm long with a plain symmetric silver crossguard, navy leather grip and small round pommel; no blue flame and no large gem. One plain navy scabbard at HER LEFT hip. RIGHT-handed. Guards are practical simple plates, not ornate spikes. HARD LOCKS: 银白低马尾, 灰紫眼, 白外套蓝长裤, 银菱胸徽1枚, 右手直剑左腰鞘, 无冠. POSE AND OWNERSHIP: Stern neutral stance. RIGHT hand holds one straight sword pointed safely down; the one scabbard stays at LEFT waist. No thigh strap and no second weapon.",
+  "referenced_image_paths": [
+    "/workspace/scratch/0645849eb5a5/gal-design-v1/01_canon/turnarounds/CHAR_sword-boss_turnaround_v2.png",
+    "/workspace/scratch/0645849eb5a5/gal-design-v1/01_canon/details/DETAIL_sword-boss_v1.png",
+    "/workspace/scratch/0645849eb5a5/gal-design-v1/01_canon/expressions/EXPR_sword-boss_v2.png"
+  ],
+  "output_contract": "01_canon/standees/STANDEE_sword-boss_neutral_v1.png"
+}

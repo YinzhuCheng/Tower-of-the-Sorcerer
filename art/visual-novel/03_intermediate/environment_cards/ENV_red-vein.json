@@ -1,0 +1,34 @@
+{
+  "version": "GAL-SIMPLE-1.2",
+  "environment_id": "red-vein",
+  "title": "赤脉炉室",
+  "usage": "5F、13F、焰璃场景",
+  "status": "gal-redraw",
+  "source_facts": "空避难所仍工作的红脉炉、救援供暖管和上行阶梯；是维生设施，不是熔岩地狱。",
+  "composition_contract": "16:9 empty visual-novel stage; clean standing-figure zones at both sides; bottom 30% low detail",
+  "series_anchors": [
+    "obsidian arch",
+    "small brass registration seal",
+    "blue-white index lamp",
+    "one thin violet seal fissure when applicable"
+  ],
+  "must_not": [
+    "people",
+    "readable text",
+    "UI",
+    "logo",
+    "watermark",
+    "photorealism",
+    "dense micro-texture"
+  ],
+  "target_asset": "01_canon/environments/ENV_red-vein_v1.png",
+  "asset_status": "accepted",
+  "asset": {
+    "path": "01_canon/environments/ENV_red-vein_v1.png",
+    "sha256": "6657bda75ceae232d5562c2ad56097fd4f911a10842d388976751141c4986ffb",
+    "width": 1672,
+    "height": 941,
+    "mode": "RGB"
+  },
+  "prompt_packet": "03_intermediate/prompt_packets/environments/red-vein.json"
+}

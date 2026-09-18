@@ -1,0 +1,36 @@
+{
+  "version": "GAL-SIMPLE-1.1",
+  "character_id": "hero",
+  "series_style_lock": "GAL-SIMPLE clean cel reference art",
+  "identity_lock": [
+    "蓝发紫蓝眼",
+    "本人右侧月牙发夹1枚",
+    "本人左肩月牙扣1枚",
+    "腰横扣2枚",
+    "记录包在左腰",
+    "右手剑左手法术",
+    "双腿服装对称"
+  ],
+  "expression_order": [
+    "neutral attentive",
+    "guarded suspicion",
+    "quiet resolve",
+    "stern warning",
+    "controlled anger like banked embers",
+    "hurt but conscious"
+  ],
+  "negative_constraints": [
+    "identity drift",
+    "hair or accessory count drift",
+    "costume redesign",
+    "text",
+    "hands or props",
+    "watermark"
+  ],
+  "prompt": "Use case: stylized-concept. Asset type: canonical visual-novel expression reference sheet. Professional Japanese 2D visual-novel cel illustration matching the accepted GAL-SIMPLE series: fine clean dark outlines, large solid local colors, one hard-edged shadow per material, tiny restrained highlights, adult proportions, no painterly texture and no dense rendering. Image 1 is the accepted turnaround and controls identity, face, hair, anatomy and costume. Image 2 is the accepted detail board and controls every accessory count, side and construction. The written canon below overrides any accidental reference error. Create a landscape 3-column by 2-row grid of SIX equal-size chest-up portraits of the SAME character. Panel order is left-to-right across the top row, then left-to-right across the bottom row. Keep face proportions, hairstyle, hair accessories, eye color, neckwear and visible shoulder clothing IDENTICAL in all six panels. Expressions must be readable through eyebrows, eyes and mouth while remaining in-character; no theatrical distortion. Warm pale-grey opaque background, even flat reference lighting. No labels, text, panel numbers, borders, scenery, hands, held props, weapons, magic, watermark or signature. No extra jewelry or costume redesign. CANON IDENTITY: Adult woman, 166 cm, long midnight-blue hair to hips with cobalt tips, violet-blue eyes, small half-up braided bun. Exactly one silver crescent hair clip on HER RIGHT temple; exactly one silver crescent mantle clasp on HER LEFT shoulder. Navy long-sleeved traveling dress with ivory front blouse inset and ivory underskirt, short front hem just above knees and two long rear panels to calves. Navy short mantle with broad ivory lining, no embroidery. Black fitted waist with exactly two horizontal silver buckle straps. Symmetric opaque black thigh-high stockings, navy knee-high low-heel boots and black gloves. One flat palm-sized black record pouch at HER LEFT waist. No chains, tassels, thigh garters, filigree or extra jewels. HARD LOCKS: 蓝发紫蓝眼, 本人右侧月牙发夹1枚, 本人左肩月牙扣1枚, 腰横扣2枚, 记录包在左腰, 右手剑左手法术, 双腿服装对称. EXPRESSIONS IN EXACT PANEL ORDER: 1: neutral attentive; 2: guarded suspicion; 3: quiet resolve; 4: stern warning; 5: controlled anger like banked embers; 6: hurt but conscious.",
+  "referenced_image_paths": [
+    "/workspace/scratch/0645849eb5a5/gal-design-v1/01_canon/turnarounds/CHAR_hero_turnaround_v2.png",
+    "/workspace/scratch/0645849eb5a5/gal-design-v1/01_canon/details/DETAIL_hero_v2.png"
+  ],
+  "output_contract": "01_canon/expressions/EXPR_hero_v1.png"
+}

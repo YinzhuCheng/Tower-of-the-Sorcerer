@@ -1,0 +1,40 @@
+{
+  "version": "GAL-SIMPLE-1.1",
+  "character_id": "echo_regent",
+  "reference_order": [
+    {
+      "role": "canonical_text",
+      "path": "01_canon/characters/echo_regent.md",
+      "sha256": "bbabccd8558c20fc06f5c907c4e498b8168570e579fa13ae6680905b02d867ff"
+    },
+    {
+      "role": "accepted_turnaround",
+      "path": "01_canon/turnarounds/CHAR_echo-regent_turnaround_v2.png",
+      "sha256": "36e67ccb88fe90016c7f10016e2bc60292e301e296d290c88db166369cd1b835"
+    },
+    {
+      "role": "accepted_detail_board",
+      "path": "01_canon/details/DETAIL_echo-regent_v1.png",
+      "sha256": "b8c7bee8fd2810cf0648274ba8380d7c5311e1bae5644fdec3e2e6e1c2cbd1a7"
+    },
+    {
+      "role": "accepted_expression_board",
+      "path": "01_canon/expressions/EXPR_echo-regent_v1.png",
+      "sha256": "1fc8dadbf1cd4a089da30614ec5f65fa769248f0b19f9c011057a7d1e0bbe416"
+    },
+    {
+      "role": "accepted_transparent_standee",
+      "path": "01_canon/standees/STANDEE_echo-regent_neutral_v1.png",
+      "sha256": "eb06020a0da8b8632ab3894e1c53c6dde4b7683a45569d24018b3d0791658869"
+    }
+  ],
+  "hard_locks": [
+    "灰金低束发",
+    "灰紫眼",
+    "蓝灰绶带右肩至左腰",
+    "方银领扣1",
+    "黑名簿1",
+    "无冠无武器"
+  ],
+  "missing_reference_policy": "stop_generation_and_complete_missing_canon_asset"
+}

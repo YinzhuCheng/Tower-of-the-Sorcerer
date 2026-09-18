@@ -1,0 +1,31 @@
+{
+  "version": "GAL-SIMPLE-1.1",
+  "character_id": "fox_boss",
+  "series_style_lock": "GAL-SIMPLE clean cel transparent standee",
+  "identity_lock": [
+    "绿眼栗红发",
+    "尾3条白尖",
+    "右鬓叶片1枚",
+    "折扇1把",
+    "纸符3张"
+  ],
+  "prop_lock": "One folding fan with dark wood ribs, plain ivory paper and ONE red disk, no written characters. Exactly THREE rectangular ivory paper seals carried in a plain green belt pocket; each marked by one simple red vertical stroke only, no decorative script. Fan stored at HER LEFT waist.",
+  "pose": "Watchful neutral stance. RIGHT hand holds one open folding fan at chest level; LEFT hand holds exactly three paper seals as one aligned set. Exactly three tails visible and separated.",
+  "negative_constraints": [
+    "background pixels",
+    "ground shadow",
+    "extra accessory",
+    "duplicate prop",
+    "wrong side",
+    "wrong count",
+    "watermark",
+    "cropped feet or prop"
+  ],
+  "prompt": "Use case: precise-object-edit and background-extraction. Asset type: canonical full-body transparent visual-novel standing figure. Correct Image 1 while preserving the exact same fox woman, face, hair, ears, kimono, green hakama, fan, three paper seals, pose, cel rendering and true transparent background. Image 1 is the rejected four-tail standee. Images 2 and 3 are the accepted turnaround and detail board. REMOVE the extra tail so there are EXACTLY THREE large red fox tails total, each clearly separated from base to white tip: one to viewer left, one centered behind the lower body, one to viewer right. No fourth tail, no hidden extra tail base and no stray tail-like hair mass. Keep one simple red leaf hair clip, one fan in her RIGHT hand and exactly three paper seals in her LEFT hand. Entire character, all three tails and both feet inside portrait canvas. Actual RGBA transparency; no background, floor, cast shadow, aura, glow, particles, text, logo or watermark.",
+  "referenced_image_paths": [
+    "/workspace/scratch/0645849eb5a5/gal-design-v1/04_cg/rejected/STANDEE_fox-boss_neutral_v1_four-tails.png",
+    "/workspace/scratch/0645849eb5a5/gal-design-v1/01_canon/turnarounds/CHAR_fox-boss_turnaround_v1.png",
+    "/workspace/scratch/0645849eb5a5/gal-design-v1/01_canon/details/DETAIL_fox-boss_v2.png"
+  ],
+  "output_contract": "01_canon/standees/STANDEE_fox-boss_neutral_v2.png"
+}

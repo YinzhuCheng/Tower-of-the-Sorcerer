@@ -1,0 +1,41 @@
+{
+  "version": "GAL-SIMPLE-1.1",
+  "character_id": "final_queen",
+  "reference_order": [
+    {
+      "role": "canonical_text",
+      "path": "01_canon/characters/final_queen.md",
+      "sha256": "43aeaa019c35531c5cc46f1460cdcac0ba77e6f612f6fdd898419d8e1a676bed"
+    },
+    {
+      "role": "accepted_turnaround",
+      "path": "01_canon/turnarounds/CHAR_final-queen_turnaround_v1.png",
+      "sha256": "9ad06627d33b9188616d9cbc9fa547a762e8933733026c101b33e8f349ef92e8"
+    },
+    {
+      "role": "accepted_detail_board",
+      "path": "01_canon/details/DETAIL_final-queen_v1.png",
+      "sha256": "647725e528e53392fe07ebc32bb4a112b0253d788609b1b7d92fc8e410e1077c"
+    },
+    {
+      "role": "accepted_expression_board",
+      "path": "01_canon/expressions/EXPR_final-queen_v1.png",
+      "sha256": "58c9121b08aadb699e5a47e964c30317326ae227c90ed9d292f67d0f866db2a7"
+    },
+    {
+      "role": "accepted_transparent_standee",
+      "path": "01_canon/standees/STANDEE_final-queen_neutral_v1.png",
+      "sha256": "99dbc41344f553a14356aeef6e7fc71ae4a3e30fba10aca5b86ba5cba47671ef"
+    }
+  ],
+  "hard_locks": [
+    "黑发暗酒红发尾",
+    "红眼",
+    "王冠3主尖峰",
+    "冠中央红菱石1枚",
+    "喉部红菱胸针1枚",
+    "施法封印片3枚",
+    "无剑"
+  ],
+  "missing_reference_policy": "stop_generation_and_complete_missing_canon_asset"
+}

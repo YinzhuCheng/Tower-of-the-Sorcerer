@@ -1,0 +1,35 @@
+{
+  "version": "GAL-SIMPLE-1.1",
+  "character_id": "act3_archive_warden",
+  "series_style_lock": "GAL-SIMPLE clean cel reference art",
+  "identity_lock": [
+    "银黑双色单辫",
+    "辫在本人右肩",
+    "铜前扣3枚",
+    "冷蓝圆筒灯杖",
+    "索引卡3张",
+    "腰盒在左"
+  ],
+  "expression_order": [
+    "dutiful neutrality",
+    "watchful focus",
+    "stern warning",
+    "concern",
+    "decisive resolve",
+    "restrained relief"
+  ],
+  "negative_constraints": [
+    "identity drift",
+    "hair or accessory count drift",
+    "costume redesign",
+    "text",
+    "hands or props",
+    "watermark"
+  ],
+  "prompt": "Use case: stylized-concept. Asset type: canonical visual-novel expression reference sheet. Professional Japanese 2D visual-novel cel illustration matching the accepted GAL-SIMPLE series: fine clean dark outlines, large solid local colors, one hard-edged shadow per material, tiny restrained highlights, adult proportions, no painterly texture and no dense rendering. Image 1 is the accepted turnaround and controls identity, face, hair, anatomy and costume. Image 2 is the accepted detail board and controls every accessory count, side and construction. The written canon below overrides any accidental reference error. Create a landscape 3-column by 2-row grid of SIX equal-size chest-up portraits of the SAME character. Panel order is left-to-right across the top row, then left-to-right across the bottom row. Keep face proportions, hairstyle, hair accessories, eye color, neckwear and visible shoulder clothing IDENTICAL in all six panels. Expressions must be readable through eyebrows, eyes and mouth while remaining in-character; no theatrical distortion. Warm pale-grey opaque background, even flat reference lighting. No labels, text, panel numbers, borders, scenery, hands, held props, weapons, magic, watermark or signature. No extra jewelry or costume redesign. CANON IDENTITY: Adult archive warden woman, 178 cm, silver-and-black two-tone hair in exactly ONE thick braid hanging over HER RIGHT shoulder to waist, calm cyan eyes. Black ankle-length archivist coat, broad ivory front inset, exactly THREE rectangular copper front clasps, narrow blue waist belt, plain black boots and gloves. No flower clip, crown, necklaces or tassels. Braid is not duplicated on back or left side. HARD LOCKS: 银黑双色单辫, 辫在本人右肩, 铜前扣3枚, 冷蓝圆筒灯杖, 索引卡3张, 腰盒在左. EXPRESSIONS IN EXACT PANEL ORDER: 1: dutiful neutrality; 2: watchful focus; 3: stern warning; 4: concern; 5: decisive resolve; 6: restrained relief.",
+  "referenced_image_paths": [
+    "/workspace/scratch/0645849eb5a5/gal-design-v1/01_canon/turnarounds/CHAR_act3-archive-warden_turnaround_v1.png",
+    "/workspace/scratch/0645849eb5a5/gal-design-v1/01_canon/details/DETAIL_act3-archive-warden_v1.png"
+  ],
+  "output_contract": "01_canon/expressions/EXPR_act3-archive-warden_v1.png"
+}

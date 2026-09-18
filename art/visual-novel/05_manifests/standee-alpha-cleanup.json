@@ -1,0 +1,431 @@
+{
+  "version": "GAL-SIMPLE-1.1",
+  "operation": "remove distant low-alpha generation halo while retaining a 4px antialias neighborhood around opaque subject",
+  "assets": [
+    {
+      "character_id": "hero",
+      "raw": "04_cg/working/standees/raw/STANDEE_hero_neutral_raw_v1.png",
+      "raw_sha256": "00b579d6a7509eceb3c12076967500a7b689fee58c19b294248315925c6c422f",
+      "final": "01_canon/standees/STANDEE_hero_neutral_v1.png",
+      "final_sha256": "bc7e81506ad41225bfe5ef548889d66e67d4c8db963c64650ebb601737d49b76",
+      "dimensions": [
+        1024,
+        1536
+      ],
+      "mode": "RGBA",
+      "alpha_range": [
+        0,
+        255
+      ],
+      "nonzero_alpha_before": 625708,
+      "nonzero_alpha_after": 582282,
+      "pixels_removed_as_halo": 43426,
+      "content_bbox": [
+        50,
+        13,
+        909,
+        1523
+      ]
+    },
+    {
+      "character_id": "guide",
+      "raw": "04_cg/working/standees/raw/STANDEE_guide_neutral_raw_v1.png",
+      "raw_sha256": "1936ffa00706387d2dc8c9bc714c9e0dc25ff9982f59752eee9866e27a593367",
+      "final": "01_canon/standees/STANDEE_guide_neutral_v1.png",
+      "final_sha256": "355727eeacf878c2001f771ed932b220e29232a6d8eec2fe2960585bbee3f0fb",
+      "dimensions": [
+        1024,
+        1536
+      ],
+      "mode": "RGBA",
+      "alpha_range": [
+        0,
+        255
+      ],
+      "nonzero_alpha_before": 676242,
+      "nonzero_alpha_after": 645241,
+      "pixels_removed_as_halo": 31001,
+      "content_bbox": [
+        80,
+        16,
+        955,
+        1518
+      ]
+    },
+    {
+      "character_id": "final_queen",
+      "raw": "04_cg/working/standees/raw/STANDEE_final-queen_neutral_raw_v1.png",
+      "raw_sha256": "c85aee01475c1b70c92e47dfd36743fbfa8607ca7d69ba9c9d735bc4c2dc906f",
+      "final": "01_canon/standees/STANDEE_final-queen_neutral_v1.png",
+      "final_sha256": "99dbc41344f553a14356aeef6e7fc71ae4a3e30fba10aca5b86ba5cba47671ef",
+      "dimensions": [
+        1024,
+        1536
+      ],
+      "mode": "RGBA",
+      "alpha_range": [
+        0,
+        255
+      ],
+      "nonzero_alpha_before": 800401,
+      "nonzero_alpha_after": 776425,
+      "pixels_removed_as_halo": 23976,
+      "content_bbox": [
+        75,
+        16,
+        955,
+        1508
+      ]
+    },
+    {
+      "character_id": "cat_boss",
+      "raw": "04_cg/working/standees/raw/STANDEE_cat-boss_neutral_raw_v1.png",
+      "raw_sha256": "98731e6fa8f389e43e0ea2a2d804d60bd89c10a3e187dbaf3deac55a540ad1a0",
+      "final": "01_canon/standees/STANDEE_cat-boss_neutral_v1.png",
+      "final_sha256": "fbd31715933f60c4eb29d57881306ec82db8ee2ad04ab5622f62043cd1a4f18f",
+      "dimensions": [
+        1024,
+        1536
+      ],
+      "mode": "RGBA",
+      "alpha_range": [
+        0,
+        255
+      ],
+      "nonzero_alpha_before": 600146,
+      "nonzero_alpha_after": 569206,
+      "pixels_removed_as_halo": 30940,
+      "content_bbox": [
+        30,
+        12,
+        989,
+        1497
+      ]
+    },
+    {
+      "character_id": "fox_boss",
+      "raw": "04_cg/working/standees/raw/STANDEE_fox-boss_neutral_raw_v3.png",
+      "raw_sha256": "38fd50eed2ffbade9d1e2cc899ec2ec1f88cea755a22d885a3957c21a3ef8209",
+      "final": "01_canon/standees/STANDEE_fox-boss_neutral_v3.png",
+      "final_sha256": "4a009a4cf82599ac4cbe9e13355c8433b5e89399c2b48e243c8045baba8b7c71",
+      "dimensions": [
+        1024,
+        1536
+      ],
+      "mode": "RGBA",
+      "alpha_range": [
+        0,
+        255
+      ],
+      "nonzero_alpha_before": 719799,
+      "nonzero_alpha_after": 702399,
+      "pixels_removed_as_halo": 17400,
+      "content_bbox": [
+        55,
+        7,
+        975,
+        1520
+      ]
+    },
+    {
+      "character_id": "whale_boss",
+      "raw": "04_cg/working/standees/raw/STANDEE_whale-boss_neutral_raw_v1.png",
+      "raw_sha256": "30c2e267b25bfa4b2e9fd105d80ef299fc3ab3d3e56c914787ddca0955547c48",
+      "final": "01_canon/standees/STANDEE_whale-boss_neutral_v1.png",
+      "final_sha256": "a6695cbfbe2114b798fda9d464f338fb20126dd83f0637c07e820fd22bbb10d4",
+      "dimensions": [
+        1024,
+        1536
+      ],
+      "mode": "RGBA",
+      "alpha_range": [
+        0,
+        255
+      ],
+      "nonzero_alpha_before": 786263,
+      "nonzero_alpha_after": 741032,
+      "pixels_removed_as_halo": 45231,
+      "content_bbox": [
+        122,
+        17,
+        963,
+        1518
+      ]
+    },
+    {
+      "character_id": "sword_boss",
+      "raw": "04_cg/working/standees/raw/STANDEE_sword-boss_neutral_raw_v1.png",
+      "raw_sha256": "4776da15d8f796bde4cda9d786ef0489dc04133d9f237a6a09ed708c3b6f47e7",
+      "final": "01_canon/standees/STANDEE_sword-boss_neutral_v1.png",
+      "final_sha256": "60a89ae46a3f93a575da994e98930c1c78a3e77d25e2fea936191e197eb936e8",
+      "dimensions": [
+        1024,
+        1536
+      ],
+      "mode": "RGBA",
+      "alpha_range": [
+        0,
+        255
+      ],
+      "nonzero_alpha_before": 596852,
+      "nonzero_alpha_after": 538127,
+      "pixels_removed_as_halo": 58725,
+      "content_bbox": [
+        15,
+        17,
+        911,
+        1509
+      ]
+    },
+    {
+      "character_id": "dragon_boss",
+      "raw": "04_cg/working/standees/raw/STANDEE_dragon-boss_neutral_raw_v1.png",
+      "raw_sha256": "d6bd9e78c62c64319e5cf5d380b7566828e0bfcef5e2ce1b8a91ff598587db2e",
+      "final": "01_canon/standees/STANDEE_dragon-boss_neutral_v1.png",
+      "final_sha256": "69c3fd9656d40970acfec31f51e0540a54f4faf4e4738301cc6715e22fcae08d",
+      "dimensions": [
+        1024,
+        1536
+      ],
+      "mode": "RGBA",
+      "alpha_range": [
+        0,
+        255
+      ],
+      "nonzero_alpha_before": 753730,
+      "nonzero_alpha_after": 697655,
+      "pixels_removed_as_halo": 56075,
+      "content_bbox": [
+        123,
+        7,
+        949,
+        1510
+      ]
+    },
+    {
+      "character_id": "astral_boss",
+      "raw": "04_cg/working/standees/raw/STANDEE_astral-boss_neutral_raw_v1.png",
+      "raw_sha256": "cfdf92bb7ae3cc9bef08c6f9321597dfff6327c6bbb10f5bce176eb21afc7dfa",
+      "final": "01_canon/standees/STANDEE_astral-boss_neutral_v1.png",
+      "final_sha256": "21e65b1141072c5cef67b6602ebe3e0fa4a7c22e83eb79cae19123084cd060ad",
+      "dimensions": [
+        1024,
+        1536
+      ],
+      "mode": "RGBA",
+      "alpha_range": [
+        0,
+        255
+      ],
+      "nonzero_alpha_before": 498925,
+      "nonzero_alpha_after": 470862,
+      "pixels_removed_as_halo": 28063,
+      "content_bbox": [
+        214,
+        18,
+        905,
+        1520
+      ]
+    },
+    {
+      "character_id": "shadow_boss",
+      "raw": "04_cg/working/standees/raw/STANDEE_shadow-boss_neutral_raw_v1.png",
+      "raw_sha256": "0106d491db80254132c2dd7efe3c0175bbb389fd3d93278c17119457523ca3e2",
+      "final": "01_canon/standees/STANDEE_shadow-boss_neutral_v1.png",
+      "final_sha256": "86a51f5b9ff6ea9982b809329da5bd34f663d09d5f3bc343736ec905beaa5f03",
+      "dimensions": [
+        1024,
+        1536
+      ],
+      "mode": "RGBA",
+      "alpha_range": [
+        0,
+        255
+      ],
+      "nonzero_alpha_before": 393130,
+      "nonzero_alpha_after": 373734,
+      "pixels_removed_as_halo": 19396,
+      "content_bbox": [
+        261,
+        13,
+        795,
+        1513
+      ]
+    },
+    {
+      "character_id": "merchant",
+      "raw": "04_cg/working/standees/raw/STANDEE_merchant_neutral_raw_v1.png",
+      "raw_sha256": "b337aa036f4cc8caa13741d8cdedd4f02b97c3057eb35d1b945b58b8ab624877",
+      "final": "01_canon/standees/STANDEE_merchant_neutral_v1.png",
+      "final_sha256": "cdc3635eff68d08f011574bd958150db228bb0d4d86c96282af0de93b63b9ac5",
+      "dimensions": [
+        1024,
+        1536
+      ],
+      "mode": "RGBA",
+      "alpha_range": [
+        0,
+        255
+      ],
+      "nonzero_alpha_before": 536872,
+      "nonzero_alpha_after": 519228,
+      "pixels_removed_as_halo": 17644,
+      "content_bbox": [
+        227,
+        10,
+        816,
+        1520
+      ]
+    },
+    {
+      "character_id": "echo_regent",
+      "raw": "04_cg/working/standees/raw/STANDEE_echo-regent_neutral_raw_v1.png",
+      "raw_sha256": "f35ca5cfbc0f6badfbb3d5efa05db692a8b8146696cb72ae3eddbc127de83c4d",
+      "final": "01_canon/standees/STANDEE_echo-regent_neutral_v1.png",
+      "final_sha256": "eb06020a0da8b8632ab3894e1c53c6dde4b7683a45569d24018b3d0791658869",
+      "dimensions": [
+        1024,
+        1536
+      ],
+      "mode": "RGBA",
+      "alpha_range": [
+        0,
+        255
+      ],
+      "nonzero_alpha_before": 515473,
+      "nonzero_alpha_after": 497651,
+      "pixels_removed_as_halo": 17822,
+      "content_bbox": [
+        239,
+        27,
+        822,
+        1523
+      ]
+    },
+    {
+      "character_id": "arcane_sovereign",
+      "raw": "04_cg/working/standees/raw/STANDEE_arcane-sovereign_neutral_raw_v1.png",
+      "raw_sha256": "258c0b78a13187c0e5745816dc3a5d719c4324f495eed9f750bf5849cf863147",
+      "final": "01_canon/standees/STANDEE_arcane-sovereign_neutral_v1.png",
+      "final_sha256": "79fc599bcc1df521e53dbc6e125b1982cd8d441ca52fc3cbcb3a6a6ddbd8f622",
+      "dimensions": [
+        1024,
+        1536
+      ],
+      "mode": "RGBA",
+      "alpha_range": [
+        0,
+        255
+      ],
+      "nonzero_alpha_before": 539616,
+      "nonzero_alpha_after": 519710,
+      "pixels_removed_as_halo": 19906,
+      "content_bbox": [
+        221,
+        8,
+        835,
+        1527
+      ]
+    },
+    {
+      "character_id": "palace_warden_v2",
+      "raw": "04_cg/working/standees/raw/STANDEE_palace-warden-v2_neutral_raw_v1.png",
+      "raw_sha256": "d55bbe06900acb7b4f4041ef358f9f1ddbeac53be3c2bfc4ab116144e420ce3f",
+      "final": "01_canon/standees/STANDEE_palace-warden-v2_neutral_v1.png",
+      "final_sha256": "a222931733159746bbc8a38a259f7470566a9e92985b751d3e046c8074d7ff7b",
+      "dimensions": [
+        1024,
+        1536
+      ],
+      "mode": "RGBA",
+      "alpha_range": [
+        0,
+        255
+      ],
+      "nonzero_alpha_before": 538711,
+      "nonzero_alpha_after": 506991,
+      "pixels_removed_as_halo": 31720,
+      "content_bbox": [
+        88,
+        5,
+        844,
+        1512
+      ]
+    },
+    {
+      "character_id": "black_seal_keeper_v2",
+      "raw": "04_cg/working/standees/raw/STANDEE_black-seal-keeper-v2_neutral_raw_v1.png",
+      "raw_sha256": "03c5df08cb6c3281d9d3c6e01d338b67ab7d0de049ff75979ba148ed59179ec0",
+      "final": "01_canon/standees/STANDEE_black-seal-keeper-v2_neutral_v1.png",
+      "final_sha256": "9bb348f84192b69e0ac26878364e2ec197a7d0d4d3d9a201a453aac0b033b7c1",
+      "dimensions": [
+        1024,
+        1536
+      ],
+      "mode": "RGBA",
+      "alpha_range": [
+        0,
+        255
+      ],
+      "nonzero_alpha_before": 682303,
+      "nonzero_alpha_after": 663538,
+      "pixels_removed_as_halo": 18765,
+      "content_bbox": [
+        178,
+        11,
+        843,
+        1521
+      ]
+    },
+    {
+      "character_id": "act3_last_custodian",
+      "raw": "04_cg/working/standees/raw/STANDEE_act3-last-custodian_neutral_raw_v1.png",
+      "raw_sha256": "48af766f6e037644d938c1adc77d390925db7beab2a04d6b301f8c3109b2b82e",
+      "final": "01_canon/standees/STANDEE_act3-last-custodian_neutral_v1.png",
+      "final_sha256": "a0fd82e413ec41ae3dea46293b58a15620d7b6c336a2d05189460eb8da30318e",
+      "dimensions": [
+        1024,
+        1536
+      ],
+      "mode": "RGBA",
+      "alpha_range": [
+        0,
+        255
+      ],
+      "nonzero_alpha_before": 742011,
+      "nonzero_alpha_after": 708059,
+      "pixels_removed_as_halo": 33952,
+      "content_bbox": [
+        164,
+        41,
+        923,
+        1518
+      ]
+    },
+    {
+      "character_id": "act3_archive_warden",
+      "raw": "04_cg/working/standees/raw/STANDEE_act3-archive-warden_neutral_raw_v1.png",
+      "raw_sha256": "6c7b19c98a3df350e920885e2cca17e3dc1b81e1b9e0a5bdfa521064d4efbedc",
+      "final": "01_canon/standees/STANDEE_act3-archive-warden_neutral_v1.png",
+      "final_sha256": "ced1d22ea66c62a48c8bbe3241d84afe254f3e1d9496d69e74b121d9d60b08a7",
+      "dimensions": [
+        1024,
+        1536
+      ],
+      "mode": "RGBA",
+      "alpha_range": [
+        0,
+        255
+      ],
+      "nonzero_alpha_before": 633097,
+      "nonzero_alpha_after": 603725,
+      "pixels_removed_as_halo": 29372,
+      "content_bbox": [
+        224,
+        14,
+        893,
+        1525
+      ]
+    }
+  ]
+}

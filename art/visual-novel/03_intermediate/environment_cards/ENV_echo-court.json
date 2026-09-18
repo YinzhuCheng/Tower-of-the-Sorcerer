@@ -1,0 +1,34 @@
+{
+  "version": "GAL-SIMPLE-1.2",
+  "environment_id": "echo-court",
+  "title": "回响王庭",
+  "usage": "19F",
+  "status": "gal-redraw",
+  "source_facts": "低矮空王座、月光、无字玻璃名牌和开阔地面；可同时陈列离港、罹难、待核实三类记录。",
+  "composition_contract": "16:9 empty visual-novel stage; clean standing-figure zones at both sides; bottom 30% low detail",
+  "series_anchors": [
+    "obsidian arch",
+    "small brass registration seal",
+    "blue-white index lamp",
+    "one thin violet seal fissure when applicable"
+  ],
+  "must_not": [
+    "people",
+    "readable text",
+    "UI",
+    "logo",
+    "watermark",
+    "photorealism",
+    "dense micro-texture"
+  ],
+  "target_asset": "01_canon/environments/ENV_echo-court_v1.png",
+  "asset_status": "accepted",
+  "asset": {
+    "path": "01_canon/environments/ENV_echo-court_v1.png",
+    "sha256": "beabf39cbfef14d6eec1b5e0b9b74874d1c74376e0288ebf5e0a2b86d3130ef5",
+    "width": 1672,
+    "height": 941,
+    "mode": "RGB"
+  },
+  "prompt_packet": "03_intermediate/prompt_packets/environments/echo-court.json"
+}

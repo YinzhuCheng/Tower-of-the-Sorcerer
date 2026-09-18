@@ -1,0 +1,229 @@
+{
+  "version": "GAL-SIMPLE-1.2",
+  "policy": "redraw active GAL presentation only; preserve tower gameplay art; archive unreferenced duplicates",
+  "source_scope_count": 128,
+  "active_gal_runtime_count": 92,
+  "archive_only_count": 35,
+  "preserve_gameplay_count": 1,
+  "active_by_kind": {
+    "avatars": [
+      "public/assets/anime/avatars/arcane-sovereign-avatar-regret.webp",
+      "public/assets/anime/avatars/archive-warden-avatar-duty.webp",
+      "public/assets/anime/avatars/astral-boss-avatar-focus.webp",
+      "public/assets/anime/avatars/black-seal-keeper-avatar-watchful.webp",
+      "public/assets/anime/avatars/cat-boss-avatar-alert-v8.webp",
+      "public/assets/anime/avatars/dragon-boss-avatar-embers-audit-v3.webp",
+      "public/assets/anime/avatars/echo-regent-avatar-grave.webp",
+      "public/assets/anime/avatars/fox-boss-avatar-watchful-v8.webp",
+      "public/assets/anime/avatars/last-custodian-avatar-grave.webp",
+      "public/assets/anime/avatars/liyue-avatar-embers-cel.webp",
+      "public/assets/anime/avatars/liyue-avatar-guarded-cel.webp",
+      "public/assets/anime/avatars/liyue-avatar-resolve-cel.webp",
+      "public/assets/anime/avatars/liyue-avatar-stern-cel.webp",
+      "public/assets/anime/avatars/merchant-avatar-knowing.webp",
+      "public/assets/anime/avatars/noctia-avatar-cold-cel.webp",
+      "public/assets/anime/avatars/noctia-avatar-grave-cel.webp",
+      "public/assets/anime/avatars/noctia-avatar-knowing-cel.webp",
+      "public/assets/anime/avatars/noctia-avatar-sorrow-cel.webp",
+      "public/assets/anime/avatars/palace-warden-avatar-duty.webp",
+      "public/assets/anime/avatars/shadow-boss-avatar-guarded.webp",
+      "public/assets/anime/avatars/shawu-avatar-focus-cel.webp",
+      "public/assets/anime/avatars/shawu-avatar-gentle-cel.webp",
+      "public/assets/anime/avatars/shawu-avatar-lament-cel.webp",
+      "public/assets/anime/avatars/shawu-avatar-watchful-cel.webp",
+      "public/assets/anime/avatars/sword-boss-avatar-stern-v8.webp",
+      "public/assets/anime/avatars/whale-boss-avatar-lament-audit-v3.webp"
+    ],
+    "cg": [
+      "public/assets/anime/cg/liyue-archive-warden-entry-cg-audit-v3.webp",
+      "public/assets/anime/cg/liyue-critical-cg.webp",
+      "public/assets/anime/cg/liyue-defeat-cg.webp",
+      "public/assets/anime/cg/liyue-echo-ledger-cg-audit-v3.webp",
+      "public/assets/anime/cg/liyue-lanyin-northstar-arrival-cg-v8.webp",
+      "public/assets/anime/cg/liyue-lighthouse-archive-cg.webp",
+      "public/assets/anime/cg/liyue-lumi-seventeen-minute-splice-cg-v8.webp",
+      "public/assets/anime/cg/liyue-noctia-afterlight-cg.webp",
+      "public/assets/anime/cg/liyue-noctia-archive-storm-cg-audit-v3.webp",
+      "public/assets/anime/cg/liyue-noctia-missing-fourth-step-cg-audit-v3.webp",
+      "public/assets/anime/cg/liyue-noctia-missing-page-cg-audit-v3.webp",
+      "public/assets/anime/cg/liyue-noctia-seal-cg-audit-v3.webp",
+      "public/assets/anime/cg/liyue-noctia-sovereign-cg-audit-v3.webp",
+      "public/assets/anime/cg/liyue-noctia-truth-cg-audit-v3.webp",
+      "public/assets/anime/cg/liyue-prologue-tower-cg.webp",
+      "public/assets/anime/cg/liyue-seven-cantos-severed-cg-audit-v3.webp",
+      "public/assets/anime/cg/liyue-traceable-revocation-cg-audit-v3.webp",
+      "public/assets/anime/cg/liyue-yayu-intercepted-receipt-cg-audit-v3.webp",
+      "public/assets/anime/cg/liyue-yayu-seven-core-network-cg-audit-v3.webp"
+    ],
+    "characters": [
+      "public/assets/anime/characters/arcane-sovereign-dialogue-acceptance.webp",
+      "public/assets/anime/characters/arcane-sovereign-dialogue-regret.webp",
+      "public/assets/anime/characters/archive-warden-dialogue-duty.webp",
+      "public/assets/anime/characters/echo-regent-dialogue-grave.webp",
+      "public/assets/anime/characters/echo-regent-dialogue-release.webp",
+      "public/assets/anime/characters/feiye-dialogue-watchful-v8.webp",
+      "public/assets/anime/characters/lanyin-dialogue-lament-v8.webp",
+      "public/assets/anime/characters/last-custodian-dialogue-release-audit-v3.webp",
+      "public/assets/anime/characters/liyue-dialogue-embers-v2.webp",
+      "public/assets/anime/characters/liyue-dialogue-guarded-v2.webp",
+      "public/assets/anime/characters/liyue-dialogue-resolve.webp",
+      "public/assets/anime/characters/lumi-dialogue-focus-v8.webp",
+      "public/assets/anime/characters/milu-dialogue-alert-v8.webp",
+      "public/assets/anime/characters/noctia-dialogue-cold-v2.webp",
+      "public/assets/anime/characters/noctia-dialogue-knowing-v2.webp",
+      "public/assets/anime/characters/noctia-dialogue-resolve.webp",
+      "public/assets/anime/characters/noctia-dialogue-sorrow.webp",
+      "public/assets/anime/characters/seph-dialogue-watchful-audit-v3.webp",
+      "public/assets/anime/characters/serena-dialogue-stern-audit-v3.webp",
+      "public/assets/anime/characters/shawu-dialogue-focus.webp",
+      "public/assets/anime/characters/shawu-dialogue-gentle.webp",
+      "public/assets/anime/characters/shawu-runtime.webp",
+      "public/assets/anime/characters/vela-dialogue-duty-audit-v3.webp",
+      "public/assets/anime/characters/yanli-dialogue-embers.webp",
+      "public/assets/anime/characters/yayu-dialogue-guarded.webp"
+    ],
+    "themes": [
+      "public/assets/anime/themes/theme-archive-storm.webp",
+      "public/assets/anime/themes/theme-ash-registry.webp",
+      "public/assets/anime/themes/theme-audit-chamber-v8.webp",
+      "public/assets/anime/themes/theme-echo-court.webp",
+      "public/assets/anime/themes/theme-ember-lighthouse-writein.webp",
+      "public/assets/anime/themes/theme-ember-lighthouse.webp",
+      "public/assets/anime/themes/theme-final-index-room.webp",
+      "public/assets/anime/themes/theme-folded-archive-market.webp",
+      "public/assets/anime/themes/theme-forest-approach.webp",
+      "public/assets/anime/themes/theme-moon-white-vestibule.webp",
+      "public/assets/anime/themes/theme-night-shelter-v8.webp",
+      "public/assets/anime/themes/theme-night-tower.webp",
+      "public/assets/anime/themes/theme-ocean-archive.webp",
+      "public/assets/anime/themes/theme-origin-core.webp",
+      "public/assets/anime/themes/theme-red-vein.webp",
+      "public/assets/anime/themes/theme-relay-gallery-v8.webp",
+      "public/assets/anime/themes/theme-star-mirror.webp",
+      "public/assets/anime/themes/theme-sun-sanctum.webp",
+      "public/assets/anime/themes/theme-triage-index-v8.webp",
+      "public/assets/anime/themes/theme-twin-score-greenhouse.webp"
+    ],
+    "transitions": [
+      "public/assets/anime/transitions/seal-shatter.webp",
+      "public/assets/anime/transitions/witness-entry.webp"
+    ]
+  },
+  "archive_only_paths": [
+    "public/assets/anime/avatars/cat-boss-avatar-alert.webp",
+    "public/assets/anime/avatars/crown-magus-avatar-certain.webp",
+    "public/assets/anime/avatars/dialogue-avatar-atlas.png",
+    "public/assets/anime/avatars/dragon-boss-avatar-embers-v6.webp",
+    "public/assets/anime/avatars/dragon-boss-avatar-embers-v7.webp",
+    "public/assets/anime/avatars/dragon-boss-avatar-embers.webp",
+    "public/assets/anime/avatars/fox-boss-avatar-watchful.webp",
+    "public/assets/anime/avatars/liyue-avatar-resolve.webp",
+    "public/assets/anime/avatars/noctia-avatar-sorrow.webp",
+    "public/assets/anime/avatars/shawu-avatar-gentle.webp",
+    "public/assets/anime/avatars/sword-boss-avatar-stern.webp",
+    "public/assets/anime/avatars/whale-boss-avatar-lament-v6.webp",
+    "public/assets/anime/avatars/whale-boss-avatar-lament-v7.webp",
+    "public/assets/anime/avatars/whale-boss-avatar-lament-v8.webp",
+    "public/assets/anime/avatars/whale-boss-avatar-lament.webp",
+    "public/assets/anime/cg/liyue-archive-warden-entry-cg.webp",
+    "public/assets/anime/cg/liyue-echo-ledger-cg.webp",
+    "public/assets/anime/cg/liyue-noctia-archive-storm-cg.webp",
+    "public/assets/anime/cg/liyue-noctia-missing-fourth-step-cg.webp",
+    "public/assets/anime/cg/liyue-noctia-missing-page-cg.webp",
+    "public/assets/anime/cg/liyue-noctia-seal-cg.webp",
+    "public/assets/anime/cg/liyue-noctia-sovereign-cg.webp",
+    "public/assets/anime/cg/liyue-noctia-truth-cg.webp",
+    "public/assets/anime/cg/liyue-seven-cantos-severed-cg.webp",
+    "public/assets/anime/cg/liyue-traceable-revocation-cg.webp",
+    "public/assets/anime/cg/liyue-yayu-intercepted-receipt-cg.webp",
+    "public/assets/anime/cg/liyue-yayu-seven-core-network-cg.webp",
+    "public/assets/anime/characters/arcane-sovereign-runtime.webp",
+    "public/assets/anime/characters/echo-regent-runtime.webp",
+    "public/assets/anime/characters/last-custodian-dialogue-release.webp",
+    "public/assets/anime/characters/liyue-runtime.webp",
+    "public/assets/anime/characters/noctia-runtime.webp",
+    "public/assets/anime/characters/seph-dialogue-watchful.webp",
+    "public/assets/anime/characters/serena-dialogue-stern-v8.webp",
+    "public/assets/anime/characters/vela-dialogue-duty.webp"
+  ],
+  "preserve_gameplay_paths": [
+    "public/assets/anime/themes/theme-forest-sanctuary.webp"
+  ],
+  "production_order": [
+    {
+      "batch": "B0",
+      "nodes": [
+        "17 character canon packs"
+      ],
+      "status": "complete"
+    },
+    {
+      "batch": "B1",
+      "nodes": [
+        "20 GAL environment masters",
+        "2 transition masters",
+        "26 avatar crops"
+      ],
+      "status": "complete"
+    },
+    {
+      "batch": "B2",
+      "nodes": [
+        "25 dialogue standee/expression variants"
+      ],
+      "status": "pending",
+      "depends_on": [
+        "B0"
+      ]
+    },
+    {
+      "batch": "B3",
+      "nodes": [
+        "2 portable battle CGs",
+        "17 story CGs"
+      ],
+      "status": "ready-for-layout",
+      "depends_on": [
+        "B0",
+        "B1"
+      ]
+    },
+    {
+      "batch": "B4",
+      "nodes": [
+        "runtime WebP exports",
+        "archive aliases",
+        "repo replacement + tests"
+      ],
+      "status": "pending",
+      "depends_on": [
+        "B1",
+        "B2",
+        "B3"
+      ]
+    }
+  ],
+  "rule": "No CG generation starts until every listed character reference and its environment master are accepted with SHA-256.",
+  "b1_progress": {
+    "environment_masters": {
+      "accepted": 20,
+      "total": 20
+    },
+    "story_cg_environment_dependencies": {
+      "accepted": 12,
+      "total": 12
+    },
+    "transition_masters": {
+      "accepted": 2,
+      "total": 2
+    },
+    "avatar_derivatives": {
+      "accepted": 26,
+      "total": 26
+    },
+    "cg_layout_admission": {
+      "ready": 19,
+      "total": 19
+    }
+  }
+}

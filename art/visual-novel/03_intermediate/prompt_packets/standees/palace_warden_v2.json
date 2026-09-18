@@ -1,0 +1,32 @@
+{
+  "version": "GAL-SIMPLE-1.1",
+  "character_id": "palace_warden_v2",
+  "series_style_lock": "GAL-SIMPLE clean cel transparent standee",
+  "identity_lock": [
+    "白发冷蓝眼",
+    "额冠中央1尖",
+    "黑甲蓝前裙片",
+    "双肩甲对称",
+    "银剑中央蓝槽1",
+    "无浮晶"
+  ],
+  "prop_lock": "One straight silver verification sword, 100 cm overall, ONE narrow blue groove along center blade, simple black straight crossguard and black grip, no gem. One plain black scabbard at LEFT waist; RIGHT-handed.",
+  "pose": "Dutiful neutral stance. RIGHT hand holds one straight silver sword with one central blue groove pointed safely down; one black scabbard at LEFT waist. No floating crystals.",
+  "negative_constraints": [
+    "background pixels",
+    "ground shadow",
+    "extra accessory",
+    "duplicate prop",
+    "wrong side",
+    "wrong count",
+    "watermark",
+    "cropped feet or prop"
+  ],
+  "prompt": "Use case: background-extraction. Asset type: canonical full-body transparent visual-novel standing figure. Create ONE isolated full-body character cutout in polished Japanese 2D visual-novel cel style matching GAL-SIMPLE: fine clean dark outlines, large solid local colors, one hard-edged shadow per material, restrained highlights, adult proportions. Image 1 is the accepted turnaround and has highest visual authority for identity, anatomy, silhouette and costume. Image 2 is the accepted detail board and controls exact accessory, clothing and prop counts and side placement. Image 3 is the accepted expression sheet and controls only the face; use its first neutral expression. Portrait 2:3 composition, centered, entire hair, all props and both feet inside canvas with 8 percent transparent padding. Natural relaxed three-quarter pose facing camera, anatomically plausible hands, readable silhouette. ACTUAL TRANSPARENT RGBA BACKGROUND: no white or checkerboard background, no scenery, floor, cast shadow, glow, aura, particles, frame, text, logo, watermark or signature. Only the character and explicitly required carried items may have visible pixels. Do not redesign, beautify with extra jewelry, duplicate props, change sides, change counts, or merge objects into hands. CANON IDENTITY: Adult female oath auditor, 176 cm, straight pearl-white hair to hips, cool blue eyes. ONE simple black forehead circlet with ONE central upward point. Smooth black breastplate and matching symmetric shoulder plates with narrow silver edging, cobalt rectangular front tabard to knees, black fitted trousers and black tall boots. No floating blue crystals, thigh cutouts, jewelry or layered spikes. Her dark armored silhouette must differ from Serena's ivory coat. CANON PROP: One straight silver verification sword, 100 cm overall, ONE narrow blue groove along center blade, simple black straight crossguard and black grip, no gem. One plain black scabbard at LEFT waist; RIGHT-handed. HARD LOCKS: 白发冷蓝眼, 额冠中央1尖, 黑甲蓝前裙片, 双肩甲对称, 银剑中央蓝槽1, 无浮晶. POSE AND OWNERSHIP: Dutiful neutral stance. RIGHT hand holds one straight silver sword with one central blue groove pointed safely down; one black scabbard at LEFT waist. No floating crystals.",
+  "referenced_image_paths": [
+    "/workspace/scratch/0645849eb5a5/gal-design-v1/01_canon/turnarounds/CHAR_palace-warden-v2_turnaround_v1.png",
+    "/workspace/scratch/0645849eb5a5/gal-design-v1/01_canon/details/DETAIL_palace-warden-v2_v1.png",
+    "/workspace/scratch/0645849eb5a5/gal-design-v1/01_canon/expressions/EXPR_palace-warden-v2_v1.png"
+  ],
+  "output_contract": "01_canon/standees/STANDEE_palace-warden-v2_neutral_v1.png"
+}

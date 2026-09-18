@@ -1,0 +1,119 @@
+{
+  "version": "GAL-SIMPLE-1.2",
+  "cg_id": "CG_011_intercepted-receipt",
+  "semantic_id": "intercepted-receipt",
+  "title": "十八阵：截留回执",
+  "status": "ready-for-layout",
+  "source_locator": {
+    "repository_commit": "b05bc623b7c1ef8b93cfa1fca253ad2119a52f68",
+    "file": "src/game/demo-20-floor-content.js",
+    "line": 270
+  },
+  "source_passage": "鸦羽收紧紫线，一只透明虚空先驱从绿光中跌出，胸口像信箱般半开，卡着带船长印记的回执。",
+  "narrative_beat": "证明回执并未丢失，而是被自动截留器困在塔内。",
+  "point_of_view": "third-person visual-novel camera aligned with protagonist understanding",
+  "cast": [
+    "hero",
+    "shadow_boss"
+  ],
+  "expressions": {
+    "hero": "startled realization",
+    "shadow_boss": "intense focus"
+  },
+  "environment_id": "ocean-archive",
+  "props": [
+    "shadow needle and spool",
+    "purple tracing lines",
+    "sealed captain receipt",
+    "spectral nonhuman interceptor"
+  ],
+  "composition": "16:9 动态三角；鸦羽在右侧收线，半透明非人形截留器跌在中央，璃在左侧看见其胸口回执。",
+  "must_show": [
+    "receipt visibly owned by interceptor",
+    "shadow_boss controls lines",
+    "interceptor is mechanism not person"
+  ],
+  "must_not_show": [
+    "readable letter",
+    "human hostage",
+    "mailbox comedy",
+    "extra weapons"
+  ],
+  "project_inference": null,
+  "character_reference_order": {
+    "hero": [
+      {
+        "role": "canonical_text",
+        "path": "01_canon/characters/hero.md",
+        "sha256": "6eada62d7bfc82c639b25fe2387de9a51f4adc6009b46d55080c26fcd2193d50"
+      },
+      {
+        "role": "accepted_turnaround",
+        "path": "01_canon/turnarounds/CHAR_hero_turnaround_v2.png",
+        "sha256": "d1385fe1798271e05e608204fe6d6cc99daa7961587d2e188cef7e62693cfe1b"
+      },
+      {
+        "role": "accepted_detail_board",
+        "path": "01_canon/details/DETAIL_hero_v2.png",
+        "sha256": "8f42611ee44f012b256262a251c67c5713d4056c8c3af5391e6c6976d337bfa1"
+      },
+      {
+        "role": "accepted_expression_board",
+        "path": "01_canon/expressions/EXPR_hero_v1.png",
+        "sha256": "d1571b7c18c3fbd902109a575619a40b1ecd4d9d84180fe6e9eb585a5eb1f3f8"
+      },
+      {
+        "role": "accepted_transparent_standee",
+        "path": "01_canon/standees/STANDEE_hero_neutral_v1.png",
+        "sha256": "bc7e81506ad41225bfe5ef548889d66e67d4c8db963c64650ebb601737d49b76"
+      }
+    ],
+    "shadow_boss": [
+      {
+        "role": "canonical_text",
+        "path": "01_canon/characters/shadow_boss.md",
+        "sha256": "26b7ad6e0a3139fbc9cc7ae6ff41e1ae1142474857ae75d8cd0187b1e885bbdf"
+      },
+      {
+        "role": "accepted_turnaround",
+        "path": "01_canon/turnarounds/CHAR_shadow-boss_turnaround_v2.png",
+        "sha256": "131fc0f668cc5493e9fbd6f277ae42753ba2c17e58178ab91768bf6221e2eebf"
+      },
+      {
+        "role": "accepted_detail_board",
+        "path": "01_canon/details/DETAIL_shadow-boss_v1.png",
+        "sha256": "016452ddc9ab04e521dc186a85371ccd0c8705c88c7a5fef495b9085f4a91203"
+      },
+      {
+        "role": "accepted_expression_board",
+        "path": "01_canon/expressions/EXPR_shadow-boss_v1.png",
+        "sha256": "bd80e789b1a2e6fa748dde895e170fb220081803fe78e1ef63f24d0fc4e776a5"
+      },
+      {
+        "role": "accepted_transparent_standee",
+        "path": "01_canon/standees/STANDEE_shadow-boss_neutral_v1.png",
+        "sha256": "86a51f5b9ff6ea9982b809329da5bd34f663d09d5f3bc343736ec905beaa5f03"
+      }
+    ]
+  },
+  "environment_reference": "01_canon/environments/ENV_ocean-archive_v1.png",
+  "runtime_target": "public/assets/anime/cg/liyue-yayu-intercepted-receipt-cg-audit-v3.webp",
+  "archive_only_aliases": [
+    "public/assets/anime/cg/liyue-yayu-intercepted-receipt-cg.webp"
+  ],
+  "iteration_ladder": [
+    "R0_layout",
+    "R1_identity",
+    "R2_costume",
+    "R3_scene",
+    "R4_final"
+  ],
+  "output_contract": "04_cg/final/CG_011_intercepted-receipt_v1.png",
+  "environment_reference_asset": {
+    "path": "01_canon/environments/ENV_ocean-archive_v1.png",
+    "sha256": "c28f63ca054607c74afa896f3c857c1f5f121d6722e3f710626d85a9cd863a33",
+    "width": 1672,
+    "height": 941,
+    "mode": "RGB"
+  }
+}

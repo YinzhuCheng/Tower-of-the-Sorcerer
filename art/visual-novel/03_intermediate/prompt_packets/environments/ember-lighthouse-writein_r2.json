@@ -1,0 +1,12 @@
+{
+  "version": "GAL-SIMPLE-1.2",
+  "environment_id": "ember-lighthouse-writein",
+  "revision": 2,
+  "rejection_parent": "04_cg/rejected/ENV_ember-lighthouse-writein_v1_readable-gibberish.png",
+  "revision_reason": "v1 had pseudo-readable text on an open book",
+  "prompt": "Use case: illustration-story. Asset type: canonical 16:9 visual-novel environment master. Image 1 is the accepted forest-approach series style anchor; inherit only its clean fine line weight, broad cel color blocking, restrained detail density, dark stone, brass and blue-white magical index-light language, not its forest layout. Create the interior write-in chamber of an ember lighthouse: one large blue-white indexing ring and light-pen socket, an old-volume READ-ONLY storage rack on the left, a new final-volume work table on the right, and a clear open floor for characters. Old originals and new status records are visibly kept in parallel, never erased. Empty stage, human eye-level wide 16:9 view; left and right standing-character zones clear; bottom 30 percent low-detail for the dialogue box. CRITICAL TEXT FIX: every book and scroll must be CLOSED, rolled, turned edge-on, or show completely BLANK pages with no marks whatsoever. Do not draw glyphs, lines that resemble handwriting, labels, numbers, letters, captions, interface text, title cards, logos, watermarks or signatures anywhere. No people or creatures. No modern screens, keyboard, science-fiction console, photorealism, 3D render, painterly texture, excessive bloom, film grain, dense micro-detail or clutter.",
+  "referenced_image_paths": [
+    "/workspace/scratch/0645849eb5a5/gal-design-v1/01_canon/environments/ENV_forest-approach_v1.png"
+  ],
+  "output_contract": "01_canon/environments/ENV_ember-lighthouse-writein_v2.png"
+}

@@ -1,0 +1,578 @@
+{
+  "version": "GAL-SIMPLE-1.2",
+  "count": 26,
+  "assets": [
+    {
+      "runtime_target": "public/assets/anime/avatars/arcane-sovereign-avatar-regret.webp",
+      "master": "04_cg/final/avatars-v1.2/arcane-sovereign-avatar-regret.webp",
+      "sha256": "cda040223c852c21788daa1221776e801980da7a6a9ba89718a8c4cf135123ee",
+      "dimensions": [
+        512,
+        512
+      ],
+      "character_id": "arcane_sovereign",
+      "expression": "regret",
+      "panel_index_zero_based": 1,
+      "source_expression_board": "01_canon/expressions/EXPR_arcane-sovereign_v1.png",
+      "source_sha256": "353344f864bc97b07edcb4785766a96e1cf3076b1773e153428b25d8d72630e4",
+      "crop_box": [
+        520,
+        8,
+        1016,
+        504
+      ],
+      "method": "deterministic canonical expression-panel crop; no new generation",
+      "status": "accepted"
+    },
+    {
+      "runtime_target": "public/assets/anime/avatars/archive-warden-avatar-duty.webp",
+      "master": "04_cg/final/avatars-v1.2/archive-warden-avatar-duty.webp",
+      "sha256": "ef7d3205f0d10e025e250938c055705e5bfa1a02fa12fd364328395a8ab4267b",
+      "dimensions": [
+        512,
+        512
+      ],
+      "character_id": "act3_archive_warden",
+      "expression": "dutiful neutrality",
+      "panel_index_zero_based": 0,
+      "source_expression_board": "01_canon/expressions/EXPR_act3-archive-warden_v1.png",
+      "source_sha256": "f92bed11e4f12dd074d6e0441d6b6529015e53d7ade00b4e22ac3e2f23707546",
+      "crop_box": [
+        8,
+        8,
+        504,
+        504
+      ],
+      "method": "deterministic canonical expression-panel crop; no new generation",
+      "status": "accepted"
+    },
+    {
+      "runtime_target": "public/assets/anime/avatars/astral-boss-avatar-focus.webp",
+      "master": "04_cg/final/avatars-v1.2/astral-boss-avatar-focus.webp",
+      "sha256": "b0099b649045eb9e2cd1af0593f92984d6972f830357786389ea294c66308b0d",
+      "dimensions": [
+        512,
+        512
+      ],
+      "character_id": "astral_boss",
+      "expression": "deep focus",
+      "panel_index_zero_based": 1,
+      "source_expression_board": "01_canon/expressions/EXPR_astral-boss_v1.png",
+      "source_sha256": "d112a76ca10182b1ce62df4293ad19969755b3404e491062935ba368392acc6a",
+      "crop_box": [
+        520,
+        8,
+        1016,
+        504
+      ],
+      "method": "deterministic canonical expression-panel crop; no new generation",
+      "status": "accepted"
+    },
+    {
+      "runtime_target": "public/assets/anime/avatars/black-seal-keeper-avatar-watchful.webp",
+      "master": "04_cg/final/avatars-v1.2/black-seal-keeper-avatar-watchful.webp",
+      "sha256": "1229719cc4ebd31cb7ccd1b707695e3d53b554f3564e99c6813de57ad3d544ba",
+      "dimensions": [
+        512,
+        512
+      ],
+      "character_id": "black_seal_keeper_v2",
+      "expression": "watchful neutrality",
+      "panel_index_zero_based": 0,
+      "source_expression_board": "01_canon/expressions/EXPR_black-seal-keeper-v2_v1.png",
+      "source_sha256": "7d43a55a49c31c32f5df2a655774a30613036fb5ce6e725690081ace53a796db",
+      "crop_box": [
+        8,
+        8,
+        504,
+        504
+      ],
+      "method": "deterministic canonical expression-panel crop; no new generation",
+      "status": "accepted"
+    },
+    {
+      "runtime_target": "public/assets/anime/avatars/cat-boss-avatar-alert-v8.webp",
+      "master": "04_cg/final/avatars-v1.2/cat-boss-avatar-alert-v8.webp",
+      "sha256": "b17f918c2dcdbac6ce302a8a129272342386da2227262e4d82ca270dae22249b",
+      "dimensions": [
+        512,
+        512
+      ],
+      "character_id": "cat_boss",
+      "expression": "alert",
+      "panel_index_zero_based": 0,
+      "source_expression_board": "01_canon/expressions/EXPR_cat-boss_v1.png",
+      "source_sha256": "7f6a579ce4ba231a569c09d96105b332dccee1ed31201f561ab563de58c0402b",
+      "crop_box": [
+        8,
+        8,
+        504,
+        504
+      ],
+      "method": "deterministic canonical expression-panel crop; no new generation",
+      "status": "accepted"
+    },
+    {
+      "runtime_target": "public/assets/anime/avatars/dragon-boss-avatar-embers-audit-v3.webp",
+      "master": "04_cg/final/avatars-v1.2/dragon-boss-avatar-embers-audit-v3.webp",
+      "sha256": "f7e09ecb29d64cac923df4bb5626be2ebb21ec46fdf5b92ff4e3aa0de3f627c8",
+      "dimensions": [
+        512,
+        512
+      ],
+      "character_id": "dragon_boss",
+      "expression": "proud embers",
+      "panel_index_zero_based": 0,
+      "source_expression_board": "01_canon/expressions/EXPR_dragon-boss_v1.png",
+      "source_sha256": "5912770003929075cb67cd320fe15eef2bc5a7bfd38a6d90ac56835209af68fc",
+      "crop_box": [
+        8,
+        8,
+        504,
+        504
+      ],
+      "method": "deterministic canonical expression-panel crop; no new generation",
+      "status": "accepted"
+    },
+    {
+      "runtime_target": "public/assets/anime/avatars/echo-regent-avatar-grave.webp",
+      "master": "04_cg/final/avatars-v1.2/echo-regent-avatar-grave.webp",
+      "sha256": "d3b5019acc210922a2527231ff5cb570b060f373a6e6522e40767e57e333d73d",
+      "dimensions": [
+        512,
+        512
+      ],
+      "character_id": "echo_regent",
+      "expression": "grave neutrality",
+      "panel_index_zero_based": 0,
+      "source_expression_board": "01_canon/expressions/EXPR_echo-regent_v1.png",
+      "source_sha256": "1fc8dadbf1cd4a089da30614ec5f65fa769248f0b19f9c011057a7d1e0bbe416",
+      "crop_box": [
+        8,
+        8,
+        504,
+        504
+      ],
+      "method": "deterministic canonical expression-panel crop; no new generation",
+      "status": "accepted"
+    },
+    {
+      "runtime_target": "public/assets/anime/avatars/fox-boss-avatar-watchful-v8.webp",
+      "master": "04_cg/final/avatars-v1.2/fox-boss-avatar-watchful-v8.webp",
+      "sha256": "581f93961f0e3947d07387dc5774403dfcd8b8b7b2032e4c78e9b468ad34a081",
+      "dimensions": [
+        512,
+        512
+      ],
+      "character_id": "fox_boss",
+      "expression": "watchful calm",
+      "panel_index_zero_based": 0,
+      "source_expression_board": "01_canon/expressions/EXPR_fox-boss_v1.png",
+      "source_sha256": "6bc4608b0041028ff299c0fefe93946f43e7908454a57799cf562878d3d895b8",
+      "crop_box": [
+        8,
+        8,
+        504,
+        504
+      ],
+      "method": "deterministic canonical expression-panel crop; no new generation",
+      "status": "accepted"
+    },
+    {
+      "runtime_target": "public/assets/anime/avatars/last-custodian-avatar-grave.webp",
+      "master": "04_cg/final/avatars-v1.2/last-custodian-avatar-grave.webp",
+      "sha256": "ccb4e58e74b573ed10edfcdf87e3ea3526333583b9577969036159164cd22b41",
+      "dimensions": [
+        512,
+        512
+      ],
+      "character_id": "act3_last_custodian",
+      "expression": "grave weariness",
+      "panel_index_zero_based": 0,
+      "source_expression_board": "01_canon/expressions/EXPR_act3-last-custodian_v1.png",
+      "source_sha256": "d4046a27abc812d3587fcf4f2c741ff5b6e210c60afee9d645f27a429c0c0d78",
+      "crop_box": [
+        8,
+        8,
+        504,
+        504
+      ],
+      "method": "deterministic canonical expression-panel crop; no new generation",
+      "status": "accepted"
+    },
+    {
+      "runtime_target": "public/assets/anime/avatars/liyue-avatar-embers-cel.webp",
+      "master": "04_cg/final/avatars-v1.2/liyue-avatar-embers-cel.webp",
+      "sha256": "9961e00cb33a39a62e0664405cb70387030ff78109732c0a4287f9cb052315f6",
+      "dimensions": [
+        512,
+        512
+      ],
+      "character_id": "hero",
+      "expression": "controlled anger like banked embers",
+      "panel_index_zero_based": 4,
+      "source_expression_board": "01_canon/expressions/EXPR_hero_v1.png",
+      "source_sha256": "d1571b7c18c3fbd902109a575619a40b1ecd4d9d84180fe6e9eb585a5eb1f3f8",
+      "crop_box": [
+        520,
+        520,
+        1016,
+        1016
+      ],
+      "method": "deterministic canonical expression-panel crop; no new generation",
+      "status": "accepted"
+    },
+    {
+      "runtime_target": "public/assets/anime/avatars/liyue-avatar-guarded-cel.webp",
+      "master": "04_cg/final/avatars-v1.2/liyue-avatar-guarded-cel.webp",
+      "sha256": "3a077f2acf3357b1b69d8a0073ff04a5fdc0de4d132973965d892dd7bebfc756",
+      "dimensions": [
+        512,
+        512
+      ],
+      "character_id": "hero",
+      "expression": "guarded suspicion",
+      "panel_index_zero_based": 1,
+      "source_expression_board": "01_canon/expressions/EXPR_hero_v1.png",
+      "source_sha256": "d1571b7c18c3fbd902109a575619a40b1ecd4d9d84180fe6e9eb585a5eb1f3f8",
+      "crop_box": [
+        520,
+        8,
+        1016,
+        504
+      ],
+      "method": "deterministic canonical expression-panel crop; no new generation",
+      "status": "accepted"
+    },
+    {
+      "runtime_target": "public/assets/anime/avatars/liyue-avatar-resolve-cel.webp",
+      "master": "04_cg/final/avatars-v1.2/liyue-avatar-resolve-cel.webp",
+      "sha256": "b65342b229e130c04fd967cda48f309894b8b6af13b23066a35e5b0178b82449",
+      "dimensions": [
+        512,
+        512
+      ],
+      "character_id": "hero",
+      "expression": "quiet resolve",
+      "panel_index_zero_based": 2,
+      "source_expression_board": "01_canon/expressions/EXPR_hero_v1.png",
+      "source_sha256": "d1571b7c18c3fbd902109a575619a40b1ecd4d9d84180fe6e9eb585a5eb1f3f8",
+      "crop_box": [
+        1032,
+        8,
+        1528,
+        504
+      ],
+      "method": "deterministic canonical expression-panel crop; no new generation",
+      "status": "accepted"
+    },
+    {
+      "runtime_target": "public/assets/anime/avatars/liyue-avatar-stern-cel.webp",
+      "master": "04_cg/final/avatars-v1.2/liyue-avatar-stern-cel.webp",
+      "sha256": "83f30cdc4ed079664e02417443ee6c5b36f66c7d52ee935052c9c38aad411770",
+      "dimensions": [
+        512,
+        512
+      ],
+      "character_id": "hero",
+      "expression": "stern warning",
+      "panel_index_zero_based": 3,
+      "source_expression_board": "01_canon/expressions/EXPR_hero_v1.png",
+      "source_sha256": "d1571b7c18c3fbd902109a575619a40b1ecd4d9d84180fe6e9eb585a5eb1f3f8",
+      "crop_box": [
+        8,
+        520,
+        504,
+        1016
+      ],
+      "method": "deterministic canonical expression-panel crop; no new generation",
+      "status": "accepted"
+    },
+    {
+      "runtime_target": "public/assets/anime/avatars/merchant-avatar-knowing.webp",
+      "master": "04_cg/final/avatars-v1.2/merchant-avatar-knowing.webp",
+      "sha256": "7b471c82c9cab45e524020277b6ae4ad19e6f4dae81695b550513e7fb2f52902",
+      "dimensions": [
+        512,
+        512
+      ],
+      "character_id": "merchant",
+      "expression": "knowing smile",
+      "panel_index_zero_based": 0,
+      "source_expression_board": "01_canon/expressions/EXPR_merchant_v1.png",
+      "source_sha256": "68a29aef0d0640ac0506b437e955fafff302cb7c0a3f64af49c0d1b8972a3579",
+      "crop_box": [
+        8,
+        8,
+        504,
+        504
+      ],
+      "method": "deterministic canonical expression-panel crop; no new generation",
+      "status": "accepted"
+    },
+    {
+      "runtime_target": "public/assets/anime/avatars/noctia-avatar-cold-cel.webp",
+      "master": "04_cg/final/avatars-v1.2/noctia-avatar-cold-cel.webp",
+      "sha256": "72e19c22ba633ed43fe9c2506114a528ba4ee73274e33de3dc7e17e8fb2f2b3c",
+      "dimensions": [
+        512,
+        512
+      ],
+      "character_id": "final_queen",
+      "expression": "cold authority",
+      "panel_index_zero_based": 0,
+      "source_expression_board": "01_canon/expressions/EXPR_final-queen_v1.png",
+      "source_sha256": "58c9121b08aadb699e5a47e964c30317326ae227c90ed9d292f67d0f866db2a7",
+      "crop_box": [
+        8,
+        8,
+        504,
+        504
+      ],
+      "method": "deterministic canonical expression-panel crop; no new generation",
+      "status": "accepted"
+    },
+    {
+      "runtime_target": "public/assets/anime/avatars/noctia-avatar-grave-cel.webp",
+      "master": "04_cg/final/avatars-v1.2/noctia-avatar-grave-cel.webp",
+      "sha256": "c4bd85091a9247ddb1d266054127359d21fcfecd66d1d5d5f24648c39e76e016",
+      "dimensions": [
+        512,
+        512
+      ],
+      "character_id": "final_queen",
+      "expression": "grave stillness",
+      "panel_index_zero_based": 3,
+      "source_expression_board": "01_canon/expressions/EXPR_final-queen_v1.png",
+      "source_sha256": "58c9121b08aadb699e5a47e964c30317326ae227c90ed9d292f67d0f866db2a7",
+      "crop_box": [
+        8,
+        520,
+        504,
+        1016
+      ],
+      "method": "deterministic canonical expression-panel crop; no new generation",
+      "status": "accepted"
+    },
+    {
+      "runtime_target": "public/assets/anime/avatars/noctia-avatar-knowing-cel.webp",
+      "master": "04_cg/final/avatars-v1.2/noctia-avatar-knowing-cel.webp",
+      "sha256": "0e9e58e7f9b912cf0be9fa78384adf28c3af009fa3dae4d2434ce947ceaf7722",
+      "dimensions": [
+        512,
+        512
+      ],
+      "character_id": "final_queen",
+      "expression": "knowing half-smile",
+      "panel_index_zero_based": 1,
+      "source_expression_board": "01_canon/expressions/EXPR_final-queen_v1.png",
+      "source_sha256": "58c9121b08aadb699e5a47e964c30317326ae227c90ed9d292f67d0f866db2a7",
+      "crop_box": [
+        520,
+        8,
+        1016,
+        504
+      ],
+      "method": "deterministic canonical expression-panel crop; no new generation",
+      "status": "accepted"
+    },
+    {
+      "runtime_target": "public/assets/anime/avatars/noctia-avatar-sorrow-cel.webp",
+      "master": "04_cg/final/avatars-v1.2/noctia-avatar-sorrow-cel.webp",
+      "sha256": "3703916862817f505c0a36ce93973a6d2eef5c9db50944f5a166afb712a51ec5",
+      "dimensions": [
+        512,
+        512
+      ],
+      "character_id": "final_queen",
+      "expression": "contained sorrow",
+      "panel_index_zero_based": 2,
+      "source_expression_board": "01_canon/expressions/EXPR_final-queen_v1.png",
+      "source_sha256": "58c9121b08aadb699e5a47e964c30317326ae227c90ed9d292f67d0f866db2a7",
+      "crop_box": [
+        1032,
+        8,
+        1528,
+        504
+      ],
+      "method": "deterministic canonical expression-panel crop; no new generation",
+      "status": "accepted"
+    },
+    {
+      "runtime_target": "public/assets/anime/avatars/palace-warden-avatar-duty.webp",
+      "master": "04_cg/final/avatars-v1.2/palace-warden-avatar-duty.webp",
+      "sha256": "f0635ae16877f67961c55318ce3cdc301d1c0b79e9d9bdad2ed8f0b4fffc5fcd",
+      "dimensions": [
+        512,
+        512
+      ],
+      "character_id": "palace_warden_v2",
+      "expression": "dutiful neutrality",
+      "panel_index_zero_based": 0,
+      "source_expression_board": "01_canon/expressions/EXPR_palace-warden-v2_v1.png",
+      "source_sha256": "568aed2b865a7b28b0e7e8b4af5fee4760c633be6b1b9062dc6dd9de8bfb4cb7",
+      "crop_box": [
+        8,
+        8,
+        504,
+        504
+      ],
+      "method": "deterministic canonical expression-panel crop; no new generation",
+      "status": "accepted"
+    },
+    {
+      "runtime_target": "public/assets/anime/avatars/shadow-boss-avatar-guarded.webp",
+      "master": "04_cg/final/avatars-v1.2/shadow-boss-avatar-guarded.webp",
+      "sha256": "0090f4bd045fced4a9fcef8f9b570cd31ac1e5a39869c8165356cae81531a0fc",
+      "dimensions": [
+        512,
+        512
+      ],
+      "character_id": "shadow_boss",
+      "expression": "guarded",
+      "panel_index_zero_based": 0,
+      "source_expression_board": "01_canon/expressions/EXPR_shadow-boss_v1.png",
+      "source_sha256": "bd80e789b1a2e6fa748dde895e170fb220081803fe78e1ef63f24d0fc4e776a5",
+      "crop_box": [
+        8,
+        8,
+        504,
+        504
+      ],
+      "method": "deterministic canonical expression-panel crop; no new generation",
+      "status": "accepted"
+    },
+    {
+      "runtime_target": "public/assets/anime/avatars/shawu-avatar-focus-cel.webp",
+      "master": "04_cg/final/avatars-v1.2/shawu-avatar-focus-cel.webp",
+      "sha256": "a848d3a4e0c8abc23adb6dda23a8c501cbe0ceb787d50dc4d6158f5d949edb05",
+      "dimensions": [
+        512,
+        512
+      ],
+      "character_id": "guide",
+      "expression": "intense focus",
+      "panel_index_zero_based": 1,
+      "source_expression_board": "01_canon/expressions/EXPR_guide_v1.png",
+      "source_sha256": "4695959e1553f64ee090108c719ca33194dfb6f2a78d5e49c6f75b90e5a24204",
+      "crop_box": [
+        520,
+        8,
+        1016,
+        504
+      ],
+      "method": "deterministic canonical expression-panel crop; no new generation",
+      "status": "accepted"
+    },
+    {
+      "runtime_target": "public/assets/anime/avatars/shawu-avatar-gentle-cel.webp",
+      "master": "04_cg/final/avatars-v1.2/shawu-avatar-gentle-cel.webp",
+      "sha256": "e7d359301060c0880f70ecbe04aee48785049aa5ce3e0b31c90a51843745b87a",
+      "dimensions": [
+        512,
+        512
+      ],
+      "character_id": "guide",
+      "expression": "gentle reassurance",
+      "panel_index_zero_based": 0,
+      "source_expression_board": "01_canon/expressions/EXPR_guide_v1.png",
+      "source_sha256": "4695959e1553f64ee090108c719ca33194dfb6f2a78d5e49c6f75b90e5a24204",
+      "crop_box": [
+        8,
+        8,
+        504,
+        504
+      ],
+      "method": "deterministic canonical expression-panel crop; no new generation",
+      "status": "accepted"
+    },
+    {
+      "runtime_target": "public/assets/anime/avatars/shawu-avatar-lament-cel.webp",
+      "master": "04_cg/final/avatars-v1.2/shawu-avatar-lament-cel.webp",
+      "sha256": "b155d8c4836a96616ac59323b75b415d27410a9c7419e33d29110c7297e39e50",
+      "dimensions": [
+        512,
+        512
+      ],
+      "character_id": "guide",
+      "expression": "open lament",
+      "panel_index_zero_based": 3,
+      "source_expression_board": "01_canon/expressions/EXPR_guide_v1.png",
+      "source_sha256": "4695959e1553f64ee090108c719ca33194dfb6f2a78d5e49c6f75b90e5a24204",
+      "crop_box": [
+        8,
+        520,
+        504,
+        1016
+      ],
+      "method": "deterministic canonical expression-panel crop; no new generation",
+      "status": "accepted"
+    },
+    {
+      "runtime_target": "public/assets/anime/avatars/shawu-avatar-watchful-cel.webp",
+      "master": "04_cg/final/avatars-v1.2/shawu-avatar-watchful-cel.webp",
+      "sha256": "273e1b792b8fb68e12df18badc3cb133cd7210dd6ec22390f3aeb26a9a070b54",
+      "dimensions": [
+        512,
+        512
+      ],
+      "character_id": "guide",
+      "expression": "watchful concern",
+      "panel_index_zero_based": 2,
+      "source_expression_board": "01_canon/expressions/EXPR_guide_v1.png",
+      "source_sha256": "4695959e1553f64ee090108c719ca33194dfb6f2a78d5e49c6f75b90e5a24204",
+      "crop_box": [
+        1032,
+        8,
+        1528,
+        504
+      ],
+      "method": "deterministic canonical expression-panel crop; no new generation",
+      "status": "accepted"
+    },
+    {
+      "runtime_target": "public/assets/anime/avatars/sword-boss-avatar-stern-v8.webp",
+      "master": "04_cg/final/avatars-v1.2/sword-boss-avatar-stern-v8.webp",
+      "sha256": "28de5991a478f11aee39126ebd2305709bae1505bb7e699200a6f3fcfcd0a567",
+      "dimensions": [
+        512,
+        512
+      ],
+      "character_id": "sword_boss",
+      "expression": "stern composure",
+      "panel_index_zero_based": 0,
+      "source_expression_board": "01_canon/expressions/EXPR_sword-boss_v2.png",
+      "source_sha256": "f5ea6e7a17d5ce956e97e23f508a47331bebd30dbb3f4f127797c68ef27b2969",
+      "crop_box": [
+        8,
+        8,
+        504,
+        504
+      ],
+      "method": "deterministic canonical expression-panel crop; no new generation",
+      "status": "accepted"
+    },
+    {
+      "runtime_target": "public/assets/anime/avatars/whale-boss-avatar-lament-audit-v3.webp",
+      "master": "04_cg/final/avatars-v1.2/whale-boss-avatar-lament-audit-v3.webp",
+      "sha256": "f3bdec1751672efc156af1a9caa9172f4a4e84c4bca06cc3ebed8d9346caca18",
+      "dimensions": [
+        512,
+        512
+      ],
+      "character_id": "whale_boss",
+      "expression": "lament",
+      "panel_index_zero_based": 1,
+      "source_expression_board": "01_canon/expressions/EXPR_whale-boss_v1.png",
+      "source_sha256": "53f5bb5f14b6122a4fb4de6444b42977bae35346eb10a05b8a44b9e7233b64bb",
+      "crop_box": [
+        520,
+        8,
+        1016,
+        504
+      ],
+      "method": "deterministic canonical expression-panel crop; no new generation",
+      "status": "accepted"
+    }
+  ]
+}

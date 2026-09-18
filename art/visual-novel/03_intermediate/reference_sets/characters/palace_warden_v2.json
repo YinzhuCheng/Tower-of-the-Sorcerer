@@ -1,0 +1,40 @@
+{
+  "version": "GAL-SIMPLE-1.1",
+  "character_id": "palace_warden_v2",
+  "reference_order": [
+    {
+      "role": "canonical_text",
+      "path": "01_canon/characters/palace_warden_v2.md",
+      "sha256": "b7b62ab17b8cab44cf9e484ea97da65b15dfe56979541adc8a72cd5ee47b26c2"
+    },
+    {
+      "role": "accepted_turnaround",
+      "path": "01_canon/turnarounds/CHAR_palace-warden-v2_turnaround_v1.png",
+      "sha256": "91c1ca08896aea26800b29f1ec54f78ed68e40cd655fb1471bb822deda666803"
+    },
+    {
+      "role": "accepted_detail_board",
+      "path": "01_canon/details/DETAIL_palace-warden-v2_v1.png",
+      "sha256": "7a0b4807065ee74f4eecf1eb05ab9b7d0caddb9524fc93b85388bf9e51f107bf"
+    },
+    {
+      "role": "accepted_expression_board",
+      "path": "01_canon/expressions/EXPR_palace-warden-v2_v1.png",
+      "sha256": "568aed2b865a7b28b0e7e8b4af5fee4760c633be6b1b9062dc6dd9de8bfb4cb7"
+    },
+    {
+      "role": "accepted_transparent_standee",
+      "path": "01_canon/standees/STANDEE_palace-warden-v2_neutral_v1.png",
+      "sha256": "a222931733159746bbc8a38a259f7470566a9e92985b751d3e046c8074d7ff7b"
+    }
+  ],
+  "hard_locks": [
+    "白发冷蓝眼",
+    "额冠中央1尖",
+    "黑甲蓝前裙片",
+    "双肩甲对称",
+    "银剑中央蓝槽1",
+    "无浮晶"
+  ],
+  "missing_reference_policy": "stop_generation_and_complete_missing_canon_asset"
+}

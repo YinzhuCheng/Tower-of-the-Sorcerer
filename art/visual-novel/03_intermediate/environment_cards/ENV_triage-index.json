@@ -1,0 +1,34 @@
+{
+  "version": "GAL-SIMPLE-1.2",
+  "environment_id": "triage-index",
+  "title": "归档作业庭",
+  "usage": "25F、27F",
+  "status": "gal-redraw",
+  "source_facts": "三路分诊索引庭，离港、罹难、待核实由空白色签和物理轨道分流；无现代 UI。",
+  "composition_contract": "16:9 empty visual-novel stage; clean standing-figure zones at both sides; bottom 30% low detail",
+  "series_anchors": [
+    "obsidian arch",
+    "small brass registration seal",
+    "blue-white index lamp",
+    "one thin violet seal fissure when applicable"
+  ],
+  "must_not": [
+    "people",
+    "readable text",
+    "UI",
+    "logo",
+    "watermark",
+    "photorealism",
+    "dense micro-texture"
+  ],
+  "target_asset": "01_canon/environments/ENV_triage-index_v1.png",
+  "asset_status": "accepted",
+  "asset": {
+    "path": "01_canon/environments/ENV_triage-index_v1.png",
+    "sha256": "2395828352d4d31412fb2ecf9c42c129ff6ee0784db6001164a7a6babd1a7bfc",
+    "width": 1672,
+    "height": 941,
+    "mode": "RGB"
+  },
+  "prompt_packet": "03_intermediate/prompt_packets/environments/triage-index.json"
+}

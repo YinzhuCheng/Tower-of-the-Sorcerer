@@ -1,0 +1,34 @@
+{
+  "version": "GAL-SIMPLE-1.2",
+  "environment_id": "origin-core",
+  "title": "起源魔源",
+  "usage": "20F",
+  "status": "gal-redraw",
+  "source_facts": "破裂钴蓝印戒、宽阔登记环和冷却管；古代术式设施，禁止现代科幻屏幕。",
+  "composition_contract": "16:9 empty visual-novel stage; clean standing-figure zones at both sides; bottom 30% low detail",
+  "series_anchors": [
+    "obsidian arch",
+    "small brass registration seal",
+    "blue-white index lamp",
+    "one thin violet seal fissure when applicable"
+  ],
+  "must_not": [
+    "people",
+    "readable text",
+    "UI",
+    "logo",
+    "watermark",
+    "photorealism",
+    "dense micro-texture"
+  ],
+  "target_asset": "01_canon/environments/ENV_origin-core_v1.png",
+  "asset_status": "accepted",
+  "asset": {
+    "path": "01_canon/environments/ENV_origin-core_v1.png",
+    "sha256": "e84683fdb87978a3bf91bd51f68ca44063d7f37f868f04a5f8f9b4dcc7ff1da6",
+    "width": 1672,
+    "height": 941,
+    "mode": "RGB"
+  },
+  "prompt_packet": "03_intermediate/prompt_packets/environments/origin-core.json"
+}

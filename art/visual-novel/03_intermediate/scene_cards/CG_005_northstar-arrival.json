@@ -1,0 +1,116 @@
+{
+  "version": "GAL-SIMPLE-1.2",
+  "cg_id": "CG_005_northstar-arrival",
+  "semantic_id": "northstar-arrival",
+  "title": "三阵：北辰七号抵岸原音",
+  "status": "ready-for-layout",
+  "source_locator": {
+    "repository_commit": "b05bc623b7c1ef8b93cfa1fca253ad2119a52f68",
+    "file": "src/game/demo-10-floor-content.js",
+    "line": 239
+  },
+  "source_passage": "第三段咏唱归位，完整原音确认北辰七号四十七人全员抵达北岸，灰港无滞留者。",
+  "narrative_beat": "第一份决定性证据终于完整响起。",
+  "point_of_view": "third-person visual-novel camera aligned with protagonist understanding",
+  "cast": [
+    "hero",
+    "whale_boss"
+  ],
+  "expressions": {
+    "hero": "quiet resolve",
+    "whale_boss": "musical concentration"
+  },
+  "environment_id": "ocean-archive",
+  "props": [
+    "five-string shell harp",
+    "water-memory ring",
+    "distant ship lights"
+  ],
+  "composition": "16:9 双人侧景；澜音以五弦贝壳琴释放水镜原音，璃在另一侧聆听，水镜内只出现远船和四十七点灯火，不出现文字。",
+  "must_show": [
+    "five strings",
+    "human legs",
+    "evidence feels clear and calm"
+  ],
+  "must_not_show": [
+    "mermaid tail",
+    "readable transcript",
+    "extra instruments",
+    "storm disaster"
+  ],
+  "project_inference": null,
+  "character_reference_order": {
+    "hero": [
+      {
+        "role": "canonical_text",
+        "path": "01_canon/characters/hero.md",
+        "sha256": "6eada62d7bfc82c639b25fe2387de9a51f4adc6009b46d55080c26fcd2193d50"
+      },
+      {
+        "role": "accepted_turnaround",
+        "path": "01_canon/turnarounds/CHAR_hero_turnaround_v2.png",
+        "sha256": "d1385fe1798271e05e608204fe6d6cc99daa7961587d2e188cef7e62693cfe1b"
+      },
+      {
+        "role": "accepted_detail_board",
+        "path": "01_canon/details/DETAIL_hero_v2.png",
+        "sha256": "8f42611ee44f012b256262a251c67c5713d4056c8c3af5391e6c6976d337bfa1"
+      },
+      {
+        "role": "accepted_expression_board",
+        "path": "01_canon/expressions/EXPR_hero_v1.png",
+        "sha256": "d1571b7c18c3fbd902109a575619a40b1ecd4d9d84180fe6e9eb585a5eb1f3f8"
+      },
+      {
+        "role": "accepted_transparent_standee",
+        "path": "01_canon/standees/STANDEE_hero_neutral_v1.png",
+        "sha256": "bc7e81506ad41225bfe5ef548889d66e67d4c8db963c64650ebb601737d49b76"
+      }
+    ],
+    "whale_boss": [
+      {
+        "role": "canonical_text",
+        "path": "01_canon/characters/whale_boss.md",
+        "sha256": "c000cafbc30c8671ec28e0fe6a50aefe9e7c024856de4f7a90723491349331fc"
+      },
+      {
+        "role": "accepted_turnaround",
+        "path": "01_canon/turnarounds/CHAR_whale-boss_turnaround_v1.png",
+        "sha256": "bc155fcc809ae9b5f27fea5872105a2791267ebf521969f46e2a277812775812"
+      },
+      {
+        "role": "accepted_detail_board",
+        "path": "01_canon/details/DETAIL_whale-boss_v1.png",
+        "sha256": "f32d409424a5627098d6b060c232b9a33f703905f47f473962838f4a0c49ed40"
+      },
+      {
+        "role": "accepted_expression_board",
+        "path": "01_canon/expressions/EXPR_whale-boss_v1.png",
+        "sha256": "53f5bb5f14b6122a4fb4de6444b42977bae35346eb10a05b8a44b9e7233b64bb"
+      },
+      {
+        "role": "accepted_transparent_standee",
+        "path": "01_canon/standees/STANDEE_whale-boss_neutral_v1.png",
+        "sha256": "a6695cbfbe2114b798fda9d464f338fb20126dd83f0637c07e820fd22bbb10d4"
+      }
+    ]
+  },
+  "environment_reference": "01_canon/environments/ENV_ocean-archive_v1.png",
+  "runtime_target": "public/assets/anime/cg/liyue-lanyin-northstar-arrival-cg-v8.webp",
+  "archive_only_aliases": [],
+  "iteration_ladder": [
+    "R0_layout",
+    "R1_identity",
+    "R2_costume",
+    "R3_scene",
+    "R4_final"
+  ],
+  "output_contract": "04_cg/final/CG_005_northstar-arrival_v1.png",
+  "environment_reference_asset": {
+    "path": "01_canon/environments/ENV_ocean-archive_v1.png",
+    "sha256": "c28f63ca054607c74afa896f3c857c1f5f121d6722e3f710626d85a9cd863a33",
+    "width": 1672,
+    "height": 941,
+    "mode": "RGB"
+  }
+}

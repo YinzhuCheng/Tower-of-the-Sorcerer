@@ -1,0 +1,22 @@
+{
+  "version": "GAL-SIMPLE-1.2",
+  "environment_id": "night-shelter",
+  "series_style_lock": "polished Japanese 2D visual-novel background in the GAL-SIMPLE series, clean fine line art, broad flat local colors, restrained two-step cel shading, gentle atmospheric depth, controlled highlights, low visual noise, readable architecture; fantasy archive tower made of stone, brass and magical index light, never modern science fiction",
+  "scene_facts": "深夜避难侧库，整齐床卷、药箱、空白夜班簿与琥珀值夜灯；安全、克制、仍在轮值。",
+  "composition": "16:9 empty visual-novel stage; clean standing-figure zones at both sides; bottom 30% low detail",
+  "negative_constraints": [
+    "people",
+    "readable text",
+    "UI",
+    "logo",
+    "watermark",
+    "photorealism",
+    "dense micro-texture"
+  ],
+  "prompt": "Use case: illustration-story. Asset type: canonical 16:9 visual-novel environment master. Image 1 is the accepted forest-approach series style anchor; inherit only its line weight, cel color blocking, restrained detail density and atmospheric depth, not its forest layout. SCENE: 深夜避难侧库，整齐床卷、药箱、空白夜班簿与琥珀值夜灯；安全、克制、仍在轮值。 STYLE: polished Japanese 2D visual-novel background in the GAL-SIMPLE series, clean fine line art, broad flat local colors, restrained two-step cel shading, gentle atmospheric depth, controlled highlights, low visual noise, readable architecture; fantasy archive tower made of stone, brass and magical index light, never modern science fiction. COMPOSITION: empty stage, wide 16:9 establishing view at human eye level; preserve clean standing-character zones on both left and right; keep the bottom 30 percent low-detail for the dialogue box. SERIES ANCHORS: repeat the same visual language of black or dark obsidian arches, one small brass registration seal, blue-white index lamps, and at most one thin violet seal fissure only when appropriate to the room. No people, silhouettes, creatures, readable writing, letters, numbers, interface panels, logo, watermark or signature. No photorealism, 3D render, painterly concept-art texture, film grain, dense micro-detail, excessive bloom, dramatic Dutch angle, or clutter in the dialogue-safe bottom zone.",
+  "referenced_image_paths": [
+    "/workspace/scratch/0645849eb5a5/gal-design-v1/01_canon/environments/ENV_forest-approach_v1.png"
+  ],
+  "output_contract": "01_canon/environments/ENV_night-shelter_v1.png",
+  "status": "ready"
+}

@@ -1,0 +1,40 @@
+{
+  "version": "GAL-SIMPLE-1.1",
+  "character_id": "act3_archive_warden",
+  "reference_order": [
+    {
+      "role": "canonical_text",
+      "path": "01_canon/characters/act3_archive_warden.md",
+      "sha256": "7901498debca5ba528d0f2f465206231b73583979dac242560e13a68206b5423"
+    },
+    {
+      "role": "accepted_turnaround",
+      "path": "01_canon/turnarounds/CHAR_act3-archive-warden_turnaround_v1.png",
+      "sha256": "96f94b9a8903453aebd65c709ec708f3961e890e5a5667c482921a0f3cecba85"
+    },
+    {
+      "role": "accepted_detail_board",
+      "path": "01_canon/details/DETAIL_act3-archive-warden_v1.png",
+      "sha256": "d8188e884e8c3600ce2a53b5ab7e94f92de1848270f0a857478be87d2d5b2af5"
+    },
+    {
+      "role": "accepted_expression_board",
+      "path": "01_canon/expressions/EXPR_act3-archive-warden_v1.png",
+      "sha256": "f92bed11e4f12dd074d6e0441d6b6529015e53d7ade00b4e22ac3e2f23707546"
+    },
+    {
+      "role": "accepted_transparent_standee",
+      "path": "01_canon/standees/STANDEE_act3-archive-warden_neutral_v1.png",
+      "sha256": "ced1d22ea66c62a48c8bbe3241d84afe254f3e1d9496d69e74b121d9d60b08a7"
+    }
+  ],
+  "hard_locks": [
+    "银黑双色单辫",
+    "辫在本人右肩",
+    "铜前扣3枚",
+    "冷蓝圆筒灯杖",
+    "索引卡3张",
+    "腰盒在左"
+  ],
+  "missing_reference_policy": "stop_generation_and_complete_missing_canon_asset"
+}

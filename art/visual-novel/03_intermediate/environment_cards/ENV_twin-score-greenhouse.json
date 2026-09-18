@@ -1,0 +1,34 @@
+{
+  "version": "GAL-SIMPLE-1.2",
+  "environment_id": "twin-score-greenhouse",
+  "title": "双谱温室",
+  "usage": "12F、米露信物",
+  "status": "gal-redraw",
+  "source_facts": "玻璃温室内两条对称谱线水渠与成对种植台，植物被用来校验两份记录；柔绿日光。",
+  "composition_contract": "16:9 empty visual-novel stage; clean standing-figure zones at both sides; bottom 30% low detail",
+  "series_anchors": [
+    "obsidian arch",
+    "small brass registration seal",
+    "blue-white index lamp",
+    "one thin violet seal fissure when applicable"
+  ],
+  "must_not": [
+    "people",
+    "readable text",
+    "UI",
+    "logo",
+    "watermark",
+    "photorealism",
+    "dense micro-texture"
+  ],
+  "target_asset": "01_canon/environments/ENV_twin-score-greenhouse_v1.png",
+  "asset_status": "accepted",
+  "asset": {
+    "path": "01_canon/environments/ENV_twin-score-greenhouse_v1.png",
+    "sha256": "0a17d9d612aaf97b5cbaaca742fe07197092d010bff1706e93cc973bc1c353c7",
+    "width": 1672,
+    "height": 941,
+    "mode": "RGB"
+  },
+  "prompt_packet": "03_intermediate/prompt_packets/environments/twin-score-greenhouse.json"
+}

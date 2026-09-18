@@ -1,0 +1,34 @@
+{
+  "version": "GAL-SIMPLE-1.2",
+  "environment_id": "ash-registry",
+  "title": "余烬登记库",
+  "usage": "21F",
+  "status": "gal-redraw",
+  "source_facts": "暖灰档案库、空白信件、铜灯与可修复书架；重点是整理和修复，不是废墟。",
+  "composition_contract": "16:9 empty visual-novel stage; clean standing-figure zones at both sides; bottom 30% low detail",
+  "series_anchors": [
+    "obsidian arch",
+    "small brass registration seal",
+    "blue-white index lamp",
+    "one thin violet seal fissure when applicable"
+  ],
+  "must_not": [
+    "people",
+    "readable text",
+    "UI",
+    "logo",
+    "watermark",
+    "photorealism",
+    "dense micro-texture"
+  ],
+  "target_asset": "01_canon/environments/ENV_ash-registry_v1.png",
+  "asset_status": "accepted",
+  "asset": {
+    "path": "01_canon/environments/ENV_ash-registry_v1.png",
+    "sha256": "ae2b51dc5b4c8f6ca9c4330f892084ad2cc10313f7c948e0c499f387eb9e4478",
+    "width": 1672,
+    "height": 941,
+    "mode": "RGB"
+  },
+  "prompt_packet": "03_intermediate/prompt_packets/environments/ash-registry.json"
+}

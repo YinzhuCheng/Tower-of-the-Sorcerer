@@ -1,0 +1,35 @@
+{
+  "version": "GAL-SIMPLE-1.1",
+  "character_id": "echo_regent",
+  "series_style_lock": "GAL-SIMPLE clean cel reference art",
+  "identity_lock": [
+    "灰金低束发",
+    "灰紫眼",
+    "蓝灰绶带右肩至左腰",
+    "方银领扣1",
+    "黑名簿1",
+    "无冠无武器"
+  ],
+  "expression_order": [
+    "grave neutrality",
+    "release and relief",
+    "regret",
+    "stern judgment",
+    "shocked recognition",
+    "peaceful acceptance"
+  ],
+  "negative_constraints": [
+    "identity drift",
+    "hair or accessory count drift",
+    "costume redesign",
+    "text",
+    "hands or props",
+    "watermark"
+  ],
+  "prompt": "Use case: stylized-concept. Asset type: canonical visual-novel expression reference sheet. Professional Japanese 2D visual-novel cel illustration matching the accepted GAL-SIMPLE series: fine clean dark outlines, large solid local colors, one hard-edged shadow per material, tiny restrained highlights, adult proportions, no painterly texture and no dense rendering. Image 1 is the accepted turnaround and controls identity, face, hair, anatomy and costume. Image 2 is the accepted detail board and controls every accessory count, side and construction. The written canon below overrides any accidental reference error. Create a landscape 3-column by 2-row grid of SIX equal-size chest-up portraits of the SAME character. Panel order is left-to-right across the top row, then left-to-right across the bottom row. Keep face proportions, hairstyle, hair accessories, eye color, neckwear and visible shoulder clothing IDENTICAL in all six panels. Expressions must be readable through eyebrows, eyes and mouth while remaining in-character; no theatrical distortion. Warm pale-grey opaque background, even flat reference lighting. No labels, text, panel numbers, borders, scenery, hands, held props, weapons, magic, watermark or signature. No extra jewelry or costume redesign. CANON IDENTITY: Androgynous adult court regent, 181 cm, slender adult masculine silhouette, shoulder-length ash-blond hair gathered in ONE low tie, muted violet eyes. Charcoal ankle-length formal coat, ivory shirt, muted blue-grey diagonal sash from HER/HIS RIGHT shoulder to LEFT hip, charcoal trousers and plain black boots. ONE square silver collar clasp. Calm grave face. No crown, no medals, tassels, decorative chains or weapon. HARD LOCKS: 灰金低束发, 灰紫眼, 蓝灰绶带右肩至左腰, 方银领扣1, 黑名簿1, 无冠无武器. EXPRESSIONS IN EXACT PANEL ORDER: 1: grave neutrality; 2: release and relief; 3: regret; 4: stern judgment; 5: shocked recognition; 6: peaceful acceptance.",
+  "referenced_image_paths": [
+    "/workspace/scratch/0645849eb5a5/gal-design-v1/01_canon/turnarounds/CHAR_echo-regent_turnaround_v2.png",
+    "/workspace/scratch/0645849eb5a5/gal-design-v1/01_canon/details/DETAIL_echo-regent_v1.png"
+  ],
+  "output_contract": "01_canon/expressions/EXPR_echo-regent_v1.png"
+}

@@ -1,0 +1,34 @@
+{
+  "version": "GAL-SIMPLE-1.2",
+  "environment_id": "folded-archive-market",
+  "title": "折页档案与折角集市",
+  "usage": "15F、26F",
+  "status": "gal-redraw",
+  "source_facts": "纸页折叠形成的档案摊位与补给柜，折角标签无文字；像工作集市，不拥挤、不庆典化。",
+  "composition_contract": "16:9 empty visual-novel stage; clean standing-figure zones at both sides; bottom 30% low detail",
+  "series_anchors": [
+    "obsidian arch",
+    "small brass registration seal",
+    "blue-white index lamp",
+    "one thin violet seal fissure when applicable"
+  ],
+  "must_not": [
+    "people",
+    "readable text",
+    "UI",
+    "logo",
+    "watermark",
+    "photorealism",
+    "dense micro-texture"
+  ],
+  "target_asset": "01_canon/environments/ENV_folded-archive-market_v1.png",
+  "asset_status": "accepted",
+  "asset": {
+    "path": "01_canon/environments/ENV_folded-archive-market_v1.png",
+    "sha256": "51c5e0ba2d4ed9922e5db4f48a52f779b35e2650c29cdad81d058d3c31c73482",
+    "width": 1672,
+    "height": 941,
+    "mode": "RGB"
+  },
+  "prompt_packet": "03_intermediate/prompt_packets/environments/folded-archive-market.json"
+}

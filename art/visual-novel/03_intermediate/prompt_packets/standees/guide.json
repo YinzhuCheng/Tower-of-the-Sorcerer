@@ -1,0 +1,31 @@
+{
+  "version": "GAL-SIMPLE-1.1",
+  "character_id": "guide",
+  "series_style_lock": "GAL-SIMPLE clean cel transparent standee",
+  "identity_lock": [
+    "银紫短发",
+    "本人左鬓白花1朵",
+    "背腰冰蓝飘带2条",
+    "完整银圆环星盘",
+    "无长发与腿链"
+  ],
+  "prop_lock": "One floating silver astrolabe: a COMPLETE circular flat ring 24 cm across, ONE fixed simple four-point silver star at center and ONE blue round center stone. No crescent, no broken ring, no orbiting crystals. One thin plain ivory notebook with lavender spine used only in writing scenes.",
+  "pose": "Gentle neutral three-quarter stance, holding the single silver circular astrolabe with both hands at waist height. No magic effects.",
+  "negative_constraints": [
+    "background pixels",
+    "ground shadow",
+    "extra accessory",
+    "duplicate prop",
+    "wrong side",
+    "wrong count",
+    "watermark",
+    "cropped feet or prop"
+  ],
+  "prompt": "Use case: background-extraction. Asset type: canonical full-body transparent visual-novel standing figure. Create ONE isolated full-body character cutout in polished Japanese 2D visual-novel cel style matching GAL-SIMPLE: fine clean dark outlines, large solid local colors, one hard-edged shadow per material, restrained highlights, adult proportions. Image 1 is the accepted turnaround and has highest visual authority for identity, anatomy, silhouette and costume. Image 2 is the accepted detail board and controls exact accessory, clothing and prop counts and side placement. Image 3 is the accepted expression sheet and controls only the face; use its first neutral expression. Portrait 2:3 composition, centered, entire hair, all props and both feet inside canvas with 8 percent transparent padding. Natural relaxed three-quarter pose facing camera, anatomically plausible hands, readable silhouette. ACTUAL TRANSPARENT RGBA BACKGROUND: no white or checkerboard background, no scenery, floor, cast shadow, glow, aura, particles, frame, text, logo, watermark or signature. Only the character and explicitly required carried items may have visible pixels. Do not redesign, beautify with extra jewelry, duplicate props, change sides, change counts, or merge objects into hands. CANON IDENTITY: Adult woman, 160 cm, chin-length silver-lilac bob haircut with soft fringe, violet eyes; exactly ONE white five-petal flower at HER LEFT temple. White sleeveless high-neck dress with lavender waist sash; front hem reaches knees, back hem reaches ankles; separate long white sleeves attached with plain lavender upper-arm cuffs. Exactly TWO broad translucent ice-blue ribbons attached at back waist. White low-heel closed shoes, bare lower legs. No long hair, crown, earrings, jewelry chains or patterned fabric. CANON PROP: One floating silver astrolabe: a COMPLETE circular flat ring 24 cm across, ONE fixed simple four-point silver star at center and ONE blue round center stone. No crescent, no broken ring, no orbiting crystals. One thin plain ivory notebook with lavender spine used only in writing scenes. HARD LOCKS: 银紫短发, 本人左鬓白花1朵, 背腰冰蓝飘带2条, 完整银圆环星盘, 无长发与腿链. POSE AND OWNERSHIP: Gentle neutral three-quarter stance, holding the single silver circular astrolabe with both hands at waist height. No magic effects.",
+  "referenced_image_paths": [
+    "/workspace/scratch/0645849eb5a5/gal-design-v1/01_canon/turnarounds/CHAR_guide_turnaround_v1.png",
+    "/workspace/scratch/0645849eb5a5/gal-design-v1/01_canon/details/DETAIL_guide_v1.png",
+    "/workspace/scratch/0645849eb5a5/gal-design-v1/01_canon/expressions/EXPR_guide_v1.png"
+  ],
+  "output_contract": "01_canon/standees/STANDEE_guide_neutral_v1.png"
+}

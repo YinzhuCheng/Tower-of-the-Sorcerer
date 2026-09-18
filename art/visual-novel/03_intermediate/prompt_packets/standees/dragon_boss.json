@@ -1,0 +1,31 @@
+{
+  "version": "GAL-SIMPLE-1.1",
+  "character_id": "dragon_boss",
+  "series_style_lock": "GAL-SIMPLE clean cel transparent standee",
+  "identity_lock": [
+    "角2尾1",
+    "黑角金尖",
+    "翼形披肩2片非肉翅",
+    "长枪1杆",
+    "枪缨1束"
+  ],
+  "prop_lock": "One slim spear, overall length 190 cm, straight black shaft, simple gold-edged red leaf-shaped spearhead and ONE short crimson tassel beneath blade. Tail has plain smooth segments and one dark red leaf-shaped tip; not a weapon carried in hand.",
+  "pose": "Proud neutral stance. RIGHT hand holds one long spear vertically beside the body with exactly one red tassel. Exactly two horns, one tail and two cloth mantle panels; no anatomical wings.",
+  "negative_constraints": [
+    "background pixels",
+    "ground shadow",
+    "extra accessory",
+    "duplicate prop",
+    "wrong side",
+    "wrong count",
+    "watermark",
+    "cropped feet or prop"
+  ],
+  "prompt": "Use case: background-extraction. Asset type: canonical full-body transparent visual-novel standing figure. Create ONE isolated full-body character cutout in polished Japanese 2D visual-novel cel style matching GAL-SIMPLE: fine clean dark outlines, large solid local colors, one hard-edged shadow per material, restrained highlights, adult proportions. Image 1 is the accepted turnaround and has highest visual authority for identity, anatomy, silhouette and costume. Image 2 is the accepted detail board and controls exact accessory, clothing and prop counts and side placement. Image 3 is the accepted expression sheet and controls only the face; use its first neutral expression. Portrait 2:3 composition, centered, entire hair, all props and both feet inside canvas with 8 percent transparent padding. Natural relaxed three-quarter pose facing camera, anatomically plausible hands, readable silhouette. ACTUAL TRANSPARENT RGBA BACKGROUND: no white or checkerboard background, no scenery, floor, cast shadow, glow, aura, particles, frame, text, logo, watermark or signature. Only the character and explicitly required carried items may have visible pixels. Do not redesign, beautify with extra jewelry, duplicate props, change sides, change counts, or merge objects into hands. CANON IDENTITY: Adult dragon knight woman, 175 cm, long flame-red hair, amber eyes, exactly TWO short black swept-back horns with gold tips, exactly ONE black-red dragon tail. Black armored dress with broad red inset skirt and narrow muted-gold trim, simple black boots and gauntlets, two smooth shoulder plates. Short red mantle cut into TWO wing-shaped cloth panels, NOT anatomical wings. No crown, fur trim, dragon-head pauldrons, extra horns, scales engraved into every surface or multiple gemstones. CANON PROP: One slim spear, overall length 190 cm, straight black shaft, simple gold-edged red leaf-shaped spearhead and ONE short crimson tassel beneath blade. Tail has plain smooth segments and one dark red leaf-shaped tip; not a weapon carried in hand. HARD LOCKS: 角2尾1, 黑角金尖, 翼形披肩2片非肉翅, 长枪1杆, 枪缨1束. POSE AND OWNERSHIP: Proud neutral stance. RIGHT hand holds one long spear vertically beside the body with exactly one red tassel. Exactly two horns, one tail and two cloth mantle panels; no anatomical wings.",
+  "referenced_image_paths": [
+    "/workspace/scratch/0645849eb5a5/gal-design-v1/01_canon/turnarounds/CHAR_dragon-boss_turnaround_v1.png",
+    "/workspace/scratch/0645849eb5a5/gal-design-v1/01_canon/details/DETAIL_dragon-boss_v1.png",
+    "/workspace/scratch/0645849eb5a5/gal-design-v1/01_canon/expressions/EXPR_dragon-boss_v1.png"
+  ],
+  "output_contract": "01_canon/standees/STANDEE_dragon-boss_neutral_v1.png"
+}

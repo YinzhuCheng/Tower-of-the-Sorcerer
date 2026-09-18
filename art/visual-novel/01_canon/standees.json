@@ -1,0 +1,142 @@
+{
+  "version": "GAL-SIMPLE-1.1",
+  "pose": "neutral canonical three-quarter",
+  "characters": {
+    "hero": {
+      "name": "绫星·璃",
+      "expression_source": "01_canon/expressions/EXPR_hero_v1.png",
+      "prompt_packet": "03_intermediate/prompt_packets/standees/hero.json",
+      "asset": "01_canon/standees/STANDEE_hero_neutral_v1.png",
+      "sha256": "bc7e81506ad41225bfe5ef548889d66e67d4c8db963c64650ebb601737d49b76",
+      "alpha_contract": "RGBA with alpha range 0-255; transparent corners; no baked background"
+    },
+    "guide": {
+      "name": "残响精灵·纱雾",
+      "expression_source": "01_canon/expressions/EXPR_guide_v1.png",
+      "prompt_packet": "03_intermediate/prompt_packets/standees/guide.json",
+      "asset": "01_canon/standees/STANDEE_guide_neutral_v1.png",
+      "sha256": "355727eeacf878c2001f771ed932b220e29232a6d8eec2fe2960585bbee3f0fb",
+      "alpha_contract": "RGBA with alpha range 0-255; transparent corners; no baked background"
+    },
+    "final_queen": {
+      "name": "无声女王·诺克缇娅",
+      "expression_source": "01_canon/expressions/EXPR_final-queen_v1.png",
+      "prompt_packet": "03_intermediate/prompt_packets/standees/final_queen.json",
+      "asset": "01_canon/standees/STANDEE_final-queen_neutral_v1.png",
+      "sha256": "99dbc41344f553a14356aeef6e7fc71ae4a3e30fba10aca5b86ba5cba47671ef",
+      "alpha_contract": "RGBA with alpha range 0-255; transparent corners; no baked background"
+    },
+    "cat_boss": {
+      "name": "猫卫长·米露",
+      "expression_source": "01_canon/expressions/EXPR_cat-boss_v1.png",
+      "prompt_packet": "03_intermediate/prompt_packets/standees/cat_boss.json",
+      "asset": "01_canon/standees/STANDEE_cat-boss_neutral_v1.png",
+      "sha256": "fbd31715933f60c4eb29d57881306ec82db8ee2ad04ab5622f62043cd1a4f18f",
+      "alpha_contract": "RGBA with alpha range 0-255; transparent corners; no baked background"
+    },
+    "fox_boss": {
+      "name": "狐祝·绯叶",
+      "expression_source": "01_canon/expressions/EXPR_fox-boss_v1.png",
+      "prompt_packet": "03_intermediate/prompt_packets/standees/fox_boss_r3.json",
+      "asset": "01_canon/standees/STANDEE_fox-boss_neutral_v3.png",
+      "sha256": "4a009a4cf82599ac4cbe9e13355c8433b5e89399c2b48e243c8045baba8b7c71",
+      "alpha_contract": "RGBA with alpha range 0-255; transparent corners; no baked background"
+    },
+    "whale_boss": {
+      "name": "深蓝歌姬·澜音",
+      "expression_source": "01_canon/expressions/EXPR_whale-boss_v1.png",
+      "prompt_packet": "03_intermediate/prompt_packets/standees/whale_boss.json",
+      "asset": "01_canon/standees/STANDEE_whale-boss_neutral_v1.png",
+      "sha256": "a6695cbfbe2114b798fda9d464f338fb20126dd83f0637c07e820fd22bbb10d4",
+      "alpha_contract": "RGBA with alpha range 0-255; transparent corners; no baked background"
+    },
+    "sword_boss": {
+      "name": "剑圣·塞蕾娜",
+      "expression_source": "01_canon/expressions/EXPR_sword-boss_v2.png",
+      "prompt_packet": "03_intermediate/prompt_packets/standees/sword_boss.json",
+      "asset": "01_canon/standees/STANDEE_sword-boss_neutral_v1.png",
+      "sha256": "60a89ae46a3f93a575da994e98930c1c78a3e77d25e2fea936191e197eb936e8",
+      "alpha_contract": "RGBA with alpha range 0-255; transparent corners; no baked background"
+    },
+    "dragon_boss": {
+      "name": "龙姬·焰璃",
+      "expression_source": "01_canon/expressions/EXPR_dragon-boss_v1.png",
+      "prompt_packet": "03_intermediate/prompt_packets/standees/dragon_boss.json",
+      "asset": "01_canon/standees/STANDEE_dragon-boss_neutral_v1.png",
+      "sha256": "69c3fd9656d40970acfec31f51e0540a54f4faf4e4738301cc6715e22fcae08d",
+      "alpha_contract": "RGBA with alpha range 0-255; transparent corners; no baked background"
+    },
+    "astral_boss": {
+      "name": "天穹魔女·露米",
+      "expression_source": "01_canon/expressions/EXPR_astral-boss_v1.png",
+      "prompt_packet": "03_intermediate/prompt_packets/standees/astral_boss.json",
+      "asset": "01_canon/standees/STANDEE_astral-boss_neutral_v1.png",
+      "sha256": "21e65b1141072c5cef67b6602ebe3e0fa4a7c22e83eb79cae19123084cd060ad",
+      "alpha_contract": "RGBA with alpha range 0-255; transparent corners; no baked background"
+    },
+    "shadow_boss": {
+      "name": "影织姬·鸦羽",
+      "expression_source": "01_canon/expressions/EXPR_shadow-boss_v1.png",
+      "prompt_packet": "03_intermediate/prompt_packets/standees/shadow_boss.json",
+      "asset": "01_canon/standees/STANDEE_shadow-boss_neutral_v1.png",
+      "sha256": "86a51f5b9ff6ea9982b809329da5bd34f663d09d5f3bc343736ec905beaa5f03",
+      "alpha_contract": "RGBA with alpha range 0-255; transparent corners; no baked background"
+    },
+    "merchant": {
+      "name": "阵间商人·珂珂",
+      "expression_source": "01_canon/expressions/EXPR_merchant_v1.png",
+      "prompt_packet": "03_intermediate/prompt_packets/standees/merchant.json",
+      "asset": "01_canon/standees/STANDEE_merchant_neutral_v1.png",
+      "sha256": "cdc3635eff68d08f011574bd958150db228bb0d4d86c96282af0de93b63b9ac5",
+      "alpha_contract": "RGBA with alpha range 0-255; transparent corners; no baked background"
+    },
+    "echo_regent": {
+      "name": "回声摄政官",
+      "expression_source": "01_canon/expressions/EXPR_echo-regent_v1.png",
+      "prompt_packet": "03_intermediate/prompt_packets/standees/echo_regent.json",
+      "asset": "01_canon/standees/STANDEE_echo-regent_neutral_v1.png",
+      "sha256": "eb06020a0da8b8632ab3894e1c53c6dde4b7683a45569d24018b3d0791658869",
+      "alpha_contract": "RGBA with alpha range 0-255; transparent corners; no baked background"
+    },
+    "arcane_sovereign": {
+      "name": "奥术主权者",
+      "expression_source": "01_canon/expressions/EXPR_arcane-sovereign_v1.png",
+      "prompt_packet": "03_intermediate/prompt_packets/standees/arcane_sovereign.json",
+      "asset": "01_canon/standees/STANDEE_arcane-sovereign_neutral_v1.png",
+      "sha256": "79fc599bcc1df521e53dbc6e125b1982cd8d441ca52fc3cbcb3a6a6ddbd8f622",
+      "alpha_contract": "RGBA with alpha range 0-255; transparent corners; no baked background"
+    },
+    "palace_warden_v2": {
+      "name": "静默执剑官·维拉",
+      "expression_source": "01_canon/expressions/EXPR_palace-warden-v2_v1.png",
+      "prompt_packet": "03_intermediate/prompt_packets/standees/palace_warden_v2.json",
+      "asset": "01_canon/standees/STANDEE_palace-warden-v2_neutral_v1.png",
+      "sha256": "a222931733159746bbc8a38a259f7470566a9e92985b751d3e046c8074d7ff7b",
+      "alpha_contract": "RGBA with alpha range 0-255; transparent corners; no baked background"
+    },
+    "black_seal_keeper_v2": {
+      "name": "黯印观测官·塞芙",
+      "expression_source": "01_canon/expressions/EXPR_black-seal-keeper-v2_v1.png",
+      "prompt_packet": "03_intermediate/prompt_packets/standees/black_seal_keeper_v2.json",
+      "asset": "01_canon/standees/STANDEE_black-seal-keeper-v2_neutral_v1.png",
+      "sha256": "9bb348f84192b69e0ac26878364e2ec197a7d0d4d3d9a201a453aac0b033b7c1",
+      "alpha_contract": "RGBA with alpha range 0-255; transparent corners; no baked background"
+    },
+    "act3_last_custodian": {
+      "name": "最后保管人",
+      "expression_source": "01_canon/expressions/EXPR_act3-last-custodian_v1.png",
+      "prompt_packet": "03_intermediate/prompt_packets/standees/act3_last_custodian.json",
+      "asset": "01_canon/standees/STANDEE_act3-last-custodian_neutral_v1.png",
+      "sha256": "a0fd82e413ec41ae3dea46293b58a15620d7b6c336a2d05189460eb8da30318e",
+      "alpha_contract": "RGBA with alpha range 0-255; transparent corners; no baked background"
+    },
+    "act3_archive_warden": {
+      "name": "档案守望者",
+      "expression_source": "01_canon/expressions/EXPR_act3-archive-warden_v1.png",
+      "prompt_packet": "03_intermediate/prompt_packets/standees/act3_archive_warden.json",
+      "asset": "01_canon/standees/STANDEE_act3-archive-warden_neutral_v1.png",
+      "sha256": "ced1d22ea66c62a48c8bbe3241d84afe254f3e1d9496d69e74b121d9d60b08a7",
+      "alpha_contract": "RGBA with alpha range 0-255; transparent corners; no baked background"
+    }
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "version": "GAL-SIMPLE-1.1",
+  "character_id": "guide",
+  "reference_order": [
+    {
+      "role": "canonical_text",
+      "path": "01_canon/characters/guide.md",
+      "sha256": "b6389693de0a4f56df83f4ad33f8436e140b178167c9ad5eecaaa01c9465e7af"
+    },
+    {
+      "role": "accepted_turnaround",
+      "path": "01_canon/turnarounds/CHAR_guide_turnaround_v1.png",
+      "sha256": "21324cb96a2a3cd44a6c53d2f1dd5a323b7caf3f25d9d118604120f3f7209af7"
+    },
+    {
+      "role": "accepted_detail_board",
+      "path": "01_canon/details/DETAIL_guide_v1.png",
+      "sha256": "b2eb5407d1e074d9aa18524558bd2788f62f5b1aa047be82d05e5febf53819c2"
+    },
+    {
+      "role": "accepted_expression_board",
+      "path": "01_canon/expressions/EXPR_guide_v1.png",
+      "sha256": "4695959e1553f64ee090108c719ca33194dfb6f2a78d5e49c6f75b90e5a24204"
+    },
+    {
+      "role": "accepted_transparent_standee",
+      "path": "01_canon/standees/STANDEE_guide_neutral_v1.png",
+      "sha256": "355727eeacf878c2001f771ed932b220e29232a6d8eec2fe2960585bbee3f0fb"
+    }
+  ],
+  "hard_locks": [
+    "银紫短发",
+    "本人左鬓白花1朵",
+    "背腰冰蓝飘带2条",
+    "完整银圆环星盘",
+    "无长发与腿链"
+  ],
+  "missing_reference_policy": "stop_generation_and_complete_missing_canon_asset"
+}

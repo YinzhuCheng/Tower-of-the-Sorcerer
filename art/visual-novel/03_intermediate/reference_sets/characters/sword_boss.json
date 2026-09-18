@@ -1,0 +1,40 @@
+{
+  "version": "GAL-SIMPLE-1.1",
+  "character_id": "sword_boss",
+  "reference_order": [
+    {
+      "role": "canonical_text",
+      "path": "01_canon/characters/sword_boss.md",
+      "sha256": "3257a05e8eab98e6633acba1bff828d33a03c97f3315f2a27974748851349803"
+    },
+    {
+      "role": "accepted_turnaround",
+      "path": "01_canon/turnarounds/CHAR_sword-boss_turnaround_v2.png",
+      "sha256": "f86ecb72e8e6d19db15e098a83a1b162525c3495a73a8e8c735498873ec2843e"
+    },
+    {
+      "role": "accepted_detail_board",
+      "path": "01_canon/details/DETAIL_sword-boss_v1.png",
+      "sha256": "c934c6e5dc0684813370f57371e87cfd64c4ce89acdb67930b3340d3f2605688"
+    },
+    {
+      "role": "accepted_expression_board",
+      "path": "01_canon/expressions/EXPR_sword-boss_v2.png",
+      "sha256": "f5ea6e7a17d5ce956e97e23f508a47331bebd30dbb3f4f127797c68ef27b2969"
+    },
+    {
+      "role": "accepted_transparent_standee",
+      "path": "01_canon/standees/STANDEE_sword-boss_neutral_v1.png",
+      "sha256": "60a89ae46a3f93a575da994e98930c1c78a3e77d25e2fea936191e197eb936e8"
+    }
+  ],
+  "hard_locks": [
+    "银白低马尾",
+    "灰紫眼",
+    "白外套蓝长裤",
+    "银菱胸徽1枚",
+    "右手直剑左腰鞘",
+    "无冠"
+  ],
+  "missing_reference_policy": "stop_generation_and_complete_missing_canon_asset"
+}

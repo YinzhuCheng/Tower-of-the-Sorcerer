@@ -1,0 +1,35 @@
+{
+  "version": "GAL-SIMPLE-1.1",
+  "character_id": "shadow_boss",
+  "series_style_lock": "GAL-SIMPLE clean cel reference art",
+  "identity_lock": [
+    "黑紫短发",
+    "右鬓银羽1枚",
+    "后摆2片",
+    "针盒左腰",
+    "右针左线轴",
+    "无剑"
+  ],
+  "expression_order": [
+    "guarded",
+    "wary attention",
+    "dry annoyance",
+    "sudden pain",
+    "guilt",
+    "quiet resolve"
+  ],
+  "negative_constraints": [
+    "identity drift",
+    "hair or accessory count drift",
+    "costume redesign",
+    "text",
+    "hands or props",
+    "watermark"
+  ],
+  "prompt": "Use case: stylized-concept. Asset type: canonical visual-novel expression reference sheet. Professional Japanese 2D visual-novel cel illustration matching the accepted GAL-SIMPLE series: fine clean dark outlines, large solid local colors, one hard-edged shadow per material, tiny restrained highlights, adult proportions, no painterly texture and no dense rendering. Image 1 is the accepted turnaround and controls identity, face, hair, anatomy and costume. Image 2 is the accepted detail board and controls every accessory count, side and construction. The written canon below overrides any accidental reference error. Create a landscape 3-column by 2-row grid of SIX equal-size chest-up portraits of the SAME character. Panel order is left-to-right across the top row, then left-to-right across the bottom row. Keep face proportions, hairstyle, hair accessories, eye color, neckwear and visible shoulder clothing IDENTICAL in all six panels. Expressions must be readable through eyebrows, eyes and mouth while remaining in-character; no theatrical distortion. Warm pale-grey opaque background, even flat reference lighting. No labels, text, panel numbers, borders, scenery, hands, held props, weapons, magic, watermark or signature. No extra jewelry or costume redesign. CANON IDENTITY: Adult shadow weaver woman, 167 cm, chin-length raven-black bob with subtle violet sheen, grey-violet eyes. ONE small silver feather hair clip at HER RIGHT temple. Black high-neck sleeveless fitted tunic, plum knee-length split overskirt with exactly TWO rear panels over black fitted shorts; long black gloves, symmetric opaque black stockings, flat black ankle boots. ONE small needle case at LEFT belt. No flowing sleeves, transparent trains, jewelry chains or thigh garters. HARD LOCKS: 黑紫短发, 右鬓银羽1枚, 后摆2片, 针盒左腰, 右针左线轴, 无剑. EXPRESSIONS IN EXACT PANEL ORDER: 1: guarded; 2: wary attention; 3: dry annoyance; 4: sudden pain; 5: guilt; 6: quiet resolve.",
+  "referenced_image_paths": [
+    "/workspace/scratch/0645849eb5a5/gal-design-v1/01_canon/turnarounds/CHAR_shadow-boss_turnaround_v2.png",
+    "/workspace/scratch/0645849eb5a5/gal-design-v1/01_canon/details/DETAIL_shadow-boss_v1.png"
+  ],
+  "output_contract": "01_canon/expressions/EXPR_shadow-boss_v1.png"
+}

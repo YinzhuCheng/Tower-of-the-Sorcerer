@@ -1,0 +1,34 @@
+{
+  "version": "GAL-SIMPLE-1.2",
+  "environment_id": "relay-gallery",
+  "title": "灯塔接力室",
+  "usage": "24F",
+  "status": "gal-redraw",
+  "source_facts": "纵深接力长廊、固定导轨、分段电容与信使交接台；蓝绿能量沿单一方向传递。",
+  "composition_contract": "16:9 empty visual-novel stage; clean standing-figure zones at both sides; bottom 30% low detail",
+  "series_anchors": [
+    "obsidian arch",
+    "small brass registration seal",
+    "blue-white index lamp",
+    "one thin violet seal fissure when applicable"
+  ],
+  "must_not": [
+    "people",
+    "readable text",
+    "UI",
+    "logo",
+    "watermark",
+    "photorealism",
+    "dense micro-texture"
+  ],
+  "target_asset": "01_canon/environments/ENV_relay-gallery_v1.png",
+  "asset_status": "accepted",
+  "asset": {
+    "path": "01_canon/environments/ENV_relay-gallery_v1.png",
+    "sha256": "b616ad234d0fe56a8df21b6fc99d118f6efbda57227b085e5a8f2cfe1f70f4a9",
+    "width": 1672,
+    "height": 941,
+    "mode": "RGB"
+  },
+  "prompt_packet": "03_intermediate/prompt_packets/environments/relay-gallery.json"
+}

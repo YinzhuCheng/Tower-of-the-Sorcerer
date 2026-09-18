@@ -1,0 +1,9 @@
+{
+  "version": "GAL-SIMPLE-1.2",
+  "transition_id": "witness-entry",
+  "prompt": "Use case: stylized-concept. Asset type: 16:9 visual-novel scene transition. Image 1 is the accepted GAL-SIMPLE environment style anchor; inherit its clean line weight, broad cel color blocks, restrained detail and blue-white index-light language. Show one centered blue-white archive doorway opening onto a short, simple inward stone stair; only three to five completely blank paper sheets drift slowly toward it. Quiet entry into a witness field, not danger. Symmetrical central depth, dark clean edges for crossfade. No people, creatures, readable marks, letters, numbers, interface, logo, watermark, signature, paper storm, photorealism, 3D render or dense texture.",
+  "referenced_image_paths": [
+    "/workspace/scratch/0645849eb5a5/gal-design-v1/01_canon/environments/ENV_forest-approach_v1.png"
+  ],
+  "output_contract": "01_canon/transitions/TRANS_witness-entry_v1.png"
+}

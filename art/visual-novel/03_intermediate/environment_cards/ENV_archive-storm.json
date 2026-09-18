@@ -1,0 +1,34 @@
+{
+  "version": "GAL-SIMPLE-1.2",
+  "environment_id": "archive-storm",
+  "title": "档案风暴",
+  "usage": "28F",
+  "status": "gal-redraw",
+  "source_facts": "塔内观测室与可通行石阶，少量失控纸页形成有方向的风；空间仍可读，不做混乱纸海。",
+  "composition_contract": "16:9 empty visual-novel stage; clean standing-figure zones at both sides; bottom 30% low detail",
+  "series_anchors": [
+    "obsidian arch",
+    "small brass registration seal",
+    "blue-white index lamp",
+    "one thin violet seal fissure when applicable"
+  ],
+  "must_not": [
+    "people",
+    "readable text",
+    "UI",
+    "logo",
+    "watermark",
+    "photorealism",
+    "dense micro-texture"
+  ],
+  "target_asset": "01_canon/environments/ENV_archive-storm_v1.png",
+  "asset_status": "accepted",
+  "asset": {
+    "path": "01_canon/environments/ENV_archive-storm_v1.png",
+    "sha256": "8dfdc13aec2ae78f6533e5322f5134fcfe9421989b5a95ed254232c2c0ecb561",
+    "width": 1672,
+    "height": 941,
+    "mode": "RGB"
+  },
+  "prompt_packet": "03_intermediate/prompt_packets/environments/archive-storm.json"
+}

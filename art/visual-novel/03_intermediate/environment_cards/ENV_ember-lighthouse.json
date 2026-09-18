@@ -1,0 +1,34 @@
+{
+  "version": "GAL-SIMPLE-1.2",
+  "environment_id": "ember-lighthouse",
+  "title": "余烬灯塔外景",
+  "usage": "终章出门",
+  "status": "gal-redraw",
+  "source_facts": "破晓塔顶与平静灰港，潮水退后的湿石路和远处新码头；余烬灯柔和，无烟花。",
+  "composition_contract": "16:9 empty visual-novel stage; clean standing-figure zones at both sides; bottom 30% low detail",
+  "series_anchors": [
+    "obsidian arch",
+    "small brass registration seal",
+    "blue-white index lamp",
+    "one thin violet seal fissure when applicable"
+  ],
+  "must_not": [
+    "people",
+    "readable text",
+    "UI",
+    "logo",
+    "watermark",
+    "photorealism",
+    "dense micro-texture"
+  ],
+  "target_asset": "01_canon/environments/ENV_ember-lighthouse_v1.png",
+  "asset_status": "accepted",
+  "asset": {
+    "path": "01_canon/environments/ENV_ember-lighthouse_v1.png",
+    "sha256": "e856ff4d6b4264599e030c472f9c4883643b9ee4f8f64fd3861c1ae6f90528bb",
+    "width": 1672,
+    "height": 941,
+    "mode": "RGB"
+  },
+  "prompt_packet": "03_intermediate/prompt_packets/environments/ember-lighthouse.json"
+}

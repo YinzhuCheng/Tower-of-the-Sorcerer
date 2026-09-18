@@ -1,0 +1,34 @@
+{
+  "version": "GAL-SIMPLE-1.2",
+  "environment_id": "audit-chamber",
+  "title": "逐页校验室",
+  "usage": "23F",
+  "status": "gal-redraw",
+  "source_facts": "成对校验桌、黄铜放大框、冷蓝页灯和封存架；每页逐一比对，画面无可读文字。",
+  "composition_contract": "16:9 empty visual-novel stage; clean standing-figure zones at both sides; bottom 30% low detail",
+  "series_anchors": [
+    "obsidian arch",
+    "small brass registration seal",
+    "blue-white index lamp",
+    "one thin violet seal fissure when applicable"
+  ],
+  "must_not": [
+    "people",
+    "readable text",
+    "UI",
+    "logo",
+    "watermark",
+    "photorealism",
+    "dense micro-texture"
+  ],
+  "target_asset": "01_canon/environments/ENV_audit-chamber_v1.png",
+  "asset_status": "accepted",
+  "asset": {
+    "path": "01_canon/environments/ENV_audit-chamber_v1.png",
+    "sha256": "539f8f9cf95bd91e4e3ac82b98ab35d997e913e1553c1a75afea9b24d40b6c79",
+    "width": 1672,
+    "height": 941,
+    "mode": "RGB"
+  },
+  "prompt_packet": "03_intermediate/prompt_packets/environments/audit-chamber.json"
+}

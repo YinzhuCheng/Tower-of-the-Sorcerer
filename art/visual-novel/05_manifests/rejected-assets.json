@@ -1,0 +1,115 @@
+{
+  "version": "GAL-SIMPLE-1.2",
+  "assets": [
+    {
+      "path": "04_cg/rejected/CHAR_black-seal-keeper-v2_turnaround_v1_extra-ring-motifs.png",
+      "sha256": "d99220355402509e7e8b34160ace03b56d761b975cecfc23333d8bbc532f856f",
+      "width": 1448,
+      "height": 1086,
+      "mode": "RGB",
+      "has_real_transparency": false,
+      "reason": "衣摆出现会与断圆盘混淆的环纹。"
+    },
+    {
+      "path": "04_cg/rejected/CHAR_echo-regent_turnaround_v1_reversed-back-sash.png",
+      "sha256": "487ca6f297f60576fbffb3eb4788d080f3336c73b63797d753f5b4052f8803cc",
+      "width": 1448,
+      "height": 1086,
+      "mode": "RGB",
+      "has_real_transparency": false,
+      "reason": "背面绶带左右方向翻转。"
+    },
+    {
+      "path": "04_cg/rejected/CHAR_hero_turnaround_v1_missing-scabbard.png",
+      "sha256": "126c230bada41f2d168a8d766b15dd5582588f50333da2fc3eb52ebcc13c221a",
+      "width": 1448,
+      "height": 1086,
+      "mode": "RGB",
+      "has_real_transparency": false,
+      "reason": "缺少左腰剑鞘。"
+    },
+    {
+      "path": "04_cg/rejected/CHAR_shadow-boss_turnaround_v1_asymmetric-legs.png",
+      "sha256": "35a319539eb89a2fe0e6a2980468d50f857927188ba9e3f267dcaa58a2d82dfe",
+      "width": 1448,
+      "height": 1086,
+      "mode": "RGB",
+      "has_real_transparency": false,
+      "reason": "两腿袜靴结构不一致。"
+    },
+    {
+      "path": "04_cg/rejected/CHAR_sword-boss_turnaround_v1_extra-leg-strap.png",
+      "sha256": "867f24881dcf7cdecbae3fa635815b234c2dc0a458dc4ced84ea418ab9502f45",
+      "width": 1448,
+      "height": 1086,
+      "mode": "RGB",
+      "has_real_transparency": false,
+      "reason": "生成了设定外腿带。"
+    },
+    {
+      "path": "04_cg/rejected/DETAIL_fox-boss_v1_ornate-clip.png",
+      "sha256": "a428767b483e8605eac10a14e440756553a45f0b4d65cb983ef1b3ec90a836df",
+      "width": 1448,
+      "height": 1086,
+      "mode": "RGB",
+      "has_real_transparency": false,
+      "reason": "红叶发夹被复杂金属花饰替代。"
+    },
+    {
+      "path": "04_cg/rejected/DETAIL_hero_v1_erasure-artifacts.png",
+      "sha256": "6b561edf3d0cd5bbacdbad5bc6a24d578536c007309244e588e1f5d618adfe1e",
+      "width": 1448,
+      "height": 1086,
+      "mode": "RGBA",
+      "alpha_min": 0,
+      "alpha_max": 255,
+      "transparent_pixels": 1567766,
+      "fully_transparent_pixels": 670461,
+      "has_real_transparency": true,
+      "reason": "出现透明擦除残片。"
+    },
+    {
+      "path": "04_cg/rejected/EXPR_sword-boss_v1_extra-collar-diamond.png",
+      "sha256": "43ce0ad4dfb187420e9734599c1656e662a92722ddd45ddc8fdc1eacfc514cf9",
+      "width": 1536,
+      "height": 1024,
+      "mode": "RGB",
+      "has_real_transparency": false,
+      "reason": "领口出现设定外的第二枚蓝菱徽。"
+    },
+    {
+      "path": "04_cg/rejected/STANDEE_fox-boss_neutral_v1_four-tails.png",
+      "sha256": "7ef17686fab8e6dd672085d131207125e05bb8e8b6043ee22cc34fa2784bb970",
+      "width": 1024,
+      "height": 1536,
+      "mode": "RGBA",
+      "alpha_min": 0,
+      "alpha_max": 254,
+      "transparent_pixels": 1572864,
+      "fully_transparent_pixels": 814926,
+      "has_real_transparency": true,
+      "reason": "生成四尾，违反准确三尾锁定。"
+    },
+    {
+      "path": "04_cg/rejected/STANDEE_fox-boss_neutral_v2_still-four-tails.png",
+      "sha256": "2ac9e3248cdeaa54a531996f9d10104b2d3b9887fac7ffe4333b0c969988347a",
+      "width": 1024,
+      "height": 1536,
+      "mode": "RGBA",
+      "alpha_min": 0,
+      "alpha_max": 254,
+      "transparent_pixels": 1572864,
+      "fully_transparent_pixels": 793754,
+      "has_real_transparency": true,
+      "reason": "二次生成仍为四尾，继续退稿。"
+    },
+    {
+      "path": "04_cg/rejected/ENV_ember-lighthouse-writein_v1_readable-gibberish.png",
+      "sha256": "1bd8ea6d859dffff450b41ab100adc65ff68a42867bc05d110ef72daa6c35a65",
+      "width": 1672,
+      "height": 941,
+      "mode": "RGB",
+      "reason": "打开的书页出现伪可读文字；空间结构保留为修订参考，v2 改为闭合书册与卷轴后通过。"
+    }
+  ]
+}

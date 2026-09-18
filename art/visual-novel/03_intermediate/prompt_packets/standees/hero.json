@@ -1,0 +1,33 @@
+{
+  "version": "GAL-SIMPLE-1.1",
+  "character_id": "hero",
+  "series_style_lock": "GAL-SIMPLE clean cel transparent standee",
+  "identity_lock": [
+    "蓝发紫蓝眼",
+    "本人右侧月牙发夹1枚",
+    "本人左肩月牙扣1枚",
+    "腰横扣2枚",
+    "记录包在左腰",
+    "右手剑左手法术",
+    "双腿服装对称"
+  ],
+  "prop_lock": "One straight silver-blue one-handed sword, length 85 cm, narrow double-edge blade, simple silver FOUR-point diamond-star guard with ONE blue diamond center, navy grip, plain silver pommel; one plain navy scabbard at LEFT hip, right hand wielding. Pouch is a plain black rectangle with ONE silver diamond clasp; crescent hair clip and crescent shoulder clasp have no dangling pieces.",
+  "pose": "Neutral vigilant three-quarter stance. RIGHT hand holds the single straight sword pointed safely downward; LEFT hand relaxed and empty, no spell effect. Scabbard and record pouch remain at LEFT waist.",
+  "negative_constraints": [
+    "background pixels",
+    "ground shadow",
+    "extra accessory",
+    "duplicate prop",
+    "wrong side",
+    "wrong count",
+    "watermark",
+    "cropped feet or prop"
+  ],
+  "prompt": "Use case: background-extraction. Asset type: canonical full-body transparent visual-novel standing figure. Create ONE isolated full-body character cutout in polished Japanese 2D visual-novel cel style matching GAL-SIMPLE: fine clean dark outlines, large solid local colors, one hard-edged shadow per material, restrained highlights, adult proportions. Image 1 is the accepted turnaround and has highest visual authority for identity, anatomy, silhouette and costume. Image 2 is the accepted detail board and controls exact accessory, clothing and prop counts and side placement. Image 3 is the accepted expression sheet and controls only the face; use its first neutral expression. Portrait 2:3 composition, centered, entire hair, all props and both feet inside canvas with 8 percent transparent padding. Natural relaxed three-quarter pose facing camera, anatomically plausible hands, readable silhouette. ACTUAL TRANSPARENT RGBA BACKGROUND: no white or checkerboard background, no scenery, floor, cast shadow, glow, aura, particles, frame, text, logo, watermark or signature. Only the character and explicitly required carried items may have visible pixels. Do not redesign, beautify with extra jewelry, duplicate props, change sides, change counts, or merge objects into hands. CANON IDENTITY: Adult woman, 166 cm, long midnight-blue hair to hips with cobalt tips, violet-blue eyes, small half-up braided bun. Exactly one silver crescent hair clip on HER RIGHT temple; exactly one silver crescent mantle clasp on HER LEFT shoulder. Navy long-sleeved traveling dress with ivory front blouse inset and ivory underskirt, short front hem just above knees and two long rear panels to calves. Navy short mantle with broad ivory lining, no embroidery. Black fitted waist with exactly two horizontal silver buckle straps. Symmetric opaque black thigh-high stockings, navy knee-high low-heel boots and black gloves. One flat palm-sized black record pouch at HER LEFT waist. No chains, tassels, thigh garters, filigree or extra jewels. CANON PROP: One straight silver-blue one-handed sword, length 85 cm, narrow double-edge blade, simple silver FOUR-point diamond-star guard with ONE blue diamond center, navy grip, plain silver pommel; one plain navy scabbard at LEFT hip, right hand wielding. Pouch is a plain black rectangle with ONE silver diamond clasp; crescent hair clip and crescent shoulder clasp have no dangling pieces. HARD LOCKS: 蓝发紫蓝眼, 本人右侧月牙发夹1枚, 本人左肩月牙扣1枚, 腰横扣2枚, 记录包在左腰, 右手剑左手法术, 双腿服装对称. POSE AND OWNERSHIP: Neutral vigilant three-quarter stance. RIGHT hand holds the single straight sword pointed safely downward; LEFT hand relaxed and empty, no spell effect. Scabbard and record pouch remain at LEFT waist.",
+  "referenced_image_paths": [
+    "/workspace/scratch/0645849eb5a5/gal-design-v1/01_canon/turnarounds/CHAR_hero_turnaround_v2.png",
+    "/workspace/scratch/0645849eb5a5/gal-design-v1/01_canon/details/DETAIL_hero_v2.png",
+    "/workspace/scratch/0645849eb5a5/gal-design-v1/01_canon/expressions/EXPR_hero_v1.png"
+  ],
+  "output_contract": "01_canon/standees/STANDEE_hero_neutral_v1.png"
+}

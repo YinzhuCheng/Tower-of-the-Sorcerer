@@ -1,0 +1,28 @@
+{
+  "version": "GAL-SIMPLE-1.2",
+  "transition_id": "witness-entry",
+  "title": "见证场进入／返回",
+  "runtime_target": "public/assets/anime/transitions/witness-entry.webp",
+  "usage": "普通 GAL 场景切入与返回",
+  "source_facts": "蓝白档案门、向内延伸的简洁石阶和少量完全空白的纸页；安静进入见证场。",
+  "composition": "16:9 centered transition plate; strong central depth; edges dark enough for crossfade",
+  "must_not": [
+    "characters",
+    "readable text",
+    "UI",
+    "logo",
+    "watermark",
+    "busy paper storm"
+  ],
+  "status": "accepted",
+  "asset_status": "accepted",
+  "target_asset": "01_canon/transitions/TRANS_witness-entry_v1.png",
+  "asset": {
+    "path": "01_canon/transitions/TRANS_witness-entry_v1.png",
+    "sha256": "0006f09c88c84d29c7df2a34582882f884573e1fb176fc7e35666a0a05650c17",
+    "width": 1672,
+    "height": 941,
+    "mode": "RGB"
+  },
+  "prompt_packet": "03_intermediate/prompt_packets/transitions/witness-entry.json"
+}
