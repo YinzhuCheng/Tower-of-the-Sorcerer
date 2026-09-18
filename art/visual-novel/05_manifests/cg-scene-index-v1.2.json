@@ -12,8 +12,10 @@
       "cast": [
         "hero"
       ],
-      "status": "ready-for-layout",
-      "environment_asset": null
+      "status": "r0-layout-accepted",
+      "environment_asset": null,
+      "layout_asset": {"path": "04_cg/working/CG_001_critical_R0_layout_v1.png", "sha256": "1dd44397a0a8f8d2601769841f741d8ef5ed4180e065997f25de124783bb7a40", "width": 1672, "height": 941, "mode": "RGB"},
+      "layout_qa": "03_intermediate/qa/CG_001_critical_R0_qa.md"
     },
     {
       "order": 2,
@@ -25,8 +27,10 @@
       "cast": [
         "hero"
       ],
-      "status": "ready-for-layout",
-      "environment_asset": null
+      "status": "r0-layout-accepted",
+      "environment_asset": null,
+      "layout_asset": {"path": "04_cg/working/CG_002_defeat_R0_layout_v1.png", "sha256": "4e54df8f39b9d8b055fb781ac2e489315b3326c17dbbe7489adcd15766c8cd12", "width": 1672, "height": 941, "mode": "RGB"},
+      "layout_qa": "03_intermediate/qa/CG_002_defeat_R0_qa.md"
     },
     {
       "order": 3,
@@ -38,14 +42,16 @@
       "cast": [
         "hero"
       ],
-      "status": "ready-for-layout",
+      "status": "r0-layout-accepted-with-carry",
       "environment_asset": {
         "path": "01_canon/environments/ENV_night-tower_v1.png",
         "sha256": "b2bf4f703f327dfcc09a8ae0f35b8705884d9e6ccde45ade0c93c82d66db3b8d",
         "width": 1672,
         "height": 941,
         "mode": "RGB"
-      }
+      },
+      "layout_asset": {"path": "04_cg/working/CG_003_prologue-tower_R0_layout_v2.png", "sha256": "c4761fef9dba03a44b53dbe6f01185bbf1f3356aaa057158154a75baf189431d", "width": 1672, "height": 941, "mode": "RGB"},
+      "layout_qa": "03_intermediate/qa/CG_003_prologue-tower_R0_qa.md"
     },
     {
       "order": 4,

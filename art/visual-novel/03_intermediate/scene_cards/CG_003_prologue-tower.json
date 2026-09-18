@@ -3,7 +3,17 @@
   "cg_id": "CG_003_prologue-tower",
   "semantic_id": "prologue-tower",
   "title": "序章：被夺去的咏唱",
-  "status": "ready-for-layout",
+  "status": "r0-layout-accepted-with-carry",
+  "current_iteration": "R0_layout_v2",
+  "layout_asset": {
+    "path": "04_cg/working/CG_003_prologue-tower_R0_layout_v2.png",
+    "sha256": "c4761fef9dba03a44b53dbe6f01185bbf1f3356aaa057158154a75baf189431d",
+    "width": 1672,
+    "height": 941,
+    "mode": "RGB"
+  },
+  "layout_qa": "03_intermediate/qa/CG_003_prologue-tower_R0_qa.md",
+  "layout_carry": "If the heroine remains in R1/R3, reduce her to roughly 12% or less of frame height without changing tower, seven lights, ship, sealed gate or storm direction.",
   "source_locator": {
     "repository_commit": "b05bc623b7c1ef8b93cfa1fca253ad2119a52f68",
     "file": "src/game/data.js",

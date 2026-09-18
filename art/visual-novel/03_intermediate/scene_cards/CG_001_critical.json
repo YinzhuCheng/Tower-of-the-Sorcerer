@@ -3,7 +3,16 @@
   "cg_id": "CG_001_critical",
   "semantic_id": "critical",
   "title": "危急战斗预演",
-  "status": "ready-for-layout",
+  "status": "r0-layout-accepted",
+  "current_iteration": "R0_layout",
+  "layout_asset": {
+    "path": "04_cg/working/CG_001_critical_R0_layout_v1.png",
+    "sha256": "1dd44397a0a8f8d2601769841f741d8ef5ed4180e065997f25de124783bb7a40",
+    "width": 1672,
+    "height": 941,
+    "mode": "RGB"
+  },
+  "layout_qa": "03_intermediate/qa/CG_001_critical_R0_qa.md",
   "source_locator": {
     "repository_commit": "b05bc623b7c1ef8b93cfa1fca253ad2119a52f68",
     "file": "src/main.js",

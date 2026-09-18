@@ -3,18 +3,24 @@
   "rule": "All listed character canon references and the exact environment master must be accepted and hash-locked before layout generation.",
   "ready": 19,
   "total": 19,
+  "r0_layout_accepted": 3,
+  "r0_layout_remaining": 16,
   "scenes": [
     {
       "cg_id": "CG_001_critical",
       "card": "03_intermediate/scene_cards/CG_001_critical.json",
       "environment_id": null,
-      "environment_asset": null
+      "environment_asset": null,
+      "layout_status": "accepted-r0-layout",
+      "layout_asset": {"path": "04_cg/working/CG_001_critical_R0_layout_v1.png", "sha256": "1dd44397a0a8f8d2601769841f741d8ef5ed4180e065997f25de124783bb7a40", "width": 1672, "height": 941, "mode": "RGB"}
     },
     {
       "cg_id": "CG_002_defeat",
       "card": "03_intermediate/scene_cards/CG_002_defeat.json",
       "environment_id": null,
-      "environment_asset": null
+      "environment_asset": null,
+      "layout_status": "accepted-r0-layout",
+      "layout_asset": {"path": "04_cg/working/CG_002_defeat_R0_layout_v1.png", "sha256": "4e54df8f39b9d8b055fb781ac2e489315b3326c17dbbe7489adcd15766c8cd12", "width": 1672, "height": 941, "mode": "RGB"}
     },
     {
       "cg_id": "CG_003_prologue-tower",
@@ -26,7 +32,9 @@
         "width": 1672,
         "height": 941,
         "mode": "RGB"
-      }
+      },
+      "layout_status": "accepted-r0-with-carry",
+      "layout_asset": {"path": "04_cg/working/CG_003_prologue-tower_R0_layout_v2.png", "sha256": "c4761fef9dba03a44b53dbe6f01185bbf1f3356aaa057158154a75baf189431d", "width": 1672, "height": 941, "mode": "RGB"}
     },
     {
       "cg_id": "CG_004_seven-cantos-severed",

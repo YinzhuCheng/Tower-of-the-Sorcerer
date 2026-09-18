@@ -3,7 +3,16 @@
   "cg_id": "CG_002_defeat",
   "semantic_id": "defeat",
   "title": "战败预演",
-  "status": "ready-for-layout",
+  "status": "r0-layout-accepted",
+  "current_iteration": "R0_layout",
+  "layout_asset": {
+    "path": "04_cg/working/CG_002_defeat_R0_layout_v1.png",
+    "sha256": "4e54df8f39b9d8b055fb781ac2e489315b3326c17dbbe7489adcd15766c8cd12",
+    "width": 1672,
+    "height": 941,
+    "mode": "RGB"
+  },
+  "layout_qa": "03_intermediate/qa/CG_002_defeat_R0_qa.md",
   "source_locator": {
     "repository_commit": "b05bc623b7c1ef8b93cfa1fca253ad2119a52f68",
     "file": "src/main.js",
