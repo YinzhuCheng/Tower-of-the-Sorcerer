@@ -10,6 +10,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          filter: blob:none
+          sparse-checkout: |
+            art/visual-novel/01_canon
+          sparse-checkout-cone-mode: true
       - name: Prepare canon export
         run: |
           mkdir -p export
