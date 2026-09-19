@@ -1,0 +1,33 @@
+name: Temporary Canon Art Export
+
+on:
+  push:
+    branches:
+      - tmp/canon-art-export-20260919
+
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Prepare canon export
+        run: |
+          mkdir -p export
+          cp -R art/visual-novel/01_canon/characters export/
+          cp -R art/visual-novel/01_canon/turnarounds export/
+          cp -R art/visual-novel/01_canon/details export/
+          cp -R art/visual-novel/01_canon/expressions export/
+          cp -R art/visual-novel/01_canon/standees export/
+          cp art/visual-novel/01_canon/character-canon.json export/
+          cp art/visual-novel/01_canon/characters.json export/
+          cp art/visual-novel/01_canon/expressions.json export/
+          cp art/visual-novel/01_canon/standees.json export/
+          cp art/visual-novel/01_canon/visual-canon-v2.json export/
+          cp art/visual-novel/01_canon/series-style.md export/
+          printf '%s\n' "source_branch=main" "source_commit=3a3741bb8dceb8556f397d7b1cac77ca69eef086" > export/EXPORT_SOURCE.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: canon-art-export-20260919
+          path: export/
+          if-no-files-found: error
+          compression-level: 0
