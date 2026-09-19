@@ -1,0 +1,61 @@
+{
+  "version": "GAL-SIMPLE-1.3",
+  "cg_id": "CG_005_northstar-arrival",
+  "stage": "R1_identity",
+  "generated_at": "2026-09-19T14:45:00Z",
+  "precedence": [
+    "canonical text",
+    "turnaround",
+    "detail board",
+    "expression board",
+    "standee",
+    "accepted CG anchor",
+    "environment"
+  ],
+  "actual_input_order": [
+    {
+      "order": 1,
+      "role": "edit_target",
+      "path": "04_cg/working/CG_005_northstar-arrival_R0_layout_v2.png",
+      "sha256": "c11202fc76167c08081eb3e2a2a6bccca38b521b98a0389fa4eebb5bc9ea598d",
+      "passed_to_generator": true
+    },
+    {
+      "order": 2,
+      "role": "accepted_hero_identity_anchor",
+      "path": "04_cg/working/CG_001_critical_R1_identity_v1.png",
+      "sha256": "2806f76c2c3808531f9fdeee57cf3cecd4b0c647a20fc14a57945d65a4737789",
+      "passed_to_generator": true
+    },
+    {
+      "order": 3,
+      "role": "whale_boss_turnaround",
+      "path": "01_canon/turnarounds/CHAR_whale-boss_turnaround_v1.png",
+      "sha256": "bc155fcc809ae9b5f27fea5872105a2791267ebf521969f46e2a277812775812",
+      "passed_to_generator": true
+    },
+    {
+      "order": 4,
+      "role": "whale_boss_detail",
+      "path": "01_canon/details/DETAIL_whale-boss_v1.png",
+      "sha256": "f32d409424a5627098d6b060c232b9a33f703905f47f473962838f4a0c49ed40",
+      "passed_to_generator": true
+    },
+    {
+      "order": 5,
+      "role": "whale_boss_expression",
+      "path": "01_canon/expressions/EXPR_whale-boss_v1.png",
+      "sha256": "53f5bb5f14b6122a4fb4de6444b42977bae35346eb10a05b8a44b9e7233b64bb",
+      "passed_to_generator": true
+    }
+  ],
+  "output": {
+    "path": "04_cg/working/CG_005_northstar-arrival_R1_identity_v1.png",
+    "sha256": "1c7b710e03875b31e5376603e9f0b8ae556603d8d96781f2bc602a0241970037",
+    "width": 1672,
+    "height": 941,
+    "mode": "RGB"
+  },
+  "qa": "03_intermediate/qa/CG_005_northstar-arrival_R1_identity_qa.md",
+  "status": "accepted-r1-identity-with-carry"
+}

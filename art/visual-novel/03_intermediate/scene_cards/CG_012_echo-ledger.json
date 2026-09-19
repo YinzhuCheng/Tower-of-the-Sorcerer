@@ -3,7 +3,7 @@
   "cg_id": "CG_012_echo-ledger",
   "semantic_id": "echo-ledger",
   "title": "十九阵名簿归还",
-  "status": "ready-for-layout",
+  "status": "r1-identity-accepted",
   "source_locator": {
     "repository_commit": "b05bc623b7c1ef8b93cfa1fca253ad2119a52f68",
     "file": "src/game/demo-20-floor-content.js",
@@ -145,5 +145,22 @@
     "width": 1672,
     "height": 941,
     "mode": "RGB"
-  }
+  },
+  "current_iteration": "R1_identity",
+  "layout_asset": {
+    "path": "04_cg/working/CG_012_echo-ledger_R0_layout_v1.png",
+    "sha256": "57a19499ce7e4a86bfc0d066fc8e3288ba5d7e78c75c1d006ba390479b61f4ea",
+    "width": 1672,
+    "height": 941,
+    "mode": "RGB"
+  },
+  "layout_qa": "03_intermediate/qa/CG_012_echo-ledger_R0_layout_qa.md",
+  "identity_asset": {
+    "path": "04_cg/working/CG_012_echo-ledger_R1_identity_v1.png",
+    "sha256": "b806b9314b37741f72d901954cfe0f1c0421d4259aa62e5d9052d1b2f8afe953",
+    "width": 1672,
+    "height": 941,
+    "mode": "RGB"
+  },
+  "identity_qa": "03_intermediate/qa/CG_012_echo-ledger_R1_identity_qa.md"
 }

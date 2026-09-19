@@ -1,0 +1,23 @@
+{
+  "version": "GAL-SIMPLE-1.3",
+  "cg_id": "CG_002_defeat",
+  "stage": "R1_identity",
+  "series_style_lock": "Clean polished anime visual-novel CG; preserve accepted R0 composition; no pseudo-text, logo, watermark, or UI.",
+  "identity_lock": "Resolve face, hair, adult age, body proportions, and silhouette from the ordered canonical references and accepted CG anchor.",
+  "composition": "Locked to the supplied R0 edit target.",
+  "continuity_anchors": [
+    "04_cg/working/CG_001_critical_R1_identity_v1.png"
+  ],
+  "negative_constraints": [
+    "composition drift",
+    "identity blending",
+    "extra characters",
+    "prop ownership swap",
+    "text",
+    "HUD",
+    "watermark",
+    "anatomy defects"
+  ],
+  "output_contract": "04_cg/working/CG_002_defeat_R1_identity_v1.png",
+  "full_prompt": "Use case: identity-preserve\nAsset type: visual-novel CG R1_identity\nEdit the FIRST image only.\n\nPreserve the FIRST image's exact 16:9 medium composition, crop, camera height, seated/kneeling exhausted pose, limb positions, dark portable tower vignette, floor reflections, lighting, one sword position, and all prop ownership. Do not redesign the shot or add an enemy.\n\nIdentity sources:\n- Reference 2 is the accepted hero face/rendering anchor. Make the woman unmistakably the same adult heroine: mature young-adult face, violet-blue eyes, midnight-blue hip-length hair with cobalt tips, small low half-up braided bun, exactly one silver crescent clip on HER RIGHT temple and one crescent mantle clasp on HER LEFT shoulder.\n- Reference 3 locks her adult body proportions and hair silhouette.\n- Reference 4 locks her exhausted-but-conscious facial identity.\n\nEmotional direction: exhausted and breathing hard, but fully conscious, alert, and assessing that the route is unwinnable. This is a safe defeat forecast, not a corpse or fetishized injury.\n\nHard invariants:\n- exactly ONE adult woman, no enemy\n- her RIGHT hand keeps ownership of exactly ONE sword; her other hand remains braced on the floor\n- keep both legs and boots readable\n- preserve existing navy/ivory costume silhouette at R1\n- no blood, wound, unconscious expression, corpse-like pose, torn or sexualized clothing, extra crescent ornaments, extra sword, chains, garters, text, UI, logo, watermark, anatomy defects, or fused fingers\n- change only face, hair, adult age, and body-proportion identity where needed\n\nOutput exactly one polished 1672×941 anime visual-novel CG at the same resolution as the first image."
+}

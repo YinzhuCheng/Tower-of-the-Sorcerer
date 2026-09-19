@@ -3,7 +3,7 @@
   "cg_id": "CG_015_letters-held-in-storm",
   "semantic_id": "letters-held-in-storm",
   "title": "二十八阵：风暴中护住原信",
-  "status": "ready-for-layout",
+  "status": "r1-identity-accepted",
   "source_locator": {
     "repository_commit": "b05bc623b7c1ef8b93cfa1fca253ad2119a52f68",
     "file": "src/game/demo-30-floor-content.js",
@@ -115,5 +115,22 @@
     "width": 1672,
     "height": 941,
     "mode": "RGB"
-  }
+  },
+  "current_iteration": "R1_identity",
+  "layout_asset": {
+    "path": "04_cg/working/CG_015_letters-held-in-storm_R0_layout_v1.png",
+    "sha256": "85c7e95fd5f0006c7815386f77155a3a15e683c9cead6a03698f9736d9877e4b",
+    "width": 1672,
+    "height": 941,
+    "mode": "RGB"
+  },
+  "layout_qa": "03_intermediate/qa/CG_015_letters-held-in-storm_R0_layout_qa.md",
+  "identity_asset": {
+    "path": "04_cg/working/CG_015_letters-held-in-storm_R1_identity_v1.png",
+    "sha256": "f9a1edfcfeab4f3d287c9a15557f21f5fb9e41cf98bef55544a05248a9c1baed",
+    "width": 1672,
+    "height": 941,
+    "mode": "RGB"
+  },
+  "identity_qa": "03_intermediate/qa/CG_015_letters-held-in-storm_R1_identity_qa.md"
 }

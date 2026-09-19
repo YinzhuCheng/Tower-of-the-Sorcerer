@@ -1,0 +1,23 @@
+{
+  "version": "GAL-SIMPLE-1.3",
+  "cg_id": "CG_006_seven-core-network",
+  "stage": "R1_identity",
+  "series_style_lock": "Clean polished anime visual-novel CG; preserve accepted R0 composition; no pseudo-text, logo, watermark, or UI.",
+  "identity_lock": "Resolve face, hair, adult age, body proportions, and silhouette from the ordered canonical references and accepted CG anchor.",
+  "composition": "Locked to the supplied R0 edit target.",
+  "continuity_anchors": [
+    "04_cg/working/CG_001_critical_R1_identity_v1.png"
+  ],
+  "negative_constraints": [
+    "composition drift",
+    "identity blending",
+    "extra characters",
+    "prop ownership swap",
+    "text",
+    "HUD",
+    "watermark",
+    "anatomy defects"
+  ],
+  "output_contract": "04_cg/working/CG_006_seven-core-network_R1_identity_v1.png",
+  "full_prompt": "Use case: identity-preserve\nAsset type: visual-novel CG R1_identity\nEdit the FIRST image only.\n\nPreserve the FIRST image's exact 16:9 high-angle medium-wide composition, star-mirror chamber geometry, central hero, shadow weaver at image right, exactly seven colored paths leading from exactly seven distinct archive nodes to one shared central closure lock, lighting, poses, and prop ownership. Do not redesign the network, camera, environment, or narrative action.\n\nIdentity sources:\n- Reference 2 is the accepted hero identity/rendering anchor. Make the central hero unmistakably the same adult woman: violet-blue eyes, mature young-adult face, midnight-blue hip-length hair with cobalt tips, small low half-up braided bun, one silver crescent clip on HER RIGHT temple, and one crescent mantle clasp on HER LEFT shoulder.\n- References 3-5 define the shadow weaver. She is an adult woman, 167 cm proportions, chin-length raven-black bob with subtle violet tips/sheen, grey-violet eyes, exactly ONE small silver feather clip on HER RIGHT temple, wary attentive expression. Preserve her black sleeveless high-neck tunic and plum split overskirt silhouette without costume overwork.\n\nProp ownership lock: shadow weaver's RIGHT hand holds one palm-length sewing needle with a visible eye; her LEFT hand feeds one compact dark wooden spool of violet thread. One continuous violet thread only. One small needle case stays at HER LEFT belt. She has no sword.\n\nHard invariants:\n- exactly TWO adult women\n- exactly SEVEN colored light paths and seven distinct nodes\n- exactly ONE shared closure lock\n- no duplicate characters, extra jewelry, random constellations, text, UI, logo, watermark, extra needles, extra spools, sword for shadow weaver, identity blending, fused hands, or anatomy defects\n- preserve R0 composition and environment; change only faces, hair, adult age, and body proportions where needed\n\nEmotional direction: hero has startled realization; shadow weaver studies one path with wary attention. Output exactly one polished 1672×941 anime visual-novel CG."
+}

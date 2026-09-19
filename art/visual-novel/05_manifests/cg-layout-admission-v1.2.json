@@ -3,8 +3,8 @@
   "rule": "All listed character canon references and the exact environment master must be accepted and hash-locked before layout generation.",
   "ready": 19,
   "total": 19,
-  "r0_layout_accepted": 3,
-  "r0_layout_remaining": 16,
+  "r0_layout_accepted": 19,
+  "r0_layout_remaining": 0,
   "scenes": [
     {
       "cg_id": "CG_001_critical",
@@ -12,7 +12,21 @@
       "environment_id": null,
       "environment_asset": null,
       "layout_status": "accepted-r0-layout",
-      "layout_asset": {"path": "04_cg/working/CG_001_critical_R0_layout_v1.png", "sha256": "1dd44397a0a8f8d2601769841f741d8ef5ed4180e065997f25de124783bb7a40", "width": 1672, "height": 941, "mode": "RGB"}
+      "layout_asset": {
+        "path": "04_cg/working/CG_001_critical_R0_layout_v2.png",
+        "sha256": "5257cbdf2a6b78c05d9aabf21b7e62b16375e1b5bfd453dad28d217b33f4b591",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
+      },
+      "identity_status": "accepted-r1-identity-with-carry",
+      "identity_asset": {
+        "path": "04_cg/working/CG_001_critical_R1_identity_v1.png",
+        "sha256": "2806f76c2c3808531f9fdeee57cf3cecd4b0c647a20fc14a57945d65a4737789",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
+      }
     },
     {
       "cg_id": "CG_002_defeat",
@@ -20,7 +34,21 @@
       "environment_id": null,
       "environment_asset": null,
       "layout_status": "accepted-r0-layout",
-      "layout_asset": {"path": "04_cg/working/CG_002_defeat_R0_layout_v1.png", "sha256": "4e54df8f39b9d8b055fb781ac2e489315b3326c17dbbe7489adcd15766c8cd12", "width": 1672, "height": 941, "mode": "RGB"}
+      "layout_asset": {
+        "path": "04_cg/working/CG_002_defeat_R0_layout_v2.png",
+        "sha256": "6d781220b0e4069a47da04a19746d7a9704fab15c6022d2c54f8b9538dcc5f30",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
+      },
+      "identity_status": "accepted-r1-identity-with-carry",
+      "identity_asset": {
+        "path": "04_cg/working/CG_002_defeat_R1_identity_v1.png",
+        "sha256": "d4acbf63060d31f0be1941822a803ddfcf4cc46efb0c46859d893dc82e9f65f6",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
+      }
     },
     {
       "cg_id": "CG_003_prologue-tower",
@@ -33,8 +61,22 @@
         "height": 941,
         "mode": "RGB"
       },
-      "layout_status": "accepted-r0-with-carry",
-      "layout_asset": {"path": "04_cg/working/CG_003_prologue-tower_R0_layout_v2.png", "sha256": "c4761fef9dba03a44b53dbe6f01185bbf1f3356aaa057158154a75baf189431d", "width": 1672, "height": 941, "mode": "RGB"}
+      "layout_status": "accepted-r0-layout",
+      "layout_asset": {
+        "path": "04_cg/working/CG_003_prologue-tower_R0_layout_v4.png",
+        "sha256": "000a23251b07710e711bc9df37145989a7fa6ceeaee8614a60afd553c59f15fa",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
+      },
+      "identity_status": "accepted-r1-identity-with-carry",
+      "identity_asset": {
+        "path": "04_cg/working/CG_003_prologue-tower_R1_identity_v3.png",
+        "sha256": "b4746f7a9c25447910b56927aaaa6b88a034b86d59ec3e5a971d6f9ed7a77094",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
+      }
     },
     {
       "cg_id": "CG_004_seven-cantos-severed",
@@ -43,6 +85,22 @@
       "environment_asset": {
         "path": "01_canon/environments/ENV_night-tower_v1.png",
         "sha256": "b2bf4f703f327dfcc09a8ae0f35b8705884d9e6ccde45ade0c93c82d66db3b8d",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
+      },
+      "layout_status": "accepted-r0-layout",
+      "layout_asset": {
+        "path": "04_cg/working/CG_004_seven-cantos-severed_R0_layout_v1.png",
+        "sha256": "eb7363e32372acdf17205a7ea6ea62a35d5a2e9ef4efdeb960f4cf7c6a2cf32b",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
+      },
+      "identity_status": "accepted-r1-identity-with-carry",
+      "identity_asset": {
+        "path": "04_cg/working/CG_004_seven-cantos-severed_R1_identity_v1.png",
+        "sha256": "f3ec511ae758d14181318f9a2c2911542dd1b05d4a6997ea6ade27354f6e113c",
         "width": 1672,
         "height": 941,
         "mode": "RGB"
@@ -58,6 +116,22 @@
         "width": 1672,
         "height": 941,
         "mode": "RGB"
+      },
+      "layout_status": "accepted-r0-layout",
+      "layout_asset": {
+        "path": "04_cg/working/CG_005_northstar-arrival_R0_layout_v2.png",
+        "sha256": "c11202fc76167c08081eb3e2a2a6bccca38b521b98a0389fa4eebb5bc9ea598d",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
+      },
+      "identity_status": "accepted-r1-identity-with-carry",
+      "identity_asset": {
+        "path": "04_cg/working/CG_005_northstar-arrival_R1_identity_v1.png",
+        "sha256": "1c7b710e03875b31e5376603e9f0b8ae556603d8d96781f2bc602a0241970037",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
       }
     },
     {
@@ -67,6 +141,22 @@
       "environment_asset": {
         "path": "01_canon/environments/ENV_star-mirror_v1.png",
         "sha256": "c883140e892bf68cddc090c5a6fc66ba99f961c78ee0d953dabbabbd4fc032a5",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
+      },
+      "layout_status": "accepted-r0-layout",
+      "layout_asset": {
+        "path": "04_cg/working/CG_006_seven-core-network_R0_layout_v1.png",
+        "sha256": "d8af5ddd8ceb3de15356f5b8465b0168f67fdd261130db75a632c171c49f6b70",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
+      },
+      "identity_status": "accepted-r1-identity-with-carry",
+      "identity_asset": {
+        "path": "04_cg/working/CG_006_seven-core-network_R1_identity_v1.png",
+        "sha256": "af417f7594fb7c71715fff3ca8e7aba239f39b7106a4821fa89286578c6295d0",
         "width": 1672,
         "height": 941,
         "mode": "RGB"
@@ -82,6 +172,22 @@
         "width": 1672,
         "height": 941,
         "mode": "RGB"
+      },
+      "layout_status": "accepted-r0-layout",
+      "layout_asset": {
+        "path": "04_cg/working/CG_007_noctia-truth_R0_layout_v2.png",
+        "sha256": "a124aea2087ed4c1bcdb7fa6b03e30d158bc26018e957890391f5a44640b72bc",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
+      },
+      "identity_status": "accepted-r1-identity-with-carry",
+      "identity_asset": {
+        "path": "04_cg/working/CG_007_noctia-truth_R1_identity_v1.png",
+        "sha256": "71d8ca94c22910cea45f5e3f1f12670bdd27428f0b5f07b589d89d064c6eebd2",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
       }
     },
     {
@@ -91,6 +197,22 @@
       "environment_asset": {
         "path": "01_canon/environments/ENV_night-tower_v1.png",
         "sha256": "b2bf4f703f327dfcc09a8ae0f35b8705884d9e6ccde45ade0c93c82d66db3b8d",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
+      },
+      "layout_status": "accepted-r0-layout",
+      "layout_asset": {
+        "path": "04_cg/working/CG_008_noctia-seal_R0_layout_v1.png",
+        "sha256": "6b63cd37d3f93282fe13cf08fe6b29eb3550218aca2abb001f5610ed8bb9c7e7",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
+      },
+      "identity_status": "accepted-r1-identity-with-carry",
+      "identity_asset": {
+        "path": "04_cg/working/CG_008_noctia-seal_R1_identity_v1.png",
+        "sha256": "6243e7693e42205e114d71b8018e7e28ba45e678c2ad2de772971fe3d5c4baac",
         "width": 1672,
         "height": 941,
         "mode": "RGB"
@@ -106,6 +228,22 @@
         "width": 1672,
         "height": 941,
         "mode": "RGB"
+      },
+      "layout_status": "accepted-r0-layout",
+      "layout_asset": {
+        "path": "04_cg/working/CG_009_missing-fourth-step_R0_layout_v2.png",
+        "sha256": "fc6d7df3ab5658e282f060b168e7188b5313c5cbf1567707b27eb5d874b19cfa",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
+      },
+      "identity_status": "accepted-r1-identity-with-carry",
+      "identity_asset": {
+        "path": "04_cg/working/CG_009_missing-fourth-step_R1_identity_v1.png",
+        "sha256": "c6d864b841c9504d19f33f5e7a40b2fc02afb5d99ebaf1868ceb6580d5276308",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
       }
     },
     {
@@ -115,6 +253,22 @@
       "environment_asset": {
         "path": "01_canon/environments/ENV_sun-sanctum_v1.png",
         "sha256": "5f115bd5dffdcb7c6ac9260e55cf6996a0de4cfaee8c1e7f970a418eb4f13675",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
+      },
+      "layout_status": "accepted-r0-layout",
+      "layout_asset": {
+        "path": "04_cg/working/CG_010_seventeen-minute-splice_R0_layout_v1.png",
+        "sha256": "cfe377a06654ab3a3683e39177b9f78088b55d675c6922b293c5118154ef35b5",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
+      },
+      "identity_status": "accepted-r1-identity-with-carry",
+      "identity_asset": {
+        "path": "04_cg/working/CG_010_seventeen-minute-splice_R1_identity_v1.png",
+        "sha256": "46461689dbbbc7b3d27ba2d75ec30f546b5f31d2f070673b5cd8bd54bfb74853",
         "width": 1672,
         "height": 941,
         "mode": "RGB"
@@ -130,6 +284,22 @@
         "width": 1672,
         "height": 941,
         "mode": "RGB"
+      },
+      "layout_status": "accepted-r0-layout",
+      "layout_asset": {
+        "path": "04_cg/working/CG_011_intercepted-receipt_R0_layout_v1.png",
+        "sha256": "875b34004f7b16e724f19e821d94f48fef8cac8f74f9db962f91daa1eafed1f0",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
+      },
+      "identity_status": "accepted-r1-identity-with-carry",
+      "identity_asset": {
+        "path": "04_cg/working/CG_011_intercepted-receipt_R1_identity_v1.png",
+        "sha256": "1dd9a87b5968aaba7cc6901709222dbbcade6e6f9e20f916bf1766911c8248bc",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
       }
     },
     {
@@ -139,6 +309,22 @@
       "environment_asset": {
         "path": "01_canon/environments/ENV_echo-court_v1.png",
         "sha256": "beabf39cbfef14d6eec1b5e0b9b74874d1c74376e0288ebf5e0a2b86d3130ef5",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
+      },
+      "layout_status": "accepted-r0-layout",
+      "layout_asset": {
+        "path": "04_cg/working/CG_012_echo-ledger_R0_layout_v1.png",
+        "sha256": "57a19499ce7e4a86bfc0d066fc8e3288ba5d7e78c75c1d006ba390479b61f4ea",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
+      },
+      "identity_status": "accepted-r1-identity-with-carry",
+      "identity_asset": {
+        "path": "04_cg/working/CG_012_echo-ledger_R1_identity_v1.png",
+        "sha256": "b806b9314b37741f72d901954cfe0f1c0421d4259aa62e5d9052d1b2f8afe953",
         "width": 1672,
         "height": 941,
         "mode": "RGB"
@@ -154,6 +340,22 @@
         "width": 1672,
         "height": 941,
         "mode": "RGB"
+      },
+      "layout_status": "accepted-r0-layout",
+      "layout_asset": {
+        "path": "04_cg/working/CG_013_noctia-sovereign_R0_layout_v1.png",
+        "sha256": "57be881348c4375b87779003722b35b986ff700be53c609844ba111e511c7bd0",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
+      },
+      "identity_status": "accepted-r1-identity-with-carry",
+      "identity_asset": {
+        "path": "04_cg/working/CG_013_noctia-sovereign_R1_identity_v1.png",
+        "sha256": "b6a8c790d9284173276b0382ee51400027b54b895c573adf4132154f9feac239",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
       }
     },
     {
@@ -163,6 +365,22 @@
       "environment_asset": {
         "path": "01_canon/environments/ENV_triage-index_v1.png",
         "sha256": "2395828352d4d31412fb2ecf9c42c129ff6ee0784db6001164a7a6babd1a7bfc",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
+      },
+      "layout_status": "accepted-r0-layout",
+      "layout_asset": {
+        "path": "04_cg/working/CG_014_missing-page-restored_R0_layout_v1.png",
+        "sha256": "903a10835ca681f200be23618d0a38c7ccf191268c6a5f13710783c3d263b28f",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
+      },
+      "identity_status": "accepted-r1-identity-with-carry",
+      "identity_asset": {
+        "path": "04_cg/working/CG_014_missing-page-restored_R1_identity_v1.png",
+        "sha256": "a9484e0785fc296dd63ae00f07919a5802d8222455069bf3b6e0bf2c8aaa095d",
         "width": 1672,
         "height": 941,
         "mode": "RGB"
@@ -178,6 +396,22 @@
         "width": 1672,
         "height": 941,
         "mode": "RGB"
+      },
+      "layout_status": "accepted-r0-layout",
+      "layout_asset": {
+        "path": "04_cg/working/CG_015_letters-held-in-storm_R0_layout_v1.png",
+        "sha256": "85c7e95fd5f0006c7815386f77155a3a15e683c9cead6a03698f9736d9877e4b",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
+      },
+      "identity_status": "accepted-r1-identity-with-carry",
+      "identity_asset": {
+        "path": "04_cg/working/CG_015_letters-held-in-storm_R1_identity_v1.png",
+        "sha256": "f9a1edfcfeab4f3d287c9a15557f21f5fb9e41cf98bef55544a05248a9c1baed",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
       }
     },
     {
@@ -187,6 +421,22 @@
       "environment_asset": {
         "path": "01_canon/environments/ENV_final-index-room_v1.png",
         "sha256": "7629653ba1666c296167df6712574f1aea5d1d220ac5de4bd6bf6fba205b82dc",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
+      },
+      "layout_status": "accepted-r0-layout",
+      "layout_asset": {
+        "path": "04_cg/working/CG_016_originals-enter-lighthouse_R0_layout_v1.png",
+        "sha256": "3769dbe146933038c5dc83b9a7a6d933f426bb350e18ca0d42ef1e0a44f3c7f9",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
+      },
+      "identity_status": "accepted-r1-identity-with-carry",
+      "identity_asset": {
+        "path": "04_cg/working/CG_016_originals-enter-lighthouse_R1_identity_v1.png",
+        "sha256": "393f20763608ffce3c85648aa13813ee1f1dd2d4b901161201e657db2ec2c10c",
         "width": 1672,
         "height": 941,
         "mode": "RGB"
@@ -202,6 +452,22 @@
         "width": 1672,
         "height": 941,
         "mode": "RGB"
+      },
+      "layout_status": "accepted-r0-layout",
+      "layout_asset": {
+        "path": "04_cg/working/CG_017_traceable-revocation_R0_layout_v2.png",
+        "sha256": "f98a0774a5d79b805a7204fa13060bae79bd1b600e74b3edd81f54543f1e0b5c",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
+      },
+      "identity_status": "accepted-r1-identity-with-carry",
+      "identity_asset": {
+        "path": "04_cg/working/CG_017_traceable-revocation_R1_identity_v1.png",
+        "sha256": "a0e54723b7aae4dfeba82b210cb102bd3ccd0aa8060f61ca2002ee53b3adb0a5",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
       }
     },
     {
@@ -211,6 +477,22 @@
       "environment_asset": {
         "path": "01_canon/environments/ENV_ember-lighthouse-writein_v2.png",
         "sha256": "7f044bfcfb871198c08f29a86117d1df1a0d3bd487cf10588868c20f59c78ac8",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
+      },
+      "layout_status": "accepted-r0-layout",
+      "layout_asset": {
+        "path": "04_cg/working/CG_018_noctia-afterlight_R0_layout_v2.png",
+        "sha256": "81ef8e8c4a3f8bebfc45dea00704936c2554418d0b238d0d48b23262e8132f9f",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
+      },
+      "identity_status": "accepted-r1-identity-with-carry",
+      "identity_asset": {
+        "path": "04_cg/working/CG_018_noctia-afterlight_R1_identity_v1.png",
+        "sha256": "bd2e5e7dd1309e9b508477c0e390b4ce34fa8af73749faf06231f9ef0e68d405",
         "width": 1672,
         "height": 941,
         "mode": "RGB"
@@ -226,7 +508,25 @@
         "width": 1672,
         "height": 941,
         "mode": "RGB"
+      },
+      "layout_status": "accepted-r0-layout",
+      "layout_asset": {
+        "path": "04_cg/working/CG_019_lighthouse-archive_R0_layout_v1.png",
+        "sha256": "c674dc75d3d154223e5d396bcc99beced5a9767bc922d755dd7d97d4328a9066",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
+      },
+      "identity_status": "accepted-r1-identity-with-carry",
+      "identity_asset": {
+        "path": "04_cg/working/CG_019_lighthouse-archive_R1_identity_v1.png",
+        "sha256": "6ec272cec46a9ae9e2f517ae4f5717724f65845dadf8a539f13a0fcec0049c22",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
       }
     }
-  ]
+  ],
+  "r1_identity_accepted": 19,
+  "r1_identity_remaining": 0
 }

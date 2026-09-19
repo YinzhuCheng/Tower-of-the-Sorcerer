@@ -1,0 +1,61 @@
+{
+  "version": "GAL-SIMPLE-1.3",
+  "cg_id": "CG_009_missing-fourth-step",
+  "stage": "R1_identity",
+  "generated_at": "2026-09-19T14:45:00Z",
+  "precedence": [
+    "canonical text",
+    "turnaround",
+    "detail board",
+    "expression board",
+    "standee",
+    "accepted CG anchor",
+    "environment"
+  ],
+  "actual_input_order": [
+    {
+      "order": 1,
+      "role": "edit_target",
+      "path": "04_cg/working/CG_009_missing-fourth-step_R0_layout_v2.png",
+      "sha256": "fc6d7df3ab5658e282f060b168e7188b5313c5cbf1567707b27eb5d874b19cfa",
+      "passed_to_generator": true
+    },
+    {
+      "order": 2,
+      "role": "accepted_hero_identity_anchor",
+      "path": "04_cg/working/CG_001_critical_R1_identity_v1.png",
+      "sha256": "2806f76c2c3808531f9fdeee57cf3cecd4b0c647a20fc14a57945d65a4737789",
+      "passed_to_generator": true
+    },
+    {
+      "order": 3,
+      "role": "accepted_hero_queen_anchor",
+      "path": "04_cg/working/CG_007_noctia-truth_R1_identity_v1.png",
+      "sha256": "71d8ca94c22910cea45f5e3f1f12670bdd27428f0b5f07b589d89d064c6eebd2",
+      "passed_to_generator": true
+    },
+    {
+      "order": 4,
+      "role": "final_queen_turnaround",
+      "path": "01_canon/turnarounds/CHAR_final-queen_turnaround_v1.png",
+      "sha256": "9ad06627d33b9188616d9cbc9fa547a762e8933733026c101b33e8f349ef92e8",
+      "passed_to_generator": true
+    },
+    {
+      "order": 5,
+      "role": "final_queen_detail",
+      "path": "01_canon/details/DETAIL_final-queen_v1.png",
+      "sha256": "647725e528e53392fe07ebc32bb4a112b0253d788609b1b7d92fc8e410e1077c",
+      "passed_to_generator": true
+    }
+  ],
+  "output": {
+    "path": "04_cg/working/CG_009_missing-fourth-step_R1_identity_v1.png",
+    "sha256": "c6d864b841c9504d19f33f5e7a40b2fc02afb5d99ebaf1868ceb6580d5276308",
+    "width": 1672,
+    "height": 941,
+    "mode": "RGB"
+  },
+  "qa": "03_intermediate/qa/CG_009_missing-fourth-step_R1_identity_qa.md",
+  "status": "accepted-r1-identity-with-carry"
+}

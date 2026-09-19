@@ -3,7 +3,7 @@
   "cg_id": "CG_010_seventeen-minute-splice",
   "semantic_id": "seventeen-minute-splice",
   "title": "十七阵：确认时序错位",
-  "status": "ready-for-layout",
+  "status": "r1-identity-accepted",
   "source_locator": {
     "repository_commit": "b05bc623b7c1ef8b93cfa1fca253ad2119a52f68",
     "file": "src/game/demo-20-floor-content.js",
@@ -113,5 +113,22 @@
     "width": 1672,
     "height": 941,
     "mode": "RGB"
-  }
+  },
+  "current_iteration": "R1_identity",
+  "layout_asset": {
+    "path": "04_cg/working/CG_010_seventeen-minute-splice_R0_layout_v1.png",
+    "sha256": "cfe377a06654ab3a3683e39177b9f78088b55d675c6922b293c5118154ef35b5",
+    "width": 1672,
+    "height": 941,
+    "mode": "RGB"
+  },
+  "layout_qa": "03_intermediate/qa/CG_010_seventeen-minute-splice_R0_layout_qa.md",
+  "identity_asset": {
+    "path": "04_cg/working/CG_010_seventeen-minute-splice_R1_identity_v1.png",
+    "sha256": "46461689dbbbc7b3d27ba2d75ec30f546b5f31d2f070673b5cd8bd54bfb74853",
+    "width": 1672,
+    "height": 941,
+    "mode": "RGB"
+  },
+  "identity_qa": "03_intermediate/qa/CG_010_seventeen-minute-splice_R1_identity_qa.md"
 }

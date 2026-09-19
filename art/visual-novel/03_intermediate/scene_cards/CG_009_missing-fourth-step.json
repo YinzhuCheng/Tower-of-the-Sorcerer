@@ -3,7 +3,7 @@
   "cg_id": "CG_009_missing-fourth-step",
   "semantic_id": "missing-fourth-step",
   "title": "十一阵：缺失的第四步",
-  "status": "ready-for-layout",
+  "status": "r1-identity-accepted",
   "source_locator": {
     "repository_commit": "b05bc623b7c1ef8b93cfa1fca253ad2119a52f68",
     "file": "src/game/demo-20-floor-content.js",
@@ -114,5 +114,22 @@
     "width": 1672,
     "height": 941,
     "mode": "RGB"
-  }
+  },
+  "current_iteration": "R1_identity",
+  "layout_asset": {
+    "path": "04_cg/working/CG_009_missing-fourth-step_R0_layout_v2.png",
+    "sha256": "fc6d7df3ab5658e282f060b168e7188b5313c5cbf1567707b27eb5d874b19cfa",
+    "width": 1672,
+    "height": 941,
+    "mode": "RGB"
+  },
+  "layout_qa": "03_intermediate/qa/CG_009_missing-fourth-step_R0_layout_qa.md",
+  "identity_asset": {
+    "path": "04_cg/working/CG_009_missing-fourth-step_R1_identity_v1.png",
+    "sha256": "c6d864b841c9504d19f33f5e7a40b2fc02afb5d99ebaf1868ceb6580d5276308",
+    "width": 1672,
+    "height": 941,
+    "mode": "RGB"
+  },
+  "identity_qa": "03_intermediate/qa/CG_009_missing-fourth-step_R1_identity_qa.md"
 }

@@ -3,7 +3,7 @@
   "cg_id": "CG_007_noctia-truth",
   "semantic_id": "noctia-truth",
   "title": "十阵真相对谈",
-  "status": "ready-for-layout",
+  "status": "r1-identity-accepted",
   "source_locator": {
     "repository_commit": "b05bc623b7c1ef8b93cfa1fca253ad2119a52f68",
     "file": "src/game/demo-10-floor-content.js",
@@ -115,5 +115,22 @@
     "width": 1672,
     "height": 941,
     "mode": "RGB"
-  }
+  },
+  "current_iteration": "R1_identity",
+  "layout_asset": {
+    "path": "04_cg/working/CG_007_noctia-truth_R0_layout_v2.png",
+    "sha256": "a124aea2087ed4c1bcdb7fa6b03e30d158bc26018e957890391f5a44640b72bc",
+    "width": 1672,
+    "height": 941,
+    "mode": "RGB"
+  },
+  "layout_qa": "03_intermediate/qa/CG_007_noctia-truth_R0_layout_qa.md",
+  "identity_asset": {
+    "path": "04_cg/working/CG_007_noctia-truth_R1_identity_v1.png",
+    "sha256": "71d8ca94c22910cea45f5e3f1f12670bdd27428f0b5f07b589d89d064c6eebd2",
+    "width": 1672,
+    "height": 941,
+    "mode": "RGB"
+  },
+  "identity_qa": "03_intermediate/qa/CG_007_noctia-truth_R1_identity_qa.md"
 }

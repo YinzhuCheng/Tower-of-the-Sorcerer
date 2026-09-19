@@ -3,7 +3,7 @@
   "cg_id": "CG_016_originals-enter-lighthouse",
   "semantic_id": "originals-enter-lighthouse",
   "title": "三十阵：原卷进入灯塔",
-  "status": "ready-for-layout",
+  "status": "r1-identity-accepted",
   "source_locator": {
     "repository_commit": "b05bc623b7c1ef8b93cfa1fca253ad2119a52f68",
     "file": "src/game/demo-30-floor-content.js",
@@ -174,5 +174,22 @@
     "width": 1672,
     "height": 941,
     "mode": "RGB"
-  }
+  },
+  "current_iteration": "R1_identity",
+  "layout_asset": {
+    "path": "04_cg/working/CG_016_originals-enter-lighthouse_R0_layout_v1.png",
+    "sha256": "3769dbe146933038c5dc83b9a7a6d933f426bb350e18ca0d42ef1e0a44f3c7f9",
+    "width": 1672,
+    "height": 941,
+    "mode": "RGB"
+  },
+  "layout_qa": "03_intermediate/qa/CG_016_originals-enter-lighthouse_R0_layout_qa.md",
+  "identity_asset": {
+    "path": "04_cg/working/CG_016_originals-enter-lighthouse_R1_identity_v1.png",
+    "sha256": "393f20763608ffce3c85648aa13813ee1f1dd2d4b901161201e657db2ec2c10c",
+    "width": 1672,
+    "height": 941,
+    "mode": "RGB"
+  },
+  "identity_qa": "03_intermediate/qa/CG_016_originals-enter-lighthouse_R1_identity_qa.md"
 }

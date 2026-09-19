@@ -1,0 +1,23 @@
+{
+  "version": "GAL-SIMPLE-1.3",
+  "cg_id": "CG_003_prologue-tower",
+  "stage": "R1_identity",
+  "series_style_lock": "Clean polished anime visual-novel CG; preserve accepted R0 composition; no pseudo-text, logo, watermark, or UI.",
+  "identity_lock": "Resolve face, hair, adult age, body proportions, and silhouette from the ordered canonical references and accepted CG anchor.",
+  "composition": "Locked to the supplied R0 edit target.",
+  "continuity_anchors": [
+    "04_cg/working/CG_001_critical_R1_identity_v1.png"
+  ],
+  "negative_constraints": [
+    "composition drift",
+    "identity blending",
+    "extra characters",
+    "prop ownership swap",
+    "text",
+    "HUD",
+    "watermark",
+    "anatomy defects"
+  ],
+  "output_contract": "04_cg/working/CG_003_prologue-tower_R1_identity_v3.png",
+  "full_prompt": "Use case: precise-object-edit\nAsset type: visual-novel CG R1_identity scale correction\nEdit the FIRST image only.\n\nThe heroine at lower left is still slightly too tall. Reduce only her complete silhouette by approximately 25 percent relative to her current size, keeping her boots planted at the same lower-left ledge point. Her final boots-to-hair height must be about 9–10% of the full image height. Preserve her back-facing adult female identity, long midnight-blue/cobalt hair, navy-and-ivory mantle, and exactly one lowered sword.\n\nPreserve the entire tower environment, camera, gate, storm, rain, lightning, reflections, all architecture, exactly SEVEN blue core lights, and exactly ONE upper-right ship unchanged. Do not alter anything except the heroine scale and the few background pixels directly revealed behind her.\n\nNo extra people, no male silhouette, no extra lights, no extra ships, no text, UI, logo, or watermark. Output exactly one polished 1672×941 image."
+}

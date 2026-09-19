@@ -3,7 +3,7 @@
   "cg_id": "CG_004_seven-cantos-severed",
   "semantic_id": "seven-cantos-severed",
   "title": "序章：七段咏唱被拆分",
-  "status": "ready-for-layout",
+  "status": "r1-identity-accepted",
   "source_locator": {
     "repository_commit": "b05bc623b7c1ef8b93cfa1fca253ad2119a52f68",
     "file": "src/game/data.js",
@@ -114,5 +114,22 @@
     "width": 1672,
     "height": 941,
     "mode": "RGB"
-  }
+  },
+  "current_iteration": "R1_identity",
+  "layout_asset": {
+    "path": "04_cg/working/CG_004_seven-cantos-severed_R0_layout_v1.png",
+    "sha256": "eb7363e32372acdf17205a7ea6ea62a35d5a2e9ef4efdeb960f4cf7c6a2cf32b",
+    "width": 1672,
+    "height": 941,
+    "mode": "RGB"
+  },
+  "layout_qa": "03_intermediate/qa/CG_004_seven-cantos-severed_R0_layout_qa.md",
+  "identity_asset": {
+    "path": "04_cg/working/CG_004_seven-cantos-severed_R1_identity_v1.png",
+    "sha256": "f3ec511ae758d14181318f9a2c2911542dd1b05d4a6997ea6ade27354f6e113c",
+    "width": 1672,
+    "height": 941,
+    "mode": "RGB"
+  },
+  "identity_qa": "03_intermediate/qa/CG_004_seven-cantos-severed_R1_identity_qa.md"
 }

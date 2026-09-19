@@ -3,7 +3,7 @@
   "cg_id": "CG_011_intercepted-receipt",
   "semantic_id": "intercepted-receipt",
   "title": "十八阵：截留回执",
-  "status": "ready-for-layout",
+  "status": "r1-identity-accepted",
   "source_locator": {
     "repository_commit": "b05bc623b7c1ef8b93cfa1fca253ad2119a52f68",
     "file": "src/game/demo-20-floor-content.js",
@@ -115,5 +115,22 @@
     "width": 1672,
     "height": 941,
     "mode": "RGB"
-  }
+  },
+  "current_iteration": "R1_identity",
+  "layout_asset": {
+    "path": "04_cg/working/CG_011_intercepted-receipt_R0_layout_v1.png",
+    "sha256": "875b34004f7b16e724f19e821d94f48fef8cac8f74f9db962f91daa1eafed1f0",
+    "width": 1672,
+    "height": 941,
+    "mode": "RGB"
+  },
+  "layout_qa": "03_intermediate/qa/CG_011_intercepted-receipt_R0_layout_qa.md",
+  "identity_asset": {
+    "path": "04_cg/working/CG_011_intercepted-receipt_R1_identity_v1.png",
+    "sha256": "1dd9a87b5968aaba7cc6901709222dbbcade6e6f9e20f916bf1766911c8248bc",
+    "width": 1672,
+    "height": 941,
+    "mode": "RGB"
+  },
+  "identity_qa": "03_intermediate/qa/CG_011_intercepted-receipt_R1_identity_qa.md"
 }

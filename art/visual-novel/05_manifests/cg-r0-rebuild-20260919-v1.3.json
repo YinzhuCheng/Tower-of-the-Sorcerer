@@ -1,0 +1,299 @@
+{
+  "version": "GAL-SIMPLE-1.3",
+  "generated_at": "2026-09-19T14:45:00Z",
+  "base_commit": "8126b11a554f101e3f2572a16657a9c91bb29dea",
+  "source": "Recovered from ChatGPT Library outputs created in the prior project session; selected by contact-sheet review against the prior acceptance decisions.",
+  "accepted": 19,
+  "total": 19,
+  "final_cg": 0,
+  "scenes": [
+    {
+      "order": 1,
+      "cg_id": "CG_001_critical",
+      "library_title": "Lone swordswoman in the obsidian tower.png",
+      "asset": {
+        "path": "04_cg/working/CG_001_critical_R0_layout_v2.png",
+        "sha256": "5257cbdf2a6b78c05d9aabf21b7e62b16375e1b5bfd453dad28d217b33f4b591",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
+      },
+      "qa": "03_intermediate/qa/CG_001_critical_R0_layout_qa.md",
+      "status": "accepted-r0-layout"
+    },
+    {
+      "order": 2,
+      "cg_id": "CG_002_defeat",
+      "library_title": "Lucid Defeat in the Obsidian Tower.png",
+      "asset": {
+        "path": "04_cg/working/CG_002_defeat_R0_layout_v2.png",
+        "sha256": "6d781220b0e4069a47da04a19746d7a9704fab15c6022d2c54f8b9538dcc5f30",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
+      },
+      "qa": "03_intermediate/qa/CG_002_defeat_R0_layout_qa.md",
+      "status": "accepted-r0-layout"
+    },
+    {
+      "order": 3,
+      "cg_id": "CG_003_prologue-tower",
+      "library_title": "Stormbound Tower With Seven Core Lights.png",
+      "asset": {
+        "path": "04_cg/working/CG_003_prologue-tower_R0_layout_v4.png",
+        "sha256": "000a23251b07710e711bc9df37145989a7fa6ceeaee8614a60afd553c59f15fa",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
+      },
+      "qa": "03_intermediate/qa/CG_003_prologue-tower_R0_layout_qa.md",
+      "status": "accepted-r0-layout"
+    },
+    {
+      "order": 4,
+      "cg_id": "CG_004_seven-cantos-severed",
+      "library_title": "Seven crystal trails and three red seals.png",
+      "asset": {
+        "path": "04_cg/working/CG_004_seven-cantos-severed_R0_layout_v1.png",
+        "sha256": "eb7363e32372acdf17205a7ea6ea62a35d5a2e9ef4efdeb960f4cf7c6a2cf32b",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
+      },
+      "qa": "03_intermediate/qa/CG_004_seven-cantos-severed_R0_layout_qa.md",
+      "status": "accepted-r0-layout"
+    },
+    {
+      "order": 5,
+      "cg_id": "CG_005_northstar-arrival",
+      "library_title": "Ocean singer’s five-string shell harp.png",
+      "asset": {
+        "path": "04_cg/working/CG_005_northstar-arrival_R0_layout_v2.png",
+        "sha256": "c11202fc76167c08081eb3e2a2a6bccca38b521b98a0389fa4eebb5bc9ea598d",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
+      },
+      "qa": "03_intermediate/qa/CG_005_northstar-arrival_R0_layout_qa.md",
+      "status": "accepted-r0-layout"
+    },
+    {
+      "order": 6,
+      "cg_id": "CG_006_seven-core-network",
+      "library_title": "Seven Paths, One Closure Lock.png",
+      "asset": {
+        "path": "04_cg/working/CG_006_seven-core-network_R0_layout_v1.png",
+        "sha256": "d8af5ddd8ceb3de15356f5b8465b0168f67fdd261130db75a632c171c49f6b70",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
+      },
+      "qa": "03_intermediate/qa/CG_006_seven-core-network_R0_layout_qa.md",
+      "status": "accepted-r0-layout"
+    },
+    {
+      "order": 7,
+      "cg_id": "CG_007_noctia-truth",
+      "library_title": "Moonlit Confession by the Low Throne.png",
+      "asset": {
+        "path": "04_cg/working/CG_007_noctia-truth_R0_layout_v2.png",
+        "sha256": "a124aea2087ed4c1bcdb7fa6b03e30d158bc26018e957890391f5a44640b72bc",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
+      },
+      "qa": "03_intermediate/qa/CG_007_noctia-truth_R0_layout_qa.md",
+      "status": "accepted-r0-layout"
+    },
+    {
+      "order": 8,
+      "cg_id": "CG_008_noctia-seal",
+      "library_title": "Queen and Heroine Open the Rift.png",
+      "asset": {
+        "path": "04_cg/working/CG_008_noctia-seal_R0_layout_v1.png",
+        "sha256": "6b63cd37d3f93282fe13cf08fe6b29eb3550218aca2abb001f5610ed8bb9c7e7",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
+      },
+      "qa": "03_intermediate/qa/CG_008_noctia-seal_R0_layout_qa.md",
+      "status": "accepted-r0-layout"
+    },
+    {
+      "order": 9,
+      "cg_id": "CG_009_missing-fourth-step",
+      "library_title": "The Sun Sanctum’s Missing Fourth Seal.png",
+      "asset": {
+        "path": "04_cg/working/CG_009_missing-fourth-step_R0_layout_v2.png",
+        "sha256": "fc6d7df3ab5658e282f060b168e7188b5313c5cbf1567707b27eb5d874b19cfa",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
+      },
+      "qa": "03_intermediate/qa/CG_009_missing-fourth-step_R0_layout_qa.md",
+      "status": "accepted-r0-layout"
+    },
+    {
+      "order": 10,
+      "cg_id": "CG_010_seventeen-minute-splice",
+      "library_title": "Sunrise Evidence and the Shifted Timeline.png",
+      "asset": {
+        "path": "04_cg/working/CG_010_seventeen-minute-splice_R0_layout_v1.png",
+        "sha256": "cfe377a06654ab3a3683e39177b9f78088b55d675c6922b293c5118154ef35b5",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
+      },
+      "qa": "03_intermediate/qa/CG_010_seventeen-minute-splice_R0_layout_qa.md",
+      "status": "accepted-r0-layout"
+    },
+    {
+      "order": 11,
+      "cg_id": "CG_011_intercepted-receipt",
+      "library_title": "The intercepted reply.png",
+      "asset": {
+        "path": "04_cg/working/CG_011_intercepted-receipt_R0_layout_v1.png",
+        "sha256": "875b34004f7b16e724f19e821d94f48fef8cac8f74f9db962f91daa1eafed1f0",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
+      },
+      "qa": "03_intermediate/qa/CG_011_intercepted-receipt_R0_layout_qa.md",
+      "status": "accepted-r0-layout"
+    },
+    {
+      "order": 12,
+      "cg_id": "CG_012_echo-ledger",
+      "library_title": "Moonlit Witnesses in the Echo Court.png",
+      "asset": {
+        "path": "04_cg/working/CG_012_echo-ledger_R0_layout_v1.png",
+        "sha256": "57a19499ce7e4a86bfc0d066fc8e3288ba5d7e78c75c1d006ba390479b61f4ea",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
+      },
+      "qa": "03_intermediate/qa/CG_012_echo-ledger_R0_layout_qa.md",
+      "status": "accepted-r0-layout"
+    },
+    {
+      "order": 13,
+      "cg_id": "CG_013_noctia-sovereign",
+      "library_title": "Broken Ring, Silent Witnesses.png",
+      "asset": {
+        "path": "04_cg/working/CG_013_noctia-sovereign_R0_layout_v1.png",
+        "sha256": "57be881348c4375b87779003722b35b986ff700be53c609844ba111e511c7bd0",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
+      },
+      "qa": "03_intermediate/qa/CG_013_noctia-sovereign_R0_layout_qa.md",
+      "status": "accepted-r0-layout"
+    },
+    {
+      "order": 14,
+      "cg_id": "CG_014_missing-page-restored",
+      "library_title": "The Protocol’s Separated Final Page.png",
+      "asset": {
+        "path": "04_cg/working/CG_014_missing-page-restored_R0_layout_v1.png",
+        "sha256": "903a10835ca681f200be23618d0a38c7ccf191268c6a5f13710783c3d263b28f",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
+      },
+      "qa": "03_intermediate/qa/CG_014_missing-page-restored_R0_layout_qa.md",
+      "status": "accepted-r0-layout"
+    },
+    {
+      "order": 15,
+      "cg_id": "CG_015_letters-held-in-storm",
+      "library_title": "Cape Shelter in the Archive Storm.png",
+      "asset": {
+        "path": "04_cg/working/CG_015_letters-held-in-storm_R0_layout_v1.png",
+        "sha256": "85c7e95fd5f0006c7815386f77155a3a15e683c9cead6a03698f9736d9877e4b",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
+      },
+      "qa": "03_intermediate/qa/CG_015_letters-held-in-storm_R0_layout_qa.md",
+      "status": "accepted-r0-layout"
+    },
+    {
+      "order": 16,
+      "cg_id": "CG_016_originals-enter-lighthouse",
+      "library_title": "Final index: brass rail to lighthouse.png",
+      "asset": {
+        "path": "04_cg/working/CG_016_originals-enter-lighthouse_R0_layout_v1.png",
+        "sha256": "3769dbe146933038c5dc83b9a7a6d933f426bb350e18ca0d42ef1e0a44f3c7f9",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
+      },
+      "qa": "03_intermediate/qa/CG_016_originals-enter-lighthouse_R0_layout_qa.md",
+      "status": "accepted-r0-layout"
+    },
+    {
+      "order": 17,
+      "cg_id": "CG_017_traceable-revocation",
+      "library_title": "Ember Lighthouse: New Ring, Old Archive.png",
+      "asset": {
+        "path": "04_cg/working/CG_017_traceable-revocation_R0_layout_v2.png",
+        "sha256": "f98a0774a5d79b805a7204fa13060bae79bd1b600e74b3edd81f54543f1e0b5c",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
+      },
+      "qa": "03_intermediate/qa/CG_017_traceable-revocation_R0_layout_qa.md",
+      "status": "accepted-r0-layout"
+    },
+    {
+      "order": 18,
+      "cg_id": "CG_018_noctia-afterlight",
+      "library_title": "Quiet Delivery at Ember Lighthouse.png",
+      "asset": {
+        "path": "04_cg/working/CG_018_noctia-afterlight_R0_layout_v2.png",
+        "sha256": "81ef8e8c4a3f8bebfc45dea00704936c2554418d0b238d0d48b23262e8132f9f",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
+      },
+      "qa": "03_intermediate/qa/CG_018_noctia-afterlight_R0_layout_qa.md",
+      "status": "accepted-r0-layout"
+    },
+    {
+      "order": 19,
+      "cg_id": "CG_019_lighthouse-archive",
+      "library_title": "Mailbound Dawn at Ember Lighthouse.png",
+      "asset": {
+        "path": "04_cg/working/CG_019_lighthouse-archive_R0_layout_v1.png",
+        "sha256": "c674dc75d3d154223e5d396bcc99beced5a9767bc922d755dd7d97d4328a9066",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
+      },
+      "qa": "03_intermediate/qa/CG_019_lighthouse-archive_R0_layout_qa.md",
+      "status": "accepted-r0-layout"
+    }
+  ],
+  "exclusions": [
+    {
+      "library_title": "Seven Lights Beneath the Storm.png",
+      "reason": "Rejected alternate CG003 composition/scale."
+    },
+    {
+      "library_title": "Water-memory proof in the ocean archive.png",
+      "reason": "Rejected CG005 anatomy/prop attempt; recovered Library transfer was truncated and is not committed."
+    },
+    {
+      "library_title": "Seven Lights Between Queen and Heroine.png",
+      "reason": "Rejected CG007 prop-ownership variant."
+    },
+    {
+      "library_title": "Seven luminous links to archive panels.png",
+      "reason": "Rejected alternate network composition."
+    },
+    {
+      "library_title": "Seven rainbow cores, three red seals.png",
+      "reason": "Rejected alternate seal composition."
+    }
+  ]
+}

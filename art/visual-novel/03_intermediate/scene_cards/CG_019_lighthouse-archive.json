@@ -3,7 +3,7 @@
   "cg_id": "CG_019_lighthouse-archive",
   "semantic_id": "lighthouse-archive",
   "title": "终章灯塔归档",
-  "status": "ready-for-layout",
+  "status": "r1-identity-accepted",
   "source_locator": {
     "repository_commit": "b05bc623b7c1ef8b93cfa1fca253ad2119a52f68",
     "file": "src/game/demo-30-floor-content.js",
@@ -172,5 +172,22 @@
     "width": 1672,
     "height": 941,
     "mode": "RGB"
-  }
+  },
+  "current_iteration": "R1_identity",
+  "layout_asset": {
+    "path": "04_cg/working/CG_019_lighthouse-archive_R0_layout_v1.png",
+    "sha256": "c674dc75d3d154223e5d396bcc99beced5a9767bc922d755dd7d97d4328a9066",
+    "width": 1672,
+    "height": 941,
+    "mode": "RGB"
+  },
+  "layout_qa": "03_intermediate/qa/CG_019_lighthouse-archive_R0_layout_qa.md",
+  "identity_asset": {
+    "path": "04_cg/working/CG_019_lighthouse-archive_R1_identity_v1.png",
+    "sha256": "6ec272cec46a9ae9e2f517ae4f5717724f65845dadf8a539f13a0fcec0049c22",
+    "width": 1672,
+    "height": 941,
+    "mode": "RGB"
+  },
+  "identity_qa": "03_intermediate/qa/CG_019_lighthouse-archive_R1_identity_qa.md"
 }

@@ -3,7 +3,7 @@
   "cg_id": "CG_017_traceable-revocation",
   "semantic_id": "traceable-revocation",
   "title": "灯塔：可追溯撤销写入",
-  "status": "ready-for-layout",
+  "status": "r1-identity-accepted",
   "source_locator": {
     "repository_commit": "b05bc623b7c1ef8b93cfa1fca253ad2119a52f68",
     "file": "src/game/demo-30-floor-content.js",
@@ -145,5 +145,22 @@
     "width": 1672,
     "height": 941,
     "mode": "RGB"
-  }
+  },
+  "current_iteration": "R1_identity",
+  "layout_asset": {
+    "path": "04_cg/working/CG_017_traceable-revocation_R0_layout_v2.png",
+    "sha256": "f98a0774a5d79b805a7204fa13060bae79bd1b600e74b3edd81f54543f1e0b5c",
+    "width": 1672,
+    "height": 941,
+    "mode": "RGB"
+  },
+  "layout_qa": "03_intermediate/qa/CG_017_traceable-revocation_R0_layout_qa.md",
+  "identity_asset": {
+    "path": "04_cg/working/CG_017_traceable-revocation_R1_identity_v1.png",
+    "sha256": "a0e54723b7aae4dfeba82b210cb102bd3ccd0aa8060f61ca2002ee53b3adb0a5",
+    "width": 1672,
+    "height": 941,
+    "mode": "RGB"
+  },
+  "identity_qa": "03_intermediate/qa/CG_017_traceable-revocation_R1_identity_qa.md"
 }

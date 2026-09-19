@@ -3,7 +3,7 @@
   "cg_id": "CG_005_northstar-arrival",
   "semantic_id": "northstar-arrival",
   "title": "三阵：北辰七号抵岸原音",
-  "status": "ready-for-layout",
+  "status": "r1-identity-accepted",
   "source_locator": {
     "repository_commit": "b05bc623b7c1ef8b93cfa1fca253ad2119a52f68",
     "file": "src/game/demo-10-floor-content.js",
@@ -112,5 +112,22 @@
     "width": 1672,
     "height": 941,
     "mode": "RGB"
-  }
+  },
+  "current_iteration": "R1_identity",
+  "layout_asset": {
+    "path": "04_cg/working/CG_005_northstar-arrival_R0_layout_v2.png",
+    "sha256": "c11202fc76167c08081eb3e2a2a6bccca38b521b98a0389fa4eebb5bc9ea598d",
+    "width": 1672,
+    "height": 941,
+    "mode": "RGB"
+  },
+  "layout_qa": "03_intermediate/qa/CG_005_northstar-arrival_R0_layout_qa.md",
+  "identity_asset": {
+    "path": "04_cg/working/CG_005_northstar-arrival_R1_identity_v1.png",
+    "sha256": "1c7b710e03875b31e5376603e9f0b8ae556603d8d96781f2bc602a0241970037",
+    "width": 1672,
+    "height": 941,
+    "mode": "RGB"
+  },
+  "identity_qa": "03_intermediate/qa/CG_005_northstar-arrival_R1_identity_qa.md"
 }

@@ -1,0 +1,54 @@
+{
+  "version": "GAL-SIMPLE-1.3",
+  "cg_id": "CG_019_lighthouse-archive",
+  "stage": "R1_identity",
+  "generated_at": "2026-09-19T14:45:00Z",
+  "precedence": [
+    "canonical text",
+    "turnaround",
+    "detail board",
+    "expression board",
+    "standee",
+    "accepted CG anchor",
+    "environment"
+  ],
+  "actual_input_order": [
+    {
+      "order": 1,
+      "role": "edit_target",
+      "path": "04_cg/working/CG_019_lighthouse-archive_R0_layout_v1.png",
+      "sha256": "c674dc75d3d154223e5d396bcc99beced5a9767bc922d755dd7d97d4328a9066",
+      "passed_to_generator": true
+    },
+    {
+      "order": 2,
+      "role": "accepted_three-person_anchor",
+      "path": "04_cg/working/CG_014_missing-page-restored_R1_identity_v1.png",
+      "sha256": "a9484e0785fc296dd63ae00f07919a5802d8222455069bf3b6e0bf2c8aaa095d",
+      "passed_to_generator": true
+    },
+    {
+      "order": 3,
+      "role": "accepted_guide_queen_sovereign_anchor",
+      "path": "04_cg/working/CG_017_traceable-revocation_R1_identity_v1.png",
+      "sha256": "a0e54723b7aae4dfeba82b210cb102bd3ccd0aa8060f61ca2002ee53b3adb0a5",
+      "passed_to_generator": true
+    },
+    {
+      "order": 4,
+      "role": "guide_turnaround",
+      "path": "01_canon/turnarounds/CHAR_guide_turnaround_v1.png",
+      "sha256": "21324cb96a2a3cd44a6c53d2f1dd5a323b7caf3f25d9d118604120f3f7209af7",
+      "passed_to_generator": true
+    }
+  ],
+  "output": {
+    "path": "04_cg/working/CG_019_lighthouse-archive_R1_identity_v1.png",
+    "sha256": "6ec272cec46a9ae9e2f517ae4f5717724f65845dadf8a539f13a0fcec0049c22",
+    "width": 1672,
+    "height": 941,
+    "mode": "RGB"
+  },
+  "qa": "03_intermediate/qa/CG_019_lighthouse-archive_R1_identity_qa.md",
+  "status": "accepted-r1-identity-with-carry"
+}

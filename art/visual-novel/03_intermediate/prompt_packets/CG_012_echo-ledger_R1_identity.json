@@ -1,0 +1,24 @@
+{
+  "version": "GAL-SIMPLE-1.3",
+  "cg_id": "CG_012_echo-ledger",
+  "stage": "R1_identity",
+  "series_style_lock": "Clean polished anime visual-novel CG; preserve accepted R0 composition; no pseudo-text, logo, watermark, or UI.",
+  "identity_lock": "Resolve face, hair, adult age, body proportions, and silhouette from the ordered canonical references and accepted CG anchor.",
+  "composition": "Locked to the supplied R0 edit target.",
+  "continuity_anchors": [
+    "04_cg/working/CG_007_noctia-truth_R1_identity_v1.png",
+    "04_cg/working/CG_001_critical_R1_identity_v1.png"
+  ],
+  "negative_constraints": [
+    "composition drift",
+    "identity blending",
+    "extra characters",
+    "prop ownership swap",
+    "text",
+    "HUD",
+    "watermark",
+    "anatomy defects"
+  ],
+  "output_contract": "04_cg/working/CG_012_echo-ledger_R1_identity_v1.png",
+  "full_prompt": "Use case: identity-preserve\nAsset type: visual-novel CG R1_identity\nEdit the FIRST image only.\n\nPreserve the FIRST image's exact 16:9 three-person witness composition, camera, moonlit archive chamber, heroine standing on image left, Queen Noctia crouching at the center table, Echo Regent standing on image right, all poses, tabletop geometry, one low black memorial ledger, one single green status light, and the solemn non-combat action. Do not redesign the environment, table, ledger, tag, seal receipt, or action.\n\nIdentity sources:\n- References 2-3 define the accepted heroine and Queen Noctia faces/rendering. Match both adult women exactly: heroine with violet-blue eyes and long midnight-blue hair with cobalt tips; queen with crimson eyes and calf-length black hair with dark burgundy ends, clearly adult and regal.\n- References 4-5 define the Echo Regent. Make the right figure unmistakably the same androgynous adult court regent: slender adult masculine silhouette, shoulder-length ash-blond hair gathered in exactly ONE low tie, muted violet eyes, calm grave face. Keep the regent distinct from both women and do not feminize or age into an elderly man.\n\nR1 scope: change only faces, hair, adult age, body proportions, and identity-critical silhouettes where needed. Preserve costume construction for R2.\n\nHard invariants:\n- exactly THREE adults: heroine left, queen center, regent right\n- queen remains crouched aligning exactly ONE nameplate/tag to one sealed receipt\n- exactly ONE green status light; at least one mourning tag remains visibly unchanged\n- the ONE black memorial ledger stays on the low table and belongs to the regent\n- no crown on the regent, no weapon on the regent, no queen sword\n- no readable names or writing, extra books, extra people, identity blending, combat pose, text, UI, logo, watermark, or anatomy defects\n\nOutput exactly one polished 1672×941 anime visual-novel CG at the same resolution as the first image."
+}

@@ -1,0 +1,24 @@
+{
+  "version": "GAL-SIMPLE-1.3",
+  "cg_id": "CG_009_missing-fourth-step",
+  "stage": "R1_identity",
+  "series_style_lock": "Clean polished anime visual-novel CG; preserve accepted R0 composition; no pseudo-text, logo, watermark, or UI.",
+  "identity_lock": "Resolve face, hair, adult age, body proportions, and silhouette from the ordered canonical references and accepted CG anchor.",
+  "composition": "Locked to the supplied R0 edit target.",
+  "continuity_anchors": [
+    "04_cg/working/CG_001_critical_R1_identity_v1.png",
+    "04_cg/working/CG_007_noctia-truth_R1_identity_v1.png"
+  ],
+  "negative_constraints": [
+    "composition drift",
+    "identity blending",
+    "extra characters",
+    "prop ownership swap",
+    "text",
+    "HUD",
+    "watermark",
+    "anatomy defects"
+  ],
+  "output_contract": "04_cg/working/CG_009_missing-fourth-step_R1_identity_v1.png",
+  "full_prompt": "Use case: identity-preserve\nAsset type: visual-novel CG R1_identity\nEdit the FIRST image only.\n\nPreserve the FIRST image's exact 16:9 wide composition, camera, sun-sanctum architecture, warm sunset lighting, wall geometry, exactly FOUR process positions, the first three abstract non-text symbols, the torn blank FOURTH position, floor reflections, hero at image left/side-back, queen at image right/back, poses, and prop ownership. The queen's hand must remain stopped just before the missing fourth gap. This is investigation, not combat.\n\nIdentity sources:\n- Reference 2 is the accepted hero identity/rendering anchor. Keep the left heroine as the same adult woman: mature proportions, violet-blue identity, midnight-blue hip-length hair with cobalt tips, small low half-up braided bun, one right-temple crescent clip, one left-shoulder crescent clasp, and exactly one visibly lowered sword.\n- Reference 3 is the accepted hero-plus-queen continuity anchor. Match both adult silhouettes and series rendering.\n- References 4-5 define the queen: adult regal woman, calf-length loose black hair with dark burgundy ends, crimson identity, thin dark-silver crown with exactly THREE main points and ONE central ruby diamond, ruby-diamond throat brooch. She has no sword.\n\nEmotional direction: hero watches with quiet resolve; queen shows shaken realization through her halted hand and tense back-facing posture.\n\nHard invariants:\n- exactly TWO adult women\n- exactly FOUR wall positions, with the FOURTH visibly missing/torn blank\n- hero remains left and owns exactly ONE lowered sword\n- queen remains right, owns no sword, and reaches with one empty hand toward the gap\n- no combat, extra people, duplicate positions, readable button text, computer UI, text, HUD, logo, watermark, identity blending, anatomy defects, or environmental redesign\n- preserve existing costume construction for R2; at R1 change only face-visible identity cues, hair, adult age, and body proportions where needed\n\nOutput exactly one polished 1672×941 anime visual-novel CG at the same resolution as the first image."
+}

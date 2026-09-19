@@ -1,0 +1,24 @@
+{
+  "version": "GAL-SIMPLE-1.3",
+  "cg_id": "CG_018_noctia-afterlight",
+  "stage": "R1_identity",
+  "series_style_lock": "Clean polished anime visual-novel CG; preserve accepted R0 composition; no pseudo-text, logo, watermark, or UI.",
+  "identity_lock": "Resolve face, hair, adult age, body proportions, and silhouette from the ordered canonical references and accepted CG anchor.",
+  "composition": "Locked to the supplied R0 edit target.",
+  "continuity_anchors": [
+    "04_cg/working/CG_001_critical_R1_identity_v1.png",
+    "04_cg/working/CG_007_noctia-truth_R1_identity_v1.png"
+  ],
+  "negative_constraints": [
+    "composition drift",
+    "identity blending",
+    "extra characters",
+    "prop ownership swap",
+    "text",
+    "HUD",
+    "watermark",
+    "anatomy defects"
+  ],
+  "output_contract": "04_cg/working/CG_018_noctia-afterlight_R1_identity_v1.png",
+  "full_prompt": "Use case: identity-preserve\nAsset type: visual-novel CG R1_identity\nEdit the FIRST image only.\n\nPreserve the FIRST image's exact 16:9 quiet close-medium composition, camera, ember-lighthouse interior, sunset window and lighting, seated hero on image left, seated queen on image right, closed first mail crate centered between them, final gray-harbor volume at lower right, exactly ONE small red alarm stone on the tabletop near the queen's just-withdrawn hand, poses, gaze, and reflective pause. Do not redesign the room, table, crate, book, stone, or emotional beat.\n\nIdentity sources:\n- Reference 2 is the accepted hero face/rendering anchor. Make the left heroine unmistakably the same adult woman: mature young-adult face, violet-blue eyes, midnight-blue hip-length hair with cobalt tips, small low half-up braided bun, exactly one silver crescent clip on HER RIGHT temple and one crescent mantle clasp on HER LEFT shoulder.\n- Reference 3 is the accepted hero-plus-queen continuity anchor. Match both adult faces, proportions, hair silhouettes, and series rendering.\n- References 4-5 define the queen: adult regal face, crimson eyes, calf-length loose black hair with dark burgundy ends, thin dark-silver crown with exactly THREE main points and ONE central ruby diamond, one ruby-diamond throat brooch. She keeps the crown while allowing the separate alarm stone to rest.\n\nEmotional direction: hero shows quiet relief and does not pressure her; queen shows peaceful acceptance after finally setting the alarm aside. No celebration and no romance.\n\nHard invariants:\n- exactly TWO adult women\n- exactly ONE red alarm stone on the table, separate from the queen's crown\n- exactly ONE closed mail crate between them and ONE final volume at lower right\n- queen keeps exactly one three-main-point crown with one central ruby; no extra jewels\n- no romantic touch, celebration, readable addresses or book text, extra crates, extra stones, extra people, text, UI, logo, watermark, identity blending, fused hands, or anatomy defects\n- preserve costume construction for R2; change only faces, hair, adult age, and body proportions where needed\n\nOutput exactly one polished 1672×941 anime visual-novel CG at the same resolution as the first image."
+}

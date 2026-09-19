@@ -1,0 +1,23 @@
+{
+  "version": "GAL-SIMPLE-1.3",
+  "cg_id": "CG_007_noctia-truth",
+  "stage": "R1_identity",
+  "series_style_lock": "Clean polished anime visual-novel CG; preserve accepted R0 composition; no pseudo-text, logo, watermark, or UI.",
+  "identity_lock": "Resolve face, hair, adult age, body proportions, and silhouette from the ordered canonical references and accepted CG anchor.",
+  "composition": "Locked to the supplied R0 edit target.",
+  "continuity_anchors": [
+    "04_cg/working/CG_001_critical_R1_identity_v1.png"
+  ],
+  "negative_constraints": [
+    "composition drift",
+    "identity blending",
+    "extra characters",
+    "prop ownership swap",
+    "text",
+    "HUD",
+    "watermark",
+    "anatomy defects"
+  ],
+  "output_contract": "04_cg/working/CG_007_noctia-truth_R1_identity_v1.png",
+  "full_prompt": "Edit the FIRST image only. This is R1_identity for CG_007_noctia-truth. Preserve the first image's exact 16:9 camera, two-person composition, positions, scale, low throne, night-tower architecture, moonlit lighting, non-attacking body language, the heroine's lowered sword, and all prop ownership. Do not redesign the shot, background, pose, or story beat.\n\nIdentity references: reference 2 is the already accepted R1 identity anchor for the blue-haired heroine; make the left-side heroine unmistakably the same adult woman with the same face, violet-blue eyes, low half-up braided bun, midnight-blue hair with cobalt tips, and adult proportions. References 3-5 define the black-haired queen, with priority: turnaround for body/face/hair silhouette, detail board for crown/brooch/three tablets, expression board for contained sorrow.\n\nQueen lock: adult regal woman, 172 cm proportions, calf-length loose black hair with dark burgundy ends, crimson eyes, one thin dark-silver crown with exactly THREE main points and ONE central ruby diamond, one ruby-diamond throat brooch. Her expression is contained sorrow, exhausted by years of waiting, not hostile. She alone cups ONE small fading pale-red distress light between her two hands at chest height. Exactly THREE red diamond seal tablets remain bound together at rest on the floor at the far lower right; they are not the distress light. She has no sword.\n\nHero lock: same adult identity as reference 2, on image left in three-quarter/back profile, watching guardedly; her one sword stays visibly lowered in her right hand. Do not alter her costume at this stage.\n\nNo combat clash, no embrace, no text, HUD, logo, watermark, extra characters, extra swords, extra crowns, extra light orbs, prop swaps, fused fingers, or identity blending. Keep clean polished anime visual-novel CG rendering. Output exactly one finished 16:9 image at the same resolution as the first image."
+}

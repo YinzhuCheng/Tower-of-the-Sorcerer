@@ -3,16 +3,16 @@
   "cg_id": "CG_003_prologue-tower",
   "semantic_id": "prologue-tower",
   "title": "序章：被夺去的咏唱",
-  "status": "r0-layout-accepted-with-carry",
-  "current_iteration": "R0_layout_v2",
+  "status": "r1-identity-accepted",
+  "current_iteration": "R1_identity",
   "layout_asset": {
-    "path": "04_cg/working/CG_003_prologue-tower_R0_layout_v2.png",
-    "sha256": "c4761fef9dba03a44b53dbe6f01185bbf1f3356aaa057158154a75baf189431d",
+    "path": "04_cg/working/CG_003_prologue-tower_R0_layout_v4.png",
+    "sha256": "000a23251b07710e711bc9df37145989a7fa6ceeaee8614a60afd553c59f15fa",
     "width": 1672,
     "height": 941,
     "mode": "RGB"
   },
-  "layout_qa": "03_intermediate/qa/CG_003_prologue-tower_R0_qa.md",
+  "layout_qa": "03_intermediate/qa/CG_003_prologue-tower_R0_layout_qa.md",
   "layout_carry": "If the heroine remains in R1/R3, reduce her to roughly 12% or less of frame height without changing tower, seven lights, ship, sealed gate or storm direction.",
   "source_locator": {
     "repository_commit": "b05bc623b7c1ef8b93cfa1fca253ad2119a52f68",
@@ -94,5 +94,13 @@
     "width": 1672,
     "height": 941,
     "mode": "RGB"
-  }
+  },
+  "identity_asset": {
+    "path": "04_cg/working/CG_003_prologue-tower_R1_identity_v3.png",
+    "sha256": "b4746f7a9c25447910b56927aaaa6b88a034b86d59ec3e5a971d6f9ed7a77094",
+    "width": 1672,
+    "height": 941,
+    "mode": "RGB"
+  },
+  "identity_qa": "03_intermediate/qa/CG_003_prologue-tower_R1_identity_qa.md"
 }

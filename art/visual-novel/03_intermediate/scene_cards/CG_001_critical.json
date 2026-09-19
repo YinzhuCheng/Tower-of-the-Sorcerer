@@ -3,16 +3,16 @@
   "cg_id": "CG_001_critical",
   "semantic_id": "critical",
   "title": "危急战斗预演",
-  "status": "r0-layout-accepted",
-  "current_iteration": "R0_layout",
+  "status": "r1-identity-accepted",
+  "current_iteration": "R1_identity",
   "layout_asset": {
-    "path": "04_cg/working/CG_001_critical_R0_layout_v1.png",
-    "sha256": "1dd44397a0a8f8d2601769841f741d8ef5ed4180e065997f25de124783bb7a40",
+    "path": "04_cg/working/CG_001_critical_R0_layout_v2.png",
+    "sha256": "5257cbdf2a6b78c05d9aabf21b7e62b16375e1b5bfd453dad28d217b33f4b591",
     "width": 1672,
     "height": 941,
     "mode": "RGB"
   },
-  "layout_qa": "03_intermediate/qa/CG_001_critical_R0_qa.md",
+  "layout_qa": "03_intermediate/qa/CG_001_critical_R0_layout_qa.md",
   "source_locator": {
     "repository_commit": "b05bc623b7c1ef8b93cfa1fca253ad2119a52f68",
     "file": "src/main.js",
@@ -87,5 +87,13 @@
     "R4_final"
   ],
   "output_contract": "04_cg/final/CG_001_critical_v1.png",
-  "environment_reference_asset": null
+  "environment_reference_asset": null,
+  "identity_asset": {
+    "path": "04_cg/working/CG_001_critical_R1_identity_v1.png",
+    "sha256": "2806f76c2c3808531f9fdeee57cf3cecd4b0c647a20fc14a57945d65a4737789",
+    "width": 1672,
+    "height": 941,
+    "mode": "RGB"
+  },
+  "identity_qa": "03_intermediate/qa/CG_001_critical_R1_identity_qa.md"
 }

@@ -1,0 +1,23 @@
+{
+  "version": "GAL-SIMPLE-1.3",
+  "cg_id": "CG_005_northstar-arrival",
+  "stage": "R1_identity",
+  "series_style_lock": "Clean polished anime visual-novel CG; preserve accepted R0 composition; no pseudo-text, logo, watermark, or UI.",
+  "identity_lock": "Resolve face, hair, adult age, body proportions, and silhouette from the ordered canonical references and accepted CG anchor.",
+  "composition": "Locked to the supplied R0 edit target.",
+  "continuity_anchors": [
+    "04_cg/working/CG_001_critical_R1_identity_v1.png"
+  ],
+  "negative_constraints": [
+    "composition drift",
+    "identity blending",
+    "extra characters",
+    "prop ownership swap",
+    "text",
+    "HUD",
+    "watermark",
+    "anatomy defects"
+  ],
+  "output_contract": "04_cg/working/CG_005_northstar-arrival_R1_identity_v1.png",
+  "full_prompt": "Edit the FIRST image only. This is R1_identity for CG_005_northstar-arrival. Preserve the first image's exact 16:9 composition, camera, seated heroine on the left, standing ocean singer on the right, central water-memory ring, distant ship and forty-seven non-textual shore lights, architecture, calm lighting, poses, limb positions, and prop ownership. Do not redesign the shot, environment, harp, water ring, or story beat.\n\nIdentity references: reference 2 is the accepted R1 anchor for the blue-haired heroine; make the seated heroine unmistakably that same adult woman with the same face, violet-blue eyes, low half-up braided bun, midnight-blue hair with cobalt tips, and adult proportions. References 3-5 define the ocean singer, with priority: turnaround for adult face/body/hair silhouette, detail board for shell clip/sleeve construction/five-string shell harp, expression board for musical concentration.\n\nOcean singer lock: adult woman, 169 cm proportions, long deep-blue hair to thighs with teal tips, sea-blue eyes, exactly ONE ivory shell hair clip on HER LEFT temple, calm concentrated expression with eyes gently closed or lowered. Navy sleeveless high-collar ankle-length dress with pearl-white front inset; exactly one pale-aqua wave drape per arm. Clearly separate HUMAN LEGS and two human feet in blue low-heel sandals. She holds exactly ONE small ivory-shell harp with a simple pale-brass U frame and exactly FIVE straight strings. No tail, no staff, no dolphins, no extra instrument.\n\nHero lock: same adult identity as reference 2, seated left, quietly listening; preserve her existing pose and costume.\n\nNo text, transcript, HUD, logo, watermark, extra people, identity blending, extra shell clips, extra strings, fused fingers, fused legs, mermaid anatomy, or storm disaster. Keep clean polished anime visual-novel CG rendering. Output exactly one finished 16:9 image at the same resolution as the first image."
+}

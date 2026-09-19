@@ -3,7 +3,7 @@
   "cg_id": "CG_006_seven-core-network",
   "semantic_id": "seven-core-network",
   "title": "七阵：七核契约网络",
-  "status": "ready-for-layout",
+  "status": "r1-identity-accepted",
   "source_locator": {
     "repository_commit": "b05bc623b7c1ef8b93cfa1fca253ad2119a52f68",
     "file": "src/game/demo-10-floor-content.js",
@@ -114,5 +114,22 @@
     "width": 1672,
     "height": 941,
     "mode": "RGB"
-  }
+  },
+  "current_iteration": "R1_identity",
+  "layout_asset": {
+    "path": "04_cg/working/CG_006_seven-core-network_R0_layout_v1.png",
+    "sha256": "d8af5ddd8ceb3de15356f5b8465b0168f67fdd261130db75a632c171c49f6b70",
+    "width": 1672,
+    "height": 941,
+    "mode": "RGB"
+  },
+  "layout_qa": "03_intermediate/qa/CG_006_seven-core-network_R0_layout_qa.md",
+  "identity_asset": {
+    "path": "04_cg/working/CG_006_seven-core-network_R1_identity_v1.png",
+    "sha256": "af417f7594fb7c71715fff3ca8e7aba239f39b7106a4821fa89286578c6295d0",
+    "width": 1672,
+    "height": 941,
+    "mode": "RGB"
+  },
+  "identity_qa": "03_intermediate/qa/CG_006_seven-core-network_R1_identity_qa.md"
 }

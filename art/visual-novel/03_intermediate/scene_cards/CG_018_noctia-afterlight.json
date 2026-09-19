@@ -3,7 +3,7 @@
   "cg_id": "CG_018_noctia-afterlight",
   "semantic_id": "noctia-afterlight",
   "title": "终章：摘下警报石",
-  "status": "ready-for-layout",
+  "status": "r1-identity-accepted",
   "source_locator": {
     "repository_commit": "b05bc623b7c1ef8b93cfa1fca253ad2119a52f68",
     "file": "src/game/demo-30-floor-content.js",
@@ -114,5 +114,22 @@
     "width": 1672,
     "height": 941,
     "mode": "RGB"
-  }
+  },
+  "current_iteration": "R1_identity",
+  "layout_asset": {
+    "path": "04_cg/working/CG_018_noctia-afterlight_R0_layout_v2.png",
+    "sha256": "81ef8e8c4a3f8bebfc45dea00704936c2554418d0b238d0d48b23262e8132f9f",
+    "width": 1672,
+    "height": 941,
+    "mode": "RGB"
+  },
+  "layout_qa": "03_intermediate/qa/CG_018_noctia-afterlight_R0_layout_qa.md",
+  "identity_asset": {
+    "path": "04_cg/working/CG_018_noctia-afterlight_R1_identity_v1.png",
+    "sha256": "bd2e5e7dd1309e9b508477c0e390b4ce34fa8af73749faf06231f9ef0e68d405",
+    "width": 1672,
+    "height": 941,
+    "mode": "RGB"
+  },
+  "identity_qa": "03_intermediate/qa/CG_018_noctia-afterlight_R1_identity_qa.md"
 }

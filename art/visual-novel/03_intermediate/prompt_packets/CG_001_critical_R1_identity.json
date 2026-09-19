@@ -1,0 +1,21 @@
+{
+  "version": "GAL-SIMPLE-1.3",
+  "cg_id": "CG_001_critical",
+  "stage": "R1_identity",
+  "series_style_lock": "Clean polished anime visual-novel CG; preserve accepted R0 composition; no pseudo-text, logo, watermark, or UI.",
+  "identity_lock": "Resolve face, hair, adult age, body proportions, and silhouette from the ordered canonical references and accepted CG anchor.",
+  "composition": "Locked to the supplied R0 edit target.",
+  "continuity_anchors": [],
+  "negative_constraints": [
+    "composition drift",
+    "identity blending",
+    "extra characters",
+    "prop ownership swap",
+    "text",
+    "HUD",
+    "watermark",
+    "anatomy defects"
+  ],
+  "output_contract": "04_cg/working/CG_001_critical_R1_identity_v1.png",
+  "full_prompt": "Edit the FIRST image only. This is R1_identity for CG_001_critical in a visual-novel continuity pipeline. Preserve the first image's exact 16:9 composition, camera, crop, kneeling pose, limb positions, sword placement, prop ownership, dark tower background, lighting, and negative space. Do not redesign the shot or add/remove objects.\n\nChange only the heroine's identity anatomy so she precisely matches references 2-5, with priority: reference 2 turnaround for face/body/hair silhouette; reference 3 for locked costume/prop construction; reference 4 for facial identity and hurt-but-conscious expression; reference 5 for overall identity consistency.\n\nCharacter lock: adult woman, 166 cm proportions, mature but young adult face, violet-blue eyes, long midnight-blue hair to hips with cobalt-blue tips, small low half-up braided bun. Exactly one silver crescent hair clip on HER RIGHT temple and exactly one silver crescent mantle clasp on HER LEFT shoulder. Keep the existing navy/ivory travel dress, black gloves, symmetric opaque stockings, navy boots, left-waist record pouch, and right-hand one-handed sword. Expression: hurt, breathing hard, fully conscious, focused forward; no blood, no open wound, no unconscious or childlike appearance.\n\nCritical preservation: same single character; right hand gripping the sword used as support; left hand on floor; both legs and feet readable; no enemy; no text, HUD, logo, watermark, extra jewelry, extra crescent, extra sword, chains, garters, or anatomy errors. Maintain clean polished anime visual-novel CG rendering. Output exactly one finished 16:9 image at the same resolution as the first image."
+}

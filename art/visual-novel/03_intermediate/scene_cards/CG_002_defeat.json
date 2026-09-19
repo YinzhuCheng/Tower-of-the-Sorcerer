@@ -3,16 +3,16 @@
   "cg_id": "CG_002_defeat",
   "semantic_id": "defeat",
   "title": "战败预演",
-  "status": "r0-layout-accepted",
-  "current_iteration": "R0_layout",
+  "status": "r1-identity-accepted",
+  "current_iteration": "R1_identity",
   "layout_asset": {
-    "path": "04_cg/working/CG_002_defeat_R0_layout_v1.png",
-    "sha256": "4e54df8f39b9d8b055fb781ac2e489315b3326c17dbbe7489adcd15766c8cd12",
+    "path": "04_cg/working/CG_002_defeat_R0_layout_v2.png",
+    "sha256": "6d781220b0e4069a47da04a19746d7a9704fab15c6022d2c54f8b9538dcc5f30",
     "width": 1672,
     "height": 941,
     "mode": "RGB"
   },
-  "layout_qa": "03_intermediate/qa/CG_002_defeat_R0_qa.md",
+  "layout_qa": "03_intermediate/qa/CG_002_defeat_R0_layout_qa.md",
   "source_locator": {
     "repository_commit": "b05bc623b7c1ef8b93cfa1fca253ad2119a52f68",
     "file": "src/main.js",
@@ -87,5 +87,13 @@
     "R4_final"
   ],
   "output_contract": "04_cg/final/CG_002_defeat_v1.png",
-  "environment_reference_asset": null
+  "environment_reference_asset": null,
+  "identity_asset": {
+    "path": "04_cg/working/CG_002_defeat_R1_identity_v1.png",
+    "sha256": "d4acbf63060d31f0be1941822a803ddfcf4cc46efb0c46859d893dc82e9f65f6",
+    "width": 1672,
+    "height": 941,
+    "mode": "RGB"
+  },
+  "identity_qa": "03_intermediate/qa/CG_002_defeat_R1_identity_qa.md"
 }

@@ -3,7 +3,7 @@
   "cg_id": "CG_008_noctia-seal",
   "semantic_id": "noctia-seal",
   "title": "十阵共同破封",
-  "status": "ready-for-layout",
+  "status": "r1-identity-accepted",
   "source_locator": {
     "repository_commit": "b05bc623b7c1ef8b93cfa1fca253ad2119a52f68",
     "file": "src/game/demo-10-floor-content.js",
@@ -116,5 +116,22 @@
     "width": 1672,
     "height": 941,
     "mode": "RGB"
-  }
+  },
+  "current_iteration": "R1_identity",
+  "layout_asset": {
+    "path": "04_cg/working/CG_008_noctia-seal_R0_layout_v1.png",
+    "sha256": "6b63cd37d3f93282fe13cf08fe6b29eb3550218aca2abb001f5610ed8bb9c7e7",
+    "width": 1672,
+    "height": 941,
+    "mode": "RGB"
+  },
+  "layout_qa": "03_intermediate/qa/CG_008_noctia-seal_R0_layout_qa.md",
+  "identity_asset": {
+    "path": "04_cg/working/CG_008_noctia-seal_R1_identity_v1.png",
+    "sha256": "6243e7693e42205e114d71b8018e7e28ba45e678c2ad2de772971fe3d5c4baac",
+    "width": 1672,
+    "height": 941,
+    "mode": "RGB"
+  },
+  "identity_qa": "03_intermediate/qa/CG_008_noctia-seal_R1_identity_qa.md"
 }

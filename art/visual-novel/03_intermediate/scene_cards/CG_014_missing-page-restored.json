@@ -3,7 +3,7 @@
   "cg_id": "CG_014_missing-page-restored",
   "semantic_id": "missing-page-restored",
   "title": "二十五阵：归档缺页复原",
-  "status": "ready-for-layout",
+  "status": "r1-identity-accepted",
   "source_locator": {
     "repository_commit": "b05bc623b7c1ef8b93cfa1fca253ad2119a52f68",
     "file": "src/game/demo-30-floor-content.js",
@@ -143,5 +143,22 @@
     "width": 1672,
     "height": 941,
     "mode": "RGB"
-  }
+  },
+  "current_iteration": "R1_identity",
+  "layout_asset": {
+    "path": "04_cg/working/CG_014_missing-page-restored_R0_layout_v1.png",
+    "sha256": "903a10835ca681f200be23618d0a38c7ccf191268c6a5f13710783c3d263b28f",
+    "width": 1672,
+    "height": 941,
+    "mode": "RGB"
+  },
+  "layout_qa": "03_intermediate/qa/CG_014_missing-page-restored_R0_layout_qa.md",
+  "identity_asset": {
+    "path": "04_cg/working/CG_014_missing-page-restored_R1_identity_v1.png",
+    "sha256": "a9484e0785fc296dd63ae00f07919a5802d8222455069bf3b6e0bf2c8aaa095d",
+    "width": 1672,
+    "height": 941,
+    "mode": "RGB"
+  },
+  "identity_qa": "03_intermediate/qa/CG_014_missing-page-restored_R1_identity_qa.md"
 }
