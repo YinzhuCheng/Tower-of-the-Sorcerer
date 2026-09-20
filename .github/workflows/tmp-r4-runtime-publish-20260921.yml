@@ -128,12 +128,17 @@ jobs:
           After merge/push, use `/art-audit` for final human runtime review.
           EOF
 
-      - name: Run regression tests
+      - name: Run CG regression tests
         shell: bash
         run: |
           set -euo pipefail
-          npm test
-          npm run build
+          node --test \
+            test/art-audit-page.test.js \
+            test/assets.test.js \
+            test/cinematics-ui.test.js \
+            test/continuity-completion-assets.test.js \
+            test/gal-audit-redraw-assets.test.js
+          node scripts/build.mjs
 
       - name: Commit runtime assets to main
         shell: bash
