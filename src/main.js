@@ -432,6 +432,13 @@ function showDialogue(dialogueId, after = null, { finalLabel = null } = {}) {
   const finish = () => {
     if (finished) return;
     finished = true;
+    // Review mode keeps the final authored frame on screen. The outer
+    // GAL-only navigator decides whether to advance; ordinary gameplay still
+    // uses the normal return transition and resumes the tower afterwards.
+    if (requestedGalOnlyMode()) {
+      after?.();
+      return;
+    }
     closeGalScene(after);
   };
 
