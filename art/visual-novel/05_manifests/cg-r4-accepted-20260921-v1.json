@@ -1,0 +1,122 @@
+{
+  "version": "2026-09-21-v1",
+  "status": "R4 accepted 19/19 without rerender",
+  "accepted_count": 19,
+  "policy": "R3 masters that pass final R4 inspection are admitted directly as final masters; no duplicate generation is required.",
+  "scenes": [
+    {
+      "cg_id": "CG_001_critical",
+      "status": "accepted-r4-no-rerender",
+      "path": "04_cg/working/R3-scene/2026-09-21/CG_001_critical_R3_accepted_v1.png",
+      "sha256": "283b636129a9464402443d18e12e48d9384324c613a2e2c5e58728fd938aac0e"
+    },
+    {
+      "cg_id": "CG_002_defeat",
+      "status": "accepted-r4-no-rerender",
+      "path": "04_cg/working/R3-scene/2026-09-21/CG_002_defeat_R3_accepted_v1.png",
+      "sha256": "599fe8c68b4dba12841a562fa3eb1196ba09404d0a04dd83257d49dad114bdb5"
+    },
+    {
+      "cg_id": "CG_003_prologue-tower",
+      "status": "accepted-r4-no-rerender",
+      "path": "04_cg/working/R3-scene/2026-09-21/CG_003_prologue-tower_R3_accepted_v1.png",
+      "sha256": "50a752d9614f5f8586fb04812dce9055c0d2704bb4b5482cbcc4f9479f3811fa"
+    },
+    {
+      "cg_id": "CG_004_seven-cantos-severed",
+      "status": "accepted-r4-no-rerender",
+      "path": "04_cg/working/R3-scene/2026-09-21/CG_004_seven-cantos-severed_R3_accepted_v1.png",
+      "sha256": "dce08651fcafb290633e5ac399edcfeb503e17136a76c24bc27b441613c76efc"
+    },
+    {
+      "cg_id": "CG_005_northstar-arrival",
+      "status": "accepted-r4-no-rerender",
+      "path": "04_cg/working/R3-scene/2026-09-21/CG_005_northstar-arrival_R3_accepted_v1.png",
+      "sha256": "3f694fa99c47e9b08b5a21bef00807b47a894809291bcd29fabf316fdcfe0d78"
+    },
+    {
+      "cg_id": "CG_006_seven-core-network",
+      "status": "accepted-r4-no-rerender",
+      "path": "04_cg/working/R3-scene/2026-09-21/CG_006_seven-core-network_R3_accepted_v1.png",
+      "sha256": "99c3c739ac9ebbd0b289b234aaa0ec8337130419af22a8bd87ebf5e854b6332a"
+    },
+    {
+      "cg_id": "CG_007_noctia-truth",
+      "status": "accepted-r4-no-rerender",
+      "path": "04_cg/working/R3-scene/2026-09-21/CG_007_noctia-truth_R3_accepted_v1.png",
+      "sha256": "9b6e1fbab0052a00f0799346db7b688b490a01fa719703dcb0d05aa175c84ddb"
+    },
+    {
+      "cg_id": "CG_008_noctia-seal",
+      "status": "accepted-r4-no-rerender",
+      "path": "04_cg/working/R3-scene/2026-09-21/CG_008_noctia-seal_R3_accepted_v1.png",
+      "sha256": "e095cf82173729c254e731fbbe3c78bc2d0b14d9ad9e26ecda4b5febcfdf1daf"
+    },
+    {
+      "cg_id": "CG_009_missing-fourth-step",
+      "status": "accepted-r4-no-rerender",
+      "path": "04_cg/working/R3-scene/2026-09-21/CG_009_missing-fourth-step_R3_accepted_v1.png",
+      "sha256": "12ced155fca518fa12bead6117929cda286b78fd6fa3130a971ab83e234c7be8"
+    },
+    {
+      "cg_id": "CG_010_seventeen-minute-splice",
+      "status": "accepted-r4-no-rerender",
+      "path": "04_cg/working/R3-scene/2026-09-21/CG_010_seventeen-minute-splice_R3_accepted_v1.png",
+      "sha256": "e93ef908f3996d28826add9d2bfadca5560cc5c70631e3bd4d8fc2a412d8ba75"
+    },
+    {
+      "cg_id": "CG_011_intercepted-receipt",
+      "status": "accepted-r4-no-rerender",
+      "path": "04_cg/working/R3-scene/2026-09-21/CG_011_intercepted-receipt_R3_accepted_v1.png",
+      "sha256": "a007db5fab3a5127dcf6b5919a40d741252501e7ecebb2f8ece103effad532a1"
+    },
+    {
+      "cg_id": "CG_012_echo-ledger",
+      "status": "accepted-r4-no-rerender",
+      "path": "04_cg/working/R3-scene/2026-09-21/CG_012_echo-ledger_R3_accepted_v1.png",
+      "sha256": "a661f1d909734aa8300f0c818d2fcae0b79457bd76bdd0f30359ea4f50234d32"
+    },
+    {
+      "cg_id": "CG_013_noctia-sovereign",
+      "status": "accepted-r4-no-rerender",
+      "path": "04_cg/working/R3-scene/2026-09-21/CG_013_noctia-sovereign_R3_accepted_v1.png",
+      "sha256": "96ef6a809ab7b049e6d8e156b54d6ec2c9e6b5e0fe59cbd7d97cf419908d6762"
+    },
+    {
+      "cg_id": "CG_014_missing-page-restored",
+      "status": "accepted-r4-no-rerender",
+      "path": "04_cg/working/R3-scene/2026-09-21/CG_014_missing-page-restored_R3_accepted_v1.png",
+      "sha256": "efffd4d0dff2ed319d6dbe057d8fcd6da9df3d6a3d43225cf27332bee5884742"
+    },
+    {
+      "cg_id": "CG_015_letters-held-in-storm",
+      "status": "accepted-r4-no-rerender",
+      "path": "04_cg/working/R3-scene/2026-09-21/CG_015_letters-held-in-storm_R3_accepted_v1.png",
+      "sha256": "fd06d16d0901edd5dff9d6f4aafe2727c4bc8c4c8526ef3d6cb331cac6dbfeac"
+    },
+    {
+      "cg_id": "CG_016_originals-enter-lighthouse",
+      "status": "accepted-r4-no-rerender",
+      "path": "04_cg/working/R3-scene/2026-09-21/CG_016_originals-enter-lighthouse_R3_accepted_v1.png",
+      "sha256": "a0671d79980f12dc3c666f79ecae4b6dc2dccc5e6747b3e486058904fb32111f"
+    },
+    {
+      "cg_id": "CG_017_traceable-revocation",
+      "status": "accepted-r4-no-rerender",
+      "path": "04_cg/working/R3-scene/2026-09-21/CG_017_traceable-revocation_R3_accepted_v1.png",
+      "sha256": "6de4d5c3ec046aaabf937f9ae19647f8c7808224b405299749bb70296926114d"
+    },
+    {
+      "cg_id": "CG_018_noctia-afterlight",
+      "status": "accepted-r4-no-rerender",
+      "path": "04_cg/working/R3-scene/2026-09-21/CG_018_noctia-afterlight_R3_accepted_v1.png",
+      "sha256": "01355ac103d26207c0e5568a170e3abf1084329113f660cd6cbbe07e1757cddc"
+    },
+    {
+      "cg_id": "CG_019_lighthouse-archive",
+      "status": "accepted-r4-no-rerender",
+      "path": "04_cg/working/R3-scene/2026-09-21/CG_019_lighthouse-archive_R3_accepted_v1.png",
+      "sha256": "8386d114ead6b98c0dd4ede513358536b57c1808adee599e74ff03cd76c7f5e3"
+    }
+  ]
+}
