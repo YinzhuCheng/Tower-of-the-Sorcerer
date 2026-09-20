@@ -6,13 +6,31 @@ on:
 
 jobs:
   test:
+    name: Test shard ${{ matrix.shard + 1 }}/4
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [0, 1, 2, 3]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node scripts/run-test-shard.mjs ${{ matrix.shard }} 4
+
+  validate:
+    name: Validate and build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - run: npm run check
+      - run: npm run validate
+      - run: npm run validate:demo20
+      - run: npm run validate:demo30
+      - run: npm run build
       - name: Generate tuner profile on solver branch
         if: always() && (github.head_ref == 'solver-phase1-pareto' || github.ref == 'refs/heads/solver-phase1-pareto')
         run: node scripts/tune-shop-hp.mjs --json > shop-hp-tuner-report.json
