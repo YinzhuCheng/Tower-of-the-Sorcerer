@@ -1,2 +1,3 @@
 Temporary trigger for deterministic R4 runtime CG publication.
 Validation mode: focused CG regression suite.
+Legacy exact-hash manifests: mark replaced CG runtime slots superseded.
