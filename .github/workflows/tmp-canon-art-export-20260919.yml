@@ -1,4 +1,4 @@
-name: Temporary Canon Art Export
+name: Temporary R2 Source Export
 
 on:
   push:
@@ -11,28 +11,67 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
+          ref: 7dab73f1cf15a719e9e4da2cbe630eab9aa80128
           filter: blob:none
+          lfs: true
           sparse-checkout: |
-            art/visual-novel/01_canon
-          sparse-checkout-cone-mode: true
-      - name: Prepare canon export
+            art/visual-novel/01_canon/environments
+            art/visual-novel/03_intermediate/BATCH_PLAN_v1.2.md
+            art/visual-novel/03_intermediate/scene_cards
+            art/visual-novel/03_intermediate/prompt_packets
+            art/visual-novel/03_intermediate/reference_sets
+            art/visual-novel/03_intermediate/qa
+            art/visual-novel/04_cg/working
+            art/visual-novel/05_manifests
+            art/visual-novel/06_logs/generation-log-v1.2.jsonl
+            art/visual-novel/CANON_FIRST_ART_PRODUCTION_PROTOCOL_2026-09-19.md
+            art/visual-novel/CG_REBUILD_STATUS_2026-09-19.md
+            art/visual-novel/CG_PRODUCTION_AND_UPLOAD_GUIDE.md
+          sparse-checkout-cone-mode: false
+
+      - name: Prepare R2 source export
+        shell: bash
         run: |
-          mkdir -p export
-          cp -R art/visual-novel/01_canon/characters export/
-          cp -R art/visual-novel/01_canon/turnarounds export/
-          cp -R art/visual-novel/01_canon/details export/
-          cp -R art/visual-novel/01_canon/expressions export/
-          cp -R art/visual-novel/01_canon/standees export/
-          cp art/visual-novel/01_canon/character-canon.json export/
-          cp art/visual-novel/01_canon/characters.json export/
-          cp art/visual-novel/01_canon/expressions.json export/
-          cp art/visual-novel/01_canon/standees.json export/
-          cp art/visual-novel/01_canon/visual-canon-v2.json export/
-          cp art/visual-novel/01_canon/series-style.md export/
-          printf '%s\n' "source_branch=main" "source_commit=3a3741bb8dceb8556f397d7b1cac77ca69eef086" > export/EXPORT_SOURCE.txt
+          set -euo pipefail
+          mkdir -p export/environments export/scene_cards export/prompt_packets export/reference_sets export/qa export/r1_cg export/manifests export/logs export/docs
+
+          cp art/visual-novel/01_canon/environments/ENV_night-tower_v1.png export/environments/
+          cp art/visual-novel/01_canon/environments/ENV_ocean-archive_v1.png export/environments/
+          cp art/visual-novel/01_canon/environments/ENV_star-mirror_v1.png export/environments/
+          cp art/visual-novel/01_canon/environments/ENV_sun-sanctum_v1.png export/environments/
+          cp art/visual-novel/01_canon/environments/ENV_echo-court_v1.png export/environments/
+          cp art/visual-novel/01_canon/environments/ENV_origin-core_v1.png export/environments/
+          cp art/visual-novel/01_canon/environments/ENV_triage-index_v1.png export/environments/
+          cp art/visual-novel/01_canon/environments/ENV_archive-storm_v1.png export/environments/
+          cp art/visual-novel/01_canon/environments/ENV_final-index-room_v1.png export/environments/
+          cp art/visual-novel/01_canon/environments/ENV_ember-lighthouse-writein_v2.png export/environments/
+          cp art/visual-novel/01_canon/environments/ENV_ember-lighthouse_v1.png export/environments/
+
+          cp art/visual-novel/03_intermediate/scene_cards/CG_*.json export/scene_cards/
+          cp art/visual-novel/03_intermediate/prompt_packets/CG_*_R1_identity*.json export/prompt_packets/
+          cp art/visual-novel/03_intermediate/reference_sets/CG_*_R1_identity*.json export/reference_sets/
+          cp art/visual-novel/03_intermediate/qa/CG_*_R1_identity*.md export/qa/
+          cp art/visual-novel/04_cg/working/CG_*_R1_identity*.png export/r1_cg/
+
+          cp art/visual-novel/05_manifests/cg-layout-admission-v1.2.json export/manifests/
+          cp art/visual-novel/05_manifests/cg-scene-index-v1.2.json export/manifests/
+          cp art/visual-novel/05_manifests/cg-r1-identity-batch*.json export/manifests/
+          cp art/visual-novel/05_manifests/cg-r0-rebuild-20260919-v1.3.json export/manifests/
+          cp art/visual-novel/06_logs/generation-log-v1.2.jsonl export/logs/
+
+          cp art/visual-novel/03_intermediate/BATCH_PLAN_v1.2.md export/docs/
+          cp art/visual-novel/CANON_FIRST_ART_PRODUCTION_PROTOCOL_2026-09-19.md export/docs/
+          cp art/visual-novel/CG_REBUILD_STATUS_2026-09-19.md export/docs/
+          cp art/visual-novel/CG_PRODUCTION_AND_UPLOAD_GUIDE.md export/docs/
+
+          printf '%s\n'             "source_branch=main"             "source_commit=7dab73f1cf15a719e9e4da2cbe630eab9aa80128"             "purpose=R2 costume-prop generation source pack"             > export/EXPORT_SOURCE.txt
+
+          find export -type f -print | sort > export/FILE_LIST.txt
+          sha256sum $(find export -type f ! -name SHA256SUMS.txt -print | sort) > export/SHA256SUMS.txt
+
       - uses: actions/upload-artifact@v4
         with:
-          name: canon-art-export-20260919
+          name: r2-source-export-20260920
           path: export/
           if-no-files-found: error
           compression-level: 0
