@@ -7,20 +7,206 @@
   "referenceSet": "art/visual-novel/03_intermediate/reference_sets/2026-09-03-story-art-v8.json",
   "qa": "art/visual-novel/03_intermediate/qa/2026-09-03-story-art-v8.md",
   "assets": [
-    {"id":"CHAR-MILU-ALERT-V8","kind":"standing","sourceMode":"user-provided-native-alpha","source":"art/visual-novel/00_source/story-art-v8-native-alpha/milu-dialogue-alert-v8-source.png","runtime":"public/assets/anime/characters/milu-dialogue-alert-v8.webp","final":"art/visual-novel/04_cg/final/2026-09-03-story-art-v8/characters/milu-dialogue-alert-v8.webp","dimensions":[1024,1536],"alphaRequired":true,"sha256":"4dabbf7f1c5b4f2304092b87ebb2b7031632642e63a51398dbf60c3d08caa1ba"},
-    {"id":"CHAR-FEIYE-WATCHFUL-V8","kind":"standing","sourceMode":"user-provided-native-alpha","source":"art/visual-novel/00_source/story-art-v8-native-alpha/feiye-dialogue-watchful-v8-source.png","runtime":"public/assets/anime/characters/feiye-dialogue-watchful-v8.webp","final":"art/visual-novel/04_cg/final/2026-09-03-story-art-v8/characters/feiye-dialogue-watchful-v8.webp","dimensions":[1024,1536],"alphaRequired":true,"sha256":"5d77d93054a2f672d16fddd2c3a4747d4d314dc3f3c6b8c48b9b63dc51159d8c"},
-    {"id":"CHAR-LANYIN-LAMENT-V8","kind":"standing","sourceMode":"user-provided-native-alpha","source":"art/visual-novel/00_source/story-art-v8-native-alpha/lanyin-dialogue-lament-v8-source.png","runtime":"public/assets/anime/characters/lanyin-dialogue-lament-v8.webp","final":"art/visual-novel/04_cg/final/2026-09-03-story-art-v8/characters/lanyin-dialogue-lament-v8.webp","dimensions":[1024,1536],"alphaRequired":true,"sha256":"b2d919347246eaa7abe1b50fc1397e1993ae2509af5d6be940d78a124740df12"},
-    {"id":"CHAR-SERENA-STERN-V8","kind":"standing","sourceMode":"user-provided-native-alpha","source":"art/visual-novel/00_source/story-art-v8-native-alpha/serena-dialogue-stern-v8-source.png","runtime":"public/assets/anime/characters/serena-dialogue-stern-v8.webp","final":"art/visual-novel/04_cg/final/2026-09-03-story-art-v8/characters/serena-dialogue-stern-v8.webp","dimensions":[1024,1536],"alphaRequired":true,"sha256":"86ffa80b7594ffd4832b0183ec495f84d1456257a4ba0fa22fcb0b4ea13c2b3e"},
-    {"id":"CHAR-LUMI-FOCUS-V8","kind":"standing","sourceMode":"canonical-reuse","runtime":"public/assets/anime/characters/lumi-dialogue-focus-v8.webp","final":"art/visual-novel/04_cg/final/2026-09-03-story-art-v8/characters/lumi-dialogue-focus-v8.webp","dimensions":[1024,1536],"alphaRequired":true,"sha256":"15943d6b00672f444ae51018abb8a60462258668dec3ad95a34a70d13f166936"},
-    {"id":"AVATAR-MILU-ALERT-V8","kind":"avatar","sourceMode":"crop-from-standing","runtime":"public/assets/anime/avatars/cat-boss-avatar-alert-v8.webp","final":"art/visual-novel/04_cg/final/2026-09-03-story-art-v8/avatars/cat-boss-avatar-alert-v8.webp","dimensions":[512,512],"alphaRequired":false,"sha256":"bb92c007f00f51e057afb120d0f15b042bcba13e6c3995fa3dc1ea6cf29f2a9a"},
-    {"id":"AVATAR-FEIYE-WATCHFUL-V8","kind":"avatar","sourceMode":"crop-from-standing","runtime":"public/assets/anime/avatars/fox-boss-avatar-watchful-v8.webp","final":"art/visual-novel/04_cg/final/2026-09-03-story-art-v8/avatars/fox-boss-avatar-watchful-v8.webp","dimensions":[512,512],"alphaRequired":false,"sha256":"b4666dec218f931804259d450dfab51929231efcc4afa379371dd7e6108cc8df"},
-    {"id":"AVATAR-LANYIN-LAMENT-V8","kind":"avatar","sourceMode":"crop-from-standing","runtime":"public/assets/anime/avatars/whale-boss-avatar-lament-v8.webp","final":"art/visual-novel/04_cg/final/2026-09-03-story-art-v8/avatars/whale-boss-avatar-lament-v8.webp","dimensions":[512,512],"alphaRequired":false,"sha256":"9c7cd6325942d174c397cd8db1ce174c283daf0542cc6313468fa44962067dfb"},
-    {"id":"AVATAR-SERENA-STERN-V8","kind":"avatar","sourceMode":"crop-from-standing","runtime":"public/assets/anime/avatars/sword-boss-avatar-stern-v8.webp","final":"art/visual-novel/04_cg/final/2026-09-03-story-art-v8/avatars/sword-boss-avatar-stern-v8.webp","dimensions":[512,512],"alphaRequired":false,"sha256":"4c61591aac7fa360d7727da897de96f3e8e01854e82d3fb4ba7c2c3485a1ea42"},
-    {"id":"BG-11-NIGHT-SHELTER-V8","kind":"backdrop","sourceMode":"generated","runtime":"public/assets/anime/themes/theme-night-shelter-v8.webp","final":"art/visual-novel/04_cg/final/2026-09-03-story-art-v8/themes/theme-night-shelter-v8.webp","dimensions":[1672,941],"alphaRequired":false,"sha256":"db4e7cbbcb89869748e9af5d5eb01e9fa598718945b7911510b9f026d7102383"},
-    {"id":"BG-12-AUDIT-CHAMBER-V8","kind":"backdrop","sourceMode":"generated","runtime":"public/assets/anime/themes/theme-audit-chamber-v8.webp","final":"art/visual-novel/04_cg/final/2026-09-03-story-art-v8/themes/theme-audit-chamber-v8.webp","dimensions":[1672,941],"alphaRequired":false,"sha256":"8dd38ac0770422f357f4bf7e6cb04bcea11648db1e6bd41bd973224079eed5d9"},
-    {"id":"BG-13-RELAY-GALLERY-V8","kind":"backdrop","sourceMode":"generated","runtime":"public/assets/anime/themes/theme-relay-gallery-v8.webp","final":"art/visual-novel/04_cg/final/2026-09-03-story-art-v8/themes/theme-relay-gallery-v8.webp","dimensions":[1672,941],"alphaRequired":false,"sha256":"861e91703d2328a5df3aba400dfc0acad77b688be34edc3b1d78402ea4d60d58"},
-    {"id":"BG-14-TRIAGE-INDEX-V8","kind":"backdrop","sourceMode":"generated","runtime":"public/assets/anime/themes/theme-triage-index-v8.webp","final":"art/visual-novel/04_cg/final/2026-09-03-story-art-v8/themes/theme-triage-index-v8.webp","dimensions":[1672,941],"alphaRequired":false,"sha256":"a13710cbcc1f1efbb3a22cda9efa3268e34685a050e6e4ad7b2c5ef807af5508"},
-    {"id":"CG-10-F3-NORTHSTAR-ARRIVAL-V8","kind":"story-cg","sourceMode":"generated","runtime":"public/assets/anime/cg/liyue-lanyin-northstar-arrival-cg-v8.webp","final":"art/visual-novel/04_cg/final/2026-09-03-story-art-v8/cg/liyue-lanyin-northstar-arrival-cg-v8.webp","dimensions":[1672,941],"alphaRequired":false,"sha256":"da351d5a1d0077e9a11284d749541637fb92ad6620cd526b05795fc5a47db863"},
-    {"id":"CG-11-F17-SEVENTEEN-MINUTE-SPLICE-V8","kind":"story-cg","sourceMode":"generated","runtime":"public/assets/anime/cg/liyue-lumi-seventeen-minute-splice-cg-v8.webp","final":"art/visual-novel/04_cg/final/2026-09-03-story-art-v8/cg/liyue-lumi-seventeen-minute-splice-cg-v8.webp","dimensions":[1672,941],"alphaRequired":false,"sha256":"478d42f8341c9f63aebcc903f767aebb6852c98d62b9fbd8e1fa40af85c1fdb5"}
+    {
+      "id": "CHAR-MILU-ALERT-V8",
+      "kind": "standing",
+      "sourceMode": "user-provided-native-alpha",
+      "source": "art/visual-novel/00_source/story-art-v8-native-alpha/milu-dialogue-alert-v8-source.png",
+      "runtime": "public/assets/anime/characters/milu-dialogue-alert-v8.webp",
+      "final": "art/visual-novel/04_cg/final/2026-09-03-story-art-v8/characters/milu-dialogue-alert-v8.webp",
+      "dimensions": [
+        1024,
+        1536
+      ],
+      "alphaRequired": true,
+      "sha256": "4dabbf7f1c5b4f2304092b87ebb2b7031632642e63a51398dbf60c3d08caa1ba"
+    },
+    {
+      "id": "CHAR-FEIYE-WATCHFUL-V8",
+      "kind": "standing",
+      "sourceMode": "user-provided-native-alpha",
+      "source": "art/visual-novel/00_source/story-art-v8-native-alpha/feiye-dialogue-watchful-v8-source.png",
+      "runtime": "public/assets/anime/characters/feiye-dialogue-watchful-v8.webp",
+      "final": "art/visual-novel/04_cg/final/2026-09-03-story-art-v8/characters/feiye-dialogue-watchful-v8.webp",
+      "dimensions": [
+        1024,
+        1536
+      ],
+      "alphaRequired": true,
+      "sha256": "5d77d93054a2f672d16fddd2c3a4747d4d314dc3f3c6b8c48b9b63dc51159d8c"
+    },
+    {
+      "id": "CHAR-LANYIN-LAMENT-V8",
+      "kind": "standing",
+      "sourceMode": "user-provided-native-alpha",
+      "source": "art/visual-novel/00_source/story-art-v8-native-alpha/lanyin-dialogue-lament-v8-source.png",
+      "runtime": "public/assets/anime/characters/lanyin-dialogue-lament-v8.webp",
+      "final": "art/visual-novel/04_cg/final/2026-09-03-story-art-v8/characters/lanyin-dialogue-lament-v8.webp",
+      "dimensions": [
+        1024,
+        1536
+      ],
+      "alphaRequired": true,
+      "sha256": "b2d919347246eaa7abe1b50fc1397e1993ae2509af5d6be940d78a124740df12"
+    },
+    {
+      "id": "CHAR-SERENA-STERN-V8",
+      "kind": "standing",
+      "sourceMode": "user-provided-native-alpha",
+      "source": "art/visual-novel/00_source/story-art-v8-native-alpha/serena-dialogue-stern-v8-source.png",
+      "runtime": "public/assets/anime/characters/serena-dialogue-stern-v8.webp",
+      "final": "art/visual-novel/04_cg/final/2026-09-03-story-art-v8/characters/serena-dialogue-stern-v8.webp",
+      "dimensions": [
+        1024,
+        1536
+      ],
+      "alphaRequired": true,
+      "sha256": "86ffa80b7594ffd4832b0183ec495f84d1456257a4ba0fa22fcb0b4ea13c2b3e"
+    },
+    {
+      "id": "CHAR-LUMI-FOCUS-V8",
+      "kind": "standing",
+      "sourceMode": "canonical-reuse",
+      "runtime": "public/assets/anime/characters/lumi-dialogue-focus-v8.webp",
+      "final": "art/visual-novel/04_cg/final/2026-09-03-story-art-v8/characters/lumi-dialogue-focus-v8.webp",
+      "dimensions": [
+        1024,
+        1536
+      ],
+      "alphaRequired": true,
+      "sha256": "15943d6b00672f444ae51018abb8a60462258668dec3ad95a34a70d13f166936"
+    },
+    {
+      "id": "AVATAR-MILU-ALERT-V8",
+      "kind": "avatar",
+      "sourceMode": "crop-from-standing",
+      "runtime": "public/assets/anime/avatars/cat-boss-avatar-alert-v8.webp",
+      "final": "art/visual-novel/04_cg/final/2026-09-03-story-art-v8/avatars/cat-boss-avatar-alert-v8.webp",
+      "dimensions": [
+        512,
+        512
+      ],
+      "alphaRequired": false,
+      "sha256": "bb92c007f00f51e057afb120d0f15b042bcba13e6c3995fa3dc1ea6cf29f2a9a"
+    },
+    {
+      "id": "AVATAR-FEIYE-WATCHFUL-V8",
+      "kind": "avatar",
+      "sourceMode": "crop-from-standing",
+      "runtime": "public/assets/anime/avatars/fox-boss-avatar-watchful-v8.webp",
+      "final": "art/visual-novel/04_cg/final/2026-09-03-story-art-v8/avatars/fox-boss-avatar-watchful-v8.webp",
+      "dimensions": [
+        512,
+        512
+      ],
+      "alphaRequired": false,
+      "sha256": "b4666dec218f931804259d450dfab51929231efcc4afa379371dd7e6108cc8df"
+    },
+    {
+      "id": "AVATAR-LANYIN-LAMENT-V8",
+      "kind": "avatar",
+      "sourceMode": "crop-from-standing",
+      "runtime": "public/assets/anime/avatars/whale-boss-avatar-lament-v8.webp",
+      "final": "art/visual-novel/04_cg/final/2026-09-03-story-art-v8/avatars/whale-boss-avatar-lament-v8.webp",
+      "dimensions": [
+        512,
+        512
+      ],
+      "alphaRequired": false,
+      "sha256": "9c7cd6325942d174c397cd8db1ce174c283daf0542cc6313468fa44962067dfb"
+    },
+    {
+      "id": "AVATAR-SERENA-STERN-V8",
+      "kind": "avatar",
+      "sourceMode": "crop-from-standing",
+      "runtime": "public/assets/anime/avatars/sword-boss-avatar-stern-v8.webp",
+      "final": "art/visual-novel/04_cg/final/2026-09-03-story-art-v8/avatars/sword-boss-avatar-stern-v8.webp",
+      "dimensions": [
+        512,
+        512
+      ],
+      "alphaRequired": false,
+      "sha256": "4c61591aac7fa360d7727da897de96f3e8e01854e82d3fb4ba7c2c3485a1ea42"
+    },
+    {
+      "id": "BG-11-NIGHT-SHELTER-V8",
+      "kind": "backdrop",
+      "sourceMode": "generated",
+      "runtime": "public/assets/anime/themes/theme-night-shelter-v8.webp",
+      "final": "art/visual-novel/04_cg/final/2026-09-03-story-art-v8/themes/theme-night-shelter-v8.webp",
+      "dimensions": [
+        1672,
+        941
+      ],
+      "alphaRequired": false,
+      "sha256": "db4e7cbbcb89869748e9af5d5eb01e9fa598718945b7911510b9f026d7102383"
+    },
+    {
+      "id": "BG-12-AUDIT-CHAMBER-V8",
+      "kind": "backdrop",
+      "sourceMode": "generated",
+      "runtime": "public/assets/anime/themes/theme-audit-chamber-v8.webp",
+      "final": "art/visual-novel/04_cg/final/2026-09-03-story-art-v8/themes/theme-audit-chamber-v8.webp",
+      "dimensions": [
+        1672,
+        941
+      ],
+      "alphaRequired": false,
+      "sha256": "8dd38ac0770422f357f4bf7e6cb04bcea11648db1e6bd41bd973224079eed5d9"
+    },
+    {
+      "id": "BG-13-RELAY-GALLERY-V8",
+      "kind": "backdrop",
+      "sourceMode": "generated",
+      "runtime": "public/assets/anime/themes/theme-relay-gallery-v8.webp",
+      "final": "art/visual-novel/04_cg/final/2026-09-03-story-art-v8/themes/theme-relay-gallery-v8.webp",
+      "dimensions": [
+        1672,
+        941
+      ],
+      "alphaRequired": false,
+      "sha256": "861e91703d2328a5df3aba400dfc0acad77b688be34edc3b1d78402ea4d60d58"
+    },
+    {
+      "id": "BG-14-TRIAGE-INDEX-V8",
+      "kind": "backdrop",
+      "sourceMode": "generated",
+      "runtime": "public/assets/anime/themes/theme-triage-index-v8.webp",
+      "final": "art/visual-novel/04_cg/final/2026-09-03-story-art-v8/themes/theme-triage-index-v8.webp",
+      "dimensions": [
+        1672,
+        941
+      ],
+      "alphaRequired": false,
+      "sha256": "a13710cbcc1f1efbb3a22cda9efa3268e34685a050e6e4ad7b2c5ef807af5508"
+    },
+    {
+      "id": "CG-10-F3-NORTHSTAR-ARRIVAL-V8",
+      "kind": "story-cg",
+      "sourceMode": "generated",
+      "runtime": "public/assets/anime/cg/liyue-lanyin-northstar-arrival-cg-v8.webp",
+      "final": "art/visual-novel/04_cg/final/2026-09-03-story-art-v8/cg/liyue-lanyin-northstar-arrival-cg-v8.webp",
+      "dimensions": [
+        1672,
+        941
+      ],
+      "alphaRequired": false,
+      "sha256": "da351d5a1d0077e9a11284d749541637fb92ad6620cd526b05795fc5a47db863",
+      "superseded_by": "cg-r4-runtime-2026-09-21"
+    },
+    {
+      "id": "CG-11-F17-SEVENTEEN-MINUTE-SPLICE-V8",
+      "kind": "story-cg",
+      "sourceMode": "generated",
+      "runtime": "public/assets/anime/cg/liyue-lumi-seventeen-minute-splice-cg-v8.webp",
+      "final": "art/visual-novel/04_cg/final/2026-09-03-story-art-v8/cg/liyue-lumi-seventeen-minute-splice-cg-v8.webp",
+      "dimensions": [
+        1672,
+        941
+      ],
+      "alphaRequired": false,
+      "sha256": "478d42f8341c9f63aebcc903f767aebb6852c98d62b9fbd8e1fa40af85c1fdb5",
+      "superseded_by": "cg-r4-runtime-2026-09-21"
+    }
   ]
 }
