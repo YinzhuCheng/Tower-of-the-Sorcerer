@@ -41,3 +41,35 @@ art/visual-novel/04_cg/working/CG_018_noctia-afterlight_R0_layout_v2.png filter=
 art/visual-novel/04_cg/working/CG_018_noctia-afterlight_R1_identity_v1.png filter=lfs diff=lfs merge=lfs -text
 art/visual-novel/04_cg/working/CG_019_lighthouse-archive_R0_layout_v1.png filter=lfs diff=lfs merge=lfs -text
 art/visual-novel/04_cg/working/CG_019_lighthouse-archive_R1_identity_v1.png filter=lfs diff=lfs merge=lfs -text
+
+# Exact-path LFS rules for the 2026-09-20 working-art handoff.
+art/visual-novel/03_intermediate/qa/2026-09-20-session-handoff/B2_canon_safe_batch_contact_sheet.png filter=lfs diff=lfs merge=lfs -text
+art/visual-novel/04_cg/working/2026-09-20-b2-standees/B2_EXTRA_guide_lament_v1.png filter=lfs diff=lfs merge=lfs -text
+art/visual-novel/04_cg/working/2026-09-20-b2-standees/B2_EXTRA_guide_watchful_v1.png filter=lfs diff=lfs merge=lfs -text
+art/visual-novel/04_cg/working/2026-09-20-b2-standees/B2_arcane-sovereign_acceptance_v1.png filter=lfs diff=lfs merge=lfs -text
+art/visual-novel/04_cg/working/2026-09-20-b2-standees/B2_arcane-sovereign_regret_v1.png filter=lfs diff=lfs merge=lfs -text
+art/visual-novel/04_cg/working/2026-09-20-b2-standees/B2_archive-warden_duty_v1.png filter=lfs diff=lfs merge=lfs -text
+art/visual-novel/04_cg/working/2026-09-20-b2-standees/B2_astral-boss_focus_v1.png filter=lfs diff=lfs merge=lfs -text
+art/visual-novel/04_cg/working/2026-09-20-b2-standees/B2_black-seal-keeper_watchful_v1.png filter=lfs diff=lfs merge=lfs -text
+art/visual-novel/04_cg/working/2026-09-20-b2-standees/B2_cat-boss_alert_v1.png filter=lfs diff=lfs merge=lfs -text
+art/visual-novel/04_cg/working/2026-09-20-b2-standees/B2_dragon-boss_embers_v1.png filter=lfs diff=lfs merge=lfs -text
+art/visual-novel/04_cg/working/2026-09-20-b2-standees/B2_echo-regent_grave_v1.png filter=lfs diff=lfs merge=lfs -text
+art/visual-novel/04_cg/working/2026-09-20-b2-standees/B2_echo-regent_release_v1.png filter=lfs diff=lfs merge=lfs -text
+art/visual-novel/04_cg/working/2026-09-20-b2-standees/B2_final-queen_cold_v1.png filter=lfs diff=lfs merge=lfs -text
+art/visual-novel/04_cg/working/2026-09-20-b2-standees/B2_final-queen_knowing_v1.png filter=lfs diff=lfs merge=lfs -text
+art/visual-novel/04_cg/working/2026-09-20-b2-standees/B2_final-queen_resolve_v1.png filter=lfs diff=lfs merge=lfs -text
+art/visual-novel/04_cg/working/2026-09-20-b2-standees/B2_final-queen_sorrow_v1.png filter=lfs diff=lfs merge=lfs -text
+art/visual-novel/04_cg/working/2026-09-20-b2-standees/B2_fox-boss_watchful_v1.png filter=lfs diff=lfs merge=lfs -text
+art/visual-novel/04_cg/working/2026-09-20-b2-standees/B2_guide_focus_v1.png filter=lfs diff=lfs merge=lfs -text
+art/visual-novel/04_cg/working/2026-09-20-b2-standees/B2_guide_gentle_v1.png filter=lfs diff=lfs merge=lfs -text
+art/visual-novel/04_cg/working/2026-09-20-b2-standees/B2_guide_runtime-neutral_v1.png filter=lfs diff=lfs merge=lfs -text
+art/visual-novel/04_cg/working/2026-09-20-b2-standees/B2_hero_embers_v1.png filter=lfs diff=lfs merge=lfs -text
+art/visual-novel/04_cg/working/2026-09-20-b2-standees/B2_hero_guarded_v1.png filter=lfs diff=lfs merge=lfs -text
+art/visual-novel/04_cg/working/2026-09-20-b2-standees/B2_hero_resolve_v1.png filter=lfs diff=lfs merge=lfs -text
+art/visual-novel/04_cg/working/2026-09-20-b2-standees/B2_last-custodian_release_v1.png filter=lfs diff=lfs merge=lfs -text
+art/visual-novel/04_cg/working/2026-09-20-b2-standees/B2_palace-warden_duty_v1.png filter=lfs diff=lfs merge=lfs -text
+art/visual-novel/04_cg/working/2026-09-20-b2-standees/B2_shadow-boss_guarded_v1.png filter=lfs diff=lfs merge=lfs -text
+art/visual-novel/04_cg/working/2026-09-20-b2-standees/B2_sword-boss_stern_v1.png filter=lfs diff=lfs merge=lfs -text
+art/visual-novel/04_cg/working/2026-09-20-b2-standees/B2_whale-boss_lament_v1.png filter=lfs diff=lfs merge=lfs -text
+art/visual-novel/04_cg/working/R2-costume-props/2026-09-20/CG_017_traceable-revocation_R2_candidate01.png filter=lfs diff=lfs merge=lfs -text
+art/visual-novel/04_cg/working/R2-costume-props/2026-09-20/CG_017_traceable-revocation_R2_candidate02.png filter=lfs diff=lfs merge=lfs -text
