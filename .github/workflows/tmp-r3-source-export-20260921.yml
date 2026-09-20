@@ -1,0 +1,61 @@
+name: Temporary R3 Source Export
+
+on:
+  push:
+    branches:
+      - tmp/r3-source-export-20260921
+
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: 7d8101d2a66e6c84ad19c802968ccf8c75b93ee0
+          filter: blob:none
+          lfs: true
+          sparse-checkout: |
+            art/visual-novel/01_canon
+            art/visual-novel/03_intermediate/scene_cards
+            art/visual-novel/03_intermediate/prompt_packets
+            art/visual-novel/03_intermediate/reference_sets
+            art/visual-novel/03_intermediate/qa/2026-09-21-r2-r3-handoff
+            art/visual-novel/04_cg/working/R2-costume-props/2026-09-21
+            art/visual-novel/04_cg/working/R3-scene/2026-09-21
+            art/visual-novel/05_manifests/cg-current-best-20260921-v1.json
+            art/visual-novel/05_manifests/cg-r2-accepted-20260921-v1.json
+            art/visual-novel/05_manifests/cg-r3-batch01-accepted-20260921-v1.json
+            art/visual-novel/CANON_FIRST_ART_PRODUCTION_PROTOCOL_2026-09-19.md
+            art/visual-novel/CG_PRODUCTION_AND_UPLOAD_GUIDE.md
+            art/visual-novel/SESSION_ART_HANDOFF_2026-09-21.md
+          sparse-checkout-cone-mode: false
+
+      - name: Prepare R3 source export
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p export
+          cp -a art/visual-novel/01_canon export/01_canon
+          mkdir -p export/03_intermediate export/04_cg/working/R2-costume-props export/04_cg/working/R3-scene export/05_manifests
+          cp -a art/visual-novel/03_intermediate/scene_cards export/03_intermediate/
+          cp -a art/visual-novel/03_intermediate/prompt_packets export/03_intermediate/
+          cp -a art/visual-novel/03_intermediate/reference_sets export/03_intermediate/
+          cp -a art/visual-novel/03_intermediate/qa/2026-09-21-r2-r3-handoff export/03_intermediate/qa
+          cp -a art/visual-novel/04_cg/working/R2-costume-props/2026-09-21 export/04_cg/working/R2-costume-props/
+          cp -a art/visual-novel/04_cg/working/R3-scene/2026-09-21 export/04_cg/working/R3-scene/
+          cp art/visual-novel/05_manifests/cg-current-best-20260921-v1.json export/05_manifests/
+          cp art/visual-novel/05_manifests/cg-r2-accepted-20260921-v1.json export/05_manifests/
+          cp art/visual-novel/05_manifests/cg-r3-batch01-accepted-20260921-v1.json export/05_manifests/
+          cp art/visual-novel/CANON_FIRST_ART_PRODUCTION_PROTOCOL_2026-09-19.md export/
+          cp art/visual-novel/CG_PRODUCTION_AND_UPLOAD_GUIDE.md export/
+          cp art/visual-novel/SESSION_ART_HANDOFF_2026-09-21.md export/
+          printf '%s\n' "source_branch=main" "source_commit=7d8101d2a66e6c84ad19c802968ccf8c75b93ee0" "purpose=R3 remaining 12 source pack" > export/EXPORT_SOURCE.txt
+          find export -type f -print | sort > export/FILE_LIST.txt
+          sha256sum $(find export -type f ! -name SHA256SUMS.txt -print | sort) > export/SHA256SUMS.txt
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: r3-source-export-20260921
+          path: export/
+          if-no-files-found: error
+          compression-level: 0
