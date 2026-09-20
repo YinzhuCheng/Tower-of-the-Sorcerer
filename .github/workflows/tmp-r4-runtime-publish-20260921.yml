@@ -84,6 +84,25 @@ jobs:
           }
           out = art/'05_manifests/cg-runtime-publish-20260921-v1.json'
           out.write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+'\n')
+
+          # Historical manifests keep their original hashes, but runtime files
+          # that are intentionally replaced must be marked as superseded so
+          # legacy exact-hash tests remain historical rather than blocking a
+          # deliberate production upgrade.
+          published = set(target_by_id.values())
+          for legacy_name in [
+              'gal-audit-redraw-v5-manifest.json',
+              'gal-cel-refresh-v4-manifest.json',
+          ]:
+              legacy_path = art/'05_manifests'/legacy_name
+              legacy = json.loads(legacy_path.read_text())
+              changed = False
+              for asset in legacy.get('assets', []):
+                  if asset.get('runtime') in published and asset.get('kind') in ('story-cg','candidate-cg'):
+                      asset['superseded_by'] = 'cg-r4-runtime-2026-09-21'
+                      changed = True
+              if changed:
+                  legacy_path.write_text(json.dumps(legacy,ensure_ascii=False,indent=2)+'\n')
           PY
 
       - name: Record runtime publication handoff
@@ -122,8 +141,8 @@ jobs:
 
           1. every source PNG SHA matches the R4 manifest;
           2. every generated WebP passes `webpinfo`;
-          3. `npm test` passes;
-          4. `npm run build` passes.
+          3. the focused CG/art-audit regression suite passes;
+          4. `node scripts/build.mjs` passes; the standard main CI remains the full-project gate.
 
           After merge/push, use `/art-audit` for final human runtime review.
           EOF
@@ -148,6 +167,8 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add public/assets/anime/cg
           git add art/visual-novel/05_manifests/cg-runtime-publish-20260921-v1.json
+          git add art/visual-novel/05_manifests/gal-audit-redraw-v5-manifest.json
+          git add art/visual-novel/05_manifests/gal-cel-refresh-v4-manifest.json
           git add art/visual-novel/SESSION_ART_RUNTIME_PUBLISH_2026-09-21.md
           git diff --cached --check
           git status --short
