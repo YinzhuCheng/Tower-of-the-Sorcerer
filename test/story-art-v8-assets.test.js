@@ -44,9 +44,13 @@ test('story art v8 manifest locks every approved runtime file', async () => {
       readFile(new URL(asset.runtime, ROOT)),
       readFile(new URL(asset.final, ROOT))
     ]);
-    assert.deepEqual(runtime, final, `${asset.id} final and runtime must match`);
-    assert.deepEqual(webpDimensions(runtime), asset.dimensions, `${asset.id} dimensions`);
-    assert.equal(createHash('sha256').update(runtime).digest('hex'), asset.sha256, `${asset.id} hash`);
+    assert.deepEqual(webpDimensions(final), asset.dimensions, `${asset.id} historical final dimensions`);
+    assert.equal(createHash('sha256').update(final).digest('hex'), asset.sha256, `${asset.id} historical final hash`);
+    assert.deepEqual(webpDimensions(runtime), asset.dimensions, `${asset.id} runtime dimensions`);
+    if (!asset.superseded_by) {
+      assert.deepEqual(runtime, final, `${asset.id} final and runtime must match`);
+      assert.equal(createHash('sha256').update(runtime).digest('hex'), asset.sha256, `${asset.id} runtime hash`);
+    }
     if (asset.alphaRequired) {
       assert.ok(runtime.includes(Buffer.from('ALPH')) || runtime.subarray(12, 16).toString('ascii') === 'VP8L', `${asset.id} alpha`);
     }
