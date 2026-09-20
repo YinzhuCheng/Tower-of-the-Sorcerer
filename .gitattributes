@@ -73,3 +73,7 @@ art/visual-novel/04_cg/working/2026-09-20-b2-standees/B2_sword-boss_stern_v1.png
 art/visual-novel/04_cg/working/2026-09-20-b2-standees/B2_whale-boss_lament_v1.png filter=lfs diff=lfs merge=lfs -text
 art/visual-novel/04_cg/working/R2-costume-props/2026-09-20/CG_017_traceable-revocation_R2_candidate01.png filter=lfs diff=lfs merge=lfs -text
 art/visual-novel/04_cg/working/R2-costume-props/2026-09-20/CG_017_traceable-revocation_R2_candidate02.png filter=lfs diff=lfs merge=lfs -text
+
+# Scoped LFS rules for the accepted 2026-09-21 R2/R3 handoff.
+art/visual-novel/04_cg/working/R2-costume-props/2026-09-21/*.png filter=lfs diff=lfs merge=lfs -text
+art/visual-novel/04_cg/working/R3-scene/2026-09-21/*.png filter=lfs diff=lfs merge=lfs -text

@@ -1,0 +1,125 @@
+{
+  "version": "handoff-2026-09-21-v1",
+  "repository": "YinzhuCheng/Tower-of-the-Sorcerer",
+  "target_branch": "main",
+  "logical_status": "R2 accepted 19/19",
+  "standalone_r2_png_count": 18,
+  "note": "CG_003 standalone R2 was superseded/overwritten locally by its accepted R3 image; see entry note.",
+  "scenes": [
+    {
+      "cg_id": "CG_001_critical",
+      "status": "accepted-r2",
+      "artifact_path": "art/visual-novel/04_cg/working/R2-costume-props/2026-09-21/CG_001_critical_R2_accepted_v1.png",
+      "sha256": "e7ef90185a909aac4b6d9f6b2b038096f79b468c2658e4dbf51458b4ade00922"
+    },
+    {
+      "cg_id": "CG_002_defeat",
+      "status": "accepted-r2",
+      "artifact_path": "art/visual-novel/04_cg/working/R2-costume-props/2026-09-21/CG_002_defeat_R2_accepted_v1.png",
+      "sha256": "8b224c3f7aec861d373cd8107e945b6d25b302f24cfb5ba182f344e9216bdf1e"
+    },
+    {
+      "cg_id": "CG_003_prologue-tower",
+      "status": "accepted-r2-superseded-by-r3",
+      "artifact_path": "art/visual-novel/04_cg/working/R3-scene/2026-09-21/CG_003_prologue-tower_R3_accepted_v1.png",
+      "sha256": "50a752d9614f5f8586fb04812dce9055c0d2704bb4b5482cbcc4f9479f3811fa",
+      "note": "Exact standalone R2 bytes were overwritten in the VM by the accepted R3 successor. Continue from R3; do not reconstruct an older R2."
+    },
+    {
+      "cg_id": "CG_004_seven-cantos-severed",
+      "status": "accepted-r2",
+      "artifact_path": "art/visual-novel/04_cg/working/R2-costume-props/2026-09-21/CG_004_seven-cantos-severed_R2_accepted_v1.png",
+      "sha256": "26a7a9cbfa390c70b85dea6ca86ca762cf893ba08cb35785b760e53c99e8ee51"
+    },
+    {
+      "cg_id": "CG_005_northstar-arrival",
+      "status": "accepted-r2",
+      "artifact_path": "art/visual-novel/04_cg/working/R2-costume-props/2026-09-21/CG_005_northstar-arrival_R2_accepted_v1.png",
+      "sha256": "7048c33cd2c814ff7306f93f716370fd4b29ef7868bd1101cbc48b062194cb33"
+    },
+    {
+      "cg_id": "CG_006_seven-core-network",
+      "status": "accepted-r2",
+      "artifact_path": "art/visual-novel/04_cg/working/R2-costume-props/2026-09-21/CG_006_seven-core-network_R2_accepted_v1.png",
+      "sha256": "dd71bbd3e10148a2142d44cf9cbaa8a395b9de2310b73b295abb15066ebb49bc"
+    },
+    {
+      "cg_id": "CG_007_noctia-truth",
+      "status": "accepted-r2",
+      "artifact_path": "art/visual-novel/04_cg/working/R2-costume-props/2026-09-21/CG_007_noctia-truth_R2_accepted_v1.png",
+      "sha256": "07d5112026938523b5577640ded09e900be8c8aef9326a61b0b857dff12782a2"
+    },
+    {
+      "cg_id": "CG_008_noctia-seal",
+      "status": "accepted-r2",
+      "artifact_path": "art/visual-novel/04_cg/working/R2-costume-props/2026-09-21/CG_008_noctia-seal_R2_accepted_v1.png",
+      "sha256": "9ea8b3112bec8def5a25822c6fa995c4fc74ae6a390e312b0a1c50eb05b0db66"
+    },
+    {
+      "cg_id": "CG_009_missing-fourth-step",
+      "status": "accepted-r2",
+      "artifact_path": "art/visual-novel/04_cg/working/R2-costume-props/2026-09-21/CG_009_missing-fourth-step_R2_accepted_v1.png",
+      "sha256": "98c106d5a696fefc6a7d43b2ce23771ed1874f1b387dec0f8f3ffe8fa4254d7f"
+    },
+    {
+      "cg_id": "CG_010_seventeen-minute-splice",
+      "status": "accepted-r2",
+      "artifact_path": "art/visual-novel/04_cg/working/R2-costume-props/2026-09-21/CG_010_seventeen-minute-splice_R2_accepted_v1.png",
+      "sha256": "71a2eac293dac6a9d3de7a6afe37c9b25228acc9755d483ed67e63b5d7a0e490"
+    },
+    {
+      "cg_id": "CG_011_intercepted-receipt",
+      "status": "accepted-r2",
+      "artifact_path": "art/visual-novel/04_cg/working/R2-costume-props/2026-09-21/CG_011_intercepted-receipt_R2_accepted_v1.png",
+      "sha256": "968450573aaaf68f256ec8d0cf2233e7493814bc86b552b13c833d480d84660c"
+    },
+    {
+      "cg_id": "CG_012_echo-ledger",
+      "status": "accepted-r2",
+      "artifact_path": "art/visual-novel/04_cg/working/R2-costume-props/2026-09-21/CG_012_echo-ledger_R2_accepted_v1.png",
+      "sha256": "e35294bdfddc4579232056612310e87a69b1478bdab7d6f91662670d0c52d0ec"
+    },
+    {
+      "cg_id": "CG_013_noctia-sovereign",
+      "status": "accepted-r2",
+      "artifact_path": "art/visual-novel/04_cg/working/R2-costume-props/2026-09-21/CG_013_noctia-sovereign_R2_accepted_v1.png",
+      "sha256": "c9dd56c80d82b249bb93199de4d39b65f29c0db84d9a244b9ef07ef8c596582f"
+    },
+    {
+      "cg_id": "CG_014_missing-page-restored",
+      "status": "accepted-r2",
+      "artifact_path": "art/visual-novel/04_cg/working/R2-costume-props/2026-09-21/CG_014_missing-page-restored_R2_accepted_v1.png",
+      "sha256": "240286907b4b98c560d1c7e07b04419db9904645f910914b2f9917a8bd8d7bb4"
+    },
+    {
+      "cg_id": "CG_015_letters-held-in-storm",
+      "status": "accepted-r2",
+      "artifact_path": "art/visual-novel/04_cg/working/R2-costume-props/2026-09-21/CG_015_letters-held-in-storm_R2_accepted_v1.png",
+      "sha256": "bc45f471c8fec5df4898c00d8a48245d8fbef40f1c0285e136dc526490363bd4"
+    },
+    {
+      "cg_id": "CG_016_originals-enter-lighthouse",
+      "status": "accepted-r2",
+      "artifact_path": "art/visual-novel/04_cg/working/R2-costume-props/2026-09-21/CG_016_originals-enter-lighthouse_R2_accepted_v1.png",
+      "sha256": "6c61e252d3fa9b712f16ea4e30f421f92ba789e650ba37b369b0184ea0def7b7"
+    },
+    {
+      "cg_id": "CG_017_traceable-revocation",
+      "status": "accepted-r2",
+      "artifact_path": "art/visual-novel/04_cg/working/R2-costume-props/2026-09-21/CG_017_traceable-revocation_R2_accepted_v1.png",
+      "sha256": "849805b1f1a86beb508bf2e814d767ad434f759b14e3de993471718c2a14c5be"
+    },
+    {
+      "cg_id": "CG_018_noctia-afterlight",
+      "status": "accepted-r2",
+      "artifact_path": "art/visual-novel/04_cg/working/R2-costume-props/2026-09-21/CG_018_noctia-afterlight_R2_accepted_v1.png",
+      "sha256": "01355ac103d26207c0e5568a170e3abf1084329113f660cd6cbbe07e1757cddc"
+    },
+    {
+      "cg_id": "CG_019_lighthouse-archive",
+      "status": "accepted-r2",
+      "artifact_path": "art/visual-novel/04_cg/working/R2-costume-props/2026-09-21/CG_019_lighthouse-archive_R2_accepted_v1.png",
+      "sha256": "834d8e5ce854c6736a7d691953af12af3f755bb349e85fbe6ae14e2ad13dde27"
+    }
+  ]
+}

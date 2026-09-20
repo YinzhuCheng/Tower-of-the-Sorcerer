@@ -1,0 +1,181 @@
+{
+  "version": "handoff-2026-09-21-v1",
+  "status": "R3 batch01 accepted 7/7",
+  "scenes": [
+    {
+      "cg_id": "CG_003_prologue-tower",
+      "stage": "R3",
+      "status": "accepted-r3",
+      "path": "art/visual-novel/04_cg/working/R3-scene/2026-09-21/CG_003_prologue-tower_R3_accepted_v1.png",
+      "sha256": "50a752d9614f5f8586fb04812dce9055c0d2704bb4b5482cbcc4f9479f3811fa",
+      "width": 1672,
+      "height": 941,
+      "mode": "RGB",
+      "runtime_target": "public/assets/anime/cg/liyue-prologue-tower-cg.webp",
+      "source_scene_card": "art/visual-novel/03_intermediate/scene_cards/CG_003_prologue-tower.json",
+      "must_show": [
+        "tower-dominant shot",
+        "storm approaching harbor",
+        "seven restrained core lights",
+        "hero small and back-facing"
+      ],
+      "must_not_show": [
+        "celebration",
+        "large hero portrait",
+        "readable signs",
+        "modern city"
+      ]
+    },
+    {
+      "cg_id": "CG_006_seven-core-network",
+      "stage": "R3",
+      "status": "accepted-r3",
+      "path": "art/visual-novel/04_cg/working/R3-scene/2026-09-21/CG_006_seven-core-network_R3_accepted_v1.png",
+      "sha256": "99c3c739ac9ebbd0b289b234aaa0ec8337130419af22a8bd87ebf5e854b6332a",
+      "width": 1672,
+      "height": 941,
+      "mode": "RGB",
+      "runtime_target": "public/assets/anime/cg/liyue-yayu-seven-core-network-cg-audit-v3.webp",
+      "source_scene_card": "art/visual-novel/03_intermediate/scene_cards/CG_006_seven-core-network.json",
+      "must_show": [
+        "exactly seven paths",
+        "one shared lock",
+        "shadow_boss owns needle/spool"
+      ],
+      "must_not_show": [
+        "seven duplicate characters",
+        "extra jewelry",
+        "readable UI",
+        "random constellation"
+      ]
+    },
+    {
+      "cg_id": "CG_009_missing-fourth-step",
+      "stage": "R3",
+      "status": "accepted-r3",
+      "path": "art/visual-novel/04_cg/working/R3-scene/2026-09-21/CG_009_missing-fourth-step_R3_accepted_v1.png",
+      "sha256": "12ced155fca518fa12bead6117929cda286b78fd6fa3130a971ab83e234c7be8",
+      "width": 1672,
+      "height": 941,
+      "mode": "RGB",
+      "runtime_target": "public/assets/anime/cg/liyue-noctia-missing-fourth-step-cg-audit-v3.webp",
+      "source_scene_card": "art/visual-novel/03_intermediate/scene_cards/CG_009_missing-fourth-step.json",
+      "must_show": [
+        "exactly four positions",
+        "fourth is missing",
+        "queen hand stops before gap"
+      ],
+      "must_not_show": [
+        "readable button text",
+        "computer UI",
+        "combat",
+        "extra people"
+      ]
+    },
+    {
+      "cg_id": "CG_010_seventeen-minute-splice",
+      "stage": "R3",
+      "status": "accepted-r3",
+      "path": "art/visual-novel/04_cg/working/R3-scene/2026-09-21/CG_010_seventeen-minute-splice_R3_accepted_v1.png",
+      "sha256": "e93ef908f3996d28826add9d2bfadca5560cc5c70631e3bd4d8fc2a412d8ba75",
+      "width": 1672,
+      "height": 941,
+      "mode": "RGB",
+      "runtime_target": "public/assets/anime/cg/liyue-lumi-seventeen-minute-splice-cg-v8.webp",
+      "source_scene_card": "art/visual-novel/03_intermediate/scene_cards/CG_010_seventeen-minute-splice.json",
+      "must_show": [
+        "three columns",
+        "two shift together",
+        "one remains original",
+        "no readable text"
+      ],
+      "must_not_show": [
+        "modern monitors",
+        "generic galaxy",
+        "extra star hair clips",
+        "combat pose"
+      ]
+    },
+    {
+      "cg_id": "CG_014_missing-page-restored",
+      "stage": "R3",
+      "status": "accepted-r3",
+      "path": "art/visual-novel/04_cg/working/R3-scene/2026-09-21/CG_014_missing-page-restored_R3_accepted_v1.png",
+      "sha256": "efffd4d0dff2ed319d6dbe057d8fcd6da9df3d6a3d43225cf27332bee5884742",
+      "width": 1672,
+      "height": 941,
+      "mode": "RGB",
+      "runtime_target": "public/assets/anime/cg/liyue-noctia-missing-page-cg-audit-v3.webp",
+      "source_scene_card": "art/visual-novel/03_intermediate/scene_cards/CG_014_missing-page-restored.json",
+      "must_show": [
+        "exactly one missing final page",
+        "mechanical separation not knife tear",
+        "three witnesses"
+      ],
+      "must_not_show": [
+        "readable legal text",
+        "many flying pages",
+        "battle pose",
+        "modern scanner"
+      ]
+    },
+    {
+      "cg_id": "CG_017_traceable-revocation",
+      "stage": "R3",
+      "status": "accepted-r3",
+      "path": "art/visual-novel/04_cg/working/R3-scene/2026-09-21/CG_017_traceable-revocation_R3_accepted_v1.png",
+      "sha256": "6de4d5c3ec046aaabf937f9ae19647f8c7808224b405299749bb70296926114d",
+      "width": 1672,
+      "height": 941,
+      "mode": "RGB",
+      "runtime_target": "public/assets/anime/cg/liyue-traceable-revocation-cg-audit-v3.webp",
+      "source_scene_card": "art/visual-novel/03_intermediate/scene_cards/CG_017_traceable-revocation.json",
+      "must_show": [
+        "guide owns pen and astrolabe",
+        "old and new records coexist",
+        "three people",
+        "layers are visually distinct"
+      ],
+      "must_not_show": [
+        "readable UI",
+        "old pages erased",
+        "queen sword",
+        "modern keyboard"
+      ]
+    },
+    {
+      "cg_id": "CG_019_lighthouse-archive",
+      "stage": "R3",
+      "status": "accepted-r3",
+      "path": "art/visual-novel/04_cg/working/R3-scene/2026-09-21/CG_019_lighthouse-archive_R3_accepted_v1.png",
+      "sha256": "8386d114ead6b98c0dd4ede513358536b57c1808adee599e74ff03cd76c7f5e3",
+      "width": 1672,
+      "height": 941,
+      "mode": "RGB",
+      "runtime_target": "public/assets/anime/cg/liyue-lighthouse-archive-cg.webp",
+      "source_scene_card": "art/visual-novel/03_intermediate/scene_cards/CG_019_lighthouse-archive.json",
+      "must_show": [
+        "four characters have distinct tasks",
+        "calm dawn",
+        "wet road",
+        "mail coach driver unarmed"
+      ],
+      "must_not_show": [
+        "victory fireworks",
+        "readable form",
+        "weapons raised",
+        "crowded festival"
+      ]
+    }
+  ],
+  "accepted_ids": [
+    "CG_003_prologue-tower",
+    "CG_006_seven-core-network",
+    "CG_009_missing-fourth-step",
+    "CG_010_seventeen-minute-splice",
+    "CG_014_missing-page-restored",
+    "CG_017_traceable-revocation",
+    "CG_019_lighthouse-archive"
+  ],
+  "remaining_r3_count": 12
+}
