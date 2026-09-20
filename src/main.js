@@ -207,6 +207,10 @@ function requestedGalPreviewDialogue() {
   return dialogueId && getDialogue(dialogueId) ? dialogueId : null;
 }
 
+function requestedGalOnlyMode() {
+  return new URLSearchParams(window.location.search).get('gal-only') === '1';
+}
+
 function editableKeyTarget(target) {
   return target instanceof Element
     && Boolean(target.closest('input, textarea, select, [contenteditable="true"]'));
@@ -1488,6 +1492,8 @@ async function boot() {
   bindControls();
   updateHud();
   const previewDialogueId = requestedGalPreviewDialogue();
+  const galOnlyPreview = Boolean(previewDialogueId && requestedGalOnlyMode());
+  document.body.classList.toggle('gal-only-preview', galOnlyPreview);
   if (!previewDialogueId) autoSave();
   let canvasAssetsPending = false;
   let startCanvasAssetsNow = null;
@@ -1516,9 +1522,27 @@ async function boot() {
   // Keep the procedural game frame available immediately, but do not let the
   // opening story compete with the bulk gameplay-art preload. The authored
   // atlases begin loading as soon as the prologue ends or is skipped.
+  const previewAfter = galOnlyPreview
+    ? () => {
+        if (window.parent !== window) {
+          window.parent.postMessage({
+            type: 'tower-gal-only-finished',
+            dialogueId: previewDialogueId
+          }, window.location.origin);
+        }
+      }
+    : startCanvasAssets;
   const openingDialogueActive = previewDialogueId
-    ? (showDialogue(previewDialogueId, startCanvasAssets), true)
+    ? (showDialogue(previewDialogueId, previewAfter), true)
     : initialGalDialogue(startCanvasAssets);
+
+  // GAL-only review is intentionally presentation-only: the real dialogue
+  // renderer and runtime art are used, but no tower canvas, movement loop,
+  // save writes or gameplay-art preload is started underneath the scene.
+  if (galOnlyPreview) {
+    elements.loading.classList.add('hidden');
+    return;
+  }
 
   try {
     const Phaser = await ensurePhaser();
