@@ -1,0 +1,150 @@
+name: Temporary R4 Runtime Publish
+
+on:
+  push:
+    branches:
+      - tmp/r4-runtime-publish-20260921
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          lfs: true
+          fetch-depth: 0
+
+      - name: Install deterministic WebP encoder
+        shell: bash
+        run: |
+          set -euo pipefail
+          sudo apt-get update -qq
+          sudo apt-get install -y webp
+
+      - name: Export 19 accepted masters to runtime WebP
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json, subprocess, hashlib
+          from pathlib import Path
+
+          repo = Path('.')
+          art = repo / 'art/visual-novel'
+          r4 = json.loads((art/'05_manifests/cg-r4-accepted-20260921-v1.json').read_text())
+          mapping = json.loads((art/'05_manifests/cg-current-best-20260921-v1.json').read_text())
+          target_by_id = {x['cg_id']: x['runtime_target'] for x in mapping['scenes']}
+          results=[]
+
+          if len(r4['scenes']) != 19:
+              raise SystemExit(f"expected 19 R4 scenes, got {len(r4['scenes'])}")
+
+          for scene in r4['scenes']:
+              cid = scene['cg_id']
+              src = art / scene['path']
+              target = repo / target_by_id[cid]
+              if not src.exists():
+                  raise SystemExit(f"missing source: {src}")
+              target.parent.mkdir(parents=True, exist_ok=True)
+              cmd = [
+                  'cwebp', '-quiet',
+                  '-q', '92',
+                  '-m', '6',
+                  '-sharp_yuv',
+                  '-metadata', 'none',
+                  str(src),
+                  '-o', str(target),
+              ]
+              subprocess.run(cmd, check=True)
+              subprocess.run(['webpinfo', '-quiet', str(target)], check=True)
+              runtime_sha = hashlib.sha256(target.read_bytes()).hexdigest()
+              source_sha = hashlib.sha256(src.read_bytes()).hexdigest()
+              if source_sha != scene['sha256']:
+                  raise SystemExit(f"source SHA mismatch for {cid}: {source_sha} != {scene['sha256']}")
+              results.append({
+                  'cg_id': cid,
+                  'source_path': str(src),
+                  'source_sha256': source_sha,
+                  'runtime_target': str(target),
+                  'runtime_sha256': runtime_sha,
+                  'runtime_bytes': target.stat().st_size,
+                  'encoder': 'cwebp',
+                  'encoder_args': ['-q','92','-m','6','-sharp_yuv','-metadata','none'],
+              })
+
+          manifest = {
+              'version':'2026-09-21-v1',
+              'status':'runtime WebP exported from R4 accepted masters',
+              'count':len(results),
+              'scenes':results,
+          }
+          out = art/'05_manifests/cg-runtime-publish-20260921-v1.json'
+          out.write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+'\n')
+          PY
+
+      - name: Record runtime publication handoff
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat > art/visual-novel/SESSION_ART_RUNTIME_PUBLISH_2026-09-21.md <<'EOF'
+          # Runtime CG Publish · 2026-09-21
+
+          ## Status
+
+          - R4 accepted masters: **19/19**
+          - Runtime WebP export: **19/19**
+          - Encoder: `cwebp`
+          - Fixed parameters: `-q 92 -m 6 -sharp_yuv -metadata none`
+          - Runtime paths are unchanged, so existing game and `/art-audit` mappings remain valid.
+
+          ## Source of truth
+
+          - `05_manifests/cg-r4-accepted-20260921-v1.json`
+          - `05_manifests/cg-runtime-publish-20260921-v1.json`
+          - `04_cg/working/R3-scene/2026-09-21/CG_*_R3_accepted_v1.png`
+
+          ## Runtime destination
+
+          The 19 accepted CGs overwrite the existing files under:
+
+          `public/assets/anime/cg/`
+
+          using the established `runtime_target` paths from
+          `05_manifests/cg-current-best-20260921-v1.json`.
+
+          ## Validation gate
+
+          Publication is allowed only after:
+
+          1. every source PNG SHA matches the R4 manifest;
+          2. every generated WebP passes `webpinfo`;
+          3. `npm test` passes;
+          4. `npm run build` passes.
+
+          After merge/push, use `/art-audit` for final human runtime review.
+          EOF
+
+      - name: Run regression tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm test
+          npm run build
+
+      - name: Commit runtime assets to main
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/assets/anime/cg
+          git add art/visual-novel/05_manifests/cg-runtime-publish-20260921-v1.json
+          git add art/visual-novel/SESSION_ART_RUNTIME_PUBLISH_2026-09-21.md
+          git diff --cached --check
+          git status --short
+          git commit -m "art: publish R4 accepted CGs to runtime"
+          git push origin HEAD:main
