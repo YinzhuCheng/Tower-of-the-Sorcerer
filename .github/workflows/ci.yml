@@ -6,7 +6,7 @@ on:
 
 jobs:
   test:
-    name: Test shard ${{ matrix.shard + 1 }}/4
+    name: Test shard ${{ matrix.shard }}/4
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
