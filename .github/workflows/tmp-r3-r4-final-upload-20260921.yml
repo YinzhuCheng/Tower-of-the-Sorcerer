@@ -1,0 +1,87 @@
+name: Temporary R3 R4 Final Upload
+
+on:
+  push:
+    branches:
+      - tmp/r3-r4-final-upload-20260921
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          lfs: true
+          fetch-depth: 0
+
+      - name: Download exact-byte transfer bundle
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl -fL 'https://sdmntprjapaneast.oaiusercontent.com/files/00000000-a710-8209-8905-39992a46bcf5/raw?se=2026-09-20T22%3A28%3A25Z&sp=r&sv=2026-02-06&sr=b&scid=ed0e5ce1-ad17-54a3-b1bc-f76a71952f17&skoid=9063adf3-a524-4acf-b70a-8731b33f2f50&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-09-20T03%3A07%3A20Z&ske=2026-09-21T03%3A07%3A20Z&sks=b&skv=2026-02-06&sig=WCONhS337QZx9GBcogNwhQQDRLfIeW39FW3b4bMk7Ds%3D' -o /tmp/tower-r3-r4-transfer.pptx
+          rm -rf /tmp/tower-pptx
+          mkdir -p /tmp/tower-pptx
+          unzip -q /tmp/tower-r3-r4-transfer.pptx -d /tmp/tower-pptx
+
+      - name: Restore source PNGs from PPTX media
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import os, re, shutil
+          from pathlib import Path
+
+          root = Path('/tmp/tower-pptx')
+          targets = [
+            'CG_001_critical_R3_accepted_v1.png',
+            'CG_002_defeat_R3_accepted_v1.png',
+            'CG_004_seven-cantos-severed_R3_accepted_v1.png',
+            'CG_005_northstar-arrival_R3_accepted_v1.png',
+            'CG_007_noctia-truth_R3_accepted_v1.png',
+            'CG_008_noctia-seal_R3_accepted_v1.png',
+            'CG_011_intercepted-receipt_R3_accepted_v1.png',
+            'CG_012_echo-ledger_R3_accepted_v1.png',
+            'CG_013_noctia-sovereign_R3_accepted_v1.png',
+            'CG_015_letters-held-in-storm_R3_accepted_v1.png',
+            'CG_016_originals-enter-lighthouse_R3_accepted_v1.png',
+            'CG_018_noctia-afterlight_R3_accepted_v1.png',
+          ]
+          out = Path('art/visual-novel/04_cg/working/R3-scene/2026-09-21')
+          out.mkdir(parents=True, exist_ok=True)
+          for i, name in enumerate(targets, start=1):
+              rel = root / f'ppt/slides/_rels/slide{i}.xml.rels'
+              text = rel.read_text(encoding='utf-8')
+              m = re.search(r'Target="([^"]+media/[^"]+)"', text)
+              if not m:
+                  raise SystemExit(f'no media target for slide {i}')
+              media = root / 'ppt/media' / Path(m.group(1)).name
+              shutil.copyfile(media, out / name)
+
+          # slide 13 is the QA contact sheet.
+          rel = root / 'ppt/slides/_rels/slide13.xml.rels'
+          text = rel.read_text(encoding='utf-8')
+          m = re.search(r'Target="([^"]+media/[^"]+)"', text)
+          if not m:
+              raise SystemExit('no media target for contact sheet')
+          media = root / 'ppt/media' / Path(m.group(1)).name
+          qa = Path('art/visual-novel/03_intermediate/qa/2026-09-21-r3-r4-final')
+          qa.mkdir(parents=True, exist_ok=True)
+          shutil.copyfile(media, qa / 'R3_R4_FINAL_19_CONTACT_SHEET.jpg')
+          PY
+
+      - name: Commit LFS-backed R3 finals to main
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git lfs install
+          git add art/visual-novel/04_cg/working/R3-scene/2026-09-21/*.png
+          git add art/visual-novel/03_intermediate/qa/2026-09-21-r3-r4-final/R3_R4_FINAL_19_CONTACT_SHEET.jpg
+          git status --short
+          git commit -m "art: complete CG R3 image set"
+          git push origin HEAD:main
