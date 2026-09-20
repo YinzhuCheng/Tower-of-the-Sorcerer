@@ -1,0 +1,349 @@
+{
+  "version": "2026-09-21-v1",
+  "status": "runtime WebP exported from R4 accepted masters",
+  "count": 19,
+  "scenes": [
+    {
+      "cg_id": "CG_001_critical",
+      "source_path": "art/visual-novel/04_cg/working/R3-scene/2026-09-21/CG_001_critical_R3_accepted_v1.png",
+      "source_sha256": "283b636129a9464402443d18e12e48d9384324c613a2e2c5e58728fd938aac0e",
+      "runtime_target": "public/assets/anime/cg/liyue-critical-cg.webp",
+      "runtime_sha256": "fb4f56e1d58599502767f636748dd3b651cd4072f15c147b011f2750abcf5ebb",
+      "runtime_bytes": 301736,
+      "encoder": "cwebp",
+      "encoder_args": [
+        "-q",
+        "92",
+        "-m",
+        "6",
+        "-sharp_yuv",
+        "-metadata",
+        "none"
+      ]
+    },
+    {
+      "cg_id": "CG_002_defeat",
+      "source_path": "art/visual-novel/04_cg/working/R3-scene/2026-09-21/CG_002_defeat_R3_accepted_v1.png",
+      "source_sha256": "599fe8c68b4dba12841a562fa3eb1196ba09404d0a04dd83257d49dad114bdb5",
+      "runtime_target": "public/assets/anime/cg/liyue-defeat-cg.webp",
+      "runtime_sha256": "012c8806f064e4bb5f2c41e60cf4f24c3e286972dc92f8d75138b361cc522141",
+      "runtime_bytes": 277714,
+      "encoder": "cwebp",
+      "encoder_args": [
+        "-q",
+        "92",
+        "-m",
+        "6",
+        "-sharp_yuv",
+        "-metadata",
+        "none"
+      ]
+    },
+    {
+      "cg_id": "CG_003_prologue-tower",
+      "source_path": "art/visual-novel/04_cg/working/R3-scene/2026-09-21/CG_003_prologue-tower_R3_accepted_v1.png",
+      "source_sha256": "50a752d9614f5f8586fb04812dce9055c0d2704bb4b5482cbcc4f9479f3811fa",
+      "runtime_target": "public/assets/anime/cg/liyue-prologue-tower-cg.webp",
+      "runtime_sha256": "5cbaae22d83a1ab8b15b0fe0f7da1c7bde59257a8e66dc41722430dc1cf368af",
+      "runtime_bytes": 352188,
+      "encoder": "cwebp",
+      "encoder_args": [
+        "-q",
+        "92",
+        "-m",
+        "6",
+        "-sharp_yuv",
+        "-metadata",
+        "none"
+      ]
+    },
+    {
+      "cg_id": "CG_004_seven-cantos-severed",
+      "source_path": "art/visual-novel/04_cg/working/R3-scene/2026-09-21/CG_004_seven-cantos-severed_R3_accepted_v1.png",
+      "source_sha256": "dce08651fcafb290633e5ac399edcfeb503e17136a76c24bc27b441613c76efc",
+      "runtime_target": "public/assets/anime/cg/liyue-seven-cantos-severed-cg-audit-v3.webp",
+      "runtime_sha256": "87e61df0dc42f56206ac8c3276443ce65c52c98f5e394ac92472d34b3c9e90de",
+      "runtime_bytes": 358292,
+      "encoder": "cwebp",
+      "encoder_args": [
+        "-q",
+        "92",
+        "-m",
+        "6",
+        "-sharp_yuv",
+        "-metadata",
+        "none"
+      ]
+    },
+    {
+      "cg_id": "CG_005_northstar-arrival",
+      "source_path": "art/visual-novel/04_cg/working/R3-scene/2026-09-21/CG_005_northstar-arrival_R3_accepted_v1.png",
+      "source_sha256": "3f694fa99c47e9b08b5a21bef00807b47a894809291bcd29fabf316fdcfe0d78",
+      "runtime_target": "public/assets/anime/cg/liyue-lanyin-northstar-arrival-cg-v8.webp",
+      "runtime_sha256": "4577dd3f6d79965dc2df23f12790f60e60a5dc44e5a0d16e6398f02bbff8f670",
+      "runtime_bytes": 413896,
+      "encoder": "cwebp",
+      "encoder_args": [
+        "-q",
+        "92",
+        "-m",
+        "6",
+        "-sharp_yuv",
+        "-metadata",
+        "none"
+      ]
+    },
+    {
+      "cg_id": "CG_006_seven-core-network",
+      "source_path": "art/visual-novel/04_cg/working/R3-scene/2026-09-21/CG_006_seven-core-network_R3_accepted_v1.png",
+      "source_sha256": "99c3c739ac9ebbd0b289b234aaa0ec8337130419af22a8bd87ebf5e854b6332a",
+      "runtime_target": "public/assets/anime/cg/liyue-yayu-seven-core-network-cg-audit-v3.webp",
+      "runtime_sha256": "ee53d94fe42b81e259a7d3882de58cdb6f26753b62f69121509ead66aeb5734f",
+      "runtime_bytes": 390478,
+      "encoder": "cwebp",
+      "encoder_args": [
+        "-q",
+        "92",
+        "-m",
+        "6",
+        "-sharp_yuv",
+        "-metadata",
+        "none"
+      ]
+    },
+    {
+      "cg_id": "CG_007_noctia-truth",
+      "source_path": "art/visual-novel/04_cg/working/R3-scene/2026-09-21/CG_007_noctia-truth_R3_accepted_v1.png",
+      "source_sha256": "9b6e1fbab0052a00f0799346db7b688b490a01fa719703dcb0d05aa175c84ddb",
+      "runtime_target": "public/assets/anime/cg/liyue-noctia-truth-cg-audit-v3.webp",
+      "runtime_sha256": "cc4044a2948c973cf11d87fcad753969b7bb4c5952b52c585be4ac68f279c3d2",
+      "runtime_bytes": 319274,
+      "encoder": "cwebp",
+      "encoder_args": [
+        "-q",
+        "92",
+        "-m",
+        "6",
+        "-sharp_yuv",
+        "-metadata",
+        "none"
+      ]
+    },
+    {
+      "cg_id": "CG_008_noctia-seal",
+      "source_path": "art/visual-novel/04_cg/working/R3-scene/2026-09-21/CG_008_noctia-seal_R3_accepted_v1.png",
+      "source_sha256": "e095cf82173729c254e731fbbe3c78bc2d0b14d9ad9e26ecda4b5febcfdf1daf",
+      "runtime_target": "public/assets/anime/cg/liyue-noctia-seal-cg-audit-v3.webp",
+      "runtime_sha256": "76e2c4138b44912d58c23806ea36ce2f4f587b78a0aa894592c7d360106435e9",
+      "runtime_bytes": 534376,
+      "encoder": "cwebp",
+      "encoder_args": [
+        "-q",
+        "92",
+        "-m",
+        "6",
+        "-sharp_yuv",
+        "-metadata",
+        "none"
+      ]
+    },
+    {
+      "cg_id": "CG_009_missing-fourth-step",
+      "source_path": "art/visual-novel/04_cg/working/R3-scene/2026-09-21/CG_009_missing-fourth-step_R3_accepted_v1.png",
+      "source_sha256": "12ced155fca518fa12bead6117929cda286b78fd6fa3130a971ab83e234c7be8",
+      "runtime_target": "public/assets/anime/cg/liyue-noctia-missing-fourth-step-cg-audit-v3.webp",
+      "runtime_sha256": "839490abf78cda172086591b82ebba50e3b2190197a36eb88f680e568a2a0f5c",
+      "runtime_bytes": 401664,
+      "encoder": "cwebp",
+      "encoder_args": [
+        "-q",
+        "92",
+        "-m",
+        "6",
+        "-sharp_yuv",
+        "-metadata",
+        "none"
+      ]
+    },
+    {
+      "cg_id": "CG_010_seventeen-minute-splice",
+      "source_path": "art/visual-novel/04_cg/working/R3-scene/2026-09-21/CG_010_seventeen-minute-splice_R3_accepted_v1.png",
+      "source_sha256": "e93ef908f3996d28826add9d2bfadca5560cc5c70631e3bd4d8fc2a412d8ba75",
+      "runtime_target": "public/assets/anime/cg/liyue-lumi-seventeen-minute-splice-cg-v8.webp",
+      "runtime_sha256": "e4fe681a8c64e414704491ab3467b0435499def23e5ee34ecf01ea3e8b9b3be3",
+      "runtime_bytes": 324876,
+      "encoder": "cwebp",
+      "encoder_args": [
+        "-q",
+        "92",
+        "-m",
+        "6",
+        "-sharp_yuv",
+        "-metadata",
+        "none"
+      ]
+    },
+    {
+      "cg_id": "CG_011_intercepted-receipt",
+      "source_path": "art/visual-novel/04_cg/working/R3-scene/2026-09-21/CG_011_intercepted-receipt_R3_accepted_v1.png",
+      "source_sha256": "a007db5fab3a5127dcf6b5919a40d741252501e7ecebb2f8ece103effad532a1",
+      "runtime_target": "public/assets/anime/cg/liyue-yayu-intercepted-receipt-cg-audit-v3.webp",
+      "runtime_sha256": "57941a28f0cc1887b5162371e8b50ff2b021625363a2ea62a26bbc7e945dc0b3",
+      "runtime_bytes": 438602,
+      "encoder": "cwebp",
+      "encoder_args": [
+        "-q",
+        "92",
+        "-m",
+        "6",
+        "-sharp_yuv",
+        "-metadata",
+        "none"
+      ]
+    },
+    {
+      "cg_id": "CG_012_echo-ledger",
+      "source_path": "art/visual-novel/04_cg/working/R3-scene/2026-09-21/CG_012_echo-ledger_R3_accepted_v1.png",
+      "source_sha256": "a661f1d909734aa8300f0c818d2fcae0b79457bd76bdd0f30359ea4f50234d32",
+      "runtime_target": "public/assets/anime/cg/liyue-echo-ledger-cg-audit-v3.webp",
+      "runtime_sha256": "395682301fa123954daac998d8c5c6da2ebfeae685241bacf69a92704cafd874",
+      "runtime_bytes": 353352,
+      "encoder": "cwebp",
+      "encoder_args": [
+        "-q",
+        "92",
+        "-m",
+        "6",
+        "-sharp_yuv",
+        "-metadata",
+        "none"
+      ]
+    },
+    {
+      "cg_id": "CG_013_noctia-sovereign",
+      "source_path": "art/visual-novel/04_cg/working/R3-scene/2026-09-21/CG_013_noctia-sovereign_R3_accepted_v1.png",
+      "source_sha256": "96ef6a809ab7b049e6d8e156b54d6ec2c9e6b5e0fe59cbd7d97cf419908d6762",
+      "runtime_target": "public/assets/anime/cg/liyue-noctia-sovereign-cg-audit-v3.webp",
+      "runtime_sha256": "5eed07d3db8e6f6d11cbc678afe7e5c4b883c1920571a3e4e367e7deead31f4f",
+      "runtime_bytes": 355766,
+      "encoder": "cwebp",
+      "encoder_args": [
+        "-q",
+        "92",
+        "-m",
+        "6",
+        "-sharp_yuv",
+        "-metadata",
+        "none"
+      ]
+    },
+    {
+      "cg_id": "CG_014_missing-page-restored",
+      "source_path": "art/visual-novel/04_cg/working/R3-scene/2026-09-21/CG_014_missing-page-restored_R3_accepted_v1.png",
+      "source_sha256": "efffd4d0dff2ed319d6dbe057d8fcd6da9df3d6a3d43225cf27332bee5884742",
+      "runtime_target": "public/assets/anime/cg/liyue-noctia-missing-page-cg-audit-v3.webp",
+      "runtime_sha256": "30b996a80a48f32a9d55ff1d8b6a91ef7f184af35b9bed724db0eaec35a96076",
+      "runtime_bytes": 325126,
+      "encoder": "cwebp",
+      "encoder_args": [
+        "-q",
+        "92",
+        "-m",
+        "6",
+        "-sharp_yuv",
+        "-metadata",
+        "none"
+      ]
+    },
+    {
+      "cg_id": "CG_015_letters-held-in-storm",
+      "source_path": "art/visual-novel/04_cg/working/R3-scene/2026-09-21/CG_015_letters-held-in-storm_R3_accepted_v1.png",
+      "source_sha256": "fd06d16d0901edd5dff9d6f4aafe2727c4bc8c4c8526ef3d6cb331cac6dbfeac",
+      "runtime_target": "public/assets/anime/cg/liyue-noctia-archive-storm-cg-audit-v3.webp",
+      "runtime_sha256": "9a88712241eed5cef946e85ec9f0d2a28c2a108f82114cd9d92c7d4dbd54f03c",
+      "runtime_bytes": 492822,
+      "encoder": "cwebp",
+      "encoder_args": [
+        "-q",
+        "92",
+        "-m",
+        "6",
+        "-sharp_yuv",
+        "-metadata",
+        "none"
+      ]
+    },
+    {
+      "cg_id": "CG_016_originals-enter-lighthouse",
+      "source_path": "art/visual-novel/04_cg/working/R3-scene/2026-09-21/CG_016_originals-enter-lighthouse_R3_accepted_v1.png",
+      "source_sha256": "a0671d79980f12dc3c666f79ecae4b6dc2dccc5e6747b3e486058904fb32111f",
+      "runtime_target": "public/assets/anime/cg/liyue-archive-warden-entry-cg-audit-v3.webp",
+      "runtime_sha256": "5d3ba88167c1acd151b800b628fccc9033f0f9d0f67fa97e58095cfe9a975b48",
+      "runtime_bytes": 419958,
+      "encoder": "cwebp",
+      "encoder_args": [
+        "-q",
+        "92",
+        "-m",
+        "6",
+        "-sharp_yuv",
+        "-metadata",
+        "none"
+      ]
+    },
+    {
+      "cg_id": "CG_017_traceable-revocation",
+      "source_path": "art/visual-novel/04_cg/working/R3-scene/2026-09-21/CG_017_traceable-revocation_R3_accepted_v1.png",
+      "source_sha256": "6de4d5c3ec046aaabf937f9ae19647f8c7808224b405299749bb70296926114d",
+      "runtime_target": "public/assets/anime/cg/liyue-traceable-revocation-cg-audit-v3.webp",
+      "runtime_sha256": "c098e19e0b876269f63405b44f7afe11da7f30eeeb02d0448e602fb55adfad0c",
+      "runtime_bytes": 401888,
+      "encoder": "cwebp",
+      "encoder_args": [
+        "-q",
+        "92",
+        "-m",
+        "6",
+        "-sharp_yuv",
+        "-metadata",
+        "none"
+      ]
+    },
+    {
+      "cg_id": "CG_018_noctia-afterlight",
+      "source_path": "art/visual-novel/04_cg/working/R3-scene/2026-09-21/CG_018_noctia-afterlight_R3_accepted_v1.png",
+      "source_sha256": "01355ac103d26207c0e5568a170e3abf1084329113f660cd6cbbe07e1757cddc",
+      "runtime_target": "public/assets/anime/cg/liyue-noctia-afterlight-cg.webp",
+      "runtime_sha256": "6425fdf569a753a7ebb5329c7eeb083cc7d627d8822df54719bee176b25a3a63",
+      "runtime_bytes": 292424,
+      "encoder": "cwebp",
+      "encoder_args": [
+        "-q",
+        "92",
+        "-m",
+        "6",
+        "-sharp_yuv",
+        "-metadata",
+        "none"
+      ]
+    },
+    {
+      "cg_id": "CG_019_lighthouse-archive",
+      "source_path": "art/visual-novel/04_cg/working/R3-scene/2026-09-21/CG_019_lighthouse-archive_R3_accepted_v1.png",
+      "source_sha256": "8386d114ead6b98c0dd4ede513358536b57c1808adee599e74ff03cd76c7f5e3",
+      "runtime_target": "public/assets/anime/cg/liyue-lighthouse-archive-cg.webp",
+      "runtime_sha256": "7b0892f38699119b7ca2386b8984439e5130f203b58fe97e4b0a9b2ee9a1d560",
+      "runtime_bytes": 416100,
+      "encoder": "cwebp",
+      "encoder_args": [
+        "-q",
+        "92",
+        "-m",
+        "6",
+        "-sharp_yuv",
+        "-metadata",
+        "none"
+      ]
+    }
+  ]
+}

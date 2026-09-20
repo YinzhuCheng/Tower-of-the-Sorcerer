@@ -82,19 +82,22 @@
       "id": "CG-CRITICAL",
       "kind": "story-cg",
       "runtime": "public/assets/anime/cg/liyue-critical-cg.webp",
-      "sha256": "4de16ffffd81d412e9f32212b5cd28c8a2340aa711461e9646d3cc129927c910"
+      "sha256": "4de16ffffd81d412e9f32212b5cd28c8a2340aa711461e9646d3cc129927c910",
+      "superseded_by": "cg-r4-runtime-2026-09-21"
     },
     {
       "id": "CG-DEFEAT",
       "kind": "story-cg",
       "runtime": "public/assets/anime/cg/liyue-defeat-cg.webp",
-      "sha256": "08193d0871da22d8ae66fc8ce40a397c7ff89b6af34a81fe731490f71b17c177"
+      "sha256": "08193d0871da22d8ae66fc8ce40a397c7ff89b6af34a81fe731490f71b17c177",
+      "superseded_by": "cg-r4-runtime-2026-09-21"
     },
     {
       "id": "CG-PROLOGUE-TOWER",
       "kind": "story-cg",
       "runtime": "public/assets/anime/cg/liyue-prologue-tower-cg.webp",
-      "sha256": "30f3acd38965cd43b197ad89fa00af589c10ed1eaaeca1639d1d7cdd45d4625d"
+      "sha256": "30f3acd38965cd43b197ad89fa00af589c10ed1eaaeca1639d1d7cdd45d4625d",
+      "superseded_by": "cg-r4-runtime-2026-09-21"
     },
     {
       "id": "CG-NOCTIA-TRUTH",
@@ -109,7 +112,8 @@
       "kind": "story-cg",
       "runtime": "public/assets/anime/cg/liyue-noctia-afterlight-cg.webp",
       "sha256": "e7b3f13faafe4c904feb15cfd8323ff195ca78223fe33a1d9e5bbce555c5f18e",
-      "runtime_referenced": false
+      "runtime_referenced": false,
+      "superseded_by": "cg-r4-runtime-2026-09-21"
     },
     {
       "id": "CG-NOCTIA-SEAL",
@@ -139,7 +143,8 @@
       "id": "CG-LIGHTHOUSE-ARCHIVE",
       "kind": "story-cg",
       "runtime": "public/assets/anime/cg/liyue-lighthouse-archive-cg.webp",
-      "sha256": "fcf2f59c2ea3e3bdd05f2725d8c8653f47426d185e78d799b55a9df96ee4c131"
+      "sha256": "fcf2f59c2ea3e3bdd05f2725d8c8653f47426d185e78d799b55a9df96ee4c131",
+      "superseded_by": "cg-r4-runtime-2026-09-21"
     },
     {
       "id": "TRANS-WITNESS-ENTRY",
