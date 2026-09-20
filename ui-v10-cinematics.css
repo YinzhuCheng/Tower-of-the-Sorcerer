@@ -865,3 +865,23 @@ body.gal-active #app-shell{pointer-events:none;user-select:none}
   .gal-root.is-entering .gal-witness-transition,.gal-root.is-entering .gal-shell,.gal-root.is-exiting .gal-witness-transition,.gal-root.is-exiting .gal-shell{animation:none}
   .gal-root.is-entering .gal-witness-transition{opacity:0}.gal-root.is-exiting .gal-witness-transition{opacity:1}
 }
+
+
+/* GAL-only review mode uses the production VN renderer without exposing or
+   booting the tower UI underneath the cinematic layer. */
+body.gal-only-preview {
+  margin: 0;
+  overflow: hidden;
+  background: #030711;
+}
+
+body.gal-only-preview #app-shell,
+body.gal-only-preview #modal-root {
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+body.gal-only-preview #gal-root {
+  position: fixed;
+  inset: 0;
+}
