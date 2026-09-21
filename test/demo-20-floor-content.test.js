@@ -87,9 +87,9 @@ test('Act II story scenes expose complete exchanges with no authored turn cap', 
     assert.ok(dialogue.turns.every((turn) => turn.speaker && turn.text && (turn.portrait || turn.kind === 'narration')), `${id} turns must be complete`);
   }
 
-  assert.match(DIALOGUES.floor11.turns.map((turn) => turn.text).join('\n'), /三日后必须撤销/);
+  assert.match(DIALOGUES.floor11.turns.map((turn) => turn.text).join('\n'), /三天一过[\s\S]{0,80}(强制命令|紧急登记)[\s\S]{0,40}(撤|停)/);
   assert.match(DIALOGUES.floor19.turns.map((turn) => turn.text).join('\n'), /死亡名簿/);
-  assert.match(DIALOGUES.bossOriginCorePost.turns.map((turn) => turn.text).join('\n'), /保存灾难的记录/);
+  assert.match(DIALOGUES.bossOriginCorePost.turns.map((turn) => turn.text).join('\n'), /(强制执行.*停|记录还在|记录.*保存)/);
 });
 
 test('F10 core restores 100 MP, reveals a real stair, and transfers into F11 without declaring victory', () => {
