@@ -220,3 +220,48 @@ Future story edits should treat the following as regression blockers:
 5. Do not merge “preserve records” and “continue emergency execution” back into one concept.
 6. Do not make Noctia either a blameless puppet or a generic villain; both her constrained information and her responsibility must remain visible.
 7. Do not make the optional witness epilogue sound like the “true ending”; the ordinary archival resolution is complete on its own.
+
+
+---
+
+## Prose / voice pass · round 2
+
+This round focused on **how** the story is spoken rather than adding more lore.
+
+### Changes
+
+- Rewrote late Act II / Act III tutorial-like dialogue so characters no longer speak in developer terminology such as raw floor IDs, “panel”, “ordinary / hidden ending”, or “player”.
+- Preserved exact gameplay consequences while expressing them in-world:
+  - war-council MP became a limited front-court resonance pool;
+  - route previews became array simulations;
+  - F21/F22/F23/F24/F27/F30 references became named places and procedures;
+  - optional witness epilogues became personal testimony that exists only if the witness actually completes her route.
+- Strengthened the first impressions of the seven early guardians so their voices differ:
+  - 米露: protective, personal, remembers people rather than just records;
+  - 绯叶: precise, careful about names and custody;
+  - 澜音: thinks through sound, routes and what she personally heard;
+  - 塞蕾娜: disciplined and concrete about what an order was meant to protect;
+  - 焰璃: blunt, bodily, focused on heat and people rather than documents;
+  - 露米: analytical but emotionally aware of the harm in a false two-choice system;
+  - 鸦羽: terse and suspicious, speaks in terms of provenance and obscured authority.
+- Deepened the Liyue / Noctia responsibility arc:
+  - Liyue now explicitly distinguishes understanding Noctia's fear from excusing her choices.
+  - Noctia names concrete harm she heard and witnessed rather than saying only “I know they suffered”.
+  - Her apology is deferred to the guardians themselves rather than treated as automatically accepted.
+- Deepened the Sovereign's responsibility:
+  - his “good intention” is explicitly separated from consent to the costs others bore.
+  - he acknowledges the physical distance between his command and the people who paid for it.
+- Strengthened the ending:
+  - the alarm stone is tied to Noctia's three-year bodily habit of constant alert;
+  - Liyue briefly tests her restored seven-part chant and deliberately does not turn it into another command;
+  - the final action remains delivering the first replies, not declaring a perfect philosophical resolution.
+
+### Regression blockers
+
+Future prose edits should not reintroduce:
+
+- raw floor IDs in character speech;
+- “player / hidden ending / ordinary ending” language inside the fiction;
+- UI terms such as “panel” where an in-world terminal / array / record can carry the same meaning;
+- mechanical explanation that erases character voice;
+- apologies that automatically absolve responsibility.
