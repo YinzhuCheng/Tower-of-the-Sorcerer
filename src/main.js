@@ -83,7 +83,8 @@ let toastTimer = null;
 let cinematicCleanup = null;
 let cinematicControls = null;
 let galTransitionTimer = null;
-const GAL_HISTORY_LIMIT = 80;
+const GAL_HISTORY_STORAGE_KEY = 'lost-magic-tower:gal-only-history:v1';
+const GAL_HISTORY_LIMIT = new URLSearchParams(window.location.search).get('gal-only') === '1' ? 600 : 80;
 const galHistory = [];
 const galImagePreloads = new Map();
 const galSettings = { auto: false, fast: false };
@@ -211,6 +212,28 @@ function requestedGalOnlyMode() {
   return new URLSearchParams(window.location.search).get('gal-only') === '1';
 }
 
+function restoreGalOnlyHistory() {
+  if (!requestedGalOnlyMode() || galHistory.length) return;
+  try {
+    const saved = JSON.parse(window.sessionStorage.getItem(GAL_HISTORY_STORAGE_KEY) ?? '[]');
+    if (!Array.isArray(saved)) return;
+    galHistory.push(...saved.slice(-GAL_HISTORY_LIMIT).filter((entry) =>
+      entry && typeof entry.key === 'string' && typeof entry.text === 'string'
+    ));
+  } catch {
+    // Review history is optional; malformed session data must never block GAL.
+  }
+}
+
+function persistGalOnlyHistory() {
+  if (!requestedGalOnlyMode()) return;
+  try {
+    window.sessionStorage.setItem(GAL_HISTORY_STORAGE_KEY, JSON.stringify(galHistory));
+  } catch {
+    // Storage denial is non-fatal; the active scene continues normally.
+  }
+}
+
 function editableKeyTarget(target) {
   return target instanceof Element
     && Boolean(target.closest('input, textarea, select, [contenteditable="true"]'));
@@ -323,6 +346,7 @@ function rememberGalLine(key, speaker, text, choice = '') {
     galHistory.push(entry);
     if (galHistory.length > GAL_HISTORY_LIMIT) galHistory.splice(0, galHistory.length - GAL_HISTORY_LIMIT);
   }
+  persistGalOnlyHistory();
 }
 
 function galBackdropFor(dialogueId, dialogue, turn) {
@@ -467,12 +491,15 @@ function showDialogue(dialogueId, after = null, { finalLabel = null } = {}) {
       ? '<div class="gal-narration-mark" aria-hidden="true">✦</div>'
       : `${galActorHtml('left', stage.left, turn.portrait, narratorName)}${galActorHtml('right', stage.right, turn.portrait, narratorName)}`;
     const nameplate = galNameplateHtml(turn, narratorName, isNarration);
-    const historyMarkup = () => galHistory.slice(-16).reverse().map((entry) => `
-      <article class="gal-history-entry">
-        <strong>${escapeHtml(entry.speaker)}</strong>
-        <p>${textToHtml(entry.text)}</p>
-        ${entry.choice ? `<small>${escapeHtml(entry.choice)}</small>` : ''}
-      </article>`).join('') || '<p class="gal-history-empty">尚未记录对话。</p>';
+    const historyMarkup = () => {
+      const entries = requestedGalOnlyMode() ? galHistory : galHistory.slice(-16);
+      return entries.map((entry) => `
+        <article class="gal-history-entry">
+          <strong>${escapeHtml(entry.speaker)}</strong>
+          <p>${textToHtml(entry.text)}</p>
+          ${entry.choice ? `<small>${escapeHtml(entry.choice)}</small>` : ''}
+        </article>`).join('') || '<p class="gal-history-empty">尚未记录对话。</p>';
+    };
 
     elements.galRoot.classList.remove('gal-ui-hidden');
     elements.galRoot.innerHTML = `
@@ -1501,6 +1528,7 @@ async function boot() {
   const previewDialogueId = requestedGalPreviewDialogue();
   const galOnlyPreview = Boolean(previewDialogueId && requestedGalOnlyMode());
   document.body.classList.toggle('gal-only-preview', galOnlyPreview);
+  if (galOnlyPreview) restoreGalOnlyHistory();
   if (!previewDialogueId) autoSave();
   let canvasAssetsPending = false;
   let startCanvasAssetsNow = null;
