@@ -23,20 +23,43 @@ applyDemoTwentyFloorContent({ enemies: ENEMIES, floors: FLOORS, items: ITEMS, di
 applyDemoThirtyFloorContent({ enemies: ENEMIES, floors: FLOORS, items: ITEMS, dialogues: DIALOGUES });
 
 const $ = (selector) => document.querySelector(selector);
-const sceneList = $('#scene-list');
-const sceneSearch = $('#scene-search');
 const frame = $('#gal-frame');
 const frameLoading = $('#frame-loading');
-const sceneId = $('#scene-id');
 const sceneTitle = $('#scene-title');
 const sceneMeta = $('#scene-meta');
 const progressLabel = $('#progress-label');
 const progressBar = $('#progress-bar');
-const autoNext = $('#auto-next');
+const startButton = $('#story-start');
 const prevButton = $('#prev-scene');
 const replayButton = $('#replay-scene');
 const nextButton = $('#next-scene');
-const openScene = $('#open-scene');
+const toc = $('#story-toc');
+const tocToggle = $('#toc-toggle');
+const tocClose = $('#toc-close');
+const tocList = $('#toc-list');
+const storyEnd = $('#story-end');
+const restartEnding = $('#restart-ending');
+
+const STORY_ORDER = Object.freeze([
+  'prologue',
+  'bossCatPreDemo', 'bossCatPostDemo',
+  'floor2', 'bossFoxPreDemo', 'bossFoxPostDemo',
+  'floor3', 'bossWhalePreDemo', 'bossWhalePostDemo',
+  'floor4', 'bossSwordPreDemo', 'bossSwordPostDemo',
+  'floor5', 'bossDragonPreDemo', 'bossDragonPostDemo',
+  'floor6', 'bossAstralPreDemo', 'bossAstralPostDemo',
+  'floor7', 'bossShadowPreDemo', 'bossShadowPostDemo',
+  'floor8', 'bossPalacePreDemo', 'bossPalacePostDemo',
+  'floor9', 'bossBlackSealPreDemo', 'bossBlackSealPostDemo',
+  'floor10', 'bossQueenPreDemo', 'queenPhaseDemo', 'bossQueenPostDemo',
+  'floor11', 'floor12', 'floor13', 'floor14', 'floor15',
+  'floor16', 'floor17', 'floor18',
+  'floor19', 'bossEchoRegentPost',
+  'floor20', 'warCouncil', 'bossArcaneSovereignPost', 'bossOriginCorePost',
+  'floor21', 'floor22', 'floor23', 'floor24', 'floor25',
+  'floor26', 'floor27', 'floor28', 'floor29',
+  'floor30', 'bossArchiveWardenPost', 'ending'
+]);
 
 function dialogueTurns(dialogue) {
   if (Array.isArray(dialogue?.turns) && dialogue.turns.length) return dialogue.turns;
@@ -48,40 +71,41 @@ function dialogueTurns(dialogue) {
   }];
 }
 
-const scenes = Object.entries(DIALOGUES)
-  .filter(([, dialogue]) => dialogue && (dialogue.title || dialogue.text || dialogue.turns?.length))
-  .map(([id, dialogue], sourceIndex) => {
+function categoryFor(id) {
+  if (id === 'prologue') return '序章';
+  if (id === 'ending') return '终章';
+  const floor = id.match(/^floor(\d+)$/i);
+  if (floor) {
+    const n = Number(floor[1]);
+    if (n <= 10) return `第一幕 · 第 ${n} 阵`;
+    if (n <= 20) return `第二幕 · 第 ${n} 阵`;
+    return `第三幕 · 第 ${n} 阵`;
+  }
+  if (id === 'warCouncil') return '第二幕 · 会战';
+  if (/^boss|queenPhase/i.test(id)) return '守护者 / 关键事件';
+  return '剧情';
+}
+
+const scenes = STORY_ORDER
+  .filter((id) => DIALOGUES[id])
+  .map((id, index) => {
+    const dialogue = DIALOGUES[id];
     const turns = dialogueTurns(dialogue);
     const speakers = [...new Set(turns.map((turn) => turn.speaker).filter(Boolean))];
     const cgCount = new Set(turns.map((turn) => turn.cg).filter(Boolean)).size;
-    const floorMatch = id.match(/floor(\d+)/i);
-    const boss = /^boss|queenPhase/i.test(id);
-    const category = id === 'prologue'
-      ? '序章'
-      : id === 'ending'
-        ? '终章'
-        : boss
-          ? '守护者'
-          : floorMatch
-            ? `第 ${floorMatch[1]} 阵`
-            : '剧情';
     return {
       id,
       title: dialogue.title ?? id,
       turns: turns.length,
       speakers,
       cgCount,
-      category,
-      sourceIndex,
-      searchText: [id, dialogue.title, category, ...speakers, ...turns.map((turn) => turn.text)]
-        .filter(Boolean)
-        .join(' ')
-        .toLowerCase()
+      category: categoryFor(id),
+      index
     };
   });
 
 let currentIndex = 0;
-let filteredSceneIds = new Set(scenes.map(({ id }) => id));
+let advancing = false;
 
 function previewUrl(id) {
   const params = new URLSearchParams({ 'gal-preview': id, 'gal-only': '1' });
@@ -94,44 +118,45 @@ function syncUrl(id) {
   history.replaceState(null, '', url);
 }
 
-function renderSceneList() {
-  sceneList.replaceChildren();
+function renderToc() {
+  tocList.replaceChildren();
   for (const [index, scene] of scenes.entries()) {
-    if (!filteredSceneIds.has(scene.id)) continue;
     const button = document.createElement('button');
     button.type = 'button';
-    button.className = `scene-entry${index === currentIndex ? ' is-active' : ''}`;
-    button.dataset.sceneId = scene.id;
+    button.className = `toc-row${index === currentIndex ? ' is-active' : ''}`;
     button.innerHTML = `
-      <span class="scene-entry-copy">
-        <small>${scene.category} · ${scene.id}</small>
-        <strong>${scene.title}</strong>
-        <em>${scene.speakers.join(' · ') || '旁白'}</em>
-      </span>
-      <span class="scene-entry-meta">${scene.turns} 句${scene.cgCount ? ` · CG ${scene.cgCount}` : ''}</span>
+      <span>${String(index + 1).padStart(2, '0')}</span>
+      <strong>${scene.title}</strong>
+      <small>${scene.category}</small>
     `;
-    button.addEventListener('click', () => loadScene(index));
-    sceneList.append(button);
+    button.addEventListener('click', () => {
+      toc.close();
+      loadScene(index);
+    });
+    tocList.append(button);
   }
-  sceneList.querySelector('.is-active')?.scrollIntoView({ block: 'nearest' });
+  tocList.querySelector('.is-active')?.scrollIntoView({ block: 'nearest' });
 }
 
-function loadScene(index, { keepUrl = false } = {}) {
+function loadScene(index, { keepUrl = false, transitionLabel = null } = {}) {
   if (!scenes.length) return;
-  currentIndex = (index + scenes.length) % scenes.length;
+  currentIndex = Math.max(0, Math.min(index, scenes.length - 1));
   const scene = scenes[currentIndex];
+  advancing = false;
+  storyEnd.hidden = true;
   frameLoading.hidden = false;
+  frameLoading.textContent = transitionLabel ?? (currentIndex === 0 ? '正在进入序章…' : '正在进入下一幕…');
   frame.src = previewUrl(scene.id);
-  sceneId.textContent = scene.id;
+
   sceneTitle.textContent = scene.title;
-  sceneMeta.textContent = `${scene.category} · ${scene.turns} 句 · ${scene.speakers.join(' / ') || '旁白'}${scene.cgCount ? ` · ${scene.cgCount} 个 CG 节点` : ''}`;
-  progressLabel.textContent = `${currentIndex + 1} / ${scenes.length}`;
+  sceneMeta.textContent = `${scene.category} · ${scene.turns} 句${scene.cgCount ? ` · ${scene.cgCount} 个 CG 节点` : ''}`;
+  progressLabel.textContent = `完整剧情 ${currentIndex + 1} / ${scenes.length}`;
   progressBar.style.width = `${((currentIndex + 1) / scenes.length) * 100}%`;
   prevButton.disabled = currentIndex === 0;
   nextButton.disabled = currentIndex === scenes.length - 1;
-  openScene.href = previewUrl(scene.id);
+
   if (!keepUrl) syncUrl(scene.id);
-  renderSceneList();
+  renderToc();
 }
 
 function moveScene(delta) {
@@ -140,19 +165,22 @@ function moveScene(delta) {
   loadScene(target);
 }
 
-sceneSearch.addEventListener('input', () => {
-  const query = sceneSearch.value.trim().toLowerCase();
-  filteredSceneIds = new Set(
-    scenes
-      .filter((scene) => !query || scene.searchText.includes(query))
-      .map(({ id }) => id)
-  );
-  renderSceneList();
-});
+function finishStory() {
+  storyEnd.hidden = false;
+  progressLabel.textContent = `完整剧情 ${scenes.length} / ${scenes.length} · 已结束`;
+  progressBar.style.width = '100%';
+}
 
+startButton.addEventListener('click', () => loadScene(0, { transitionLabel: '正在返回序章…' }));
 prevButton.addEventListener('click', () => moveScene(-1));
 nextButton.addEventListener('click', () => moveScene(1));
-replayButton.addEventListener('click', () => loadScene(currentIndex));
+replayButton.addEventListener('click', () => loadScene(currentIndex, { transitionLabel: '正在重播本幕…' }));
+restartEnding.addEventListener('click', () => loadScene(0, { transitionLabel: '正在返回序章…' }));
+tocToggle.addEventListener('click', () => toc.showModal());
+tocClose.addEventListener('click', () => toc.close());
+toc.addEventListener('click', (event) => {
+  if (event.target === toc) toc.close();
+});
 
 frame.addEventListener('load', () => {
   frameLoading.hidden = true;
@@ -162,14 +190,24 @@ window.addEventListener('message', (event) => {
   if (event.origin !== window.location.origin) return;
   const payload = event.data;
   if (!payload || payload.type !== 'tower-gal-only-finished') return;
-  if (payload.dialogueId !== scenes[currentIndex]?.id) return;
-  if (autoNext.checked && currentIndex < scenes.length - 1) {
-    loadScene(currentIndex + 1);
+  if (payload.dialogueId !== scenes[currentIndex]?.id || advancing) return;
+
+  if (currentIndex >= scenes.length - 1) {
+    finishStory();
+    return;
   }
+
+  advancing = true;
+  frameLoading.hidden = false;
+  frameLoading.textContent = '进入下一幕…';
+  window.setTimeout(() => loadScene(currentIndex + 1), 260);
 });
 
 window.addEventListener('keydown', (event) => {
-  if (event.target instanceof HTMLInputElement) return;
+  if (event.key === 'Escape' && toc.open) {
+    toc.close();
+    return;
+  }
   if (event.key === '[' || event.key === 'PageUp') {
     event.preventDefault();
     moveScene(-1);
@@ -178,7 +216,10 @@ window.addEventListener('keydown', (event) => {
     moveScene(1);
   } else if (event.key.toLowerCase() === 'r') {
     event.preventDefault();
-    loadScene(currentIndex);
+    loadScene(currentIndex, { transitionLabel: '正在重播本幕…' });
+  } else if (event.key.toLowerCase() === 'i') {
+    event.preventDefault();
+    toc.open ? toc.close() : toc.showModal();
   }
 });
 
