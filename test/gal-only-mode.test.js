@@ -67,6 +67,11 @@ test('GAL-only is a continuous prologue-to-ending reader using the production re
   assert.match(cinematicCss, /\.gal-root \.gal-dialogue\.is-new-cg \.gal-cg\{[\s\S]*animation:galCgReveal/);
   assert.match(cinematicCss, /\.gal-root \.gal-actor\.is-entering \.gal-standing\{[\s\S]*animation:galStandingEnter/);
 
+  assert.match(main, /const GAL_ONLY_BOOT = new URLSearchParams\(window\.location\.search\)\.get\('gal-only'\) === '1'/);
+  assert.match(main, /if \(requestedGalOnlyMode\(\)\) \{[\s\S]*delete elements\.galRoot\.dataset\.transition;[\s\S]*classList\.remove\('is-entering'\);[\s\S]*return;/);
+  assert.match(cinematicCss, /html\.gal-only-boot #app-shell/);
+  assert.match(cinematicCss, /button\[data-gal-control="backlog-close"\][\s\S]*place-items:center/);
+
   await access(new URL('../public/gal-only/styles.css', import.meta.url));
 });
 
