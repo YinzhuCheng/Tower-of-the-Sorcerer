@@ -349,11 +349,15 @@ function installActTwoDialogues(dialogues) {
       dialogueTurn('绫星·璃', 'hero', '第二阶段要停下的是强制执行层，不是记录库。打开写入口。', { expression: 'resolve' })
     ]),
     bossOriginCorePost: dialogueSequence('终章：魔源再临', [
-      dialogueTurn('绫星·璃', 'hero', '起源核心安静下来了。强制执行已停止，它仍然保存灾难的记录。', { expression: 'resolve' }),
-      dialogueTurn('残响精灵·纱雾', 'guide', '还不能离开。上方的余烬登记库仍有未投递的信，也保留着旧命令的副本。', { expression: 'focus' }),
-      dialogueTurn('无声女王·诺克缇娅', 'final_queen', '如果副本再次下发，起源核心会被拉回原来的循环。那里能做真正的归档吗？', { expression: 'sorrow' }),
-      dialogueTurn('奥术主权者', 'arcane_sovereign', '能。登记库有三套修复章程，上方的灯塔负责发出最终归档回执。', { expression: 'acceptance' }),
-      dialogueTurn('绫星·璃', 'hero', '那就继续上行。这一次要让记录有去处，也让整座塔收到“命令结束”。', { expression: 'resolve' })
+      dialogueTurn('绫星·璃', 'hero', '起源核心安静下来了。强制执行停了，记录还在。先别庆祝——这只说明我们终于能动手修，而不是已经修完。', { expression: 'resolve' }),
+      dialogueTurn('旁白', null, '奥术主权者手腕上的蓝色束缚松开了。那枚裂开的主权印没有消失，他也没有把它摘下来，只用另一只手扶住还在发抖的指节。', { kind: 'narration' }),
+      dialogueTurn('奥术主权者', 'arcane_sovereign', '别替我把这当成赎罪。写下无限延长的是我，今天只不过终于有人把我从那道命令里拖出来，让我能亲手去收拾它留下的东西。', { expression: 'acceptance' }),
+      dialogueTurn('无声女王·诺克缇娅', 'final_queen', '我不会替你说“已经够了”。也不会把自己做过的事算到你的签名下面。我们各自有要回答的部分——既然还没回答完，就一起上去。', { expression: 'grave' }),
+      dialogueTurn('旁白', null, '两人第一次并肩站在没有王座、也没有封印隔开的地方。谁也没有伸手和解。升降梯却已经在她们身后重新亮起。', { kind: 'narration' }),
+      dialogueTurn('残响精灵·纱雾', 'guide', '还不能离开。上方的余烬登记库仍有未投递的信，也保留着旧命令的副本。只要那些副本还能重新下发，今天停掉的循环就可能被再次拼回来。', { expression: 'focus' }),
+      dialogueTurn('无声女王·诺克缇娅', 'final_queen', '那就去找真正的归档方式。我要亲眼确认，警报停止以后，那些名字仍然有地方留下。', { expression: 'sorrow' }),
+      dialogueTurn('奥术主权者', 'arcane_sovereign', '登记库里有护送、校验、接力三套旧修复方案。再往上是余烬灯塔——只有那里能把最终结案真正送出高塔。方案是我参与设计的，哪里会卡住，我会告诉你们。', { expression: 'acceptance' }),
+      dialogueTurn('绫星·璃', 'hero', '好。继续上行。第三幕不再查“谁做错了什么”，而是把已经查清的错误一件件修掉：让记录有去处，让命令真的结束，让外面的人收到回答。', { expression: 'resolve' })
     ])
   });
 }
