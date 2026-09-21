@@ -53,6 +53,20 @@ test('GAL-only is a continuous prologue-to-ending reader using the production re
   assert.match(cinematicCss, /\.gal-root \.gal-history-entry\{[\s\S]*border:0;[\s\S]*border-bottom:/);
   assert.match(cinematicCss, /\.gal-root \.gal-history-entry p\{[\s\S]*text-align:left;[\s\S]*text-indent:2em/);
 
+  // A dialogue turn may rebuild its text controls, but unchanged scene art
+  // must not replay background/CG reveals. Standee entrance is reserved for
+  // a real actor insertion on that side.
+  assert.match(main, /let previousVisual = null/);
+  assert.match(main, /backdropChanged \? 'is-new-backdrop' : 'is-continuing-backdrop'/);
+  assert.match(main, /cgChanged \? 'is-new-cg' : 'is-continuing-cg'/);
+  assert.match(main, /leftEntering = Boolean\(visual\.left\)/);
+  assert.match(main, /rightEntering = Boolean\(visual\.right\)/);
+  assert.match(main, /entering \? 'is-entering' : 'is-continuing'/);
+  assert.match(cinematicCss, /\.gal-root \.gal-dialogue\.is-new-backdrop \.gal-backdrop\{[\s\S]*animation:galBackdropReveal/);
+  assert.match(cinematicCss, /\.gal-root \.gal-dialogue\.is-continuing-backdrop \.gal-backdrop\{[\s\S]*transform:scale\(1\.025\)/);
+  assert.match(cinematicCss, /\.gal-root \.gal-dialogue\.is-new-cg \.gal-cg\{[\s\S]*animation:galCgReveal/);
+  assert.match(cinematicCss, /\.gal-root \.gal-actor\.is-entering \.gal-standing\{[\s\S]*animation:galStandingEnter/);
+
   await access(new URL('../public/gal-only/styles.css', import.meta.url));
 });
 
