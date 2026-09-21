@@ -229,7 +229,7 @@ const ACT3_FLOORS = Object.freeze([
   }),
   floor({
     number: 29, title: '最后名册', intro: 'floor29',
-    objective: '击败两名索引守卫后上行；为 F30 预留资源。',
+    objective: '击败两名名册守卫后上行；为 F30 预留资源。',
     roomPlan: ['索引落点', '左页守卫廊', '右页守卫廊', '封底门庭', '终局上行阶'],
     theme: THEMES[8], exitGuardians: ['lastCustodian', 'archiveMarshal'], boss: 'lastCustodian',
     puzzles: { guardianGates: { f29IndexSeal: ['lastCustodian', 'archiveMarshal'] } },
@@ -276,7 +276,7 @@ const ACT3_ITEMS = Object.freeze({
   act3Dual: { name: '双纹护符', kind: 'stat', atk: 10, def: 10, relic: '双栏校样', description: '攻击、防御各 +10。' },
   act3Mana: { name: '灯塔余能', kind: 'stat', mp: 100, relic: '灯塔余能', description: '恢复 100 MP。' },
   shelterAegis: { name: '月影护信印', kind: 'stat', hp: 13_000, maxHp: 13_000, def: 16, relic: '夜航护送印', description: '生命上限与当前生命 +13000，防御 +16；F30 每阶段少结算 3 次反击。' },
-  auditLedger: { name: '星镜辨真簿', kind: 'stat', atk: 20, def: 8, relic: '逐页校验簿', description: '攻击 +20，防御 +8；F30 两相均获得校验削弱。' },
+  auditLedger: { name: '星镜辨真簿', kind: 'stat', atk: 20, def: 8, relic: '星镜辨真簿', description: '攻击 +20，防御 +8；F30 两相均受到星镜破咒。' },
   relayCapacitor: { name: '赤焰传火炉心', kind: 'stat', maxMp: 60, mp: 160, relic: '灯塔接力电容', description: '最大 MP +60 并恢复 160 MP；F27 总管落败后再次补满。' }
 });
 
@@ -385,7 +385,7 @@ function installDialogues(dialogues) {
     ]),
     floor30: sequence('第三十阵：余烬灯塔', [
       turn('旁白', null, '余烬灯塔的镜面朝向灰港与更远的北岸。最后保管人转动封底钥匙，成捆的家书与名牌沿着升降轨缓缓升向塔顶。', { cg: '/assets/anime/cg/liyue-archive-warden-entry-cg-audit-v3.webp', cgHold: 5, kind: 'narration' }),
-      turn('旁白', null, '灯塔守望者挡在外环。它守的并不是某一条旧命令，而是所有被带到这里的原物：谁也不能为了让故事更顺利，就在最后一战偷偷换掉不方便的那一页。', { kind: 'narration' }),
+      turn('旁白', null, '灯塔守望者挡在外环。它守的并不是某一句旧誓，而是所有被带到这里的原物：谁也不能为了让故事更顺利，就在最后一战偷偷换掉不方便的那一页。', { kind: 'narration' }),
       turn('绫星·璃', 'hero', '那就不换。我们带来的是什么，就让灯塔看见什么。', { expression: 'resolve' }),
       turn('残响精灵·纱雾', 'guide', '守望者之后还有错誓之核。它是三年守夜留下的最后一团执念，会把任何矛盾重新拖回“继续守夜”。两场会连在一起。', { expression: 'focus' })
     ]),
