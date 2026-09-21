@@ -1565,20 +1565,13 @@ async function boot() {
   hydratePortraits();
   bindControls();
   updateHud();
+
   const previewDialogueId = requestedGalPreviewDialogue();
   const galOnlyPreview = Boolean(previewDialogueId && requestedGalOnlyMode());
   document.body.classList.toggle('gal-only-preview', galOnlyPreview);
   if (galOnlyPreview) restoreGalOnlyHistory();
   if (!previewDialogueId) autoSave();
-  let canvasAssetsPending = false;
-  let startCanvasAssetsNow = null;
-  const startCanvasAssets = () => {
-    // The tactical shell is intentionally absent from the first paint. Reveal
-    // it only after the opening GAL has actually finished.
-    releaseStoryBoot();
-    if (startCanvasAssetsNow) startCanvasAssetsNow();
-    else canvasAssetsPending = true;
-  };
+
   const bridge = {
     getState: () => state,
     canMove: () => elements.modalRoot.classList.contains('hidden') && elements.galRoot.classList.contains('hidden') && !state.victory,
@@ -1597,9 +1590,49 @@ async function boot() {
     }
   };
 
-  // Keep the procedural game frame available immediately, but do not let the
-  // opening story compete with the bulk gameplay-art preload. The authored
-  // atlases begin loading as soon as the prologue ends or is skipped.
+  // Do not create Phaser/Canvas at all while the opening GAL is on screen.
+  // Hiding an already-running tower is not enough: renderer boot, resize and
+  // first-frame work can still leak the tactical layer for a frame. The
+  // tactical world now literally does not exist until the story releases it.
+  let tacticalBootPromise = null;
+  const startTacticalScene = () => {
+    if (tacticalBootPromise) return tacticalBootPromise;
+    tacticalBootPromise = (async () => {
+      try {
+        const Phaser = await ensurePhaser();
+        if (Phaser) {
+          const SceneClass = createMagicTowerScene(Phaser, bridge);
+          new Phaser.Game({
+            type: Phaser.AUTO,
+            parent: 'game-container',
+            width: GRID_SIZE * TILE_SIZE,
+            height: GRID_SIZE * TILE_SIZE,
+            backgroundColor: '#090914',
+            render: { antialias: true, pixelArt: false, roundPixels: true },
+            scale: { mode: Phaser.Scale.FIT, autoCenter: Phaser.Scale.CENTER_BOTH },
+            scene: [SceneClass]
+          });
+          return;
+        }
+
+        console.info('Phaser CDN unavailable or Canvas explicitly requested; using the local Canvas renderer.');
+        const canvasScene = createCanvasTowerScene(bridge, undefined, { autoStart: false });
+        await canvasScene.start();
+      } catch (error) {
+        console.error(error);
+        elements.loading.textContent = `启动失败：${error.message}`;
+        elements.loading.classList.remove('hidden');
+      }
+    })();
+    return tacticalBootPromise;
+  };
+
+  const releaseIntoTower = () => {
+    if (GAL_ONLY_BOOT) return;
+    releaseStoryBoot();
+    void startTacticalScene();
+  };
+
   const previewAfter = galOnlyPreview
     ? () => {
         if (window.parent !== window) {
@@ -1609,53 +1642,22 @@ async function boot() {
           }, window.location.origin);
         }
       }
-    : startCanvasAssets;
+    : releaseIntoTower;
+
   const openingDialogueActive = previewDialogueId
     ? (showDialogue(previewDialogueId, previewAfter), true)
-    : initialGalDialogue(startCanvasAssets);
+    : initialGalDialogue(releaseIntoTower);
 
-  // Returning saves that have already seen the opening may reveal the tower
-  // immediately. Fresh runs stay in story-boot until startCanvasAssets().
-  if (!openingDialogueActive && !galOnlyPreview) releaseStoryBoot();
-
-  // GAL-only review is intentionally presentation-only: the real dialogue
-  // renderer and runtime art are used, but no tower canvas, movement loop,
-  // save writes or gameplay-art preload is started underneath the scene.
+  // GAL-only is pure presentation: no tactical renderer, no movement loop and
+  // no gameplay-art preload are created anywhere behind the story.
   if (galOnlyPreview) {
     elements.loading.classList.add('hidden');
     return;
   }
 
-  try {
-    const Phaser = await ensurePhaser();
-    if (Phaser) {
-      const SceneClass = createMagicTowerScene(Phaser, bridge);
-      new Phaser.Game({
-        type: Phaser.AUTO,
-        parent: 'game-container',
-        width: GRID_SIZE * TILE_SIZE,
-        height: GRID_SIZE * TILE_SIZE,
-        backgroundColor: '#090914',
-        render: { antialias: true, pixelArt: false, roundPixels: true },
-        scale: { mode: Phaser.Scale.FIT, autoCenter: Phaser.Scale.CENTER_BOTH },
-        scene: [SceneClass]
-      });
-      return;
-    }
-    console.info('Phaser CDN unavailable or Canvas explicitly requested; using the local Canvas renderer.');
-    const canvasScene = createCanvasTowerScene(bridge, undefined, { autoStart: !openingDialogueActive });
-    if (openingDialogueActive) {
-      startCanvasAssetsNow = () => { void canvasScene.start(); };
-      if (canvasAssetsPending) {
-        canvasAssetsPending = false;
-        startCanvasAssetsNow();
-      }
-    }
-  } catch (error) {
-    console.error(error);
-    elements.loading.textContent = `启动失败：${error.message}`;
-    elements.loading.classList.remove('hidden');
-  }
+  // If there is no opening story to show, enter the tower immediately.
+  // Otherwise releaseIntoTower() is called only after the GAL has fully closed.
+  if (!openingDialogueActive) releaseIntoTower();
 }
 
 boot();
