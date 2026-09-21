@@ -618,7 +618,14 @@ body.gal-active #app-shell{pointer-events:none;user-select:none}
   background-image:var(--gal-backdrop);
   background-position:center;
   background-size:cover;
+  animation:none;
+}
+.gal-root .gal-dialogue.is-new-backdrop .gal-backdrop{
   animation:galBackdropReveal .65s ease-out both;
+}
+.gal-root .gal-dialogue.is-continuing-backdrop .gal-backdrop{
+  opacity:1;
+  transform:scale(1.025);
 }
 .gal-root .gal-backdrop::after{
   content:"";
@@ -636,7 +643,14 @@ body.gal-active #app-shell{pointer-events:none;user-select:none}
   opacity:1;
   transform:none;
   background:var(--gal-cg) center / cover no-repeat;
+  animation:none;
+}
+.gal-root .gal-dialogue.is-new-cg .gal-cg{
   animation:galCgReveal .7s ease-out both;
+}
+.gal-root .gal-dialogue.is-continuing-cg .gal-cg{
+  opacity:.88;
+  transform:scale(1.018);
 }
 .gal-root .gal-dialogue.has-cg .gal-backdrop{filter:brightness(.42) saturate(.7)}
 .gal-root .gal-dialogue.has-cg .gal-lens{background:linear-gradient(0deg,rgba(2,4,12,.63),transparent 55%),linear-gradient(90deg,rgba(2,5,14,.34),transparent 47%,rgba(2,5,14,.3))}
@@ -669,6 +683,16 @@ body.gal-active #app-shell{pointer-events:none;user-select:none}
   max-height:none;
   object-fit:contain;
   object-position:center bottom;
+}
+.gal-root .gal-actor.is-entering .gal-standing{
+  animation:galStandingEnter .3s cubic-bezier(.2,.82,.24,1) both;
+}
+.gal-root .gal-actor.is-continuing .gal-standing{
+  animation:none;
+}
+@keyframes galStandingEnter{
+  from{opacity:0;transform:translateY(1.4%) scale(.985)}
+  to{opacity:1;transform:none}
 }
 .gal-root .gal-actor.is-speaking{
   z-index:3;
