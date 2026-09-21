@@ -1,0 +1,42 @@
+name: Temporary B2 Runtime Source Export
+
+on:
+  push:
+    branches:
+      - tmp/b2-runtime-export-20260921
+
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: 8c714c62f292c594cafb38c849303ca240f76814
+          lfs: true
+          filter: blob:none
+          sparse-checkout: |
+            art/visual-novel/04_cg/working/2026-09-20-b2-standees
+            art/visual-novel/01_canon/standees
+            art/visual-novel/01_canon/expressions
+            art/visual-novel/01_canon/characters
+          sparse-checkout-cone-mode: false
+
+      - name: Prepare export
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p export
+          cp -a art/visual-novel/04_cg/working/2026-09-20-b2-standees export/
+          cp -a art/visual-novel/01_canon/standees export/canon-standees
+          cp -a art/visual-novel/01_canon/expressions export/canon-expressions
+          cp -a art/visual-novel/01_canon/characters export/canon-characters
+          printf '%s\n' "source_branch=main" "source_commit=8c714c62f292c594cafb38c849303ca240f76814" > export/EXPORT_SOURCE.txt
+          find export -type f -print | sort > export/FILE_LIST.txt
+          sha256sum $(find export -type f ! -name SHA256SUMS.txt -print | sort) > export/SHA256SUMS.txt
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: b2-runtime-source-export-20260921
+          path: export/
+          if-no-files-found: error
+          compression-level: 0
