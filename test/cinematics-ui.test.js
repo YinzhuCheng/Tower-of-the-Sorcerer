@@ -134,8 +134,10 @@ test('production build publishes the isolated Gal stylesheet and scene input loc
   assert.match(main, /\$\('#app-shell'\)\.inert = true/);
   assert.match(main, /dialogueRoot\.addEventListener\('click'/);
   assert.match(main, /const previewDialogueId = requestedGalPreviewDialogue\(\)/);
-  assert.match(main, /: initialGalDialogue\(startCanvasAssets\)/);
-  assert.match(main, /createCanvasTowerScene\(bridge, undefined, \{ autoStart: !openingDialogueActive \}\)/);
+  assert.match(main, /: initialGalDialogue\(releaseIntoTower\)/);
+  assert.match(main, /createCanvasTowerScene\(bridge, undefined, \{ autoStart: false \}\)/);
+  assert.match(main, /const startTacticalScene = \(\) =>/);
+  assert.match(main, /if \(!openingDialogueActive\) releaseIntoTower\(\)/);
   assert.match(css, /body\.gal-active\{height:100%;overflow:hidden/);
   assert.match(css, /\.gal-root\{[\s\S]*?position:fixed/);
 });
