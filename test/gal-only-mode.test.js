@@ -3,9 +3,10 @@ import { access, readFile } from 'node:fs/promises';
 import test from 'node:test';
 
 test('GAL-only is a continuous prologue-to-ending reader using the production renderer', async () => {
-  const [html, app, main, shellCss, cinematicCss] = await Promise.all([
+  const [html, app, indexHtml, main, shellCss, cinematicCss] = await Promise.all([
     readFile(new URL('../public/gal-only/index.html', import.meta.url), 'utf8'),
     readFile(new URL('../public/gal-only/app.js', import.meta.url), 'utf8'),
+    readFile(new URL('../index.html', import.meta.url), 'utf8'),
     readFile(new URL('../src/main.js', import.meta.url), 'utf8'),
     readFile(new URL('../public/gal-only/styles.css', import.meta.url), 'utf8'),
     readFile(new URL('../ui-v10-cinematics.css', import.meta.url), 'utf8')
@@ -68,9 +69,16 @@ test('GAL-only is a continuous prologue-to-ending reader using the production re
   assert.match(cinematicCss, /\.gal-root \.gal-actor\.is-entering \.gal-standing\{[\s\S]*animation:galStandingEnter/);
 
   assert.match(main, /const GAL_ONLY_BOOT = new URLSearchParams\(window\.location\.search\)\.get\('gal-only'\) === '1'/);
-  assert.match(main, /if \(requestedGalOnlyMode\(\)\) \{[\s\S]*delete elements\.galRoot\.dataset\.transition;[\s\S]*classList\.remove\('is-entering'\);[\s\S]*return;/);
+  assert.match(main, /if \(requestedGalOnlyMode\(\) \|\| document\.documentElement\.classList\.contains\('story-boot'\)\) \{[\s\S]*delete elements\.galRoot\.dataset\.transition;[\s\S]*classList\.remove\('is-entering'\);[\s\S]*return;/);
   assert.match(cinematicCss, /html\.gal-only-boot #app-shell/);
   assert.match(cinematicCss, /button\[data-gal-control="backlog-close"\][\s\S]*place-items:center/);
+
+  // Fresh game loads must not paint the tactical shell before the opening GAL.
+  assert.match(indexHtml, /<html lang="zh-CN" class="story-boot">/);
+  assert.match(indexHtml, /html\.story-boot #app-shell,[\s\S]*display: none !important/);
+  assert.match(main, /function releaseStoryBoot\(\)[\s\S]*classList\.remove\('story-boot'\)/);
+  assert.match(main, /const startCanvasAssets = \(\) => \{[\s\S]*releaseStoryBoot\(\)/);
+  assert.match(main, /if \(!openingDialogueActive && !galOnlyPreview\) releaseStoryBoot\(\)/);
 
   await access(new URL('../public/gal-only/styles.css', import.meta.url));
 });
