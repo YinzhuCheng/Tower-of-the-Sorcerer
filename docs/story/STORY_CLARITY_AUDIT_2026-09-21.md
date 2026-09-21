@@ -320,3 +320,32 @@ This round did not add new plot facts. It changed **how already-correct informat
 ### Editorial result
 
 The story now carries the same information with less “system manual” cadence. The remaining mechanical explanations are retained only where the player needs them to make an informed gameplay decision.
+
+
+---
+
+## Prose / Voice Pass · Round 3
+
+Round 3 focused on **character separation** and script-level prose hygiene.
+
+### Key changes
+
+- Liyue now compresses evidence into decisions and next actions instead of re-explaining the whole system.
+- Shawu more consistently marks evidence boundaries: what is known, what is inferred, and what is not yet proven.
+- Yayu's lines were shortened and sharpened around paths, traces, authority and tactical commitment.
+- Lanyin's evidence language now leans on sound, rhythm, clocks, echoes and whether multiple signals align.
+- Yanli's resource / relay explanations now use heat, fuel and endurance rather than abstract optimization language.
+- Milu's route explanation now stays grounded in protecting, carrying and delivering rather than “build” language.
+- The Arcane Sovereign speaks more explicitly in first-person responsibility: rules he authored, choices he made, and questions he must continue answering.
+- Several lines where a speaking character described their own action in third person were converted into actual narration.
+- The ending now separates Liyue's physical action from her spoken final line instead of embedding script-like stage direction inside her dialogue.
+
+### Regression guard
+
+Future narrative edits should follow:
+
+`docs/story/CHARACTER_VOICE_GUIDE_2026-09-21.md`
+
+A useful test is:
+
+> If a major line can be moved from Liyue to Shawu, from Lanyin to Yayu, or from Yanli to the Sovereign without sounding wrong, the voice is not distinct enough.
