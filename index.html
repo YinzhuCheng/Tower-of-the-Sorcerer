@@ -1,10 +1,22 @@
 <!doctype html>
-<html lang="zh-CN">
+<html lang="zh-CN" class="story-boot">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self'; font-src 'self' data:; object-src 'none'; base-uri 'self'" />
     <meta name="theme-color" content="#07101c" />
+    <style>
+      html.story-boot,
+      html.story-boot body {
+        margin: 0;
+        min-height: 100%;
+        background: #02050d !important;
+      }
+      html.story-boot #app-shell,
+      html.story-boot #modal-root {
+        display: none !important;
+      }
+    </style>
     <meta name="description" content="30 层三章节魔塔：以固定数值、钥匙门、互斥选择、会战部署与可调魔力附刃构成的日系二次元策略 RPG。" />
     <meta name="robots" content="index,follow" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
