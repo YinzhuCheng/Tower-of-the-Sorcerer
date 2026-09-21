@@ -103,5 +103,5 @@ test('an explicit production QA query can open any authored GAL scene without ma
   assert.match(main, /new URLSearchParams\(window\.location\.search\)\.get\('gal-preview'\)/);
   assert.match(main, /dialogueId && getDialogue\(dialogueId\) \? dialogueId : null/);
   assert.match(main, /const previewDialogueId = requestedGalPreviewDialogue\(\);[\s\S]{0,260}if \(!previewDialogueId\) autoSave\(\)/);
-  assert.match(main, /previewDialogueId\s*\? \(showDialogue\(previewDialogueId, previewAfter\), true\)\s*: initialGalDialogue\(startCanvasAssets\)/);
+  assert.match(main, /previewDialogueId\s*\? \(showDialogue\(previewDialogueId, previewAfter\), true\)\s*: initialGalDialogue\(releaseIntoTower\)/);
 });
