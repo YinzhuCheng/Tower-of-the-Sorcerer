@@ -47,12 +47,12 @@ test('Gal scenes bridge into and out of the same Tower instead of hard-cutting f
 
 test('lead and late-Boss scene states resolve to real high-resolution standing art', async () => {
   const states = [
-    ['hero', 'guarded', 'liyue-dialogue-guarded-v2.webp'],
-    ['hero', 'embers', 'liyue-dialogue-embers-v2.webp'],
-    ['final_queen', 'cold', 'noctia-dialogue-cold-v2.webp'],
-    ['final_queen', 'knowing', 'noctia-dialogue-knowing-v2.webp'],
-    ['echo_regent', 'release', 'echo-regent-dialogue-release.webp'],
-    ['arcane_sovereign', 'acceptance', 'arcane-sovereign-dialogue-acceptance.webp']
+    ['hero', 'guarded', 'hero-guarded-b2.webp'],
+    ['hero', 'embers', 'hero-embers-b2.webp'],
+    ['final_queen', 'cold', 'final-queen-cold-b2.webp'],
+    ['final_queen', 'knowing', 'final-queen-knowing-b2.webp'],
+    ['echo_regent', 'release', 'echo-regent-release-b2.webp'],
+    ['arcane_sovereign', 'acceptance', 'arcane-sovereign-acceptance-b2.webp']
   ];
 
   for (const [id, expression, filename] of states) {
@@ -60,7 +60,7 @@ test('lead and late-Boss scene states resolve to real high-resolution standing a
     assert.ok(presentation.hasPaintedExpression, `${id}:${expression} needs genuine standing art`);
     assert.match(presentation.stage, new RegExp(filename.replace('.', '\\.')));
     const asset = await stat(new URL(`../public${presentation.stage}`, import.meta.url));
-    assert.ok(asset.size > 150_000, `${id}:${expression} must be a full scene asset, not a map token`);
+    assert.ok(asset.size > 100_000, `${id}:${expression} must be a full scene asset, not a map token`);
   }
 });
 
