@@ -175,3 +175,48 @@ Expansion is only valid if it adds at least one of:
 Do not expand with interchangeable poetic filler.
 
 The target is **readable, concrete Japanese-style GAL prose in Chinese**, not short UI copy and not an essay.
+
+
+---
+
+## Execution update · 2026-09-21
+
+The first-read rewrite has now been applied across the shipped story sources. A second review of the current `main` shows that the original audit's largest gaps have been addressed:
+
+- the prologue now introduces Greyport, the storm, the Tower's emergency functions, Liyue, Shawu, Noctia, the seven-part chant, the seven guardians, the missing receipt and the investigation objective before tactical play;
+- F1–F7 now explain each guardian's former job, current compulsion, and the evidence recovered from that layer;
+- F10 → F11 explicitly bridges the apparent first-act victory into the authority / archival investigation;
+- F11 recaps the complete emergency workflow and defines the missing archival step;
+- F19 distinguishes departed, dead and still-unverified people instead of collapsing them into one “unresolved” state;
+- F20 identifies the Sovereign's decision, motive, error and inability to safely retract it;
+- F21 restates the three linked failures before the story changes from investigation to repair;
+- F28–F30 demonstrate why undelivered messages, incomplete records and clear/rebuild logic would recreate the emergency after a simple power-off;
+- the ending shows delivery acknowledgements, follow-up obligations, retained historical records and Noctia's decision to leave the alarm stone behind.
+
+### Remaining issue found during second review
+
+The remaining clarity defect was not missing lore but **late-game dialogue sounding like developer documentation**. In particular, F27 and F30 had characters saying raw identifiers such as “F11 / F21 / F20 / F30” while explaining witness contracts, repair charters and final support.
+
+This pass rewrote those lines in `src/game/demo-30-floor-content.js` so that:
+
+- the witness contract is explained as *who can personally testify to which lived fact*;
+- the repair charter is explained as *which part of the damaged process is restored first*;
+- the relay-yard choice is explained as *which final battle support is loaded first*;
+- the optional epilogue is explained as a consequence of a witness actually completing her route and surviving, not as an unlock checklist;
+- the F30 reminder refers to the in-world registration library and relay yard instead of level numbers.
+
+No costs, combat effects, route outcomes, CG IDs, portrait IDs or plot facts were changed.
+
+### Current editorial verdict
+
+The shipped story now has enough information for a first-time reader to reconstruct the complete causal chain in one continuous GAL-only playthrough.
+
+Future story edits should treat the following as regression blockers:
+
+1. Do not shorten the prologue back into a premise summary.
+2. Do not remove the “what we learned → what remains → why we go upward” bridges.
+3. Do not let character introductions collapse into title + portrait only.
+4. Do not use floor IDs or source-code terminology in character speech.
+5. Do not merge “preserve records” and “continue emergency execution” back into one concept.
+6. Do not make Noctia either a blameless puppet or a generic villain; both her constrained information and her responsibility must remain visible.
+7. Do not make the optional witness epilogue sound like the “true ending”; the ordinary archival resolution is complete on its own.
