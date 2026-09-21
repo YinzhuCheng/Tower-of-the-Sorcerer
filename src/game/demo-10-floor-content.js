@@ -365,9 +365,9 @@ export function applyDemoTenFloorContent({ enemies, floors, dialogues, gridSize 
     bossQueenPreDemo: dialogueSequence('第十阵：无声女王', 'night', [
       dialogueTurn('旁白', null, '王座前没有庆典，只有一封被反复播放、始终没有落款的求援讯息。', { kind: 'narration' }),
       dialogueTurn('旁白', null, '诺克缇娅坐在灰尘未落的王座上，像三年前一样穿着停战礼服。她面前摆着四十七枚姓名牌，每一枚都被擦得干净；这三年她没有忘记任何人，也没有走出这间殿。', { kind: 'narration' }),
-      dialogueTurn('无声女王·诺克缇娅', 'final_queen', '我收到的最后一句是“等待确认”。若我结案，旧程序就会删掉所有未确认的名字。', { expression: 'sorrow' }),
+      dialogueTurn('无声女王·诺克缇娅', 'final_queen', '我最后收到的，不是“人已到岸”，只有四个字——等待确认。王庭又一次次把同一个警告推到我眼前：一旦结案，所有还挂着“未确认”的名字都会被当成临时记录清掉。那四十七块名牌就在我面前，我没有勇气按下去。', { expression: 'sorrow' }),
       dialogueTurn('无声女王·诺克缇娅', 'final_queen', '璃来接应时，我已经耗尽维持登记网的魔力。风暴还在撞门，名册上又有四十七个人没有回签。我怕网络一停，她们就会连求救过都无人知道，所以夺走了璃的咏唱，把七段分别交给七名守护者。'),
-      dialogueTurn('无声女王·诺克缇娅', 'final_queen', '我告诉自己只要再等片刻，回执就会到，随后我会亲自归还咏唱、向每个人道歉。可片刻变成一夜，一夜变成三年。我后来已经知道守卫在受苦，却仍不敢成为按下停止的人。', { expression: 'sorrow' }),
+      dialogueTurn('无声女王·诺克缇娅', 'final_queen', '最开始，我真的只想再等一会儿。我想，等回执来了，我就把七段咏唱还给你，再去向米露她们一个个道歉。可一会儿变成一夜，一夜又变成一年、两年、三年。后来我已经知道她们在受苦，也知道自己正在把“再等等”变成新的伤害，可我越来越不敢承认，那个应该按下停止的人一直都是我。', { expression: 'sorrow' }),
       dialogueTurn('旁白', null, '诺克缇娅看向七枚核心。米露的铃声、澜音的船长回话、露米的时间记录在殿中依次响起，她的剑尖第一次动摇。', { kind: 'narration' }),
       dialogueTurn('绫星·璃', 'hero', '你不是因为喜欢这座王座才留下。你是怕一旦承认救援结束，灰港那些名字就会跟着消失。可我一路带回来的每一份东西都在告诉你：人没有消失，消失的是本该抵达你手里的回答。离港回执是真的，只是被上层权限截住了。', { expression: 'guarded' }),
       dialogueTurn('绫星·璃', 'hero', '北辰七号的四十七人全部抵达北岸。米露保存了出发录音，绯叶保住了完整名单，澜音带回船长原音；塞蕾娜、焰璃、露米和鸦羽又证明，结案是在回执抵达后被上层权限截断的。'),
@@ -375,7 +375,7 @@ export function applyDemoTenFloorContent({ enemies, floors, dialogues, gridSize 
       dialogueTurn('绫星·璃', 'hero', '你先为救人封塔，后来却因为害怕失去记录，把所有人留在命令里。奥术主权者利用了你的恐惧，可夺走咏唱、拒绝面对守护者的痛苦，仍是你必须亲口承担的部分。', { expression: 'guarded' }),
       dialogueTurn('无声女王·诺克缇娅', 'final_queen', '我知道她们痛苦。我听过米露的铃铛在夜里失控，也知道焰璃守着空炉、澜音把同一句警报唱到声音发抖。可每一次我伸手想停下，黯星核心都会把那些名字烧成灰给我看。三年里，我一次次告诉自己“再等一晚就好”——其实只是我不敢成为那个按下停止的人。', { expression: 'sorrow' }),
       dialogueTurn('绫星·璃', 'hero', '天穹核心已经算出第三条路。我们先把姓名、船号、人数和抵达时间写入只读档案，再解除救援状态。你不必靠永远重复求援来证明自己记得她们。', { expression: 'resolve' }),
-      dialogueTurn('无声女王·诺克缇娅', 'final_queen', '我想相信你。可黯星核心不会接受话语，只会检验你能否打破它的命令。', { expression: 'sorrow' })
+      dialogueTurn('无声女王·诺克缇娅', 'final_queen', '我想相信你，璃。可这三年里，我已经太多次把“我想相信”当成继续拖延的理由。黯星核心不听我们的解释，它只认那套旧命令。若我们真要走第三条路，就得先把它从王座下面拽出来。', { expression: 'sorrow' })
     ]),
     queenPhaseDemo: dialogueSequence('最终术式展开', 'night', [
       dialogueTurn('旁白', null, '女王的剑停了，黯星核心却从王座下升起。它用魔法反击将两人一同锁在阵中。', { kind: 'narration' }),
@@ -392,7 +392,7 @@ export function applyDemoTenFloorContent({ enemies, floors, dialogues, gridSize 
       dialogueTurn('绫星·璃', 'hero', '七枚核心都已回收，守卫们也恢复了自由。可原始签名指向更高处的起源魔源。', { expression: 'resolve' }),
       dialogueTurn('无声女王·诺克缇娅', 'final_queen', '封塔是我做的，把你的咏唱拆开也是我做的。哪怕后来有人篡改了命令，这两件事也不会因此变成别人的责任。我不能只说一句“对不起”就留在王座上等你们善后。接下来的路，我会一起走；等真正的结案完成，再由米露她们决定要不要接受我的道歉。', { expression: 'sorrow' }),
       dialogueTurn('无声女王·诺克缇娅', 'final_queen', '我不会用“受人操纵”替自己开脱。等我们回来，我会把封塔经过、七名守护者遭受的强制契约和我作出的每个决定公开记录。她们愿不愿继续留在塔里，由她们自己选择。', { expression: 'sorrow' }),
-      dialogueTurn('残响精灵·纱雾', 'guide', '王座开启了上层阶梯。下一段路要查明奥术主权者为何签下无限延长，以及如何安全归档。', { expression: 'focus' }),
+      dialogueTurn('残响精灵·纱雾', 'guide', '王座后面的阶梯已经亮了。上面连着起源魔源，也连着那道真正把“临时”改成“无限”的签名。接下来我们得去问清楚：是谁签的、为什么签，以及怎样在不毁掉这些名字的前提下，让错误命令真正停下来。', { expression: 'focus' }),
       dialogueTurn('残响精灵·纱雾', 'guide', '十层之上的档案把“奥术主权者”与一座失联的魔源中枢相连。第二章要做三件事：确认签署者身份，查清他为何需要灰港永远处于紧急状态，再让只读归档脱离黯星核心也能长期保存。', { expression: 'watchful' }),
       dialogueTurn('旁白', null, '石阶在王座后方一节节亮起，通向从未出现在高塔图纸上的上层。璃回头看了一眼不再鸣警的十层：灰港的撤离终于结案，但篡改命令的人仍在更高处留下了一扇门。', { kind: 'narration' }),
       dialogueTurn('绫星·璃', 'hero', '那就一起上去。这次不是追责后就算结束，我们要把三年前没做完的事真正做完。', { expression: 'resolve' })
