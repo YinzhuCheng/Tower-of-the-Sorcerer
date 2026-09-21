@@ -1058,3 +1058,50 @@ body.gal-only-preview #gal-root {
     padding:8px 1px;
   }
 }
+
+
+/* V15 — GAL-only continuity + backlog close alignment --------------------- */
+html.gal-only-boot #app-shell,
+html.gal-only-boot #loading-note,
+html.gal-only-boot #modal-root{
+  display:none!important;
+}
+html.gal-only-boot,
+html.gal-only-boot body{
+  background:#02050d!important;
+}
+
+.gal-root .gal-backlog header{
+  min-height:48px;
+  align-items:center;
+}
+.gal-root .gal-backlog header button[data-gal-control="backlog-close"]{
+  display:grid!important;
+  place-items:center;
+  flex:0 0 34px;
+  width:34px!important;
+  min-width:34px!important;
+  height:34px!important;
+  min-height:34px!important;
+  margin:0;
+  padding:0!important;
+  border:1px solid rgba(218,230,255,.36)!important;
+  border-radius:8px!important;
+  background:rgba(255,255,255,.045)!important;
+  color:#f4f7ff!important;
+  font-family:Arial,Helvetica,sans-serif!important;
+  font-size:24px!important;
+  font-weight:400!important;
+  line-height:1!important;
+  text-align:center;
+  vertical-align:middle;
+  transform:none!important;
+  appearance:none;
+}
+.gal-root .gal-backlog header button[data-gal-control="backlog-close"]:hover,
+.gal-root .gal-backlog header button[data-gal-control="backlog-close"]:focus-visible{
+  border-color:rgba(246,224,172,.8)!important;
+  background:rgba(83,101,145,.24)!important;
+  outline:2px solid rgba(246,224,172,.22);
+  outline-offset:2px;
+}
