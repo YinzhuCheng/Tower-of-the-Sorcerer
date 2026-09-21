@@ -407,13 +407,17 @@ function galCgFor(turns, index) {
   return null;
 }
 
-function galActorHtml(side, actor, speakerId, speakerName) {
+function galActorHtml(side, actor, speakerId, speakerName, { entering = false } = {}) {
   if (!actor) return '';
   const speaking = actor.id === speakerId;
   const visual = dialoguePresentation(actor.id, actor.expression);
-  return `<figure class="gal-actor gal-actor-${side} expression-${escapeHtml(visual.expression)} ${visual.hasPaintedExpression ? 'has-painted-expression' : ''} ${speaking ? 'is-speaking' : 'is-listening'}" data-expression="${escapeHtml(visual.expression)}">
+  return `<figure class="gal-actor gal-actor-${side} expression-${escapeHtml(visual.expression)} ${visual.hasPaintedExpression ? 'has-painted-expression' : ''} ${speaking ? 'is-speaking' : 'is-listening'} ${entering ? 'is-entering' : 'is-continuing'}" data-expression="${escapeHtml(visual.expression)}">
     <img class="gal-standing" src="${visual.stage}" alt="${escapeHtml(speaking ? speakerName : '')}" decoding="async" fetchpriority="high" />
   </figure>`;
+}
+
+function galActorIdentity(actor) {
+  return actor?.id ?? null;
 }
 
 function galNameplateHtml(turn, speakerName, isNarration) {
@@ -452,6 +456,7 @@ function showDialogue(dialogueId, after = null, { finalLabel = null } = {}) {
   // which creates the familiar two-character visual-novel rhythm without
   // requiring every content row to repeat cast metadata.
   const stage = { left: { id: 'hero', expression: null }, right: null };
+  let previousVisual = null;
 
   const finish = () => {
     if (finished) return;
@@ -485,11 +490,27 @@ function showDialogue(dialogueId, after = null, { finalLabel = null } = {}) {
         expression: turn.expression ?? null
       };
     }
+
+    const visual = {
+      backdrop,
+      cg: cg ?? null,
+      left: isNarration ? null : galActorIdentity(stage.left),
+      right: isNarration ? null : galActorIdentity(stage.right)
+    };
+    const backdropChanged = !previousVisual || previousVisual.backdrop !== visual.backdrop;
+    const cgChanged = Boolean(visual.cg) && (!previousVisual || previousVisual.cg !== visual.cg);
+    const leftEntering = Boolean(visual.left) && (!previousVisual || previousVisual.left !== visual.left);
+    const rightEntering = Boolean(visual.right) && (!previousVisual || previousVisual.right !== visual.right);
+    const visualClasses = [
+      backdropChanged ? 'is-new-backdrop' : 'is-continuing-backdrop',
+      cgChanged ? 'is-new-cg' : 'is-continuing-cg'
+    ].join(' ');
+
     const historyKey = `${dialogueId}:${index}`;
     rememberGalLine(historyKey, narratorName, String(turn.text ?? ''));
     const portraits = isNarration
       ? '<div class="gal-narration-mark" aria-hidden="true">✦</div>'
-      : `${galActorHtml('left', stage.left, turn.portrait, narratorName)}${galActorHtml('right', stage.right, turn.portrait, narratorName)}`;
+      : `${galActorHtml('left', stage.left, turn.portrait, narratorName, { entering: leftEntering })}${galActorHtml('right', stage.right, turn.portrait, narratorName, { entering: rightEntering })}`;
     const nameplate = galNameplateHtml(turn, narratorName, isNarration);
     const historyMarkup = () => {
       const entries = requestedGalOnlyMode() ? galHistory : galHistory.slice(-16);
@@ -504,7 +525,7 @@ function showDialogue(dialogueId, after = null, { finalLabel = null } = {}) {
     elements.galRoot.classList.remove('gal-ui-hidden');
     elements.galRoot.innerHTML = `
       <div class="gal-shell">
-        <section class="gal-dialogue ${isNarration ? 'is-narration' : ''} ${cg ? 'has-cg' : ''}" aria-label="${escapeHtml(narratorName)}的对话" style="--gal-backdrop:url('${escapeHtml(backdrop)}')">
+        <section class="gal-dialogue ${isNarration ? 'is-narration' : ''} ${cg ? 'has-cg' : ''} ${visualClasses}" aria-label="${escapeHtml(narratorName)}的对话" style="--gal-backdrop:url('${escapeHtml(backdrop)}')">
           <div class="gal-backdrop" aria-hidden="true"></div>
           <div class="gal-stage">
             ${cg ? `<div class="gal-cg" style="--gal-cg:url('${escapeHtml(cg)}')" aria-hidden="true"></div>` : ''}
@@ -543,6 +564,7 @@ function showDialogue(dialogueId, after = null, { finalLabel = null } = {}) {
           <button type="button" class="gal-ui-restore" aria-label="显示对话界面">点击任意位置显示界面</button>
         </section>
       </div>`;
+    previousVisual = visual;
     if (!sceneOpened) {
       sceneOpened = true;
       beginGalScene(transition);
