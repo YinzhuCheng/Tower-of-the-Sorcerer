@@ -265,3 +265,58 @@ Future prose edits should not reintroduce:
 - UI terms such as “panel” where an in-world terminal / array / record can carry the same meaning;
 - mechanical explanation that erases character voice;
 - apologies that automatically absolve responsibility.
+
+
+---
+
+## Prose / Voice Pass · Round 2
+
+This round did not add new plot facts. It changed **how already-correct information is delivered**.
+
+### Goals
+
+- reduce lines that sound like a design document;
+- move explanations into character-specific speech;
+- preserve the full first-read causal chain;
+- keep mechanics truthful without making characters speak like UI tooltips;
+- give Noctia, Shawu, Liyue, the Sovereign and the guardians more distinct emotional positions.
+
+### Changes by act
+
+#### Opening / Act I
+
+- Rephrased the definition of the final evacuation receipt so it is explained through what the north shore must actually say back to the Tower, rather than as a formal term definition.
+- Rephrased Shawu's explanation of “closure” into an in-character warning: ending the emergency is not the same thing as deleting people or records.
+- Rephrased the seven-part chant as a connected working system rather than a list of modules.
+- Rephrased the first-floor resource tutorial so Shawu/Liyue's objective remains diegetic: preserve enough strength to reach the evidence and the guardian rather than “clear everything.”
+- Deepened Noctia's F10 speech:
+  - her fear is now anchored to the forty-seven nameplates in front of her;
+  - her three-year delay is framed as a progression from “wait a little longer” into responsibility she increasingly avoided;
+  - her decision to fight the core is framed as ending a pattern of delay rather than merely accepting a new technical solution.
+- Reworked the F10 → F11 handoff so Shawu describes the upper route through the unanswered signature and archival problem, not as a chapter objective list.
+
+#### Act II
+
+- Rephrased the emergency registry explanation around what navigation, supply and the ledger each physically know about a person.
+- Rephrased the three-day emergency grace period as an operational practice (“save first, paperwork later”) instead of policy language.
+- Rephrased Noctia's explanation of the Sovereign and the three confirmations so her misunderstanding of the glowing aggregate seal is emotional and personal rather than procedural.
+- Rephrased Serena's explanation of the three-seat safeguard as a reason the system originally existed: stop one person from dragging the whole Tower along with a unilateral order.
+
+#### Act III
+
+- Rephrased the three repair charters as three different failure risks, not three menu choices.
+- Rephrased verification and relay mechanics around concrete actions:
+  - compare names / ship numbers / time / source;
+  - wait for each relay station to actually answer “received”;
+  - repair only the broken segment rather than resetting the whole incident.
+- Rephrased the Sovereign's F30 admission into direct responsibility: no hidden fourth culprit remains.
+- Rephrased Noctia's final evidence summary so each document's limitation is stated naturally.
+- Rephrased the four-step final archival procedure into character voices:
+  - Shawu protects originals from retroactive cleanup;
+  - the new status/trace fields are explained as “what we know now” plus “who changed it and why”;
+  - the Sovereign personally revokes his own indefinite order without erasing it;
+  - Noctia personally witnesses closure and commits to the first review.
+
+### Editorial result
+
+The story now carries the same information with less “system manual” cadence. The remaining mechanical explanations are retained only where the player needs them to make an informed gameplay decision.
