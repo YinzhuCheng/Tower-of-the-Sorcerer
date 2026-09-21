@@ -35,7 +35,7 @@ export const ACT3_CHARTERS = Object.freeze([
     route: 'F23 星镜辨真室（消耗星蚀卡 ×2）',
     cost: '星蚀卡 ×2，并击败持镜守官。',
     payoff: '提高攻防；F30 两阶段生命 -21%、防御 -15、魔法伤害 -55。',
-    risk: '要打魔法执行官；本轮没有夜航减击或接力补魔。',
+    risk: '要打持镜守官；本轮没有月影减击或赤焰补魔。',
     finale: Object.freeze({ hpMultiplier: 0.79, defPenalty: 15, magicPenalty: 55, label: '星镜辨真：最终生命 -21%、防御 -15、魔法伤害 -55' })
   }),
   Object.freeze({
