@@ -4,71 +4,64 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="color-scheme" content="dark" />
-  <meta name="description" content="《失落魔法阵：少女魔塔》GAL-only 剧情演出验收模式。" />
+  <meta name="description" content="《失落魔法阵：少女魔塔》从序章到终章的连续 GAL 验收模式。" />
   <meta name="robots" content="noindex" />
-  <title>GAL ONLY 验收 · 失落魔法阵</title>
+  <title>完整 GAL · 失落魔法阵</title>
   <link rel="icon" href="/favicon.svg" />
   <link rel="stylesheet" href="/gal-only/styles.css" />
 </head>
 <body>
-  <main class="review-shell">
-    <aside class="review-sidebar">
-      <header class="review-brand">
-        <p>LOST MAGIC TOWER · REVIEW MODE</p>
-        <h1>GAL ONLY</h1>
-        <span>剧情演出独立验收</span>
-      </header>
-
-      <div class="review-note">
-        <strong>正式运行时预览</strong>
-        <p>复用游戏中的同一套 GAL 渲染、CG、立绘、背景和转场。此模式不启动魔塔画布，也不写游戏存档。</p>
+  <main class="story-shell">
+    <header class="story-toolbar">
+      <div class="story-brand">
+        <small>LOST MAGIC TOWER · GAL ONLY</small>
+        <strong id="scene-title">载入完整剧情…</strong>
+        <span id="scene-meta">从序章连续播放至终章</span>
       </div>
 
-      <label class="review-search">
-        <span>搜索场景</span>
-        <input id="scene-search" type="search" placeholder="标题 / 场景 ID / 角色" autocomplete="off" />
-      </label>
+      <nav class="story-actions" aria-label="完整剧情控制">
+        <button id="story-start" type="button">从头开始</button>
+        <button id="prev-scene" type="button">上一幕</button>
+        <button id="replay-scene" type="button">重播本幕</button>
+        <button id="toc-toggle" type="button">目录</button>
+        <button id="next-scene" type="button" class="primary">下一幕</button>
+        <a href="/art-audit/" target="_blank" rel="noopener">美术审计</a>
+        <a href="/">返回游戏</a>
+      </nav>
 
-      <div class="review-progress">
-        <span id="progress-label">载入场景中…</span>
+      <div class="story-progress" aria-label="剧情总进度">
+        <span id="progress-label">准备中…</span>
         <div class="progress-track"><i id="progress-bar"></i></div>
       </div>
+    </header>
 
-      <nav id="scene-list" class="scene-list" aria-label="GAL 场景目录"></nav>
-    </aside>
-
-    <section class="review-stage">
-      <header class="stage-toolbar">
-        <div class="stage-copy">
-          <small id="scene-id">—</small>
-          <strong id="scene-title">载入中…</strong>
-          <span id="scene-meta"></span>
-        </div>
-        <div class="stage-actions">
-          <label class="auto-next-toggle">
-            <input id="auto-next" type="checkbox" checked />
-            <span>播完自动下一场</span>
-          </label>
-          <button id="prev-scene" type="button">上一场</button>
-          <button id="replay-scene" type="button">重播</button>
-          <button id="next-scene" type="button" class="primary">下一场</button>
-          <a id="open-scene" href="/" target="_blank" rel="noopener">新窗口</a>
-          <a href="/art-audit/" target="_blank" rel="noopener">美术审计台</a>
-          <a href="/">返回游戏</a>
-        </div>
-      </header>
-
-      <div class="frame-wrap">
-        <iframe
-          id="gal-frame"
-          title="GAL-only 剧情演出"
-          allow="fullscreen"
-          referrerpolicy="same-origin"
-        ></iframe>
-        <div id="frame-loading" class="frame-loading">正在载入 GAL 场景…</div>
+    <section class="story-stage">
+      <iframe
+        id="gal-frame"
+        title="完整 GAL 剧情"
+        allow="fullscreen"
+        referrerpolicy="same-origin"
+      ></iframe>
+      <div id="frame-loading" class="frame-loading">正在进入序章…</div>
+      <div id="story-end" class="story-end" hidden>
+        <small>THE END</small>
+        <strong>完整剧情播放结束</strong>
+        <button id="restart-ending" type="button">从序章重新开始</button>
       </div>
     </section>
   </main>
+
+  <dialog id="story-toc" class="story-toc">
+    <header>
+      <div>
+        <small>STORY INDEX</small>
+        <strong>完整剧情目录</strong>
+      </div>
+      <button id="toc-close" type="button" aria-label="关闭目录">×</button>
+    </header>
+    <p>默认从序章连续播放到终章。目录只用于验收时快速跳转，不需要逐幕手动切换。</p>
+    <nav id="toc-list" class="toc-list" aria-label="剧情目录"></nav>
+  </dialog>
 
   <script type="module" src="/gal-only/app.js"></script>
 </body>
