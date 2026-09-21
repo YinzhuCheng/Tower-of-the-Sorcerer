@@ -186,8 +186,8 @@ export function applyDemoTenFloorContent({ enemies, floors, dialogues, gridSize 
     bossCatPreDemo: dialogueSequence('第一阵守护者：猫卫长·米露', [
       dialogueTurn('旁白', null, '月白门廊的地面遍布爪痕。猫卫长挡在楼梯前，手上的铃铛还在重复封塔警报。', { kind: 'narration' }),
       dialogueTurn('旁白', null, '门廊原是撤离者进入高塔后的第一站。长桌上还摊着三年前的登记册，墨迹停在最后一页；靠墙的小凳高低不一，是米露特意为孩子们找来的。', { kind: 'narration' }),
-      dialogueTurn('猫卫长·米露', 'cat_boss', '我的职责是核对进塔者、为避难者打开第一道门。可名单停在三年前，现在谁来都会被判成入侵者。'),
-      dialogueTurn('猫卫长·米露', 'cat_boss', '璃，我认得你。可登记网把你标成“未登记的入塔者”，月影契约正逼我出爪。'),
+      dialogueTurn('猫卫长·米露', 'cat_boss', '那一夜，所有人进塔前都要先从我这里过。我认脸、核名字、给孩子找凳子，也替走不动的人把第一道门撑着。可名册停在三年前以后，这扇门就再也不会问“你是谁”，只会问“你是不是名单里的人”。'),
+      dialogueTurn('猫卫长·米露', 'cat_boss', '璃，我当然认得你。你当年还把湿透的披风借给一个小孩。可登记网认不出这种事——它只看见你的名字不在三年前那一页上。月影契约已经在扯我的手了，我再拖下去，它会替我先扑过去。'),
       dialogueTurn('猫卫长·米露', 'cat_boss', '那一夜我送走最后一队老人，亲手把门牌翻成“已清空”。后来铃铛又把它翻了回去。从那以后，无论门外站的是送粮人还是旧同伴，我的手都会先攻击。'),
       dialogueTurn('旁白', null, '米露把持铃的手藏到身后，另一只手却已抬起利爪。她咬着牙，仍被核心一步步推向璃。', { kind: 'narration' }),
       dialogueTurn('残响精灵·纱雾', 'guide', '击破契约就能收回月影核心，不会伤到她的意识。但你要先留足体力走到这里。', { expression: 'focus' }),
@@ -206,7 +206,7 @@ export function applyDemoTenFloorContent({ enemies, floors, dialogues, gridSize 
     bossFoxPreDemo: dialogueSequence('第二阵守护者：狐祝·绯叶', [
       dialogueTurn('旁白', null, '森罗核心把当年的撤离名册化成叶片。叶脉里记着每一道门何时开启。', { kind: 'narration' }),
       dialogueTurn('旁白', null, '璃从叶片间读到一个个普通备注：“需要拐杖”“与姐姐同船”“晕浪，请靠窗”。这不是一串用来计数的号码，而是门廊里真实走过的人。', { kind: 'narration' }),
-      dialogueTurn('狐祝·绯叶', 'fox_boss', '我负责保管撤离名册和门钥。只有人名、船号与回签三项相合，我才能把最后一页归档。'),
+      dialogueTurn('狐祝·绯叶', 'fox_boss', '名册归我保管，门钥也在我手里。那不是为了把人变成一排整齐数字；每一个名字后面都要有船号，也要有目的地回来的确认。三项对不上，我就不能擅自把最后一页合上。'),
       dialogueTurn('狐祝·绯叶', 'fox_boss', '前六艘船都已齐全。最后一页记录北辰七号四十七人，船号和姓名都在，唯独“安全抵达”一栏空着。登记网因此把四十七人连同负责她们的我们一起留在救援状态。'),
       dialogueTurn('狐祝·绯叶', 'fox_boss', '我守的不只是名字，还有为撤离付过的每一把钥匙、每一滴血。女王说代价不能被忘掉。'),
       dialogueTurn('绫星·璃', 'hero', '记住代价，是为了不再重犯。但把每个名字永远困在撤离那天，不是纪念。', { expression: 'guarded' }),
@@ -226,7 +226,7 @@ export function applyDemoTenFloorContent({ enemies, floors, dialogues, gridSize 
     bossWhalePreDemo: dialogueSequence('第三阵守护者：深蓝歌姬·澜音', [
       dialogueTurn('旁白', null, '澜音站在水纹阵中。鲸歌每绕行一周，都会把一段船长的回话压回水下。', { kind: 'narration' }),
       dialogueTurn('旁白', null, '导航台的圆窗外并没有海，术式却把三年前的浪投在玻璃上。每当幻浪拍下，室内便闪过北辰七号驶过最后一座浮标的影像。', { kind: 'narration' }),
-      dialogueTurn('深蓝歌姬·澜音', 'whale_boss', '我的职责是用潮汐歌标出航道，再把船长的回签送回森罗名册。最后一艘船离港时，我明明听见了她。'),
+      dialogueTurn('深蓝歌姬·澜音', 'whale_boss', '我唱歌不是为了给风暴添回声。潮汐歌会把航道一段一段点亮，也会把船长最后那句“我们到了”送回名册。北辰七号离港那晚，我一直听到她越过最后一座浮标——我很确定，我听见了她。'),
       dialogueTurn('深蓝歌姬·澜音', 'whale_boss', '我的歌本该引导最后一艘避难船。可术式要我不断报警，就像它从没有离港。'),
       dialogueTurn('深蓝歌姬·澜音', 'whale_boss', '她报出“北辰七号，全员四十七，已抵达北岸”。前半句被送进名册，最后四个字却在进入王庭前被改成“等待复核”。我想重放原音，潮汐核心就勒住我的喉咙。'),
       dialogueTurn('旁白', null, '水纹勒住澜音的脚踝。她试图停唱，潮汐核心却把警报灌回她的喉咙，卷起一道横在两人之间的浪墙。', { kind: 'narration' }),
@@ -245,7 +245,7 @@ export function applyDemoTenFloorContent({ enemies, floors, dialogues, gridSize 
     bossSwordPreDemo: dialogueSequence('第四阵守护者：剑圣·塞蕾娜', [
       dialogueTurn('旁白', null, '塞蕾娜的剑前摆着两份命令。原件写着“护送撤离”，副本只剩“禁止上行”。', { kind: 'narration' }),
       dialogueTurn('旁白', null, '原件边缘还有巡卫们的签字和交班时间，最后一班写着“待北辰七号回签后解除”。副本在相同位置留下一块整齐的空白，像是有人把整句话连同墨水一起挖走。', { kind: 'narration' }),
-      dialogueTurn('剑圣·塞蕾娜', 'sword_boss', '我的职责是分派巡卫、护住撤离通道。只要封锁令有效，锋刃核心就要求我把任何上行者逼回塔外。'),
+      dialogueTurn('剑圣·塞蕾娜', 'sword_boss', '我训练巡卫，是为了在最乱的时候给伤员留出一条能走的路。封锁本来只是把逆行的人挡开，不是让所有人永远停在门外。可只要这份封锁令还被判定有效，锋刃核心就会把每一个上行者都当成会堵死通道的人。'),
       dialogueTurn('剑圣·塞蕾娜', 'sword_boss', '封锁令只该维持到撤离结束。可副本没有终止栏，锋刃核心命令我继续执行。'),
       dialogueTurn('绫星·璃', 'hero', '潮汐核心已经带回“全员离港”的回执。我会取回你身上的第四枚核心，把终止时间补回去。', { expression: 'resolve' }),
       dialogueTurn('旁白', null, '塞蕾娜看了一眼原件，像是想收剑。下一刻，锋刃印在她掌心亮起，她只能将剑锋重新抬到璃的眼前。', { kind: 'narration' }),
@@ -264,7 +264,7 @@ export function applyDemoTenFloorContent({ enemies, floors, dialogues, gridSize 
     bossDragonPreDemo: dialogueSequence('第五阵守护者：龙姬·焰璃', 'redVein', [
       dialogueTurn('旁白', null, '锻炉的心跳隔着石墙传来。供暖管仍向一排早已空下来的避难屋送去热量。', { kind: 'narration' }),
       dialogueTurn('旁白', null, '走廊里叠着洗净的汤碗，碗沿没有一点灰，显然每天都有人擦拭。焰璃仍按四十七人的份量烧水、煮汤，再在无人领取后将它们倒掉。', { kind: 'narration' }),
-      dialogueTurn('龙姬·焰璃', 'dragon_boss', '我的职责是让避难屋有热水、让伤员撑过风暴。只要名单还有一人“等待确认”，赤焰核心就不许我降低炉温。', { expression: 'embers' }),
+      dialogueTurn('龙姬·焰璃', 'dragon_boss', '我管的不是炉子，是炉子后面那些会发冷的人。那一夜有人发高烧、有人全身湿透，我只知道一件事：屋里还有人，就不能让火灭。可登记网只要还留着一个“等待确认”，赤焰核心就会把整排空屋都当成还住着伤员。', { expression: 'embers' }),
       dialogueTurn('龙姬·焰璃', 'dragon_boss', '第七百三十一次校验：无人应答。可登记网只给我一条结论——继续燃烧。', { expression: 'embers' }),
       dialogueTurn('龙姬·焰璃', 'dragon_boss', '我试过逐间关阀。每关一处，核心就把那间屋标成“伤员失温”，逼我用更大的火补回来。我知道屋里没人，可万一我的判断错一次，代价就是一条命。'),
       dialogueTurn('绫星·璃', 'hero', '我不会让你现在就熄火。先让我看清是谁把“等一等”写成了永远。', { expression: 'guarded' }),
@@ -284,7 +284,7 @@ export function applyDemoTenFloorContent({ enemies, floors, dialogues, gridSize 
     bossAstralPreDemo: dialogueSequence('第六阵守护者：天穹魔女·露米', [
       dialogueTurn('旁白', null, '露米的星镜同时映出两幅景象：一边是空白的灰港名册，一边是永不停歇的战斗。', { kind: 'narration' }),
       dialogueTurn('旁白', null, '镜框下堆满露米写过的演算稿。最上面一页只有两个结果：停止登记，四十七个名字被旧程序清空；保持登记，七名守护者继续把所有来者视作敌人。纸角被反复摩挲得发白。', { kind: 'narration' }),
-      dialogueTurn('天穹魔女·露米', 'astral_boss', '我负责保存运行记录，也替王座演算每次决策的后果。可天穹核心只准我在旧程序给出的选项里选择。'),
+      dialogueTurn('天穹魔女·露米', 'astral_boss', '王座每做一个决定，最后都会先从我的星镜里走一遍。我会把它可能伤到谁、会留下什么后果算给诺克缇娅看。可三年前开始，天穹核心只肯给我看旧程序承认的答案；我能算出两条路都很糟，却连第三条路的入口都碰不到。'),
       dialogueTurn('天穹魔女·露米', 'astral_boss', '我算过两条路：停止会遗失档案，继续会伤害守卫。女王看完演算，选了后者。'),
       dialogueTurn('天穹魔女·露米', 'astral_boss', '她问过我：“能不能只把姓名留下，把求援关闭？”我尝试建立只读档案，演算每次都在访问起源魔源时被拒绝。不是方法不存在，是我们被禁止验证它。'),
       dialogueTurn('旁白', null, '露米抬手想关掉星镜，镜面却自行转向璃，成百道预演过的攻击同时亮起。她的叹息被淹没在术式的嗡鸣里。', { kind: 'narration' }),
@@ -304,7 +304,7 @@ export function applyDemoTenFloorContent({ enemies, floors, dialogues, gridSize 
     bossShadowPreDemo: dialogueSequence('第七阵守护者：影织姬·鸦羽', 'starMirror', [
       dialogueTurn('旁白', null, '数十根影线在空中织出塔的轮廓；最上层有一根线，既不通向王座，也不通向任何守卫。', { kind: 'narration' }),
       dialogueTurn('旁白', null, '其余影线都标着用途：门禁、名册、导航、巡卫、供暖与演算。唯独那根自上而下的黑线没有名称，它穿过所有系统，却故意绕开了诺克缇娅的王座签章。', { kind: 'narration' }),
-      dialogueTurn('影织姬·鸦羽', 'shadow_boss', '我负责追踪权限流向、藏起不该外泄的签名。如今虚影核心反过来蒙住我的眼，只准我维护这张网。', { expression: 'guarded' }),
+      dialogueTurn('影织姬·鸦羽', 'shadow_boss', '影线原本是用来找出“这道命令到底从谁手里来”的。该藏的签名我会藏，该追的源头我也会追。可现在虚影核心把最重要的那一段黑了下去，只准我继续维护这张网，却不许我看见是谁先把它织成现在这样。', { expression: 'guarded' }),
       dialogueTurn('影织姬·鸦羽', 'shadow_boss', '正常的遮蔽是保护撤离者姓名，不让敌人从名册追到北岸。可这根黑线遮住的是发令者自己。她借用了我的术式，让每一层都能执行延长令，却无人能看见命令从何而来。', { expression: 'guarded' }),
       dialogueTurn('影织姬·鸦羽', 'shadow_boss', '我看见陛下划掉自己的离塔许可。她想留下来守住灰港，结果让所有人都陪她被困。', { expression: 'guarded' }),
       dialogueTurn('绫星·璃', 'hero', '那不是她一个人的罪。有人利用她的恐惧，把一份临时命令套在所有名字上。', { expression: 'guarded' }),
