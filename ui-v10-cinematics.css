@@ -1105,3 +1105,14 @@ html.gal-only-boot body{
   outline:2px solid rgba(246,224,172,.22);
   outline-offset:2px;
 }
+
+
+/* V16 — zero-flash opening story boot ------------------------------------- */
+html.story-boot,
+html.story-boot body{
+  background:#02050d!important;
+}
+html.story-boot #app-shell,
+html.story-boot #modal-root{
+  display:none!important;
+}
