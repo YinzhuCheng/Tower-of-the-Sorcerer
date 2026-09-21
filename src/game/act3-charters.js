@@ -1,5 +1,5 @@
 /**
- * Act III: the Afterlight Registry.
+ * Act III: the Road of Undelivered Letters.
  *
  * The old tower ends with a command engine going quiet.  The last ten floors
  * ask a less ceremonial question: what do you repair first when the archive
@@ -16,40 +16,40 @@ export const ACT3_CHARTERS_ID = 'afterlight-registry-charters-v1';
 export const ACT3_CHARTERS = Object.freeze([
   Object.freeze({
     id: 'shelter',
-    title: '夜航护送章程',
+    title: '月影护信之道',
     gateId: 'f22ShelterAnnex',
     itemId: 'shelterAegis',
     difficulty: '生命型终局',
     route: 'F22 夜航侧库（消耗月辉卡 ×2）',
     cost: '月辉卡 ×2，并击败夜航守柜人。',
     payoff: '获得大幅生命与防御；F30 的每个阶段少结算 3 次反击。',
-    risk: '本轮无法获得校验削弱或接力补魔。',
-    finale: Object.freeze({ counterattackGuard: 3, label: '夜航护送：最终每阶段少结算 3 次反击' })
+    risk: '本轮无法获得星镜削弱或赤焰补魔。',
+    finale: Object.freeze({ counterattackGuard: 3, label: '月影护信：最终每阶段少结算 3 次反击' })
   }),
   Object.freeze({
     id: 'audit',
-    title: '逐页校验章程',
+    title: '星镜辨真之道',
     gateId: 'f23AuditAnnex',
     itemId: 'auditLedger',
-    difficulty: '削弱型终局',
-    route: 'F23 逐页校验室（消耗星蚀卡 ×2）',
-    cost: '星蚀卡 ×2，并击败持簿执行官。',
+    difficulty: '破咒型终局',
+    route: 'F23 星镜辨真室（消耗星蚀卡 ×2）',
+    cost: '星蚀卡 ×2，并击败持镜守官。',
     payoff: '提高攻防；F30 两阶段生命 -21%、防御 -15、魔法伤害 -55。',
-    risk: '要打魔法执行官；本轮没有夜航减击或接力补魔。',
-    finale: Object.freeze({ hpMultiplier: 0.79, defPenalty: 15, magicPenalty: 55, label: '逐页校验：最终生命 -21%、防御 -15、魔法伤害 -55' })
+    risk: '要打持镜守官；本轮没有月影减击或赤焰补魔。',
+    finale: Object.freeze({ hpMultiplier: 0.79, defPenalty: 15, magicPenalty: 55, label: '星镜辨真：最终生命 -21%、防御 -15、魔法伤害 -55' })
   }),
   Object.freeze({
     id: 'relay',
-    title: '灯塔接力章程',
+    title: '赤焰传火之道',
     gateId: 'f24RelayAnnex',
     itemId: 'relayCapacitor',
-    difficulty: 'MP 型终局',
-    route: 'F24 灯塔接力室（消耗日曜卡 ×1、月辉卡 ×1）',
+    difficulty: '共鸣型终局',
+    route: 'F24 赤焰传火室（消耗日曜卡 ×1、月辉卡 ×1）',
     cost: '日曜卡 ×1、月辉卡 ×1；第二次回充在 F27 后触发。',
     payoff: '最大 MP +60、恢复 160 MP（不超过当前上限）；击败 F27 接力总管后再补满一次。',
-    risk: '不直接削弱终局；F27 后的 MP 要留给 F30。',
+    risk: '不直接削弱终局；F27 后的 MP 要留给灯塔。',
     relayEnemyId: 'archiveMarshal',
-    finale: Object.freeze({ label: '灯塔接力：F27 后 MP 补满一次' })
+    finale: Object.freeze({ label: '赤焰传火：F27 后 MP 补满一次' })
   })
 ]);
 
@@ -97,9 +97,9 @@ export function canSelectAct3Charter(state) {
 
 export function selectAct3Charter(state, charterId) {
   const charter = getAct3Charter(charterId);
-  if (!charter) return { ok: false, reason: '未知的修复章程。' };
+  if (!charter) return { ok: false, reason: '未知的送信古道。' };
   if (!canSelectAct3Charter(state)) {
-    return { ok: false, reason: '修复章程只能在 F21 的入口阶梯前公开签署一次。' };
+    return { ok: false, reason: '送信古道只能在 F21 的入口阶梯前选择一次。' };
   }
   state.charter = { selectedId: charter.id, completedId: null, relayRefilled: false, legacyOpen: false };
   return { ok: true, charter };
@@ -114,8 +114,8 @@ export function act3CharterGateAccess(state, gateId) {
     ok: false,
     charter,
     reason: selected
-      ? `本轮已签署「${selected.title}」；「${charter.title}」的侧库会保留给下一轮。`
-      : '必须先在 F21 公开签署一份修复章程。'
+      ? `本轮已选择「${selected.title}」；「${charter.title}」的侧库会保留给下一轮。`
+      : '必须先在 F21 选择一条送信古道。'
   };
 }
 
@@ -170,7 +170,7 @@ export function applyAct3CharterEnemyDefeatEffect(state, enemyId) {
   state.charter = { ...state.charter, relayRefilled: true };
   return Object.freeze({
     id: 'relay-refill',
-    label: `灯塔接力完成：MP 从 ${before} 恢复至 ${state.magic.mp}/${state.magic.maxMp}。`,
+    label: `赤焰传火完成：MP 从 ${before} 恢复至 ${state.magic.mp}/${state.magic.maxMp}。`,
     beforeMp: before,
     afterMp: state.magic.mp
   });

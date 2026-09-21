@@ -129,7 +129,7 @@ test('free final intel shows the selected charter modifier without charging for 
   const intel = getFreeRouteIntel(state, { lookahead: 0 });
   const warden = intel.finale.finalEnemies.find((enemy) => enemy.id === 'archiveWarden');
   assert.ok(warden.hp < ENEMIES.archiveWarden.hp);
-  assert.match(warden.modifierLabels.join(' '), /逐页校验/);
+  assert.match(warden.modifierLabels.join(' '), /星镜辨真/);
   assert.equal(state.cards.sun + state.cards.moon + state.cards.star, 0, 'consulting intel has no resource cost');
 });
 

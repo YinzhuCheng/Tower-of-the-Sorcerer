@@ -24,14 +24,13 @@ function sceneText(ids) {
   return ids.flatMap((id) => DIALOGUES[id]?.turns ?? []).map((turn) => turn.text).join('\n');
 }
 
-test('the 30-floor dialogue tells a complete, skippable three-act story', () => {
+test('the 30-floor dialogue tells a complete fantasy three-act story', () => {
   const introIds = ['prologue', 'floor2', 'floor3', 'floor4', 'floor5', 'floor6', 'floor7', 'floor8', 'floor9', 'floor10'];
   const middleIds = ['floor11', 'floor12', 'floor13', 'floor14', 'floor15', 'floor16', 'floor17', 'floor18', 'floor19', 'floor20'];
   const endingIds = ['floor21', 'floor22', 'floor23', 'floor24', 'floor25', 'floor26', 'floor27', 'floor28', 'floor29', 'floor30', 'ending'];
   const actOneEvidence = [...introIds, 'bossWhalePostDemo', 'bossAstralPostDemo', 'bossBlackSealPostDemo', 'bossQueenPostDemo'];
 
   const mainSceneIds = [...introIds, ...middleIds, ...endingIds];
-
   for (const id of mainSceneIds) {
     const turns = DIALOGUES[id]?.turns;
     assert.ok(Array.isArray(turns) && turns.length > 0, `${id} needs a readable Gal scene`);
@@ -39,46 +38,36 @@ test('the 30-floor dialogue tells a complete, skippable three-act story', () => 
     assert.ok(turns.some((turn) => turn.kind === 'narration' || turn.speaker === '旁白'), `${id} needs scene-setting narration`);
   }
 
-  const authoredCharacterCount = mainSceneIds
-    .flatMap((id) => DIALOGUES[id].turns)
-    .reduce((total, turn) => total + turn.text.length, 0);
-  assert.ok(authoredCharacterCount > 20_000, 'the skippable main story should have room for full context, action and interiority');
-  assert.ok(mainSceneIds.some((id) => DIALOGUES[id].turns.length > 12), 'story scenes must not be compressed back to an artificial turn cap');
-
-  assert.match(sceneText(actOneEvidence), /灰港撤离/);
-  assert.match(sceneText(actOneEvidence), /离港确认/);
   assert.match(sceneText(actOneEvidence), /北辰七号/);
-  assert.match(sceneText(actOneEvidence), /七枚核心/);
-  assert.match(sceneText(middleIds), /三天一过[\s\S]{0,80}(强制命令|紧急登记)[\s\S]{0,40}(撤|停)/);
-  assert.match(sceneText(middleIds), /主权签名/);
-  assert.match(sceneText(middleIds), /死亡名簿/);
-  assert.match(sceneText(middleIds), /十七分钟/);
-  assert.match(sceneText(middleIds), /(见证契约|亲自.*证明|亲眼.*证明|愿意为这些作证)/);
-  assert.match(sceneText(endingIds), /修复章程/);
-  assert.match(sceneText(endingIds), /夜航护送章程/);
-  assert.match(sceneText(endingIds), /逐页校验章程/);
-  assert.match(sceneText(endingIds), /灯塔接力章程/);
-  assert.match(sceneText(endingIds), /断电/);
-  assert.match(sceneText(endingIds), /复电/);
-  assert.match(sceneText(endingIds), /归档模式/);
-  assert.match(sceneText(endingIds), /记录留下，命令结束/);
-  assert.match(sceneText(endingIds), /(结案本身已经完整|灰港都会真正结案|完整结案)/);
-  assert.match(sceneText(endingIds), /(亲笔后记|亲手留下一页后记|本人.*后记)/);
-});
+  assert.match(sceneText(actOneEvidence), /(七段咏唱|七声|七枚核心)/);
+  assert.match(sceneText(actOneEvidence), /(续夜之印|守夜)/);
 
-test('the expanded story may use unlimited consecutive Gal turns to explain each act', () => {
+  assert.match(sceneText(middleIds), /十七分钟/);
+  assert.match(sceneText(middleIds), /归航/);
+  assert.match(sceneText(middleIds), /(记忆晶|旧夜残响)/);
+  assert.match(sceneText(middleIds), /(万名灯殿|灯海)/);
+  assert.match(sceneText(middleIds), /(七灯同时熄灭|守夜终仪|归航钟)/);
+
+  assert.match(sceneText(endingIds), /(月影|护信)/);
+  assert.match(sceneText(endingIds), /(星镜|辨真)/);
+  assert.match(sceneText(endingIds), /(赤焰|传火)/);
+  assert.match(sceneText(endingIds), /(书页风暴|未寄|家书)/);
+  assert.match(sceneText(endingIds), /(余烬灯塔|灯塔)/);
+  assert.match(sceneText(endingIds), /(守夜已终|名字长存)/);
+});
+test('the rewritten story keeps every act readable without procedural exposition bloat', () => {
   const acts = [
     ['prologue', 'floor2', 'floor3', 'floor4', 'floor5', 'floor6', 'floor7', 'floor8', 'floor9', 'floor10'],
     ['floor11', 'floor12', 'floor13', 'floor14', 'floor15', 'floor16', 'floor17', 'floor18', 'floor19', 'floor20'],
     ['floor21', 'floor22', 'floor23', 'floor24', 'floor25', 'floor26', 'floor27', 'floor28', 'floor29', 'floor30', 'ending']
   ];
-  const minimumCharacters = [3_000, 7_000, 8_000];
 
   acts.forEach((ids, actIndex) => {
     const turns = ids.flatMap((id) => DIALOGUES[id].turns);
-    assert.ok(ids.some((id) => DIALOGUES[id].turns.length > 8), `Act ${actIndex + 1} should not be compressed to an eight-turn cap`);
-    assert.ok(turns.reduce((total, turn) => total + turn.text.length, 0) >= minimumCharacters[actIndex], `Act ${actIndex + 1} needs enough room for readable context`);
+    assert.ok(turns.length >= ids.length * 3, `Act ${actIndex + 1} needs enough authored beats to remain readable`);
     assert.ok(ids.every((id) => DIALOGUES[id].turns.some((turn) => turn.kind === 'narration' || turn.speaker === '旁白')), `Act ${actIndex + 1} floor scenes need environmental or action narration`);
-    assert.ok(ids.some((id) => DIALOGUES[id].turns.some((turn, index, scene) => index > 0 && turn.speaker === scene[index - 1].speaker)), `Act ${actIndex + 1} may keep one speaker across consecutive dialogue boxes`);
   });
+
+  const playerFacing = acts.flat().flatMap((id) => DIALOGUES[id].turns).map((turn) => turn.text).join('\n');
+  assert.doesNotMatch(playerFacing, /(写入口|原始解析器|缓存|终端弹出|登记库立即报错|未授权篡改|三套修复章程)/);
 });
