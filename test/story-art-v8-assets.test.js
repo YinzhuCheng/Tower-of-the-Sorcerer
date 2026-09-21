@@ -65,11 +65,11 @@ test('story art v8 manifest locks every approved runtime file', async () => {
 
 test('early guardians and Lumi resolve to production standing art and matching avatars', () => {
   const states = [
-    ['cat_boss', 'alert', 'milu-dialogue-alert-v8.webp', 'cat-boss-avatar-alert-v8.webp'],
-    ['fox_boss', 'watchful', 'feiye-dialogue-watchful-v8.webp', 'fox-boss-avatar-watchful-v8.webp'],
-    ['whale_boss', 'lament', 'lanyin-dialogue-lament-v8.webp', 'whale-boss-avatar-lament-audit-v3.webp'],
-    ['sword_boss', 'stern', 'serena-dialogue-stern-audit-v3.webp', 'sword-boss-avatar-stern-v8.webp'],
-    ['astral_boss', 'focus', 'lumi-dialogue-focus-v8.webp', 'astral-boss-avatar-focus.webp']
+    ['cat_boss', 'alert', 'cat-boss-alert-b2.webp', 'cat-boss-avatar-alert-v8.webp'],
+    ['fox_boss', 'watchful', 'fox-boss-watchful-b2.webp', 'fox-boss-avatar-watchful-v8.webp'],
+    ['whale_boss', 'lament', 'whale-boss-lament-b2.webp', 'whale-boss-avatar-lament-audit-v3.webp'],
+    ['sword_boss', 'stern', 'sword-boss-stern-b2.webp', 'sword-boss-avatar-stern-v8.webp'],
+    ['astral_boss', 'focus', 'astral-boss-focus-b2.webp', 'astral-boss-avatar-focus.webp']
   ];
   for (const [id, expression, standing, avatar] of states) {
     const presentation = dialoguePresentation(id, expression);
