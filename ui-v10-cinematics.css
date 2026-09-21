@@ -885,3 +885,152 @@ body.gal-only-preview #gal-root {
   position: fixed;
   inset: 0;
 }
+
+
+/* V14 — continuous-reading typography -------------------------------------
+   The GAL layer is read as one continuous story. Dialogue copy follows
+   Chinese prose conventions, and the backlog is a compact reading stream
+   instead of a grid of large cards. */
+.gal-root .gal-textbox{
+  min-height:clamp(126px,17.5%,170px);
+  padding-top:clamp(30px,4vh,40px);
+  padding-bottom:clamp(11px,1.6vh,16px);
+  text-align:left;
+}
+.gal-root .gal-typewriter{
+  min-height:0;
+  margin:0;
+  text-align:left;
+  text-indent:2em;
+  text-wrap:pretty;
+  overflow-wrap:anywhere;
+  line-height:1.86;
+}
+.gal-root .gal-dialogue.is-narration .gal-textbox{
+  text-align:left;
+}
+.gal-root .gal-dialogue.is-narration .gal-typewriter{
+  text-align:left;
+  text-indent:2em;
+}
+
+.gal-root .gal-backlog{
+  top:clamp(48px,8vh,82px);
+  right:auto;
+  bottom:clamp(18px,5vh,48px);
+  left:50%;
+  width:min(82vw,920px);
+  transform:translateX(-50%);
+  border:1px solid rgba(204,222,255,.32);
+  border-radius:9px;
+  background:rgba(5,11,28,.95);
+  box-shadow:0 20px 64px rgba(0,0,0,.6);
+}
+.gal-root .gal-backlog header{
+  padding:12px clamp(16px,2.5vw,28px);
+  background:rgba(6,13,31,.96);
+}
+.gal-root .gal-history-list{
+  display:block;
+  height:calc(100% - 49px);
+  padding:0 clamp(16px,3vw,34px) 12px;
+  overflow-y:auto;
+  overscroll-behavior:contain;
+  scrollbar-gutter:stable;
+}
+.gal-root .gal-history-entry{
+  display:block;
+  margin:0;
+  padding:clamp(11px,1.7vh,17px) 2px;
+  border:0;
+  border-bottom:1px solid rgba(208,222,255,.14);
+  border-radius:0;
+  background:none;
+  box-shadow:none;
+}
+.gal-root .gal-history-entry:last-child{
+  border-bottom:0;
+}
+.gal-root .gal-history-entry strong{
+  display:block;
+  margin:0 0 5px;
+  color:#f2dfa6;
+  font-size:clamp(.68rem,.8vw,.78rem);
+  line-height:1.35;
+}
+.gal-root .gal-history-entry p{
+  margin:0;
+  color:#e9efff;
+  font-family:"Noto Serif SC","Songti SC",serif;
+  font-size:clamp(.78rem,1vw,.92rem);
+  line-height:1.82;
+  letter-spacing:.015em;
+  text-align:left;
+  text-indent:2em;
+  text-wrap:pretty;
+  overflow-wrap:anywhere;
+}
+.gal-root .gal-history-entry small{
+  display:block;
+  margin-top:6px;
+  padding-left:2em;
+  color:#d8c7ff;
+  font-size:clamp(.63rem,.75vw,.7rem);
+  line-height:1.5;
+}
+
+@media (max-width:700px), (max-aspect-ratio:4/5){
+  .gal-root .gal-textbox{
+    right:2.4%;
+    bottom:2%;
+    left:2.4%;
+    min-height:clamp(120px,21%,160px);
+    padding:30px 40px 11px 16px;
+  }
+  .gal-root .gal-typewriter{
+    font-size:clamp(.82rem,3.4vw,.94rem);
+    line-height:1.78;
+  }
+  .gal-root .gal-backlog{
+    top:54px;
+    right:10px;
+    bottom:10px;
+    left:10px;
+    width:auto;
+    transform:none;
+  }
+  .gal-root .gal-backlog header{
+    padding:10px 13px;
+  }
+  .gal-root .gal-history-list{
+    height:calc(100% - 44px);
+    padding:0 14px 10px;
+  }
+  .gal-root .gal-history-entry{
+    padding:11px 1px;
+  }
+  .gal-root .gal-history-entry p{
+    font-size:clamp(.76rem,3.2vw,.86rem);
+    line-height:1.75;
+  }
+}
+
+@media (max-height:560px) and (orientation:landscape){
+  .gal-root .gal-textbox{
+    min-height:108px;
+    padding-top:27px;
+    padding-bottom:9px;
+  }
+  .gal-root .gal-typewriter{
+    font-size:.82rem;
+    line-height:1.68;
+  }
+  .gal-root .gal-backlog{
+    top:42px;
+    bottom:8px;
+    width:min(88vw,940px);
+  }
+  .gal-root .gal-history-entry{
+    padding:8px 1px;
+  }
+}
