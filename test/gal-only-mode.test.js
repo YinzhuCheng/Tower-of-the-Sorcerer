@@ -77,8 +77,12 @@ test('GAL-only is a continuous prologue-to-ending reader using the production re
   assert.match(indexHtml, /<html lang="zh-CN" class="story-boot">/);
   assert.match(indexHtml, /html\.story-boot #app-shell,[\s\S]*display: none !important/);
   assert.match(main, /function releaseStoryBoot\(\)[\s\S]*classList\.remove\('story-boot'\)/);
-  assert.match(main, /const startCanvasAssets = \(\) => \{[\s\S]*releaseStoryBoot\(\)/);
-  assert.match(main, /if \(!openingDialogueActive && !galOnlyPreview\) releaseStoryBoot\(\)/);
+  assert.match(main, /const startTacticalScene = \(\) =>/);
+  assert.match(main, /const releaseIntoTower = \(\) => \{[\s\S]*releaseStoryBoot\(\);[\s\S]*startTacticalScene\(\)/);
+  assert.match(main, /const openingDialogueActive = [\s\S]*initialGalDialogue\(releaseIntoTower\)/);
+  assert.match(main, /if \(!openingDialogueActive\) releaseIntoTower\(\)/);
+  assert.match(main, /createCanvasTowerScene\(bridge, undefined, \{ autoStart: false \}\)/);
+  assert.doesNotMatch(main, /autoStart: !openingDialogueActive/);
 
   await access(new URL('../public/gal-only/styles.css', import.meta.url));
 });
