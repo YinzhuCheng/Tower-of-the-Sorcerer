@@ -40,6 +40,8 @@ const tocList = $('#toc-list');
 const storyEnd = $('#story-end');
 const restartEnding = $('#restart-ending');
 
+const GAL_HISTORY_STORAGE_KEY = 'lost-magic-tower:gal-only-history:v1';
+
 const STORY_ORDER = Object.freeze([
   'prologue',
   'bossCatPreDemo', 'bossCatPostDemo',
@@ -171,11 +173,17 @@ function finishStory() {
   progressBar.style.width = '100%';
 }
 
-startButton.addEventListener('click', () => loadScene(0, { transitionLabel: '正在返回序章…' }));
+startButton.addEventListener('click', () => {
+  window.sessionStorage.removeItem(GAL_HISTORY_STORAGE_KEY);
+  loadScene(0, { transitionLabel: '正在返回序章…' });
+});
 prevButton.addEventListener('click', () => moveScene(-1));
 nextButton.addEventListener('click', () => moveScene(1));
 replayButton.addEventListener('click', () => loadScene(currentIndex, { transitionLabel: '正在重播本幕…' }));
-restartEnding.addEventListener('click', () => loadScene(0, { transitionLabel: '正在返回序章…' }));
+restartEnding.addEventListener('click', () => {
+  window.sessionStorage.removeItem(GAL_HISTORY_STORAGE_KEY);
+  loadScene(0, { transitionLabel: '正在返回序章…' });
+});
 tocToggle.addEventListener('click', () => toc.showModal());
 tocClose.addEventListener('click', () => toc.close());
 toc.addEventListener('click', (event) => {
@@ -225,4 +233,5 @@ window.addEventListener('keydown', (event) => {
 
 const requestedId = new URLSearchParams(window.location.search).get('scene');
 const requestedIndex = requestedId ? scenes.findIndex(({ id }) => id === requestedId) : -1;
+if (requestedIndex < 0) window.sessionStorage.removeItem(GAL_HISTORY_STORAGE_KEY);
 loadScene(requestedIndex >= 0 ? requestedIndex : 0, { keepUrl: requestedIndex >= 0 });
