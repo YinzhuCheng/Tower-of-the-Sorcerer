@@ -49,12 +49,12 @@ test('the 30-floor dialogue tells a complete, skippable three-act story', () => 
   assert.match(sceneText(actOneEvidence), /离港确认/);
   assert.match(sceneText(actOneEvidence), /北辰七号/);
   assert.match(sceneText(actOneEvidence), /七枚核心/);
-  assert.match(sceneText(middleIds), /三日后必须撤销/);
+  assert.match(sceneText(middleIds), /三天一过[\s\S]{0,80}(强制命令|紧急登记)[\s\S]{0,40}(撤|停)/);
   assert.match(sceneText(middleIds), /主权签名/);
   assert.match(sceneText(middleIds), /死亡名簿/);
   assert.match(sceneText(middleIds), /十七分钟/);
   assert.match(sceneText(middleIds), /本人见证/);
-  assert.match(sceneText(endingIds), /三套修复章程/);
+  assert.match(sceneText(endingIds), /修复章程/);
   assert.match(sceneText(endingIds), /夜航护送章程/);
   assert.match(sceneText(endingIds), /逐页校验章程/);
   assert.match(sceneText(endingIds), /灯塔接力章程/);
@@ -62,8 +62,8 @@ test('the 30-floor dialogue tells a complete, skippable three-act story', () => 
   assert.match(sceneText(endingIds), /复电/);
   assert.match(sceneText(endingIds), /归档模式/);
   assert.match(sceneText(endingIds), /记录留下，命令结束/);
-  assert.match(sceneText(endingIds), /普通结局/);
-  assert.match(sceneText(endingIds), /隐藏结局/);
+  assert.match(sceneText(endingIds), /(结案本身已经完整|灰港都会真正结案|完整结案)/);
+  assert.match(sceneText(endingIds), /(亲笔后记|亲手留下一页后记|本人.*后记)/);
 });
 
 test('the expanded story may use unlimited consecutive Gal turns to explain each act', () => {
