@@ -53,7 +53,7 @@ test('the 30-floor dialogue tells a complete, skippable three-act story', () => 
   assert.match(sceneText(middleIds), /主权签名/);
   assert.match(sceneText(middleIds), /死亡名簿/);
   assert.match(sceneText(middleIds), /十七分钟/);
-  assert.match(sceneText(middleIds), /本人见证/);
+  assert.match(sceneText(middleIds), /(见证契约|亲自.*证明|亲眼.*证明|愿意为这些作证)/);
   assert.match(sceneText(endingIds), /修复章程/);
   assert.match(sceneText(endingIds), /夜航护送章程/);
   assert.match(sceneText(endingIds), /逐页校验章程/);
