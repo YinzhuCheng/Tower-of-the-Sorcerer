@@ -278,7 +278,7 @@ function beginGalScene(transition) {
   // GAL-only is one continuous visual novel. Do not replay the tower-to-witness
   // bridge between authored story scenes; the outer reader handles scene-to-scene
   // continuity and keeps the game UI permanently out of view.
-  if (requestedGalOnlyMode()) {
+  if (requestedGalOnlyMode() || document.documentElement.classList.contains('story-boot')) {
     delete elements.galRoot.dataset.transition;
     elements.galRoot.classList.remove('is-entering');
     return;
