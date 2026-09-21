@@ -1,0 +1,686 @@
+{
+  "version": "2026-09-21-v1",
+  "status": "B2 accepted and promoted to runtime",
+  "candidate_count": 27,
+  "active_b2_slots": 25,
+  "supplemental_guide_expressions": 2,
+  "runtime_count": 27,
+  "qa": "03_intermediate/qa/2026-09-21-b2-runtime/B2_RUNTIME_QA.md",
+  "assets": [
+    {
+      "slot": "hero:resolve",
+      "source": "art/visual-novel/04_cg/working/2026-09-20-b2-standees/B2_hero_resolve_v1.png",
+      "source_sha256": "db09d870c9cb99f02284bbdafe21f17dffd6de1de64a23a3ac99c3abca1a309e",
+      "runtime": "public/assets/anime/characters/b2-20260921/hero-resolve-b2.webp",
+      "runtime_sha256": "a6a2caf5016596f3a545961ee01dc9fa674d7e53b58dbef95304c932ec2545f3",
+      "runtime_bytes": 283384,
+      "dimensions": [
+        1024,
+        1536
+      ],
+      "alpha_required": true,
+      "encoder": "cwebp",
+      "encoder_args": [
+        "-q",
+        "94",
+        "-m",
+        "6",
+        "-alpha_q",
+        "100",
+        "-exact",
+        "-metadata",
+        "none"
+      ]
+    },
+    {
+      "slot": "hero:guarded",
+      "source": "art/visual-novel/04_cg/working/2026-09-20-b2-standees/B2_hero_guarded_v1.png",
+      "source_sha256": "fa9bb329cea0dc7e769ec44e169410e56086c5ed08c6a5b33e3f97603600b802",
+      "runtime": "public/assets/anime/characters/b2-20260921/hero-guarded-b2.webp",
+      "runtime_sha256": "8da330f0a20d1aee565c3e970fbc2d94a709d25c757e6d26696b40f677277ceb",
+      "runtime_bytes": 296928,
+      "dimensions": [
+        1024,
+        1536
+      ],
+      "alpha_required": true,
+      "encoder": "cwebp",
+      "encoder_args": [
+        "-q",
+        "94",
+        "-m",
+        "6",
+        "-alpha_q",
+        "100",
+        "-exact",
+        "-metadata",
+        "none"
+      ]
+    },
+    {
+      "slot": "hero:embers",
+      "source": "art/visual-novel/04_cg/working/2026-09-20-b2-standees/B2_hero_embers_v1.png",
+      "source_sha256": "2f444db201d6c0c383173b3ed293e72805f84914f58b012bda77f806bf209689",
+      "runtime": "public/assets/anime/characters/b2-20260921/hero-embers-b2.webp",
+      "runtime_sha256": "54a91b3f7c40e14cf39f77521f095a9d5a3215a979222947526e37c9787eba6f",
+      "runtime_bytes": 380758,
+      "dimensions": [
+        1024,
+        1536
+      ],
+      "alpha_required": true,
+      "encoder": "cwebp",
+      "encoder_args": [
+        "-q",
+        "94",
+        "-m",
+        "6",
+        "-alpha_q",
+        "100",
+        "-exact",
+        "-metadata",
+        "none"
+      ]
+    },
+    {
+      "slot": "guide:neutral-runtime",
+      "source": "art/visual-novel/04_cg/working/2026-09-20-b2-standees/B2_guide_runtime-neutral_v1.png",
+      "source_sha256": "a22c2d7636f070109fc90586e5ac3a7c2e652bd51012d76fea068dbd499adcb3",
+      "runtime": "public/assets/anime/characters/b2-20260921/guide-neutral-b2.webp",
+      "runtime_sha256": "ebd84c48b57836b865e54e7c3855f236e547426d91930fe28d3f2570bbf69bc9",
+      "runtime_bytes": 216996,
+      "dimensions": [
+        1024,
+        1536
+      ],
+      "alpha_required": true,
+      "encoder": "cwebp",
+      "encoder_args": [
+        "-q",
+        "94",
+        "-m",
+        "6",
+        "-alpha_q",
+        "100",
+        "-exact",
+        "-metadata",
+        "none"
+      ]
+    },
+    {
+      "slot": "guide:gentle",
+      "source": "art/visual-novel/04_cg/working/2026-09-20-b2-standees/B2_guide_gentle_v1.png",
+      "source_sha256": "bb40b70bb06e60562e4d3552019f347696607854575866ef7c48dcd854e0aa7d",
+      "runtime": "public/assets/anime/characters/b2-20260921/guide-gentle-b2.webp",
+      "runtime_sha256": "a52d900ac91755263fcccf29ba05ccc0fc3c23cd05e6e8712b1935bc369ed15b",
+      "runtime_bytes": 245552,
+      "dimensions": [
+        1024,
+        1536
+      ],
+      "alpha_required": true,
+      "encoder": "cwebp",
+      "encoder_args": [
+        "-q",
+        "94",
+        "-m",
+        "6",
+        "-alpha_q",
+        "100",
+        "-exact",
+        "-metadata",
+        "none"
+      ]
+    },
+    {
+      "slot": "guide:focus",
+      "source": "art/visual-novel/04_cg/working/2026-09-20-b2-standees/B2_guide_focus_v1.png",
+      "source_sha256": "af0d9bc8d59c3a01e725185b5635b475f8a69fbdc4dbb87f5623c17249cdafa6",
+      "runtime": "public/assets/anime/characters/b2-20260921/guide-focus-b2.webp",
+      "runtime_sha256": "afb3d5053bf8c1621876993ba65c0e312841f96d7aa20afb6562bda2a8856461",
+      "runtime_bytes": 225948,
+      "dimensions": [
+        1024,
+        1536
+      ],
+      "alpha_required": true,
+      "encoder": "cwebp",
+      "encoder_args": [
+        "-q",
+        "94",
+        "-m",
+        "6",
+        "-alpha_q",
+        "100",
+        "-exact",
+        "-metadata",
+        "none"
+      ]
+    },
+    {
+      "slot": "guide:watchful",
+      "source": "art/visual-novel/04_cg/working/2026-09-20-b2-standees/B2_EXTRA_guide_watchful_v1.png",
+      "source_sha256": "3dd5a5af78a96d875e9696b9fb12db5977b226242ffd7aa36be638e2cb61ac00",
+      "runtime": "public/assets/anime/characters/b2-20260921/guide-watchful-b2.webp",
+      "runtime_sha256": "68c155fe9f330abf0c3ab7642db31cf3ee3991b0b807bb6a0470112070088694",
+      "runtime_bytes": 250318,
+      "dimensions": [
+        1024,
+        1536
+      ],
+      "alpha_required": true,
+      "encoder": "cwebp",
+      "encoder_args": [
+        "-q",
+        "94",
+        "-m",
+        "6",
+        "-alpha_q",
+        "100",
+        "-exact",
+        "-metadata",
+        "none"
+      ]
+    },
+    {
+      "slot": "guide:lament",
+      "source": "art/visual-novel/04_cg/working/2026-09-20-b2-standees/B2_EXTRA_guide_lament_v1.png",
+      "source_sha256": "7240139ce657cb78147fdf60f944997dfe121aba3ab8326d2be82cd8381d1f42",
+      "runtime": "public/assets/anime/characters/b2-20260921/guide-lament-b2.webp",
+      "runtime_sha256": "ffad29427c5d7f629f3569535e08a178ed9b1ea238b197022c489dc8ae15bb86",
+      "runtime_bytes": 207116,
+      "dimensions": [
+        1024,
+        1536
+      ],
+      "alpha_required": true,
+      "encoder": "cwebp",
+      "encoder_args": [
+        "-q",
+        "94",
+        "-m",
+        "6",
+        "-alpha_q",
+        "100",
+        "-exact",
+        "-metadata",
+        "none"
+      ]
+    },
+    {
+      "slot": "final_queen:sorrow",
+      "source": "art/visual-novel/04_cg/working/2026-09-20-b2-standees/B2_final-queen_sorrow_v1.png",
+      "source_sha256": "0491d0f99f8c6d77edcb106bf7be7247cb69b9a7511dbf8d631bbe91593892ff",
+      "runtime": "public/assets/anime/characters/b2-20260921/final-queen-sorrow-b2.webp",
+      "runtime_sha256": "26fbb3e1fbac2d84cd96a59e2ff2a87b901a73e6eac9b98b1fb564bc26f35165",
+      "runtime_bytes": 285968,
+      "dimensions": [
+        1024,
+        1536
+      ],
+      "alpha_required": true,
+      "encoder": "cwebp",
+      "encoder_args": [
+        "-q",
+        "94",
+        "-m",
+        "6",
+        "-alpha_q",
+        "100",
+        "-exact",
+        "-metadata",
+        "none"
+      ]
+    },
+    {
+      "slot": "final_queen:cold",
+      "source": "art/visual-novel/04_cg/working/2026-09-20-b2-standees/B2_final-queen_cold_v1.png",
+      "source_sha256": "94ce20b4961040ae834c6da96cfee969159af9df3e08f5eaacf8575e2f18719d",
+      "runtime": "public/assets/anime/characters/b2-20260921/final-queen-cold-b2.webp",
+      "runtime_sha256": "0b7a9c61e7a8462c2d10c3253267b47b72b3445b8565fafae180fdeccd16d3ca",
+      "runtime_bytes": 245610,
+      "dimensions": [
+        1024,
+        1536
+      ],
+      "alpha_required": true,
+      "encoder": "cwebp",
+      "encoder_args": [
+        "-q",
+        "94",
+        "-m",
+        "6",
+        "-alpha_q",
+        "100",
+        "-exact",
+        "-metadata",
+        "none"
+      ]
+    },
+    {
+      "slot": "final_queen:knowing",
+      "source": "art/visual-novel/04_cg/working/2026-09-20-b2-standees/B2_final-queen_knowing_v1.png",
+      "source_sha256": "697ed07d60a7335fb1daf499fe95f19dd716e6795ee20013a61f638784ff910d",
+      "runtime": "public/assets/anime/characters/b2-20260921/final-queen-knowing-b2.webp",
+      "runtime_sha256": "553852645e0c50bc2d44d8383d55380cf85a694786b42d36d8772c1626d4b425",
+      "runtime_bytes": 229756,
+      "dimensions": [
+        1024,
+        1536
+      ],
+      "alpha_required": true,
+      "encoder": "cwebp",
+      "encoder_args": [
+        "-q",
+        "94",
+        "-m",
+        "6",
+        "-alpha_q",
+        "100",
+        "-exact",
+        "-metadata",
+        "none"
+      ]
+    },
+    {
+      "slot": "final_queen:resolve",
+      "source": "art/visual-novel/04_cg/working/2026-09-20-b2-standees/B2_final-queen_resolve_v1.png",
+      "source_sha256": "d22043516da0475a95d14177cd4c1006269c2d9823aa2d4f5b5c6bbcc18b1f88",
+      "runtime": "public/assets/anime/characters/b2-20260921/final-queen-resolve-b2.webp",
+      "runtime_sha256": "3e04cd236d87995aec1c00ccc9c8432c8537d570ad8edce76a60f99b25ec32f0",
+      "runtime_bytes": 242632,
+      "dimensions": [
+        1024,
+        1536
+      ],
+      "alpha_required": true,
+      "encoder": "cwebp",
+      "encoder_args": [
+        "-q",
+        "94",
+        "-m",
+        "6",
+        "-alpha_q",
+        "100",
+        "-exact",
+        "-metadata",
+        "none"
+      ]
+    },
+    {
+      "slot": "cat_boss:alert",
+      "source": "art/visual-novel/04_cg/working/2026-09-20-b2-standees/B2_cat-boss_alert_v1.png",
+      "source_sha256": "5a96ead8bb5aa19b520fc13d93735b7c8facd9972513feb9020b5ef4d03b5e91",
+      "runtime": "public/assets/anime/characters/b2-20260921/cat-boss-alert-b2.webp",
+      "runtime_sha256": "aa54a17f60a0ced84a05256dc62e7a90984403f536e563a147b20ebe1d9c89ca",
+      "runtime_bytes": 210586,
+      "dimensions": [
+        1024,
+        1536
+      ],
+      "alpha_required": true,
+      "encoder": "cwebp",
+      "encoder_args": [
+        "-q",
+        "94",
+        "-m",
+        "6",
+        "-alpha_q",
+        "100",
+        "-exact",
+        "-metadata",
+        "none"
+      ]
+    },
+    {
+      "slot": "fox_boss:watchful",
+      "source": "art/visual-novel/04_cg/working/2026-09-20-b2-standees/B2_fox-boss_watchful_v1.png",
+      "source_sha256": "9f5d765e4a0241cbf928e16a9fe6dcae9e09bac589cee843285ca5ebaeadf3bc",
+      "runtime": "public/assets/anime/characters/b2-20260921/fox-boss-watchful-b2.webp",
+      "runtime_sha256": "7e507a62fb9df8760dfcde3b3a4a77738e8a813c192bc3578a6685d779537c21",
+      "runtime_bytes": 225132,
+      "dimensions": [
+        1024,
+        1536
+      ],
+      "alpha_required": true,
+      "encoder": "cwebp",
+      "encoder_args": [
+        "-q",
+        "94",
+        "-m",
+        "6",
+        "-alpha_q",
+        "100",
+        "-exact",
+        "-metadata",
+        "none"
+      ]
+    },
+    {
+      "slot": "whale_boss:lament",
+      "source": "art/visual-novel/04_cg/working/2026-09-20-b2-standees/B2_whale-boss_lament_v1.png",
+      "source_sha256": "2fc7d75b3ec7fe736421ace481e7e35ce115682508ce82a744fb596fac04aa0d",
+      "runtime": "public/assets/anime/characters/b2-20260921/whale-boss-lament-b2.webp",
+      "runtime_sha256": "87c7c4de984d4c94a65670543f00051c7926bf7cc710724d40b01b5a0690b704",
+      "runtime_bytes": 222808,
+      "dimensions": [
+        1024,
+        1536
+      ],
+      "alpha_required": true,
+      "encoder": "cwebp",
+      "encoder_args": [
+        "-q",
+        "94",
+        "-m",
+        "6",
+        "-alpha_q",
+        "100",
+        "-exact",
+        "-metadata",
+        "none"
+      ]
+    },
+    {
+      "slot": "sword_boss:stern",
+      "source": "art/visual-novel/04_cg/working/2026-09-20-b2-standees/B2_sword-boss_stern_v1.png",
+      "source_sha256": "ff4f502f545993b9c80b6bfdedd9531642d68b30b3343e5292eaebe38453adfd",
+      "runtime": "public/assets/anime/characters/b2-20260921/sword-boss-stern-b2.webp",
+      "runtime_sha256": "93941d67e271afcc960d2dca00ad5ab3be73aca1861bf67965803806b0a84ab1",
+      "runtime_bytes": 198380,
+      "dimensions": [
+        1024,
+        1536
+      ],
+      "alpha_required": true,
+      "encoder": "cwebp",
+      "encoder_args": [
+        "-q",
+        "94",
+        "-m",
+        "6",
+        "-alpha_q",
+        "100",
+        "-exact",
+        "-metadata",
+        "none"
+      ]
+    },
+    {
+      "slot": "dragon_boss:embers",
+      "source": "art/visual-novel/04_cg/working/2026-09-20-b2-standees/B2_dragon-boss_embers_v1.png",
+      "source_sha256": "806371db6b952e50be02ee6be7b16e474f4e2264b0da564a2807e036bcf79476",
+      "runtime": "public/assets/anime/characters/b2-20260921/dragon-boss-embers-b2.webp",
+      "runtime_sha256": "92b20a84fd38bb69c4514a23913ea3e428a1aa734d0965552c9cd6a00d3c9455",
+      "runtime_bytes": 261994,
+      "dimensions": [
+        1024,
+        1536
+      ],
+      "alpha_required": true,
+      "encoder": "cwebp",
+      "encoder_args": [
+        "-q",
+        "94",
+        "-m",
+        "6",
+        "-alpha_q",
+        "100",
+        "-exact",
+        "-metadata",
+        "none"
+      ]
+    },
+    {
+      "slot": "astral_boss:focus",
+      "source": "art/visual-novel/04_cg/working/2026-09-20-b2-standees/B2_astral-boss_focus_v1.png",
+      "source_sha256": "9aefb10a0027aae5441bdc08c90a9347cac4dcc35f9d7656de6e729afa9fcaea",
+      "runtime": "public/assets/anime/characters/b2-20260921/astral-boss-focus-b2.webp",
+      "runtime_sha256": "988bf71a660ea1e73a19f68b893968f906d74e3721b896fc89f8ed7257515fb5",
+      "runtime_bytes": 118290,
+      "dimensions": [
+        1024,
+        1536
+      ],
+      "alpha_required": true,
+      "encoder": "cwebp",
+      "encoder_args": [
+        "-q",
+        "94",
+        "-m",
+        "6",
+        "-alpha_q",
+        "100",
+        "-exact",
+        "-metadata",
+        "none"
+      ]
+    },
+    {
+      "slot": "shadow_boss:guarded",
+      "source": "art/visual-novel/04_cg/working/2026-09-20-b2-standees/B2_shadow-boss_guarded_v1.png",
+      "source_sha256": "789fe3696ad0955b04b11fd83e95f399b3bb4625b7b4fd6f3f792faebd991caa",
+      "runtime": "public/assets/anime/characters/b2-20260921/shadow-boss-guarded-b2.webp",
+      "runtime_sha256": "2b1d7d825cc573956265dbe7005bd85c9d7c9000f0af1c628b1b33e14f760490",
+      "runtime_bytes": 147462,
+      "dimensions": [
+        1024,
+        1536
+      ],
+      "alpha_required": true,
+      "encoder": "cwebp",
+      "encoder_args": [
+        "-q",
+        "94",
+        "-m",
+        "6",
+        "-alpha_q",
+        "100",
+        "-exact",
+        "-metadata",
+        "none"
+      ]
+    },
+    {
+      "slot": "echo_regent:grave",
+      "source": "art/visual-novel/04_cg/working/2026-09-20-b2-standees/B2_echo-regent_grave_v1.png",
+      "source_sha256": "e2d5fbad02af667269f3c6dbd8585edc7456b2ce4a7aacaac4b8ecd00b13ede8",
+      "runtime": "public/assets/anime/characters/b2-20260921/echo-regent-grave-b2.webp",
+      "runtime_sha256": "f401ceb92b1b1e0eee8547e2384dcce9f3ca9693eaeab7dbe35d075ea8bacb76",
+      "runtime_bytes": 113684,
+      "dimensions": [
+        1024,
+        1536
+      ],
+      "alpha_required": true,
+      "encoder": "cwebp",
+      "encoder_args": [
+        "-q",
+        "94",
+        "-m",
+        "6",
+        "-alpha_q",
+        "100",
+        "-exact",
+        "-metadata",
+        "none"
+      ]
+    },
+    {
+      "slot": "echo_regent:release",
+      "source": "art/visual-novel/04_cg/working/2026-09-20-b2-standees/B2_echo-regent_release_v1.png",
+      "source_sha256": "9be0488775e16c3edd65b88dbe4b489161771779adb408ed32d414a07f5bed54",
+      "runtime": "public/assets/anime/characters/b2-20260921/echo-regent-release-b2.webp",
+      "runtime_sha256": "6dd350a8d688df126643fd0a19e3fc81e4e1a706a25370e89c867fdfdffcf855",
+      "runtime_bytes": 113226,
+      "dimensions": [
+        1024,
+        1536
+      ],
+      "alpha_required": true,
+      "encoder": "cwebp",
+      "encoder_args": [
+        "-q",
+        "94",
+        "-m",
+        "6",
+        "-alpha_q",
+        "100",
+        "-exact",
+        "-metadata",
+        "none"
+      ]
+    },
+    {
+      "slot": "arcane_sovereign:regret",
+      "source": "art/visual-novel/04_cg/working/2026-09-20-b2-standees/B2_arcane-sovereign_regret_v1.png",
+      "source_sha256": "5d0ae18e48b07d427f51cdbe7fe4f5ed822c21d35beebb019fa64c656e79845c",
+      "runtime": "public/assets/anime/characters/b2-20260921/arcane-sovereign-regret-b2.webp",
+      "runtime_sha256": "ce51e2a669809b44fea4d698b83941f9fbac4704b0b17b02d93b89a8205f544a",
+      "runtime_bytes": 130192,
+      "dimensions": [
+        1024,
+        1536
+      ],
+      "alpha_required": true,
+      "encoder": "cwebp",
+      "encoder_args": [
+        "-q",
+        "94",
+        "-m",
+        "6",
+        "-alpha_q",
+        "100",
+        "-exact",
+        "-metadata",
+        "none"
+      ]
+    },
+    {
+      "slot": "arcane_sovereign:acceptance",
+      "source": "art/visual-novel/04_cg/working/2026-09-20-b2-standees/B2_arcane-sovereign_acceptance_v1.png",
+      "source_sha256": "7409986d500e74400045ac5b5ab198ca1327a0208e1cbe003be688db314b30d3",
+      "runtime": "public/assets/anime/characters/b2-20260921/arcane-sovereign-acceptance-b2.webp",
+      "runtime_sha256": "d2708abba81b6639ea2b24c5e245689dc115f49c3d8a6801348d1379aac350cc",
+      "runtime_bytes": 130100,
+      "dimensions": [
+        1024,
+        1536
+      ],
+      "alpha_required": true,
+      "encoder": "cwebp",
+      "encoder_args": [
+        "-q",
+        "94",
+        "-m",
+        "6",
+        "-alpha_q",
+        "100",
+        "-exact",
+        "-metadata",
+        "none"
+      ]
+    },
+    {
+      "slot": "act3_archive_warden:duty",
+      "source": "art/visual-novel/04_cg/working/2026-09-20-b2-standees/B2_archive-warden_duty_v1.png",
+      "source_sha256": "7b81dabe2e7f75123520f7f5a0640b12e2da98656a003dc7b2c5ac577896853e",
+      "runtime": "public/assets/anime/characters/b2-20260921/archive-warden-duty-b2.webp",
+      "runtime_sha256": "b7b58ef93ac0fccd7f2251dd93d13bc3155345c6ead1b4149ccf8201651e3920",
+      "runtime_bytes": 145568,
+      "dimensions": [
+        1024,
+        1536
+      ],
+      "alpha_required": true,
+      "encoder": "cwebp",
+      "encoder_args": [
+        "-q",
+        "94",
+        "-m",
+        "6",
+        "-alpha_q",
+        "100",
+        "-exact",
+        "-metadata",
+        "none"
+      ]
+    },
+    {
+      "slot": "palace_warden_v2:duty",
+      "source": "art/visual-novel/04_cg/working/2026-09-20-b2-standees/B2_palace-warden_duty_v1.png",
+      "source_sha256": "0257e30ded0fe260b04520b1b2fb1a0d1c781e0cfca0a5c93692c371ba46970d",
+      "runtime": "public/assets/anime/characters/b2-20260921/palace-warden-duty-b2.webp",
+      "runtime_sha256": "ffa6645d38c29ffc27b75d15c7bd07b02a9ff4657848398f5ca91c30b59d63b7",
+      "runtime_bytes": 230076,
+      "dimensions": [
+        1024,
+        1536
+      ],
+      "alpha_required": true,
+      "encoder": "cwebp",
+      "encoder_args": [
+        "-q",
+        "94",
+        "-m",
+        "6",
+        "-alpha_q",
+        "100",
+        "-exact",
+        "-metadata",
+        "none"
+      ]
+    },
+    {
+      "slot": "black_seal_keeper_v2:watchful",
+      "source": "art/visual-novel/04_cg/working/2026-09-20-b2-standees/B2_black-seal-keeper_watchful_v1.png",
+      "source_sha256": "26371f42d8e589061a097b8408aca0851b4bc97c8219e78c93b36437ae77d609",
+      "runtime": "public/assets/anime/characters/b2-20260921/black-seal-keeper-watchful-b2.webp",
+      "runtime_sha256": "7799c02fb07d5feba9e980a3004feddb80731d0288996a47d0c77177813190b5",
+      "runtime_bytes": 176672,
+      "dimensions": [
+        1024,
+        1536
+      ],
+      "alpha_required": true,
+      "encoder": "cwebp",
+      "encoder_args": [
+        "-q",
+        "94",
+        "-m",
+        "6",
+        "-alpha_q",
+        "100",
+        "-exact",
+        "-metadata",
+        "none"
+      ]
+    },
+    {
+      "slot": "act3_last_custodian:release",
+      "source": "art/visual-novel/04_cg/working/2026-09-20-b2-standees/B2_last-custodian_release_v1.png",
+      "source_sha256": "7a9944a64aeadd464be4f7df7e47e38b0c4a80745519542f1a2926d309332e2e",
+      "runtime": "public/assets/anime/characters/b2-20260921/last-custodian-release-b2.webp",
+      "runtime_sha256": "81d1c8894cdb172a2d503cbc881ae79ba4a906382a2b5c1fb5e206292f2d3e19",
+      "runtime_bytes": 165212,
+      "dimensions": [
+        1024,
+        1536
+      ],
+      "alpha_required": true,
+      "encoder": "cwebp",
+      "encoder_args": [
+        "-q",
+        "94",
+        "-m",
+        "6",
+        "-alpha_q",
+        "100",
+        "-exact",
+        "-metadata",
+        "none"
+      ]
+    }
+  ]
+}
