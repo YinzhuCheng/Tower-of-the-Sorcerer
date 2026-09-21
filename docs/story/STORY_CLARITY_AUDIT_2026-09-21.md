@@ -349,3 +349,23 @@ Future narrative edits should follow:
 A useful test is:
 
 > If a major line can be moved from Liyue to Shawu, from Lanyin to Yayu, or from Yanli to the Sovereign without sounding wrong, the voice is not distinct enough.
+
+
+---
+
+## Emotional Continuity Pass · Round 4
+
+This pass focused on **what characters do immediately after major revelations**, so the story does not feel like one evidence report opening directly into the next.
+
+### F20 → F21
+
+Expanded the post-Origin-Core scene so that:
+
+- the Origin Core stopping is explicitly framed as “now we can repair” rather than “everything is solved”;
+- the Arcane Sovereign keeps the cracked authority mark and refuses to treat participation in the repair as automatic absolution;
+- Noctia explicitly separates the Sovereign's responsibility from her own;
+- the two agree to continue upward without a premature reconciliation scene;
+- Shawu explains why the remaining copies and undelivered mail still matter;
+- Liyue reframes Act III in plain language: investigation is over; now the task is to repair each known failure and make closure actually reach the outside world.
+
+This gives Act III a character transition as well as a systems transition.
