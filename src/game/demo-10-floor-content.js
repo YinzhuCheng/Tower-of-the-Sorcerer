@@ -121,7 +121,7 @@ export function applyDemoTenFloorContent({ enemies, floors, dialogues, gridSize 
     blackSealKeeper: {
       name: '黯印观测官·塞芙', portrait: 'black_seal_keeper_v2', faction: '王座前厅', floor: 9,
       hp: 2700, atk: 215, def: 95, gold: 600, boss: true, special: 'magic', magicPower: 160,
-      description: '掌管王座前最后一道黯星许可印。她守住的是不可替代的校准权限，而不是另一处可反复购买的补救点。'
+      description: '掌管王座前最后一道黯星许可印。她守住的是不可替代的辨印秘术，而不是另一处可反复购买的补救点。'
     },
     silenceGuard: { ...enemies.silenceGuard, floor: 10 },
     eclipseMage: { ...enemies.eclipseMage, floor: 10 },
