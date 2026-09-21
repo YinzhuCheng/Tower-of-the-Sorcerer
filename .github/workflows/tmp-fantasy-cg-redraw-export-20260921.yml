@@ -1,0 +1,92 @@
+name: Temporary Fantasy CG Redraw Source Export
+
+on:
+  push:
+    branches:
+      - tmp/canon-art-export-20260919
+
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          filter: blob:none
+          lfs: true
+          sparse-checkout: |
+            art/visual-novel/01_canon
+            art/visual-novel/03_intermediate/scene_cards
+            art/visual-novel/03_intermediate/prompt_packets
+            art/visual-novel/03_intermediate/reference_sets
+            art/visual-novel/03_intermediate/qa
+            art/visual-novel/04_cg/working/R3-scene/2026-09-21
+            art/visual-novel/05_manifests
+            art/visual-novel/06_logs/generation-log-v1.2.jsonl
+            art/visual-novel/CANON_FIRST_ART_PRODUCTION_PROTOCOL_2026-09-19.md
+            art/visual-novel/CG_REBUILD_STATUS_2026-09-19.md
+            art/visual-novel/CG_PRODUCTION_AND_UPLOAD_GUIDE.md
+            art/visual-novel/README.md
+          sparse-checkout-cone-mode: false
+
+      - name: Prepare fantasy redraw source export
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p export/canon export/scenes export/prompts export/reference_sets export/qa export/cg_anchors export/manifests export/logs export/docs
+
+          cp -a art/visual-novel/01_canon/. export/canon/
+
+          for id in \
+            CG_006_seven-core-network \
+            CG_009_missing-fourth-step \
+            CG_010_seventeen-minute-splice \
+            CG_011_intercepted-receipt \
+            CG_012_echo-ledger \
+            CG_017_traceable-revocation
+          do
+            cp "art/visual-novel/03_intermediate/scene_cards/${id}.json" export/scenes/
+            cp art/visual-novel/03_intermediate/prompt_packets/${id}_*.json export/prompts/ || true
+            cp art/visual-novel/03_intermediate/reference_sets/${id}_*.json export/reference_sets/ || true
+            cp art/visual-novel/03_intermediate/qa/${id}_*.md export/qa/ || true
+          done
+
+          for id in \
+            CG_001_critical \
+            CG_006_seven-core-network \
+            CG_007_noctia-truth \
+            CG_009_missing-fourth-step \
+            CG_010_seventeen-minute-splice \
+            CG_011_intercepted-receipt \
+            CG_012_echo-ledger \
+            CG_013_noctia-sovereign \
+            CG_017_traceable-revocation
+          do
+            cp art/visual-novel/04_cg/working/R3-scene/2026-09-21/${id}_R3_accepted_v1.png export/cg_anchors/
+          done
+
+          cp art/visual-novel/05_manifests/cg-runtime-publish-20260921-v1.json export/manifests/
+          cp art/visual-novel/05_manifests/cg-scene-index-v1.2.json export/manifests/
+          cp art/visual-novel/05_manifests/cg-layout-admission-v1.2.json export/manifests/
+          cp art/visual-novel/06_logs/generation-log-v1.2.jsonl export/logs/
+
+          cp art/visual-novel/CANON_FIRST_ART_PRODUCTION_PROTOCOL_2026-09-19.md export/docs/
+          cp art/visual-novel/CG_REBUILD_STATUS_2026-09-19.md export/docs/
+          cp art/visual-novel/CG_PRODUCTION_AND_UPLOAD_GUIDE.md export/docs/
+          cp art/visual-novel/README.md export/docs/
+
+          printf '%s\n' \
+            "source_branch=main" \
+            "purpose=fantasy rewrite six-CG redraw source pack" \
+            "contains=full 01_canon + six scene pipelines + nine accepted CG anchors" \
+            > export/EXPORT_SOURCE.txt
+
+          find export -type f -print | sort > export/FILE_LIST.txt
+          sha256sum $(find export -type f ! -name SHA256SUMS.txt -print | sort) > export/SHA256SUMS.txt
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: fantasy-cg-redraw-source-20260921
+          path: export/
+          if-no-files-found: error
+          compression-level: 0
