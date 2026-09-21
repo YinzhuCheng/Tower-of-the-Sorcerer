@@ -131,8 +131,8 @@ jobs:
           base='/assets/anime/characters/b2-20260921/'
 
           replacements={
-            "'guide: '/assets/anime/characters/shawu-runtime.webp'":
-              f"'guide: '{base}guide-neutral-b2.webp'",
+            "guide: '/assets/anime/characters/shawu-runtime.webp'":
+              f"guide: '{base}guide-neutral-b2.webp'",
 
             "'hero:resolve': '/assets/anime/characters/liyue-dialogue-resolve.webp'":
               f"'hero:resolve': '{base}hero-resolve-b2.webp'",
