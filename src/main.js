@@ -46,6 +46,9 @@ import { applyV83RenderFixes, installV83UiFixes } from './game/visual-patch-v83.
 const MANUAL_SAVE_KEY = 'lost-magic-tower:manual:v1';
 const AUTO_SAVE_KEY = 'lost-magic-tower:auto:v1';
 
+const GAL_ONLY_BOOT = new URLSearchParams(window.location.search).get('gal-only') === '1';
+if (GAL_ONLY_BOOT) document.documentElement.classList.add('gal-only-boot');
+
 const $ = (selector) => document.querySelector(selector);
 const elements = {
   loading: $('#loading-note'),
@@ -263,10 +266,20 @@ function galTransitionFor(dialogueId, dialogue) {
 function beginGalScene(transition) {
   window.clearTimeout(galTransitionTimer);
   galTransitionTimer = null;
-  elements.galRoot.dataset.transition = transition;
   document.body.classList.add('gal-active');
   $('#app-shell').inert = true;
   elements.galRoot.classList.remove('hidden', 'is-exiting');
+
+  // GAL-only is one continuous visual novel. Do not replay the tower-to-witness
+  // bridge between authored story scenes; the outer reader handles scene-to-scene
+  // continuity and keeps the game UI permanently out of view.
+  if (requestedGalOnlyMode()) {
+    delete elements.galRoot.dataset.transition;
+    elements.galRoot.classList.remove('is-entering');
+    return;
+  }
+
+  elements.galRoot.dataset.transition = transition;
   elements.galRoot.classList.add('is-entering');
   galTransitionTimer = window.setTimeout(() => {
     elements.galRoot.classList.remove('is-entering');
