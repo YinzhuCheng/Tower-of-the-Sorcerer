@@ -24,16 +24,16 @@ const shippedScenes = [
 ];
 
 const keyStageStates = [
-  ['cat_boss', 'alert', 'milu-dialogue-alert-v8.webp'],
-  ['fox_boss', 'watchful', 'feiye-dialogue-watchful-v8.webp'],
-  ['whale_boss', 'lament', 'lanyin-dialogue-lament-v8.webp'],
-  ['sword_boss', 'stern', 'serena-dialogue-stern-audit-v3.webp'],
-  ['dragon_boss', 'embers', 'yanli-dialogue-embers.webp'],
-  ['astral_boss', 'focus', 'lumi-dialogue-focus-v8.webp'],
-  ['shadow_boss', 'guarded', 'yayu-dialogue-guarded.webp'],
-  ['echo_regent', 'grave', 'echo-regent-dialogue-grave.webp'],
-  ['arcane_sovereign', 'regret', 'arcane-sovereign-dialogue-regret.webp'],
-  ['act3_archive_warden', 'duty', 'archive-warden-dialogue-duty.webp']
+  ['cat_boss', 'alert', 'cat-boss-alert-b2.webp'],
+  ['fox_boss', 'watchful', 'fox-boss-watchful-b2.webp'],
+  ['whale_boss', 'lament', 'whale-boss-lament-b2.webp'],
+  ['sword_boss', 'stern', 'sword-boss-stern-b2.webp'],
+  ['dragon_boss', 'embers', 'dragon-boss-embers-b2.webp'],
+  ['astral_boss', 'focus', 'astral-boss-focus-b2.webp'],
+  ['shadow_boss', 'guarded', 'shadow-boss-guarded-b2.webp'],
+  ['echo_regent', 'grave', 'echo-regent-grave-b2.webp'],
+  ['arcane_sovereign', 'regret', 'arcane-sovereign-regret-b2.webp'],
+  ['act3_archive_warden', 'duty', 'archive-warden-duty-b2.webp']
 ];
 
 function webpDimensions(buffer) {
