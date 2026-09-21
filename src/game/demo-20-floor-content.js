@@ -209,7 +209,7 @@ function installActTwoDialogues(dialogues) {
     floor18: dialogueSequence('第十八阵：澄空航渠', [
       dialogueTurn('旁白', null, '澄空航渠里流动的不是水，而是声音。三年前的鲸歌、港钟与船长呼喊在光带中回旋，每次快要冲向王庭时，都会被一条黑色影流拽回深处。', { kind: 'narration' }),
       dialogueTurn('影织姬·鸦羽', 'shadow_boss', '找到了。就是这条东西在吃消息。它不管信里写什么，只要带着“守夜可以结束”的气息，就往黑线里拖。'),
-      dialogueTurn('旁白', null, '鸦羽把影刃刺进黑流，一张被折得发白的船长信符从里面翻出来。其上残留的鲸歌与北岸钟声仍在颤动。', { cg: '/assets/anime/cg/liyue-yayu-intercepted-receipt-cg-audit-v3.webp', cgHold: 4, kind: 'narration' }),
+      dialogueTurn('旁白', null, '鸦羽以影刃切开黑流，璃俯身接住从水光里翻出的船长信符。湿透的纸角仍缠着黑紫影丝，其上残留的鲸歌与北岸钟声还在颤动。', { cg: '/assets/anime/cg/liyue-yayu-intercepted-receipt-cg-audit-v3.webp', cgHold: 4, kind: 'narration' }),
       dialogueTurn('深蓝歌姬·澜音', 'whale_boss', '就是这一声。北岸的第三次钟响之后，船长喊的是：“全员到岸，灰港无人滞留。”'),
       dialogueTurn('绫星·璃', 'hero', '把它带上。三年前没能走完的最后一段路，现在由我们走。', { expression: 'resolve' })
     ]),
