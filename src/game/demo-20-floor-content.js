@@ -301,7 +301,7 @@ function installActTwoDialogues(dialogues) {
       dialogueTurn('奥术主权者', 'arcane_sovereign', '我以为只是多等几天。可回执一到，核心就把它视为与最高命令冲突，截进权限链。后来我再想改，它已经把我的封印也锁进了命令里。', { expression: 'regret' }),
       dialogueTurn('旁白', null, '奥术主权者说完后将手放在印戒下方。破裂的光环立刻沿着他的手腕收紧，晶核发出冰冷提示：“原签署人与命令共同封存，禁止单方撤回。”', { cg: '/assets/anime/cg/liyue-noctia-sovereign-cg-audit-v3.webp', cgHold: 5, kind: 'narration' }),
       dialogueTurn('绫星·璃', 'hero', '你是怕漏掉一个求援者，但你没有先确认三席的回答，也没给别人留下正常撤销的方法。结果是所有人都被困在你那一刻的害怕里。', { expression: 'resolve' }),
-      dialogueTurn('奥术主权者', 'arcane_sovereign', '我不会再用初衷为自己开脱。但这套旧法只允许主权者在决斗中交出写入权；如果我自行解封，核心会把它判定为新一次篡改。', { expression: 'acceptance' }),
+      dialogueTurn('奥术主权者', 'arcane_sovereign', '我不会再拿“当时只是想多救一个人”替自己开脱。那句话听起来善良，可真正被它锁住的人并没有替我同意这份代价。现在这套旧法只认一种交接：主权者必须在决斗中把写入权交出去。我若自己解封，核心只会把它当成又一次越权篡改。', { expression: 'acceptance' }),
       dialogueTurn('奥术主权者', 'arcane_sovereign', '我已经试过强行拔掉自己的印。每次尝试，核心都会从上层命令副本重建一枚新印，同时将新回执继续判为冲突。赢下决斗不会证明你们的历史更真，它只是这扇旧门唯一肯承认的交接方式。', { expression: 'acceptance' }),
       dialogueTurn('无声女王·诺克缇娅', 'final_queen', '那就按它听得懂的方式打开门。回执、名簿和三位真正的见证者都已到场；我们取回的只是停止错误命令的权限，不会删去灰港。', { expression: 'grave' }),
       dialogueTurn('绫星·璃', 'hero', '顺序已经很清楚。前庭的共鸣池总共只有一百二十点储量，我们要把它分给三名见证者，让她们带着自己的证词活着穿过阵列；随后击败主权者，取得真正的写入权；最后面对起源核心时，只停掉强制执行，不碰回执和名簿原件。', { expression: 'resolve' }),
