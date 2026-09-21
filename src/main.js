@@ -49,6 +49,11 @@ const AUTO_SAVE_KEY = 'lost-magic-tower:auto:v1';
 const GAL_ONLY_BOOT = new URLSearchParams(window.location.search).get('gal-only') === '1';
 if (GAL_ONLY_BOOT) document.documentElement.classList.add('gal-only-boot');
 
+function releaseStoryBoot() {
+  if (GAL_ONLY_BOOT) return;
+  document.documentElement.classList.remove('story-boot');
+}
+
 const $ = (selector) => document.querySelector(selector);
 const elements = {
   loading: $('#loading-note'),
@@ -1568,6 +1573,9 @@ async function boot() {
   let canvasAssetsPending = false;
   let startCanvasAssetsNow = null;
   const startCanvasAssets = () => {
+    // The tactical shell is intentionally absent from the first paint. Reveal
+    // it only after the opening GAL has actually finished.
+    releaseStoryBoot();
     if (startCanvasAssetsNow) startCanvasAssetsNow();
     else canvasAssetsPending = true;
   };
@@ -1605,6 +1613,10 @@ async function boot() {
   const openingDialogueActive = previewDialogueId
     ? (showDialogue(previewDialogueId, previewAfter), true)
     : initialGalDialogue(startCanvasAssets);
+
+  // Returning saves that have already seen the opening may reveal the tower
+  // immediately. Fresh runs stay in story-boot until startCanvasAssets().
+  if (!openingDialogueActive && !galOnlyPreview) releaseStoryBoot();
 
   // GAL-only review is intentionally presentation-only: the real dialogue
   // renderer and runtime art are used, but no tower canvas, movement loop,
