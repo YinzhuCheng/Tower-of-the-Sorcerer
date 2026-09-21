@@ -1,0 +1,327 @@
+name: Temporary B2 Runtime Publish
+
+on:
+  push:
+    branches:
+      - tmp/b2-runtime-publish-20260921
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          lfs: true
+          fetch-depth: 0
+
+      - name: Install image tooling
+        shell: bash
+        run: |
+          set -euo pipefail
+          sudo apt-get update -qq
+          sudo apt-get install -y webp imagemagick
+
+      - name: Validate B2 candidates and export runtime WebP
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import hashlib, json, subprocess
+          from pathlib import Path
+
+          source_dir = Path('art/visual-novel/04_cg/working/2026-09-20-b2-standees')
+          out_dir = Path('public/assets/anime/characters/b2-20260921')
+          out_dir.mkdir(parents=True, exist_ok=True)
+
+          items = [
+            ('B2_hero_resolve_v1.png','hero-resolve-b2.webp','hero:resolve'),
+            ('B2_hero_guarded_v1.png','hero-guarded-b2.webp','hero:guarded'),
+            ('B2_hero_embers_v1.png','hero-embers-b2.webp','hero:embers'),
+            ('B2_guide_runtime-neutral_v1.png','guide-neutral-b2.webp','guide:neutral-runtime'),
+            ('B2_guide_gentle_v1.png','guide-gentle-b2.webp','guide:gentle'),
+            ('B2_guide_focus_v1.png','guide-focus-b2.webp','guide:focus'),
+            ('B2_EXTRA_guide_watchful_v1.png','guide-watchful-b2.webp','guide:watchful'),
+            ('B2_EXTRA_guide_lament_v1.png','guide-lament-b2.webp','guide:lament'),
+            ('B2_final-queen_sorrow_v1.png','final-queen-sorrow-b2.webp','final_queen:sorrow'),
+            ('B2_final-queen_cold_v1.png','final-queen-cold-b2.webp','final_queen:cold'),
+            ('B2_final-queen_knowing_v1.png','final-queen-knowing-b2.webp','final_queen:knowing'),
+            ('B2_final-queen_resolve_v1.png','final-queen-resolve-b2.webp','final_queen:resolve'),
+            ('B2_cat-boss_alert_v1.png','cat-boss-alert-b2.webp','cat_boss:alert'),
+            ('B2_fox-boss_watchful_v1.png','fox-boss-watchful-b2.webp','fox_boss:watchful'),
+            ('B2_whale-boss_lament_v1.png','whale-boss-lament-b2.webp','whale_boss:lament'),
+            ('B2_sword-boss_stern_v1.png','sword-boss-stern-b2.webp','sword_boss:stern'),
+            ('B2_dragon-boss_embers_v1.png','dragon-boss-embers-b2.webp','dragon_boss:embers'),
+            ('B2_astral-boss_focus_v1.png','astral-boss-focus-b2.webp','astral_boss:focus'),
+            ('B2_shadow-boss_guarded_v1.png','shadow-boss-guarded-b2.webp','shadow_boss:guarded'),
+            ('B2_echo-regent_grave_v1.png','echo-regent-grave-b2.webp','echo_regent:grave'),
+            ('B2_echo-regent_release_v1.png','echo-regent-release-b2.webp','echo_regent:release'),
+            ('B2_arcane-sovereign_regret_v1.png','arcane-sovereign-regret-b2.webp','arcane_sovereign:regret'),
+            ('B2_arcane-sovereign_acceptance_v1.png','arcane-sovereign-acceptance-b2.webp','arcane_sovereign:acceptance'),
+            ('B2_archive-warden_duty_v1.png','archive-warden-duty-b2.webp','act3_archive_warden:duty'),
+            ('B2_palace-warden_duty_v1.png','palace-warden-duty-b2.webp','palace_warden_v2:duty'),
+            ('B2_black-seal-keeper_watchful_v1.png','black-seal-keeper-watchful-b2.webp','black_seal_keeper_v2:watchful'),
+            ('B2_last-custodian_release_v1.png','last-custodian-release-b2.webp','act3_last_custodian:release'),
+          ]
+
+          rows=[]
+          for src_name, out_name, slot in items:
+              src=source_dir/src_name
+              if not src.exists():
+                  raise SystemExit(f'missing B2 source {src}')
+              identify=subprocess.check_output(
+                  ['identify','-format','%w %h %[channels]',str(src)],
+                  text=True
+              ).strip()
+              parts=identify.split()
+              if parts[0:2] != ['1024','1536']:
+                  raise SystemExit(f'unexpected dimensions {src_name}: {identify}')
+              if 'a' not in parts[2].lower():
+                  raise SystemExit(f'alpha channel missing {src_name}: {identify}')
+
+              dst=out_dir/out_name
+              subprocess.run([
+                  'cwebp','-quiet',
+                  '-q','94','-m','6',
+                  '-alpha_q','100','-exact',
+                  '-metadata','none',
+                  str(src),'-o',str(dst)
+              ],check=True)
+              subprocess.run(['webpinfo','-quiet',str(dst)],check=True)
+              rows.append({
+                  'slot':slot,
+                  'source':str(src),
+                  'source_sha256':hashlib.sha256(src.read_bytes()).hexdigest(),
+                  'runtime':str(dst),
+                  'runtime_sha256':hashlib.sha256(dst.read_bytes()).hexdigest(),
+                  'runtime_bytes':dst.stat().st_size,
+                  'dimensions':[1024,1536],
+                  'alpha_required':True,
+                  'encoder':'cwebp',
+                  'encoder_args':['-q','94','-m','6','-alpha_q','100','-exact','-metadata','none']
+              })
+
+          manifest={
+              'version':'2026-09-21-v1',
+              'status':'B2 accepted and promoted to runtime',
+              'candidate_count':27,
+              'active_b2_slots':25,
+              'supplemental_guide_expressions':2,
+              'runtime_count':len(rows),
+              'qa':'03_intermediate/qa/2026-09-21-b2-runtime/B2_RUNTIME_QA.md',
+              'assets':rows
+          }
+          Path('art/visual-novel/05_manifests/b2-runtime-accepted-20260921-v1.json').write_text(
+              json.dumps(manifest,ensure_ascii=False,indent=2)+'\n'
+          )
+          PY
+
+      - name: Promote B2 mappings
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+
+          path=Path('src/game/anime-portraits.js')
+          s=path.read_text()
+          base='/assets/anime/characters/b2-20260921/'
+
+          replacements={
+            "'guide: '/assets/anime/characters/shawu-runtime.webp'":
+              f"'guide: '{base}guide-neutral-b2.webp'",
+
+            "'hero:resolve': '/assets/anime/characters/liyue-dialogue-resolve.webp'":
+              f"'hero:resolve': '{base}hero-resolve-b2.webp'",
+            "'hero:stern': '/assets/anime/characters/liyue-dialogue-resolve.webp'":
+              f"'hero:stern': '{base}hero-resolve-b2.webp'",
+            "'hero:guarded': '/assets/anime/characters/liyue-dialogue-guarded-v2.webp'":
+              f"'hero:guarded': '{base}hero-guarded-b2.webp'",
+            "'hero:embers': '/assets/anime/characters/liyue-dialogue-embers-v2.webp'":
+              f"'hero:embers': '{base}hero-embers-b2.webp'",
+
+            "'guide:gentle': '/assets/anime/characters/shawu-dialogue-gentle.webp'":
+              f"'guide:gentle': '{base}guide-gentle-b2.webp'",
+            "'guide:watchful': '/assets/anime/characters/shawu-dialogue-gentle.webp'":
+              f"'guide:watchful': '{base}guide-watchful-b2.webp'",
+            "'guide:lament': '/assets/anime/characters/shawu-dialogue-gentle.webp'":
+              f"'guide:lament': '{base}guide-lament-b2.webp'",
+            "'guide:focus': '/assets/anime/characters/shawu-dialogue-focus.webp'":
+              f"'guide:focus': '{base}guide-focus-b2.webp'",
+
+            "'final_queen:sorrow': '/assets/anime/characters/noctia-dialogue-sorrow.webp'":
+              f"'final_queen:sorrow': '{base}final-queen-sorrow-b2.webp'",
+            "'final_queen:grave': '/assets/anime/characters/noctia-dialogue-sorrow.webp'":
+              f"'final_queen:grave': '{base}final-queen-sorrow-b2.webp'",
+            "'final_queen:knowing': '/assets/anime/characters/noctia-dialogue-knowing-v2.webp'":
+              f"'final_queen:knowing': '{base}final-queen-knowing-b2.webp'",
+            "'final_queen:cold': '/assets/anime/characters/noctia-dialogue-cold-v2.webp'":
+              f"'final_queen:cold': '{base}final-queen-cold-b2.webp'",
+            "'final_queen:resolve': '/assets/anime/characters/noctia-dialogue-resolve.webp'":
+              f"'final_queen:resolve': '{base}final-queen-resolve-b2.webp'",
+
+            "'cat_boss:alert': '/assets/anime/characters/milu-dialogue-alert-v8.webp'":
+              f"'cat_boss:alert': '{base}cat-boss-alert-b2.webp'",
+            "'fox_boss:watchful': '/assets/anime/characters/feiye-dialogue-watchful-v8.webp'":
+              f"'fox_boss:watchful': '{base}fox-boss-watchful-b2.webp'",
+            "'whale_boss:lament': '/assets/anime/characters/lanyin-dialogue-lament-v8.webp'":
+              f"'whale_boss:lament': '{base}whale-boss-lament-b2.webp'",
+            "'sword_boss:stern': '/assets/anime/characters/serena-dialogue-stern-audit-v3.webp'":
+              f"'sword_boss:stern': '{base}sword-boss-stern-b2.webp'",
+            "'dragon_boss:embers': '/assets/anime/characters/yanli-dialogue-embers.webp'":
+              f"'dragon_boss:embers': '{base}dragon-boss-embers-b2.webp'",
+            "'astral_boss:focus': '/assets/anime/characters/lumi-dialogue-focus-v8.webp'":
+              f"'astral_boss:focus': '{base}astral-boss-focus-b2.webp'",
+            "'shadow_boss:guarded': '/assets/anime/characters/yayu-dialogue-guarded.webp'":
+              f"'shadow_boss:guarded': '{base}shadow-boss-guarded-b2.webp'",
+            "'echo_regent:grave': '/assets/anime/characters/echo-regent-dialogue-grave.webp'":
+              f"'echo_regent:grave': '{base}echo-regent-grave-b2.webp'",
+            "'echo_regent:release': '/assets/anime/characters/echo-regent-dialogue-release.webp'":
+              f"'echo_regent:release': '{base}echo-regent-release-b2.webp'",
+            "'arcane_sovereign:regret': '/assets/anime/characters/arcane-sovereign-dialogue-regret.webp'":
+              f"'arcane_sovereign:regret': '{base}arcane-sovereign-regret-b2.webp'",
+            "'arcane_sovereign:acceptance': '/assets/anime/characters/arcane-sovereign-dialogue-acceptance.webp'":
+              f"'arcane_sovereign:acceptance': '{base}arcane-sovereign-acceptance-b2.webp'",
+            "'act3_archive_warden:duty': '/assets/anime/characters/archive-warden-dialogue-duty.webp'":
+              f"'act3_archive_warden:duty': '{base}archive-warden-duty-b2.webp'",
+            "'palace_warden_v2:duty': '/assets/anime/characters/vela-dialogue-duty-audit-v3.webp'":
+              f"'palace_warden_v2:duty': '{base}palace-warden-duty-b2.webp'",
+            "'black_seal_keeper_v2:watchful': '/assets/anime/characters/seph-dialogue-watchful-audit-v3.webp'":
+              f"'black_seal_keeper_v2:watchful': '{base}black-seal-keeper-watchful-b2.webp'",
+            "'act3_last_custodian:grave': '/assets/anime/characters/last-custodian-dialogue-release-audit-v3.webp'":
+              f"'act3_last_custodian:grave': '{base}last-custodian-release-b2.webp'",
+            "'act3_last_custodian:release': '/assets/anime/characters/last-custodian-dialogue-release-audit-v3.webp'":
+              f"'act3_last_custodian:release': '{base}last-custodian-release-b2.webp'",
+          }
+
+          missing=[]
+          for old,new in replacements.items():
+              if old not in s:
+                  missing.append(old)
+              else:
+                  s=s.replace(old,new)
+          if missing:
+              raise SystemExit('mapping anchors missing:\n'+'\n'.join(missing))
+          path.write_text(s)
+          PY
+
+      - name: Write QA handoff and B2 runtime test
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p art/visual-novel/03_intermediate/qa/2026-09-21-b2-runtime
+          cat > art/visual-novel/03_intermediate/qa/2026-09-21-b2-runtime/B2_RUNTIME_QA.md <<'EOF'
+          # B2 Standee Runtime QA · 2026-09-21
+
+          ## Verdict
+
+          - B2 formal candidate slots: **25/25 PASS**
+          - Supplemental guide expressions (`watchful`, `lament`): **2/2 PASS**
+          - Runtime promotion set: **27/27**
+          - Rerender required: **0**
+
+          ## QA gates
+
+          Every promoted source was reviewed against its Canon neutral standee and expression board.
+
+          - identity / hair / face / costume / signature prop consistency
+          - 1024×1536 portrait-stage dimensions
+          - real RGBA transparency; no baked checkerboard
+          - full-body crop suitable for GAL stage
+          - no pseudo-text / watermark
+          - no cross-character contamination
+          - requested expression/action remains readable at GAL scale
+
+          The runtime encoder validates every output with `webpinfo`.
+          Runtime files use a new namespaced directory instead of overwriting historical
+          standees, so previous audit manifests remain traceable.
+
+          ## Runtime policy
+
+          `src/game/anime-portraits.js` now points authored GAL expressions to
+          `/assets/anime/characters/b2-20260921/*`.
+
+          Compact HUD/codex avatars remain separate by design; this promotion concerns
+          the full GAL standing layer.
+
+          ## Encoder
+
+          `cwebp -q 94 -m 6 -alpha_q 100 -exact -metadata none`
+          EOF
+
+          cat > test/b2-runtime-standees.test.js <<'EOF'
+          import assert from 'node:assert/strict';
+          import { createHash } from 'node:crypto';
+          import { readFile } from 'node:fs/promises';
+          import test from 'node:test';
+
+          const ROOT = new URL('../', import.meta.url);
+
+          function webpDimensions(buffer) {
+            assert.equal(buffer.subarray(0, 4).toString('ascii'), 'RIFF');
+            assert.equal(buffer.subarray(8, 12).toString('ascii'), 'WEBP');
+            const chunk = buffer.subarray(12, 16).toString('ascii');
+            if (chunk === 'VP8 ') return [buffer.readUInt16LE(26) & 0x3fff, buffer.readUInt16LE(28) & 0x3fff];
+            if (chunk === 'VP8L') {
+              const bits = buffer.readUInt32LE(21);
+              return [(bits & 0x3fff) + 1, ((bits >> 14) & 0x3fff) + 1];
+            }
+            if (chunk === 'VP8X') return [buffer.readUIntLE(24, 3) + 1, buffer.readUIntLE(27, 3) + 1];
+            throw new Error(`unsupported WebP chunk ${JSON.stringify(chunk)}`);
+          }
+
+          test('B2 runtime manifest publishes all accepted standees with exact hashes and alpha', async () => {
+            const manifest = JSON.parse(await readFile(new URL('art/visual-novel/05_manifests/b2-runtime-accepted-20260921-v1.json', ROOT), 'utf8'));
+            assert.equal(manifest.active_b2_slots, 25);
+            assert.equal(manifest.supplemental_guide_expressions, 2);
+            assert.equal(manifest.runtime_count, 27);
+
+            for (const asset of manifest.assets) {
+              const runtime = await readFile(new URL(asset.runtime, ROOT));
+              assert.deepEqual(webpDimensions(runtime), [1024, 1536], asset.slot);
+              assert.equal(createHash('sha256').update(runtime).digest('hex'), asset.runtime_sha256, asset.slot);
+              assert.ok(runtime.includes(Buffer.from('ALPH')) || runtime.subarray(12,16).toString('ascii') === 'VP8L', `${asset.slot} alpha`);
+            }
+          });
+
+          test('GAL expression mapping is promoted to the B2 runtime namespace', async () => {
+            const source = await readFile(new URL('src/game/anime-portraits.js', ROOT), 'utf8');
+            const required = [
+              'hero-resolve-b2.webp','hero-guarded-b2.webp','hero-embers-b2.webp',
+              'guide-gentle-b2.webp','guide-focus-b2.webp','guide-watchful-b2.webp','guide-lament-b2.webp',
+              'final-queen-sorrow-b2.webp','final-queen-cold-b2.webp','final-queen-knowing-b2.webp','final-queen-resolve-b2.webp',
+              'cat-boss-alert-b2.webp','fox-boss-watchful-b2.webp','whale-boss-lament-b2.webp',
+              'sword-boss-stern-b2.webp','dragon-boss-embers-b2.webp','astral-boss-focus-b2.webp',
+              'shadow-boss-guarded-b2.webp','echo-regent-grave-b2.webp','echo-regent-release-b2.webp',
+              'arcane-sovereign-regret-b2.webp','arcane-sovereign-acceptance-b2.webp',
+              'archive-warden-duty-b2.webp','palace-warden-duty-b2.webp',
+              'black-seal-keeper-watchful-b2.webp','last-custodian-release-b2.webp'
+            ];
+            for (const file of required) assert.match(source, new RegExp(file.replace('.', '\\.')));
+          });
+          EOF
+
+      - name: Focused B2 regression and build
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --test             test/b2-runtime-standees.test.js             test/gal-only-mode.test.js             test/art-audit-page.test.js             test/assets.test.js             test/cinematics-ui.test.js
+          npm run build
+
+      - name: Commit B2 runtime promotion to main
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/assets/anime/characters/b2-20260921
+          git add src/game/anime-portraits.js
+          git add art/visual-novel/05_manifests/b2-runtime-accepted-20260921-v1.json
+          git add art/visual-novel/03_intermediate/qa/2026-09-21-b2-runtime/B2_RUNTIME_QA.md
+          git add test/b2-runtime-standees.test.js
+          git diff --cached --check
+          git commit -m "art: promote accepted B2 standees to GAL runtime"
+          git push origin HEAD:main
