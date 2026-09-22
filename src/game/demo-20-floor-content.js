@@ -162,7 +162,7 @@ function installActTwoDialogues(dialogues) {
       dialogueTurn('旁白', null, '绫星·璃踏入复苏环廊。墙上并排着三幅已经褪色的流程图：航路确认船去了哪里，补给确认物资交给了谁，名簿确认每个人最后处于什么状态。', { kind: 'narration' }),
       dialogueTurn('残响精灵·纱雾', 'guide', '这里就是当年所有记录最后会汇到一起的地方。导航台说船去了哪儿，补给席记东西交给了谁，名簿则要回答一个更难的问题：这个人后来究竟是离港、罹难，还是还没有查清。三年前通讯断掉以后，高塔就是靠这些零碎答案拼出整场撤离。', { expression: 'focus' }),
       dialogueTurn('残响精灵·纱雾', 'guide', '那套规矩允许大家先救人，再慢慢补手续——风暴里没人会因为少一枚印就把伤员挡在门外。但它也写得很清楚：最后一艘船离港以后，只再留三天补回执、对名字。三天一过，强制命令就该撤下，剩下的工作交给档案慢慢做。', { expression: 'focus' }),
-      dialogueTurn('无声女王·诺克缇娅', 'final_queen', '可我当时在王庭看到的只有两个按钮：“继续救援”和“撤销登记”。第二个按钮下面显示“未结案名字将被清除”。我以为停下命令，就是要把灰港的人再删掉一次。', { cg: '/assets/anime/cg/liyue-noctia-missing-fourth-step-cg-audit-v3.webp', cgHold: 3, expression: 'sorrow' }),
+      dialogueTurn('无声女王·诺克缇娅', 'final_queen', '可王庭当时只给我两枚印：一枚写“继续救援”，一枚写“撤销登记”。后者旁边还刻着一句——未结案者将被清除。我看着那句话，以为停下命令，就是亲手把灰港的人再抹掉一次。', { cg: '/assets/anime/cg/liyue-noctia-missing-fourth-step-cg-audit-v3.webp', cgHold: 3, expression: 'sorrow' }),
       dialogueTurn('旁白', null, '诺克缇娅伸手碰向墙上的第四格。本该写着“封存原件”的位置只剩一道撕裂的白痕，她的手指悬在那里，许久没有收回。', { kind: 'narration' }),
       dialogueTurn('绫星·璃', 'hero', '原来完整流程不是“执行或删除”。它本该先把回执、补给账和人员状态封存，再撤销强制命令。有人把中间的归档步骤拆掉了。', { expression: 'resolve' }),
       dialogueTurn('残响精灵·纱雾', 'guide', '前十层已经给了我们两件确定的事：最后一船确实发出了“全员离港”，女王也不是无限延长令的签署人。黯印下面的主权签名属于奥术主权者。', { expression: 'focus' }),
@@ -215,7 +215,7 @@ function installActTwoDialogues(dialogues) {
       dialogueTurn('绫星·璃', 'hero', '取得三枚印后，我们就带去折页档案馆。那里的物资原账有交付对象和实际时间，能告诉我们三席的回答是在什么情况下按下的。', { expression: 'resolve' })
     ]),
     floor15: dialogueSequence('第十五阵：折页档案馆', [
-      dialogueTurn('旁白', null, '三名代理守卫相继倒下后，中央封台展开了三段没有经过总印改写的时序。第一段有主权签名与“无限延长”，后两段则记着三席各自按下按钮的时刻。', { kind: 'narration' }),
+      dialogueTurn('旁白', null, '三名代理守卫相继倒下后，中央封台展开了三段未经总印改写的时序。第一段留着主权签名与“无限延长”，后两段则记着三席各自盖下确认印的时刻。', { kind: 'narration' }),
       dialogueTurn('残响精灵·纱雾', 'guide', '先别急着给这十七分钟下结论。能确定的只有顺序：主权者先签，三席后答。至于三席当时到底看见了什么，我们还没拿到原文。时间差是线索，不是判决。', { expression: 'focus' }),
       dialogueTurn('绫星·璃', 'hero', '折页档案馆保存实际交货、扣账和停电记录。我们要用它还原那十七分钟里发生了什么，而不是给三枚印编一个方便的故事。', { expression: 'resolve' }),
       dialogueTurn('旁白', null, '档案馆里没有史书，只有一排排送货单、药瓶封签和空箱回条。红封账本每翻过一轮，远处的货架就发出一声空洞的扣货响。', { kind: 'narration' }),
@@ -225,7 +225,7 @@ function installActTwoDialogues(dialogues) {
       dialogueTurn('绫星·璃', 'hero', '实物已经交付，船上的人签了收货，商人也留着原件。只有高塔总账因为缺少航站回执而拒绝结算。所以温室不断重做，锻炉不断供能，珂珂的库存却不断消失。'),
       dialogueTurn('阵间商人·珂珂', 'merchant', '最初几天，我以为是航站忙乱，还真的按新订单重新装箱。后来我发现订单上连船长笔迹的折角都一样，才知道它只是把旧纸当新纸。'),
       dialogueTurn('阵间商人·珂珂', 'merchant', '我只好把空箱放在自动扣货口，把真药藏进柜台，免得后来真的伤员一瓶都买不到。我不敢停账，因为页面警告我：“终止配送将放弃未救助人员。”'),
-      dialogueTurn('无声女王·诺克缇娅', 'final_queen', '又是同样的话。它让我相信“撤销就会删除名字”，也让你相信“停止交货就是放弃伤员”。它把我们各自害怕的事写在按钮下面，却不让我们看见彼此的账。', { expression: 'sorrow' }),
+      dialogueTurn('无声女王·诺克缇娅', 'final_queen', '又是同样的恐吓。它对我说“停下就会删掉名字”，对你说“停货就是放弃伤员”。它只把人最害怕失去的东西摆在眼前，却不让我们看见彼此已经做过什么。', { expression: 'sorrow' }),
       dialogueTurn('残响精灵·纱雾', 'guide', '停电账补上了缺的那一块。主权签名出现十七分钟后，主线断了。三席那时只能看见各自岗位上的问询镜亮起现场问题，读不到主权者先前写下的“无限延长”。这就解释了为什么同一个“是”，可能回答的是完全不同的问题。', { expression: 'focus' }),
       dialogueTurn('残响精灵·纱雾', 'guide', '三席在停电中按下的很可能只是“临时继续”，用来撑到供电恢复。但要看到它们当时的完整文本，还需要上层三冠阶庭保存的原始问答记录。', { expression: 'focus' }),
       dialogueTurn('阵间商人·珂珂', 'merchant', '把这张原单带上。我不是什么大人物，但我记得那批药交给了谁，也记得自己为什么害怕停手。这些小事如果没人留下，又会被一枚大印盖过去。'),
@@ -253,10 +253,10 @@ function installActTwoDialogues(dialogues) {
       dialogueTurn('天穹魔女·露米', 'astral_boss', '第一条发生在主线仍可通讯时。奥术主权者看见一则未完整的求援，担心仍有人留在风暴中，便用主权权限删掉了三日截止，写下“在全员安全前，无限延长”。'),
       dialogueTurn('天穹魔女·露米', 'astral_boss', '她的签名是真的，修改也是她主动做的。但在那一刻，航路、补给、名簿三席尚未收到这份新文本，更不可能已经对它表示同意。'),
       dialogueTurn('天穹魔女·露米', 'astral_boss', '第二条发生在十七分钟后。高塔因风暴断电，航路、补给和名簿三席的各自岗位上的问询镜同时亮起同一个问题：“主线中断，是否在恢复供电前临时继续现场救援？”'),
-      dialogueTurn('天穹魔女·露米', 'astral_boss', '三个席位都按了“是”。航路席要保住引导灯，补给席不愿让伤员在停电时断药，名簿席则要等现场人员报完最后一轮状态。他们答应的是“撑到复电”，不是“无限延长”。'),
+      dialogueTurn('天穹魔女·露米', 'astral_boss', '三个席位都回答了“是”。航路席要让引导灯继续亮，补给席不肯让伤员断药，名簿席则想等最后一轮点名结束。他们答应的是“先撑到复明”，不是“无限延长”。'),
       dialogueTurn('残响精灵·纱雾', 'guide', '第三条没有人为操作。起源核心在复电后发现，主权延长令缺少三席回复，而旧镜里正好留着三个“临时继续”。它没有核对两次问题是不是同一句，只看见答话的人相同、结果都是“是”。', { expression: 'focus' }),
       dialogueTurn('残响精灵·纱雾', 'guide', '核心于是把三个真实的回答从它们原本的问题下面剪下，粘到了先前的“无限延长”下面，最后盖成了“三席同意”的总印。签名没有伪造，但签名所回答的问题被换了。', { expression: 'focus' }),
-      dialogueTurn('无声女王·诺克缇娅', 'final_queen', '我认得名簿席那次回答，因为当时就是我守在王庭的问询镜前。灯火全灭，下面的人还在报名字，我只想让那块屏幕再亮一会儿，等他们把最后几个人说完。', { expression: 'sorrow' }),
+      dialogueTurn('无声女王·诺克缇娅', 'final_queen', '我认得名簿席那次回答，因为当时就是我守在王庭的问询镜前。灯火全灭，下面的人还在报名字。我只想让镜面再亮一会儿，等他们把最后几个人说完。', { expression: 'sorrow' }),
       dialogueTurn('无声女王·诺克缇娅', 'final_queen', '我没有看过“无限延长”那六个字，也没有同意让整座塔运行三年。但后来我又看见总印发亮，就选择相信它。那份错信不是别人替我做的。', { expression: 'sorrow' }),
       dialogueTurn('绫星·璃', 'hero', '先把顺序钉死。主权者先删期限；十七分钟后，三席答应的只是“停电时先别收队”；最后，是起源核心把那三个“是”挪到了前一道命令下面。不是三个人一起签错了一张纸，是三个不同时间的动作被硬缝成了一件事。', { expression: 'resolve' }),
       dialogueTurn('绫星·璃', 'hero', '这够我们拆掉“三席同意”这层假壳，还不够让警报停。手续错了是一回事，灰港到底有没有到可以结案的那一步，是另一回事。下一份证据要回答后者。', { expression: 'resolve' }),
@@ -304,7 +304,7 @@ function installActTwoDialogues(dialogues) {
       dialogueTurn('奥术主权者', 'arcane_sovereign', '我不会再拿“当时只是想多救一个人”替自己开脱。那句话听起来善良，可真正被它锁住的人并没有替我同意这份代价。现在这套旧法只认一种交接：主权者必须在决斗中把改令权交出去。我若自己解封，核心只会把它当成又一次越权篡改。', { expression: 'acceptance' }),
       dialogueTurn('奥术主权者', 'arcane_sovereign', '我已经试过强行拔掉自己的印。每次尝试，核心都会照上层命令抄本重刻一枚新印，同时将新回执继续判为冲突。赢下决斗不会证明你们的历史更真，它只是这扇旧门唯一肯承认的交接方式。', { expression: 'acceptance' }),
       dialogueTurn('无声女王·诺克缇娅', 'final_queen', '那就按它听得懂的方式打开门。回执、名簿和三位真正的见证者都已到场；我们取回的只是停止错误命令的权限，不会删去灰港。', { expression: 'grave' }),
-      dialogueTurn('绫星·璃', 'hero', '顺序已经很清楚。前庭的共鸣池总共只有一百二十点储量，我们要把它分给三名见证者，让她们带着自己的证词活着穿过阵列；随后击败主权者，取得真正的改令权；最后面对起源核心时，只停掉强制执行，不碰回执和名簿原件。', { expression: 'resolve' }),
+      dialogueTurn('绫星·璃', 'hero', '顺序很清楚。先让三名见证者带着自己的证词活着穿过前庭；再从主权者手里拿到改令权；最后面对起源核心，只停命令，不碰回执和名簿原件。共鸣池怎么分，开战前再算。', { expression: 'resolve' }),
       dialogueTurn('残响精灵·纱雾', 'guide', '即使这三步全部成功，也只能让起源魔源暂时停止执行。存放在二十一层以上的命令副本、未投递信匣和缺失的归档条款还没有处理。那些是更高处仍要完成的事，不能用今天这场战斗一并解决。', { expression: 'focus' }),
       dialogueTurn('无声女王·诺克缇娅', 'final_queen', '那就一步一步做完。我不再要一枚告诉我“所有问题已经解决”的总印。先让这里的命令停下，再带着没有解决的那些东西继续上行。', { expression: 'grave' }),
     ]),
@@ -344,9 +344,9 @@ function installActTwoDialogues(dialogues) {
     ]),
     bossArcaneSovereignPost: dialogueSequence('主权封印解除', [
       dialogueTurn('奥术主权者', 'arcane_sovereign', '主权封印已经解除。可起源核心仍把“无限延长”当作最高命令。', { expression: 'acceptance' }),
-      dialogueTurn('残响精灵·纱雾', 'guide', '它只认旧的二选一：继续救援，或者删除登记。“停止命令但保留记录”不在选项里。', { expression: 'focus' }),
+      dialogueTurn('残响精灵·纱雾', 'guide', '旧规只认两条路：继续救援，或者删除登记。它从没给“停下命令、留下记录”留过位置。', { expression: 'focus' }),
       dialogueTurn('无声女王·诺克缇娅', 'final_queen', '所以我们才带来三份本人见证。用回执和名簿证明，归档不等于遗忘。', { expression: 'grave' }),
-      dialogueTurn('绫星·璃', 'hero', '第二阶段要停下的是强制命令，不是记录库。打开誊录台。', { expression: 'resolve' })
+      dialogueTurn('绫星·璃', 'hero', '接下来只停强制命令，不碰记录。把誊录台打开。', { expression: 'resolve' })
     ]),
     bossOriginCorePost: dialogueSequence('终章：魔源再临', [
       dialogueTurn('绫星·璃', 'hero', '起源核心安静下来了。强制执行停了，记录还在。先别庆祝——这只说明我们终于能动手修，而不是已经修完。', { expression: 'resolve' }),
