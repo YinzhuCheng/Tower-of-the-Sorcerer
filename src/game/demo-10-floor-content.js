@@ -369,11 +369,11 @@ export function applyDemoTenFloorContent({ enemies, floors, dialogues, gridSize 
       dialogueTurn('无声女王·诺克缇娅', 'final_queen', '璃来接应时，我已经耗尽维持登记网的魔力。风暴还在撞门，名册上又有四十七个人没有回签。我怕网络一停，她们就会连求救过都无人知道，所以夺走了璃的咏唱，把七段分别交给七名守护者。'),
       dialogueTurn('无声女王·诺克缇娅', 'final_queen', '最开始，我真的只想再等一会儿。我想，等回执来了，我就把七段咏唱还给你，再去向米露她们一个个道歉。可一会儿变成一夜，一夜又变成一年、两年、三年。后来我已经知道她们在受苦，也知道自己正在把“再等等”变成新的伤害，可我越来越不敢承认，那个应该按下停止的人一直都是我。', { expression: 'sorrow' }),
       dialogueTurn('旁白', null, '诺克缇娅看向七枚核心。米露的铃声、澜音的船长回话、露米的时间记录在殿中依次响起，她的剑尖第一次动摇。', { kind: 'narration' }),
-      dialogueTurn('绫星·璃', 'hero', '你不是因为喜欢这座王座才留下。你是怕一旦承认救援结束，灰港那些名字就会跟着消失。可我一路带回来的每一份东西都在告诉你：人没有消失，消失的是本该抵达你手里的回答。离港回执是真的，只是被上层权限截住了。', { expression: 'guarded' }),
+      dialogueTurn('绫星·璃', 'hero', '你留下，不是因为舍不得王座，是怕承认救援结束以后，那些名字也会跟着消失。可人没有消失。真正没到你手里的，是北岸早就送回来的回答。', { expression: 'guarded' }),
       dialogueTurn('绫星·璃', 'hero', '北辰七号的四十七人全部抵达北岸。米露保存了出发录音，绯叶保住了完整名单，澜音带回船长原音；塞蕾娜、焰璃、露米和鸦羽又证明，结案是在回执抵达后被上层权限截断的。'),
       dialogueTurn('绫星·璃', 'hero', '米露、绯叶、澜音和其他守护者都记得那一夜。保留名字，不等于逼她们永远受命。', { expression: 'resolve' }),
       dialogueTurn('绫星·璃', 'hero', '你先为救人封塔，后来却因为害怕失去记录，把所有人留在命令里。奥术主权者利用了你的恐惧，可夺走咏唱、拒绝面对守护者的痛苦，仍是你必须亲口承担的部分。', { expression: 'guarded' }),
-      dialogueTurn('无声女王·诺克缇娅', 'final_queen', '我知道她们痛苦。我听过米露的铃铛在夜里失控，也知道焰璃守着空炉、澜音把同一句警报唱到声音发抖。可每一次我伸手想停下，黯星核心都会把那些名字烧成灰给我看。三年里，我一次次告诉自己“再等一晚就好”——其实只是我不敢成为那个按下停止的人。', { expression: 'sorrow' }),
+      dialogueTurn('无声女王·诺克缇娅', 'final_queen', '我听过米露的铃铛在夜里失控，也听过澜音把同一句警报唱到声音发抖。焰璃守着空炉，她们都来问过我什么时候才算结束。我没有回答。每次那些姓名牌在我眼前烧成灰，我就把她们再推回去守一晚——这一晚，是我亲手加上去的。', { expression: 'sorrow' }),
       dialogueTurn('绫星·璃', 'hero', '天穹核心已经算出第三条路。我们先把姓名、船号、人数和抵达时间写入不可涂改的档案，再解除救援状态。你不必靠永远重复求援来证明自己记得她们。', { expression: 'resolve' }),
       dialogueTurn('无声女王·诺克缇娅', 'final_queen', '我想相信你，璃。可这三年里，我已经太多次把“我想相信”当成继续拖延的理由。黯星核心不听我们的解释，它只认那套旧命令。若我们真要走第三条路，就得先把它从王座下面拽出来。', { expression: 'sorrow' })
     ]),
@@ -383,7 +383,7 @@ export function applyDemoTenFloorContent({ enemies, floors, dialogues, gridSize 
       dialogueTurn('无声女王·诺克缇娅', 'final_queen', '原来它从没有受我控制。它锁住原始签名，也不许我承认撤离已经结束。', { expression: 'sorrow' }),
       dialogueTurn('无声女王·诺克缇娅', 'final_queen', '我仍然是做出封塔选择的人，但我不会再让这份恐惧替我挥剑。璃，姓名牌只是幻象，真正的档案已经由七枚核心保存。攻击核心。', { expression: 'resolve' }),
       dialogueTurn('旁白', null, '诺克缇娅反手扯断束缚自己的黑纹，为璃撕开一道狭窄缺口。七枚核心沿缺口照亮黯星的裂缝。', { cg: '/assets/anime/cg/liyue-noctia-seal-cg-audit-v3.webp', cgHold: 2, kind: 'narration' }),
-      dialogueTurn('绫星·璃', 'hero', '那就一起打破它。第二阶段的反击无视防御，我会用留下的生命撑过去。', { expression: 'embers' })
+      dialogueTurn('绫星·璃', 'hero', '那就一起打破它。它的反击会穿过护甲；我会用上一战剩下的力气撑过去。', { expression: 'embers' })
     ]),
     bossQueenPostDemo: dialogueSequence('终章：魔法重新被选择', 'night', [
       dialogueTurn('旁白', null, '黯星核心碎裂，王庭的警报终于停下。墙上的灰港名字没有消失，只是不再闪烁。', { kind: 'narration' }),
@@ -392,8 +392,8 @@ export function applyDemoTenFloorContent({ enemies, floors, dialogues, gridSize 
       dialogueTurn('绫星·璃', 'hero', '七枚核心都已回收，守卫们也恢复了自由。可原始签名指向更高处的起源魔源。', { expression: 'resolve' }),
       dialogueTurn('无声女王·诺克缇娅', 'final_queen', '封塔是我做的，把你的咏唱拆开也是我做的。哪怕后来有人篡改了命令，这两件事也不会因此变成别人的责任。我不能只说一句“对不起”就留在王座上等你们善后。接下来的路，我会一起走；等真正的结案完成，再由米露她们决定要不要接受我的道歉。', { expression: 'sorrow' }),
       dialogueTurn('无声女王·诺克缇娅', 'final_queen', '我不会用“受人操纵”替自己开脱。等我们回来，我会把封塔经过、七名守护者遭受的强制契约和我作出的每个决定公开记录。她们愿不愿继续留在塔里，由她们自己选择。', { expression: 'sorrow' }),
-      dialogueTurn('残响精灵·纱雾', 'guide', '王座后面的阶梯已经亮了。上面连着起源魔源，也连着那道真正把“临时”改成“无限”的签名。接下来我们得去问清楚：是谁签的、为什么签，以及怎样在不毁掉这些名字的前提下，让错误命令真正停下来。', { expression: 'focus' }),
-      dialogueTurn('残响精灵·纱雾', 'guide', '十层之上的档案把“奥术主权者”与一座失联的魔源中枢相连。上面的路还剩三件事：找出签署者是谁，问清他为何把临时救援改成无限延长，再让这些已经封存的记录即使离开黯星核心也能长久留下。', { expression: 'watchful' }),
+      dialogueTurn('残响精灵·纱雾', 'guide', '王座后面的阶梯通向起源魔源。真正把“临时”改成“无限”的签名，就在那里。我们先找到签署人，再问他为什么这么做。', { expression: 'focus' }),
+      dialogueTurn('残响精灵·纱雾', 'guide', '还有一件事不能忘：就算黯星核心碎了，档案也必须能独立留下。否则我们只是换了一种方式，把那些名字绑在另一枚核心上。', { expression: 'watchful' }),
       dialogueTurn('旁白', null, '石阶在王座后方一节节亮起，通向从未出现在高塔图纸上的上层。璃回头看了一眼不再鸣警的十层：灰港的撤离终于结案，但篡改命令的人仍在更高处留下了一扇门。', { kind: 'narration' }),
       dialogueTurn('绫星·璃', 'hero', '那就一起上去。这次不是追责后就算结束，我们要把三年前没做完的事真正做完。', { expression: 'resolve' })
     ])
