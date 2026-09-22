@@ -84,5 +84,5 @@ test('Lumi and Noctia derivatives remain identity-synchronized across runtime ro
   assert.match(portraits, /astral_boss: '\/assets\/anime\/portraits\/v1\/astral-boss-portrait-runtime\.webp'/);
   assert.match(portraits, /'final_queen:sorrow': '\/assets\/anime\/characters\/b2-20260921\/final-queen-sorrow-b2\.webp'/);
   assert.equal(enemyManifest.assets.astral_boss.file, 'enemies/v1/astral-boss-map-128.webp');
-  assert.match(source, /GAL_ART_VERSION = '20260904-art-audit-repair-v3'/);
+  assert.match(source, /GAL_ART_VERSION = '20260923-floor-environment-refresh-v1'/);
 });

@@ -30,7 +30,7 @@ test('art audit page covers every speaking character and every authored CG mappi
 
   assert.deepEqual([...spokenIds].sort(), Object.keys(DIALOGUE_CAST).sort());
   assert.equal(CG_SCENES.length, 19);
-  assert.equal(BACKDROPS.length, 21);
+  assert.equal(BACKDROPS.length, 30);
   assert.equal(TRANSITIONS.length, 2);
 
   const dialogueCgs = new Set(Object.values(DIALOGUES)
