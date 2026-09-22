@@ -453,7 +453,7 @@ export const DIALOGUES = {
     text: '黯星核心从王座下升起，强行接管女王残留的术式。它的反击会直接穿过护甲。\n\n没有休息的时间。璃只能带着上一战剩下的生命与魔力继续迎战。'
   },
   ending: {
-    speaker: '绫星·璃', portrait: 'hero', expression: 'guarded', title: '终章：魔法重新被选择',
+    speaker: '绫星·璃', portrait: 'hero', expression: 'guarded', title: '王座之后：魔法重新被选择',
     text: '黯星核心破碎，守卫们恢复意识。\n\n璃没有夺走任何人的魔力；高塔的命令终于失效。'
   }
 };
