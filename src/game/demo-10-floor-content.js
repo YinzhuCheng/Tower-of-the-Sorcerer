@@ -278,7 +278,7 @@ export function applyDemoTenFloorContent({ enemies, floors, dialogues, gridSize 
       dialogueTurn('旁白', null, '第五段咏唱带着暖意回到璃体内。她与焰璃沿走廊逐一确认空屋，把整排无人居住的避难屋停掉，只留下守卫仍在使用的三间；旧管道没有爆裂，也没有任何求救声被遗漏。', { kind: 'narration' }),
       dialogueTurn('残响精灵·纱雾', 'guide', '炉心吐出一枚被压住的去向签：最后一艘船的回执，被送往星镜书库。', { expression: 'watchful' }),
       dialogueTurn('龙姬·焰璃', 'dragon_boss', '能耗记录还显示，回执抵达后炉火本应自行转入低档，王庭却发来一条“维持救援”的压过原令的新指令。它不是我的命令，也不是锋刃庭院的副本。'),
-      dialogueTurn('绫星·璃', 'hero', '前四层告诉我们回执是真的、终止栏被换了；赤焰日志现在证明替换发生后，整座塔仍被持续供能。去星镜书库，我们查这道压过原令的新指令究竟从谁手里来。', { expression: 'guarded' }),
+      dialogueTurn('绫星·璃', 'hero', '前四层告诉我们回执是真的、终止栏被换了；赤焰炉记现在证明改令发生后，整座塔仍被持续供能。去星镜书库，我们查这道压过原令的新指令究竟从谁手里来。', { expression: 'guarded' }),
       dialogueTurn('绫星·璃', 'hero', '焰璃，替我守住这盏灯。我们会把回执带回来。', { expression: 'guarded' })
     ]),
     bossAstralPreDemo: dialogueSequence('第六阵守护者：天穹魔女·露米', [
@@ -366,7 +366,7 @@ export function applyDemoTenFloorContent({ enemies, floors, dialogues, gridSize 
       dialogueTurn('旁白', null, '王座前没有庆典，只有一封被反复播放、始终没有落款的求援讯息。', { kind: 'narration' }),
       dialogueTurn('旁白', null, '诺克缇娅坐在灰尘未落的王座上，像三年前一样穿着停战礼服。她面前摆着四十七枚姓名牌，每一枚都被擦得干净；这三年她没有忘记任何人，也没有走出这间殿。', { kind: 'narration' }),
       dialogueTurn('无声女王·诺克缇娅', 'final_queen', '我最后收到的，不是“人已到岸”，只有四个字——等待确认。王庭又一次次把同一个警告推到我眼前：一旦结案，所有还挂着“未确认”的名字都会被当成临时记录清掉。那四十七块名牌就在我面前，我没有勇气按下去。', { expression: 'sorrow' }),
-      dialogueTurn('无声女王·诺克缇娅', 'final_queen', '璃来接应时，我已经耗尽维持登记网的魔力。风暴还在撞门，名册上又有四十七个人没有回签。我怕网络一停，她们就会连求救过都无人知道，所以夺走了璃的咏唱，把七段分别交给七名守护者。'),
+      dialogueTurn('无声女王·诺克缇娅', 'final_queen', '璃来接应时，我已经耗尽维持登记网的魔力。风暴还在撞门，名册上又有四十七个人没有回签。我怕登记网一停，她们就会连求救过都无人知道，所以夺走了璃的咏唱，把七段分别交给七名守护者。'),
       dialogueTurn('无声女王·诺克缇娅', 'final_queen', '最开始，我真的只想再等一会儿。我想，等回执来了，我就把七段咏唱还给你，再去向米露她们一个个道歉。可一会儿变成一夜，一夜又变成一年、两年、三年。后来我已经知道她们在受苦，也知道自己正在把“再等等”变成新的伤害，可我越来越不敢承认，那个应该按下停止的人一直都是我。', { expression: 'sorrow' }),
       dialogueTurn('旁白', null, '诺克缇娅看向七枚核心。米露的铃声、澜音的船长回话、露米的时间记录在殿中依次响起，她的剑尖第一次动摇。', { kind: 'narration' }),
       dialogueTurn('绫星·璃', 'hero', '你留下，不是因为舍不得王座，是怕承认救援结束以后，那些名字也会跟着消失。可人没有消失。真正没到你手里的，是北岸早就送回来的回答。', { expression: 'guarded' }),
