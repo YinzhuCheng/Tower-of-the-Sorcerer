@@ -290,7 +290,7 @@ export function applyDemoTenFloorContent({ enemies, floors, dialogues, gridSize 
       dialogueTurn('绫星·璃', 'hero', '我要取回天穹核心，读出那份抵达回执完整的经手记录。那里一定藏着第三条路。', { expression: 'resolve' })
     ]),
     bossAstralPostDemo: dialogueSequence('天穹核心回收', [
-      dialogueTurn('旁白', null, '失去天穹核心的星镜没有熄灭，只是停止攻击。露米第一次把演算拖回离港回执抵达的那一刻。', { kind: 'narration' }),
+      dialogueTurn('旁白', null, '失去天穹核心的星镜没有熄灭，只是停止攻击。露米第一次把演算拖回抵达回执进入高塔的那一刻。', { kind: 'narration' }),
       dialogueTurn('旁白', null, '六份记录在镜中对齐：北辰七号确已抵达北岸，潮汐回执也确实进入高塔，却在送到王庭前被截住。按原来的顺序，它本应继续上送并触发解封；随后，一道来自王庭上方的命令将这份回执判成“不可结案”，又删除了封锁的终止条件。', { kind: 'narration' }),
       dialogueTurn('天穹魔女·露米', 'astral_boss', '演算更新：离港确认是真的。但接收后一刻钟，它被更高一层的印权改成了“不可结案”。'),
       dialogueTurn('天穹魔女·露米', 'astral_boss', '第六段咏唱恢复后，我终于能计算第三条路：将姓名、船号、抵达时间写入不可涂改的档案，再从名单上撤下救援令。记录会留下，命令可以停止。'),
