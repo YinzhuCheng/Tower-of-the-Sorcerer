@@ -358,7 +358,7 @@ export function applyDemoTenFloorContent({ enemies, floors, dialogues, gridSize 
       dialogueTurn('黯印观测官·塞芙', 'black_seal_keeper_v2', '黯印解除了。签名写着：奥术主权者；指令是“灰港紧急登记，无限延长”。'),
       dialogueTurn('黯印观测官·塞芙', 'black_seal_keeper_v2', '签署时间在诺克缇娅封塔后七息。她下的是临时命令，奥术主权者随后把它写入起源魔源，并删掉了终止条件。之后，这枚主权印又把所有与“无限延长”相冲的异常报告挡在王庭外——但仅凭这里的痕迹，还不能断定那是他亲手加上的封锁，还是高层旧规在自行保护这道命令。'),
       dialogueTurn('残响精灵·纱雾', 'guide', '奥术主权者管理起源魔源，身份高于王座。可他现在不在这十层之内。', { expression: 'watchful' }),
-      dialogueTurn('残响精灵·纱雾', 'guide', '这个称号不是姓名。要知道他究竟是谁、为什么把一次已经完成的撤离改成无限延长，我们必须进入王座后的上层档案区。今晚能做的，是先让诺克缇娅看见回执和签名；更上面的责任，等我们亲自找到他再问。', { expression: 'watchful' }),
+      dialogueTurn('残响精灵·纱雾', 'guide', '“奥术主权者”只告诉我们签令者在塔里的身份，并不能解释他当时看见了什么、为什么会删掉期限。要把这份责任说清，我们必须进入王座后的上层档案区，亲自找到签署人。今晚能做的，是先让诺克缇娅看见回执和这枚主权印。', { expression: 'watchful' }),
       dialogueTurn('绫星·璃', 'hero', '那就先去王座。女王必须看见离港回执和这枚印，才能明白自己守了什么。', { expression: 'resolve' }),
       dialogueTurn('黯印观测官·塞芙', 'black_seal_keeper_v2', '带好日曜卡。王座结界后没有商店，进去以后，你就得用现有的一切走到底。')
     ]),
