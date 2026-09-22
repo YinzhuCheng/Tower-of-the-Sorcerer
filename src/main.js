@@ -170,8 +170,8 @@ const GAL_DIALOGUE_BACKDROPS = Object.freeze({
   bossArcaneSovereignPost: 'originCore', bossOriginCorePost: 'originCore',
   bossArchiveWardenPost: 'emberLighthouseWritein',
   warCouncil: 'originCore',
-  bondMilu: 'twinScoreGreenhouse', bondLanin: 'ocean',
-  bondYanli: 'redVein', bondYayu: 'ocean'
+  bondMilu: 'twinScoreGreenhouse', bondLanin: 'floor16TideMirrorHall',
+  bondYanli: 'floor13RedVeinPulseForge', bondYayu: 'floor18TideSkyWaterway'
 });
 
 // A floor is a chapter of the same physical Tower, not a random world map.
