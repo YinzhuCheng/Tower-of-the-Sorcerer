@@ -1,0 +1,85 @@
+name: Import fantasy CG redraw accepted assets
+
+on:
+  push:
+    branches:
+      - art/fantasy-cg-redraw-2026-09-21
+    paths:
+      - '.art-upload/fantasy-redraw/source-url.txt'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: fantasy-cg-redraw-import-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  import:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out target branch
+        uses: actions/checkout@v4
+        with:
+          ref: art/fantasy-cg-redraw-2026-09-21
+          fetch-depth: 0
+
+      - name: Download accepted fantasy CG archive
+        shell: bash
+        run: |
+          set -euo pipefail
+          SOURCE_URL="$(tr -d '\r\n' < .art-upload/fantasy-redraw/source-url.txt)"
+          test -n "$SOURCE_URL"
+          curl --fail --location --retry 3 --retry-delay 2 "$SOURCE_URL" -o /tmp/fantasy-redraw.zip
+          rm -rf /tmp/fantasy-redraw
+          mkdir -p /tmp/fantasy-redraw
+          unzip -q /tmp/fantasy-redraw.zip -d /tmp/fantasy-redraw
+          test -f /tmp/fantasy-redraw/manifest.json
+
+      - name: Verify and install accepted assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import hashlib, json
+          from pathlib import Path
+
+          root = Path('.')
+          source = Path('/tmp/fantasy-redraw')
+          payload = json.loads((source / 'manifest.json').read_text(encoding='utf-8'))
+
+          expected_branch = 'art/fantasy-cg-redraw-2026-09-21'
+          if payload.get('branch') != expected_branch:
+              raise RuntimeError(f"branch mismatch: {payload.get('branch')} != {expected_branch}")
+
+          for item in payload['files']:
+              src = source / item['archive']
+              if not src.is_file():
+                  raise RuntimeError(f"missing archive member: {src}")
+              data = src.read_bytes()
+              digest = hashlib.sha256(data).hexdigest()
+              if digest != item['sha256']:
+                  raise RuntimeError(f"sha256 mismatch for {item['id']}: {digest} != {item['sha256']}")
+              if len(data) != item['bytes']:
+                  raise RuntimeError(f"byte-size mismatch for {item['id']}: {len(data)} != {item['bytes']}")
+              target = root / item['target']
+              target.parent.mkdir(parents=True, exist_ok=True)
+              target.write_bytes(data)
+              print(f"installed {item['id']} -> {target} ({len(data)} bytes, {digest})")
+          PY
+
+      - name: Run story and runtime tests
+        run: npm test
+
+      - name: Commit accepted fantasy CGs
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add art/visual-novel/04_cg/final/2026-09-22-fantasy-redraw public/assets/anime/cg
+          git rm -r .art-upload/fantasy-redraw
+          git commit -m "art: publish four accepted fantasy CG redraws"
+          git push origin HEAD:art/fantasy-cg-redraw-2026-09-21

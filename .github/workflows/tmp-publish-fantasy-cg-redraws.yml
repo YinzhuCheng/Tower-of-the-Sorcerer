@@ -1,0 +1,60 @@
+name: Publish accepted fantasy CG redraws
+
+on:
+  push:
+    branches:
+      - art/fantasy-cg-redraw-2026-09-21
+    paths:
+      - 'art/visual-novel/04_cg/working/fantasy-redraw/2026-09-21/**'
+      - '.github/workflows/tmp-publish-fantasy-cg-redraws.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: art/fantasy-cg-redraw-2026-09-21
+          fetch-depth: 0
+
+      - name: Install WebP tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y webp
+
+      - name: Export runtime WebP
+        shell: bash
+        run: |
+          set -euo pipefail
+          src=art/visual-novel/04_cg/working/fantasy-redraw/2026-09-21
+          out=public/assets/anime/cg
+          cwebp -q 92 -m 6 -sharp_yuv -metadata none "$src/CG_006_seven-core-network_fantasy_accepted_v1.png" -o "$out/liyue-yayu-seven-core-network-cg-audit-v3.webp"
+          cwebp -q 92 -m 6 -sharp_yuv -metadata none "$src/CG_009_missing-fourth-step_fantasy_accepted_v1.png" -o "$out/liyue-noctia-missing-fourth-step-cg-audit-v3.webp"
+          cwebp -q 92 -m 6 -sharp_yuv -metadata none "$src/CG_011_intercepted-receipt_fantasy_accepted_v1.png" -o "$out/liyue-yayu-intercepted-receipt-cg-audit-v3.webp"
+          cwebp -q 92 -m 6 -sharp_yuv -metadata none "$src/CG_012_echo-ledger_fantasy_accepted_v1.png" -o "$out/liyue-echo-ledger-cg-audit-v3.webp"
+          {
+            echo '# Fantasy CG runtime SHA-256 — 2026-09-22'
+            echo
+            sha256sum               "$out/liyue-yayu-seven-core-network-cg-audit-v3.webp"               "$out/liyue-noctia-missing-fourth-step-cg-audit-v3.webp"               "$out/liyue-yayu-intercepted-receipt-cg-audit-v3.webp"               "$out/liyue-echo-ledger-cg-audit-v3.webp"
+          } > docs/art/fantasy-cg-redraw-runtime-sha-2026-09-22.md
+
+      - name: Commit runtime assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/assets/anime/cg/liyue-yayu-seven-core-network-cg-audit-v3.webp
+          git add public/assets/anime/cg/liyue-noctia-missing-fourth-step-cg-audit-v3.webp
+          git add public/assets/anime/cg/liyue-yayu-intercepted-receipt-cg-audit-v3.webp
+          git add public/assets/anime/cg/liyue-echo-ledger-cg-audit-v3.webp
+          git add docs/art/fantasy-cg-redraw-runtime-sha-2026-09-22.md
+          if git diff --cached --quiet; then
+            echo "No runtime changes"
+          else
+            git commit -m "art: publish accepted fantasy CG redraws"
+            git push origin HEAD:art/fantasy-cg-redraw-2026-09-21
+          fi
