@@ -384,7 +384,7 @@ export function applyDemoTenFloorContent({ enemies, floors, dialogues, gridSize 
       dialogueTurn('旁白', null, '女王的剑停了，黯星核心却从王座下升起。它用魔法反击将两人一同锁在阵中。', { kind: 'narration' }),
       dialogueTurn('旁白', null, '核心把四十七枚姓名牌投成燃烧的幻象，又在每一枚下方写出“关闭即删除”。诺克缇娅下意识伸手护住它们，锁链便趁机缠上她的手腕。', { kind: 'narration' }),
       dialogueTurn('无声女王·诺克缇娅', 'final_queen', '原来我一直只能借它的力量维持救援，却从没有真正握住让它停下的钥匙。它锁着原始签名，也不许我承认撤离已经结束。', { expression: 'sorrow' }),
-      dialogueTurn('无声女王·诺克缇娅', 'final_queen', '我仍然是做出封塔选择的人，但我不会再让这份恐惧替我挥剑。璃，姓名牌只是幻象，真正的档案已经由七枚核心保存。攻击核心。', { expression: 'resolve' }),
+      dialogueTurn('无声女王·诺克缇娅', 'final_queen', '我仍然是做出封塔选择的人，但我不会再让这份恐惧替我挥剑。璃，眼前燃烧的姓名牌只是它拿来吓我的幻象；当夜的出发录音、名册、船长回话和改令痕迹都还分散保存在七枚核心里。攻击核心。', { expression: 'resolve' }),
       dialogueTurn('旁白', null, '诺克缇娅反手扯断束缚自己的黑纹，为璃撕开一道狭窄缺口。七枚核心沿缺口照亮黯星的裂缝。', { cg: '/assets/anime/cg/liyue-noctia-seal-cg-audit-v3.webp', cgHold: 2, kind: 'narration' }),
       dialogueTurn('绫星·璃', 'hero', '那就一起打破它。它的反击会穿过护甲；我会用上一战剩下的力气撑过去。', { expression: 'embers' })
     ]),
