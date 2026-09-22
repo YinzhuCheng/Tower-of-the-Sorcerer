@@ -46,7 +46,7 @@ test('the 30-floor dialogue tells a complete, skippable three-act story', () => 
   assert.ok(mainSceneIds.some((id) => DIALOGUES[id].turns.length > 12), 'story scenes must not be compressed back to an artificial turn cap');
 
   assert.match(sceneText(actOneEvidence), /灰港撤离/);
-  assert.match(sceneText(actOneEvidence), /离港确认/);
+  assert.match(sceneText(actOneEvidence), /抵达确认/);
   assert.match(sceneText(actOneEvidence), /北辰七号/);
   assert.match(sceneText(actOneEvidence), /七枚核心/);
   assert.match(sceneText(actOneEvidence), /(抵达回执|全部抵达北岸|全员抵达北岸)/);
