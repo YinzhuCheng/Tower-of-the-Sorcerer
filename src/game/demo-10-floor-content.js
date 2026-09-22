@@ -134,7 +134,7 @@ export function applyDemoTenFloorContent({ enemies, floors, dialogues, gridSize 
     floor7: {
       title: '第七阵：虚影织界',
       turns: [
-        dialogueTurn('旁白', null, '星镜里的批注一闪而过：离港确认有效，结案的印权却被上层锁住。', { kind: 'narration' }),
+        dialogueTurn('旁白', null, '星镜里的批注一闪而过：抵达确认有效，结案的印权却被上层锁住。', { kind: 'narration' }),
         dialogueTurn('旁白', null, '第七层没有窗，只有成千上万根影线穿过墙壁。每根线都牵着一道命令的来路，也牵着一名无法违令的守卫。', { kind: 'narration' }),
         dialogueTurn('旁白', null, '璃走近时，七束颜色不同的光从她胸前分向各层。那是尚未取回的最后一段咏唱在呼唤其余六段，也让她第一次看清：七名守护者的契约都系在同一个结案锁上。', { cg: '/assets/anime/cg/liyue-yayu-seven-core-network-cg-audit-v3.webp', cgHold: 4, kind: 'narration' }),
         dialogueTurn('影织姬·鸦羽', 'shadow_boss', '女王以为“撤销登记”就是删掉名字。她把自己也留在塔里，一等就是三年。'),
@@ -292,7 +292,7 @@ export function applyDemoTenFloorContent({ enemies, floors, dialogues, gridSize 
     bossAstralPostDemo: dialogueSequence('天穹核心回收', [
       dialogueTurn('旁白', null, '失去天穹核心的星镜没有熄灭，只是停止攻击。露米第一次把演算拖回抵达回执进入高塔的那一刻。', { kind: 'narration' }),
       dialogueTurn('旁白', null, '六份记录在镜中对齐：北辰七号确已抵达北岸，潮汐回执也确实进入高塔，却在送到王庭前被截住。按原来的顺序，它本应继续上送并触发解封；随后，一道来自王庭上方的命令将这份回执判成“不可结案”，又删除了封锁的终止条件。', { kind: 'narration' }),
-      dialogueTurn('天穹魔女·露米', 'astral_boss', '演算更新：离港确认是真的。但接收后一刻钟，它被更高一层的印权改成了“不可结案”。'),
+      dialogueTurn('天穹魔女·露米', 'astral_boss', '演算更新：抵达确认是真的。但这份回执进入高塔后一刻钟，结案仍被更高一层的印权压成了“不可结案”。'),
       dialogueTurn('天穹魔女·露米', 'astral_boss', '第六段咏唱恢复后，我终于能计算第三条路：将姓名、船号、抵达时间写入不可涂改的档案，再从名单上撤下救援令。记录会留下，命令可以停止。'),
       dialogueTurn('残响精灵·纱雾', 'guide', '这道印权不属于女王。它从王庭之上接入，经过虚影层时，签名也被黑线遮住了。', { expression: 'watchful' }),
       dialogueTurn('天穹魔女·露米', 'astral_boss', '鸦羽管理虚影织界。她知道那条线穿过了谁的名字。'),
@@ -368,7 +368,7 @@ export function applyDemoTenFloorContent({ enemies, floors, dialogues, gridSize 
       dialogueTurn('无声女王·诺克缇娅', 'final_queen', '可一会儿变成一夜，一夜又变成一年、两年、三年。后来我已经知道她们在受苦，也知道“再等等”正在变成新的伤害。只是拖得越久，我越不敢承认：那个该亲手让警报停下的人，一直都是我。', { expression: 'sorrow' }),
       dialogueTurn('旁白', null, '诺克缇娅看向七枚核心。米露的铃声、澜音的船长回话、露米的时间记录在殿中依次响起，她的剑尖第一次动摇。', { kind: 'narration' }),
       dialogueTurn('绫星·璃', 'hero', '你留下，不是因为舍不得王座，是怕承认救援结束以后，那些名字也会跟着消失。可人没有消失。真正没到你手里的，是北岸早就送回来的回答。', { expression: 'guarded' }),
-      dialogueTurn('绫星·璃', 'hero', '北辰七号的四十七人全部抵达北岸。米露保存了出发录音，绯叶保住了完整名单，澜音带回船长原音；塞蕾娜、焰璃、露米和鸦羽又证明，结案是在回执抵达后被上层命令截断的。'),
+      dialogueTurn('绫星·璃', 'hero', '北辰七号的四十七人全部抵达北岸。米露保存了出发录音，绯叶保住了完整名单，澜音带回船长原音；塞蕾娜、焰璃、露米和鸦羽又证明，结案是在回执进入高塔后、送往王庭的途中被上层命令截断的。'),
       dialogueTurn('绫星·璃', 'hero', '米露、绯叶、澜音和其他守护者都记得那一夜。保留名字，不等于逼她们永远受命。', { expression: 'resolve' }),
       dialogueTurn('绫星·璃', 'hero', '你先为救人封塔，后来却因为害怕失去记录，把所有人留在命令里。奥术主权者留下的命令把你的恐惧固化成了整座塔的旧规；可夺走咏唱、迟迟不肯面对守护者的痛苦，仍是你必须亲口承担的部分。', { expression: 'guarded' }),
       dialogueTurn('无声女王·诺克缇娅', 'final_queen', '我听过米露的铃铛在夜里失控，也听过澜音把同一句警报唱到声音发抖。焰璃守着空炉，她们都来问过我什么时候才算结束。我没有回答。每次那些姓名牌在我眼前烧成灰，我就把她们再推回去守一晚——这一晚，是我亲手加上去的。', { expression: 'sorrow' }),
