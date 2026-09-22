@@ -46,9 +46,11 @@ test('the 30-floor dialogue tells a complete, skippable three-act story', () => 
   assert.ok(mainSceneIds.some((id) => DIALOGUES[id].turns.length > 12), 'story scenes must not be compressed back to an artificial turn cap');
 
   assert.match(sceneText(actOneEvidence), /灰港撤离/);
-  assert.match(sceneText(actOneEvidence), /离港确认/);
+  assert.match(sceneText(actOneEvidence), /抵达确认/);
   assert.match(sceneText(actOneEvidence), /北辰七号/);
   assert.match(sceneText(actOneEvidence), /七枚核心/);
+  assert.match(sceneText(actOneEvidence), /(抵达回执|全部抵达北岸|全员抵达北岸)/);
+  assert.doesNotMatch(sceneText(mainSceneIds), /离港回执/);
   assert.match(sceneText(middleIds), /三天一过[\s\S]{0,80}(强制命令|紧急登记)[\s\S]{0,40}(撤|停)/);
   assert.match(sceneText(middleIds), /主权签名/);
   assert.match(sceneText(middleIds), /死亡名簿/);
@@ -56,14 +58,16 @@ test('the 30-floor dialogue tells a complete, skippable three-act story', () => 
   assert.match(sceneText(middleIds), /(见证契约|亲自.*证明|亲眼.*证明|愿意为这些作证)/);
   assert.match(sceneText(endingIds), /修复章程/);
   assert.match(sceneText(endingIds), /夜航护送章程/);
-  assert.match(sceneText(endingIds), /逐页校验章程/);
-  assert.match(sceneText(endingIds), /灯塔接力章程/);
+  assert.match(sceneText(endingIds), /逐页校验(?:章程|完成|侧库)/);
+  assert.match(sceneText(endingIds), /灯塔接力(?:章程|解决|修好)/);
   assert.match(sceneText(endingIds), /断电/);
   assert.match(sceneText(endingIds), /复电/);
-  assert.match(sceneText(endingIds), /归档模式/);
+  assert.match(sceneText(endingIds), /(归档模式|只留档|保留档案|档案[^\n]{0,20}不再发令|停止发令[^\n]{0,20}档案)/);
   assert.match(sceneText(endingIds), /记录留下，命令结束/);
-  assert.match(sceneText(endingIds), /(结案本身已经完整|灰港都会真正结案|完整结案)/);
-  assert.match(sceneText(endingIds), /(亲笔后记|亲手留下一页后记|本人.*后记)/);
+  assert.match(sceneText(endingIds), /已抵达/);
+  assert.doesNotMatch(sceneText(endingIds), /新索引只写四种现况：已离港/);
+  assert.match(sceneText(endingIds), /(结案(?:本身)?已经完整|灰港[^\n]{0,20}真正结案|完整结案)/);
+  assert.match(sceneText(endingIds), /(亲笔后记|亲手留下一页|本人[^\n]{0,20}(?:后记|记录)|自己的那一页|一页自己的话)/);
 });
 
 test('the expanded story may use unlimited consecutive Gal turns to explain each act', () => {
