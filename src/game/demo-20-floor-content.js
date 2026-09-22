@@ -292,7 +292,7 @@ function installActTwoDialogues(dialogues) {
       dialogueTurn('绫星·璃', 'hero', '我们会把它们带到起源魔源。那里等着的是奥术主权者——删去三日期限的原签署人。回执、名簿和三席时序都已经到齐，下一个回答必须由他亲自给出。', { expression: 'resolve' })
     ]),
     floor20: dialogueSequence('第二十阵：起源魔源', [
-      dialogueTurn('旁白', null, '起源魔源是整座高塔所有上层命令汇聚的地方。一枚破裂印戒悬在晶核上方，每转一圈，整座塔就响起一次“灰港紧急登记，无限延长”。', { kind: 'narration' }),
+      dialogueTurn('旁白', null, '起源魔源是整座高塔上层命令汇聚的中枢；“魔源”指的是这间中枢本身，悬在中央、真正执行命令的那枚晶核才叫起源核心。一枚破裂印戒浮在核心上方，每转一圈，整座塔就响起一次“灰港紧急登记，无限延长”。', { kind: 'narration' }),
       dialogueTurn('旁白', null, '绫星·璃没有立即拔剑。她先将四份证据依次放在誊录台上：三席的原始时序、珂珂的交付账、第七船的离港回执、死亡名簿的分类核验副本。它们分别回答“谁同意”、“物资交给了谁”、“船是否离港”与“每个人最后去了哪里”。', { kind: 'narration' }),
       dialogueTurn('奥术主权者', 'arcane_sovereign', '你们带来的东西，我都看见了：最后一船的回执，补给的交付账，死亡名簿，还有三个席位的真正时序。你们查得比我当年仔细。', { expression: 'regret' }),
       dialogueTurn('无声女王·诺克缇娅', 'final_queen', '回答我，主权者。你是否先签了命令，再让核心把我们临时的“继续救援”补成同意？', { expression: 'grave' }),
@@ -305,7 +305,7 @@ function installActTwoDialogues(dialogues) {
       dialogueTurn('奥术主权者', 'arcane_sovereign', '我已经试过强行拔掉自己的印。每次尝试，核心都会照上层命令抄本重刻一枚新印，同时将新回执继续判为冲突。赢下决斗不会证明你们的历史更真，它只是这扇旧门唯一肯承认的交接方式。', { expression: 'acceptance' }),
       dialogueTurn('无声女王·诺克缇娅', 'final_queen', '那就按它听得懂的方式打开门。回执、名簿和三位真正的见证者都已到场；我们取回的只是撤下错误命令的印权，不会删去灰港。', { expression: 'grave' }),
       dialogueTurn('绫星·璃', 'hero', '顺序很清楚。先让三名见证者带着自己的证词活着穿过前庭；再从主权者手里拿到改令权；最后面对起源核心，只停命令，不碰回执和名簿原件。共鸣池怎么分，开战前再算。', { expression: 'resolve' }),
-      dialogueTurn('残响精灵·纱雾', 'guide', '即使这三步全部成功，也只能让起源魔源暂时停止执行。存放在二十一层以上的命令副本、未投递信匣和缺失的归档条款还没有处理。那些是更高处仍要完成的事，不能用今天这场战斗一并解决。', { expression: 'focus' }),
+      dialogueTurn('残响精灵·纱雾', 'guide', '即使这三步全部成功，也只是让起源核心停下强制命令。更高处仍存着命令抄本、未投递的信匣和缺失的归档条款，还没有处理。那些是更高处仍要完成的事，不能用今天这场战斗一并解决。', { expression: 'focus' }),
       dialogueTurn('无声女王·诺克缇娅', 'final_queen', '那就一步一步做完。我不再要一枚告诉我“所有问题已经解决”的总印。先让这里的命令停下，再带着没有解决的那些东西继续上行。', { expression: 'grave' }),
     ]),
     bondMilu: dialogueSequence('月镜复写', [
