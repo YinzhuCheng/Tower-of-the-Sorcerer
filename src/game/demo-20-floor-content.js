@@ -248,11 +248,11 @@ function installActTwoDialogues(dialogues) {
       dialogueTurn('残响精灵·纱雾', 'guide', '这样才算见证。她说自己亲眼看见的，也把自己不能证明的部分留空。我们不用谁替整件事作答。接下来去三冠阶庭，把旧三席真正回答过的话读出来。', { expression: 'focus' })
     ]),
     floor17: dialogueSequence('第十七阵：三冠阶庭', [
-      dialogueTurn('旁白', null, '三冠阶庭的拱顶下悬着三只原始问答镜。三矢竞技场取得的分印被逐一放入后，水晶屏上的一枚总印分解成三列文字。', { kind: 'narration' }),
+      dialogueTurn('旁白', null, '三冠阶庭的拱顶下悬着三只原始问答镜。三矢竞技场取得的分印被逐一放入后，水晶镜面上的一枚总印分解成三列文字。', { kind: 'narration' }),
       dialogueTurn('旁白', null, '三列时间原本被显示为同一刻。露米将折页档案馆的停电记录叠上去，其中两列突然向后滑动了十七分钟。那不是无足轻重的误差，而是一道命令与三次回答之间的真实先后。', { cg: '/assets/anime/cg/liyue-lumi-seventeen-minute-splice-cg-v8.webp', cgHold: 4, kind: 'narration' }),
       dialogueTurn('天穹魔女·露米', 'astral_boss', '第一条发生在主线仍可通讯时。奥术主权者看见一则未完整的求援，担心仍有人留在风暴中，便用主权印删掉了三日截止，写下“在全员安全前，无限延长”。'),
       dialogueTurn('天穹魔女·露米', 'astral_boss', '他的签名是真的，删去期限也是他主动做的。但在那一刻，航路、补给、名簿三席还没有见过这道新命令，更不可能已经表示同意。'),
-      dialogueTurn('天穹魔女·露米', 'astral_boss', '第二条发生在十七分钟后。高塔因风暴断电，航路、补给和名簿三席的各自岗位上的问询镜同时亮起同一个问题：“主线中断，是否在恢复供电前临时继续现场救援？”'),
+      dialogueTurn('天穹魔女·露米', 'astral_boss', '第二条发生在十七分钟后。高塔因风暴断电，航路、补给和名簿三席各自岗位上的问询镜同时亮起同一个问题：“主线中断，是否在恢复供电前临时继续现场救援？”'),
       dialogueTurn('天穹魔女·露米', 'astral_boss', '三个席位都回答了“是”。航路席要让引导灯继续亮，补给席不肯让伤员断药，名簿席则想等最后一轮点名结束。他们答应的是“先撑到复明”，不是“无限延长”。'),
       dialogueTurn('残响精灵·纱雾', 'guide', '第三条没有人为操作。起源核心在复电后发现，主权延长令缺少三席回复，而旧镜里正好留着三个“临时继续”。它没有核对两次问题是不是同一句，只看见答话的人相同、结果都是“是”。', { expression: 'focus' }),
       dialogueTurn('残响精灵·纱雾', 'guide', '核心于是把三个真实的回答从它们原本的问题下面剪下，粘到了先前的“无限延长”下面，最后盖成了“三席同意”的总印。签名没有伪造，但签名所回答的问题被换了。', { expression: 'focus' }),
@@ -293,7 +293,7 @@ function installActTwoDialogues(dialogues) {
     ]),
     floor20: dialogueSequence('第二十阵：起源魔源', [
       dialogueTurn('旁白', null, '起源魔源是整座高塔所有上层命令汇聚的地方。一枚破裂印戒悬在晶核上方，每转一圈，整座塔就响起一次“灰港紧急登记，无限延长”。', { kind: 'narration' }),
-      dialogueTurn('旁白', null, '绫星·璃没有立即拔剑。她先将四份证据依次放在誊录台上：三席的原始时序、珂珂的交付账、第七船的离港回执、死亡名簿的分类核验副本。它们分别回答“谁同意”、“物资交给了谁”、“船是否离港”与“每个人最后处于什么状态”。', { kind: 'narration' }),
+      dialogueTurn('旁白', null, '绫星·璃没有立即拔剑。她先将四份证据依次放在誊录台上：三席的原始时序、珂珂的交付账、第七船的离港回执、死亡名簿的分类核验副本。它们分别回答“谁同意”、“物资交给了谁”、“船是否离港”与“每个人最后去了哪里”。', { kind: 'narration' }),
       dialogueTurn('奥术主权者', 'arcane_sovereign', '你们带来的东西，我都看见了：最后一船的回执，补给的交付账，死亡名簿，还有三个席位的真正时序。你们查得比我当年仔细。', { expression: 'regret' }),
       dialogueTurn('无声女王·诺克缇娅', 'final_queen', '回答我，主权者。你是否先签了命令，再让核心把我们临时的“继续救援”补成同意？', { expression: 'grave' }),
       dialogueTurn('奥术主权者', 'arcane_sovereign', '是。通讯在灰港撤离最混乱时中断，我怕三日期限到了以后，仍有求援会被当成旧信。所以我先删掉期限，命令核心等三席后补。', { expression: 'regret' }),
@@ -314,15 +314,15 @@ function installActTwoDialogues(dialogues) {
     ]),
     bondLanin: dialogueSequence('潮汐导管', [
       dialogueTurn('深蓝歌姬·澜音', 'whale_boss', '潮汐导管能在最后那段魔法冲击里替我们削掉一次反击。我想亲手把真正的航线接回去——不是为了赢得漂亮，而是让那句“已经抵达”终于走到该去的地方。'),
-      dialogueTurn('绫星·璃', 'hero', '会战里让你活下来，就能用上。')
+      dialogueTurn('绫星·璃', 'hero', '我会把你排进阵列。但那句“已经抵达”，得由你自己活着送到最后。')
     ]),
     bondYanli: dialogueSequence('赤焰蓄能', [
       dialogueTurn('龙姬·焰璃', 'dragon_boss', '赤焰蓄能可以提前削弱核心的维持层。炉火已经白烧了三年，这一次我想让它真正替活着的人开路。让我去。'),
-      dialogueTurn('绫星·璃', 'hero', '那就为你留一格。')
+      dialogueTurn('绫星·璃', 'hero', '那就跟上。别把自己先烧空在前庭。')
     ]),
     bondYayu: dialogueSequence('影线校准', [
       dialogueTurn('影织姬·鸦羽', 'shadow_boss', '影线校正能让起源核心失去二连击。我会把伪造的命令线一根根拆开。'),
-      dialogueTurn('绫星·璃', 'hero', '会战时保持存活，就能兑现。')
+      dialogueTurn('绫星·璃', 'hero', '那就活着走到核心面前。你的线，要由你自己拆。')
     ]),
     warCouncil: dialogueSequence('王座前：共鸣会战', [
       dialogueTurn('旁白', null, '通往主权封印的前庭上，三道银白轨迹并排伸向门内。每条轨迹尽头都站着一名被旧命令定额强化的忠诚守卫，他们将所有新见证视为对无限延长令的入侵。', { kind: 'narration' }),
@@ -331,7 +331,7 @@ function installActTwoDialogues(dialogues) {
       dialogueTurn('影织姬·鸦羽', 'shadow_boss', '三个人，顺序不变：铁卫先挡，咏唱者穿甲，执刑官抢先手。我们的人怎么排，谁就去接谁。'),
       dialogueTurn('影织姬·鸦羽', 'shadow_boss', '前庭有一百二十点共鸣，一人最多接六十。先在阵里试配；试错不会烧掉璃自己的魔力。'),
       dialogueTurn('猫卫长·米露', 'cat_boss', '所以别凭谁看起来最能打就把所有共鸣都压在她身上。前庭阵列能把每一种分配先推演给我们看：谁会撑住、谁会倒下，活下来的人又能给后面的两场战斗带去什么帮助。先把结果算清楚，不用拿我们的命去试错。'),
-      dialogueTurn('残响精灵·纱雾', 'guide', '每名存活伙伴都会带来自己的基础支援；沿途取得的月镜、潮汐导管、赤焰蓄能或影线校准，则会再增加一项信物效果。大多数信物需要对应伙伴存活；月镜只需米露实际上场就能留下防护复写。', { expression: 'focus' }),
+      dialogueTurn('残响精灵·纱雾', 'guide', '每个活着穿过会战的人，都会把自己的术式带进后面的战斗。一路取得的月镜、潮汐导管、赤焰蓄能和影线校正，还能再多帮一把；多数信物都得由主人亲自活着带过去，只有米露的月镜只要真正上场，就能把护幕复写下来。', { expression: 'focus' }),
       dialogueTurn('龙姬·焰璃', 'dragon_boss', '我们不需要三个人交替说同一句话。米露能证明补给如何被重复发放，澜音能证明离港回答确实发出，我能证明供能怎样被强制续上，鸦羽能证明回执被什么线路截留。选上的人只说自己知道的那一部分。'),
       dialogueTurn('绫星·璃', 'hero', '那就先让阵列推演几次，把出场顺序和共鸣储量都排到每个人能活着走完为止。等方案定下，我们就照同一套顺序一次执行到底；这里没有靠运气赌过去的余地。', { expression: 'resolve' }),
       dialogueTurn('绫星·璃', 'hero', '我们要带进誊录台的，不是三个人整齐的“同意”，而是三份有不同内容、不同边界的本人见证。准备好后再开战。')
@@ -349,12 +349,12 @@ function installActTwoDialogues(dialogues) {
       dialogueTurn('绫星·璃', 'hero', '接下来只停强制命令，不碰记录。把誊录台打开。', { expression: 'resolve' })
     ]),
     bossOriginCorePost: dialogueSequence('终章：魔源再临', [
-      dialogueTurn('绫星·璃', 'hero', '起源核心安静下来了。强制执行停了，记录还在。先别庆祝——这只说明我们终于能动手修，而不是已经修完。', { expression: 'resolve' }),
+      dialogueTurn('绫星·璃', 'hero', '起源核心安静下来了。强制命令停了，记录还在。先别庆祝——这只说明我们终于能动手收拾残局，还不是已经结束。', { expression: 'resolve' }),
       dialogueTurn('旁白', null, '奥术主权者手腕上的蓝色束缚松开了。那枚裂开的主权印没有消失，他也没有把它摘下来，只用另一只手扶住还在发抖的指节。', { kind: 'narration' }),
       dialogueTurn('奥术主权者', 'arcane_sovereign', '别替我把这当成赎罪。写下无限延长的是我，今天只不过终于有人把我从那道命令里拖出来，让我能亲手去收拾它留下的东西。', { expression: 'acceptance' }),
       dialogueTurn('无声女王·诺克缇娅', 'final_queen', '我不会替你说“已经够了”。也不会把自己做过的事算到你的签名下面。我们各自有要回答的部分——既然还没回答完，就一起上去。', { expression: 'grave' }),
       dialogueTurn('旁白', null, '两人第一次并肩站在没有王座、也没有封印隔开的地方。谁也没有伸手和解。升降梯却已经在她们身后重新亮起。', { kind: 'narration' }),
-      dialogueTurn('残响精灵·纱雾', 'guide', '还不能离开。上方的余烬登记库仍有未投递的信，也保留着旧命令的副本。只要那些副本还能重新下发，今天停掉的循环就可能被再次拼回来。', { expression: 'focus' }),
+      dialogueTurn('残响精灵·纱雾', 'guide', '还不能离开。上方的余烬登记库仍有未投递的信，也保留着旧命令的副本。只要那些抄本还能重新送出，今天停下的旧命令就可能被再次拼回来。', { expression: 'focus' }),
       dialogueTurn('无声女王·诺克缇娅', 'final_queen', '那就去找真正的归档方式。我要亲眼确认，警报停止以后，那些名字仍然有地方留下。', { expression: 'sorrow' }),
       dialogueTurn('奥术主权者', 'arcane_sovereign', '登记库里有护送、校验、接力三套旧修复方案。再往上是余烬灯塔——只有那里能把最终结案真正送出高塔。方案是我参与设计的，哪里会卡住，我会告诉你们。', { expression: 'acceptance' }),
       dialogueTurn('绫星·璃', 'hero', '好。继续上行。再往上，我们不再追问“谁做错了什么”，而是把已经查清的错误一件件修掉：让记录有去处，让命令真的结束，让外面的人收到回答。', { expression: 'resolve' })
