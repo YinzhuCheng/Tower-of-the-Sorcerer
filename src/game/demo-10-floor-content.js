@@ -275,7 +275,7 @@ export function applyDemoTenFloorContent({ enemies, floors, dialogues, gridSize 
     bossDragonPostDemo: dialogueSequence('赤焰核心回收', 'redVein', [
       dialogueTurn('旁白', null, '赤焰核心离开炉心，暴烈的火舌终于缩成温暖的灯焰。焰璃急忙调低阀门，而不是任由整座炉室骤冷。', { kind: 'narration' }),
       dialogueTurn('龙姬·焰璃', 'dragon_boss', '火候降下来了……原来我还记得该怎样让一盏灯只为正在等的人亮着。', { expression: 'embers' }),
-      dialogueTurn('旁白', null, '第五段咏唱带着暖意回到璃体内。她与焰璃沿走廊逐一确认空屋，把供暖从四十七间降到守卫实际使用的三间；旧管道没有爆裂，也没有任何求救声被遗漏。', { kind: 'narration' }),
+      dialogueTurn('旁白', null, '第五段咏唱带着暖意回到璃体内。她与焰璃沿走廊逐一确认空屋，把整排无人居住的避难屋停掉，只留下守卫仍在使用的三间；旧管道没有爆裂，也没有任何求救声被遗漏。', { kind: 'narration' }),
       dialogueTurn('残响精灵·纱雾', 'guide', '炉心吐出一枚被压住的去向签：最后一艘船的回执，被送往星镜书库。', { expression: 'watchful' }),
       dialogueTurn('龙姬·焰璃', 'dragon_boss', '能耗记录还显示，回执抵达后炉火本应自行转入低档，王庭却发来一条“维持救援”的压过原令的新指令。它不是我的命令，也不是锋刃庭院的副本。'),
       dialogueTurn('绫星·璃', 'hero', '前四层告诉我们回执是真的、终止栏被换了；赤焰日志现在证明替换发生后，整座塔仍被持续供能。去星镜书库，我们查这道压过原令的新指令究竟从谁手里来。', { expression: 'guarded' }),
