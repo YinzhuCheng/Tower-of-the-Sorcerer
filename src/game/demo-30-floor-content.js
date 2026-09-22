@@ -327,7 +327,7 @@ function sequence(title, turns) { return Object.freeze({ title, turns: Object.fr
 function installDialogues(dialogues) {
   Object.assign(dialogues, {
     floor21: sequence('第二十一阵：余烬登记库', [
-      turn('旁白', null, '起源核心停机后，旧升降梯又向上爬了一段。门缝刚亮，成捆信匣便从塔顶夹层滑落，蜡封上全是三年前的灰。', { kind: 'narration' }),
+      turn('旁白', null, '起源核心沉寂后，旧升降梯又向上爬了一段。门缝刚亮，成捆信匣便从塔顶夹层滑落，蜡封上全是三年前的灰。', { kind: 'narration' }),
       turn('旁白', null, '这里不像王庭或炉室，倒像一座被仓促遗弃的邮局。墙上三枚灯牌分别写着“护送”“校验”“接力”，它们通往不同的侧库，却都指向最高处的余烬灯塔。', { kind: 'narration' }),
       turn('残响精灵·纱雾', 'guide', '现在可以把篡改链说完整了：奥术主权者删去三日期限，起源核心挪用三席旧确认，虚空先驱又截走离港回执。不是灰港没有结案，是结案被拆散了。', { expression: 'focus' }),
       turn('残响精灵·纱雾', 'guide', '第一步发生在风暴断讯时。奥术主权者怕三天后还有生还者没被找到，所以把“三日后复核撤销”改成“无限延长”。他想防止过早收队，却没写新的停止条件。', { expression: 'focus' }),
