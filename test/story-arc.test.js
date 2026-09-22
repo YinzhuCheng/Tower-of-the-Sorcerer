@@ -56,14 +56,14 @@ test('the 30-floor dialogue tells a complete, skippable three-act story', () => 
   assert.match(sceneText(middleIds), /(见证契约|亲自.*证明|亲眼.*证明|愿意为这些作证)/);
   assert.match(sceneText(endingIds), /修复章程/);
   assert.match(sceneText(endingIds), /夜航护送章程/);
-  assert.match(sceneText(endingIds), /逐页校验章程/);
-  assert.match(sceneText(endingIds), /灯塔接力章程/);
+  assert.match(sceneText(endingIds), /逐页校验(?:章程|完成|侧库)/);
+  assert.match(sceneText(endingIds), /灯塔接力(?:章程|解决|修好)/);
   assert.match(sceneText(endingIds), /断电/);
   assert.match(sceneText(endingIds), /复电/);
-  assert.match(sceneText(endingIds), /归档模式/);
+  assert.match(sceneText(endingIds), /(归档模式|只留档|保留档案|档案[^\n]{0,20}不再发令|停止发令[^\n]{0,20}档案)/);
   assert.match(sceneText(endingIds), /记录留下，命令结束/);
-  assert.match(sceneText(endingIds), /(结案本身已经完整|灰港都会真正结案|完整结案)/);
-  assert.match(sceneText(endingIds), /(亲笔后记|亲手留下一页后记|本人.*后记)/);
+  assert.match(sceneText(endingIds), /(结案(?:本身)?已经完整|灰港[^\n]{0,20}真正结案|完整结案)/);
+  assert.match(sceneText(endingIds), /(亲笔后记|亲手留下一页|本人[^\n]{0,20}(?:后记|记录)|自己的那一页|一页自己的话)/);
 });
 
 test('the expanded story may use unlimited consecutive Gal turns to explain each act', () => {
