@@ -96,7 +96,7 @@ const GAL_HISTORY_LIMIT = new URLSearchParams(window.location.search).get('gal-o
 const galHistory = [];
 const galImagePreloads = new Map();
 const galSettings = { auto: false, fast: false };
-const GAL_ART_VERSION = '20260904-art-audit-repair-v3';
+const GAL_ART_VERSION = '20260923-floor-environment-refresh-v1';
 const galArtUrl = (path) => `${path}?v=${GAL_ART_VERSION}`;
 const KEYBOARD_DIRECTIONS = Object.freeze({
   arrowup: 'up', w: 'up',
@@ -111,6 +111,15 @@ const GAL_BACKDROPS = Object.freeze({
   ocean: galArtUrl('/assets/anime/themes/theme-ocean-archive.webp'),
   forest: galArtUrl('/assets/anime/themes/theme-forest-approach.webp'),
   redVein: galArtUrl('/assets/anime/themes/theme-red-vein.webp'),
+  floor03TideNavigation: galArtUrl('/assets/anime/themes/theme-floor03-tide-navigation.webp'),
+  floor05RedVeinShelter: galArtUrl('/assets/anime/themes/theme-floor05-red-vein-shelter.webp'),
+  floor11SunRevivalCorridor: galArtUrl('/assets/anime/themes/theme-floor11-sun-revival-corridor.webp'),
+  floor13RedVeinPulseForge: galArtUrl('/assets/anime/themes/theme-floor13-red-vein-pulse-forge.webp'),
+  floor14SunThreeArrowArena: galArtUrl('/assets/anime/themes/theme-floor14-sun-three-arrow-arena.webp'),
+  floor16TideMirrorHall: galArtUrl('/assets/anime/themes/theme-floor16-tide-mirror-hall.webp'),
+  floor17SunThreeCrownCourt: galArtUrl('/assets/anime/themes/theme-floor17-sun-three-crown-court.webp'),
+  floor18TideSkyWaterway: galArtUrl('/assets/anime/themes/theme-floor18-tide-sky-waterway.webp'),
+  floor19EchoCourtInterior: galArtUrl('/assets/anime/themes/theme-floor19-echo-court-interior.webp'),
   starMirror: galArtUrl('/assets/anime/themes/theme-star-mirror.webp'),
   echoCourt: galArtUrl('/assets/anime/themes/theme-echo-court.webp'),
   originCore: galArtUrl('/assets/anime/themes/theme-origin-core.webp'),
@@ -149,15 +158,15 @@ const GAL_DIALOGUE_BACKDROPS = Object.freeze({
   ending: 'emberLighthouseWritein',
   bossCatPreDemo: 'moonWhiteVestibule', bossCatPostDemo: 'moonWhiteVestibule',
   bossFoxPreDemo: 'forest', bossFoxPostDemo: 'forest',
-  bossWhalePreDemo: 'ocean', bossWhalePostDemo: 'ocean',
+  bossWhalePreDemo: 'floor03TideNavigation', bossWhalePostDemo: 'floor03TideNavigation',
   bossSwordPreDemo: 'forest', bossSwordPostDemo: 'forest',
-  bossDragonPreDemo: 'redVein', bossDragonPostDemo: 'redVein',
+  bossDragonPreDemo: 'floor05RedVeinShelter', bossDragonPostDemo: 'floor05RedVeinShelter',
   bossAstralPreDemo: 'starMirror', bossAstralPostDemo: 'starMirror',
   bossShadowPreDemo: 'starMirror', bossShadowPostDemo: 'starMirror',
   bossPalacePreDemo: 'night', bossPalacePostDemo: 'night',
   bossBlackSealPreDemo: 'night', bossBlackSealPostDemo: 'night',
   bossQueenPreDemo: 'night', queenPhaseDemo: 'night', bossQueenPostDemo: 'night',
-  bossEchoRegentPost: 'echoCourt',
+  bossEchoRegentPost: 'floor19EchoCourtInterior',
   bossArcaneSovereignPost: 'originCore', bossOriginCorePost: 'originCore',
   bossArchiveWardenPost: 'emberLighthouseWritein',
   warCouncil: 'originCore',
@@ -169,10 +178,10 @@ const GAL_DIALOGUE_BACKDROPS = Object.freeze({
 // This table makes that rule executable: each witness-field owns one specific
 // visual-novel scene, while stairs and the usual tower anchors bridge scenes.
 const GAL_FLOOR_BACKDROPS = Object.freeze({
-  1: 'forest', 2: 'forest', 3: 'ocean', 4: 'forest',
-  5: 'redVein', 6: 'starMirror', 7: 'starMirror', 8: 'night', 9: 'night', 10: 'night',
-  11: 'sun', 12: 'twinScoreGreenhouse', 13: 'redVein', 14: 'sun', 15: 'foldedArchiveMarket', 16: 'ocean', 17: 'sun',
-  18: 'ocean', 19: 'echoCourt', 20: 'originCore',
+  1: 'forest', 2: 'forest', 3: 'floor03TideNavigation', 4: 'forest',
+  5: 'floor05RedVeinShelter', 6: 'starMirror', 7: 'starMirror', 8: 'night', 9: 'night', 10: 'night',
+  11: 'floor11SunRevivalCorridor', 12: 'twinScoreGreenhouse', 13: 'floor13RedVeinPulseForge', 14: 'floor14SunThreeArrowArena', 15: 'foldedArchiveMarket', 16: 'floor16TideMirrorHall', 17: 'floor17SunThreeCrownCourt',
+  18: 'floor18TideSkyWaterway', 19: 'floor19EchoCourtInterior', 20: 'originCore',
   21: 'ashRegistry', 22: 'nightShelter', 23: 'auditChamber', 24: 'relayGallery', 25: 'triageIndex',
   26: 'foldedArchiveMarket', 27: 'triageIndex', 28: 'archiveStorm', 29: 'finalIndexRoom', 30: 'emberLighthouseWritein'
 });

@@ -1,0 +1,97 @@
+{
+  "version": "2026-09-23-floor-environment-refresh-v1",
+  "status": "qa-pass",
+  "topologyLock": "All nine runtime scenes are unambiguously inside the same tower; no distant exterior tower, skyline, mountain horizon, or detached outdoor courtyard.",
+  "assets": [
+    {
+      "id": "floor03-tide-navigation",
+      "floor": 3,
+      "width": 1672,
+      "height": 941,
+      "runtime": "public/assets/anime/themes/theme-floor03-tide-navigation.webp",
+      "source": "art/visual-novel/01_canon/environments/ENV_floor03-tide-navigation_v1.png",
+      "runtimeSha256": "7404018a855f2cc97d7b4d0252d722eda5c43970330357424b560092cb8d300b",
+      "sourceSha256": "a814842e64cfe9ec09ba8f0f16773c1cee451a69a9644c918f17685aaee4ab8f"
+    },
+    {
+      "id": "floor05-red-vein-shelter",
+      "floor": 5,
+      "width": 1672,
+      "height": 941,
+      "runtime": "public/assets/anime/themes/theme-floor05-red-vein-shelter.webp",
+      "source": "art/visual-novel/01_canon/environments/ENV_floor05-red-vein-shelter_v1.png",
+      "runtimeSha256": "055fa0e5cc40e82f15bc19417ad27f9815653c347e49cddf0bd4fb17484893b9",
+      "sourceSha256": "e10c820507fdd5c6851558b10df667250b48119d6815789e542caa7e20dc89e1"
+    },
+    {
+      "id": "floor11-sun-revival-corridor",
+      "floor": 11,
+      "width": 1672,
+      "height": 941,
+      "runtime": "public/assets/anime/themes/theme-floor11-sun-revival-corridor.webp",
+      "source": "art/visual-novel/01_canon/environments/ENV_floor11-sun-revival-corridor_v1.png",
+      "runtimeSha256": "ca8d15e6891816fea4b55bf8e8882d88d2bee50459d7c0565e8d0b140e4b4902",
+      "sourceSha256": "4c4ec9d610ec9d357f47d22bd42acc76a864c247fd81e9d5fb1e93783592fcaf"
+    },
+    {
+      "id": "floor13-red-vein-pulse-forge",
+      "floor": 13,
+      "width": 1672,
+      "height": 941,
+      "runtime": "public/assets/anime/themes/theme-floor13-red-vein-pulse-forge.webp",
+      "source": "art/visual-novel/01_canon/environments/ENV_floor13-red-vein-pulse-forge_v1.png",
+      "runtimeSha256": "edf29fb79baa6a92b2e279bde01a30d951d20c30242369b96ca56d77664c06be",
+      "sourceSha256": "4017b5aa3f5f296c6c09e2074c54fbc0929a68630c5cec7582c7887f6f5351bb"
+    },
+    {
+      "id": "floor14-sun-three-arrow-arena",
+      "floor": 14,
+      "width": 1672,
+      "height": 941,
+      "runtime": "public/assets/anime/themes/theme-floor14-sun-three-arrow-arena.webp",
+      "source": "art/visual-novel/01_canon/environments/ENV_floor14-sun-three-arrow-arena_v1.png",
+      "runtimeSha256": "1206292b899b3dbf88215a8999fb306fd9f9f13cfe52d5692da4563850210661",
+      "sourceSha256": "15c9a231ace46c628c15486eae617b38e366f02c51484fcb65cc9af4545a7c89"
+    },
+    {
+      "id": "floor16-tide-mirror-hall",
+      "floor": 16,
+      "width": 1672,
+      "height": 941,
+      "runtime": "public/assets/anime/themes/theme-floor16-tide-mirror-hall.webp",
+      "source": "art/visual-novel/01_canon/environments/ENV_floor16-tide-mirror-hall_v1.png",
+      "runtimeSha256": "c895f1a03a5c0855663da055276c8fecd6563efcfaf40e6d51bd5bf2d09761dc",
+      "sourceSha256": "496b34129e400cbc0ec6ac35acad19441ba6e74e888af7f29d36566ac6eb6b80"
+    },
+    {
+      "id": "floor17-sun-three-crown-court",
+      "floor": 17,
+      "width": 1672,
+      "height": 941,
+      "runtime": "public/assets/anime/themes/theme-floor17-sun-three-crown-court.webp",
+      "source": "art/visual-novel/01_canon/environments/ENV_floor17-sun-three-crown-court_v1.png",
+      "runtimeSha256": "978d4726debbe31455836395a7bbd92f9b17d2a93074710faf8def1d25f7b8d7",
+      "sourceSha256": "9cae8aa78ba18f11f5775e6aec34364b0bb7a090a380ed79393b88cf032d14da"
+    },
+    {
+      "id": "floor18-tide-sky-waterway",
+      "floor": 18,
+      "width": 1672,
+      "height": 941,
+      "runtime": "public/assets/anime/themes/theme-floor18-tide-sky-waterway.webp",
+      "source": "art/visual-novel/01_canon/environments/ENV_floor18-tide-sky-waterway_v1.png",
+      "runtimeSha256": "6b665e7854c1dca483247f673b9a911b5bf195e75e0a131f296339f696b67275",
+      "sourceSha256": "5d8f5d610f86befbf951240f569d5d62971860dd654a08d70b4f48b1f1a2a880"
+    },
+    {
+      "id": "floor19-echo-court-interior",
+      "floor": 19,
+      "width": 1672,
+      "height": 941,
+      "runtime": "public/assets/anime/themes/theme-floor19-echo-court-interior.webp",
+      "source": "art/visual-novel/01_canon/environments/ENV_floor19-echo-court-interior_v1.png",
+      "runtimeSha256": "daa65bf7d24c1c9895f8a88d3ec7b91ea2b5e7f586983fe853db3fb54a046570",
+      "sourceSha256": "de28b087ab575561e1e74dc0e70a5fcdf2d6d5341ce84da1c4cf1259fbadc8e5"
+    }
+  ]
+}

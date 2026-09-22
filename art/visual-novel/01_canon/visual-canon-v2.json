@@ -1,39 +1,299 @@
 {
   "version": "2026-09-04-v5",
   "series_style_lock": "Japanese 2D anime cel-shaded visual novel art, classic Japanese shoujo Galgame aesthetic; clean gentle fine linework, broad flat color planes, restrained two-step cel shading, television-anime level detail, quiet low-noise finish, cinematic but readable composition. No photorealism, no painterly realism, no 3D render, no western comic style, no mobile-game splash art, no hyper-detail, no micro-texture, no gritty texture, no film grain, no oversharpening, no HDR, no text, no logo, no watermark.",
-  "render_limits": ["two shadow tones maximum", "one simple highlight per material", "moderate contrast", "no crushed blacks", "no built-in UI or textbox"],
-  "tower_anchors": ["a dark obsidian tower arch", "small brass registration seals", "blue-white index lights", "hairline violet seal fractures"],
+  "render_limits": [
+    "two shadow tones maximum",
+    "one simple highlight per material",
+    "moderate contrast",
+    "no crushed blacks",
+    "no built-in UI or textbox"
+  ],
+  "tower_anchors": [
+    "a dark obsidian tower arch",
+    "small brass registration seals",
+    "blue-white index lights",
+    "hairline violet seal fractures"
+  ],
   "backdrops": [
-    {"id":"forest-approach","file":"theme-forest-approach.webp","floors":[1,2,4],"mood":"cold dawn, first threshold"},
-    {"id":"moon-white-vestibule","file":"theme-moon-white-vestibule.webp","scenes":["bossCatPreDemo","bossCatPostDemo"],"mood":"first-night registration and humane shelter"},
-    {"id":"red-vein","file":"theme-red-vein.webp","floors":[5,13],"mood":"forced warmth, exhausted rescue furnace"},
-    {"id":"tide-archive","file":"theme-ocean-archive.webp","floors":[3,16,18],"mood":"submerged records and a lost evacuation signal"},
-    {"id":"star-mirror","file":"theme-star-mirror.webp","floors":[6,7],"mood":"evidence revealed by reflected starlight"},
-    {"id":"night-tower","file":"theme-night-tower.webp","floors":[8,9,10],"mood":"the silent queen's sealed court"},
-    {"id":"sun-sanctum","file":"theme-sun-sanctum.webp","floors":[11,14,17],"mood":"public ritual, false consensus"},
-    {"id":"twin-score-greenhouse","file":"theme-twin-score-greenhouse.webp","floors":[12],"mood":"duplicated supplies without a receiving voyage"},
-    {"id":"folded-archive-market","file":"theme-folded-archive-market.webp","floors":[15,26],"mood":"folded ledgers, exhausted stock and accountable trade"},
-    {"id":"echo-court","file":"theme-echo-court.webp","floors":[19],"mood":"names returned to their owners"},
-    {"id":"origin-core","file":"theme-origin-core.webp","floors":[20],"mood":"the machinery beneath authority"},
-    {"id":"ash-registry","file":"theme-ash-registry.webp","floors":[21,22,23,24,25,26,27],"mood":"undelivered letters and repair work"},
-    {"id":"archive-storm","file":"theme-archive-storm.webp","floors":[28],"mood":"records breaking free of the old system"},
-    {"id":"final-index-room","file":"theme-final-index-room.webp","floors":[29],"mood":"incomplete truths preserved without forced certainty"},
-    {"id":"ember-lighthouse-writein","file":"theme-ember-lighthouse-writein.webp","floors":[30],"mood":"traceable write-in and accountable revocation"},
-    {"id":"ember-lighthouse","file":"theme-ember-lighthouse.webp","scenes":["ending-exterior"],"mood":"a final signal, then a humane archive"}
+    {
+      "id": "forest-approach",
+      "file": "theme-forest-approach.webp",
+      "floors": [
+        1,
+        2,
+        4
+      ],
+      "mood": "cold dawn, first threshold"
+    },
+    {
+      "id": "moon-white-vestibule",
+      "file": "theme-moon-white-vestibule.webp",
+      "scenes": [
+        "bossCatPreDemo",
+        "bossCatPostDemo"
+      ],
+      "mood": "first-night registration and humane shelter"
+    },
+    {
+      "id": "red-vein",
+      "file": "theme-red-vein.webp",
+      "mood": "forced warmth, exhausted rescue furnace",
+      "scenes": [
+        "theme-master"
+      ]
+    },
+    {
+      "id": "tide-archive",
+      "file": "theme-ocean-archive.webp",
+      "mood": "submerged records and a lost evacuation signal",
+      "scenes": [
+        "theme-master"
+      ]
+    },
+    {
+      "id": "star-mirror",
+      "file": "theme-star-mirror.webp",
+      "floors": [
+        6,
+        7
+      ],
+      "mood": "evidence revealed by reflected starlight"
+    },
+    {
+      "id": "night-tower",
+      "file": "theme-night-tower.webp",
+      "floors": [
+        8,
+        9,
+        10
+      ],
+      "mood": "the silent queen's sealed court"
+    },
+    {
+      "id": "sun-sanctum",
+      "file": "theme-sun-sanctum.webp",
+      "mood": "public ritual, false consensus",
+      "scenes": [
+        "theme-master"
+      ]
+    },
+    {
+      "id": "twin-score-greenhouse",
+      "file": "theme-twin-score-greenhouse.webp",
+      "floors": [
+        12
+      ],
+      "mood": "duplicated supplies without a receiving voyage"
+    },
+    {
+      "id": "folded-archive-market",
+      "file": "theme-folded-archive-market.webp",
+      "floors": [
+        15,
+        26
+      ],
+      "mood": "folded ledgers, exhausted stock and accountable trade"
+    },
+    {
+      "id": "echo-court",
+      "file": "theme-echo-court.webp",
+      "mood": "names returned to their owners",
+      "scenes": [
+        "theme-master"
+      ]
+    },
+    {
+      "id": "origin-core",
+      "file": "theme-origin-core.webp",
+      "floors": [
+        20
+      ],
+      "mood": "the machinery beneath authority"
+    },
+    {
+      "id": "ash-registry",
+      "file": "theme-ash-registry.webp",
+      "floors": [
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27
+      ],
+      "mood": "undelivered letters and repair work"
+    },
+    {
+      "id": "archive-storm",
+      "file": "theme-archive-storm.webp",
+      "floors": [
+        28
+      ],
+      "mood": "records breaking free of the old system"
+    },
+    {
+      "id": "final-index-room",
+      "file": "theme-final-index-room.webp",
+      "floors": [
+        29
+      ],
+      "mood": "incomplete truths preserved without forced certainty"
+    },
+    {
+      "id": "ember-lighthouse-writein",
+      "file": "theme-ember-lighthouse-writein.webp",
+      "floors": [
+        30
+      ],
+      "mood": "traceable write-in and accountable revocation"
+    },
+    {
+      "id": "ember-lighthouse",
+      "file": "theme-ember-lighthouse.webp",
+      "scenes": [
+        "ending-exterior"
+      ],
+      "mood": "a final signal, then a humane archive"
+    },
+    {
+      "id": "floor03-tide-navigation",
+      "file": "theme-floor03-tide-navigation.webp",
+      "floors": [
+        3
+      ],
+      "mood": "tower-interior tidal navigation and preserved evacuation signal"
+    },
+    {
+      "id": "floor05-red-vein-shelter",
+      "file": "theme-floor05-red-vein-shelter.webp",
+      "floors": [
+        5
+      ],
+      "mood": "tower-interior emergency shelter heating and humane warmth"
+    },
+    {
+      "id": "floor11-sun-revival-corridor",
+      "file": "theme-floor11-sun-revival-corridor.webp",
+      "floors": [
+        11
+      ],
+      "mood": "enclosed solar revival corridor and archival threshold"
+    },
+    {
+      "id": "floor13-red-vein-pulse-forge",
+      "file": "theme-floor13-red-vein-pulse-forge.webp",
+      "floors": [
+        13
+      ],
+      "mood": "tower-interior pulse forge and controlled power routing"
+    },
+    {
+      "id": "floor14-sun-three-arrow-arena",
+      "file": "theme-floor14-sun-three-arrow-arena.webp",
+      "floors": [
+        14
+      ],
+      "mood": "enclosed three-route verification arena"
+    },
+    {
+      "id": "floor16-tide-mirror-hall",
+      "file": "theme-floor16-tide-mirror-hall.webp",
+      "floors": [
+        16
+      ],
+      "mood": "enclosed twin-mirror hall recording testimony"
+    },
+    {
+      "id": "floor17-sun-three-crown-court",
+      "file": "theme-floor17-sun-three-crown-court.webp",
+      "floors": [
+        17
+      ],
+      "mood": "enclosed three-crown court preserving separate answers"
+    },
+    {
+      "id": "floor18-tide-sky-waterway",
+      "file": "theme-floor18-tide-sky-waterway.webp",
+      "floors": [
+        18
+      ],
+      "mood": "enclosed luminous archive waterway carrying receipts"
+    },
+    {
+      "id": "floor19-echo-court-interior",
+      "file": "theme-floor19-echo-court-interior.webp",
+      "floors": [
+        19
+      ],
+      "mood": "moonlit enclosed echo court with suspended nameless record plaques"
+    }
   ],
   "key_speaking_bosses": [
-    {"id":"cat_boss","name":"猫卫长·米露","identity_lock":"young adult cat knight, short charcoal hair, moon-white cat ears and tail, deep navy guard coat, silver bell cuirass, crescent buckler, alert amber eyes"},
-    {"id":"fox_boss","name":"狐祝·绯叶","identity_lock":"young adult fox shrine officiant, long chestnut-red hair, fox ears and three distinct tails, white crimson and deep-green ceremonial robes, paper seals, sharp green eyes"},
-    {"id":"whale_boss","name":"深蓝歌姬·澜音","identity_lock":"young adult ocean singer, long deep-blue hair with teal tips, sea-blue eyes, navy and pearl-white musician dress, a small shell harp, wave-ribbon sleeves"},
-    {"id":"sword_boss","name":"剑圣·塞蕾娜","identity_lock":"young adult sword saint, long black-blue hair tied low, grey-blue eyes, tailored white and midnight-blue duelist uniform, silver rapier, disciplined posture"},
-    {"id":"dragon_boss","name":"龙姬·焰璃","identity_lock":"young adult fire dragon knight, long flame-red hair, small black-gold horns, amber eyes, black red and gold armored dress, ember wing-shaped mantle, one slim spear"},
-    {"id":"astral_boss","name":"天穹魔女·露米","identity_lock":"young adult astrologer, ash-violet hair, bright gold-violet eyes, indigo and ivory scholar-witch dress, crescent astrolabe, star charts"},
-    {"id":"shadow_boss","name":"影织姬·鸦羽","identity_lock":"young adult shadow weaver, short raven hair with a violet sheen, grey-violet eyes, black plum and silver stealth dress, needle-like shadow threads, guarded expression"},
-    {"id":"palace_warden_v2","name":"静默执剑官·维拉","identity_lock":"young adult female oath auditor, long pearl-white hair, cool blue eyes, white and navy ceremonial guard coat, crescent pauldrons, one slim silver verification sword, restrained posture"},
-    {"id":"black_seal_keeper_v2","name":"黯印观测官·塞芙","identity_lock":"young adult female seal observer, long midnight-violet hair, amber eyes, indigo and black observer robe, broken circular astrolabe and black seal tablet, no sword"},
-    {"id":"echo_regent","name":"回声摄政官","identity_lock":"androgynous young adult court regent, pale ash-blond hair, muted violet eyes, long charcoal court coat with a blue-black sash, carries a sealed ledger, grave but humane"},
-    {"id":"arcane_sovereign","name":"奥术主权者","identity_lock":"young adult arcane sovereign, dark teal hair, tired gold eyes, formal black and ivory magistrate coat, restrained cobalt sigils, a broken signet ring, remorseful authority"},
-    {"id":"act3_last_custodian","name":"最后保管人","identity_lock":"young adult female final custodian, deep-teal bobbed hair, pale gold eyes, broad dark archive coat with ivory panels, sealed index key at waist, tired but resolute"},
-    {"id":"act3_archive_warden","name":"档案守望者","identity_lock":"young adult archive warden, silver-black braided hair, calm cyan eyes, long dark archivist uniform with copper clasps, lantern staff and floating index cards, rigid sense of duty"}
+    {
+      "id": "cat_boss",
+      "name": "猫卫长·米露",
+      "identity_lock": "young adult cat knight, short charcoal hair, moon-white cat ears and tail, deep navy guard coat, silver bell cuirass, crescent buckler, alert amber eyes"
+    },
+    {
+      "id": "fox_boss",
+      "name": "狐祝·绯叶",
+      "identity_lock": "young adult fox shrine officiant, long chestnut-red hair, fox ears and three distinct tails, white crimson and deep-green ceremonial robes, paper seals, sharp green eyes"
+    },
+    {
+      "id": "whale_boss",
+      "name": "深蓝歌姬·澜音",
+      "identity_lock": "young adult ocean singer, long deep-blue hair with teal tips, sea-blue eyes, navy and pearl-white musician dress, a small shell harp, wave-ribbon sleeves"
+    },
+    {
+      "id": "sword_boss",
+      "name": "剑圣·塞蕾娜",
+      "identity_lock": "young adult sword saint, long black-blue hair tied low, grey-blue eyes, tailored white and midnight-blue duelist uniform, silver rapier, disciplined posture"
+    },
+    {
+      "id": "dragon_boss",
+      "name": "龙姬·焰璃",
+      "identity_lock": "young adult fire dragon knight, long flame-red hair, small black-gold horns, amber eyes, black red and gold armored dress, ember wing-shaped mantle, one slim spear"
+    },
+    {
+      "id": "astral_boss",
+      "name": "天穹魔女·露米",
+      "identity_lock": "young adult astrologer, ash-violet hair, bright gold-violet eyes, indigo and ivory scholar-witch dress, crescent astrolabe, star charts"
+    },
+    {
+      "id": "shadow_boss",
+      "name": "影织姬·鸦羽",
+      "identity_lock": "young adult shadow weaver, short raven hair with a violet sheen, grey-violet eyes, black plum and silver stealth dress, needle-like shadow threads, guarded expression"
+    },
+    {
+      "id": "palace_warden_v2",
+      "name": "静默执剑官·维拉",
+      "identity_lock": "young adult female oath auditor, long pearl-white hair, cool blue eyes, white and navy ceremonial guard coat, crescent pauldrons, one slim silver verification sword, restrained posture"
+    },
+    {
+      "id": "black_seal_keeper_v2",
+      "name": "黯印观测官·塞芙",
+      "identity_lock": "young adult female seal observer, long midnight-violet hair, amber eyes, indigo and black observer robe, broken circular astrolabe and black seal tablet, no sword"
+    },
+    {
+      "id": "echo_regent",
+      "name": "回声摄政官",
+      "identity_lock": "androgynous young adult court regent, pale ash-blond hair, muted violet eyes, long charcoal court coat with a blue-black sash, carries a sealed ledger, grave but humane"
+    },
+    {
+      "id": "arcane_sovereign",
+      "name": "奥术主权者",
+      "identity_lock": "young adult arcane sovereign, dark teal hair, tired gold eyes, formal black and ivory magistrate coat, restrained cobalt sigils, a broken signet ring, remorseful authority"
+    },
+    {
+      "id": "act3_last_custodian",
+      "name": "最后保管人",
+      "identity_lock": "young adult female final custodian, deep-teal bobbed hair, pale gold eyes, broad dark archive coat with ivory panels, sealed index key at waist, tired but resolute"
+    },
+    {
+      "id": "act3_archive_warden",
+      "name": "档案守望者",
+      "identity_lock": "young adult archive warden, silver-black braided hair, calm cyan eyes, long dark archivist uniform with copper clasps, lantern staff and floating index cards, rigid sense of duty"
+    }
   ]
 }

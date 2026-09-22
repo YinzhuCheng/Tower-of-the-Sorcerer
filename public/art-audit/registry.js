@@ -169,12 +169,12 @@ export const CG_SCENES = Object.freeze([
 export const BACKDROPS = Object.freeze([
   { id: 'forest-approach', title: '森林进塔口', path: '/assets/anime/themes/theme-forest-approach.webp', usage: '序章、1–4F、早期守护者' },
   { id: 'forest-sanctuary', title: '森林视觉主题', path: '/assets/anime/themes/theme-forest-sanctuary.webp', usage: '玩法森林主题环境层' },
-  { id: 'red-vein', title: '赤脉炉室', path: '/assets/anime/themes/theme-red-vein.webp', usage: '5F、13F、焰璃场景' },
-  { id: 'ocean-archive', title: '潮汐档案', path: '/assets/anime/themes/theme-ocean-archive.webp', usage: '3F、16F、18F、澜音场景' },
+  { id: 'red-vein', title: '赤脉炉室', path: '/assets/anime/themes/theme-red-vein.webp', usage: '赤脉主题母版；5F、13F 运行时背景已拆分' },
+  { id: 'ocean-archive', title: '潮汐档案', path: '/assets/anime/themes/theme-ocean-archive.webp', usage: '潮汐主题母版；3F、16F、18F 运行时背景已拆分' },
   { id: 'star-mirror', title: '星镜档案', path: '/assets/anime/themes/theme-star-mirror.webp', usage: '6–7F、星图与影织场景' },
   { id: 'night-tower', title: '暗夜王庭', path: '/assets/anime/themes/theme-night-tower.webp', usage: '8–10F、女王场景' },
-  { id: 'sun-sanctum', title: '日轮圣所', path: '/assets/anime/themes/theme-sun-sanctum.webp', usage: '11F、14F、17F' },
-  { id: 'echo-court', title: '回响王庭', path: '/assets/anime/themes/theme-echo-court.webp', usage: '19F' },
+  { id: 'sun-sanctum', title: '日轮圣所', path: '/assets/anime/themes/theme-sun-sanctum.webp', usage: '日轮主题母版；11F、14F、17F 运行时背景已拆分' },
+  { id: 'echo-court', title: '回响王庭', path: '/assets/anime/themes/theme-echo-court.webp', usage: '回响主题母版；19F 运行时背景已拆分' },
   { id: 'origin-core', title: '起源魔源', path: '/assets/anime/themes/theme-origin-core.webp', usage: '20F' },
   { id: 'ash-registry', title: '余烬登记库', path: '/assets/anime/themes/theme-ash-registry.webp', usage: '21F' },
   { id: 'night-shelter', title: '夜航侧库', path: '/assets/anime/themes/theme-night-shelter-v8.webp', usage: '22F' },
@@ -187,7 +187,16 @@ export const BACKDROPS = Object.freeze([
   { id: 'twin-score-greenhouse', title: '双谱温室', path: '/assets/anime/themes/theme-twin-score-greenhouse.webp', usage: '12F、米露信物' },
   { id: 'folded-archive-market', title: '折页档案与折角集市', path: '/assets/anime/themes/theme-folded-archive-market.webp', usage: '15F、26F' },
   { id: 'final-index-room', title: '最后索引室', path: '/assets/anime/themes/theme-final-index-room.webp', usage: '29F' },
-  { id: 'ember-lighthouse-writein', title: '余烬灯塔写入口', path: '/assets/anime/themes/theme-ember-lighthouse-writein.webp', usage: '30F、终章室内' }
+  { id: 'ember-lighthouse-writein', title: '余烬灯塔写入口', path: '/assets/anime/themes/theme-ember-lighthouse-writein.webp', usage: '30F、终章室内' },
+{ id: 'floor03-tide-navigation', title: '3F 潮汐导航台', path: '/assets/anime/themes/theme-floor03-tide-navigation.webp', usage: '3F、澜音导航台' },
+  { id: 'floor05-red-vein-shelter', title: '5F 避难供暖炉室', path: '/assets/anime/themes/theme-floor05-red-vein-shelter.webp', usage: '5F、焰璃早期炉室' },
+  { id: 'floor11-sun-revival-corridor', title: '11F 复苏环廊', path: '/assets/anime/themes/theme-floor11-sun-revival-corridor.webp', usage: '11F' },
+  { id: 'floor13-red-vein-pulse-forge', title: '13F 脉冲锻炉', path: '/assets/anime/themes/theme-floor13-red-vein-pulse-forge.webp', usage: '13F' },
+  { id: 'floor14-sun-three-arrow-arena', title: '14F 三矢竞技场', path: '/assets/anime/themes/theme-floor14-sun-three-arrow-arena.webp', usage: '14F' },
+  { id: 'floor16-tide-mirror-hall', title: '16F 镜轮双殿', path: '/assets/anime/themes/theme-floor16-tide-mirror-hall.webp', usage: '16F' },
+  { id: 'floor17-sun-three-crown-court', title: '17F 三冠阶庭', path: '/assets/anime/themes/theme-floor17-sun-three-crown-court.webp', usage: '17F' },
+  { id: 'floor18-tide-sky-waterway', title: '18F 澄空航渠', path: '/assets/anime/themes/theme-floor18-tide-sky-waterway.webp', usage: '18F' },
+  { id: 'floor19-echo-court-interior', title: '19F 回响王庭·塔内', path: '/assets/anime/themes/theme-floor19-echo-court-interior.webp', usage: '19F' }
 ]);
 
 export const TRANSITIONS = Object.freeze([
