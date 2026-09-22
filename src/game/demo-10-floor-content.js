@@ -153,7 +153,7 @@ export function applyDemoTenFloorContent({ enemies, floors, dialogues, gridSize 
         dialogueTurn('残响精灵·纱雾', 'guide', '起源魔源在王庭上方，是整座塔最初的动力与档案库。诺克缇娅能调用它维持救援，却改不了被写进塔基旧规里的主权命令。', { expression: 'watchful' }),
         dialogueTurn('旁白', null, '璃试着推门，七枚核心同时发烫。门后传来的不是女王的声音，而是一道被写进塔基旧规、任何人都不能单独撤销的命令。', { kind: 'narration' }),
         dialogueTurn('绫星·璃', 'hero', '所以取回魔力只是第一步。我得先解开王庭外环，再让女王亲眼看到离港证据。', { expression: 'resolve' }),
-        dialogueTurn('残响精灵·纱雾', 'guide', '踩亮两枚静默开关、击败维拉就能上行。右侧双卫守的宝库是可选的，先算耗血。', { expression: 'focus' })
+        dialogueTurn('残响精灵·纱雾', 'guide', '踩亮两枚静默开关、击败维拉就能上行。右侧双卫守着额外宝物，不是必经之路；先想清楚那场战斗值不值得挨。', { expression: 'focus' })
       ]
     },
     floor9: {
@@ -212,10 +212,10 @@ export function applyDemoTenFloorContent({ enemies, floors, dialogues, gridSize 
       dialogueTurn('绫星·璃', 'hero', '记住代价，是为了不再重犯。但把每个名字永远困在撤离那天，不是纪念。', { expression: 'guarded' }),
       dialogueTurn('旁白', null, '绯叶垂下眼，藤蔓却缠紧她的手腕，将法杖尖端强行对准璃。缺少回签的名册不允许她放任何人上楼。', { kind: 'narration' }),
       dialogueTurn('狐祝·绯叶', 'fox_boss', '我已经试过把自己的名字从守卫名单上划掉。森罗核心立刻又写了回来，还让藤蔓攻击替我递笔的人。你若靠近，它也会如此。'),
-      dialogueTurn('狐祝·绯叶', 'fox_boss', '那就让我看看，你会不会为了省事，把所有卡牌和生命都丢在这里。')
+      dialogueTurn('狐祝·绯叶', 'fox_boss', '那就让我看看，你会不会为了省事，把手里的钥匙和力气都耗在这里。')
     ]),
     bossFoxPostDemo: dialogueSequence('森罗核心回收', [
-      dialogueTurn('狐祝·绯叶', 'fox_boss', '你没有把钥匙和生命随手花掉。女王若还肯看，她该看见人不是只会服从指令。'),
+      dialogueTurn('狐祝·绯叶', 'fox_boss', '你没有把钥匙和力气随手耗掉。女王若还肯看，她该看见人不是只会服从指令。'),
       dialogueTurn('旁白', null, '森罗核心里没有最后一页名册。记录显示，那一页被第三层导航台接走了。', { kind: 'narration' }),
       dialogueTurn('旁白', null, '第二段咏唱回到璃体内，散落的叶片随之排成撤离顺序。名单没有缺人：北辰七号的四十七个名字全在，缺失的只有那艘船抵达北岸后的回签。', { kind: 'narration' }),
       dialogueTurn('狐祝·绯叶', 'fox_boss', '不是名册漏了人，是最后一艘船的回签没被送回来。澜音守着导航台，她那里一定听见过什么。'),
@@ -305,7 +305,7 @@ export function applyDemoTenFloorContent({ enemies, floors, dialogues, gridSize 
       dialogueTurn('旁白', null, '数十根影线在空中织出塔的轮廓；最上层有一根线，既不通向王座，也不通向任何守卫。', { kind: 'narration' }),
       dialogueTurn('旁白', null, '其余影线都标着用途：门禁、名册、导航、巡卫、供暖与演算。唯独那根自上而下的黑线没有名称，它穿过塔内所有职司，却故意绕开了诺克缇娅的王座签章。', { kind: 'narration' }),
       dialogueTurn('影织姬·鸦羽', 'shadow_boss', '影线原本是用来找出“这道命令到底从谁手里来”的。该藏的签名我会藏，该追的源头我也会追。可现在虚影核心把最重要的那一段黑了下去，只准我继续维护这张网，却不许我看见是谁先把它织成现在这样。', { expression: 'guarded' }),
-      dialogueTurn('影织姬·鸦羽', 'shadow_boss', '正常的遮蔽是保护撤离者姓名，不让敌人从名册追到北岸。可这根黑线遮住的是发令者自己。她借用了我的术式，让每一层都能执行延长令，却无人能看见命令从何而来。', { expression: 'guarded' }),
+      dialogueTurn('影织姬·鸦羽', 'shadow_boss', '正常的遮蔽是保护撤离者姓名，不让敌人从名册追到北岸。可这根黑线遮住的是发令者自己。对方借用了我的术式，让每一层都能执行延长令，却无人能看见命令从何而来。', { expression: 'guarded' }),
       dialogueTurn('影织姬·鸦羽', 'shadow_boss', '我看见陛下划掉自己的离塔许可。她想留下来守住灰港，结果让所有人都陪她被困。', { expression: 'guarded' }),
       dialogueTurn('绫星·璃', 'hero', '那不是她一个人的罪。有人利用她的恐惧，把一份临时命令套在所有名字上。', { expression: 'guarded' }),
       dialogueTurn('旁白', null, '鸦羽指尖微动，影线便先一步缠上她的手臂。线结强迫她摆出迎战姿势，也把那枚陌生主权印藏得更深。', { kind: 'narration' }),
