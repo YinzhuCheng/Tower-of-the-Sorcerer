@@ -434,7 +434,7 @@ export const DIALOGUES = {
   },
   bossSword: {
     speaker: '剑圣·塞蕾娜', portrait: 'sword_boss', title: '锋刃核心回收',
-    text: '“规则写在数值里。你看清了，也承担了。”\n\n塞蕾娜收剑，让出通路。'
+    text: '“你没有把每一道门都当成必须斩开的敌人。该省的力气省下，该承担的交锋也没有躲。”\n\n塞蕾娜收剑，让出通路。'
   },
   bossDragon: {
     speaker: '龙姬·焰璃', portrait: 'dragon_boss', title: '赤焰核心回收',
@@ -442,7 +442,7 @@ export const DIALOGUES = {
   },
   bossAstral: {
     speaker: '天穹魔女·露米', portrait: 'astral_boss', title: '天穹核心回收',
-    text: '“结果修正：你已经有胜算。”\n\n露米解除星图封锁，交出第六枚核心。'
+    text: '“演算修正。第三条路成立。”\n\n露米解除星图封锁，交出第六枚核心。'
   },
   bossShadow: {
     speaker: '影织姬·鸦羽', portrait: 'shadow_boss', title: '虚影核心回收',
@@ -450,7 +450,7 @@ export const DIALOGUES = {
   },
   queenPhase: {
     speaker: '无声女王·诺克缇娅', portrait: 'final_queen', expression: 'cold', title: '最终术式展开',
-    text: '女王与黯星核心融合。核心的魔法反击无视防御。\n\n第二阶段紧接着开始，战前请确认生命和附刃档位。'
+    text: '黯星核心从王座下升起，强行接管女王残留的术式。它的反击会直接穿过护甲。\n\n没有休息的时间。璃只能带着上一战剩下的生命与魔力继续迎战。'
   },
   ending: {
     speaker: '绫星·璃', portrait: 'hero', expression: 'guarded', title: '终章：魔法重新被选择',
