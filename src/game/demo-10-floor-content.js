@@ -162,7 +162,7 @@ export function applyDemoTenFloorContent({ enemies, floors, dialogues, gridSize 
         dialogueTurn('旁白', null, '倒悬星桥记录着三道指令的先后：灰港撤离、女王封塔、紧急登记被无限延长。', { kind: 'narration' }),
         dialogueTurn('旁白', null, '三行时间依次亮起。船长的回执先抵达；一刻钟后，诺克缇娅因看不到回执而封塔；又过了七息，一道陌生的上层命令把“临时”改成“无限”。顺序排开后，谁在因果链上做了什么终于不再混成一团。', { kind: 'narration' }),
         dialogueTurn('残响精灵·纱雾', 'guide', '最后一道指令带着王座之外的黯星印权。诺克缇娅也许做错了选择，却不是唯一的签署人。', { expression: 'watchful' }),
-        dialogueTurn('绫星·璃', 'hero', '她封塔、夺走我的咏唱，这些是她亲手做的；可有人明知她会害怕，仍把没有出口的命令递给了她。两件事都得说清。', { expression: 'guarded' }),
+        dialogueTurn('绫星·璃', 'hero', '她封塔、夺走我的咏唱，这些是她亲手做的；可在她之后，又有人把一道没有停止条件的命令写进了更高处。两件事都得说清。', { expression: 'guarded' }),
         dialogueTurn('绫星·璃', 'hero', '我不是去替她开脱。我要让她面对七名守护者受过的伤，也要把真正改写命令的人从黑印后面找出来。少说任何一半，三年前的事都会再次被说成一个人的错。', { expression: 'guarded' }),
         dialogueTurn('绫星·璃', 'hero', '塞芙守着黯星通行印。拿到它，我们才能越过王座封印，读出延长令的真正签名。', { expression: 'resolve' }),
         dialogueTurn('残响精灵·纱雾', 'guide', '先用月辉卡进入校准台，再按月蚀、晨辉、星落的顺序踩亮符文。', { expression: 'focus' })
@@ -307,7 +307,7 @@ export function applyDemoTenFloorContent({ enemies, floors, dialogues, gridSize 
       dialogueTurn('影织姬·鸦羽', 'shadow_boss', '影线原本是用来找出“这道命令到底从谁手里来”的。该藏的签名我会藏，该追的源头我也会追。可现在虚影核心把最重要的那一段黑了下去，只准我继续维护这张网，却不许我看见是谁先把它织成现在这样。', { expression: 'guarded' }),
       dialogueTurn('影织姬·鸦羽', 'shadow_boss', '正常的遮蔽是保护撤离者姓名，不让敌人从名册追到北岸。可这根黑线遮住的却是发令者。现在我只能确定：主权印经过虚影层以后，签名被挡住了。至于是签署者刻意遮名，还是上层旧规本来就不向王座公开，我还没有证据。', { expression: 'guarded' }),
       dialogueTurn('影织姬·鸦羽', 'shadow_boss', '我看见陛下划掉自己的离塔许可。她想留下来守住灰港，结果让所有人都陪她被困。', { expression: 'guarded' }),
-      dialogueTurn('绫星·璃', 'hero', '那不是她一个人的罪。有人利用她的恐惧，把一份临时命令套在所有名字上。', { expression: 'guarded' }),
+      dialogueTurn('绫星·璃', 'hero', '那不是她一个人的责任。她的恐惧让她不敢停手，而那道更高的命令又把“不能停”变成了整座塔都必须服从的旧规。', { expression: 'guarded' }),
       dialogueTurn('旁白', null, '鸦羽指尖微动，影线便先一步缠上她的手臂。线结强迫她摆出迎战姿势，也把那枚陌生主权印藏得更深。', { kind: 'narration' }),
       dialogueTurn('影织姬·鸦羽', 'shadow_boss', '别靠我的左侧。核心会先封住你的影子，再借影线刺向本体。我能提醒你的只有这些；开战后，连这点声音也会被它收走。', { expression: 'guarded' }),
       dialogueTurn('影织姬·鸦羽', 'shadow_boss', '证明给我看。否则我会把你也钉在这张网里。', { expression: 'guarded' }),
@@ -372,7 +372,7 @@ export function applyDemoTenFloorContent({ enemies, floors, dialogues, gridSize 
       dialogueTurn('绫星·璃', 'hero', '你留下，不是因为舍不得王座，是怕承认救援结束以后，那些名字也会跟着消失。可人没有消失。真正没到你手里的，是北岸早就送回来的回答。', { expression: 'guarded' }),
       dialogueTurn('绫星·璃', 'hero', '北辰七号的四十七人全部抵达北岸。米露保存了出发录音，绯叶保住了完整名单，澜音带回船长原音；塞蕾娜、焰璃、露米和鸦羽又证明，结案是在回执抵达后被上层命令截断的。'),
       dialogueTurn('绫星·璃', 'hero', '米露、绯叶、澜音和其他守护者都记得那一夜。保留名字，不等于逼她们永远受命。', { expression: 'resolve' }),
-      dialogueTurn('绫星·璃', 'hero', '你先为救人封塔，后来却因为害怕失去记录，把所有人留在命令里。奥术主权者利用了你的恐惧，可夺走咏唱、拒绝面对守护者的痛苦，仍是你必须亲口承担的部分。', { expression: 'guarded' }),
+      dialogueTurn('绫星·璃', 'hero', '你先为救人封塔，后来却因为害怕失去记录，把所有人留在命令里。奥术主权者留下的命令把你的恐惧固化成了整座塔的旧规；可夺走咏唱、迟迟不肯面对守护者的痛苦，仍是你必须亲口承担的部分。', { expression: 'guarded' }),
       dialogueTurn('无声女王·诺克缇娅', 'final_queen', '我听过米露的铃铛在夜里失控，也听过澜音把同一句警报唱到声音发抖。焰璃守着空炉，她们都来问过我什么时候才算结束。我没有回答。每次那些姓名牌在我眼前烧成灰，我就把她们再推回去守一晚——这一晚，是我亲手加上去的。', { expression: 'sorrow' }),
       dialogueTurn('绫星·璃', 'hero', '天穹核心已经算出第三条路。我们先把姓名、船号、人数和抵达时间写入不可涂改的档案，再撤下救援令。你不必靠永远重复求援来证明自己记得她们。', { expression: 'resolve' }),
       dialogueTurn('无声女王·诺克缇娅', 'final_queen', '我想相信你，璃。可这三年里，我已经太多次把“我想相信”当成继续拖延的理由。黯星核心不听我们的解释，它只认那套旧命令。若我们真要走第三条路，就得先把它从王座下面拽出来。', { expression: 'sorrow' })
