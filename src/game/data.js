@@ -385,7 +385,7 @@ export const DIALOGUES = {
       { speaker: '龙姬·焰璃', portrait: 'dragon_boss', text: '可登记网三年来每天把同一份名单送给我。它不告诉我“这些人昨天已经离开”，只说“仍有四十七人等待确认”。我逐间敲门、逐段查管道，没有一次得到回应；核心却把沉默解释成“可能有人无法回答”。' },
       { speaker: '旁白', portrait: null, text: '焰璃踢开一只空汤锅。锅底被反复洗得发亮，旁边的四十七只碗却从未被拿走。她不是不知道房间已经空了，而是不敢把一次判断错误的代价押在可能存在的伤员身上。' },
       { speaker: '绫星·璃', portrait: 'hero', expression: 'guarded', text: '先别熄炉。真有一间屋还住着伤员，突然断火先害的是她。我们先斩断强制契约，再和你一间间确认；空屋停火，有人的地方继续烧。' },
-      { speaker: '绫星·璃', portrait: 'hero', expression: 'guarded', text: '炉心还记着每次加火的时刻。船长回话明明已经到了；如果那之后火力反而被强行抬高，就说明有人在看见证据之后，仍让旧命令继续。' },
+      { speaker: '绫星·璃', portrait: 'hero', expression: 'guarded', text: '炉心还记着每次加火的时刻。船长回话明明已经进塔；如果那之后火力反而被强行抬高，就说明更高一层的命令在回执出现后仍压住了原来的收尾顺序。至于是人重新下令，还是旧规自行延续，现在还不能下结论。' },
       { speaker: '龙姬·焰璃', portrait: 'dragon_boss', text: '如果你只是想让我相信一份纸，我不会停火。但你已经带回澜音的原音，也让塞蕾娜的剑停过一次。先斩断赤焰核心，战斗结束后我亲自和你逐屋确认。' }
     ]
   },
@@ -405,7 +405,7 @@ export const DIALOGUES = {
   floor7: {
     title: '第七阵：虚影织界',
     turns: [
-      { speaker: '旁白', portrait: null, text: '第六枚核心恢复后，星镜显示了一条被遮住的批注：“离港确认有效，结案的印权被上层锁住。”' },
+      { speaker: '旁白', portrait: null, text: '第六枚核心恢复后，星镜显示了一条被遮住的批注：“抵达确认有效，结案的印权被上层锁住。”' },
       { speaker: '影织姬·鸦羽', portrait: 'shadow_boss', text: '陛下听见“撤销登记”时，以为那些名字也会一起消失。她划掉自己的离塔许可，留在王座上等一份永远不会送到的答复。' },
       { speaker: '绫星·璃', portrait: 'hero', expression: 'stern', text: '她想守住灰港的名字，却让活着的守卫成了命令的工具。我要取回第七枚核心，让王庭的门承认我们带来的证据。' },
       { speaker: '影织姬·鸦羽', portrait: 'shadow_boss', text: '那就带着月辉卡和星蚀卡来解双相结界。日曜卡留好——女王的王座只认它。' }
@@ -416,7 +416,7 @@ export const DIALOGUES = {
     turns: [
       { speaker: '旁白', portrait: null, text: '七枚核心的光在王座前汇拢。灰港的姓名铺满墙面，每个名字后都闪着同一句：“等待确认。”' },
       { speaker: '无声女王·诺克缇娅', portrait: 'final_queen', expression: 'grave', text: '我没有忘记他们。如果关掉登记，旧规就会抹掉所有没有结案的名字。我不能让灰港消失第二次。' },
-      { speaker: '绫星·璃', portrait: 'hero', expression: 'embers', text: '七枚核心已经证明，人们离港了，回执是在送往王庭的途中被上层命令截住的。你守住的是记录，不是一道必须永远执行的求援令。' },
+      { speaker: '绫星·璃', portrait: 'hero', expression: 'embers', text: '七枚核心已经证明，北辰七号四十七人全部抵达北岸；回执是在送往王庭的途中被上层命令截住的。你守住的是记录，不是一道必须永远执行的求援令。' },
       { speaker: '残响精灵·纱雾', portrait: 'guide', expression: 'gentle', text: '诺克缇娅，让我们查读原始签名。只要找到归档方式，记录可以留下，命令也可以结束。' }
     ]
   },
@@ -446,7 +446,7 @@ export const DIALOGUES = {
   },
   bossShadow: {
     speaker: '影织姬·鸦羽', portrait: 'shadow_boss', title: '虚影核心回收',
-    text: '影线一根根断开。鸦羽低声说：“她怕的不是你的力量，是你还能自己选择。”'
+    text: '影线一根根断开。鸦羽抓住逃向上层的黑线：“源头还在王庭之上。别把女王和真正的签令者混成一个人。”'
   },
   queenPhase: {
     speaker: '无声女王·诺克缇娅', portrait: 'final_queen', expression: 'cold', title: '最终术式展开',
@@ -454,7 +454,7 @@ export const DIALOGUES = {
   },
   ending: {
     speaker: '绫星·璃', portrait: 'hero', expression: 'guarded', title: '王座之后：魔法重新被选择',
-    text: '黯星核心破碎，守卫们恢复意识。\n\n璃没有夺走任何人的魔力；高塔的命令终于失效。'
+    text: '黯星核心破碎，七名守护者摆脱王庭的强制契约。\n\n璃没有夺走任何人的魔力；可更上层的无限延长与归档问题仍未解决。王座后的阶梯已经亮起。'
   }
 };
 
