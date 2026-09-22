@@ -325,7 +325,7 @@ export function applyDemoTenFloorContent({ enemies, floors, dialogues, gridSize 
       dialogueTurn('静默执剑官·维拉', 'palace_warden_v2', '我的职责是核验进入王庭的证据，防止有人伪造撤离结果、擅改起源魔源。你带来的七枚核心必须逐一应答。'),
       dialogueTurn('静默执剑官·维拉', 'palace_warden_v2', '月影要证明谁经过门廊，森罗要证明名单完整，潮汐要复述船长原音；锋刃、赤焰、天穹与虚影则要说明回执进入高塔后为什么没能到达王庭。任何一份时间不合，我都不能开门。'),
       dialogueTurn('静默执剑官·维拉', 'palace_warden_v2', '这道门封住起源魔源的访问权。没有它，就连女王也只能维持登记，不能修改塔基旧令。'),
-      dialogueTurn('绫星·璃', 'hero', '所以她不只是不愿意关闭，也没有真正的关闭权。但她封住所有人的选择，仍然必须回答。', { expression: 'guarded' }),
+      dialogueTurn('绫星·璃', 'hero', '她不是凭一句话就能让这道旧令消失。但封塔、夺走咏唱、让守护者继续替她等待，这些都是她自己做的，仍然要回答。', { expression: 'guarded' }),
       dialogueTurn('旁白', null, '七枚核心依次亮起，门锁仍将维拉的剑推离剑鞘。核验完成以前，她同样不能让路。', { kind: 'narration' }),
       dialogueTurn('静默执剑官·维拉', 'palace_warden_v2', '我的剑会逐段检验咏唱。你若在中途倒下，外环会把证据重新判为无效；不是我怀疑你，而是这道旧规只承认完整通过的结果。'),
       dialogueTurn('静默执剑官·维拉', 'palace_warden_v2', '先让七枚核心通过我的剑。若它们的见证一致，我会把外环通行印交给你。')
@@ -345,7 +345,7 @@ export function applyDemoTenFloorContent({ enemies, floors, dialogues, gridSize 
       dialogueTurn('黯印观测官·塞芙', 'black_seal_keeper_v2', '我负责观测上层指令是否越过王座，也守着唯一能揭开签名的通行印。三年来，它不许我向任何人交付异常报告。'),
       dialogueTurn('黯印观测官·塞芙', 'black_seal_keeper_v2', '我每天都记录同一个矛盾：灰港已经撤离，救援命令却仍有效。每当我把报告送向王庭，黯印就会将收件人改成我自己。诺克缇娅因此从未看见完整警告。'),
       dialogueTurn('黯印观测官·塞芙', 'black_seal_keeper_v2', '这枚印来自王座之外。它把延长令刻进塔基旧规，女王可以继续执行，却不能单独撤销。'),
-      dialogueTurn('绫星·璃', 'hero', '她仍然应该为封住守卫道歉，但她不应替真正的发令者背上全部责任。', { expression: 'guarded' }),
+      dialogueTurn('绫星·璃', 'hero', '封住守卫、夺走咏唱，是她自己的责任；无限延长是谁签的，是另一笔。两笔都不能省。', { expression: 'guarded' }),
       dialogueTurn('旁白', null, '塞芙伸手触碰黯印，手指立刻被黑光弹开。她转而举起法杖——通行印只承认能击破校准术式的人。', { kind: 'narration' }),
       dialogueTurn('黯印观测官·塞芙', 'black_seal_keeper_v2', '开战后，黑印会把我的观察术改成攻击术。我会标出它最薄弱的三个校准点，但无法替你踩亮。击破它，报告和签名才能同时解封。'),
       dialogueTurn('绫星·璃', 'hero', '塞芙，把印交给我。我会带着它去见女王，也让真正的签署人留下姓名。', { expression: 'resolve' })
