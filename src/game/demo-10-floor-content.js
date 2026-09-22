@@ -383,21 +383,21 @@ export function applyDemoTenFloorContent({ enemies, floors, dialogues, gridSize 
     queenPhaseDemo: dialogueSequence('最终术式展开', 'night', [
       dialogueTurn('旁白', null, '女王的剑停了，黯星核心却从王座下升起。它用魔法反击将两人一同锁在阵中。', { kind: 'narration' }),
       dialogueTurn('旁白', null, '核心把四十七枚姓名牌投成燃烧的幻象，又在每一枚下方写出“关闭即删除”。诺克缇娅下意识伸手护住它们，锁链便趁机缠上她的手腕。', { kind: 'narration' }),
-      dialogueTurn('无声女王·诺克缇娅', 'final_queen', '原来它从没有受我控制。它锁住原始签名，也不许我承认撤离已经结束。', { expression: 'sorrow' }),
+      dialogueTurn('无声女王·诺克缇娅', 'final_queen', '原来我一直只能借它的力量维持救援，却从没有真正握住让它停下的钥匙。它锁着原始签名，也不许我承认撤离已经结束。', { expression: 'sorrow' }),
       dialogueTurn('无声女王·诺克缇娅', 'final_queen', '我仍然是做出封塔选择的人，但我不会再让这份恐惧替我挥剑。璃，姓名牌只是幻象，真正的档案已经由七枚核心保存。攻击核心。', { expression: 'resolve' }),
       dialogueTurn('旁白', null, '诺克缇娅反手扯断束缚自己的黑纹，为璃撕开一道狭窄缺口。七枚核心沿缺口照亮黯星的裂缝。', { cg: '/assets/anime/cg/liyue-noctia-seal-cg-audit-v3.webp', cgHold: 2, kind: 'narration' }),
       dialogueTurn('绫星·璃', 'hero', '那就一起打破它。它的反击会穿过护甲；我会用上一战剩下的力气撑过去。', { expression: 'embers' })
     ]),
     bossQueenPostDemo: dialogueSequence('终章：魔法重新被选择', 'night', [
       dialogueTurn('旁白', null, '黯星核心碎裂，王庭的警报终于停下。墙上的灰港名字没有消失，只是不再闪烁。', { kind: 'narration' }),
-      dialogueTurn('旁白', null, '诺克缇娅逐个触碰那些名字。它们已被转入不可涂改的档案：可以被记住，却不会再向守卫下达命令。', { kind: 'narration' }),
+      dialogueTurn('旁白', null, '诺克缇娅逐个触碰那些名字。七枚核心先把四十七块名牌封进王庭卷册，让它们不再向守卫发令；这只是王庭层的临时封卷，还没有经过更上层的最终归档。', { kind: 'narration' }),
       dialogueTurn('旁白', null, '门廊的铃铛、导航台的鲸歌与锻炉的轰鸣也相继安静下来。七名守护者仍保有当夜的记忆，却不再被迫重复当夜的动作；她们第一次可以决定接下来要去哪里。', { kind: 'narration' }),
       dialogueTurn('绫星·璃', 'hero', '七枚核心都已回收，守卫们也恢复了自由。可原始签名指向更高处的起源魔源。', { expression: 'resolve' }),
       dialogueTurn('无声女王·诺克缇娅', 'final_queen', '封塔是我做的，把你的咏唱拆开也是我做的。哪怕后来有人篡改了命令，这两件事也不会因此变成别人的责任。我不能只说一句“对不起”就留在王座上等你们善后。接下来的路，我会一起走；等真正的结案完成，再由米露她们决定要不要接受我的道歉。', { expression: 'sorrow' }),
-      dialogueTurn('无声女王·诺克缇娅', 'final_queen', '我不会用“受人操纵”替自己开脱。等我们回来，我会把封塔经过、七名守护者遭受的强制契约和我作出的每个决定公开记录。她们愿不愿继续留在塔里，由她们自己选择。', { expression: 'sorrow' }),
+      dialogueTurn('无声女王·诺克缇娅', 'final_queen', '我不会用“上层命令也在逼我”替自己开脱。等我们回来，我会把封塔经过、七名守护者遭受的强制契约和我作出的每个决定公开记录。她们愿不愿继续留在塔里，由她们自己选择。', { expression: 'sorrow' }),
       dialogueTurn('残响精灵·纱雾', 'guide', '王座后面的阶梯通向起源魔源。真正把“临时”改成“无限”的签名，就在那里。我们先找到签署人，再问他为什么这么做。', { expression: 'focus' }),
       dialogueTurn('残响精灵·纱雾', 'guide', '还有一件事不能忘：就算黯星核心碎了，档案也必须能独立留下。否则我们只是换了一种方式，把那些名字绑在另一枚核心上。', { expression: 'watchful' }),
-      dialogueTurn('旁白', null, '石阶在王座后方一节节亮起，通向从未出现在高塔图纸上的上层。璃回头看了一眼不再鸣警的十层：灰港的撤离终于结案，但篡改命令的人仍在更高处留下了一扇门。', { kind: 'narration' }),
+      dialogueTurn('旁白', null, '石阶在王座后方一节节亮起，通向从未出现在高塔图纸上的上层。璃回头看了一眼不再鸣警的十层：高塔终于承认北辰七号已经到岸，七名守护者也不再受旧命令驱使；可灰港的原卷还没有完成最终归档，真正的结案仍在更高处。', { kind: 'narration' }),
       dialogueTurn('绫星·璃', 'hero', '那就一起上去。找到签署人，撤下无限延长，也让这些档案不再依赖警报才能留下。三年前没收好的尾，我们这次一件件收完。', { expression: 'resolve' })
     ])
   });
