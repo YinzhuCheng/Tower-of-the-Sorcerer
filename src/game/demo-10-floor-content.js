@@ -244,7 +244,7 @@ export function applyDemoTenFloorContent({ enemies, floors, dialogues, gridSize 
       dialogueTurn('旁白', null, '原件边缘还有巡卫们的签字和交班时间，最后一班写着“待北辰七号回签后解除”。副本在相同位置留下一块整齐的空白，像是有人把整句话连同墨水一起挖走。', { kind: 'narration' }),
       dialogueTurn('剑圣·塞蕾娜', 'sword_boss', '我训练巡卫，是为了在最乱的时候给伤员留出一条能走的路。封锁本来只是把逆行的人挡开，不是让所有人永远停在门外。可只要这份封锁令还被判定有效，锋刃核心就会把每一个上行者都当成会堵死通道的人。'),
       dialogueTurn('剑圣·塞蕾娜', 'sword_boss', '封锁令只该维持到撤离结束。可副本没有终止栏，锋刃核心命令我继续执行。'),
-      dialogueTurn('绫星·璃', 'hero', '潮汐核心已经带回“全员离港”的回执。我会取回你身上的第四枚核心，把终止时间补回去。', { expression: 'resolve' }),
+      dialogueTurn('绫星·璃', 'hero', '潮汐核心已经带回“北辰七号四十七人全部抵达北岸”的回执。我会取回你身上的第四枚核心，把本该存在的停止条件找回来。', { expression: 'resolve' }),
       dialogueTurn('旁白', null, '塞蕾娜看了一眼原件，像是想收剑。下一刻，锋刃印在她掌心亮起，她只能将剑锋重新抬到璃的眼前。', { kind: 'narration' }),
       dialogueTurn('剑圣·塞蕾娜', 'sword_boss', '三年来，我把剑锋偏开过很多次。核心会在下一击纠正角度，直到我无法避开。别把我的克制当成放行的承诺；进入战斗后，我的身体不会继续听我指挥。'),
       dialogueTurn('剑圣·塞蕾娜', 'sword_boss', '先证明你能穿过这道命令。我会尽力出剑，这是契约留给我最后的选择。')
