@@ -375,7 +375,10 @@ export function applyDemoTenFloorContent({ enemies, floors, dialogues, gridSize 
       dialogueTurn('绫星·璃', 'hero', '你先为救人封塔，后来却因为害怕失去记录，把所有人留在命令里。奥术主权者留下的命令把你的恐惧固化成了整座塔的旧规；可夺走咏唱、迟迟不肯面对守护者的痛苦，仍是你必须亲口承担的部分。', { expression: 'guarded' }),
       dialogueTurn('无声女王·诺克缇娅', 'final_queen', '我听过米露的铃铛在夜里失控，也听过澜音把同一句警报唱到声音发抖。焰璃守着空炉，她们都来问过我什么时候才算结束。我没有回答。每次那些姓名牌在我眼前烧成灰，我就把她们再推回去守一晚——这一晚，是我亲手加上去的。', { expression: 'sorrow' }),
       dialogueTurn('绫星·璃', 'hero', '天穹核心已经算出第三条路。我们先把姓名、船号、人数和抵达时间写入不可涂改的档案，再撤下救援令。你不必靠永远重复求援来证明自己记得她们。', { expression: 'resolve' }),
-      dialogueTurn('无声女王·诺克缇娅', 'final_queen', '我想相信你，璃。可这三年里，我已经太多次把“我想相信”当成继续拖延的理由。黯星核心不听我们的解释，它只认那套旧命令。若我们真要走第三条路，就得先把它从王座下面拽出来。', { expression: 'sorrow' })
+      dialogueTurn('无声女王·诺克缇娅', 'final_queen', '我想相信你，璃。可这三年里，我已经太多次把“我想相信”当成继续拖延的理由。黯星核心不听我们的解释，它只认那套旧命令。若我们真要走第三条路，就得先把它从王座下面拽出来。', { expression: 'sorrow' }),
+      dialogueTurn('旁白', null, '诺克缇娅试着把剑放到地上。剑尖刚离开王座半尺，腕上的黯星纹便骤然收紧，像另一只手重新扣住她的五指。她咬住一声痛呼，剑锋仍被强行抬回璃面前。', { kind: 'narration' }),
+      dialogueTurn('无声女王·诺克缇娅', 'final_queen', '看见了吗？我已经可以说“停”，身体却还不能照做。先斩断缠在我手腕、王冠和王座之间的封印。别把剑锋让给我的脸，也别因为是我就收力——只有把这层束缚逼到崩裂，黯星核心才会离开我，露出真正的本体。', { expression: 'resolve' }),
+      dialogueTurn('绫星·璃', 'hero', '明白。我斩的是封印，不是你。等核心出来，我们再一起把这场救援真正停下。', { expression: 'resolve' })
     ]),
     queenPhaseDemo: dialogueSequence('最终术式展开', 'night', [
       dialogueTurn('旁白', null, '女王的剑停了，黯星核心却从王座下升起。它用魔法反击将两人一同锁在阵中。', { kind: 'narration' }),
