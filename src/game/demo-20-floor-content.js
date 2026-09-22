@@ -348,7 +348,7 @@ function installActTwoDialogues(dialogues) {
       dialogueTurn('无声女王·诺克缇娅', 'final_queen', '所以我们才带来三份本人见证。用回执和名簿证明，归档不等于遗忘。', { expression: 'grave' }),
       dialogueTurn('绫星·璃', 'hero', '接下来只停强制命令，不碰记录。把誊录台打开。', { expression: 'resolve' })
     ]),
-    bossOriginCorePost: dialogueSequence('终章：魔源再临', [
+    bossOriginCorePost: dialogueSequence('起源之后：仍未投递', [
       dialogueTurn('绫星·璃', 'hero', '起源核心安静下来了。强制命令停了，记录还在。先别庆祝——这只说明我们终于能动手收拾残局，还不是已经结束。', { expression: 'resolve' }),
       dialogueTurn('旁白', null, '奥术主权者手腕上的蓝色束缚松开了。那枚裂开的主权印没有消失，他也没有把它摘下来，只用另一只手扶住还在发抖的指节。', { kind: 'narration' }),
       dialogueTurn('奥术主权者', 'arcane_sovereign', '别替我把这当成赎罪。写下无限延长的是我，今天只不过终于有人把我从那道命令里拖出来，让我能亲手去收拾它留下的东西。', { expression: 'acceptance' }),
