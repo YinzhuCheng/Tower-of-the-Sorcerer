@@ -170,6 +170,7 @@ const DIALOGUE_EXPRESSIONS = Object.freeze({
   'dragon_boss:embers': '/assets/anime/characters/b2-20260921/dragon-boss-embers-b2.webp',
   'astral_boss:focus': '/assets/anime/characters/b2-20260921/astral-boss-focus-b2.webp',
   'shadow_boss:guarded': '/assets/anime/characters/b2-20260921/shadow-boss-guarded-b2.webp',
+  'merchant:knowing': '/assets/anime/characters/merchant-keke-knowing-hd.png',
   'echo_regent:grave': '/assets/anime/characters/b2-20260921/echo-regent-grave-b2.webp',
   'echo_regent:release': '/assets/anime/characters/b2-20260921/echo-regent-release-b2.webp',
   'arcane_sovereign:regret': '/assets/anime/characters/b2-20260921/arcane-sovereign-regret-b2.webp',
