@@ -385,7 +385,7 @@ export function applyDemoTenFloorContent({ enemies, floors, dialogues, gridSize 
       dialogueTurn('旁白', null, '诺克缇娅反手扯断束缚自己的黑纹，为璃撕开一道狭窄缺口。七枚核心沿缺口照亮黯星的裂缝。', { cg: '/assets/anime/cg/liyue-noctia-seal-cg-audit-v3.webp', cgHold: 2, kind: 'narration' }),
       dialogueTurn('绫星·璃', 'hero', '那就一起打破它。它的反击会穿过护甲；我会用上一战剩下的力气撑过去。', { expression: 'embers' })
     ]),
-    bossQueenPostDemo: dialogueSequence('终章：魔法重新被选择', 'night', [
+    bossQueenPostDemo: dialogueSequence('王座之后：未完的结案', 'night', [
       dialogueTurn('旁白', null, '黯星核心碎裂，王庭的警报终于停下。墙上的灰港名字没有消失，只是不再闪烁。', { kind: 'narration' }),
       dialogueTurn('旁白', null, '诺克缇娅逐个触碰那些名字。七枚核心先把四十七块名牌封进王庭卷册，让它们不再向守卫发令；这只是王庭层的临时封卷，还没有经过更上层的最终归档。', { kind: 'narration' }),
       dialogueTurn('旁白', null, '门廊的铃铛、导航台的鲸歌与锻炉的轰鸣也相继安静下来。七名守护者仍保有当夜的记忆，却不再被迫重复当夜的动作；她们第一次可以决定接下来要去哪里。', { kind: 'narration' }),
