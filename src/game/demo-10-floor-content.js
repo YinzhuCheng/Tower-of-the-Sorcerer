@@ -138,7 +138,7 @@ export function applyDemoTenFloorContent({ enemies, floors, dialogues, gridSize 
         dialogueTurn('旁白', null, '第七层没有窗，只有成千上万根影线穿过墙壁。每根线都牵着一道命令的来路，也牵着一名无法违令的守卫。', { kind: 'narration' }),
         dialogueTurn('旁白', null, '璃走近时，七束颜色不同的光从她胸前分向各层。那是尚未取回的最后一段咏唱在呼唤其余六段，也让她第一次看清：七名守护者的契约都系在同一个结案锁上。', { cg: '/assets/anime/cg/liyue-yayu-seven-core-network-cg-audit-v3.webp', cgHold: 4, kind: 'narration' }),
         dialogueTurn('影织姬·鸦羽', 'shadow_boss', '女王以为“撤销登记”就是删掉名字。她把自己也留在塔里，一等就是三年。'),
-        dialogueTurn('影织姬·鸦羽', 'shadow_boss', '我负责沿影线追查每道命令从哪里来。可延长令落下的那一刻，有人反过来借虚影核心遮住了源头；我明明看见异常，却连报告都送不出。', { expression: 'guarded' }),
+        dialogueTurn('影织姬·鸦羽', 'shadow_boss', '我负责沿影线追查每道命令从哪里来。可延长令落下的那一刻，虚影核心反过来把发令的源头遮住了；我明明看见异常，却连报告都送不出。', { expression: 'guarded' }),
         dialogueTurn('绫星·璃', 'hero', '她想守住灰港，却让守卫们成了命令的工具。我会带着证据去见她。', { expression: 'guarded' }),
         dialogueTurn('绫星·璃', 'hero', '月影留下出发录音，森罗留下乘员名单，潮汐带回抵达原音，锋刃和赤焰证明封锁被异常延长，天穹找到了上层锁。还差你追到的发令来路，七份记录才会连成完整证词。', { expression: 'resolve' }),
         dialogueTurn('残响精灵·纱雾', 'guide', '取回第七枚虚影核心，王庭就会承认七份见证。月、星卡开结界，日曜卡留给王座。', { expression: 'focus' })
@@ -297,15 +297,15 @@ export function applyDemoTenFloorContent({ enemies, floors, dialogues, gridSize 
       dialogueTurn('旁白', null, '六份记录在镜中对齐：北辰七号抵达，潮汐回执进入王庭，临时封锁本应解除；随后，一道来自王庭上方的命令将回执改成“不可结案”，又删除了封锁的终止条件。', { kind: 'narration' }),
       dialogueTurn('天穹魔女·露米', 'astral_boss', '演算更新：离港确认是真的。但接收后一刻钟，它被更高一层的印权改成了“不可结案”。'),
       dialogueTurn('天穹魔女·露米', 'astral_boss', '第六段咏唱恢复后，我终于能计算第三条路：将姓名、船号、抵达时间写入不可涂改的档案，再从名单上撤下救援令。记录会留下，命令可以停止。'),
-      dialogueTurn('残响精灵·纱雾', 'guide', '这道印权不属于女王。它从王庭之上接入，又把签名用虚影线藏了起来。', { expression: 'watchful' }),
+      dialogueTurn('残响精灵·纱雾', 'guide', '这道印权不属于女王。它从王庭之上接入，经过虚影层时，签名也被黑线遮住了。', { expression: 'watchful' }),
       dialogueTurn('天穹魔女·露米', 'astral_boss', '鸦羽管理虚影织界。她知道那条线穿过了谁的名字。'),
       dialogueTurn('绫星·璃', 'hero', '那就去第七层。收回最后一枚核心，我们就有七份证据去打开王庭。', { expression: 'resolve' })
     ]),
     bossShadowPreDemo: dialogueSequence('第七阵守护者：影织姬·鸦羽', 'starMirror', [
       dialogueTurn('旁白', null, '数十根影线在空中织出塔的轮廓；最上层有一根线，既不通向王座，也不通向任何守卫。', { kind: 'narration' }),
-      dialogueTurn('旁白', null, '其余影线都标着用途：门禁、名册、导航、巡卫、供暖与演算。唯独那根自上而下的黑线没有名称，它穿过塔内所有职司，却故意绕开了诺克缇娅的王座签章。', { kind: 'narration' }),
+      dialogueTurn('旁白', null, '其余影线都标着用途：门禁、名册、导航、巡卫、供暖与演算。唯独那根自上而下的黑线没有名称。它穿过塔内所有职司，却绕开了诺克缇娅的王座签章。', { kind: 'narration' }),
       dialogueTurn('影织姬·鸦羽', 'shadow_boss', '影线原本是用来找出“这道命令到底从谁手里来”的。该藏的签名我会藏，该追的源头我也会追。可现在虚影核心把最重要的那一段黑了下去，只准我继续维护这张网，却不许我看见是谁先把它织成现在这样。', { expression: 'guarded' }),
-      dialogueTurn('影织姬·鸦羽', 'shadow_boss', '正常的遮蔽是保护撤离者姓名，不让敌人从名册追到北岸。可这根黑线遮住的是发令者自己。对方借用了我的术式，让每一层都能执行延长令，却无人能看见命令从何而来。', { expression: 'guarded' }),
+      dialogueTurn('影织姬·鸦羽', 'shadow_boss', '正常的遮蔽是保护撤离者姓名，不让敌人从名册追到北岸。可这根黑线遮住的却是发令者。现在我只能确定：主权印经过虚影层以后，签名被挡住了。至于是签署者刻意遮名，还是上层旧规本来就不向王座公开，我还没有证据。', { expression: 'guarded' }),
       dialogueTurn('影织姬·鸦羽', 'shadow_boss', '我看见陛下划掉自己的离塔许可。她想留下来守住灰港，结果让所有人都陪她被困。', { expression: 'guarded' }),
       dialogueTurn('绫星·璃', 'hero', '那不是她一个人的罪。有人利用她的恐惧，把一份临时命令套在所有名字上。', { expression: 'guarded' }),
       dialogueTurn('旁白', null, '鸦羽指尖微动，影线便先一步缠上她的手臂。线结强迫她摆出迎战姿势，也把那枚陌生主权印藏得更深。', { kind: 'narration' }),
@@ -340,7 +340,7 @@ export function applyDemoTenFloorContent({ enemies, floors, dialogues, gridSize 
       dialogueTurn('残响精灵·纱雾', 'guide', '我还是无法读取延长令的签名。有一枚黯星印遮住了发令者。', { expression: 'watchful' }),
       dialogueTurn('静默执剑官·维拉', 'palace_warden_v2', '外环只能确认事实，不能解除高于王座的命令。现在我们知道灰港平安，也知道诺克缇娅收到的是被篡改后的结果；最后缺的是谁下令无限延长。'),
       dialogueTurn('静默执剑官·维拉', 'palace_warden_v2', '第九层的观测官塞芙保管那枚印。她守的是进入王座前最后一道校准。'),
-      dialogueTurn('绫星·璃', 'hero', '我要那枚印，也要签署人的名字。诺克缇娅不该继续替一个藏起来的人承担一切。', { expression: 'resolve' })
+      dialogueTurn('绫星·璃', 'hero', '我要那枚印，也要签署人的名字。诺克缇娅不该继续替那位尚未现身的签署者承担全部责任。', { expression: 'resolve' })
     ]),
     bossBlackSealPreDemo: dialogueSequence('第九阵守护者：黯印观测官·塞芙', [
       dialogueTurn('旁白', null, '黯星印悬在塞芙身后。印面将延长令的签名涂成一团黑色，只留下“无限”二字。', { kind: 'narration' }),
@@ -351,7 +351,7 @@ export function applyDemoTenFloorContent({ enemies, floors, dialogues, gridSize 
       dialogueTurn('绫星·璃', 'hero', '她仍然应该为封住守卫道歉，但她不应替真正的发令者背上全部责任。', { expression: 'guarded' }),
       dialogueTurn('旁白', null, '塞芙伸手触碰黯印，手指立刻被黑光弹开。她转而举起法杖——通行印只承认能击破校准术式的人。', { kind: 'narration' }),
       dialogueTurn('黯印观测官·塞芙', 'black_seal_keeper_v2', '开战后，黑印会把我的观察术改成攻击术。我会标出它最薄弱的三个校准点，但无法替你踩亮。击破它，报告和签名才能同时解封。'),
-      dialogueTurn('绫星·璃', 'hero', '塞芙，把印交给我。我会带着它去见女王，让被藏起来的人也留下姓名。', { expression: 'resolve' })
+      dialogueTurn('绫星·璃', 'hero', '塞芙，把印交给我。我会带着它去见女王，也让真正的签署人留下姓名。', { expression: 'resolve' })
     ]),
     bossBlackSealPostDemo: dialogueSequence('黯星通行印解除', [
       dialogueTurn('旁白', null, '黑光剥落，印面第一次显出完整字迹。塞芙没有立刻开口，只把三年前没能递出的异常报告交到璃手中。', { kind: 'narration' }),
