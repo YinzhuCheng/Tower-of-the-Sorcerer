@@ -160,7 +160,7 @@ export function applyDemoTenFloorContent({ enemies, floors, dialogues, gridSize 
       title: '第九阵：倒悬星桥',
       turns: [
         dialogueTurn('旁白', null, '倒悬星桥记录着三道指令的先后：灰港撤离、女王封塔、紧急登记被无限延长。', { kind: 'narration' }),
-        dialogueTurn('旁白', null, '三行时间依次亮起。船长的回执先抵达；一刻钟后，诺克缇娅因看不到回执而封塔；又过了七息，一道陌生的上层命令把“临时”改成“无限”。顺序排开后，谁在因果链上做了什么终于不再混成一团。', { kind: 'narration' }),
+        dialogueTurn('旁白', null, '三行时间依次亮起。船长的回执先进入高塔的潮汐回路，却没有送到王庭；一刻钟后，诺克缇娅因仍看不到回执而封塔；又过了七息，一道陌生的上层命令把“临时”改成“无限”。顺序排开后，谁在因果链上做了什么终于不再混成一团。', { kind: 'narration' }),
         dialogueTurn('残响精灵·纱雾', 'guide', '最后一道指令带着王座之外的黯星印权。诺克缇娅也许做错了选择，却不是唯一的签署人。', { expression: 'watchful' }),
         dialogueTurn('绫星·璃', 'hero', '她封塔、夺走我的咏唱，这些是她亲手做的；可在她之后，又有人把一道没有停止条件的命令写进了更高处。两件事都得说清。', { expression: 'guarded' }),
         dialogueTurn('绫星·璃', 'hero', '我不是去替她开脱。我要让她面对七名守护者受过的伤，也要把真正改写命令的人从黑印后面找出来。少说任何一半，三年前的事都会再次被说成一个人的错。', { expression: 'guarded' }),
