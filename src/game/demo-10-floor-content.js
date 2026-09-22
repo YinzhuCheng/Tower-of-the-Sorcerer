@@ -265,7 +265,7 @@ export function applyDemoTenFloorContent({ enemies, floors, dialogues, gridSize 
       dialogueTurn('旁白', null, '锻炉的心跳隔着石墙传来。供暖管仍向一排早已空下来的避难屋送去热量。', { kind: 'narration' }),
       dialogueTurn('旁白', null, '走廊里叠着洗净的汤碗，碗沿没有一点灰，显然每天都有人擦拭。焰璃仍按四十七人的份量烧水、煮汤，再在无人领取后将它们倒掉。', { kind: 'narration' }),
       dialogueTurn('龙姬·焰璃', 'dragon_boss', '我管的不是炉子，是炉子后面那些会发冷的人。那一夜有人发高烧、有人全身湿透，我只知道一件事：屋里还有人，就不能让火灭。可登记网只要还留着一个“等待确认”，赤焰核心就会把整排空屋都当成还住着伤员。', { expression: 'embers' }),
-      dialogueTurn('龙姬·焰璃', 'dragon_boss', '第七百三十一次点名：无人应答。可登记网只给我一条结论——继续燃烧。', { expression: 'embers' }),
+      dialogueTurn('龙姬·焰璃', 'dragon_boss', '又一次点名：无人应答。可登记网还是只给我一条结论——继续燃烧。', { expression: 'embers' }),
       dialogueTurn('龙姬·焰璃', 'dragon_boss', '我试过逐间关阀。每关一处，核心就把那间屋标成“伤员失温”，逼我用更大的火补回来。我知道屋里没人，可万一我的判断错一次，代价就是一条命。'),
       dialogueTurn('绫星·璃', 'hero', '我不会让你现在就熄火。先让我看清是谁把“等一等”写成了永远。', { expression: 'guarded' }),
       dialogueTurn('绫星·璃', 'hero', '战斗结束后你来操作阀门，我用取回的赤焰咏唱稳住炉温。我们一间一间关，不让管道骤冷，也不再为不存在的伤员继续烧空炉。', { expression: 'resolve' }),
@@ -336,7 +336,7 @@ export function applyDemoTenFloorContent({ enemies, floors, dialogues, gridSize 
     bossPalacePostDemo: dialogueSequence('王庭外环解除', [
       dialogueTurn('旁白', null, '维拉将剑插回门锁。七道光沿剑脊汇成同一个时间戳，密闭门随之退开半尺。', { kind: 'narration' }),
       dialogueTurn('静默执剑官·维拉', 'palace_warden_v2', '七份见证完全一致：灰港撤离已完成。我解除王庭外环。'),
-      dialogueTurn('旁白', null, '门上的“等待确认”逐字熄灭，换成清晰的结论：“北辰七号，四十七人，于停战夜抵达北岸；灰港撤离完成。”这是三年来，高塔第一次正式承认那场救援已经结束。', { kind: 'narration' }),
+      dialogueTurn('旁白', null, '门上的“等待确认”逐字熄灭，换成清晰的结论：“北辰七号，四十七人，于停战次日凌晨抵达北岸；灰港撤离完成。”这是三年来，高塔第一次正式承认那场救援已经结束。', { kind: 'narration' }),
       dialogueTurn('残响精灵·纱雾', 'guide', '我还是无法读取延长令的签名。有一枚黯星印遮住了发令者。', { expression: 'watchful' }),
       dialogueTurn('静默执剑官·维拉', 'palace_warden_v2', '外环只能确认事实，不能解除高于王座的命令。现在我们知道灰港平安，也知道诺克缇娅收到的是被篡改后的结果；最后缺的是谁下令无限延长。'),
       dialogueTurn('静默执剑官·维拉', 'palace_warden_v2', '第九层的观测官塞芙保管那枚印。她守的是进入王座前最后一道校准。'),
