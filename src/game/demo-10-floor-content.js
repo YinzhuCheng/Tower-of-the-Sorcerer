@@ -232,10 +232,10 @@ export function applyDemoTenFloorContent({ enemies, floors, dialogues, gridSize 
     ]),
     bossWhalePostDemo: dialogueSequence('潮汐核心回收', [
       dialogueTurn('旁白', null, '水墙退成一层薄雾。被鲸歌压住的女声终于穿过回廊，清楚得像是刚刚从港外传来。', { kind: 'narration' }),
-      dialogueTurn('深蓝歌姬·澜音', 'whale_boss', '鲸歌停下了。我终于听见船长的原话：“灰港最后一船，全员已离港。”'),
+      dialogueTurn('深蓝歌姬·澜音', 'whale_boss', '鲸歌停下了。刚才我一直只能听到前半句——“灰港最后一船已经离港”。后面的声音，现在终于没有再被水声压住。'),
       dialogueTurn('旁白', null, '第三段咏唱归位，璃听见被水声割开的完整原音：“北辰七号，四十七人，全员抵达北岸。灰港无滞留者，请结束紧急登记。”', { cg: '/assets/anime/cg/liyue-lanyin-northstar-arrival-cg-v8.webp', kind: 'narration' }),
-      dialogueTurn('残响精灵·纱雾', 'guide', '回话时间比封塔早一刻钟。诺克缇娅本该收到，它却被标成了“等待复核”。', { expression: 'watchful' }),
-      dialogueTurn('残响精灵·纱雾', 'guide', '也就是说，失效的不是船长回执，而是王庭收到回执后给它下的判定。我们已经证明撤离完成，下一步要查封锁为何没有按规定终止。', { expression: 'watchful' }),
+      dialogueTurn('残响精灵·纱雾', 'guide', '这段回话比封塔早一刻钟。按原来的传讯顺序，它本该继续送到王庭，却在途中被压成了“等待复核”。', { expression: 'watchful' }),
+      dialogueTurn('残响精灵·纱雾', 'guide', '也就是说，失效的不是船长的回答，而是它进入高塔后的传递过程。我们已经证明北辰七号安全到岸，下一步要查：这份回执为什么没送到王庭，封锁又为什么没有按原规结束。', { expression: 'watchful' }),
       dialogueTurn('绫星·璃', 'hero', '女王不知道人们已经离开。下一层的锋刃庭院掌管封锁令，那里会有修改记录。', { expression: 'guarded' }),
       dialogueTurn('深蓝歌姬·澜音', 'whale_boss', '去吧。我会把这句回话保存好，等她愿意听的时候，再完整地唱一次。')
     ]),
