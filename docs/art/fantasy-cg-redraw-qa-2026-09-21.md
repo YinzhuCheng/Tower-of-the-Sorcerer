@@ -80,3 +80,23 @@ No audit trail, revision history, records dashboard, screen, table, readable tex
 **Exactly 2 story CGs remain blocked: CG_010 and CG_017.**
 
 No new standee, avatar, map, generic environment, or UI art gap was found in this pass. Existing Canon P0–P3 and environment masters are sufficient to finish both scenes in a clean image-generation context.
+
+
+## RESOLVED: CG_010 and CG_017 — 2026-09-22
+
+The two previously blocked fantasy-rewrite CGs are now accepted and supersede the earlier BLOCKED notes above.
+
+- **CG_010 seventeen-minute-splice**
+  - accepted source: `art/visual-novel/04_cg/working/fantasy-redraw/2026-09-21/CG_010_seventeen-minute-splice_fantasy_accepted_v1.png`
+  - source SHA-256: `57506d50eba838c730d9fbf2959cf7661bb0dbb723cca814cab2a984b386a2d0`
+  - runtime: `public/assets/anime/cg/liyue-lumi-seventeen-minute-splice-cg-v8.webp`
+  - runtime SHA-256: `57c99b7cd4648128c65abbec263dd511af00f88eac9038c5094aa956138e0805`
+  - QA: exactly two adult women; 璃 left; 露米 right; brass astrolabe owned/operated by 露米; three magical memory echoes; no modern UI/readable timeline.
+- **CG_017 traceable-revocation**
+  - accepted source: `art/visual-novel/04_cg/working/fantasy-redraw/2026-09-21/CG_017_traceable-revocation_fantasy_accepted_v1.png`
+  - source SHA-256: `cdcff0306a39bbb0f6da971318b1e9506af8e0c8684abe396eed4c50240b435d`
+  - runtime: `public/assets/anime/cg/liyue-traceable-revocation-cg-audit-v3.webp`
+  - runtime SHA-256: `eab68e9cb945460bc9799dd915012ce996009aef377e45562708db723587be5f`
+  - QA: exactly three adults; 诺克缇娅 left, 纱雾 center, 奥术主权者 right; oath page restored to ancient volume; blue seal visibly breaking; dawn Gray Harbor visible; no modern records UI.
+
+**Remaining mandatory fantasy-rewrite story CG gap: 0.**
