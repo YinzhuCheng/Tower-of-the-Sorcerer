@@ -172,14 +172,11 @@ export function applyDemoTenFloorContent({ enemies, floors, dialogues, gridSize 
       title: '第十阵：无声王座',
       turns: [
         dialogueTurn('旁白', null, '王座上没有胜利庆典，只有一封不断重播的求援。七枚核心在璃身边同时亮起。', { kind: 'narration' }),
-        dialogueTurn('旁白', null, '殿墙刻着灰港全部撤离者的名字。多数人已在北岸成家，有人经营面包房，有人成了领航员；可登记网不知道他们后来的生活，只把每个人冻结成三年前等待救援的一行字。', { kind: 'narration' }),
-        dialogueTurn('无声女王·诺克缇娅', 'final_queen', '三年里，我每天都听见同一句“等待确认”。若我关掉它，谁来记得灰港的人？', { cg: '/assets/anime/cg/liyue-noctia-truth-cg-audit-v3.webp', cgHold: 3, expression: 'sorrow' }),
-        dialogueTurn('无声女王·诺克缇娅', 'final_queen', '我亲眼见过旧登记被关闭后整批档案化成空白。那天之后，我宁可让警钟继续，也不敢赌灰港会不会被抹掉。我知道这个选择困住了所有人，也知道自己没有勇气改。', { expression: 'sorrow' }),
-        dialogueTurn('旁白', null, '诺克缇娅说得很轻，按住封印链的手却没有松开。黯星纹路正沿着她的手腕向上蔓延，替她拒绝一切结案请求。', { kind: 'narration' }),
-        dialogueTurn('绫星·璃', 'hero', '七名守护者都记得。离港回执也存在，只是被更高一层的命令截住了。', { expression: 'resolve' }),
-        dialogueTurn('绫星·璃', 'hero', '我们已经找到另一种做法：把姓名、船号和抵达时间封进不可涂改的档案，保留记录；再从登记网上撤下救援令，让命令停止。这样没有名字会消失，也没有守卫需要继续为一场早已结束的撤离流血。', { expression: 'resolve' }),
-        dialogueTurn('绫星·璃', 'hero', '让她们永远互相伤害，不会把任何人送回家。我会留下记录，也会停下错误的命令。', { expression: 'embers' }),
-        dialogueTurn('无声女王·诺克缇娅', 'final_queen', '那就带着日曜卡来到我面前。让我亲眼看见：警报停下以后，名字仍然能留下。', { expression: 'sorrow' })
+        dialogueTurn('旁白', null, '殿墙刻着灰港撤离者的名字。塔外，有人已在北岸开店、成家、做了领航员；塔内，这些名字仍停在三年前的“等待确认”，像那场风暴从未过去。', { kind: 'narration' }),
+        dialogueTurn('无声女王·诺克缇娅', 'final_queen', '三年里，我每天都听见同一句“等待确认”。你说他们已经到岸，那就把那句话带到我面前。', { cg: '/assets/anime/cg/liyue-noctia-truth-cg-audit-v3.webp', cgHold: 3, expression: 'sorrow' }),
+        dialogueTurn('旁白', null, '她隔着长阶按住王座旁的封印链。黯星纹路沿手腕向上爬，像是在替她提醒：任何结案请求，都仍被这座王座视为威胁。', { kind: 'narration' }),
+        dialogueTurn('绫星·璃', 'hero', '我带回了七枚核心，也带回北辰七号真正的回话。你等了三年的答案就在这座塔里。', { expression: 'resolve' }),
+        dialogueTurn('无声女王·诺克缇娅', 'final_queen', '那就带着日曜卡走到王座前。别隔着长阶向我保证——让我亲眼看。', { expression: 'sorrow' })
       ]
     },
 
