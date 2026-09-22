@@ -179,7 +179,7 @@ export function applyDemoTenFloorContent({ enemies, floors, dialogues, gridSize 
         dialogueTurn('绫星·璃', 'hero', '七名守护者都记得。离港回执也存在，只是被更高一层的命令截住了。', { expression: 'resolve' }),
         dialogueTurn('绫星·璃', 'hero', '我们已经找到另一种做法：把姓名、船号和抵达时间封进不可涂改的档案，保留记录；再从登记网上撤下救援令，让命令停止。这样没有名字会消失，也没有守卫需要继续为一场早已结束的撤离流血。', { expression: 'resolve' }),
         dialogueTurn('绫星·璃', 'hero', '让她们永远互相伤害，不会把任何人送回家。我会留下记录，也会停下错误的命令。', { expression: 'embers' }),
-        dialogueTurn('无声女王·诺克缇娅', 'final_queen', '那就带着日曜卡来到我面前。证明你的答案，不会再让一个名字消失。', { expression: 'sorrow' })
+        dialogueTurn('无声女王·诺克缇娅', 'final_queen', '那就带着日曜卡来到我面前。让我亲眼看见：警报停下以后，名字仍然能留下。', { expression: 'sorrow' })
       ]
     },
 
@@ -358,7 +358,7 @@ export function applyDemoTenFloorContent({ enemies, floors, dialogues, gridSize 
       dialogueTurn('黯印观测官·塞芙', 'black_seal_keeper_v2', '黯印解除了。签名写着：奥术主权者；指令是“灰港紧急登记，无限延长”。'),
       dialogueTurn('黯印观测官·塞芙', 'black_seal_keeper_v2', '签署时间在诺克缇娅封塔后七息。她下的是临时命令，奥术主权者随后把它写入起源魔源，删除终止条件，并拦住所有异常报告。'),
       dialogueTurn('残响精灵·纱雾', 'guide', '奥术主权者管理起源魔源，身份高于王座。可他现在不在这十层之内。', { expression: 'watchful' }),
-      dialogueTurn('残响精灵·纱雾', 'guide', '这个称号不是姓名。要知道她是谁、为什么把一次已完成的撤离无限延长，我们必须进入王座后的上层档案区。那会是下一段旅程，不是今晚在十层内能查完的答案。', { expression: 'watchful' }),
+      dialogueTurn('残响精灵·纱雾', 'guide', '这个称号不是姓名。要知道他究竟是谁、为什么把一次已经完成的撤离改成无限延长，我们必须进入王座后的上层档案区。今晚能做的，是先让诺克缇娅看见回执和签名；更上面的责任，等我们亲自找到他再问。', { expression: 'watchful' }),
       dialogueTurn('绫星·璃', 'hero', '那就先去王座。女王必须看见离港回执和这枚印，才能明白自己守了什么。', { expression: 'resolve' }),
       dialogueTurn('黯印观测官·塞芙', 'black_seal_keeper_v2', '带好日曜卡。王座结界后没有商店，进去以后，你就得用现有的一切走到底。')
     ]),
@@ -395,7 +395,7 @@ export function applyDemoTenFloorContent({ enemies, floors, dialogues, gridSize 
       dialogueTurn('残响精灵·纱雾', 'guide', '王座后面的阶梯通向起源魔源。真正把“临时”改成“无限”的签名，就在那里。我们先找到签署人，再问他为什么这么做。', { expression: 'focus' }),
       dialogueTurn('残响精灵·纱雾', 'guide', '还有一件事不能忘：就算黯星核心碎了，档案也必须能独立留下。否则我们只是换了一种方式，把那些名字绑在另一枚核心上。', { expression: 'watchful' }),
       dialogueTurn('旁白', null, '石阶在王座后方一节节亮起，通向从未出现在高塔图纸上的上层。璃回头看了一眼不再鸣警的十层：灰港的撤离终于结案，但篡改命令的人仍在更高处留下了一扇门。', { kind: 'narration' }),
-      dialogueTurn('绫星·璃', 'hero', '那就一起上去。这次不是追责后就算结束，我们要把三年前没做完的事真正做完。', { expression: 'resolve' })
+      dialogueTurn('绫星·璃', 'hero', '那就一起上去。找到签署人，撤下无限延长，也让这些档案不再依赖警报才能留下。三年前没收好的尾，我们这次一件件收完。', { expression: 'resolve' })
     ])
   });
 
