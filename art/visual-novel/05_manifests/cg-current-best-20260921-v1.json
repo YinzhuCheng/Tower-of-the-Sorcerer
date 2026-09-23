@@ -1,6 +1,6 @@
 {
-  "version": "handoff-2026-09-21-v1",
-  "status": "current best source for all 19 active CGs",
+  "version": "handoff-2026-09-23-floor-cg-refresh-v2",
+  "status": "current best source for all 19 active CGs; floor 11/17/18/19 refreshed after environment redraw",
   "scenes": [
     {
       "cg_id": "CG_001_critical",
@@ -60,30 +60,30 @@
     },
     {
       "cg_id": "CG_009_missing-fourth-step",
-      "current_stage": "R3",
-      "path": "art/visual-novel/04_cg/working/R3-scene/2026-09-21/CG_009_missing-fourth-step_R3_accepted_v1.png",
-      "sha256": "12ced155fca518fa12bead6117929cda286b78fd6fa3130a971ab83e234c7be8",
+      "current_stage": "R4",
+      "path": "art/visual-novel/04_cg/final/2026-09-23-floor-cg-refresh/cg/CG_009_missing-fourth-step_R4_v1.png",
+      "sha256": "aa9b9168f3e3efabc6af540f3116af6149af7a8df10b884b7da6d5185d66e3ac",
       "runtime_target": "public/assets/anime/cg/liyue-noctia-missing-fourth-step-cg-audit-v3.webp"
     },
     {
       "cg_id": "CG_010_seventeen-minute-splice",
-      "current_stage": "R3",
-      "path": "art/visual-novel/04_cg/working/R3-scene/2026-09-21/CG_010_seventeen-minute-splice_R3_accepted_v1.png",
-      "sha256": "e93ef908f3996d28826add9d2bfadca5560cc5c70631e3bd4d8fc2a412d8ba75",
+      "current_stage": "R4",
+      "path": "art/visual-novel/04_cg/final/2026-09-23-floor-cg-refresh/cg/CG_010_seventeen-minute-splice_R4_v1.png",
+      "sha256": "f38884d7009f9b7083cb990af5fc407869274e9a386a064039dad5556969d9c8",
       "runtime_target": "public/assets/anime/cg/liyue-lumi-seventeen-minute-splice-cg-v8.webp"
     },
     {
       "cg_id": "CG_011_intercepted-receipt",
-      "current_stage": "R2",
-      "path": "art/visual-novel/04_cg/working/R2-costume-props/2026-09-21/CG_011_intercepted-receipt_R2_accepted_v1.png",
-      "sha256": "968450573aaaf68f256ec8d0cf2233e7493814bc86b552b13c833d480d84660c",
+      "current_stage": "R4",
+      "path": "art/visual-novel/04_cg/final/2026-09-23-floor-cg-refresh/cg/CG_011_intercepted-receipt_R4_v1.png",
+      "sha256": "a8fcdc84563897f14f5b48a605e223381dff6cde9b1caf021475433dc614dc6b",
       "runtime_target": "public/assets/anime/cg/liyue-yayu-intercepted-receipt-cg-audit-v3.webp"
     },
     {
       "cg_id": "CG_012_echo-ledger",
-      "current_stage": "R2",
-      "path": "art/visual-novel/04_cg/working/R2-costume-props/2026-09-21/CG_012_echo-ledger_R2_accepted_v1.png",
-      "sha256": "e35294bdfddc4579232056612310e87a69b1478bdab7d6f91662670d0c52d0ec",
+      "current_stage": "R4",
+      "path": "art/visual-novel/04_cg/final/2026-09-23-floor-cg-refresh/cg/CG_012_echo-ledger_R4_v1.png",
+      "sha256": "e00c424eb589cd63c3696768b11f1ba99e1d79a7c0a283cdd37f3e429549f832",
       "runtime_target": "public/assets/anime/cg/liyue-echo-ledger-cg-audit-v3.webp"
     },
     {

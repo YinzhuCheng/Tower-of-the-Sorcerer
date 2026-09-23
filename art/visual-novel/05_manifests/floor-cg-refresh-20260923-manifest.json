@@ -1,0 +1,58 @@
+{
+  "version": "2026-09-23-floor-cg-refresh-v1",
+  "status": "runtime-ready",
+  "assets": [
+    {
+      "id": "missing-fourth-step",
+      "archive": "runtime/liyue-noctia-missing-fourth-step-cg-audit-v3.webp",
+      "target": "public/assets/anime/cg/liyue-noctia-missing-fourth-step-cg-audit-v3.webp",
+      "sha256": "dfc491ebe5eea4a19a381dcfff7ea0ac1f6cc119f3bdde82f141d9871457fa8b"
+    },
+    {
+      "id": "seventeen-minute-splice",
+      "archive": "runtime/liyue-lumi-seventeen-minute-splice-cg-v8.webp",
+      "target": "public/assets/anime/cg/liyue-lumi-seventeen-minute-splice-cg-v8.webp",
+      "sha256": "f3de9914e29afb98220d0e16334e31027689918594e40a79f969fcc21f308e19"
+    },
+    {
+      "id": "intercepted-receipt",
+      "archive": "runtime/liyue-yayu-intercepted-receipt-cg-audit-v3.webp",
+      "target": "public/assets/anime/cg/liyue-yayu-intercepted-receipt-cg-audit-v3.webp",
+      "sha256": "e807a522a7f3c522898c04dfb40e10973046cd137bab50afb186c68ac9c0d016"
+    },
+    {
+      "id": "echo-ledger",
+      "archive": "runtime/liyue-echo-ledger-cg-audit-v3.webp",
+      "target": "public/assets/anime/cg/liyue-echo-ledger-cg-audit-v3.webp",
+      "sha256": "e7efa605d0b8d80ba5b5d0ea9cf7b9f1c9f2ce05e510489c54f2e3b19e2d2aca"
+    },
+    {
+      "id": "missing-fourth-step-source",
+      "sourceMaster": true,
+      "archive": "source/CG_009_missing-fourth-step_R4_v1.png",
+      "target": "art/visual-novel/04_cg/final/2026-09-23-floor-cg-refresh/cg/CG_009_missing-fourth-step_R4_v1.png",
+      "sha256": "aa9b9168f3e3efabc6af540f3116af6149af7a8df10b884b7da6d5185d66e3ac"
+    },
+    {
+      "id": "seventeen-minute-splice-source",
+      "sourceMaster": true,
+      "archive": "source/CG_010_seventeen-minute-splice_R4_v1.png",
+      "target": "art/visual-novel/04_cg/final/2026-09-23-floor-cg-refresh/cg/CG_010_seventeen-minute-splice_R4_v1.png",
+      "sha256": "f38884d7009f9b7083cb990af5fc407869274e9a386a064039dad5556969d9c8"
+    },
+    {
+      "id": "intercepted-receipt-source",
+      "sourceMaster": true,
+      "archive": "source/CG_011_intercepted-receipt_R4_v1.png",
+      "target": "art/visual-novel/04_cg/final/2026-09-23-floor-cg-refresh/cg/CG_011_intercepted-receipt_R4_v1.png",
+      "sha256": "a8fcdc84563897f14f5b48a605e223381dff6cde9b1caf021475433dc614dc6b"
+    },
+    {
+      "id": "echo-ledger-source",
+      "sourceMaster": true,
+      "archive": "source/CG_012_echo-ledger_R4_v1.png",
+      "target": "art/visual-novel/04_cg/final/2026-09-23-floor-cg-refresh/cg/CG_012_echo-ledger_R4_v1.png",
+      "sha256": "e00c424eb589cd63c3696768b11f1ba99e1d79a7c0a283cdd37f3e429549f832"
+    }
+  ]
+}

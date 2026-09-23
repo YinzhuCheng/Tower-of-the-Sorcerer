@@ -151,14 +151,14 @@
     },
     {
       "id": "echo-ledger",
-      "profile": "cel-simplify",
-      "sourceFrom": "public/assets/anime/cg/liyue-echo-ledger-cg.webp",
+      "profile": "floor-cg-refresh-2026-09-23",
+      "sourceFrom": "art/visual-novel/04_cg/final/2026-09-23-floor-cg-refresh/cg/CG_012_echo-ledger_R4_v1.png",
       "runtime": "public/assets/anime/cg/liyue-echo-ledger-cg-audit-v3.webp",
       "dimensions": [
         1672,
         941
       ],
-      "sha256": "02f9feb30734fb59a63d3f5c7ced610ae57a2cae6185ee3f5a884ceac09abe75"
+      "sha256": "e7efa605d0b8d80ba5b5d0ea9cf7b9f1c9f2ce05e510489c54f2e3b19e2d2aca"
     },
     {
       "id": "noctia-sovereign",
@@ -195,25 +195,25 @@
     },
     {
       "id": "missing-fourth-step",
-      "profile": "user-selected-round2-2026-09-11",
-      "sourceFrom": "public/assets/anime/cg/liyue-noctia-missing-fourth-step-cg.webp",
+      "profile": "floor-cg-refresh-2026-09-23",
+      "sourceFrom": "art/visual-novel/04_cg/final/2026-09-23-floor-cg-refresh/cg/CG_009_missing-fourth-step_R4_v1.png",
       "runtime": "public/assets/anime/cg/liyue-noctia-missing-fourth-step-cg-audit-v3.webp",
       "dimensions": [
         1672,
         941
       ],
-      "sha256": "24e603a5591e253eab7065938a37477ae75ad2b63ab9e3c844d6a9a9a584533d"
+      "sha256": "dfc491ebe5eea4a19a381dcfff7ea0ac1f6cc119f3bdde82f141d9871457fa8b"
     },
     {
       "id": "intercepted-receipt",
-      "profile": "user-selected-round2-2026-09-11",
-      "sourceFrom": "public/assets/anime/cg/liyue-yayu-intercepted-receipt-cg.webp",
+      "profile": "floor-cg-refresh-2026-09-23",
+      "sourceFrom": "art/visual-novel/04_cg/final/2026-09-23-floor-cg-refresh/cg/CG_011_intercepted-receipt_R4_v1.png",
       "runtime": "public/assets/anime/cg/liyue-yayu-intercepted-receipt-cg-audit-v3.webp",
       "dimensions": [
         1672,
         941
       ],
-      "sha256": "5523d51a0801e50be299747b110e53acc22bfeaa41b6dfcf5dabf950c8ec9d03"
+      "sha256": "e807a522a7f3c522898c04dfb40e10973046cd137bab50afb186c68ac9c0d016"
     },
     {
       "id": "missing-page-restored",
@@ -265,5 +265,11 @@
     "countRuntime": 11,
     "countSourceMasters": 3,
     "policy": "Eight user-selected CG replacements plus three round-two transparent standees. Existing runtime paths preserved."
+  },
+  "floorCgRefresh": {
+    "date": "2026-09-23",
+    "runtimeCount": 4,
+    "sourceMasterCount": 4,
+    "policy": "Redraw floor 11/17/18/19 story CGs against the refreshed floor-specific interior environments while preserving approved character identities."
   }
 }
