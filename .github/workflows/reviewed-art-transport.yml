@@ -26,7 +26,7 @@ jobs:
       - name: Verify exact bounded transport inputs
         run: |
           echo '60db00981ee8e55681ae1a929cf9b99dba4681bb3d4f5aa9dbab7c0fe3569d4d  .release-transport/painted-viewports-r2/manifest.json' | sha256sum --check --strict
-          echo '0375e7518598d1f144d7de200fd8c67d4a31ffa415276611c8021a6a24f1d989  .release-transport/painted-viewports-r2/retain-and-prepare.py' | sha256sum --check --strict
+          echo '463f105180847991486070c3d5636eb2a3ffe7ac577512ad98893dd568215640  .release-transport/painted-viewports-r2/retain-and-prepare.py' | sha256sum --check --strict
       - name: Install pinned complete-image decoder
         run: python -m pip install Pillow==12.3.0
       - name: Decode original art and retain ordinary blobs only on temporary branch
@@ -52,11 +52,136 @@ jobs:
           export PLAYWRIGHT_MODULE="$GITHUB_WORKSPACE/.release-transport/painted-viewports-r2/tooling/node_modules/playwright-core/index.mjs"
           export CHROMIUM_EXECUTABLE="$(command -v google-chrome)"
           node scripts/capture-playwright.mjs
-      - name: Retain real browser evidence including failures
+      - name: Split actual evidence below the supported transfer limit
+        if: always()
+        run: |
+          echo '9c9f065c2ffc1adfe1e9fb3724a2cff84440bdcfa7f337ca4f06ee9ab0c2865e  .release-transport/painted-viewports-r2/split-evidence.py' | sha256sum --check --strict
+          python .release-transport/painted-viewports-r2/split-evidence.py
+      - name: Retain real browser evidence shard 00
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: painted-viewports-r2-${{ github.sha }}
-          path: .release-transport/painted-viewports-r2/app/qa/browser-evidence/
-          if-no-files-found: warn
+          name: painted-r2-shard00-${{ github.sha }}
+          path: .release-transport/painted-viewports-r2/evidence-shards/00/
+          if-no-files-found: ignore
+          retention-days: 14
+      - name: Retain real browser evidence shard 01
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: painted-r2-shard01-${{ github.sha }}
+          path: .release-transport/painted-viewports-r2/evidence-shards/01/
+          if-no-files-found: ignore
+          retention-days: 14
+      - name: Retain real browser evidence shard 02
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: painted-r2-shard02-${{ github.sha }}
+          path: .release-transport/painted-viewports-r2/evidence-shards/02/
+          if-no-files-found: ignore
+          retention-days: 14
+      - name: Retain real browser evidence shard 03
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: painted-r2-shard03-${{ github.sha }}
+          path: .release-transport/painted-viewports-r2/evidence-shards/03/
+          if-no-files-found: ignore
+          retention-days: 14
+      - name: Retain real browser evidence shard 04
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: painted-r2-shard04-${{ github.sha }}
+          path: .release-transport/painted-viewports-r2/evidence-shards/04/
+          if-no-files-found: ignore
+          retention-days: 14
+      - name: Retain real browser evidence shard 05
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: painted-r2-shard05-${{ github.sha }}
+          path: .release-transport/painted-viewports-r2/evidence-shards/05/
+          if-no-files-found: ignore
+          retention-days: 14
+      - name: Retain real browser evidence shard 06
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: painted-r2-shard06-${{ github.sha }}
+          path: .release-transport/painted-viewports-r2/evidence-shards/06/
+          if-no-files-found: ignore
+          retention-days: 14
+      - name: Retain real browser evidence shard 07
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: painted-r2-shard07-${{ github.sha }}
+          path: .release-transport/painted-viewports-r2/evidence-shards/07/
+          if-no-files-found: ignore
+          retention-days: 14
+      - name: Retain real browser evidence shard 08
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: painted-r2-shard08-${{ github.sha }}
+          path: .release-transport/painted-viewports-r2/evidence-shards/08/
+          if-no-files-found: ignore
+          retention-days: 14
+      - name: Retain real browser evidence shard 09
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: painted-r2-shard09-${{ github.sha }}
+          path: .release-transport/painted-viewports-r2/evidence-shards/09/
+          if-no-files-found: ignore
+          retention-days: 14
+      - name: Retain real browser evidence shard 10
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: painted-r2-shard10-${{ github.sha }}
+          path: .release-transport/painted-viewports-r2/evidence-shards/10/
+          if-no-files-found: ignore
+          retention-days: 14
+      - name: Retain real browser evidence shard 11
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: painted-r2-shard11-${{ github.sha }}
+          path: .release-transport/painted-viewports-r2/evidence-shards/11/
+          if-no-files-found: ignore
+          retention-days: 14
+      - name: Retain real browser evidence shard 12
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: painted-r2-shard12-${{ github.sha }}
+          path: .release-transport/painted-viewports-r2/evidence-shards/12/
+          if-no-files-found: ignore
+          retention-days: 14
+      - name: Retain real browser evidence shard 13
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: painted-r2-shard13-${{ github.sha }}
+          path: .release-transport/painted-viewports-r2/evidence-shards/13/
+          if-no-files-found: ignore
+          retention-days: 14
+      - name: Retain real browser evidence shard 14
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: painted-r2-shard14-${{ github.sha }}
+          path: .release-transport/painted-viewports-r2/evidence-shards/14/
+          if-no-files-found: ignore
+          retention-days: 14
+      - name: Retain real browser evidence shard 15
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: painted-r2-shard15-${{ github.sha }}
+          path: .release-transport/painted-viewports-r2/evidence-shards/15/
+          if-no-files-found: ignore
           retention-days: 14

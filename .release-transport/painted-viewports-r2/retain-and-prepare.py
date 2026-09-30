@@ -33,7 +33,10 @@ app_manifest=safe(prefix+'/app/MANIFEST.json');assert sha(app_manifest)==m['app_
 subprocess.run(['node','scripts/check-manifest.mjs'],cwd=root/prefix/'app',check=True)
 if verify_only:print('VERIFY_ONLY=true; NO_REMOTE_WRITE=true');sys.exit(0)
 tree=git('write-tree');assert git('rev-parse',head+':.github')==git('rev-parse',tree+':.github'),'WORKFLOW_SUBTREE_CHANGED'
-expected={'.release-transport/final-blobs/'+f['git_blob_sha'] for f in m['files']};changed=set(git('diff','--cached','--name-only',head).splitlines());assert changed and changed.issubset(expected),changed
+expected={'.release-transport/final-blobs/'+f['git_blob_sha'] for f in m['files']};changed=set(git('diff','--cached','--name-only',head).splitlines());assert changed.issubset(expected),changed
+if not changed:
+ for f in m['files']:assert git('rev-parse',head+':.release-transport/final-blobs/'+f['git_blob_sha'])==f['git_blob_sha']
+ protected();print('ALREADY_RETAINED=true; NO_REF_CHANGED=true');sys.exit(0)
 protected();assert git('ls-remote','origin','refs/heads/'+m['storage_branch']).split()[0]==head,'TRANSPORT_CHANGED_BEFORE_RETENTION'
 commit=git('commit-tree',tree,'-p',head,data=b'transport: retain three verified original painted-scene QA assets [skip ci]\n')
 git('push','origin',commit+':refs/heads/'+m['storage_branch'])
