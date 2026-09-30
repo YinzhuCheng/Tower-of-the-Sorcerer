@@ -22,7 +22,7 @@ test('B preview blocks keyboard, map and requests behind story and confirmation'
 });
 
 test('B confirmation cancel changes neither game nor narrative and repeated confirm pays once',()=>{
- for(const id of ['b03.heatBox','b13.coatShop','b17.warmgreenhouse','b26.confirmHeat.5','b30.together']){
+ for(const id of ['b05.valve','b13.coatShop','b17.warmgreenhouse','b26.confirmHeat.5','b28.serviceLever','b28.stopMainValve','b30.together']){
  const{session:s,storage}=at(checkpoint(id).before);s.pause();const raw=runtime.serialize(s.state),presentation=JSON.stringify(s.presentation),saved=storage.getItem(s.repo.key('auto'));
  assert.equal(s.request({type:'interact',entityId:id}).confirmation,true,id);s.cancel();assert.equal(runtime.serialize(s.state),raw);assert.equal(JSON.stringify(s.presentation),presentation);assert.equal(storage.getItem(s.repo.key('auto')),saved);
  assert.equal(s.confirm().ok,false);assert.equal(s.request({type:'interact',entityId:id}).confirmation,true);assert.equal(s.confirm().ok,true);const committed=runtime.serialize(s.state);assert.equal(s.confirm().ok,false);assert.equal(runtime.serialize(s.state),committed);s.pause();assert.equal(s.request({type:'interact',entityId:id}).ok,false);assert.equal(runtime.serialize(s.state),committed);

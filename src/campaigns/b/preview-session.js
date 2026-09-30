@@ -1,6 +1,7 @@
 import { createSaveRepository } from '../../core/campaign.js';
 import { createForestStory, FOREST_STORY_CONTENT } from './story/index.js';
 import { cleanForestAction, forestActionView, forestApproach } from './view.js';
+import { forestChoicePrompt } from './player-copy.js';
 const copy=x=>structuredClone(x);
 const empty=()=>({storyVersion:FOREST_STORY_CONTENT.id,seenIds:[],queue:[],turnIndex:0,paused:false});
 export function validForestPresentation(p){
@@ -13,7 +14,7 @@ export function createForestPreviewSession(runtime,storage){
  let state=restored.state??runtime.initialState(),presentation=restored.presentation??empty(),allowAutoSave=restored.allowAutoSave,pending=null;
  const issues=[...restored.issues];
  function persist(slot='auto'){if(slot==='auto'&&!allowAutoSave)return false;try{repo.save(slot,state,presentation);return true;}catch(error){issues.push({reason:`无法保存：${error.message}`});return false;}}
- function enqueue(result){presentation.seenIds=result.seenIds;for(const scene of result.scenes){if(!scene.turns.length&&scene.choices.length)scene.turns=[{id:`ui:choice:${scene.id}`,kind:'choice-prompt',speaker:'你的选择',text:'请在下方选择；实际消耗会在执行前再次确认',choices:copy(scene.choices),presentationOnly:true}];if(scene.turns.length)presentation.queue.push(scene);}return result;}
+ function enqueue(result){presentation.seenIds=result.seenIds;for(const scene of result.scenes){if(!scene.turns.length&&scene.choices.length)scene.turns=[{id:`ui:choice:${scene.id}`,kind:'choice-prompt',speaker:'你的选择',text:forestChoicePrompt(scene),choices:copy(scene.choices),presentationOnly:true}];if(scene.turns.length)presentation.queue.push(scene);}return result;}
  function current(){return presentation.queue[0]??null;}
  function turn(){return current()?.turns[presentation.turnIndex]??null;}
  function isStoryOpen(){return Boolean(current()&&!presentation.paused);}
