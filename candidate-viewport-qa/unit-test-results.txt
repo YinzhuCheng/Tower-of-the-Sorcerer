@@ -1,0 +1,30 @@
+✔ all four configs specify package, output, branch and entry without guessing B/C paths (1.981785ms)
+✔ reject unsafe config paths, remote URLs, unrecognized adapters and flags (0.882384ms)
+✔ browser capture is refused outside actual explicit CI mode (0.344421ms)
+✔ Chrome flags preserve sandbox, normal GPU, security and scrollbars (0.944888ms)
+✔ path helper blocks traversal and server root escapes (0.371631ms)
+✔ A opening is observable before any canvas and never called map-ready (1.466236ms)
+✔ A readiness retains real autosave, finished asset loading and interactive shell (5.474467ms)
+✔ B and C autosave are identity-scoped and do not need A floorStates (1.252253ms)
+✔ wrong or missing campaign save cannot pass map readiness (5.120081ms)
+✔ visible B/C modal blocks movement readiness (0.557542ms)
+✔ C3D reports pending renderer rather than accepting fallback too early (0.51611ms)
+✔ C3D genuine WebGL2 failure is labeled 2D fallback (0.902544ms)
+✔ C3D WebGL2 label requires live visible 3D canvas and app renderer report (0.420306ms)
+✔ one move must be one adjacent cell, same region, without victory (0.316729ms)
+✔ PNG check verifies exact viewport pixel dimensions, not full page (0.293594ms)
+✔ serialized read-only observation compiles without page mutation methods (0.768943ms)
+✔ workflow stays on exactly one candidate branch and uses read-only checkout (0.254865ms)
+✔ source-derived C-M01 initial grid fallback reads only the isolated prototype save (5.704955ms)
+✔ an ordinary C save cannot masquerade as the C3D prototype autosave (0.377521ms)
+✔ grid fallback requires actual signal, hook view, complete grid, and hidden real canvases (2.318305ms)
+✔ continuous sample fallback requires its own visible map canvas and 121 cells (0.253994ms)
+✔ when C3D package is present, its actual source and projection still match the fixture (55.835658ms)
+ℹ tests 22
+ℹ suites 0
+ℹ pass 22
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 395.490603

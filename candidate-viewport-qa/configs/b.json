@@ -1,0 +1,1 @@
+{"id":"b","branch":"candidate/b-forest-road","adapter":"b","packageRoot":".","build":[["node","scripts/build-b-preview.mjs"]],"outputDirectory":"dist-b-preview","startPath":"/campaigns-b/","expectedCampaignId":"forest-b"}

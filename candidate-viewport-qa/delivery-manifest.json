@@ -1,0 +1,139 @@
+{
+  "status": "revision 2: C3D storage namespace and DOM-grid fallback corrected; remote browser capture not run",
+  "unitTests": {
+    "sourceCrosscheck": {
+      "passed": 22,
+      "failed": 0,
+      "skipped": 0,
+      "sourcePackage": "tower-c-3d-preview/prototypes/c-harbor-3d"
+    },
+    "standalone": {
+      "passed": 21,
+      "failed": 0,
+      "skipped": 1,
+      "skip": "actual C3D package absent beside isolated QA directory"
+    },
+    "node": "v24.19.0"
+  },
+  "browserRuns": 0,
+  "screenshotsProduced": 0,
+  "modifiedExistingGameFiles": false,
+  "pushed": false,
+  "files": [
+    {
+      "path": "candidate-viewport-qa/.gitignore",
+      "bytes": 29,
+      "sha256": "86af7f1a3f9b15e648fa8c7f5e3f71ea82aa684e8e621f632fdb5d611dbb0d1d"
+    },
+    {
+      "path": "candidate-viewport-qa/README.md",
+      "bytes": 9515,
+      "sha256": "c54200e96fb14a3efac4a17417b60b1961c142ad4e158a2697d6b4b13ec25404"
+    },
+    {
+      "path": "candidate-viewport-qa/capture.mjs",
+      "bytes": 13269,
+      "sha256": "0d4220cc622a44a73813e6e3263f0cde5bf248b698a064a14e266942cc3ddee7"
+    },
+    {
+      "path": "candidate-viewport-qa/ci.mjs",
+      "bytes": 3444,
+      "sha256": "3ab8691c89a96ab69a27c45e138667632eae86424b3af4f3d420ad8ae2b2f7cf"
+    },
+    {
+      "path": "candidate-viewport-qa/config.schema.json",
+      "bytes": 1920,
+      "sha256": "d15846c749d4899ab103631e2c804c3b62f503fd8e2657cb6c079d934565f449"
+    },
+    {
+      "path": "candidate-viewport-qa/configs/a.json",
+      "bytes": 216,
+      "sha256": "59b438367a61a4a70a30fe9978984bebdb918d5d9409002b538fa14181fe7870"
+    },
+    {
+      "path": "candidate-viewport-qa/configs/b.json",
+      "bytes": 222,
+      "sha256": "c3bf2627e1929041dd239b95b3c9cdda4c8bcaf1da036dd2fe4cec7146f81001"
+    },
+    {
+      "path": "candidate-viewport-qa/configs/c.json",
+      "bytes": 228,
+      "sha256": "42c8056d7efc6a44d4aff24b3231e621167f09358ba70680b28fee74f25e2e48"
+    },
+    {
+      "path": "candidate-viewport-qa/configs/c3d.json",
+      "bytes": 285,
+      "sha256": "b418aba9f2d13bde4d246cdbf74e4d2ac00a59c6be33fb0c6dd313b720a70523"
+    },
+    {
+      "path": "candidate-viewport-qa/lib/cdp.mjs",
+      "bytes": 2184,
+      "sha256": "c73ab7f221883767e3c408be4a866e07cdc1763847b901e9089b54b3f5b20324"
+    },
+    {
+      "path": "candidate-viewport-qa/lib/config.mjs",
+      "bytes": 3167,
+      "sha256": "f5f39ad0744051550fd8adcfb0fd1a19b3d7705c2c2e7b62774b2fe508cacc43"
+    },
+    {
+      "path": "candidate-viewport-qa/lib/observation.mjs",
+      "bytes": 7524,
+      "sha256": "2f124300a8c9127804b899e4b35049901edd777eacfc096e5abbc0469749df34"
+    },
+    {
+      "path": "candidate-viewport-qa/lib/server.mjs",
+      "bytes": 1947,
+      "sha256": "5ebfe9919ca02d03bf890c490092964d26e98d84b6bf1846aff610579ba7567a"
+    },
+    {
+      "path": "candidate-viewport-qa/package.json",
+      "bytes": 162,
+      "sha256": "f81626e1ca77031713617f128acb55bd13e54056e816b320f5ee544b24ac3d3d"
+    },
+    {
+      "path": "candidate-viewport-qa/test/contracts.test.mjs",
+      "bytes": 13865,
+      "sha256": "60a0bae284d940f7f9a590f7762cda840d063b6230c333d0f68e34f296db8e5b"
+    },
+    {
+      "path": "candidate-viewport-qa/test/fixtures/c3d-initial-contract.json",
+      "bytes": 2301,
+      "sha256": "cadbe4da607364403e6076dde38a5d808453fcfaaab0079e2f5ba606f3d273e0"
+    },
+    {
+      "path": "candidate-viewport-qa/unit-test-results.txt",
+      "bytes": 2018,
+      "sha256": "16c10ad03fd71a1af4108e523569fc94235c5e9cd6904a601eec2e8fa3fb4e4e"
+    },
+    {
+      "path": "candidate-viewport-qa/unit-test-standalone-results.txt",
+      "bytes": 2106,
+      "sha256": "f4ecc5609b1009d0b56deadac0a497c8b12b1150c623c44217899be6aa9bac95"
+    },
+    {
+      "path": "candidate-viewport-qa/workflow/candidate-a-viewport.yml.example",
+      "bytes": 1309,
+      "sha256": "28f8d53025d1986585c7d9c4c70ee79fc345a8adb132b7f20ad65ac4a318ca4d"
+    },
+    {
+      "path": "candidate-viewport-qa/workflow/candidate-b-viewport.yml.example",
+      "bytes": 1305,
+      "sha256": "930120644a4117120d005b58a8784efac67801f504e79d7c2726c81c720c7944"
+    },
+    {
+      "path": "candidate-viewport-qa/workflow/candidate-c-viewport.yml.example",
+      "bytes": 1307,
+      "sha256": "43f6733dfb8c28aff9d256a182d43f42abf664a1ea8e006b28ba9152601a0fdd"
+    },
+    {
+      "path": "candidate-viewport-qa/workflow/candidate-c3d-viewport.yml.example",
+      "bytes": 1319,
+      "sha256": "0d97fd132b291906c3de133f13b7c01ac18addebced570d645afb74f8bb39175"
+    },
+    {
+      "path": "candidate-viewport-qa/workflow/make-workflow.mjs",
+      "bytes": 1947,
+      "sha256": "19ae2f1ef25b0ee3c4cdd331cb14dc884d847f473158542cfe3d1655cc04241d"
+    }
+  ]
+}

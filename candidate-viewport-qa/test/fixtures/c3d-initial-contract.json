@@ -1,0 +1,101 @@
+{
+  "purpose": "Unit-test fixture derived read-only from actual C3D initial-state and source; never loaded by browser QA; not a playthrough",
+  "sources": {
+    "public/campaigns/app.js": "6a1d83fc4eec0adb2b7619f03456cb0a4a250b06686760b4d5edf427006060a1",
+    "src/rendering/c-adapter.js": "d9014a2bdb892cf74ddcbd021d98d094f5a5144f94687e360c9c73be0c8908df",
+    "src/rendering/c-three-controller.js": "31af2be002ed798eb3e818bc0b7584531bed2c4e411836e79fc45b84fda9b576",
+    "src/rendering/continuous-map.js": "b3781165cedd1b422f22aef89537676dd3ce2b9e5287beca07136d50cccc1b70"
+  },
+  "identity": {
+    "campaignId": "voyage-c",
+    "difficultyId": "normal",
+    "contentVersion": "c-rules-prototype-v1.2-geometry",
+    "rulesVersion": "fixed-campaign-v1.1",
+    "contentHash": "c5a5f809d5548f36"
+  },
+  "initialState": {
+    "identity": {
+      "campaignId": "voyage-c",
+      "difficultyId": "normal",
+      "contentVersion": "c-rules-prototype-v1.2-geometry",
+      "rulesVersion": "fixed-campaign-v1.1",
+      "contentHash": "c5a5f809d5548f36"
+    },
+    "revision": 0,
+    "location": {
+      "regionId": "C-M01",
+      "x": 7,
+      "y": 7
+    },
+    "stats": {
+      "hp": 60,
+      "maxHp": 60,
+      "atk": 14,
+      "def": 8,
+      "gold": 8
+    },
+    "resources": {
+      "fuel": 9
+    },
+    "flags": {
+      "c.lampOil": true
+    },
+    "cleared": [],
+    "visited": [
+      "C-M01"
+    ],
+    "boat": {
+      "dock": "C-M01",
+      "moored": true,
+      "cargo": "center",
+      "positions": {
+        "w1": "L1",
+        "w2": "L2",
+        "w3": "C1"
+      }
+    },
+    "victory": false
+  },
+  "map": [
+    "~~~~~~~~~~~",
+    "~~~~~~~...~",
+    "~~~~~~~...~",
+    "~~~~BBB#..~",
+    "~~~~BBB...~",
+    "~~~~BBB...~",
+    "~~~~BBB...~",
+    "~~~~BB....~",
+    "~~~~BBB#..~",
+    "~~~~~~~...~",
+    "~~~~~~~~~~~"
+  ],
+  "entityCoordinates": [
+    {
+      "x": 5,
+      "y": 7
+    },
+    {
+      "x": 9,
+      "y": 2
+    },
+    {
+      "x": 9,
+      "y": 5
+    },
+    {
+      "x": 7,
+      "y": 3
+    }
+  ],
+  "continuousSamples": [
+    "C-D01",
+    "C-M03",
+    "C-M05"
+  ],
+  "continuousSceneAtStart": null,
+  "storagePrefix": "c3d-prototype:",
+  "boardRenderer": "legacy",
+  "mapCanvasHidden": true,
+  "threeCanvasHidden": true,
+  "fallbackHealth": "已回退 2D：WebGL2 unavailable"
+}
