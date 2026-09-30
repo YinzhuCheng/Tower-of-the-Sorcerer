@@ -8,3 +8,4 @@ generated_images/
 .vscode/
 .idea/
 .vercel/
+dist-c-preview/

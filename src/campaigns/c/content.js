@@ -1,6 +1,6 @@
 // Development geometry and numeric seed. No final-art or difficulty certification claim.
 // Story contract: full v1.1 SHA256 4dfcfba4fb686dfec5e9b0ac5bce22a70323f8ff68b1712048c661ee89328f1f.
-import { createCampaign } from '../../core/campaign.js';
+import { createCampaign, deepFreeze } from '../../core/campaign.js';
 
 const flag = (id) => ({flag:id});
 const dock = (id) => ({dock:`C-M0${id}`});
@@ -12,7 +12,54 @@ const grid2=["~~~~~~~~~~~","~~~~~~~...~","~~~~~~~...~","~~~~BBB#..~","~~~~BBB...
 const grid3=["~~~~~~~~~~~","~~~~~~~...~","~~~~~~~...~","~~~~BBB#..~","~~~~BBB...~","~~~~BBB...~","~~~~BBB...~","~~~~BB....~","~~~~BBB#..~","~~~~~~~...~","~~~~~~~~~~~"];
 const grid4=["~~~~~~~~~~~","~~~~~~~...~","~~~~~~~...~","~~~~BBB#..~","~~~~BBB...~","~~~~BBB...~","~~~~BBB...~","~~~~BB....~","~~~~BBB#..~","~~~~~~~...~","~~~~~~~~~~~"];
 const grid5=["~~~~~~~~~~~","~~~~~~~...~","~~~~~~~...~","~~~~BBB#..X","~~~~BBB...X","~~~~BBB...X","~~~~BBB...~","~~~~BB....~","~~~~BBB#..~","~~~~~~~...~","~~~~~~~~~~~"];
-const deck=["~~~~~~~~~~~","~~.......~~","~~.......~~","~~.......~~","~~.......~~","~~.......~~","~~.......~~","~~.......~~","~~.......~~","~~.......~~","~~~~~~~~~~~"];
+const deck=["~~~~~~~~~~~","~~~.....~~~","~~~.....~~~","~~~#.#.#~~~","~~~.....~~~","~~~.....~~~","~~~.....~~~","~~~.....~~~","~~~.....~~~","~~~.....~~~","~~~~~~~~~~~"];
+
+// One metric hull for berth, deck inset, GAL and an optional 3D view adapter.
+// Grid transforms are uniform similarities, never independent X/Z fit-to-box scales.
+export const VOYAGE_VESSEL_GEOMETRY = deepFreeze({
+  version:'1.2',geometryId:'C_FERRY_HULL_01',units:'metres',axes:{X:'starboard',Y:'up',Z:'stern (bow is negative Z)'},
+  hull:{beam:3,length:6,deckY:0.8,waterlineY:0,bottomY:-0.5,
+    outlineXZ:[[0,-3],[1.5,-2.4],[1.5,3],[-1.5,3],[-1.5,-2.4]],
+    bottomOutlineXZ:[[0,-2.7],[1.1,-2.15],[1.1,2.7],[-1.1,2.7],[-1.1,-2.15]],
+    meshPolicy:'Extrude these same rings once; every view reuses this geometry ID with rigid pose and uniform camera zoom only'},
+  deckSampling:{pitch:0.6,originXYZ:[-3,0.8,-2.7],xStepXYZ:[0.6,0,0],yStepXYZ:[0,0,0.6],
+    walkableBounds:{minX:3,maxX:7,minY:1,maxY:9},reservedRackCells:[[3,3],[5,3],[7,3]],actorRadius:0.18},
+  berthSampling:{metresPerCell:1,hullOriginGrid:[5,5.5],hullEnvelopeGrid:[3.5,2.5,6.5,8.5],
+    gangwayCenterlineGrid:[[6,7],[7,7]],gangwayWidth:0.45},
+  fixtures:{
+    cargoRack:{poses:{left:[3,3],center:[5,3],right:[7,3]},crateHalfExtentsXZ:[0.22,0.2],reservedInAllStates:true},
+    ballastSlots:{L1:[3,4],L2:[3,6],C1:[5,4],C2:[5,6],R1:[7,4],R2:[7,6],
+      mounting:'shallow recessed sockets with flush walk-rated lids between atomic adjustments; visible marked weight tops, never tall collision walls'},
+    gateWinch:{body:[5,3],handle:[4,3],operator:[4,4],fairleadXYZ:[0.8,1,-2.3],
+      cablePathXZ:[[0,-0.9],[0.8,-2.3],[2,-2.5]]},
+    cargoDavit:{body:[8,3],handle:[8,2],operator:[7,2],hullMountXYZ:[1.35,0.8,-1.25],
+      outboardHousingXYZ:[1.8,0.95,-0.9],handleXYZ:[1.8,1.1,-1.5],
+      connection:'Rigid bracket from in-hull foot to outboard housing; visible forward shaft joins housing and handwheel'},
+    bowObserver:[4,2],guideRopeOperator:[6,5],helm:[5,8],gangwayStand:[7,7],gangwayHotspot:[8,7],
+    smallCargoLocker:{grid:[5,7],mounting:'flush deck hatch; contents are part of baseline load'},
+    securedSword:{visible:false,legacyAnchorRetired:[2,7],sourceScene:'c16',placement:'put safely aside out of shot; do not invent a visible rack or hang it outside the hull'},
+    sternSignal:{grid:[7,9],mounting:'rail-mounted shuttered signal, distinct from mooring cleat'},
+    mooring:{operationStand:[7,9],bowFairleadXYZ:[1.4,0.85,-2.2],sternFairleadXYZ:[1.4,0.85,2.7],
+      shoreBollardsGrid:[[7,3],[7,8]],signalDoesNotOperateLines:true}
+  },
+  views:{deck:'same mesh, full hull inside grid boundary [-.5,10.5]; no widening to fill 11 columns',
+    berth:'same mesh inside original 3-by-6 conservative B footprint; gangplank overlaps the starboard hull-edge cell',
+    gal:'same mesh and fixture coordinates; legal state overlays and camera crop, never mirrored',
+    world:'Right-handed boat axes X starboard/Y up/Z stern; right-handed world axes X east/Y up/Z south. Apply berth yaw and uniform scale; positive determinant including M04 yaw180'},
+  migration:{fromContentHash:'f56a71f169fbe102',automatic:false,
+    reason:'The old deck had removed floor cells; old states/certificates remain in their old content namespace. Start a new run or replay actions under this identity.'}
+});
+const xyz = p => Array.isArray(p)?p:[p.x,p.y];
+export function voyageDeckToVessel(point) {
+  const [x,y]=xyz(point);return [0.6*(x-5),0.8,0.6*y-2.7].map(n=>Number(n.toFixed(9)));
+}
+export function voyageVesselToBerth([X,Y,Z]) { return [5+X,5.5+Z].map(n=>Number(n.toFixed(9))); }
+export function voyageDeckToBerth(point) { return voyageVesselToBerth(voyageDeckToVessel(point)); }
+export function voyageVesselToWorld(point,regionTransform) {
+  const [x,y]=voyageVesselToBerth(point),a=regionTransform.yaw_deg*Math.PI/180,s=regionTransform.scale;
+  return [regionTransform.origin[0]+s*(x*Math.cos(a)-y*Math.sin(a)),point[1]*s,
+    regionTransform.origin[1]+s*(x*Math.sin(a)+y*Math.cos(a))].map(n=>Number(n.toFixed(9)));
+}
 
 export function createVoyageSpec() {
   const regions=[
@@ -39,7 +86,7 @@ export function createVoyageSpec() {
       op('c.signal',7,3,'与近灯互认灯号并开放内港窄口',[flag('c.lampInstalled'),flag('c.nearLampStaffed'),flag('c.ferryStaffed')],{flags:{'c.bothLamps':true,'c.farLampStaffed':true}},'c18')
     ]),
     {id:deckRegion,title:'渡船甲板 · 同一艘船',map:deck,arrival:{x:7,y:7},entities:[
-      {id:'c.deckGangway',x:8,y:7,title:'返回当前泊位',kind:'anchor'},
+      {id:'c.deckGangway',x:8,y:7,title:'返回当前泊位',kind:'anchor',interactionAt:{x:7,y:7}},
       {id:'c.helm',x:5,y:8,title:'舵位 / 离岸确认',kind:'anchor'},
       {id:'c.ballast',x:5,y:5,title:'三枚配重控制位',kind:'anchor'},
       ...[2,3,4,5].map(n=>({...op(`c.moor${n}`,7,9,n===5?'双缆系泊远灯内侧':'按口令完成安全靠泊',[dock(n),{moored:false},{cargo:'center'},{balance:true}],{moored:true,flags:{[`c.moored${n}`]:true}},n===3?'c07':n===5?'c15':null),visibleWhen:dock(n)})),
@@ -47,8 +94,8 @@ export function createVoyageSpec() {
       {...op('c.openBarrier',4,3,'牵引开浮栅，收到岸锁回应',[dock(3),{moored:true},{cargo:'left'},{balance:true},flag('c.shoreLock')],{flags:{'c.barrierOpen':true}},'c08'),interactionAt:{x:4,y:4},visibleWhen:dock(3)},
       {...op('c.centerCargo',5,3,'浮栅作业完成，货架归中',[dock(3),{moored:true},{cargo:'left'},flag('c.barrierOpen')],{cargo:'center'},'c10'),visibleWhen:dock(3)},
       {...op('c.shiftRight',5,3,'把灯座移到右舷固定吊点',[dock(5),{moored:true},{cargo:'center'}],{cargo:'right'},'c16'),visibleWhen:dock(5)},
-      {...op('c.unload',8,3,'确认配平，手摇船吊臂卸货',[dock(5),{moored:true},{cargo:'right'},{balance:true}],{cargo:'ashore',flags:{'c.cargoAshore':true}},'c16'),visibleWhen:dock(5)},
-      {...op('c.stow',8,3,'空船配平后收妥空吊臂',[dock(5),{moored:true},{cargo:'ashore'},{balance:true}],{flags:{'c.craneStowed':true,'c.emptyShipSecured':true}},'c16'),visibleWhen:dock(5)}
+      {...op('c.unload',8,2,'确认配平，手摇船吊臂卸货',[dock(5),{moored:true},{cargo:'right'},{balance:true}],{cargo:'ashore',flags:{'c.cargoAshore':true}},'c16'),interactionAt:{x:7,y:2},visibleWhen:dock(5)},
+      {...op('c.stow',8,2,'空船配平后收妥空吊臂',[dock(5),{moored:true},{cargo:'ashore'},{balance:true}],{flags:{'c.craneStowed':true,'c.emptyShipSecured':true}},'c16'),interactionAt:{x:7,y:2},visibleWhen:dock(5)}
     ]}
   ];
   const transitions=regions.filter(r=>r.id!==deckRegion).map(r=>({id:`${r.id}.board`,title:'登船',anchor:`${r.id}.boat`,to:deckRegion,requires:[{dock:r.id},{moored:true}]}));
@@ -63,11 +110,11 @@ export function createVoyageSpec() {
     depart('c.sail45',4,5,2,'末航段至远灯 · 2油',[flag('c.handover')],'c14',{flags:{'c.nearLampStaffed':true,'c.ferryStaffed':true}})
   );
   return {
-    id:'voyage-c',difficulty:'normal',version:'c-rules-prototype-v1',title:'双灯夜航 · 规则原型',
+    id:'voyage-c',difficulty:'normal',version:'c-rules-prototype-v1.2-geometry',title:'双灯夜航 · 规则原型',
     source:{fullSha256:'4dfcfba4fb686dfec5e9b0ac5bce22a70323f8ff68b1712048c661ee89328f1f',outlineSha256:'22dc7a6b0419aeb9f61869625f850b92f5d609c27c96d3be0cbfc566593edcd0'},
     initial:{location:{regionId:'C-M01',x:7,y:7},stats:{hp:60,maxHp:60,atk:14,def:8,gold:8},resources:{fuel:9},flags:{'c.lampOil':true},boat:{dock:'C-M01',moored:true,cargo:'center',positions:{w1:'L1',w2:'L2',w3:'C1'}}},
-    regions,transitions,
-    visualLinks:[{id:'c.winch',regionId:deckRegion,body:{x:5,y:3},controlEntityId:'c.openBarrier',operator:{x:4,y:4},meaning:'同一牵引绞盘：机身与侧面手柄，非遥控装置'}],
+    regions,transitions,vesselGeometry:VOYAGE_VESSEL_GEOMETRY,
+    visualLinks:[{id:'c.winch',regionId:deckRegion,body:{x:5,y:3},controlEntityId:'c.openBarrier',operator:{x:4,y:4},meaning:'同一牵引绞盘：机身与侧面手柄，非遥控装置'},{id:'c.davit',regionId:deckRegion,body:{x:8,y:3},controlEntityId:'c.unload',otherControlEntityIds:['c.stow'],operator:{x:7,y:2},meaning:'同一右舷吊臂：舷外机架与前侧手轮，固定支座在船体内；操作者不站在右货架下'}],
     ballast:{deckRegion,control:'c.ballast',weights:{w1:1,w2:1,w3:2},slots:{L1:-1,L2:-1,C1:0,C2:0,R1:1,R2:1},slotCoordinates:{L1:[3,4],L2:[3,6],C1:[5,4],C2:[5,6],R1:[7,4],R2:[7,6]},cargoTorques:{center:0,left:-2,right:2,ashore:0}},
     goal:[flag('c.bothLamps'),flag('c.farLampStaffed'),flag('c.nearLampStaffed'),flag('c.ferryStaffed'),flag('c.emptyShipSecured'),{cargo:'ashore'},{moored:true},{balance:true}]
   };

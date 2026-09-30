@@ -1,0 +1,377 @@
+{
+  "status": "PASS",
+  "scope": "Six actual masks and all entity stands; watertight single metric mesh; three authoritative initial-state certificate replays. Physical swept-path tests are in test/campaign-c-geometry.test.js. No pixel-art acceptance claim.",
+  "runtimeIdentity": {
+    "campaignId": "voyage-c",
+    "difficultyId": "normal",
+    "contentVersion": "c-rules-prototype-v1.2-geometry",
+    "rulesVersion": "fixed-campaign-v1.1",
+    "contentHash": "c5a5f809d5548f36"
+  },
+  "runtimeSnapshotSha256": "48445f8ded606603247bba284880e6bf18e72e578444a20fcf17e3742fa841f3",
+  "geometryId": "C_FERRY_HULL_01",
+  "metricHull": {
+    "beam": 3,
+    "length": 6,
+    "vertices": 10,
+    "triangles": 16,
+    "manifold": true
+  },
+  "deckPitch": 0.6,
+  "deckReachableCells": 42,
+  "checks": [
+    {
+      "region": "C-M01",
+      "dimensions11": true,
+      "normalizedMaskMatches": true,
+      "reachableCells": 26,
+      "entities": [
+        {
+          "id": "C-M01.boat",
+          "at": [
+            5,
+            7
+          ],
+          "requiredStand": null,
+          "reachable": true
+        },
+        {
+          "id": "c.manifest",
+          "at": [
+            9,
+            2
+          ],
+          "requiredStand": null,
+          "reachable": true
+        },
+        {
+          "id": "c.coat",
+          "at": [
+            9,
+            5
+          ],
+          "requiredStand": null,
+          "reachable": true
+        },
+        {
+          "id": "c.departureBrief",
+          "at": [
+            7,
+            3
+          ],
+          "requiredStand": null,
+          "reachable": true
+        }
+      ]
+    },
+    {
+      "region": "C-M02",
+      "dimensions11": true,
+      "normalizedMaskMatches": true,
+      "reachableCells": 25,
+      "entities": [
+        {
+          "id": "C-M02.boat",
+          "at": [
+            5,
+            7
+          ],
+          "requiredStand": null,
+          "reachable": true
+        },
+        {
+          "id": "c.supplies",
+          "at": [
+            9,
+            5
+          ],
+          "requiredStand": null,
+          "reachable": true
+        },
+        {
+          "id": "c.machine1",
+          "at": [
+            8,
+            3
+          ],
+          "requiredStand": null,
+          "reachable": true
+        },
+        {
+          "id": "c.bandage",
+          "at": [
+            9,
+            8
+          ],
+          "requiredStand": null,
+          "reachable": true
+        }
+      ]
+    },
+    {
+      "region": "C-M03",
+      "dimensions11": true,
+      "normalizedMaskMatches": true,
+      "reachableCells": 25,
+      "entities": [
+        {
+          "id": "C-M03.boat",
+          "at": [
+            5,
+            7
+          ],
+          "requiredStand": null,
+          "reachable": true
+        },
+        {
+          "id": "c.shoreLock",
+          "at": [
+            7,
+            3
+          ],
+          "requiredStand": null,
+          "reachable": true
+        },
+        {
+          "id": "c.machine2",
+          "at": [
+            8,
+            1
+          ],
+          "requiredStand": null,
+          "reachable": true
+        }
+      ]
+    },
+    {
+      "region": "C-M04",
+      "dimensions11": true,
+      "normalizedMaskMatches": true,
+      "reachableCells": 26,
+      "entities": [
+        {
+          "id": "C-M04.boat",
+          "at": [
+            5,
+            7
+          ],
+          "requiredStand": null,
+          "reachable": true
+        },
+        {
+          "id": "c.handover",
+          "at": [
+            9,
+            2
+          ],
+          "requiredStand": null,
+          "reachable": true
+        }
+      ]
+    },
+    {
+      "region": "C-M05",
+      "dimensions11": true,
+      "normalizedMaskMatches": true,
+      "reachableCells": 26,
+      "entities": [
+        {
+          "id": "C-M05.boat",
+          "at": [
+            5,
+            7
+          ],
+          "requiredStand": null,
+          "reachable": true
+        },
+        {
+          "id": "c.rollCargo",
+          "at": [
+            8,
+            5
+          ],
+          "requiredStand": null,
+          "reachable": true
+        },
+        {
+          "id": "c.installLamp",
+          "at": [
+            9,
+            2
+          ],
+          "requiredStand": null,
+          "reachable": true
+        },
+        {
+          "id": "c.signal",
+          "at": [
+            7,
+            3
+          ],
+          "requiredStand": null,
+          "reachable": true
+        }
+      ]
+    },
+    {
+      "region": "C-D01",
+      "dimensions11": true,
+      "normalizedMaskMatches": true,
+      "reachableCells": 42,
+      "entities": [
+        {
+          "id": "c.deckGangway",
+          "at": [
+            8,
+            7
+          ],
+          "requiredStand": {
+            "x": 7,
+            "y": 7
+          },
+          "reachable": true
+        },
+        {
+          "id": "c.helm",
+          "at": [
+            5,
+            8
+          ],
+          "requiredStand": null,
+          "reachable": true
+        },
+        {
+          "id": "c.ballast",
+          "at": [
+            5,
+            5
+          ],
+          "requiredStand": null,
+          "reachable": true
+        },
+        {
+          "id": "c.moor2",
+          "at": [
+            7,
+            9
+          ],
+          "requiredStand": null,
+          "reachable": true
+        },
+        {
+          "id": "c.moor3",
+          "at": [
+            7,
+            9
+          ],
+          "requiredStand": null,
+          "reachable": true
+        },
+        {
+          "id": "c.moor4",
+          "at": [
+            7,
+            9
+          ],
+          "requiredStand": null,
+          "reachable": true
+        },
+        {
+          "id": "c.moor5",
+          "at": [
+            7,
+            9
+          ],
+          "requiredStand": null,
+          "reachable": true
+        },
+        {
+          "id": "c.shiftLeft",
+          "at": [
+            5,
+            3
+          ],
+          "requiredStand": null,
+          "reachable": true
+        },
+        {
+          "id": "c.openBarrier",
+          "at": [
+            4,
+            3
+          ],
+          "requiredStand": {
+            "x": 4,
+            "y": 4
+          },
+          "reachable": true
+        },
+        {
+          "id": "c.centerCargo",
+          "at": [
+            5,
+            3
+          ],
+          "requiredStand": null,
+          "reachable": true
+        },
+        {
+          "id": "c.shiftRight",
+          "at": [
+            5,
+            3
+          ],
+          "requiredStand": null,
+          "reachable": true
+        },
+        {
+          "id": "c.unload",
+          "at": [
+            8,
+            2
+          ],
+          "requiredStand": {
+            "x": 7,
+            "y": 2
+          },
+          "reachable": true
+        },
+        {
+          "id": "c.stow",
+          "at": [
+            8,
+            2
+          ],
+          "requiredStand": {
+            "x": 7,
+            "y": 2
+          },
+          "reachable": true
+        }
+      ]
+    }
+  ],
+  "routes": [
+    {
+      "name": "c-normal",
+      "actions": 170,
+      "hp": 29,
+      "fuel": 1,
+      "victory": true
+    },
+    {
+      "name": "c-normal-short-bypass",
+      "actions": 163,
+      "hp": 54,
+      "fuel": 0,
+      "victory": true
+    },
+    {
+      "name": "c-normal-bypass-short",
+      "actions": 167,
+      "hp": 47,
+      "fuel": 0,
+      "victory": true
+    }
+  ]
+}

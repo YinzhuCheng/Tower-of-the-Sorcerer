@@ -1,6 +1,6 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "buildCommand": "node scripts/build-campaign-preview.mjs && node scripts/validate-campaign-preview-build.mjs",
+  "buildCommand": "node scripts/validate-campaign-c-geometry-v1.2.mjs && node scripts/validate-campaign-c-story-runtime.mjs && node scripts/build-campaign-preview.mjs && node scripts/validate-campaign-preview-build.mjs",
   "outputDirectory": "dist-c-preview",
   "cleanUrls": true,
   "trailingSlash": true,

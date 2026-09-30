@@ -2,9 +2,9 @@
   "identity": {
     "campaignId": "voyage-c",
     "difficultyId": "normal",
-    "contentVersion": "c-rules-prototype-v1",
+    "contentVersion": "c-rules-prototype-v1.2-geometry",
     "rulesVersion": "fixed-campaign-v1.1",
-    "contentHash": "f56a71f169fbe102"
+    "contentHash": "c5a5f809d5548f36"
   },
   "status": "witness_verified",
   "coverage": "complete-macro",
@@ -12,16 +12,16 @@
   "expanded": 40,
   "generated": 240,
   "stoppedReason": "goalFound",
-  "actions": 164,
+  "actions": 170,
   "final": {
     "identity": {
       "campaignId": "voyage-c",
       "difficultyId": "normal",
-      "contentVersion": "c-rules-prototype-v1",
+      "contentVersion": "c-rules-prototype-v1.2-geometry",
       "rulesVersion": "fixed-campaign-v1.1",
-      "contentHash": "f56a71f169fbe102"
+      "contentHash": "c5a5f809d5548f36"
     },
-    "revision": 164,
+    "revision": 170,
     "location": {
       "regionId": "C-M05",
       "x": 8,

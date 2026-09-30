@@ -1,0 +1,984 @@
+{
+  "version": "1.2",
+  "status": "metric-hull-and-runtime-navigation-verified-pending-art",
+  "engine_contact": "/root/design_shared_campaign_engine agreed 2026-09-30: five-berth anchors, unique gangplank (6,7), boat hotspot (5,7), orthogonal interaction",
+  "runtime_expected_path": "tower-campaigns/src/campaigns/c/content.js regions[]",
+  "legend": {
+    "~": {
+      "material": "inner-harbor-water",
+      "walkable": false
+    },
+    ".": {
+      "material": "stone-quay",
+      "walkable": true
+    },
+    "=": {
+      "material": "single-gangplank",
+      "walkable": true
+    },
+    "B": {
+      "material": "same-ferry-hull",
+      "walkable": false
+    },
+    "#": {
+      "material": "shore-boundary or deck-reserved-cargo-rack",
+      "walkable": false
+    },
+    "X": {
+      "material": "isolated-damaged-platform",
+      "walkable": false
+    },
+    "r": {
+      "material": "low-roller-ramp",
+      "walkable": true
+    },
+    "d": {
+      "material": "ferry-deck",
+      "walkable": true
+    },
+    "s": {
+      "material": "fixed-ballast-slot",
+      "walkable": true
+    }
+  },
+  "regions": [
+    {
+      "id": "C-M01",
+      "dimensions": [
+        11,
+        11
+      ],
+      "coordinate_type": "local grid x right, y down; NOT geographic north on every region",
+      "grid": [
+        "~~~~~~~~~~~",
+        "~~~~~~~...~",
+        "~~~~~~~...~",
+        "~~~~BBB#..~",
+        "~~~~BBB...~",
+        "~~~~BBB...~",
+        "~~~~BBB...~",
+        "~~~~BB=...~",
+        "~~~~BBB#..~",
+        "~~~~~~~...~",
+        "~~~~~~~~~~~"
+      ],
+      "anchors": [
+        {
+          "id": "shore-arrival",
+          "xy": [
+            7,
+            7
+          ],
+          "kind": "entry-walkable"
+        },
+        {
+          "id": "deck-entry",
+          "xy": [
+            5,
+            7
+          ],
+          "kind": "interact-orthogonally",
+          "walkable": false,
+          "trigger_from": [
+            6,
+            7
+          ]
+        },
+        {
+          "id": "gangplank",
+          "xy": [
+            6,
+            7
+          ],
+          "kind": "unique-walkable-connection"
+        },
+        {
+          "id": "main-bollard-bow",
+          "xy": [
+            7,
+            3
+          ],
+          "kind": "nonwalkable-prop"
+        },
+        {
+          "id": "main-bollard-stern",
+          "xy": [
+            7,
+            8
+          ],
+          "kind": "nonwalkable-prop"
+        },
+        {
+          "id": "front-personnel-path",
+          "xy": [
+            9,
+            2
+          ],
+          "kind": "staff-path-not-map-transition",
+          "cargo_access": false
+        },
+        {
+          "id": "near-light-front-sightline",
+          "xy": [
+            9,
+            -6
+          ],
+          "kind": "offgrid-same-near-light"
+        },
+        {
+          "id": "fixed-shop",
+          "xy": [
+            9,
+            5
+          ],
+          "kind": "interact-orthogonally"
+        },
+        {
+          "id": "ferry-holding-rope",
+          "xy": [
+            8,
+            8
+          ],
+          "kind": "navigation-control-no-extra-player-exit"
+        }
+      ],
+      "entry": [
+        7,
+        7
+      ],
+      "deck_trigger": [
+        5,
+        7
+      ],
+      "deck_interaction_stand": [
+        6,
+        7
+      ],
+      "boundary_policy": "No implicit walk to neighboring region. Only documented departure edge changes berth. Water always blocked. Staff path not player teleport.",
+      "boat_local_heading": "bow toward y=0; starboard x positive",
+      "entity_overlay_policy": "grid is material/base passability only; fixed entities may block their anchor cells. Validate approach cells after overlay."
+    },
+    {
+      "id": "C-M02",
+      "dimensions": [
+        11,
+        11
+      ],
+      "coordinate_type": "local grid x right, y down; NOT geographic north on every region",
+      "grid": [
+        "~~~~~~~~~~~",
+        "~~~~~~~...~",
+        "~~~~~~~...~",
+        "~~~~BBB#..~",
+        "~~~~BBB...~",
+        "~~~~BBB...~",
+        "~~~~BBB...~",
+        "~~~~BB=...~",
+        "~~~~BBB#..~",
+        "~~~~~~~...~",
+        "~~~~~~~~~~~"
+      ],
+      "anchors": [
+        {
+          "id": "shore-arrival",
+          "xy": [
+            7,
+            7
+          ],
+          "kind": "entry-walkable"
+        },
+        {
+          "id": "deck-entry",
+          "xy": [
+            5,
+            7
+          ],
+          "kind": "interact-orthogonally",
+          "walkable": false,
+          "trigger_from": [
+            6,
+            7
+          ]
+        },
+        {
+          "id": "gangplank",
+          "xy": [
+            6,
+            7
+          ],
+          "kind": "unique-walkable-connection"
+        },
+        {
+          "id": "main-bollard-bow",
+          "xy": [
+            7,
+            3
+          ],
+          "kind": "nonwalkable-prop"
+        },
+        {
+          "id": "main-bollard-stern",
+          "xy": [
+            7,
+            8
+          ],
+          "kind": "nonwalkable-prop"
+        },
+        {
+          "id": "fixed-bolts-and-fuel-locker",
+          "xy": [
+            9,
+            5
+          ],
+          "kind": "interact-orthogonally",
+          "unique": true
+        },
+        {
+          "id": "short-route-rail-machine-1",
+          "xy": [
+            8,
+            3
+          ],
+          "kind": "fixed-enemy-nonwalkable",
+          "unique": true
+        },
+        {
+          "id": "route-decision",
+          "xy": [
+            8,
+            7
+          ],
+          "kind": "UI-route-edge-selection",
+          "branches": [
+            "short",
+            "detour"
+          ]
+        }
+      ],
+      "entry": [
+        7,
+        7
+      ],
+      "deck_trigger": [
+        5,
+        7
+      ],
+      "deck_interaction_stand": [
+        6,
+        7
+      ],
+      "boundary_policy": "No implicit walk to neighboring region. Only documented departure edge changes berth. Water always blocked. Staff path not player teleport.",
+      "boat_local_heading": "bow toward y=0; starboard x positive",
+      "entity_overlay_policy": "grid is material/base passability only; fixed entities may block their anchor cells. Validate approach cells after overlay."
+    },
+    {
+      "id": "C-M03",
+      "dimensions": [
+        11,
+        11
+      ],
+      "coordinate_type": "local grid x right, y down; NOT geographic north on every region",
+      "grid": [
+        "~~~~~~~~~~~",
+        "~~~~~~~...~",
+        "~~~~~~~...~",
+        "~~~~BBB#..~",
+        "~~~~BBB...~",
+        "~~~~BBB...~",
+        "~~~~BBB...~",
+        "~~~~BB=...~",
+        "~~~~BBB#..~",
+        "~~~~~~~...~",
+        "~~~~~~~~~~~"
+      ],
+      "anchors": [
+        {
+          "id": "shore-arrival",
+          "xy": [
+            7,
+            7
+          ],
+          "kind": "entry-walkable"
+        },
+        {
+          "id": "deck-entry",
+          "xy": [
+            5,
+            7
+          ],
+          "kind": "interact-orthogonally",
+          "walkable": false,
+          "trigger_from": [
+            6,
+            7
+          ]
+        },
+        {
+          "id": "gangplank",
+          "xy": [
+            6,
+            7
+          ],
+          "kind": "unique-walkable-connection"
+        },
+        {
+          "id": "main-bollard-bow",
+          "xy": [
+            7,
+            3
+          ],
+          "kind": "nonwalkable-prop"
+        },
+        {
+          "id": "main-bollard-stern",
+          "xy": [
+            7,
+            8
+          ],
+          "kind": "nonwalkable-prop"
+        },
+        {
+          "id": "shore-latch",
+          "xy": [
+            7,
+            3
+          ],
+          "kind": "interact-orthogonally",
+          "same_fixture_as": "main-bollard-bow",
+          "note": "锁扣支座与桩位同格但独立可见结构，非把主缆拆掉解锁",
+          "safe_approach": [
+            [
+              8,
+              3
+            ],
+            [
+              7,
+              4
+            ]
+          ]
+        },
+        {
+          "id": "floating-gate-closed",
+          "cells": [
+            [
+              3,
+              1
+            ],
+            [
+              4,
+              1
+            ],
+            [
+              5,
+              1
+            ],
+            [
+              6,
+              1
+            ]
+          ],
+          "kind": "water-only-barrier",
+          "navigation_gate_for": [
+            "short",
+            "detour"
+          ]
+        },
+        {
+          "id": "floating-gate-side-pocket",
+          "xy": [
+            2,
+            1
+          ],
+          "kind": "open-gate-stowage-water-only"
+        },
+        {
+          "id": "short-route-rail-machine-2",
+          "xy": [
+            8,
+            1
+          ],
+          "kind": "fixed-enemy-nonwalkable",
+          "unique": true,
+          "approach": [
+            8,
+            2
+          ]
+        },
+        {
+          "id": "short-water-channel",
+          "xy": [
+            6,
+            0
+          ],
+          "kind": "offgrid-after-common-gate",
+          "walkable": false
+        },
+        {
+          "id": "detour-water-channel",
+          "xy": [
+            2,
+            0
+          ],
+          "kind": "offgrid-after-common-gate",
+          "walkable": false
+        },
+        {
+          "id": "near-light-sightline",
+          "direction": "southeast",
+          "kind": "offgrid-same-near-light"
+        }
+      ],
+      "entry": [
+        7,
+        7
+      ],
+      "deck_trigger": [
+        5,
+        7
+      ],
+      "deck_interaction_stand": [
+        6,
+        7
+      ],
+      "boundary_policy": "No implicit walk to neighboring region. Only documented departure edge changes berth. Water always blocked. Staff path not player teleport.",
+      "boat_local_heading": "bow toward y=0; starboard x positive",
+      "entity_overlay_policy": "grid is material/base passability only; fixed entities may block their anchor cells. Validate approach cells after overlay."
+    },
+    {
+      "id": "C-M04",
+      "dimensions": [
+        11,
+        11
+      ],
+      "coordinate_type": "local grid x right, y down; NOT geographic north on every region",
+      "grid": [
+        "~~~~~~~~~~~",
+        "~~~~~~~...~",
+        "~~~~~~~...~",
+        "~~~~BBB#..~",
+        "~~~~BBB...~",
+        "~~~~BBB...~",
+        "~~~~BBB...~",
+        "~~~~BB=...~",
+        "~~~~BBB#..~",
+        "~~~~~~~...~",
+        "~~~~~~~~~~~"
+      ],
+      "anchors": [
+        {
+          "id": "shore-arrival",
+          "xy": [
+            7,
+            7
+          ],
+          "kind": "entry-walkable"
+        },
+        {
+          "id": "deck-entry",
+          "xy": [
+            5,
+            7
+          ],
+          "kind": "interact-orthogonally",
+          "walkable": false,
+          "trigger_from": [
+            6,
+            7
+          ]
+        },
+        {
+          "id": "gangplank",
+          "xy": [
+            6,
+            7
+          ],
+          "kind": "unique-walkable-connection"
+        },
+        {
+          "id": "main-bollard-bow",
+          "xy": [
+            7,
+            3
+          ],
+          "kind": "nonwalkable-prop"
+        },
+        {
+          "id": "main-bollard-stern",
+          "xy": [
+            7,
+            8
+          ],
+          "kind": "nonwalkable-prop"
+        },
+        {
+          "id": "near-light-back-window",
+          "xy": [
+            9,
+            2
+          ],
+          "kind": "same-near-light-staff-hotspot"
+        },
+        {
+          "id": "near-light-narrow-steps",
+          "cells": [
+            [
+              9,
+              3
+            ],
+            [
+              9,
+              4
+            ]
+          ],
+          "kind": "person-only-staff-path",
+          "cargo_access": false
+        },
+        {
+          "id": "handoff-berth",
+          "xy": [
+            8,
+            7
+          ],
+          "kind": "event-hotspot"
+        },
+        {
+          "id": "final-line-cleat",
+          "xy": [
+            7,
+            8
+          ],
+          "kind": "last-berth-line-c14"
+        }
+      ],
+      "entry": [
+        7,
+        7
+      ],
+      "deck_trigger": [
+        5,
+        7
+      ],
+      "deck_interaction_stand": [
+        6,
+        7
+      ],
+      "boundary_policy": "No implicit walk to neighboring region. Only documented departure edge changes berth. Water always blocked. Staff path not player teleport.",
+      "boat_local_heading": "bow toward y=0; starboard x positive",
+      "entity_overlay_policy": "grid is material/base passability only; fixed entities may block their anchor cells. Validate approach cells after overlay."
+    },
+    {
+      "id": "C-M05",
+      "dimensions": [
+        11,
+        11
+      ],
+      "coordinate_type": "local grid x right, y down; NOT geographic north on every region",
+      "grid": [
+        "~~~~~~~~~~~",
+        "~~~~~~~...~",
+        "~~~~~~~...~",
+        "~~~~BBB#r.X",
+        "~~~~BBB.r.X",
+        "~~~~BBB.r.X",
+        "~~~~BBB...~",
+        "~~~~BB=...~",
+        "~~~~BBB#..~",
+        "~~~~~~~...~",
+        "~~~~~~~~~~~"
+      ],
+      "anchors": [
+        {
+          "id": "shore-arrival",
+          "xy": [
+            7,
+            7
+          ],
+          "kind": "entry-walkable"
+        },
+        {
+          "id": "deck-entry",
+          "xy": [
+            5,
+            7
+          ],
+          "kind": "interact-orthogonally",
+          "walkable": false,
+          "trigger_from": [
+            6,
+            7
+          ]
+        },
+        {
+          "id": "gangplank",
+          "xy": [
+            6,
+            7
+          ],
+          "kind": "unique-walkable-connection"
+        },
+        {
+          "id": "main-bollard-bow",
+          "xy": [
+            7,
+            3
+          ],
+          "kind": "nonwalkable-prop"
+        },
+        {
+          "id": "main-bollard-stern",
+          "xy": [
+            7,
+            8
+          ],
+          "kind": "nonwalkable-prop"
+        },
+        {
+          "id": "unloading-receiving-face",
+          "xy": [
+            8,
+            5
+          ],
+          "kind": "clear-landing-zone"
+        },
+        {
+          "id": "short-roller-ramp",
+          "cells": [
+            [
+              8,
+              5
+            ],
+            [
+              8,
+              4
+            ],
+            [
+              8,
+              3
+            ]
+          ],
+          "kind": "continuous-low-height-cargo-path"
+        },
+        {
+          "id": "low-lantern-room",
+          "xy": [
+            9,
+            2
+          ],
+          "kind": "same-map-scene-hotspot",
+          "approach": [
+            9,
+            3
+          ]
+        },
+        {
+          "id": "damaged-outer-platform",
+          "cells": [
+            [
+              10,
+              3
+            ],
+            [
+              10,
+              4
+            ],
+            [
+              10,
+              5
+            ]
+          ],
+          "kind": "blocked-and-railed-no-walk"
+        },
+        {
+          "id": "inner-tow-cleat",
+          "xy": [
+            7,
+            8
+          ],
+          "kind": "next-morning-tow-line",
+          "same_fixture_as": "main-bollard-stern"
+        }
+      ],
+      "entry": [
+        7,
+        7
+      ],
+      "deck_trigger": [
+        5,
+        7
+      ],
+      "deck_interaction_stand": [
+        6,
+        7
+      ],
+      "boundary_policy": "No implicit walk to neighboring region. Only documented departure edge changes berth. Water always blocked. Staff path not player teleport.",
+      "boat_local_heading": "bow toward y=0; starboard x positive",
+      "entity_overlay_policy": "grid is material/base passability only; fixed entities may block their anchor cells. Validate approach cells after overlay."
+    },
+    {
+      "id": "C-D01",
+      "dimensions": [
+        11,
+        11
+      ],
+      "coordinate_type": "isotropic 0.6m deck sampling of C_FERRY_HULL_01, not a 7-by-9 hull",
+      "grid": [
+        "~~~~~~~~~~~",
+        "~~~ddddd~~~",
+        "~~~ddddd~~~",
+        "~~~#d#d#~~~",
+        "~~~sdsds~~~",
+        "~~~ddddd~~~",
+        "~~~sdsds~~~",
+        "~~~ddddd~~~",
+        "~~~ddddd~~~",
+        "~~~ddddd~~~",
+        "~~~~~~~~~~~"
+      ],
+      "slots": {
+        "L1": [
+          3,
+          4
+        ],
+        "L2": [
+          3,
+          6
+        ],
+        "C1": [
+          5,
+          4
+        ],
+        "C2": [
+          5,
+          6
+        ],
+        "R1": [
+          7,
+          4
+        ],
+        "R2": [
+          7,
+          6
+        ]
+      },
+      "cargo_positions": {
+        "left": [
+          3,
+          3
+        ],
+        "center": [
+          5,
+          3
+        ],
+        "right": [
+          7,
+          3
+        ],
+        "unloaded": null
+      },
+      "anchors": [
+        {
+          "id": "ferry-bow-observation",
+          "xy": [
+            4,
+            2
+          ],
+          "kind": "safe-observer-no-cable-extension"
+        },
+        {
+          "id": "gate-hand-winch",
+          "xy": [
+            5,
+            3
+          ],
+          "kind": "winch-body-decoration-under-center-cargo-rack",
+          "visible_when": "cargo=left",
+          "operator": [
+            4,
+            4
+          ],
+          "control_hotspot": [
+            4,
+            3
+          ],
+          "same_fixture_as": "gate-hand-winch-handle"
+        },
+        {
+          "id": "starboard-cargo-davit",
+          "xy": [
+            8,
+            3
+          ],
+          "kind": "nonwalkable-outboard-device-attached-to-in-hull-foot",
+          "operator": [
+            7,
+            2
+          ],
+          "control_hotspot": [
+            8,
+            2
+          ],
+          "same_fixture_as": "starboard-cargo-davit-handwheel"
+        },
+        {
+          "id": "cargo-guideline-position",
+          "xy": [
+            6,
+            5
+          ],
+          "kind": "safe-away-from-suspended-load"
+        },
+        {
+          "id": "helm",
+          "xy": [
+            5,
+            8
+          ],
+          "kind": "same-fixed-helm"
+        },
+        {
+          "id": "stern-signal-lamp",
+          "xy": [
+            7,
+            9
+          ],
+          "kind": "small-shuttered-signal-not-navigation-light",
+          "note": "Rail-mounted small signal only; independent mooring cleat and paired cables use the metric fixture file"
+        },
+        {
+          "id": "center-small-cargo-locker",
+          "xy": [
+            5,
+            7
+          ],
+          "kind": "flush-centerline-hatch-baseline-load"
+        },
+        {
+          "id": "deck-return",
+          "xy": [
+            8,
+            7
+          ],
+          "kind": "nonwalkable-gangway-edge-hotspot-current-berth-only",
+          "walkable": false,
+          "trigger_from": [
+            7,
+            7
+          ]
+        },
+        {
+          "id": "secured-sword-location",
+          "kind": "c16-temporary-put-aside-not-a-visible-runtime-prop",
+          "visible": false,
+          "retired_old_xy": [
+            2,
+            7
+          ],
+          "note": "No new rack and no floating sword. The source only requires safe unobstructive storage; optional close-up omits this item."
+        },
+        {
+          "id": "gate-hand-winch-handle",
+          "xy": [
+            4,
+            3
+          ],
+          "kind": "interact-orthogonally",
+          "runtime_entity": "c.openBarrier",
+          "operator": [
+            4,
+            4
+          ],
+          "same_fixture_as": "gate-hand-winch",
+          "note": "Body (5,3) and handle (4,3) must be visibly connected parts of one winch; operator (4,4) is off the cable line."
+        },
+        {
+          "id": "starboard-cargo-davit-handwheel",
+          "xy": [
+            8,
+            2
+          ],
+          "operator": [
+            7,
+            2
+          ],
+          "kind": "nonwalkable-edge-interaction",
+          "runtime_entities": [
+            "c.unload",
+            "c.stow"
+          ],
+          "same_fixture_as": "starboard-cargo-davit",
+          "note": "Forward handle is physically shaft-connected to the original body (8,3); do not stand on right cargo rack (7,3)."
+        },
+        {
+          "id": "mooring-line-operation",
+          "xy": [
+            7,
+            9
+          ],
+          "kind": "operation-stand-not-signal-switch",
+          "fixture_ref": "vessel-physical-geometry-v1.2.json geometry.fixtures.mooring"
+        }
+      ],
+      "state_note": "Slot icons are interactable representations; their navigation policy must match runtime implementation. Characters do not contribute ballast moment. Cargo rack and three ballast items are different objects.",
+      "physicalMapping": {
+        "formula": "[X,Y,Z]=[0.6*(x-5),0.8,0.6*y-2.7]; Z stern, bow negative Z",
+        "toBerth": "[5+X,5.5+Z]=[2+0.6*x,2.8+0.6*y]",
+        "meshId": "C_FERRY_HULL_01"
+      },
+      "reservedEquipmentCells": [
+        [
+          3,
+          3
+        ],
+        [
+          5,
+          3
+        ],
+        [
+          7,
+          3
+        ]
+      ],
+      "navigation_policy": "Only 42 dot/s cells are walkable. Three cargo rack cells stay reserved in every cargo state; two passage columns x4/x6 connect fore and aft deck. Recessed weight sockets/hatches have flush covers between atomic operations. No outboard walking."
+    }
+  ],
+  "protected_edges": [
+    {
+      "from": "C-M01",
+      "to": "C-M02",
+      "route": "fixed"
+    },
+    {
+      "from": "C-M02",
+      "to": "C-M03",
+      "route": "short|detour"
+    },
+    {
+      "from": "C-M03",
+      "to": "C-M04",
+      "route": "short|detour",
+      "common_requirement": "gate-open"
+    },
+    {
+      "from": "C-M04",
+      "to": "C-M05",
+      "route": "fixed-inner-bend"
+    }
+  ],
+  "forbidden_edges": [
+    "M04→M01 ship return",
+    "M01 personnel stairs carrying cargo",
+    "M04→M05 footbridge",
+    "D01→any berth except current",
+    "night reverse sailing",
+    "outer-sea exit"
+  ],
+  "supersedes": "map-space-contract.json version1.1; retained for r3 history",
+  "physicalGeometry": "vessel-physical-geometry-v1.2.json",
+  "runtimeIdentity": {
+    "campaignId": "voyage-c",
+    "difficultyId": "normal",
+    "contentVersion": "c-rules-prototype-v1.2-geometry",
+    "rulesVersion": "fixed-campaign-v1.1",
+    "contentHash": "c5a5f809d5548f36"
+  }
+}

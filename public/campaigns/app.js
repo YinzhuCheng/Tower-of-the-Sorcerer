@@ -1,3 +1,5 @@
+import { projectVoyageScene } from '../src/rendering/c-adapter.js';
+import { presentContinuousScene } from '../src/rendering/continuous-map.js';
 import { createVoyagePlanning } from '../src/campaigns/c/planning.js';
 import { createVoyageStory } from '../src/campaigns/c/story/index.js';
 import { createVoyageCampaign } from '../src/campaigns/c/content.js';
@@ -88,6 +90,7 @@ function describe(action,preview){
  return parts.join('\n');
 }
 function request(action){
+ if(document.querySelector('dialog[open]')||pending||playTimer)return;
  const preview=runtime.preview(state,action);const title=action.title;action=Object.fromEntries(Object.entries(action).filter(([key])=>['type','entityId','edgeId','weightId','slot'].includes(key)));if(!preview.legal){notify(preview.reason);return;}
  const consumes=preview.nextState&&(Object.entries(state.resources).some(([id,value])=>(preview.nextState.resources[id]??0)<value)||preview.nextState.stats.gold<state.stats.gold);
  const irreversibleDeparture=action.type==='traverse'&&runtime.spec.transitions.find(edge=>edge.id===action.edgeId)?.departure;
@@ -109,10 +112,11 @@ function render(){
  $('cargo').textContent=`灯座：${{center:'中线',left:'左侧绞盘作业',right:'右舷吊装',ashore:'已上岸'}[boat.cargo]} · ${view.balance.balanced?'配平':'尚未配平'} · 封装灯油${state.flags['c.lampOil']?'随船独立运输':'已用于远灯'}`;
  $('balance-ledger').textContent=`左右总力矩：左 ${view.balance.leftMoment} / 右 ${view.balance.rightMoment}。相等即可确认作业，中线载荷不计入左右`;
  renderForecast($('route-forecast'));
+ presentContinuousScene($('map-canvas'),$('board'),projectVoyageScene(runtime,state));
  $('board').replaceChildren();for(let y=0;y<11;y++)for(let x=0;x<11;x++){
   const token=view.region.map[y][x],tile=document.createElement('button');tile.className=`tile ${token==='.'?(view.region.id==='C-D01'?'deck':'floor'):token==='B'?'ship':token==='#'?'wall':''}`;tile.setAttribute('aria-label',`${x},${y}`);
   let slotInfo=null;
-  const entities=view.entities.filter(e=>e.x===x&&e.y===y);const entity=entities.find(e=>!e.completed)??entities[0];
+  const entities=view.entities.filter(e=>e.x===x&&e.y===y&&runtime.meets(state,e.visibleWhen));const entity=entities.find(e=>!e.completed)??entities[0];
   if(entity){tile.classList.add('entity');if(entity.completed)tile.classList.add('completed');tile.textContent=entity.kind==='enemy'?(entity.completed?'·':'⚙'):entity.kind==='pickup'?'◆':entity.kind==='shop'?'◇':entity.id.endsWith('.boat')?'⚓':entity.kind==='anchor'?'◈':'▣';tile.title=entity.title;}
   if(view.region.id==='C-D01'){for(const [slot,[sx,sy]]of Object.entries(runtime.spec.ballast.slotCoordinates)){if(sx===x&&sy===y){tile.classList.add('balance-slot');const weight=Object.entries(boat.positions).find(([,pos])=>pos===slot)?.[0];const ordinal=weight?Object.keys(runtime.spec.ballast.weights).indexOf(weight):-1;tile.textContent=weight?`${['①','②','③'][ordinal]} ${runtime.spec.ballast.weights[weight]}`:'空';slotInfo={name:view.balance.slotNames[slot],weight,ordinal};tile.title=`${slotInfo.name}：${weight?`${ordinal+1}号铁块，质量${runtime.spec.ballast.weights[weight]}`:'空槽'}`;tile.setAttribute('aria-label',`${x},${y} ${tile.title}`);}}
    if(boat.dock==='C-M03'&&boat.cargo==='left'&&y===3&&[4,5].includes(x)){tile.textContent=x===5?'⚙':'↤';tile.title=x===5?'同一牵引绞盘机身，左侧为手柄':'牵引绞盘侧手柄；站在4,4操作';tile.classList.add(x===5?'winch-body':'winch-handle');}
@@ -120,7 +124,9 @@ function render(){
   }
   if(state.location.x===x&&state.location.y===y){tile.classList.add('hero');tile.textContent='◎';}
   if(slotInfo){const label=document.createElement('small');label.textContent=slotInfo.name;tile.append(label);}
-  tile.onclick=()=>{if(!playTimer)walkTo(x,y);};$('board').append(tile);
+  tile.tabIndex=state.location.x===x&&state.location.y===y?0:-1;
+  tile.setAttribute('aria-label',`${x},${y} ${tile.title||({'.':'可行地面','B':'船体，经唯一跳板登船','#':'固定机座或岸桩','X':'损坏平台，不可进入','~':'水面，不可行走'}[token]??'不可行走')}${state.location.x===x&&state.location.y===y?'，璃在这里':''}`);
+  tile.onclick=()=>{if(!playTimer&&!document.querySelector('dialog[open]')&&!pending)walkTo(x,y);};$('board').append(tile);
  }
  $('actions').replaceChildren();
  const actions=view.interactions;
@@ -135,7 +141,7 @@ function render(){
  const selected=$('checkpoint-select').value;$('checkpoint-select').replaceChildren();for(let i=1;i<=5;i++){const id=`C-M0${i}`;if(repo.inspect(`checkpoint:${id}`).status==='valid'){const o=document.createElement('option');o.value=id;o.textContent=`${id}抵达初态`;$('checkpoint-select').append(o);}}if(selected)$('checkpoint-select').value=selected;
  $('replay-info').textContent=playback?`原子动作 ${playIndex}/${playback.steps.length}`:'';
 }
-for(const button of document.querySelectorAll('[data-dir]'))button.onclick=()=>apply({type:'move',direction:button.dataset.dir});
+for(const button of document.querySelectorAll('[data-dir]'))button.onclick=()=>{if(!document.querySelector('dialog[open]')&&!pending&&!playTimer)apply({type:'move',direction:button.dataset.dir});};
 document.addEventListener('keydown',event=>{if(document.querySelector('dialog[open]')||playTimer)return;const direction={ArrowUp:'up',ArrowDown:'down',ArrowLeft:'left',ArrowRight:'right',w:'up',a:'left',s:'down',d:'right'}[event.key];if(direction){event.preventDefault();apply({type:'move',direction});}});
 $('save').onclick=()=>{repo.save('manual',state,presentation);notify('手动档已保存；自动档继续独立更新');};
 function load(slot){try{const info=repo.inspect(slot);if(info.status==='invalid')throw new Error(info.reason);const saved=info.state;if(!saved){notify('这个槽还没有存档');return;}stopReplay();playback=null;state=saved;presentation=info.presentation??emptyPresentation();allowAutoSave=true;render();enqueueStory(story.location(state,{seenIds:presentation.seenIds}));notify(`已读取${slot==='auto'?'自动':'手动'}档`);}catch(error){const result=repo.restore({preferred:slot,fallback:null});notify(`存档损坏，原始内容已保留副本：${result.issues[0]?.reason??error.message}`);}}
