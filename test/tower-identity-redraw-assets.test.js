@@ -93,10 +93,10 @@ test('map runtime prefers high-resolution portraits and preserves their aspect r
   assert.match(scene, /drawMapUnitImage/);
   assert.match(scene, /sourceHeight <= sourceWidth \* 1\.14/);
   assert.match(scene, /footY/);
-  assert.match(portraits, /characters\/yayu-dialogue-guarded\.webp/);
-  assert.match(portraits, /characters\/echo-regent-dialogue-grave\.webp/);
-  assert.match(portraits, /characters\/arcane-sovereign-dialogue-regret\.webp/);
-  assert.match(portraits, /characters\/archive-warden-dialogue-duty\.webp/);
+  assert.match(portraits, /avatars\/shadow-boss-avatar-guarded\.webp/);
+  assert.match(portraits, /avatars\/echo-regent-avatar-grave\.webp/);
+  assert.match(portraits, /avatars\/arcane-sovereign-avatar-regret\.webp/);
+  assert.match(portraits, /avatars\/archive-warden-avatar-duty\.webp/);
   assert.match(mapManifest, /hero-v6\.webp/);
   assert.match(portraits, /avatars\/liyue-avatar-embers-cel\.webp/);
   assert.match(mapManifest, /"heroRevision": "identity-audited-hero-v7"/);

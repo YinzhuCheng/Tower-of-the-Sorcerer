@@ -1,0 +1,397 @@
+{
+  "version": "2026-09-30-deterministic-legacy-atlas-repair",
+  "base_commit": "3c2bc16cba3b57d2f3ae81d3b1d9bd9f87edcf4e",
+  "method": "Lossless atlas packaging from accepted V6/V8/V10 cells; no generated artwork.",
+  "sources": {
+    "wall": {
+      "path": "public/assets/anime/map/atlases/runtime/wall-materials-v6.webp",
+      "sha256": "1b1e50afdc51456c72370ff48f4b6cc8370529990446d2547b72560363c28184",
+      "columns": 3,
+      "rows": 2
+    },
+    "ui": {
+      "path": "public/assets/anime/map/atlases/runtime/ui-v8.webp",
+      "sha256": "857a56998c8d6c625f1a343bf9bac29084b899be04f19cc2d77a3678d246e4ec",
+      "columns": 3,
+      "rows": 2
+    },
+    "game": {
+      "path": "public/assets/anime/map/atlases/runtime/gameplay-v10.webp",
+      "sha256": "dd1b308334377c46e36cd2bdcb634a20d450fa0c1547f8bc50af9d204e23c79d",
+      "columns": 4,
+      "rows": 4
+    },
+    "seal": {
+      "path": "public/assets/anime/map/interactables/guardian-vault-seal.webp",
+      "sha256": "36101847c7253347bb503a323e067ad5c002cdedb5476be309f97ecd8243219d",
+      "columns": 1,
+      "rows": 1
+    }
+  },
+  "atlases": [
+    {
+      "name": "environment",
+      "path": "public/assets/anime/map/atlases/runtime/environment.webp",
+      "sha256": "4416dd4fd595c4f7be040ddea2f0e92a86897931ee4b786074a7752342bf511a",
+      "width": 800,
+      "height": 640,
+      "cell_size": 160,
+      "slots": [
+        {
+          "index": 0,
+          "source": "wall",
+          "source_index": 0,
+          "keys": [
+            "wall-body"
+          ],
+          "rgba_sha256": "e25de4e946dba46e8f9d0c45326debbab4cc8aa82308291c04d5f975da0df5e0"
+        },
+        {
+          "index": 1,
+          "source": "wall",
+          "source_index": 1,
+          "keys": [
+            "wall-edge"
+          ],
+          "rgba_sha256": "06c475eb4c0ff6d9c1f5c24f424cf460af113c28d2ba866fd0019ef8385a91c0"
+        },
+        {
+          "index": 2,
+          "source": "wall",
+          "source_index": 3,
+          "keys": [
+            "wall-outer-corner-alt"
+          ],
+          "rgba_sha256": "c9bac3b58d65e3e5a74980288853fa5710dc370587a397813b963b6de456b82e"
+        },
+        {
+          "index": 3,
+          "source": "wall",
+          "source_index": 4,
+          "keys": [
+            "wall-inner-corner-alt"
+          ],
+          "rgba_sha256": "97265b6487401bf8378c54eb2f967f50edfe4f588e52f1f914460137ba45cca2"
+        },
+        {
+          "index": 4,
+          "source": "ui",
+          "source_index": 0,
+          "keys": [
+            "floor-main"
+          ],
+          "rgba_sha256": "ed700dcb8415535c1256cf26706b64e9a03c2e5f09b01cca2e99ce016b36b90b"
+        },
+        {
+          "index": 5,
+          "source": "game",
+          "source_index": 7,
+          "keys": [
+            "gate-sun"
+          ],
+          "rgba_sha256": "6dcae2a3904a065fe6376cb7e9008ca1b6d78e3539cced10c74407b3d000c45d"
+        },
+        {
+          "index": 6,
+          "source": "game",
+          "source_index": 8,
+          "keys": [
+            "gate-moon"
+          ],
+          "rgba_sha256": "d5695d12dacd1ab3e78ec91d63c1a899e702a29d5ff4edd2efb8e04a9a7e261a"
+        },
+        {
+          "index": 7,
+          "source": "game",
+          "source_index": 9,
+          "keys": [
+            "gate-star"
+          ],
+          "rgba_sha256": "1041878e266b764c2f7a62342225ffdaafc4d3363e93c6480f913ea0fdcb5cac"
+        },
+        {
+          "index": 8,
+          "source": "game",
+          "source_index": 11,
+          "keys": [
+            "stairs-legacy"
+          ],
+          "rgba_sha256": "dac6add0d2880406618bbac65cb5d48654a6c81a1ca4eed7a2a7a07951fae814"
+        },
+        {
+          "index": 9,
+          "source": "game",
+          "source_index": 10,
+          "keys": [
+            "portal-transfer"
+          ],
+          "rgba_sha256": "cb4e18b611ae8c8bffe2d466219ddd8287ae346238c640ec9f5d446a47569eba"
+        },
+        {
+          "index": 10,
+          "source": "wall",
+          "source_index": 1,
+          "keys": [
+            "wall-horizontal"
+          ],
+          "rgba_sha256": "06c475eb4c0ff6d9c1f5c24f424cf460af113c28d2ba866fd0019ef8385a91c0"
+        },
+        {
+          "index": 11,
+          "source": "wall",
+          "source_index": 2,
+          "keys": [
+            "wall-vertical"
+          ],
+          "rgba_sha256": "a3a9c65df829bae4c6917e4a11a9f63a6f6d7d3d1d99198417317867e00bc9c4"
+        },
+        {
+          "index": 12,
+          "source": "wall",
+          "source_index": 3,
+          "keys": [
+            "wall-outer-corner"
+          ],
+          "rgba_sha256": "c9bac3b58d65e3e5a74980288853fa5710dc370587a397813b963b6de456b82e"
+        },
+        {
+          "index": 13,
+          "source": "wall",
+          "source_index": 4,
+          "keys": [
+            "wall-inner-corner"
+          ],
+          "rgba_sha256": "97265b6487401bf8378c54eb2f967f50edfe4f588e52f1f914460137ba45cca2"
+        },
+        {
+          "index": 14,
+          "source": "wall",
+          "source_index": 1,
+          "keys": [
+            "wall-t-junction"
+          ],
+          "rgba_sha256": "06c475eb4c0ff6d9c1f5c24f424cf460af113c28d2ba866fd0019ef8385a91c0"
+        },
+        {
+          "index": 15,
+          "source": "wall",
+          "source_index": 5,
+          "keys": [
+            "wall-end-cap"
+          ],
+          "rgba_sha256": "316002607ed6482ba5603e1ff73fb189bf4d37d6bd10507aa3305e15ef0940c6"
+        },
+        {
+          "index": 16,
+          "source": "wall",
+          "source_index": 5,
+          "keys": [
+            "wall-pillar"
+          ],
+          "rgba_sha256": "316002607ed6482ba5603e1ff73fb189bf4d37d6bd10507aa3305e15ef0940c6"
+        },
+        {
+          "index": 17,
+          "source": "game",
+          "source_index": 11,
+          "keys": [
+            "stairs-up"
+          ],
+          "rgba_sha256": "dac6add0d2880406618bbac65cb5d48654a6c81a1ca4eed7a2a7a07951fae814"
+        },
+        {
+          "index": 18,
+          "source": "game",
+          "source_index": 12,
+          "keys": [
+            "stairs-down"
+          ],
+          "rgba_sha256": "137b0977642cbaaa72cac581f1c91535d9e2e01c398588477853d85bd53ad90a"
+        },
+        {
+          "index": 19,
+          "source": "ui",
+          "source_index": 1,
+          "keys": [
+            "floor-alt"
+          ],
+          "rgba_sha256": "038f2115c51947c2afe2f413cd182ab0797bed910febe44b8181c84c21c30b81"
+        }
+      ],
+      "replaced_git_blob_sha": "71f86cd7935569db5b15b40db12d6e76a21e1870"
+    },
+    {
+      "name": "v4Combined",
+      "path": "public/assets/anime/map/atlases/runtime/v4-combined.webp",
+      "sha256": "584116240b9c6f575ec36045c641b714f07e5fb7281f6ef56c0b244bd3eb0e5d",
+      "width": 800,
+      "height": 640,
+      "cell_size": 160,
+      "slots": [
+        {
+          "index": 0,
+          "source": "wall",
+          "source_index": 0,
+          "keys": [
+            "wall-body-v4"
+          ],
+          "rgba_sha256": "e25de4e946dba46e8f9d0c45326debbab4cc8aa82308291c04d5f975da0df5e0"
+        },
+        {
+          "index": 1,
+          "source": "wall",
+          "source_index": 3,
+          "keys": [
+            "wall-outer-corner-v4"
+          ],
+          "rgba_sha256": "c9bac3b58d65e3e5a74980288853fa5710dc370587a397813b963b6de456b82e"
+        },
+        {
+          "index": 2,
+          "source": "wall",
+          "source_index": 4,
+          "keys": [
+            "wall-inner-corner-v4"
+          ],
+          "rgba_sha256": "97265b6487401bf8378c54eb2f967f50edfe4f588e52f1f914460137ba45cca2"
+        },
+        {
+          "index": 3,
+          "source": "wall",
+          "source_index": 5,
+          "keys": [
+            "wall-pillar-v4"
+          ],
+          "rgba_sha256": "316002607ed6482ba5603e1ff73fb189bf4d37d6bd10507aa3305e15ef0940c6"
+        },
+        {
+          "index": 4,
+          "source": "ui",
+          "source_index": 0,
+          "keys": [
+            "floor-main-v4"
+          ],
+          "rgba_sha256": "ed700dcb8415535c1256cf26706b64e9a03c2e5f09b01cca2e99ce016b36b90b"
+        },
+        {
+          "index": 5,
+          "source": "game",
+          "source_index": 10,
+          "keys": [
+            "floor-altar-v4"
+          ],
+          "rgba_sha256": "cb4e18b611ae8c8bffe2d466219ddd8287ae346238c640ec9f5d446a47569eba"
+        },
+        {
+          "index": 6,
+          "source": "game",
+          "source_index": 7,
+          "keys": [
+            "gate-sun-v4"
+          ],
+          "rgba_sha256": "6dcae2a3904a065fe6376cb7e9008ca1b6d78e3539cced10c74407b3d000c45d"
+        },
+        {
+          "index": 7,
+          "source": "game",
+          "source_index": 8,
+          "keys": [
+            "gate-moon-v4"
+          ],
+          "rgba_sha256": "d5695d12dacd1ab3e78ec91d63c1a899e702a29d5ff4edd2efb8e04a9a7e261a"
+        },
+        {
+          "index": 8,
+          "source": "game",
+          "source_index": 9,
+          "keys": [
+            "gate-star-v4"
+          ],
+          "rgba_sha256": "1041878e266b764c2f7a62342225ffdaafc4d3363e93c6480f913ea0fdcb5cac"
+        },
+        {
+          "index": 9,
+          "source": "game",
+          "source_index": 11,
+          "keys": [
+            "stairs-up-v4"
+          ],
+          "rgba_sha256": "dac6add0d2880406618bbac65cb5d48654a6c81a1ca4eed7a2a7a07951fae814"
+        },
+        {
+          "index": 10,
+          "source": "game",
+          "source_index": 12,
+          "keys": [
+            "stairs-down-v4"
+          ],
+          "rgba_sha256": "137b0977642cbaaa72cac581f1c91535d9e2e01c398588477853d85bd53ad90a"
+        },
+        {
+          "index": 11,
+          "source": "seal",
+          "source_index": 0,
+          "keys": [
+            "gate-boss-v4"
+          ],
+          "rgba_sha256": "387a79f139cc47f540576ca3055883594e5200fb4fe1007dd84abacd3c5f929b"
+        },
+        {
+          "index": 12,
+          "source": "game",
+          "source_index": 4,
+          "keys": [
+            "card-sun-drop-v4"
+          ],
+          "rgba_sha256": "a0a1eebe36765b00f835e2a32bfd235fb4f766a1e7b8c43d04222ba033dea94e"
+        },
+        {
+          "index": 13,
+          "source": "game",
+          "source_index": 5,
+          "keys": [
+            "card-moon-drop-v4"
+          ],
+          "rgba_sha256": "6085411863e43e311191625c60e4596853e7becc3680b107b3672d503ce08877"
+        },
+        {
+          "index": 14,
+          "source": "game",
+          "source_index": 6,
+          "keys": [
+            "card-star-drop-v4"
+          ],
+          "rgba_sha256": "f053769b30e73157ee150ab5af2a485b15aa44d973e69ef77ef440702e9937bc"
+        },
+        {
+          "index": 15,
+          "source": "game",
+          "source_index": 4,
+          "keys": [
+            "card-sun-ui-v4"
+          ],
+          "rgba_sha256": "a0a1eebe36765b00f835e2a32bfd235fb4f766a1e7b8c43d04222ba033dea94e"
+        },
+        {
+          "index": 16,
+          "source": "game",
+          "source_index": 5,
+          "keys": [
+            "card-moon-ui-v4"
+          ],
+          "rgba_sha256": "6085411863e43e311191625c60e4596853e7becc3680b107b3672d503ce08877"
+        },
+        {
+          "index": 17,
+          "source": "game",
+          "source_index": 6,
+          "keys": [
+            "card-star-ui-v4"
+          ],
+          "rgba_sha256": "f053769b30e73157ee150ab5af2a485b15aa44d973e69ef77ef440702e9937bc"
+        }
+      ],
+      "replaced_git_blob_sha": "f052bd066d07fc024d66947b85ed8e8d70cdf1ef"
+    }
+  ]
+}

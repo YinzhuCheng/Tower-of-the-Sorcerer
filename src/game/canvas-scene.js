@@ -6,10 +6,9 @@ import { getItemAsset } from './item-assets.js';
 import { getMapAsset } from './map-assets.js';
 import { applyWallMaterialV6 } from './wall-material-v6.js';
 
+// Feline encounters use their identity-verified per-enemy art. The legacy
+// featured cat cells depict human catgirls and a fox girl in the boss slot.
 const FEATURED_ENEMY_ASSET = Object.freeze({
-  catScout: 'featured-cat-scout',
-  catMage: 'featured-cat-mage',
-  catBoss: 'featured-cat-boss',
   swordApprentice: 'featured-sword-apprentice'
 });
 

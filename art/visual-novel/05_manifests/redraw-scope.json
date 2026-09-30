@@ -1,12 +1,14 @@
 {
-  "version": "GAL-SIMPLE-1.0",
-  "policy": "redraw GAL presentation; retain tower gameplay art",
+  "version": "GAL-SIMPLE-1.3",
+  "policy": "Unify named-character GAL and tower map/combat/HUD art to approved GAL canon; retain unrelated generic enemies, map tiles, items and interactive tower assets",
   "redrawCategories": [
     "dialogue standees",
     "dialogue avatars",
     "event CG",
     "GAL stage backgrounds",
-    "GAL transitions"
+    "GAL transitions",
+    "named-character map sprites",
+    "named-character combat, codex and HUD portraits"
   ],
   "redrawPaths": [
     "public/assets/anime/avatars/arcane-sovereign-avatar-regret.webp",
@@ -140,10 +142,15 @@
   ],
   "preserveCategories": [
     "map tiles",
-    "map sprites",
-    "combat enemy sprites",
+    "unrelated generic enemy sprites",
     "items and interactive tower assets"
   ],
-  "preservePathCount": 216,
-  "exceptions": "Map/combat files may be read as identity ancestry for a character, but are not replacement targets."
+  "exceptions": "Named GAL cast tower sprites and HUD/codex portraits now share the approved GAL identities. Historical map paths remain archived ancestry only; they are not active named-cast decode fallbacks.",
+  "scope_update": {
+    "date": "2026-09-30",
+    "authority": "art/visual-novel/01_canon/tower-gal-unification-20260930.md",
+    "runtime_manifest": "art/visual-novel/05_manifests/named-cast-tower-gal-20260930-v1.json",
+    "supersedes": "Prior GAL-only scope and preserve-map notices for named GAL cast"
+  },
+  "historicalPreservePathCount": 216
 }

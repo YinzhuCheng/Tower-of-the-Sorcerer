@@ -1,0 +1,134 @@
+{
+  "version": "2026-09-30-canonical-dialogue-avatar-preview",
+  "usage": "Review-only contact atlas; runtime dialogue loads individual avatar files.",
+  "path": "public/assets/anime/avatars/dialogue-avatar-atlas.png",
+  "width": 1280,
+  "height": 1024,
+  "columns": 5,
+  "rows": 4,
+  "cell_size": 256,
+  "sha256": "1ac91a03ec376ced90e72ad971fcbcd13b43e91e98af3b26ddf608a58fb153a4",
+  "characters": [
+    {
+      "character_id": "hero",
+      "index": 0,
+      "source": "public/assets/anime/avatars/liyue-avatar-resolve-cel.webp",
+      "source_sha256": "b65342b229e130c04fd967cda48f309894b8b6af13b23066a35e5b0178b82449",
+      "rgba_sha256": "96730b1cfa76dd3749255ee834df8491b934649a422263471e197a0fb2b9474a"
+    },
+    {
+      "character_id": "guide",
+      "index": 1,
+      "source": "public/assets/anime/avatars/shawu-avatar-gentle-cel.webp",
+      "source_sha256": "e7d359301060c0880f70ecbe04aee48785049aa5ce3e0b31c90a51843745b87a",
+      "rgba_sha256": "067c11c9fb216adb08216a3e9e844124cccc7c5e6ade33f1419faa0e5877c61b"
+    },
+    {
+      "character_id": "final_queen",
+      "index": 2,
+      "source": "public/assets/anime/avatars/noctia-avatar-sorrow-cel.webp",
+      "source_sha256": "3703916862817f505c0a36ce93973a6d2eef5c9db50944f5a166afb712a51ec5",
+      "rgba_sha256": "85ce31fae351d166623677a463ab9fb1c71a1b9e406cead51fb732bd1ebd62ca"
+    },
+    {
+      "character_id": "cat_boss",
+      "index": 3,
+      "source": "public/assets/anime/avatars/cat-boss-avatar-alert-v8.webp",
+      "source_sha256": "b17f918c2dcdbac6ce302a8a129272342386da2227262e4d82ca270dae22249b",
+      "rgba_sha256": "a534f51cdd96da647bc9207e0ab987b6c015b7dc49e3b044a40ad32aef1dcbf5"
+    },
+    {
+      "character_id": "fox_boss",
+      "index": 4,
+      "source": "public/assets/anime/avatars/fox-boss-avatar-watchful-v8.webp",
+      "source_sha256": "581f93961f0e3947d07387dc5774403dfcd8b8b7b2032e4c78e9b468ad34a081",
+      "rgba_sha256": "fbee4d1718e34cf38c6ae2905fdbf66e7809bd6cc7f0704caa4c992e3d5b3079"
+    },
+    {
+      "character_id": "whale_boss",
+      "index": 5,
+      "source": "public/assets/anime/avatars/whale-boss-avatar-lament-audit-v3.webp",
+      "source_sha256": "f3bdec1751672efc156af1a9caa9172f4a4e84c4bca06cc3ebed8d9346caca18",
+      "rgba_sha256": "fdaf2adc690eb22c25e0d0aa09f30c1646028aed5daced06b03b453f841e85c3"
+    },
+    {
+      "character_id": "sword_boss",
+      "index": 6,
+      "source": "public/assets/anime/avatars/sword-boss-avatar-stern-v8.webp",
+      "source_sha256": "28de5991a478f11aee39126ebd2305709bae1505bb7e699200a6f3fcfcd0a567",
+      "rgba_sha256": "fe3ff291fca5ec8b17aa1ca5c8c7fd8c8326070e15a8beecb16bafa2188a1d4e"
+    },
+    {
+      "character_id": "dragon_boss",
+      "index": 7,
+      "source": "public/assets/anime/avatars/dragon-boss-avatar-embers-audit-v3.webp",
+      "source_sha256": "f7e09ecb29d64cac923df4bb5626be2ebb21ec46fdf5b92ff4e3aa0de3f627c8",
+      "rgba_sha256": "7efb0ad8bb27342506c090d7b82107ea36b7ccf92ddf56a673479e218920a8d8"
+    },
+    {
+      "character_id": "astral_boss",
+      "index": 8,
+      "source": "public/assets/anime/avatars/astral-boss-avatar-focus.webp",
+      "source_sha256": "b0099b649045eb9e2cd1af0593f92984d6972f830357786389ea294c66308b0d",
+      "rgba_sha256": "689441703bd5a4314dbbd18f912b435165e2f96d51268b28d0567c1cbf4e2986"
+    },
+    {
+      "character_id": "shadow_boss",
+      "index": 9,
+      "source": "public/assets/anime/avatars/shadow-boss-avatar-guarded.webp",
+      "source_sha256": "0090f4bd045fced4a9fcef8f9b570cd31ac1e5a39869c8165356cae81531a0fc",
+      "rgba_sha256": "841c45ab09228e7be3f86fdbb7f38ec9ce5b99db5cdb969a7097e9d96f5bfd31"
+    },
+    {
+      "character_id": "merchant",
+      "index": 10,
+      "source": "public/assets/anime/avatars/merchant-avatar-knowing.webp",
+      "source_sha256": "7b471c82c9cab45e524020277b6ae4ad19e6f4dae81695b550513e7fb2f52902",
+      "rgba_sha256": "7cfd669fb75ec089440a2cbc47244ce043613b407afb4f02b94a7cc113d23437"
+    },
+    {
+      "character_id": "echo_regent",
+      "index": 11,
+      "source": "public/assets/anime/avatars/echo-regent-avatar-grave.webp",
+      "source_sha256": "d3b5019acc210922a2527231ff5cb570b060f373a6e6522e40767e57e333d73d",
+      "rgba_sha256": "662696edda2b1f306070005907758c844e88d327411c40f014131d03625f4766"
+    },
+    {
+      "character_id": "arcane_sovereign",
+      "index": 12,
+      "source": "public/assets/anime/avatars/arcane-sovereign-avatar-regret.webp",
+      "source_sha256": "cda040223c852c21788daa1221776e801980da7a6a9ba89718a8c4cf135123ee",
+      "rgba_sha256": "f2a0f27f245372cd68bd170a61754ddb2c365a668a6fe2df42ded0e2cd569325"
+    },
+    {
+      "character_id": "palace_warden_v2",
+      "index": 13,
+      "source": "public/assets/anime/avatars/palace-warden-avatar-duty.webp",
+      "source_sha256": "f0635ae16877f67961c55318ce3cdc301d1c0b79e9d9bdad2ed8f0b4fffc5fcd",
+      "rgba_sha256": "ae854e5a818269e669c1e8d661c7240ebdb18cf350ccb639cb1bf0b5909e5b5a"
+    },
+    {
+      "character_id": "black_seal_keeper_v2",
+      "index": 14,
+      "source": "public/assets/anime/avatars/black-seal-keeper-avatar-watchful.webp",
+      "source_sha256": "1229719cc4ebd31cb7ccd1b707695e3d53b554f3564e99c6813de57ad3d544ba",
+      "rgba_sha256": "9042f77fcf6f200fde85e1843e12b7944e1b20c3a39316846bab072d4fadd424"
+    },
+    {
+      "character_id": "act3_last_custodian",
+      "index": 15,
+      "source": "public/assets/anime/avatars/last-custodian-avatar-grave.webp",
+      "source_sha256": "ccb4e58e74b573ed10edfcdf87e3ea3526333583b9577969036159164cd22b41",
+      "rgba_sha256": "1891d97ec95500f8f354933b367df203235a1298c8c1eb1fbfb25e809a95952e"
+    },
+    {
+      "character_id": "act3_archive_warden",
+      "index": 16,
+      "source": "public/assets/anime/avatars/archive-warden-avatar-duty.webp",
+      "source_sha256": "ef7d3205f0d10e025e250938c055705e5bfa1a02fa12fd364328395a8ab4267b",
+      "rgba_sha256": "b66d2254eecd6e89bda6e17ac23cbb6c73e9075812fe510e1a6aff4d23b58609"
+    }
+  ],
+  "replaced_git_blob_sha": "677f07e92a891e2d74712d76ca497902b35054bb",
+  "base_commit": "3c2bc16cba3b57d2f3ae81d3b1d9bd9f87edcf4e"
+}

@@ -1,7 +1,7 @@
 {
   "version": "GAL-SIMPLE-1.1",
   "status": "complete-character-reference-pack",
-  "scope": "GAL only; map art retained",
+  "scope": "GAL and named-character tower map/combat/HUD/codex; unrelated generic enemies and environment/item art retained",
   "decisions_are_new_design": true,
   "characters": [
     {
@@ -408,5 +408,6 @@
       ],
       "detail": "single braid routing from back to right shoulder, three copper coat clasps and waist case, cylindrical blue-white lantern staff front/side, three index cards"
     }
-  ]
+  ],
+  "scope_decision": "2026-09-30: user chose newer GAL artwork as shared named-character visual authority; see tower-gal-unification-20260930.md"
 }

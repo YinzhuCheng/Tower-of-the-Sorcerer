@@ -1,0 +1,25 @@
+{
+  "date": "2026-09-30",
+  "id": "CG_008",
+  "status": "accepted",
+  "runtime": "public/assets/anime/cg/liyue-noctia-seal-cg-audit-v3.webp",
+  "source": "art/visual-novel/04_cg/final/2026-09-30-consistency-repair/CG_008_noctia-seal_seven-cores_v4.png",
+  "previous_sha256": "76e2c4138b44912d58c23806ea36ce2f4f587b78a0aa894592c7d360106435e9",
+  "runtime_sha256": "6d5ea280f420922a5a1dd779245c1eec81463deada39a3952db0bce81cdf1ab0",
+  "source_sha256": "b6bf7b6c35aa21ff1f25519c0dd6b3e99ad20eadb2b5463895c52796cd51e3c7",
+  "dimensions": [
+    1672,
+    941
+  ],
+  "tool": "built-in image_gen",
+  "qa": {
+    "reviewers": 2,
+    "status": "accepted",
+    "correction": "Exactly seven individually legible rainbow cores; all three framed red queen tablets preserved",
+    "note": "Blue core slightly staggered right below sword impact so it cannot merge into white flash",
+    "path": "art/visual-novel/03_intermediate/qa/2026-09-30-consistency-repair/CG008-CG_008_core-repair_v4_qa.md"
+  },
+  "baseline_main": "3c2bc16cba3b57d2f3ae81d3b1d9bd9f87edcf4e",
+  "scope": "localized narrative core-count repair; original main identities and composition preserved",
+  "lineage": "art/visual-novel/06_logs/2026-09-30-consistency-repair/CG008-generation-lineage.json"
+}

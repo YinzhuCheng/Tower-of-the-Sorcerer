@@ -87,7 +87,12 @@
         512
       ],
       "alphaRequired": false,
-      "sha256": "bb92c007f00f51e057afb120d0f15b042bcba13e6c3995fa3dc1ea6cf29f2a9a"
+      "sha256": "bb92c007f00f51e057afb120d0f15b042bcba13e6c3995fa3dc1ea6cf29f2a9a",
+      "superseded_by": "canonical-avatars-runtime-20260930-v1",
+      "runtime_dimensions": [
+        512,
+        512
+      ]
     },
     {
       "id": "AVATAR-FEIYE-WATCHFUL-V8",
@@ -100,7 +105,12 @@
         512
       ],
       "alphaRequired": false,
-      "sha256": "b4666dec218f931804259d450dfab51929231efcc4afa379371dd7e6108cc8df"
+      "sha256": "b4666dec218f931804259d450dfab51929231efcc4afa379371dd7e6108cc8df",
+      "superseded_by": "canonical-avatars-runtime-20260930-v1",
+      "runtime_dimensions": [
+        512,
+        512
+      ]
     },
     {
       "id": "AVATAR-LANYIN-LAMENT-V8",
@@ -126,7 +136,12 @@
         512
       ],
       "alphaRequired": false,
-      "sha256": "4c61591aac7fa360d7727da897de96f3e8e01854e82d3fb4ba7c2c3485a1ea42"
+      "sha256": "4c61591aac7fa360d7727da897de96f3e8e01854e82d3fb4ba7c2c3485a1ea42",
+      "superseded_by": "canonical-avatars-runtime-20260930-v1",
+      "runtime_dimensions": [
+        512,
+        512
+      ]
     },
     {
       "id": "BG-11-NIGHT-SHELTER-V8",

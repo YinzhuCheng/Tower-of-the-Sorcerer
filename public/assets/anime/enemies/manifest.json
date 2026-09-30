@@ -1,5 +1,5 @@
 {
-  "version": 10,
+  "version": 11,
   "basePath": "/assets/anime/",
   "assets": {
     "mana_wisp": {
@@ -84,8 +84,10 @@
       "file": "enemies/v1/cat-mage-map-128.webp"
     },
     "cat_boss": {
-      "file": "enemies/v1/cat-boss-map-128.webp",
-      "scale": 1.08
+      "file": "enemies/canonical-gal-20260930/cat-boss-map.webp",
+      "scale": 1.08,
+      "highResFile": "enemies/canonical-gal-20260930/cat-boss-map.webp",
+      "identityRevision": "gal-canon-20260930"
     },
     "fox_acolyte": {
       "file": "enemies/v1/fox-acolyte-map-128.webp"
@@ -94,8 +96,10 @@
       "file": "enemies/v1/fox-archer-map-128.webp"
     },
     "fox_boss": {
-      "file": "enemies/v1/fox-boss-map-128.webp",
-      "scale": 1.1
+      "file": "enemies/canonical-gal-20260930/fox-boss-map.webp",
+      "scale": 1.1,
+      "highResFile": "enemies/canonical-gal-20260930/fox-boss-map.webp",
+      "identityRevision": "gal-canon-20260930"
     },
     "whale_singer": {
       "file": "enemies/v1/whale-singer-map-128.webp"
@@ -104,8 +108,10 @@
       "file": "enemies/v1/tide-lancer-map-128.webp"
     },
     "whale_boss": {
-      "file": "enemies/v1/whale-boss-map-128.webp",
-      "scale": 1.1
+      "file": "enemies/canonical-gal-20260930/whale-boss-map.webp",
+      "scale": 1.1,
+      "highResFile": "enemies/canonical-gal-20260930/whale-boss-map.webp",
+      "identityRevision": "gal-canon-20260930"
     },
     "sword_apprentice": {
       "file": "enemies/v1/sword-apprentice-map-128.webp"
@@ -114,8 +120,10 @@
       "file": "enemies/v1/sword-knight-map-128.webp"
     },
     "sword_boss": {
-      "file": "enemies/v1/sword-boss-map-128.webp",
-      "scale": 1.1
+      "file": "enemies/canonical-gal-20260930/sword-boss-map.webp",
+      "scale": 1.1,
+      "highResFile": "enemies/canonical-gal-20260930/sword-boss-map.webp",
+      "identityRevision": "gal-canon-20260930"
     },
     "dragon_whelp": {
       "file": "enemies/v1/dragon-whelp-map-128.webp"
@@ -124,8 +132,10 @@
       "file": "enemies/v1/flame-caster-map-128.webp"
     },
     "dragon_boss": {
-      "file": "enemies/v1/dragon-boss-map-128.webp",
-      "scale": 1.12
+      "file": "enemies/canonical-gal-20260930/dragon-boss-map.webp",
+      "scale": 1.12,
+      "highResFile": "enemies/canonical-gal-20260930/dragon-boss-map.webp",
+      "identityRevision": "gal-canon-20260930"
     },
     "star_witch": {
       "file": "enemies/v1/star-witch-map-128.webp"
@@ -162,12 +172,16 @@
       "scale": 1.1
     },
     "palace_warden_v2": {
-      "file": "enemies/v2/palace-warden-map-384.webp",
-      "scale": 1.12
+      "file": "enemies/canonical-gal-20260930/palace-warden-v2-map.webp",
+      "scale": 1.12,
+      "highResFile": "enemies/canonical-gal-20260930/palace-warden-v2-map.webp",
+      "identityRevision": "gal-canon-20260930"
     },
     "black_seal_keeper_v2": {
-      "file": "enemies/v2/black-seal-keeper-map-384.webp",
-      "scale": 1.1
+      "file": "enemies/canonical-gal-20260930/black-seal-keeper-v2-map.webp",
+      "scale": 1.1,
+      "highResFile": "enemies/canonical-gal-20260930/black-seal-keeper-v2-map.webp",
+      "identityRevision": "gal-canon-20260930"
     },
     "vine_druid": {
       "file": "enemies/v3/vine-druid-map-384.webp",
@@ -202,30 +216,39 @@
       "scale": 1.16
     },
     "echo_regent": {
-      "file": "enemies/v2/echo-regent-map-384.webp",
-      "highResFile": "characters/echo-regent-dialogue-grave.webp",
-      "scale": 1.12
+      "file": "enemies/canonical-gal-20260930/echo-regent-map.webp",
+      "highResFile": "enemies/canonical-gal-20260930/echo-regent-map.webp",
+      "scale": 1.12,
+      "identityRevision": "gal-canon-20260930"
     },
     "arcane_sovereign": {
-      "file": "enemies/v2/arcane-sovereign-map-384.webp",
-      "highResFile": "characters/arcane-sovereign-dialogue-regret.webp",
-      "scale": 1.12
+      "file": "enemies/canonical-gal-20260930/arcane-sovereign-map.webp",
+      "highResFile": "enemies/canonical-gal-20260930/arcane-sovereign-map.webp",
+      "scale": 1.12,
+      "identityRevision": "gal-canon-20260930"
     },
     "astral_boss": {
-      "file": "enemies/v1/astral-boss-map-128.webp",
-      "scale": 1.08
+      "file": "enemies/canonical-gal-20260930/astral-boss-map.webp",
+      "scale": 1.08,
+      "highResFile": "enemies/canonical-gal-20260930/astral-boss-map.webp",
+      "identityRevision": "gal-canon-20260930"
     },
     "shadow_boss": {
-      "file": "enemies/v3/shadow-boss-map-audit-v3.webp",
-      "highResFile": "characters/yayu-dialogue-guarded.webp",
-      "scale": 1.08
+      "file": "enemies/canonical-gal-20260930/shadow-boss-map.webp",
+      "highResFile": "enemies/canonical-gal-20260930/shadow-boss-map.webp",
+      "scale": 1.08,
+      "identityRevision": "gal-canon-20260930"
     },
     "final_queen": {
-      "file": "enemies/v1/final-queen-combat-map-128.webp",
-      "scale": 1.12
+      "file": "enemies/canonical-gal-20260930/final-queen-map.webp",
+      "scale": 1.12,
+      "highResFile": "enemies/canonical-gal-20260930/final-queen-map.webp",
+      "identityRevision": "gal-canon-20260930"
     },
     "merchant": {
-      "file": "enemies/v1/merchant-keke-map-128.webp"
+      "file": "enemies/canonical-gal-20260930/merchant-map.webp",
+      "highResFile": "enemies/canonical-gal-20260930/merchant-map.webp",
+      "identityRevision": "gal-canon-20260930"
     },
     "act3_cinder_scribe": {
       "file": "enemies/act3/cinder-scribe-map-384.webp",
@@ -284,13 +307,16 @@
       "scale": 1.16
     },
     "act3_last_custodian": {
-      "file": "enemies/act3/last-custodian-map-384.webp",
-      "scale": 1.18
+      "file": "enemies/canonical-gal-20260930/act3-last-custodian-map.webp",
+      "scale": 1.18,
+      "highResFile": "enemies/canonical-gal-20260930/act3-last-custodian-map.webp",
+      "identityRevision": "gal-canon-20260930"
     },
     "act3_archive_warden": {
-      "file": "enemies/act3/archive-warden-map-384.webp",
-      "highResFile": "characters/archive-warden-dialogue-duty.webp",
-      "scale": 1.15
+      "file": "enemies/canonical-gal-20260930/act3-archive-warden-map.webp",
+      "highResFile": "enemies/canonical-gal-20260930/act3-archive-warden-map.webp",
+      "scale": 1.15,
+      "identityRevision": "gal-canon-20260930"
     },
     "act3_errata_core": {
       "file": "enemies/act3/errata-core-map-384.webp",
@@ -328,5 +354,6 @@
       "file": "enemies/v3/hush-vault-cantor-map-384.webp",
       "scale": 1.1
     }
-  }
+  },
+  "identityRevision": "named-cast-gal-20260930"
 }

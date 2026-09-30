@@ -1,0 +1,374 @@
+{
+  "version": "canonical-avatars-runtime-20260930-v1",
+  "baseline_commit": "3c2bc16",
+  "status": "runtime-published",
+  "source_manifest": "art/visual-novel/05_manifests/avatar-derivatives-v1.2.json",
+  "count": 26,
+  "policy": "No new generation or resampling; accepted expression-panel derivatives replace legacy runtime slots. Existing dialogue expression selection and aliases are preserved.",
+  "assets": [
+    {
+      "runtime": "public/assets/anime/avatars/arcane-sovereign-avatar-regret.webp",
+      "master": "art/visual-novel/04_cg/final/avatars-v1.2/arcane-sovereign-avatar-regret.webp",
+      "character_id": "arcane_sovereign",
+      "expression": "regret",
+      "dimensions": [
+        512,
+        512
+      ],
+      "source_sha256": "353344f864bc97b07edcb4785766a96e1cf3076b1773e153428b25d8d72630e4",
+      "runtime_sha256": "cda040223c852c21788daa1221776e801980da7a6a9ba89718a8c4cf135123ee",
+      "replaced_runtime_sha256": "08f7c0bf18bfec7d0c79ada0224179f6ac1cfd286bb69ef42b9a8a7361f74644",
+      "method": "publish already accepted canonical expression derivative unchanged"
+    },
+    {
+      "runtime": "public/assets/anime/avatars/archive-warden-avatar-duty.webp",
+      "master": "art/visual-novel/04_cg/final/avatars-v1.2/archive-warden-avatar-duty.webp",
+      "character_id": "act3_archive_warden",
+      "expression": "dutiful neutrality",
+      "dimensions": [
+        512,
+        512
+      ],
+      "source_sha256": "f92bed11e4f12dd074d6e0441d6b6529015e53d7ade00b4e22ac3e2f23707546",
+      "runtime_sha256": "ef7d3205f0d10e025e250938c055705e5bfa1a02fa12fd364328395a8ab4267b",
+      "replaced_runtime_sha256": "8066252750cc0b3db46aa5b017f38dd837bc5e12465170ebdcbeeb94506c7de4",
+      "method": "publish already accepted canonical expression derivative unchanged"
+    },
+    {
+      "runtime": "public/assets/anime/avatars/astral-boss-avatar-focus.webp",
+      "master": "art/visual-novel/04_cg/final/avatars-v1.2/astral-boss-avatar-focus.webp",
+      "character_id": "astral_boss",
+      "expression": "deep focus",
+      "dimensions": [
+        512,
+        512
+      ],
+      "source_sha256": "d112a76ca10182b1ce62df4293ad19969755b3404e491062935ba368392acc6a",
+      "runtime_sha256": "b0099b649045eb9e2cd1af0593f92984d6972f830357786389ea294c66308b0d",
+      "replaced_runtime_sha256": "ad2b2982e45fc891fe0c9e04ece43dcf8b7c8eeaa0ea2c578fcc85287809d0ef",
+      "method": "publish already accepted canonical expression derivative unchanged"
+    },
+    {
+      "runtime": "public/assets/anime/avatars/black-seal-keeper-avatar-watchful.webp",
+      "master": "art/visual-novel/04_cg/final/avatars-v1.2/black-seal-keeper-avatar-watchful.webp",
+      "character_id": "black_seal_keeper_v2",
+      "expression": "watchful neutrality",
+      "dimensions": [
+        512,
+        512
+      ],
+      "source_sha256": "7d43a55a49c31c32f5df2a655774a30613036fb5ce6e725690081ace53a796db",
+      "runtime_sha256": "1229719cc4ebd31cb7ccd1b707695e3d53b554f3564e99c6813de57ad3d544ba",
+      "replaced_runtime_sha256": "9866ffcddcdb168c4aa466c92d37778cd1d2a6feefb0cc09a3e3306782b27511",
+      "method": "publish already accepted canonical expression derivative unchanged"
+    },
+    {
+      "runtime": "public/assets/anime/avatars/cat-boss-avatar-alert-v8.webp",
+      "master": "art/visual-novel/04_cg/final/avatars-v1.2/cat-boss-avatar-alert-v8.webp",
+      "character_id": "cat_boss",
+      "expression": "alert",
+      "dimensions": [
+        512,
+        512
+      ],
+      "source_sha256": "7f6a579ce4ba231a569c09d96105b332dccee1ed31201f561ab563de58c0402b",
+      "runtime_sha256": "b17f918c2dcdbac6ce302a8a129272342386da2227262e4d82ca270dae22249b",
+      "replaced_runtime_sha256": "bb92c007f00f51e057afb120d0f15b042bcba13e6c3995fa3dc1ea6cf29f2a9a",
+      "method": "publish already accepted canonical expression derivative unchanged"
+    },
+    {
+      "runtime": "public/assets/anime/avatars/dragon-boss-avatar-embers-audit-v3.webp",
+      "master": "art/visual-novel/04_cg/final/avatars-v1.2/dragon-boss-avatar-embers-audit-v3.webp",
+      "character_id": "dragon_boss",
+      "expression": "proud embers",
+      "dimensions": [
+        512,
+        512
+      ],
+      "source_sha256": "5912770003929075cb67cd320fe15eef2bc5a7bfd38a6d90ac56835209af68fc",
+      "runtime_sha256": "f7e09ecb29d64cac923df4bb5626be2ebb21ec46fdf5b92ff4e3aa0de3f627c8",
+      "replaced_runtime_sha256": "a7ca77d523a428830e36e0e8b6e3ee1a2d21a84b51eafaa8416f74087462e11d",
+      "method": "publish already accepted canonical expression derivative unchanged"
+    },
+    {
+      "runtime": "public/assets/anime/avatars/echo-regent-avatar-grave.webp",
+      "master": "art/visual-novel/04_cg/final/avatars-v1.2/echo-regent-avatar-grave.webp",
+      "character_id": "echo_regent",
+      "expression": "grave neutrality",
+      "dimensions": [
+        512,
+        512
+      ],
+      "source_sha256": "1fc8dadbf1cd4a089da30614ec5f65fa769248f0b19f9c011057a7d1e0bbe416",
+      "runtime_sha256": "d3b5019acc210922a2527231ff5cb570b060f373a6e6522e40767e57e333d73d",
+      "replaced_runtime_sha256": "7ad0b1a3faeb289198695419f76fcce34944e92494e033f157174d4b6998fafb",
+      "method": "publish already accepted canonical expression derivative unchanged"
+    },
+    {
+      "runtime": "public/assets/anime/avatars/fox-boss-avatar-watchful-v8.webp",
+      "master": "art/visual-novel/04_cg/final/avatars-v1.2/fox-boss-avatar-watchful-v8.webp",
+      "character_id": "fox_boss",
+      "expression": "watchful calm",
+      "dimensions": [
+        512,
+        512
+      ],
+      "source_sha256": "6bc4608b0041028ff299c0fefe93946f43e7908454a57799cf562878d3d895b8",
+      "runtime_sha256": "581f93961f0e3947d07387dc5774403dfcd8b8b7b2032e4c78e9b468ad34a081",
+      "replaced_runtime_sha256": "b4666dec218f931804259d450dfab51929231efcc4afa379371dd7e6108cc8df",
+      "method": "publish already accepted canonical expression derivative unchanged"
+    },
+    {
+      "runtime": "public/assets/anime/avatars/last-custodian-avatar-grave.webp",
+      "master": "art/visual-novel/04_cg/final/avatars-v1.2/last-custodian-avatar-grave.webp",
+      "character_id": "act3_last_custodian",
+      "expression": "grave weariness",
+      "dimensions": [
+        512,
+        512
+      ],
+      "source_sha256": "d4046a27abc812d3587fcf4f2c741ff5b6e210c60afee9d645f27a429c0c0d78",
+      "runtime_sha256": "ccb4e58e74b573ed10edfcdf87e3ea3526333583b9577969036159164cd22b41",
+      "replaced_runtime_sha256": "f889bc133ae75bd9ca86b1e2ff4aa92aaffec0c58de0e7ccf547f75e79660819",
+      "method": "publish already accepted canonical expression derivative unchanged"
+    },
+    {
+      "runtime": "public/assets/anime/avatars/liyue-avatar-embers-cel.webp",
+      "master": "art/visual-novel/04_cg/final/avatars-v1.2/liyue-avatar-embers-cel.webp",
+      "character_id": "hero",
+      "expression": "controlled anger like banked embers",
+      "dimensions": [
+        512,
+        512
+      ],
+      "source_sha256": "d1571b7c18c3fbd902109a575619a40b1ecd4d9d84180fe6e9eb585a5eb1f3f8",
+      "runtime_sha256": "9961e00cb33a39a62e0664405cb70387030ff78109732c0a4287f9cb052315f6",
+      "replaced_runtime_sha256": "5c4f1956021b99fc0d459b108b8e23dcc97c900a00d4d481400008af4b35f0cf",
+      "method": "publish already accepted canonical expression derivative unchanged"
+    },
+    {
+      "runtime": "public/assets/anime/avatars/liyue-avatar-guarded-cel.webp",
+      "master": "art/visual-novel/04_cg/final/avatars-v1.2/liyue-avatar-guarded-cel.webp",
+      "character_id": "hero",
+      "expression": "guarded suspicion",
+      "dimensions": [
+        512,
+        512
+      ],
+      "source_sha256": "d1571b7c18c3fbd902109a575619a40b1ecd4d9d84180fe6e9eb585a5eb1f3f8",
+      "runtime_sha256": "3a077f2acf3357b1b69d8a0073ff04a5fdc0de4d132973965d892dd7bebfc756",
+      "replaced_runtime_sha256": "c8c75cca7bdb1c7684b3d68d1a1d508497c1f03bc8db3a4baf1f105e532bd753",
+      "method": "publish already accepted canonical expression derivative unchanged"
+    },
+    {
+      "runtime": "public/assets/anime/avatars/liyue-avatar-resolve-cel.webp",
+      "master": "art/visual-novel/04_cg/final/avatars-v1.2/liyue-avatar-resolve-cel.webp",
+      "character_id": "hero",
+      "expression": "quiet resolve",
+      "dimensions": [
+        512,
+        512
+      ],
+      "source_sha256": "d1571b7c18c3fbd902109a575619a40b1ecd4d9d84180fe6e9eb585a5eb1f3f8",
+      "runtime_sha256": "b65342b229e130c04fd967cda48f309894b8b6af13b23066a35e5b0178b82449",
+      "replaced_runtime_sha256": "d3d48b3462cdc309b0a944bd2e5c1bb96919bf358d371c9932e2d87dc0daaa26",
+      "method": "publish already accepted canonical expression derivative unchanged"
+    },
+    {
+      "runtime": "public/assets/anime/avatars/liyue-avatar-stern-cel.webp",
+      "master": "art/visual-novel/04_cg/final/avatars-v1.2/liyue-avatar-stern-cel.webp",
+      "character_id": "hero",
+      "expression": "stern warning",
+      "dimensions": [
+        512,
+        512
+      ],
+      "source_sha256": "d1571b7c18c3fbd902109a575619a40b1ecd4d9d84180fe6e9eb585a5eb1f3f8",
+      "runtime_sha256": "83f30cdc4ed079664e02417443ee6c5b36f66c7d52ee935052c9c38aad411770",
+      "replaced_runtime_sha256": "0cccc63a5cdbe40e924cf41fb693e5d2ab8e968e914aed91acd15261fd42aa59",
+      "method": "publish already accepted canonical expression derivative unchanged"
+    },
+    {
+      "runtime": "public/assets/anime/avatars/merchant-avatar-knowing.webp",
+      "master": "art/visual-novel/04_cg/final/avatars-v1.2/merchant-avatar-knowing.webp",
+      "character_id": "merchant",
+      "expression": "knowing smile",
+      "dimensions": [
+        512,
+        512
+      ],
+      "source_sha256": "68a29aef0d0640ac0506b437e955fafff302cb7c0a3f64af49c0d1b8972a3579",
+      "runtime_sha256": "7b471c82c9cab45e524020277b6ae4ad19e6f4dae81695b550513e7fb2f52902",
+      "replaced_runtime_sha256": "cd6a830bb7d9b184fe9d27bf03dd132e59ebdf915822a4354a32322ebedf526b",
+      "method": "publish already accepted canonical expression derivative unchanged"
+    },
+    {
+      "runtime": "public/assets/anime/avatars/noctia-avatar-cold-cel.webp",
+      "master": "art/visual-novel/04_cg/final/avatars-v1.2/noctia-avatar-cold-cel.webp",
+      "character_id": "final_queen",
+      "expression": "cold authority",
+      "dimensions": [
+        512,
+        512
+      ],
+      "source_sha256": "58c9121b08aadb699e5a47e964c30317326ae227c90ed9d292f67d0f866db2a7",
+      "runtime_sha256": "72e19c22ba633ed43fe9c2506114a528ba4ee73274e33de3dc7e17e8fb2f2b3c",
+      "replaced_runtime_sha256": "fc05beec034e57b19a444ac1e65aac369455cb9c573ecd615ec1a7a88eba5c29",
+      "method": "publish already accepted canonical expression derivative unchanged"
+    },
+    {
+      "runtime": "public/assets/anime/avatars/noctia-avatar-grave-cel.webp",
+      "master": "art/visual-novel/04_cg/final/avatars-v1.2/noctia-avatar-grave-cel.webp",
+      "character_id": "final_queen",
+      "expression": "grave stillness",
+      "dimensions": [
+        512,
+        512
+      ],
+      "source_sha256": "58c9121b08aadb699e5a47e964c30317326ae227c90ed9d292f67d0f866db2a7",
+      "runtime_sha256": "c4bd85091a9247ddb1d266054127359d21fcfecd66d1d5d5f24648c39e76e016",
+      "replaced_runtime_sha256": "ef91e90ba9baf67af842739bbb5d666b238c329fb6dbf73328d5b43cac9c9a63",
+      "method": "publish already accepted canonical expression derivative unchanged"
+    },
+    {
+      "runtime": "public/assets/anime/avatars/noctia-avatar-knowing-cel.webp",
+      "master": "art/visual-novel/04_cg/final/avatars-v1.2/noctia-avatar-knowing-cel.webp",
+      "character_id": "final_queen",
+      "expression": "knowing half-smile",
+      "dimensions": [
+        512,
+        512
+      ],
+      "source_sha256": "58c9121b08aadb699e5a47e964c30317326ae227c90ed9d292f67d0f866db2a7",
+      "runtime_sha256": "0e9e58e7f9b912cf0be9fa78384adf28c3af009fa3dae4d2434ce947ceaf7722",
+      "replaced_runtime_sha256": "a25e02ff35f881d1de86287b208efdda91691cdbdfc9a7a1880f2b109f4eb903",
+      "method": "publish already accepted canonical expression derivative unchanged"
+    },
+    {
+      "runtime": "public/assets/anime/avatars/noctia-avatar-sorrow-cel.webp",
+      "master": "art/visual-novel/04_cg/final/avatars-v1.2/noctia-avatar-sorrow-cel.webp",
+      "character_id": "final_queen",
+      "expression": "contained sorrow",
+      "dimensions": [
+        512,
+        512
+      ],
+      "source_sha256": "58c9121b08aadb699e5a47e964c30317326ae227c90ed9d292f67d0f866db2a7",
+      "runtime_sha256": "3703916862817f505c0a36ce93973a6d2eef5c9db50944f5a166afb712a51ec5",
+      "replaced_runtime_sha256": "e8d4ccef6da3649e721d6b8cccb2f20065158271f8e4c4b9d4ce72983a700526",
+      "method": "publish already accepted canonical expression derivative unchanged"
+    },
+    {
+      "runtime": "public/assets/anime/avatars/palace-warden-avatar-duty.webp",
+      "master": "art/visual-novel/04_cg/final/avatars-v1.2/palace-warden-avatar-duty.webp",
+      "character_id": "palace_warden_v2",
+      "expression": "dutiful neutrality",
+      "dimensions": [
+        512,
+        512
+      ],
+      "source_sha256": "568aed2b865a7b28b0e7e8b4af5fee4760c633be6b1b9062dc6dd9de8bfb4cb7",
+      "runtime_sha256": "f0635ae16877f67961c55318ce3cdc301d1c0b79e9d9bdad2ed8f0b4fffc5fcd",
+      "replaced_runtime_sha256": "5cbca632583a56642ec21473a239cb6fa808e4806cab4f378064e6afda53441e",
+      "method": "publish already accepted canonical expression derivative unchanged"
+    },
+    {
+      "runtime": "public/assets/anime/avatars/shadow-boss-avatar-guarded.webp",
+      "master": "art/visual-novel/04_cg/final/avatars-v1.2/shadow-boss-avatar-guarded.webp",
+      "character_id": "shadow_boss",
+      "expression": "guarded",
+      "dimensions": [
+        512,
+        512
+      ],
+      "source_sha256": "bd80e789b1a2e6fa748dde895e170fb220081803fe78e1ef63f24d0fc4e776a5",
+      "runtime_sha256": "0090f4bd045fced4a9fcef8f9b570cd31ac1e5a39869c8165356cae81531a0fc",
+      "replaced_runtime_sha256": "c36bf7f325c003962756805dcade5b8ca5acd35cd412f8af0a228634501b8e28",
+      "method": "publish already accepted canonical expression derivative unchanged"
+    },
+    {
+      "runtime": "public/assets/anime/avatars/shawu-avatar-focus-cel.webp",
+      "master": "art/visual-novel/04_cg/final/avatars-v1.2/shawu-avatar-focus-cel.webp",
+      "character_id": "guide",
+      "expression": "intense focus",
+      "dimensions": [
+        512,
+        512
+      ],
+      "source_sha256": "4695959e1553f64ee090108c719ca33194dfb6f2a78d5e49c6f75b90e5a24204",
+      "runtime_sha256": "a848d3a4e0c8abc23adb6dda23a8c501cbe0ceb787d50dc4d6158f5d949edb05",
+      "replaced_runtime_sha256": "8716a66297a52fcd1fa63156f7335009bf18df1310a07b88148cb22978ad51b7",
+      "method": "publish already accepted canonical expression derivative unchanged"
+    },
+    {
+      "runtime": "public/assets/anime/avatars/shawu-avatar-gentle-cel.webp",
+      "master": "art/visual-novel/04_cg/final/avatars-v1.2/shawu-avatar-gentle-cel.webp",
+      "character_id": "guide",
+      "expression": "gentle reassurance",
+      "dimensions": [
+        512,
+        512
+      ],
+      "source_sha256": "4695959e1553f64ee090108c719ca33194dfb6f2a78d5e49c6f75b90e5a24204",
+      "runtime_sha256": "e7d359301060c0880f70ecbe04aee48785049aa5ce3e0b31c90a51843745b87a",
+      "replaced_runtime_sha256": "e7de2e15c2eba9fc80e4cc6b1646e32040945cb80b9c78f9d31ae0806296dc47",
+      "method": "publish already accepted canonical expression derivative unchanged"
+    },
+    {
+      "runtime": "public/assets/anime/avatars/shawu-avatar-lament-cel.webp",
+      "master": "art/visual-novel/04_cg/final/avatars-v1.2/shawu-avatar-lament-cel.webp",
+      "character_id": "guide",
+      "expression": "open lament",
+      "dimensions": [
+        512,
+        512
+      ],
+      "source_sha256": "4695959e1553f64ee090108c719ca33194dfb6f2a78d5e49c6f75b90e5a24204",
+      "runtime_sha256": "b155d8c4836a96616ac59323b75b415d27410a9c7419e33d29110c7297e39e50",
+      "replaced_runtime_sha256": "e48399499f3400a161eff9e570528eb0ef083947e9cba6ac6c10bc067017499b",
+      "method": "publish already accepted canonical expression derivative unchanged"
+    },
+    {
+      "runtime": "public/assets/anime/avatars/shawu-avatar-watchful-cel.webp",
+      "master": "art/visual-novel/04_cg/final/avatars-v1.2/shawu-avatar-watchful-cel.webp",
+      "character_id": "guide",
+      "expression": "watchful concern",
+      "dimensions": [
+        512,
+        512
+      ],
+      "source_sha256": "4695959e1553f64ee090108c719ca33194dfb6f2a78d5e49c6f75b90e5a24204",
+      "runtime_sha256": "273e1b792b8fb68e12df18badc3cb133cd7210dd6ec22390f3aeb26a9a070b54",
+      "replaced_runtime_sha256": "f9c2b01f4a23f8bd4c374076f63215b53c308df20ae2ab0adb28e25caba13d40",
+      "method": "publish already accepted canonical expression derivative unchanged"
+    },
+    {
+      "runtime": "public/assets/anime/avatars/sword-boss-avatar-stern-v8.webp",
+      "master": "art/visual-novel/04_cg/final/avatars-v1.2/sword-boss-avatar-stern-v8.webp",
+      "character_id": "sword_boss",
+      "expression": "stern composure",
+      "dimensions": [
+        512,
+        512
+      ],
+      "source_sha256": "f5ea6e7a17d5ce956e97e23f508a47331bebd30dbb3f4f127797c68ef27b2969",
+      "runtime_sha256": "28de5991a478f11aee39126ebd2305709bae1505bb7e699200a6f3fcfcd0a567",
+      "replaced_runtime_sha256": "4c61591aac7fa360d7727da897de96f3e8e01854e82d3fb4ba7c2c3485a1ea42",
+      "method": "publish already accepted canonical expression derivative unchanged"
+    },
+    {
+      "runtime": "public/assets/anime/avatars/whale-boss-avatar-lament-audit-v3.webp",
+      "master": "art/visual-novel/04_cg/final/avatars-v1.2/whale-boss-avatar-lament-audit-v3.webp",
+      "character_id": "whale_boss",
+      "expression": "lament",
+      "dimensions": [
+        512,
+        512
+      ],
+      "source_sha256": "53f5bb5f14b6122a4fb4de6444b42977bae35346eb10a05b8a44b9e7233b64bb",
+      "runtime_sha256": "f3bdec1751672efc156af1a9caa9172f4a4e84c4bca06cc3ebed8d9346caca18",
+      "replaced_runtime_sha256": "59746b4a604e65eab7baa54ad2304f5380f6760147ff33304ed7af2b2e9f9421",
+      "method": "publish already accepted canonical expression derivative unchanged"
+    }
+  ]
+}

@@ -78,7 +78,9 @@ test('art audit page covers every living combat unit, the hero and the merchant'
 
   const lowResolutionEntries = Object.values(enemyManifest.assets)
     .filter(({ file }) => /-map-128\.webp$/.test(file));
-  assert.equal(lowResolutionEntries.length, 47);
+  const namedRelease = JSON.parse(await readFile(new URL('../art/visual-novel/05_manifests/named-cast-tower-gal-20260930-v1.json', import.meta.url), 'utf8'));
+  const migratedV1 = namedRelease.assets.filter(({ previous_enemy_entry }) => /-map-128\.webp$/.test(previous_enemy_entry.file));
+  assert.equal(lowResolutionEntries.length, 47 - migratedV1.length);
   for (const entry of lowResolutionEntries) {
     const highResolutionFile = entry.highResFile
       ?? entry.file.replace(/^enemies\/v1\//, 'portraits/v1/').replace(/-map-128\.webp$/, '-portrait-runtime.webp');
@@ -86,10 +88,10 @@ test('art audit page covers every living combat unit, the hero and the merchant'
     await access(new URL(`../public/assets/anime/${highResolutionFile}`, import.meta.url));
   }
 
-  assert.equal(enemyManifest.assets.shadow_boss.highResFile, 'characters/yayu-dialogue-guarded.webp');
-  assert.equal(enemyManifest.assets.echo_regent.highResFile, 'characters/echo-regent-dialogue-grave.webp');
-  assert.equal(enemyManifest.assets.arcane_sovereign.highResFile, 'characters/arcane-sovereign-dialogue-regret.webp');
-  assert.equal(enemyManifest.assets.act3_archive_warden.highResFile, 'characters/archive-warden-dialogue-duty.webp');
+  assert.equal(enemyManifest.assets.shadow_boss.highResFile, 'enemies/canonical-gal-20260930/shadow-boss-map.webp');
+  assert.equal(enemyManifest.assets.echo_regent.highResFile, 'enemies/canonical-gal-20260930/echo-regent-map.webp');
+  assert.equal(enemyManifest.assets.arcane_sovereign.highResFile, 'enemies/canonical-gal-20260930/arcane-sovereign-map.webp');
+  assert.equal(enemyManifest.assets.act3_archive_warden.highResFile, 'enemies/canonical-gal-20260930/act3-archive-warden-map.webp');
 });
 
 test('art audit page ships review persistence, filters, lightbox and JSON export', async () => {

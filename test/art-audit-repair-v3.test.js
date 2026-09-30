@@ -26,9 +26,9 @@ test('audit repair v3 keeps transparent standees and publishes every revised bin
 
 test('identity notes resolve to the requested runtime sources', async () => {
   assert.match(portraitUrl('hero'), /liyue-avatar-embers-cel\.webp/);
-  assert.match(portraitUrl('echo_regent'), /echo-regent-dialogue-grave\.webp/);
-  assert.match(portraitUrl('arcane_sovereign'), /arcane-sovereign-dialogue-regret\.webp/);
-  assert.match(portraitUrl('act3_archive_warden'), /archive-warden-dialogue-duty\.webp/);
+  assert.match(portraitUrl('echo_regent'), /echo-regent-avatar-grave\.webp/);
+  assert.match(portraitUrl('arcane_sovereign'), /arcane-sovereign-avatar-regret\.webp/);
+  assert.match(portraitUrl('act3_archive_warden'), /archive-warden-avatar-duty\.webp/);
   assert.match(dialoguePresentation('whale_boss', 'lament').avatar, /whale-boss-avatar-lament-audit-v3\.webp/);
   assert.match(dialoguePresentation('dragon_boss', 'embers').avatar, /dragon-boss-avatar-embers-audit-v3\.webp/);
   assert.match(dialoguePresentation('sword_boss', 'stern').stage, /sword-boss-stern-b2\.webp/);
@@ -40,7 +40,7 @@ test('identity notes resolve to the requested runtime sources', async () => {
   assert.equal(mapManifest.atlases.heroPortraitV4.file, 'atlases/runtime/hero-portrait-v4.webp');
   const heroMapPortrait = await readFile(new URL('public/assets/anime/map/atlases/runtime/hero-portrait-v4.webp', ROOT));
   assert.ok(heroMapPortrait.includes(Buffer.from('ALPH')) || heroMapPortrait.includes(Buffer.from('VP8L')));
-  assert.equal(enemyManifest.assets.shadow_boss.file, 'enemies/v3/shadow-boss-map-audit-v3.webp');
+  assert.equal(enemyManifest.assets.shadow_boss.file, 'enemies/canonical-gal-20260930/shadow-boss-map.webp');
 });
 
 test('all twelve reviewed CG records use cache-busted audit-v3 binaries', () => {

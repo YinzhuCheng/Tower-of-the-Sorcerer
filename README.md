@@ -58,17 +58,26 @@ npm run build
 
 ## 测试与可通关性验证
 
+美术完整性检查使用 Python 3.10+ 和固定版本的 Pillow。首次运行完整检查前安装：
+
+```bash
+python3 -m pip install -r scripts/requirements-art.txt
+```
+
+`npm run validate:art` 会完整解码运行时图片，检查所有被引用的图集格子和确定性重组来源；仅检查文件头不能发现局部花屏或被截断的图片。生产构建本身仍无需 Python。
+
 ```bash
 npm run check
 ```
 
 该命令依次执行：
 
-1. `node --test`：战斗公式、卡片门、宝物、机关、符文、商店、存档、终局 Boss 与会战测试。
-2. `scripts/validate-game.mjs`：自动求解基础战役，要求回收七枚核心、击败最终 Boss 且剩余生命大于 0。
-3. `scripts/validate-demo-20f.mjs`：从 F10 已验证路线继续求解 F11–F20，重放完整证书，并检查车轮战胜利窗口。
-4. `scripts/validate-demo-30f.mjs`：以高压第二幕证书为前缀，重放三条 F21–F30 章程路线，并额外证明三条「章程＋F27 先后手」高难路线均可由权威回放通关。
-5. 静态生产构建。
+1. `scripts/validate-runtime-art.py`：严格解码全部运行时美术，校验文件引用、图集格子与重组谱系。
+2. `node --test`：战斗公式、卡片门、宝物、机关、符文、商店、存档、终局 Boss 与会战测试。
+3. `scripts/validate-game.mjs`：自动求解基础战役，要求回收七枚核心、击败最终 Boss 且剩余生命大于 0。
+4. `scripts/validate-demo-20f.mjs`：从 F10 已验证路线继续求解 F11–F20，重放完整证书，并检查车轮战胜利窗口。
+5. `scripts/validate-demo-30f.mjs`：以高压第二幕证书为前缀，重放三条 F21–F30 章程路线，并额外证明三条「章程＋F27 先后手」高难路线均可由权威回放通关。
+6. 静态生产构建。
 
 地图、敌人布置、资源或数值调整后应始终重新运行该命令。自动求解器不是唯一通关路线，只用于证明当前版本至少存在一条合法通关路径。
 

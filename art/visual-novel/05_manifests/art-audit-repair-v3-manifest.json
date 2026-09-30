@@ -80,7 +80,12 @@
       "alphaRequired": false,
       "alphaMin": 0,
       "alphaMax": 255,
-      "sha256": "59746b4a604e65eab7baa54ad2304f5380f6760147ff33304ed7af2b2e9f9421"
+      "sha256": "59746b4a604e65eab7baa54ad2304f5380f6760147ff33304ed7af2b2e9f9421",
+      "superseded_by": "canonical-avatars-runtime-20260930-v1",
+      "runtime_dimensions": [
+        512,
+        512
+      ]
     },
     {
       "id": "dragon_boss",
@@ -93,7 +98,12 @@
       "alphaRequired": false,
       "alphaMin": 0,
       "alphaMax": 255,
-      "sha256": "a7ca77d523a428830e36e0e8b6e3ee1a2d21a84b51eafaa8416f74087462e11d"
+      "sha256": "a7ca77d523a428830e36e0e8b6e3ee1a2d21a84b51eafaa8416f74087462e11d",
+      "superseded_by": "canonical-avatars-runtime-20260930-v1",
+      "runtime_dimensions": [
+        512,
+        512
+      ]
     }
   ],
   "mapUnits": [

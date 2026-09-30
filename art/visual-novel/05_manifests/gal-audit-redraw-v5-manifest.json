@@ -73,7 +73,12 @@
         512
       ],
       "alpha_required": false,
-      "sha256": "c36bf7f325c003962756805dcade5b8ca5acd35cd412f8af0a228634501b8e28"
+      "sha256": "c36bf7f325c003962756805dcade5b8ca5acd35cd412f8af0a228634501b8e28",
+      "superseded_by": "canonical-avatars-runtime-20260930-v1",
+      "runtime_dimensions": [
+        512,
+        512
+      ]
     },
     {
       "id": "AVATAR-LUMI-FOCUS",
@@ -87,7 +92,12 @@
         512
       ],
       "alpha_required": false,
-      "sha256": "ad2b2982e45fc891fe0c9e04ece43dcf8b7c8eeaa0ea2c578fcc85287809d0ef"
+      "sha256": "ad2b2982e45fc891fe0c9e04ece43dcf8b7c8eeaa0ea2c578fcc85287809d0ef",
+      "superseded_by": "canonical-avatars-runtime-20260930-v1",
+      "runtime_dimensions": [
+        512,
+        512
+      ]
     },
     {
       "id": "AVATAR-ECHO-REGENT-GRAVE",
@@ -101,7 +111,12 @@
         512
       ],
       "alpha_required": false,
-      "sha256": "7ad0b1a3faeb289198695419f76fcce34944e92494e033f157174d4b6998fafb"
+      "sha256": "7ad0b1a3faeb289198695419f76fcce34944e92494e033f157174d4b6998fafb",
+      "superseded_by": "canonical-avatars-runtime-20260930-v1",
+      "runtime_dimensions": [
+        512,
+        512
+      ]
     },
     {
       "id": "AVATAR-ARCANE-SOVEREIGN-REGRET",
@@ -115,7 +130,12 @@
         512
       ],
       "alpha_required": false,
-      "sha256": "08f7c0bf18bfec7d0c79ada0224179f6ac1cfd286bb69ef42b9a8a7361f74644"
+      "sha256": "08f7c0bf18bfec7d0c79ada0224179f6ac1cfd286bb69ef42b9a8a7361f74644",
+      "superseded_by": "canonical-avatars-runtime-20260930-v1",
+      "runtime_dimensions": [
+        512,
+        512
+      ]
     },
     {
       "id": "AVATAR-ARCHIVE-WARDEN-DUTY",
@@ -129,7 +149,12 @@
         512
       ],
       "alpha_required": false,
-      "sha256": "8066252750cc0b3db46aa5b017f38dd837bc5e12465170ebdcbeeb94506c7de4"
+      "sha256": "8066252750cc0b3db46aa5b017f38dd837bc5e12465170ebdcbeeb94506c7de4",
+      "superseded_by": "canonical-avatars-runtime-20260930-v1",
+      "runtime_dimensions": [
+        512,
+        512
+      ]
     },
     {
       "id": "CG-PROLOGUE-TOWER",

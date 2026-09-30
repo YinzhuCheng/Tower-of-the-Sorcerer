@@ -20,6 +20,8 @@ function webpDimensions(buffer) {
 
 test('continuity completion manifest matches accepted files and runtime copies', async () => {
   const manifest = JSON.parse(await readFile(new URL('art/visual-novel/05_manifests/continuity-completion-v1-manifest.json', ROOT), 'utf8'));
+  const avatarRelease = JSON.parse(await readFile(new URL('art/visual-novel/05_manifests/canonical-avatars-runtime-20260930-v1.json', ROOT), 'utf8'));
+  const currentAvatars = new Map(avatarRelease.assets.map((asset) => [asset.runtime, asset]));
   assert.equal(manifest.assets.filter(({ kind }) => kind === 'story-cg').length, 8);
   assert.equal(manifest.assets.filter(({ kind }) => kind === 'backdrop').length, 5);
   assert.equal(manifest.assets.filter(({ kind }) => kind === 'checkerboard-standee-source').length, 5);
@@ -29,8 +31,15 @@ test('continuity completion manifest matches accepted files and runtime copies',
     assert.equal(createHash('sha256').update(final).digest('hex'), asset.sha256, `${asset.id} final hash`);
     if (asset.runtime) {
       const runtime = await readFile(new URL(asset.runtime, ROOT));
-      assert.deepEqual(runtime, final, `${asset.id} final/runtime bytes`);
-      assert.deepEqual(webpDimensions(runtime), asset.dimensions, `${asset.id} runtime dimensions`);
+      const replacement = currentAvatars.get(asset.runtime);
+      if (replacement) {
+        assert.equal(asset.superseded_by, avatarRelease.version);
+        assert.equal(createHash('sha256').update(runtime).digest('hex'), replacement.runtime_sha256, `${asset.id} canonical replacement hash`);
+        assert.deepEqual(webpDimensions(runtime), replacement.dimensions, `${asset.id} canonical replacement dimensions`);
+      } else {
+        assert.deepEqual(runtime, final, `${asset.id} final/runtime bytes`);
+        assert.deepEqual(webpDimensions(runtime), asset.dimensions, `${asset.id} runtime dimensions`);
+      }
     } else {
       assert.deepEqual(webpDimensions(final), asset.dimensions, `${asset.id} WebP handoff dimensions`);
       assert.equal(asset.requiresUserAlphaExtraction, true, `${asset.id} remains out of runtime`);

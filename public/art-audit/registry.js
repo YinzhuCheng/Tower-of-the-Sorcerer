@@ -96,7 +96,7 @@ export const CG_SCENES = Object.freeze([
     id: 'lighthouse-archive',
     title: '终章灯塔归档',
     path: '/assets/anime/cg/liyue-lighthouse-archive-cg.webp',
-    cast: ['hero', 'guide', 'final_queen'],
+    cast: ['hero', 'guide', 'final_queen', 'arcane_sovereign'],
     scenes: ['ending · 01/04'],
     role: 'story-cg'
   },
@@ -104,7 +104,7 @@ export const CG_SCENES = Object.freeze([
     id: 'seven-cantos-severed',
     title: '序章：七段咏唱被拆分',
     path: '/assets/anime/cg/liyue-seven-cantos-severed-cg-audit-v3.webp',
-    cast: ['hero', 'guide'],
+    cast: ['hero', 'final_queen'],
     scenes: ['prologue'],
     role: 'story-cg'
   },
@@ -152,7 +152,7 @@ export const CG_SCENES = Object.freeze([
     id: 'originals-enter-lighthouse',
     title: '三十阵：原卷进入灯塔',
     path: '/assets/anime/cg/liyue-archive-warden-entry-cg-audit-v3.webp',
-    cast: ['hero', 'final_queen', 'arcane_sovereign'],
+    cast: ['hero', 'final_queen', 'arcane_sovereign', 'act3_last_custodian'],
     scenes: ['floor30'],
     role: 'story-cg'
   },

@@ -1,0 +1,549 @@
+{
+  "version": "named-cast-tower-gal-20260930-v1",
+  "decision_date": "2026-09-30",
+  "status": "runtime-published",
+  "scope": "Named GAL cast shared with tower map, combat, codex and HUD. Unrelated generic enemies and environment/item art remain unchanged.",
+  "authority": "art/visual-novel/01_canon/tower-gal-unification-20260930.md",
+  "assets": [
+    {
+      "character_id": "cat_boss",
+      "source": "public/assets/anime/characters/b2-20260921/cat-boss-alert-b2.webp",
+      "source_sha256": "aa54a17f60a0ced84a05256dc62e7a90984403f536e563a147b20ebe1d9c89ca",
+      "runtime": "public/assets/anime/enemies/canonical-gal-20260930/cat-boss-map.webp",
+      "dimensions": [
+        384,
+        576
+      ],
+      "hud_avatar": "/assets/anime/avatars/cat-boss-avatar-alert-v8.webp",
+      "previous_enemy_entry": {
+        "file": "enemies/v1/cat-boss-map-128.webp",
+        "scale": 1.08
+      },
+      "transform": {
+        "alpha_bbox_threshold": 8,
+        "padding_px": 12,
+        "resize": "LANCZOS contain; preserve aspect ratio; bottom aligned; no drawing",
+        "webp_quality": 94,
+        "webp_method": 6,
+        "alpha_quality": 100
+      },
+      "source_crop_box": [
+        25,
+        13,
+        1005,
+        1501
+      ],
+      "content_dimensions": [
+        360,
+        547
+      ],
+      "runtime_sha256": "25debe637d5eab0cf2f5d9b66615ad9ad7def8f44e75f349bea1db62e1016065",
+      "runtime_bytes": 50962
+    },
+    {
+      "character_id": "fox_boss",
+      "source": "public/assets/anime/characters/b2-20260921/fox-boss-watchful-b2.webp",
+      "source_sha256": "7e507a62fb9df8760dfcde3b3a4a77738e8a813c192bc3578a6685d779537c21",
+      "runtime": "public/assets/anime/enemies/canonical-gal-20260930/fox-boss-map.webp",
+      "dimensions": [
+        384,
+        576
+      ],
+      "hud_avatar": "/assets/anime/avatars/fox-boss-avatar-watchful-v8.webp",
+      "previous_enemy_entry": {
+        "file": "enemies/v1/fox-boss-map-128.webp",
+        "scale": 1.1
+      },
+      "transform": {
+        "alpha_bbox_threshold": 8,
+        "padding_px": 12,
+        "resize": "LANCZOS contain; preserve aspect ratio; bottom aligned; no drawing",
+        "webp_quality": 94,
+        "webp_method": 6,
+        "alpha_quality": 100
+      },
+      "source_crop_box": [
+        51,
+        2,
+        974,
+        1524
+      ],
+      "content_dimensions": [
+        335,
+        552
+      ],
+      "runtime_sha256": "57795ee821e800e2bcdc720bb5e52e00e18489db42ee97f54b51035687dcade8",
+      "runtime_bytes": 53408
+    },
+    {
+      "character_id": "whale_boss",
+      "source": "public/assets/anime/characters/b2-20260921/whale-boss-lament-b2.webp",
+      "source_sha256": "87c7c4de984d4c94a65670543f00051c7926bf7cc710724d40b01b5a0690b704",
+      "runtime": "public/assets/anime/enemies/canonical-gal-20260930/whale-boss-map.webp",
+      "dimensions": [
+        384,
+        576
+      ],
+      "hud_avatar": "/assets/anime/avatars/whale-boss-avatar-lament-audit-v3.webp",
+      "previous_enemy_entry": {
+        "file": "enemies/v1/whale-boss-map-128.webp",
+        "scale": 1.1
+      },
+      "transform": {
+        "alpha_bbox_threshold": 8,
+        "padding_px": 12,
+        "resize": "LANCZOS contain; preserve aspect ratio; bottom aligned; no drawing",
+        "webp_quality": 94,
+        "webp_method": 6,
+        "alpha_quality": 100
+      },
+      "source_crop_box": [
+        122,
+        17,
+        963,
+        1518
+      ],
+      "content_dimensions": [
+        309,
+        552
+      ],
+      "runtime_sha256": "c4282a77acf530f319d0b9191914cabb722b616f4c3045bf0472a69d407b1d71",
+      "runtime_bytes": 64682
+    },
+    {
+      "character_id": "sword_boss",
+      "source": "public/assets/anime/characters/b2-20260921/sword-boss-stern-b2.webp",
+      "source_sha256": "93941d67e271afcc960d2dca00ad5ab3be73aca1861bf67965803806b0a84ab1",
+      "runtime": "public/assets/anime/enemies/canonical-gal-20260930/sword-boss-map.webp",
+      "dimensions": [
+        384,
+        576
+      ],
+      "hud_avatar": "/assets/anime/avatars/sword-boss-avatar-stern-v8.webp",
+      "previous_enemy_entry": {
+        "file": "enemies/v1/sword-boss-map-128.webp",
+        "scale": 1.1
+      },
+      "transform": {
+        "alpha_bbox_threshold": 8,
+        "padding_px": 12,
+        "resize": "LANCZOS contain; preserve aspect ratio; bottom aligned; no drawing",
+        "webp_quality": 94,
+        "webp_method": 6,
+        "alpha_quality": 100
+      },
+      "source_crop_box": [
+        15,
+        17,
+        911,
+        1509
+      ],
+      "content_dimensions": [
+        331,
+        552
+      ],
+      "runtime_sha256": "bb2e0a2bd92dadb5112dd745b407f1a7d488f2b400aa6ee0fdbaef0fefccdac3",
+      "runtime_bytes": 60574
+    },
+    {
+      "character_id": "dragon_boss",
+      "source": "public/assets/anime/characters/b2-20260921/dragon-boss-embers-b2.webp",
+      "source_sha256": "92b20a84fd38bb69c4514a23913ea3e428a1aa734d0965552c9cd6a00d3c9455",
+      "runtime": "public/assets/anime/enemies/canonical-gal-20260930/dragon-boss-map.webp",
+      "dimensions": [
+        384,
+        576
+      ],
+      "hud_avatar": "/assets/anime/avatars/dragon-boss-avatar-embers-audit-v3.webp",
+      "previous_enemy_entry": {
+        "file": "enemies/v1/dragon-boss-map-128.webp",
+        "scale": 1.12
+      },
+      "transform": {
+        "alpha_bbox_threshold": 8,
+        "padding_px": 12,
+        "resize": "LANCZOS contain; preserve aspect ratio; bottom aligned; no drawing",
+        "webp_quality": 94,
+        "webp_method": 6,
+        "alpha_quality": 100
+      },
+      "source_crop_box": [
+        123,
+        7,
+        949,
+        1510
+      ],
+      "content_dimensions": [
+        303,
+        552
+      ],
+      "runtime_sha256": "a67753a956500967212b6444300ba217cea910bd1842bccc7ad7bab8d1ef43f9",
+      "runtime_bytes": 70186
+    },
+    {
+      "character_id": "astral_boss",
+      "source": "public/assets/anime/characters/b2-20260921/astral-boss-focus-b2.webp",
+      "source_sha256": "988bf71a660ea1e73a19f68b893968f906d74e3721b896fc89f8ed7257515fb5",
+      "runtime": "public/assets/anime/enemies/canonical-gal-20260930/astral-boss-map.webp",
+      "dimensions": [
+        384,
+        576
+      ],
+      "hud_avatar": "/assets/anime/avatars/astral-boss-avatar-focus.webp",
+      "previous_enemy_entry": {
+        "file": "enemies/v1/astral-boss-map-128.webp",
+        "scale": 1.08
+      },
+      "transform": {
+        "alpha_bbox_threshold": 8,
+        "padding_px": 12,
+        "resize": "LANCZOS contain; preserve aspect ratio; bottom aligned; no drawing",
+        "webp_quality": 94,
+        "webp_method": 6,
+        "alpha_quality": 100
+      },
+      "source_crop_box": [
+        214,
+        18,
+        905,
+        1520
+      ],
+      "content_dimensions": [
+        254,
+        552
+      ],
+      "runtime_sha256": "3d7f55986bbb8824744e9f1149b8e378682d16714a974b54558a88511ab26b01",
+      "runtime_bytes": 37064
+    },
+    {
+      "character_id": "shadow_boss",
+      "source": "public/assets/anime/characters/b2-20260921/shadow-boss-guarded-b2.webp",
+      "source_sha256": "2b1d7d825cc573956265dbe7005bd85c9d7c9000f0af1c628b1b33e14f760490",
+      "runtime": "public/assets/anime/enemies/canonical-gal-20260930/shadow-boss-map.webp",
+      "dimensions": [
+        384,
+        576
+      ],
+      "hud_avatar": "/assets/anime/avatars/shadow-boss-avatar-guarded.webp",
+      "previous_enemy_entry": {
+        "file": "enemies/v3/shadow-boss-map-audit-v3.webp",
+        "highResFile": "characters/yayu-dialogue-guarded.webp",
+        "scale": 1.08
+      },
+      "transform": {
+        "alpha_bbox_threshold": 8,
+        "padding_px": 12,
+        "resize": "LANCZOS contain; preserve aspect ratio; bottom aligned; no drawing",
+        "webp_quality": 94,
+        "webp_method": 6,
+        "alpha_quality": 100
+      },
+      "source_crop_box": [
+        232,
+        22,
+        852,
+        1511
+      ],
+      "content_dimensions": [
+        230,
+        552
+      ],
+      "runtime_sha256": "30ee90318aef958ba6c435175dd02acc8a87a0c22201ee59e88ffd079303752d",
+      "runtime_bytes": 35344
+    },
+    {
+      "character_id": "final_queen",
+      "source": "public/assets/anime/characters/b2-20260921/final-queen-cold-b2.webp",
+      "source_sha256": "0b7a9c61e7a8462c2d10c3253267b47b72b3445b8565fafae180fdeccd16d3ca",
+      "runtime": "public/assets/anime/enemies/canonical-gal-20260930/final-queen-map.webp",
+      "dimensions": [
+        384,
+        576
+      ],
+      "hud_avatar": "/assets/anime/avatars/noctia-avatar-cold-cel.webp",
+      "previous_enemy_entry": {
+        "file": "enemies/v1/final-queen-combat-map-128.webp",
+        "scale": 1.12
+      },
+      "transform": {
+        "alpha_bbox_threshold": 8,
+        "padding_px": 12,
+        "resize": "LANCZOS contain; preserve aspect ratio; bottom aligned; no drawing",
+        "webp_quality": 94,
+        "webp_method": 6,
+        "alpha_quality": 100
+      },
+      "source_crop_box": [
+        29,
+        12,
+        998,
+        1520
+      ],
+      "content_dimensions": [
+        355,
+        552
+      ],
+      "runtime_sha256": "0edcaf89e94b297479e7a8b8388e3599c09c919059208f90f90af9e355f358a3",
+      "runtime_bytes": 59302
+    },
+    {
+      "character_id": "echo_regent",
+      "source": "public/assets/anime/characters/b2-20260921/echo-regent-grave-b2.webp",
+      "source_sha256": "f401ceb92b1b1e0eee8547e2384dcce9f3ca9693eaeab7dbe35d075ea8bacb76",
+      "runtime": "public/assets/anime/enemies/canonical-gal-20260930/echo-regent-map.webp",
+      "dimensions": [
+        384,
+        576
+      ],
+      "hud_avatar": "/assets/anime/avatars/echo-regent-avatar-grave.webp",
+      "previous_enemy_entry": {
+        "file": "enemies/v2/echo-regent-map-384.webp",
+        "highResFile": "characters/echo-regent-dialogue-grave.webp",
+        "scale": 1.12
+      },
+      "transform": {
+        "alpha_bbox_threshold": 8,
+        "padding_px": 12,
+        "resize": "LANCZOS contain; preserve aspect ratio; bottom aligned; no drawing",
+        "webp_quality": 94,
+        "webp_method": 6,
+        "alpha_quality": 100
+      },
+      "source_crop_box": [
+        239,
+        1,
+        822,
+        1523
+      ],
+      "content_dimensions": [
+        211,
+        552
+      ],
+      "runtime_sha256": "66972b2450036daf51d7c9731b4932b0e72e5e8cef22b24f4e289861f6e15082",
+      "runtime_bytes": 31512
+    },
+    {
+      "character_id": "arcane_sovereign",
+      "source": "public/assets/anime/characters/b2-20260921/arcane-sovereign-regret-b2.webp",
+      "source_sha256": "ce51e2a669809b44fea4d698b83941f9fbac4704b0b17b02d93b89a8205f544a",
+      "runtime": "public/assets/anime/enemies/canonical-gal-20260930/arcane-sovereign-map.webp",
+      "dimensions": [
+        384,
+        576
+      ],
+      "hud_avatar": "/assets/anime/avatars/arcane-sovereign-avatar-regret.webp",
+      "previous_enemy_entry": {
+        "file": "enemies/v2/arcane-sovereign-map-384.webp",
+        "highResFile": "characters/arcane-sovereign-dialogue-regret.webp",
+        "scale": 1.12
+      },
+      "transform": {
+        "alpha_bbox_threshold": 8,
+        "padding_px": 12,
+        "resize": "LANCZOS contain; preserve aspect ratio; bottom aligned; no drawing",
+        "webp_quality": 94,
+        "webp_method": 6,
+        "alpha_quality": 100
+      },
+      "source_crop_box": [
+        221,
+        8,
+        835,
+        1527
+      ],
+      "content_dimensions": [
+        223,
+        552
+      ],
+      "runtime_sha256": "28c6bd2e92e31a64f50c982e505357060884c2d2c2ba8879927b6e2a65f0f7f8",
+      "runtime_bytes": 35258
+    },
+    {
+      "character_id": "palace_warden_v2",
+      "source": "public/assets/anime/characters/b2-20260921/palace-warden-duty-b2.webp",
+      "source_sha256": "ffa6645d38c29ffc27b75d15c7bd07b02a9ff4657848398f5ca91c30b59d63b7",
+      "runtime": "public/assets/anime/enemies/canonical-gal-20260930/palace-warden-v2-map.webp",
+      "dimensions": [
+        384,
+        576
+      ],
+      "hud_avatar": "/assets/anime/avatars/palace-warden-avatar-duty.webp",
+      "previous_enemy_entry": {
+        "file": "enemies/v2/palace-warden-map-384.webp",
+        "scale": 1.12
+      },
+      "transform": {
+        "alpha_bbox_threshold": 8,
+        "padding_px": 12,
+        "resize": "LANCZOS contain; preserve aspect ratio; bottom aligned; no drawing",
+        "webp_quality": 94,
+        "webp_method": 6,
+        "alpha_quality": 100
+      },
+      "source_crop_box": [
+        36,
+        4,
+        873,
+        1516
+      ],
+      "content_dimensions": [
+        306,
+        552
+      ],
+      "runtime_sha256": "051018396bd7759155f3e04f61a4121f7f0a0b3a45a30bf25dd93263ff2c4b43",
+      "runtime_bytes": 54234
+    },
+    {
+      "character_id": "black_seal_keeper_v2",
+      "source": "public/assets/anime/characters/b2-20260921/black-seal-keeper-watchful-b2.webp",
+      "source_sha256": "7799c02fb07d5feba9e980a3004feddb80731d0288996a47d0c77177813190b5",
+      "runtime": "public/assets/anime/enemies/canonical-gal-20260930/black-seal-keeper-v2-map.webp",
+      "dimensions": [
+        384,
+        576
+      ],
+      "hud_avatar": "/assets/anime/avatars/black-seal-keeper-avatar-watchful.webp",
+      "previous_enemy_entry": {
+        "file": "enemies/v2/black-seal-keeper-map-384.webp",
+        "scale": 1.1
+      },
+      "transform": {
+        "alpha_bbox_threshold": 8,
+        "padding_px": 12,
+        "resize": "LANCZOS contain; preserve aspect ratio; bottom aligned; no drawing",
+        "webp_quality": 94,
+        "webp_method": 6,
+        "alpha_quality": 100
+      },
+      "source_crop_box": [
+        154,
+        10,
+        880,
+        1525
+      ],
+      "content_dimensions": [
+        265,
+        552
+      ],
+      "runtime_sha256": "2abc94cb8ffd839f95e8c2cb53bd9aa6dc953bbe822c8ab13bb32ca01ce1b280",
+      "runtime_bytes": 41430
+    },
+    {
+      "character_id": "act3_archive_warden",
+      "source": "public/assets/anime/characters/b2-20260921/archive-warden-duty-b2.webp",
+      "source_sha256": "b7b58ef93ac0fccd7f2251dd93d13bc3155345c6ead1b4149ccf8201651e3920",
+      "runtime": "public/assets/anime/enemies/canonical-gal-20260930/act3-archive-warden-map.webp",
+      "dimensions": [
+        384,
+        576
+      ],
+      "hud_avatar": "/assets/anime/avatars/archive-warden-avatar-duty.webp",
+      "previous_enemy_entry": {
+        "file": "enemies/act3/archive-warden-map-384.webp",
+        "highResFile": "characters/archive-warden-dialogue-duty.webp",
+        "scale": 1.15
+      },
+      "transform": {
+        "alpha_bbox_threshold": 8,
+        "padding_px": 12,
+        "resize": "LANCZOS contain; preserve aspect ratio; bottom aligned; no drawing",
+        "webp_quality": 94,
+        "webp_method": 6,
+        "alpha_quality": 100
+      },
+      "source_crop_box": [
+        224,
+        14,
+        893,
+        1525
+      ],
+      "content_dimensions": [
+        244,
+        552
+      ],
+      "runtime_sha256": "7037dfb1f00da3fce7acd7f140335aaef2ecbcdb2ad6a9067784b4786455d373",
+      "runtime_bytes": 39088
+    },
+    {
+      "character_id": "act3_last_custodian",
+      "source": "public/assets/anime/characters/b2-20260921/last-custodian-release-b2.webp",
+      "source_sha256": "81d1c8894cdb172a2d503cbc881ae79ba4a906382a2b5c1fb5e206292f2d3e19",
+      "runtime": "public/assets/anime/enemies/canonical-gal-20260930/act3-last-custodian-map.webp",
+      "dimensions": [
+        384,
+        576
+      ],
+      "hud_avatar": "/assets/anime/avatars/last-custodian-avatar-grave.webp",
+      "previous_enemy_entry": {
+        "file": "enemies/act3/last-custodian-map-384.webp",
+        "scale": 1.18
+      },
+      "transform": {
+        "alpha_bbox_threshold": 8,
+        "padding_px": 12,
+        "resize": "LANCZOS contain; preserve aspect ratio; bottom aligned; no drawing",
+        "webp_quality": 94,
+        "webp_method": 6,
+        "alpha_quality": 100
+      },
+      "source_crop_box": [
+        164,
+        41,
+        923,
+        1518
+      ],
+      "content_dimensions": [
+        284,
+        552
+      ],
+      "runtime_sha256": "e99e26778b7ee8282fc1589c6a38c47bd95c1a41cec17f4e0b8801ffabd6a76a",
+      "runtime_bytes": 50184
+    },
+    {
+      "character_id": "merchant",
+      "source": "public/assets/anime/characters/merchant-keke-knowing-hd.png",
+      "source_sha256": "7025aed9bfa08bcaff356806424242a7b8030de65e2f11a19e9c7c9bac2daa75",
+      "runtime": "public/assets/anime/enemies/canonical-gal-20260930/merchant-map.webp",
+      "dimensions": [
+        384,
+        576
+      ],
+      "hud_avatar": "/assets/anime/avatars/merchant-avatar-knowing.webp",
+      "previous_enemy_entry": {
+        "file": "enemies/v1/merchant-keke-map-128.webp"
+      },
+      "transform": {
+        "alpha_bbox_threshold": 8,
+        "padding_px": 12,
+        "resize": "LANCZOS contain; preserve aspect ratio; bottom aligned; no drawing",
+        "webp_quality": 94,
+        "webp_method": 6,
+        "alpha_quality": 100
+      },
+      "source_crop_box": [
+        221,
+        10,
+        835,
+        1515
+      ],
+      "content_dimensions": [
+        225,
+        552
+      ],
+      "runtime_sha256": "e472aec54b7bb9c7f0199a237016ee2911e41a7fb15013d55e926a14a1e7582e",
+      "runtime_bytes": 44120
+    }
+  ],
+  "hud_only": [
+    {
+      "character_id": "hero",
+      "hud_avatar": "/assets/anime/avatars/liyue-avatar-embers-cel.webp",
+      "map_policy": "Retain accepted identity-matched four-direction hero-v6 chibi; no one-view fullbody substitution."
+    },
+    {
+      "character_id": "guide",
+      "hud_avatar": "/assets/anime/avatars/shawu-avatar-gentle-cel.webp",
+      "map_policy": "No individual enemy map slot exists."
+    }
+  ]
+}

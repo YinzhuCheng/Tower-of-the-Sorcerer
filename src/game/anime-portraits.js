@@ -47,18 +47,19 @@ const PORTRAITS = {
 const urlCache = new Map();
 const cardUiAssets = Object.freeze({ sun: 'card-sun-v10', moon: 'card-moon-v10', star: 'card-star-v10' });
 // Dialogue art is intentionally served as ordinary WebP files instead of
-// Base64 text blobs.  The high-resolution masters stay outside the gameplay
-// repository; these 256×384 WebPs are only used by dialogue, codex, and HUD
-// portraits.  Map pieces keep their dedicated transparent sprite pipeline.
+// Base64 text blobs. Named-cast HUD/codex portraits use the accepted 512×512
+// canonical face crops. Map pieces use separate transparent, aspect-safe
+// derivatives of the same accepted GAL identities; fullbody art is never
+// squeezed into the small face-avatar slots.
 const RUNTIME_PORTRAITS = Object.freeze({
   hero: '/assets/anime/avatars/liyue-avatar-embers-cel.webp',
-  guide: '/assets/anime/characters/b2-20260921/guide-neutral-b2.webp',
-  final_queen: '/assets/anime/portraits/v1/final-queen-combat-portrait-runtime.webp',
-  echo_regent: '/assets/anime/characters/echo-regent-dialogue-grave.webp',
-  arcane_sovereign: '/assets/anime/characters/arcane-sovereign-dialogue-regret.webp',
+  guide: '/assets/anime/avatars/shawu-avatar-gentle-cel.webp',
+  final_queen: '/assets/anime/avatars/noctia-avatar-cold-cel.webp',
+  echo_regent: '/assets/anime/avatars/echo-regent-avatar-grave.webp',
+  arcane_sovereign: '/assets/anime/avatars/arcane-sovereign-avatar-regret.webp',
   void_core: '/assets/anime/enemies/v2/void-core-map-384.webp',
-  palace_warden_v2: '/assets/anime/enemies/v2/palace-warden-map-384.webp',
-  black_seal_keeper_v2: '/assets/anime/enemies/v2/black-seal-keeper-map-384.webp',
+  palace_warden_v2: '/assets/anime/avatars/palace-warden-avatar-duty.webp',
+  black_seal_keeper_v2: '/assets/anime/avatars/black-seal-keeper-avatar-watchful.webp',
   vine_druid: '/assets/anime/enemies/v3/vine-druid-map-384.webp',
   shell_guard: '/assets/anime/enemies/v3/shell-guard-map-384.webp',
   blade_priestess: '/assets/anime/enemies/v3/blade-priestess-map-384.webp',
@@ -88,8 +89,8 @@ const RUNTIME_PORTRAITS = Object.freeze({
   act3_errata_cantor: '/assets/anime/enemies/act3/errata-cantor-map-384.webp',
   act3_archive_marshal: '/assets/anime/enemies/act3/archive-marshal-map-384.webp',
   act3_index_beast: '/assets/anime/enemies/act3/index-beast-map-384.webp',
-  act3_last_custodian: '/assets/anime/enemies/act3/last-custodian-map-384.webp',
-  act3_archive_warden: '/assets/anime/characters/archive-warden-dialogue-duty.webp',
+  act3_last_custodian: '/assets/anime/avatars/last-custodian-avatar-grave.webp',
+  act3_archive_warden: '/assets/anime/avatars/archive-warden-avatar-duty.webp',
   act3_errata_core: '/assets/anime/enemies/act3/errata-core-map-384.webp',
   mana_wisp: '/assets/anime/portraits/v1/mana-wisp-portrait-runtime.webp',
   aether_warden: '/assets/anime/portraits/v1/aether-warden-portrait-runtime.webp',
@@ -114,19 +115,19 @@ const RUNTIME_PORTRAITS = Object.freeze({
   mote: '/assets/anime/portraits/v1/mote-portrait-runtime.webp',
   cat_scout: '/assets/anime/portraits/v1/cat-scout-portrait-runtime.webp',
   cat_mage: '/assets/anime/portraits/v1/cat-mage-portrait-runtime.webp',
-  cat_boss: '/assets/anime/portraits/v1/cat-boss-portrait-runtime.webp',
+  cat_boss: '/assets/anime/avatars/cat-boss-avatar-alert-v8.webp',
   fox_acolyte: '/assets/anime/portraits/v1/fox-acolyte-portrait-runtime.webp',
   fox_archer: '/assets/anime/portraits/v1/fox-archer-portrait-runtime.webp',
-  fox_boss: '/assets/anime/portraits/v1/fox-boss-portrait-runtime.webp',
+  fox_boss: '/assets/anime/avatars/fox-boss-avatar-watchful-v8.webp',
   whale_singer: '/assets/anime/portraits/v1/whale-singer-portrait-runtime.webp',
   tide_lancer: '/assets/anime/portraits/v1/tide-lancer-portrait-runtime.webp',
-  whale_boss: '/assets/anime/portraits/v1/whale-boss-portrait-runtime.webp',
+  whale_boss: '/assets/anime/avatars/whale-boss-avatar-lament-audit-v3.webp',
   sword_apprentice: '/assets/anime/portraits/v1/sword-apprentice-portrait-runtime.webp',
   sword_knight: '/assets/anime/portraits/v1/sword-knight-portrait-runtime.webp',
-  sword_boss: '/assets/anime/portraits/v1/sword-boss-portrait-runtime.webp',
+  sword_boss: '/assets/anime/avatars/sword-boss-avatar-stern-v8.webp',
   dragon_whelp: '/assets/anime/portraits/v1/dragon-whelp-portrait-runtime.webp',
   flame_caster: '/assets/anime/portraits/v1/flame-caster-portrait-runtime.webp',
-  dragon_boss: '/assets/anime/portraits/v1/dragon-boss-portrait-runtime.webp',
+  dragon_boss: '/assets/anime/avatars/dragon-boss-avatar-embers-audit-v3.webp',
   star_witch: '/assets/anime/portraits/v1/star-witch-portrait-runtime.webp',
   mirror_doll: '/assets/anime/portraits/v1/mirror-doll-portrait-runtime.webp',
   shadow_ninja: '/assets/anime/portraits/v1/shadow-ninja-portrait-runtime.webp',
@@ -137,9 +138,9 @@ const RUNTIME_PORTRAITS = Object.freeze({
   outer_crown: '/assets/anime/enemies/v3/outer-crown-map-384.webp',
   palace_warden: '/assets/anime/portraits/v1/palace-warden-portrait-runtime.webp',
   black_seal_keeper: '/assets/anime/portraits/v1/black-seal-keeper-portrait-runtime.webp',
-  astral_boss: '/assets/anime/portraits/v1/astral-boss-portrait-runtime.webp',
-  shadow_boss: '/assets/anime/characters/yayu-dialogue-guarded.webp',
-  merchant: '/assets/anime/portraits/v1/merchant-keke-portrait-runtime.webp'
+  astral_boss: '/assets/anime/avatars/astral-boss-avatar-focus.webp',
+  shadow_boss: '/assets/anime/avatars/shadow-boss-avatar-guarded.webp',
+  merchant: '/assets/anime/avatars/merchant-avatar-knowing.webp'
 });
 
 // The gameplay portrait is intentionally stable, while the visual-novel
