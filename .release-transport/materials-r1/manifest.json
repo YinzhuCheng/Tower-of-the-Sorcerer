@@ -1,0 +1,197 @@
+{
+  "schema": 1,
+  "purpose": "Retain six approved continuous-map sample texture blobs for two preview branches",
+  "repository": "YinzhuCheng/Tower-of-the-Sorcerer",
+  "storage_branch": "transport/reviewed-art-20260930",
+  "expected_main": "661296d3df912539f14f300442d962ba6c462541",
+  "files": [
+    {
+      "path": "public/assets/continuous-map/dark-rock.webp",
+      "bytes": 158100,
+      "sha256": "b6e1aedd23a6b8daa5cc08449cdb29664794aede93e3efea2ba8679feb90c28e",
+      "git_blob_sha": "9f4441b19aec9fa130e0f4da37e5f0aee473773c",
+      "chunks": [
+        {
+          "path": ".release-transport/materials-r1/chunks/9f4441b19aec9fa130e0f4da37e5f0aee473773c-000.b64",
+          "bytes": 131072,
+          "sha256": "9b33641bd6c89d8d1f32db8d74e652318149cc4d3b959af2803119078320d74e",
+          "git_blob_sha": "0f21fb2be5efbeedbe6e0b8f45c7236d48d2b529",
+          "offset": 0
+        },
+        {
+          "path": ".release-transport/materials-r1/chunks/9f4441b19aec9fa130e0f4da37e5f0aee473773c-001.b64",
+          "bytes": 79728,
+          "sha256": "34ebdd9cd48aa7eb1186f95f4696b359f727c96102c2adf8a52851bd413ef460",
+          "git_blob_sha": "6ea541a0f9bfcba697d20a39112984977cc906ee",
+          "offset": 131072
+        }
+      ]
+    },
+    {
+      "path": "public/assets/continuous-map/dry-stone.webp",
+      "bytes": 140112,
+      "sha256": "87979285f874d2371c28aebbcce681ddeee43e2ba0086d00cbb60bc88e8a3b22",
+      "git_blob_sha": "a5c7e0541bb02fea69cc1a211b957c8f801ab359",
+      "chunks": [
+        {
+          "path": ".release-transport/materials-r1/chunks/a5c7e0541bb02fea69cc1a211b957c8f801ab359-000.b64",
+          "bytes": 131072,
+          "sha256": "9806521a5864f19398e6dfd12fff091b612e81ae4a561d5396ef3c0c26f0d2c4",
+          "git_blob_sha": "afbb0df6aab735a26cbb9b3823e2703a26f80167",
+          "offset": 0
+        },
+        {
+          "path": ".release-transport/materials-r1/chunks/a5c7e0541bb02fea69cc1a211b957c8f801ab359-001.b64",
+          "bytes": 55744,
+          "sha256": "cf0ac71f095ab66a7d700559372fad3ab11cb30ed7a9a56c0015aeefc87db44d",
+          "git_blob_sha": "e3901377edd92d3ef559cf51d91ff5488408c085",
+          "offset": 131072
+        }
+      ]
+    },
+    {
+      "path": "public/assets/continuous-map/earth-moss.webp",
+      "bytes": 555386,
+      "sha256": "c7f20af9b3f06389ab0ed945c2e3318fec281b1d115c8529cace6f3fe1d11473",
+      "git_blob_sha": "a3d8fc4efe6185328e8fdd898d32a4b419f6a4e6",
+      "chunks": [
+        {
+          "path": ".release-transport/materials-r1/chunks/a3d8fc4efe6185328e8fdd898d32a4b419f6a4e6-000.b64",
+          "bytes": 131072,
+          "sha256": "8fa3c9f11091a4195f908359192813d516ea987bb4b1490e2bdf1be82414649b",
+          "git_blob_sha": "19e8a3517c2d4bf74226b57d2e11a3f4664df30c",
+          "offset": 0
+        },
+        {
+          "path": ".release-transport/materials-r1/chunks/a3d8fc4efe6185328e8fdd898d32a4b419f6a4e6-001.b64",
+          "bytes": 131072,
+          "sha256": "94fb88eed86909429dcaf4cfa3c9129394bf15b94e9b43fc68cf5061d0a1a08c",
+          "git_blob_sha": "19e67c4f5c1bea96a021c1ef86c7221bb984c2d2",
+          "offset": 131072
+        },
+        {
+          "path": ".release-transport/materials-r1/chunks/a3d8fc4efe6185328e8fdd898d32a4b419f6a4e6-002.b64",
+          "bytes": 131072,
+          "sha256": "84b9377877fda503829415f5ede15cfb28904340cc6ebec592b75aefdb351a6a",
+          "git_blob_sha": "fab6145de0eca5afca89795ca36741f0664deff7",
+          "offset": 262144
+        },
+        {
+          "path": ".release-transport/materials-r1/chunks/a3d8fc4efe6185328e8fdd898d32a4b419f6a4e6-003.b64",
+          "bytes": 131072,
+          "sha256": "280ca71326a095eb397364dd5a2ed1f9a27559d44205e49ec1a5c9a2b63351a8",
+          "git_blob_sha": "8e397b3049a7a3da4c7406a6df56fe62f75a105c",
+          "offset": 393216
+        },
+        {
+          "path": ".release-transport/materials-r1/chunks/a3d8fc4efe6185328e8fdd898d32a4b419f6a4e6-004.b64",
+          "bytes": 131072,
+          "sha256": "1274c3a87fab52c038eb70485abde95d121456608b6044e7618938de5be9f6fe",
+          "git_blob_sha": "9fdb696af009835f1e6b86ea2fb1483343b38b2e",
+          "offset": 524288
+        },
+        {
+          "path": ".release-transport/materials-r1/chunks/a3d8fc4efe6185328e8fdd898d32a4b419f6a4e6-005.b64",
+          "bytes": 85156,
+          "sha256": "6c2e1f1a2eae8d3d605fae4ab89ccae1594fb7bd435024cae5cc70da90b260e1",
+          "git_blob_sha": "97ea402dc9594c84aca36756e2908b74f0c25459",
+          "offset": 655360
+        }
+      ]
+    },
+    {
+      "path": "public/assets/continuous-map/root-bark.webp",
+      "bytes": 396884,
+      "sha256": "4d75ab791e1607ff2d77f229828f12447554ded505594fa96e9899525bd980a8",
+      "git_blob_sha": "9139683cd382a53f9bd1e926fa618b43eabef64d",
+      "chunks": [
+        {
+          "path": ".release-transport/materials-r1/chunks/9139683cd382a53f9bd1e926fa618b43eabef64d-000.b64",
+          "bytes": 131072,
+          "sha256": "e559d6ac3c91ddc0f23830453ebe28c506d9e5bfa8cb2d1ca301e1ffaef52ec3",
+          "git_blob_sha": "dd099648df8c471fb34dd43ae1c50c12e72f9ab4",
+          "offset": 0
+        },
+        {
+          "path": ".release-transport/materials-r1/chunks/9139683cd382a53f9bd1e926fa618b43eabef64d-001.b64",
+          "bytes": 131072,
+          "sha256": "770375c192abd0043d2b6151ac5f74e3a0a8b0a7906670e2f715ebfb410aee52",
+          "git_blob_sha": "a05e02e2fa456d41b615c34eac987f407a92b4f0",
+          "offset": 131072
+        },
+        {
+          "path": ".release-transport/materials-r1/chunks/9139683cd382a53f9bd1e926fa618b43eabef64d-002.b64",
+          "bytes": 131072,
+          "sha256": "9d48f0361e3bdf383c5eecff364398b491bb31d95856134f6688b35f45afa3c3",
+          "git_blob_sha": "9cf00eb6413b1ca074d950708535710d7f09907c",
+          "offset": 262144
+        },
+        {
+          "path": ".release-transport/materials-r1/chunks/9139683cd382a53f9bd1e926fa618b43eabef64d-003.b64",
+          "bytes": 131072,
+          "sha256": "d3d2a5f58e876ac945af931d04c423c8a5d8c46111c5c80fee01630db2a0a791",
+          "git_blob_sha": "8b3930d1667335e3c383dc8467ae6ef6bdc80da6",
+          "offset": 393216
+        },
+        {
+          "path": ".release-transport/materials-r1/chunks/9139683cd382a53f9bd1e926fa618b43eabef64d-004.b64",
+          "bytes": 4892,
+          "sha256": "98ba5bcf0c584de0b6626e61e5b7670ff0f4f9c134511925b920c8c3bf30cf2f",
+          "git_blob_sha": "141cffacb2546f3a8efe06edf009bfeb5dcc0060",
+          "offset": 524288
+        }
+      ]
+    },
+    {
+      "path": "public/assets/continuous-map/warm-planks.webp",
+      "bytes": 236460,
+      "sha256": "ccc1df6609f1cc605515aac2dd2cb142f8e087bdc0283618c96e464ea00d3843",
+      "git_blob_sha": "951a1308f5fd1ca0947451c9a808a85cf9efeb12",
+      "chunks": [
+        {
+          "path": ".release-transport/materials-r1/chunks/951a1308f5fd1ca0947451c9a808a85cf9efeb12-000.b64",
+          "bytes": 131072,
+          "sha256": "affb14acf0a8d6ab5525f2df3d64cbf5ee6b1220808e922d68f2631736fe42d8",
+          "git_blob_sha": "30a90a099905e4c6ec78828b9be4d35c80430854",
+          "offset": 0
+        },
+        {
+          "path": ".release-transport/materials-r1/chunks/951a1308f5fd1ca0947451c9a808a85cf9efeb12-001.b64",
+          "bytes": 131072,
+          "sha256": "49cb244dad03fed5070ee79a1d6e1243dc1355d9e2ac27e1e12ec5f40d1dd3cc",
+          "git_blob_sha": "d14053cedd75877fdc8b09866dc7784e7355f043",
+          "offset": 131072
+        },
+        {
+          "path": ".release-transport/materials-r1/chunks/951a1308f5fd1ca0947451c9a808a85cf9efeb12-002.b64",
+          "bytes": 53136,
+          "sha256": "33c1b3398371911caa06cf99c0665bace8c52e7297198559ebbf41e8b1217d0b",
+          "git_blob_sha": "7f726b1082f0d5d45bdac1de693f8500081141c1",
+          "offset": 262144
+        }
+      ]
+    },
+    {
+      "path": "public/assets/continuous-map/water.webp",
+      "bytes": 154346,
+      "sha256": "be939c613564ed3d6f2a9f5b3d867b937f872ab16d268c28b52639c5850be54d",
+      "git_blob_sha": "eea445ad7105f9bf69aeeda0a8d002683282e5a6",
+      "chunks": [
+        {
+          "path": ".release-transport/materials-r1/chunks/eea445ad7105f9bf69aeeda0a8d002683282e5a6-000.b64",
+          "bytes": 131072,
+          "sha256": "417581adf3e84d71ad41c45070b1426498f48e611788ed405c93b6ad0fc02ad3",
+          "git_blob_sha": "6cf23129e69c1cfbbc19cd7f6d1f07a9e19a859f",
+          "offset": 0
+        },
+        {
+          "path": ".release-transport/materials-r1/chunks/eea445ad7105f9bf69aeeda0a8d002683282e5a6-001.b64",
+          "bytes": 74724,
+          "sha256": "75844f22944083aef74830725a41b4c31360094c7173d649a8a60b40cd807038",
+          "git_blob_sha": "f6ebf224f7574ecc8bb4403352ed2746020cdc58",
+          "offset": 131072
+        }
+      ]
+    }
+  ]
+}
