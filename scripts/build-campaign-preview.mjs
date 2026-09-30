@@ -5,8 +5,9 @@ const root=join(dirname(fileURLToPath(import.meta.url)),'..');
 const out=join(root,'dist-c-preview');
 // Explicit allowlist: never copy main's art bundle or production index.
 const files=[
+ 'src/campaigns/c/story/index.js','src/campaigns/c/story/content.js','src/campaigns/c/story/presentation.js',
  'src/core/battle.js','src/core/campaign.js','src/game/magic-blade.js','src/solver/state.js',
- 'src/solver/campaign-adapter.js','src/solver/campaign-replay.js','src/campaigns/c/content.js',
+ 'src/solver/campaign-adapter.js','src/solver/campaign-replay.js','src/campaigns/c/content.js','src/campaigns/c/planning.js',
  'public/campaigns/index.html','public/campaigns/styles.css','public/campaigns/app.js','public/campaigns/c-normal.certificate.json'
 ];
 await rm(out,{recursive:true,force:true});await mkdir(out,{recursive:true});

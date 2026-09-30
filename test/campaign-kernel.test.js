@@ -69,3 +69,9 @@ test('content compiler refuses repeatable rewards and free infinite shops',()=>{
  const a=tiny();a.regions[0].entities[0].once=false;assert.throws(()=>createCampaign(a),/Repeatable/);
  const b=tiny();b.regions[0].entities[0]={id:'shop',x:2,y:1,kind:'shop',once:false,price:0,effects:{stats:{atk:1}}};assert.throws(()=>createCampaign(b),/Unbounded/);
 });
+test('game state and in-progress presentation persist atomically in a compatible envelope',()=>{
+ const values=new Map(),storage={getItem:k=>values.get(k)??null,setItem:(k,v)=>values.set(k,v),removeItem:k=>values.delete(k)};
+ const r=createCampaign(tiny()),repo=createSaveRepository(storage,r,{validatePresentation:p=>p==null||Array.isArray(p.queue)}),state=r.initialState(),presentation={seenIds:['c01'],queue:[{id:'c01',turns:[{text:'still reading'}]}],turnIndex:0};
+ repo.save('auto',state,presentation);assert.deepEqual(repo.restore().presentation,presentation);assert.deepEqual(repo.load('auto'),state);
+ const bad=JSON.parse(values.get(repo.key('auto')));bad.presentation={queue:'corrupt'};values.set(repo.key('auto'),JSON.stringify(bad));const result=repo.restore();assert.equal(result.allowAutoSave,false);assert.equal(result.issues.length,1);assert.ok(values.has(result.issues[0].backup));
+});

@@ -1,7 +1,7 @@
 import { calculateBattle } from './battle.js';
 import { hashValue, stableStringify } from '../solver/state.js';
 
-export const CAMPAIGN_RULES_VERSION = 'fixed-campaign-v1';
+export const CAMPAIGN_RULES_VERSION = 'fixed-campaign-v1.1';
 export const DIRECTIONS = Object.freeze({up:[0,-1],down:[0,1],left:[-1,0],right:[1,0]});
 export const clone = (value) => structuredClone(value);
 export function deepFreeze(value) {
@@ -30,6 +30,7 @@ export function createCampaign(input) {
       assert(!(['enemy','pickup'].includes(entity.kind)&&entity.once===false), `Repeatable enemy/pickup is forbidden: ${entity.id}`);
       if(entity.kind==='shop') assert(integer(entity.price)&&entity.price>=0&&(entity.once!==false||(entity.price>0&&(entity.effects?.stats?.gold??0)<entity.price)), `Unbounded shop: ${entity.id}`);
       if(entity.once===false&&entity.kind!=='shop') assert(!Object.values(entity.effects?.resources??{}).some(n=>n>0)&&!Object.values(entity.effects?.stats??{}).some(n=>n>0), `Repeatable resource reward: ${entity.id}`);
+      if(entity.interactionAt) assert(region.map[entity.interactionAt.y]?.[entity.interactionAt.x]==='.'&&distance(entity,entity.interactionAt)<=1, `Invalid interaction stand: ${entity.id}`);
       entities.set(entity.id, {...entity, regionId:region.id});
     }
   }
@@ -95,13 +96,29 @@ export function createCampaign(input) {
     if (condition.balance != null) return balanced(state)===condition.balance;
     throw new Error(`Unsupported condition: ${JSON.stringify(condition)}`);
   }
+  function explainMissing(state,condition) {
+    if(condition==null||meets(state,condition))return [];
+    if(Array.isArray(condition))return condition.flatMap(c=>explainMissing(state,c));
+    if(condition.all)return condition.all.flatMap(c=>explainMissing(state,c));
+    if(condition.any)return [`需任选一项：${condition.any.map(c=>explainMissing(state,c).join('、')).join('；或')}`];
+    if(condition.not)return ['这项操作要求对应事项尚未完成'];
+    if(condition.balance!=null)return [condition.balance?'配重未平衡，请在甲板调整三枚铁块':'当前配重已平衡'];
+    if(condition.moored!=null)return [condition.moored?'请先完成系泊确认':'船已完成系泊'];
+    if(condition.dock)return [`请先抵达${regions.get(condition.dock)?.title??condition.dock}`];
+    if(condition.cargo)return [`灯座须处于${{center:'中线货架',left:'左侧绞盘作业位',right:'右舷吊装位',ashore:'已上岸状态'}[condition.cargo]??condition.cargo}`];
+    if(condition.cleared)return [`请先清除${entities.get(condition.cleared)?.title??condition.cleared}`];
+    if(condition.resource){const reserved=(condition.reserveUntrueFlags??[]).filter(id=>!state.flags[id]).length;const label=spec.resourceLabels?.[condition.resource]??({fuel:'船油',heat:'热脂',wedges:'根楔'}[condition.resource]??condition.resource);return [`${label}不足：本次需${condition.min??0}${reserved?`，另须为主线保留${reserved}`:''}，现有${state.resources[condition.resource]??0}`];}
+    if(condition.stat)return [`${condition.stat}至少需要${condition.min??0}，现有${state.stats[condition.stat]??0}`];
+    if(condition.flag){const source=[...entities.values()].find(e=>Object.hasOwn(e.effects?.flags??{},condition.flag)&&e.effects.flags[condition.flag]===(condition.value??true));const label=spec.flagLabels?.[condition.flag]??source?.title??'对应前置作业';return [(condition.value??true)===false?`须保持“${label}”未完成`:`请先完成：${label}`];}
+    return ['对应前置条件尚未满足'];
+  }
   function remainingEntity(state, entity) { return !state.cleared.includes(entity.id); }
   function passable(state,x,y) {
     const region=regions.get(state.location.regionId);
     if (region?.map[y]?.[x]!=='.') return false;
     return !(region.entities ?? []).some(e=>e.x===x&&e.y===y&&e.blocking===true&&remainingEntity(state,e));
   }
-  function atEntity(state,entity) { return entity && entity.regionId===state.location.regionId && distance(state.location,entity)<=1; }
+  function atEntity(state,entity) { return Boolean(entity && entity.regionId===state.location.regionId && distance(state.location,entity)<=1 && (!entity.interactionAt || state.location.x===entity.interactionAt.x&&state.location.y===entity.interactionAt.y)); }
   function applyEffects(state,effect={}) {
     for (const [id,delta] of Object.entries(effect.resources ?? {})) { assert(integer(delta),'Noninteger resource delta'); state.resources[id]=(state.resources[id]??0)+delta; }
     const stats=effect.stats ?? {};
@@ -128,7 +145,7 @@ export function createCampaign(input) {
       const entity=entities.get(action.entityId);
       if (!atEntity(state,entity)) return deny(state,'请先到目标旁边');
       if (!remainingEntity(state,entity)) return deny(state,'该事项已完成，不能重复领取或结算');
-      if (!meets(state,entity.requires)) return deny(state,entity.blockedReason ?? '尚未满足公开的前置条件');
+      if (!meets(state,entity.requires)) return deny(state,[entity.blockedReason,...explainMissing(state,entity.requires)].filter(Boolean).join('；'));
       if (entity.kind==='enemy') {
         const battle=calculateBattle(state.stats,entity.enemy);
         if (!battle.winnable) return {...deny(state,battle.reason),battle};
@@ -146,8 +163,8 @@ export function createCampaign(input) {
     } else if (action.type==='traverse') {
       const edge=transitions.get(action.edgeId);
       if (!edge || !atEntity(state,entities.get(edge.anchor))) return deny(state,'请先到路线的指定出发点');
-      if (!meets(state,edge.requires)) return deny(state,edge.blockedReason ?? '出航或通行条件未满足');
-      for (const [id,cost] of Object.entries(edge.cost ?? {})) if ((state.resources[id]??0)<cost) return deny(state,`${id}不足，需要${cost}`);
+      if (!meets(state,edge.requires)) return deny(state,[edge.blockedReason,...explainMissing(state,edge.requires)].filter(Boolean).join('；'));
+      for (const [id,cost] of Object.entries(edge.cost ?? {})) if ((state.resources[id]??0)<cost) return deny(state,`${spec.resourceLabels?.[id]??({fuel:'船油',heat:'热脂',wedges:'根楔'}[id]??id)}不足，需要${cost}，目前${state.resources[id]??0}`);
       let to=edge.to==='@dock'?state.boat?.dock:edge.to;
       if (!regions.has(to)) return deny(state,'没有有效的目的地');
       for (const [id,cost] of Object.entries(edge.cost ?? {})) next.resources[id]-=cost;
@@ -182,6 +199,14 @@ export function createCampaign(input) {
     const result=dispatch(state,action);
     return {legal:result.ok,reason:result.reason??null,events:result.events,battle:result.battle??result.events.find(event=>event.type==='battle')?.battle??null,receipt:result.receipt??null,nextState:result.ok?result.state:null};
   }
+  const slotNames={L1:'左前槽',L2:'左后槽',C1:'中前槽',C2:'中后槽',R1:'右前槽',R2:'右后槽'};
+  function ballastView(state){
+    if(!spec.ballast)return null;
+    const cargoTorque=spec.ballast.cargoTorques[state.boat.cargo];
+    let leftMoment=Math.max(0,-cargoTorque),rightMoment=Math.max(0,cargoTorque);
+    for(const[id,mass]of Object.entries(spec.ballast.weights)){const moment=mass*spec.ballast.slots[state.boat.positions[id]];leftMoment+=Math.max(0,-moment);rightMoment+=Math.max(0,moment);}
+    return {balanced:balanced(state),weights:clone(spec.ballast.weights),positions:clone(state.boat.positions),cargo:state.boat.cargo,slotNames:clone(slotNames),leftMoment,rightMoment};
+  }
   function listInteractions(state,{all=false}={}) {
     const actions=[];
     for (const entity of entities.values()) if ((all||atEntity(state,entity)) && entity.regionId===state.location.regionId && meets(state,entity.visibleWhen) && remainingEntity(state,entity) && ['enemy','pickup','operation','shop'].includes(entity.kind)) {
@@ -192,40 +217,40 @@ export function createCampaign(input) {
       if ((all||atEntity(state,entity)) && entity.regionId===state.location.regionId && (!edge.departure||edge.departure.from===state.boat?.dock)) actions.push({type:'traverse',edgeId:edge.id,title:edge.title,anchor:entity.id});
     }
     if (spec.ballast && state.location.regionId===spec.ballast.deckRegion && (all||atEntity(state,entities.get(spec.ballast.control)))) {
-      for (const weightId of Object.keys(spec.ballast.weights)) for (const slot of Object.keys(spec.ballast.slots)) if (!Object.values(state.boat.positions).includes(slot)) actions.push({type:'moveBallast',weightId,slot,title:`${weightId}移到${slot}`,anchor:spec.ballast.control});
+      for (const weightId of Object.keys(spec.ballast.weights)) for (const slot of Object.keys(spec.ballast.slots)) if (!Object.values(state.boat.positions).includes(slot)) actions.push({type:'moveBallast',weightId,slot,title:`${Object.keys(spec.ballast.weights).indexOf(weightId)+1}号铁块（质量${spec.ballast.weights[weightId]}，当前${slotNames[state.boat.positions[weightId]]??state.boat.positions[weightId]}）→${slotNames[slot]??slot}`,anchor:spec.ballast.control});
     }
     return actions;
   }
   function projectView(state) {
     assertValidState(state);
     const region=regions.get(state.location.regionId);
-    return {identity,state:clone(state),region:clone(region),entities:[...entities.values()].filter(e=>e.regionId===region.id).map(e=>({...clone(e),completed:state.cleared.includes(e.id)})),interactions:listInteractions(state).map(action=>({...action,preview:preview(state,action)})),balance:spec.ballast?{balanced:balanced(state),weights:clone(spec.ballast.weights),positions:clone(state.boat.positions),cargo:state.boat.cargo}:null};
+    return {identity,state:clone(state),region:clone(region),entities:[...entities.values()].filter(e=>e.regionId===region.id).map(e=>({...clone(e),completed:state.cleared.includes(e.id)})),interactions:listInteractions(state).map(action=>({...action,preview:preview(state,action)})),balance:ballastView(state)};
   }
   function deserialize(text) { const state=JSON.parse(text); assertValidState(state); return state; }
-  return Object.freeze({spec,identity,initialState,dispatch,preview,listInteractions,projectView,passable,balanced,meets,assertValidState,entity:id=>entities.get(id),region:id=>regions.get(id),serialize:state=>{assertValidState(state);return JSON.stringify(state);},deserialize,stateHash:hashValue});
+  return Object.freeze({spec,identity,initialState,dispatch,preview,listInteractions,projectView,passable,balanced,meets,explainMissing,inReach:(state,id)=>atEntity(state,entities.get(id)),assertValidState,entity:id=>entities.get(id),region:id=>regions.get(id),serialize:state=>{assertValidState(state);return JSON.stringify(state);},deserialize,stateHash:hashValue});
 }
 
-export function createSaveRepository(storage,runtime) {
-  const prefix=`campaign:${runtime.identity.campaignId}:${runtime.identity.difficultyId}:${runtime.identity.contentHash}`;
+export function createSaveRepository(storage,runtime,{validatePresentation=()=>true}={}) {
+  const prefix=`campaign:${runtime.identity.campaignId}:${runtime.identity.difficultyId}:${runtime.identity.rulesVersion}:${runtime.identity.contentHash}`;
   const key=slot=>`${prefix}:${slot}`;
   function inspect(slot) {
     const raw=storage.getItem(key(slot));
     if(raw==null) return {status:'missing',slot};
-    try { return {status:'valid',slot,state:runtime.deserialize(raw)}; }
+    try { const parsed=JSON.parse(raw); const envelope=parsed?.$campaignSave===1; if(envelope)assert(validatePresentation(parsed.presentation??null),'Invalid presentation state'); const state=runtime.deserialize(envelope?JSON.stringify(parsed.state):raw); return {status:'valid',slot,state,presentation:envelope?clone(parsed.presentation??null):null}; }
     catch(error) { return {status:'invalid',slot,raw,reason:error.message}; }
   }
   function restore({preferred='auto',fallback='manual'}={}) {
-    const issues=[]; let state=null,source=null;
+    const issues=[]; let state=null,source=null,presentation=null;
     for(const slot of [...new Set([preferred,fallback].filter(Boolean))]) {
       const result=inspect(slot);
-      if(result.status==='valid'&&!state) {state=result.state;source=slot;}
+      if(result.status==='valid'&&!state) {state=result.state;source=slot;presentation=result.presentation;}
       if(result.status==='invalid') {
         const digest=hashValue(result.raw),backup=key(`corrupt:${slot}:${digest}`);
         if(storage.getItem(backup)==null) storage.setItem(backup,result.raw);
         issues.push({slot,reason:result.reason,backup});
       }
     }
-    return {state,source,issues,allowAutoSave:Boolean(state)||issues.length===0};
+    return {state,source,presentation,issues,allowAutoSave:Boolean(state)||issues.length===0};
   }
-  return Object.freeze({key,inspect,restore,save(slot,state){storage.setItem(key(slot),runtime.serialize(state));},load(slot){const raw=storage.getItem(key(slot));return raw?runtime.deserialize(raw):null;},remove(slot){storage.removeItem(key(slot));}});
+  return Object.freeze({key,inspect,restore,save(slot,state,presentation=null){const raw=runtime.serialize(state);storage.setItem(key(slot),presentation==null?raw:JSON.stringify({$campaignSave:1,state:JSON.parse(raw),presentation:clone(presentation)}));},load(slot){const result=inspect(slot);if(result.status==='invalid')throw new Error(result.reason);return result.state??null;},remove(slot){storage.removeItem(key(slot));}});
 }

@@ -36,7 +36,7 @@ export function createCampaignAdapter(runtime,{allowAction=()=>true,coverage='co
       for (const action of runtime.listInteractions(state,{all:true})) {
         if (!allowAction(action,state)) continue;
         const entity=runtime.entity(action.anchor);
-        const approach=[...paths.entries()].filter(([key])=>{const [x,y]=key.split(',').map(Number);return Math.abs(x-entity.x)+Math.abs(y-entity.y)<=1;}).sort((a,b)=>a[1].length-b[1].length)[0];
+        const approach=[...paths.entries()].filter(([key])=>{const [x,y]=key.split(',').map(Number);return runtime.inReach({...state,location:{...state.location,x,y}},entity.id);}).sort((a,b)=>a[1].length-b[1].length)[0];
         if (!approach) continue;
         const [x,y]=approach[0].split(',').map(Number);
         const nearby={...state,location:{...state.location,x,y}};

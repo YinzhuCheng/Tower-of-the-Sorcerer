@@ -44,7 +44,7 @@ export function createVoyageSpec() {
       {id:'c.ballast',x:5,y:5,title:'三枚配重控制位',kind:'anchor'},
       ...[2,3,4,5].map(n=>({...op(`c.moor${n}`,7,9,n===5?'双缆系泊远灯内侧':'按口令完成安全靠泊',[dock(n),{moored:false},{cargo:'center'},{balance:true}],{moored:true,flags:{[`c.moored${n}`]:true}},n===3?'c07':n===5?'c15':null),visibleWhen:dock(n)})),
       {...op('c.shiftLeft',5,3,'把灯座左移，露出船端绞盘',[dock(3),{moored:true},{cargo:'center'},flag('c.shoreLock')],{cargo:'left'},'c08'),visibleWhen:dock(3)},
-      {...op('c.openBarrier',5,3,'牵引开浮栅，收到岸锁回应',[dock(3),{moored:true},{cargo:'left'},{balance:true},flag('c.shoreLock')],{flags:{'c.barrierOpen':true}},'c08'),visibleWhen:dock(3)},
+      {...op('c.openBarrier',4,3,'牵引开浮栅，收到岸锁回应',[dock(3),{moored:true},{cargo:'left'},{balance:true},flag('c.shoreLock')],{flags:{'c.barrierOpen':true}},'c08'),interactionAt:{x:4,y:4},visibleWhen:dock(3)},
       {...op('c.centerCargo',5,3,'浮栅作业完成，货架归中',[dock(3),{moored:true},{cargo:'left'},flag('c.barrierOpen')],{cargo:'center'},'c10'),visibleWhen:dock(3)},
       {...op('c.shiftRight',5,3,'把灯座移到右舷固定吊点',[dock(5),{moored:true},{cargo:'center'}],{cargo:'right'},'c16'),visibleWhen:dock(5)},
       {...op('c.unload',8,3,'确认配平，手摇船吊臂卸货',[dock(5),{moored:true},{cargo:'right'},{balance:true}],{cargo:'ashore',flags:{'c.cargoAshore':true}},'c16'),visibleWhen:dock(5)},
@@ -67,6 +67,7 @@ export function createVoyageSpec() {
     source:{fullSha256:'4dfcfba4fb686dfec5e9b0ac5bce22a70323f8ff68b1712048c661ee89328f1f',outlineSha256:'22dc7a6b0419aeb9f61869625f850b92f5d609c27c96d3be0cbfc566593edcd0'},
     initial:{location:{regionId:'C-M01',x:7,y:7},stats:{hp:60,maxHp:60,atk:14,def:8,gold:8},resources:{fuel:9},flags:{'c.lampOil':true},boat:{dock:'C-M01',moored:true,cargo:'center',positions:{w1:'L1',w2:'L2',w3:'C1'}}},
     regions,transitions,
+    visualLinks:[{id:'c.winch',regionId:deckRegion,body:{x:5,y:3},controlEntityId:'c.openBarrier',operator:{x:4,y:4},meaning:'同一牵引绞盘：机身与侧面手柄，非遥控装置'}],
     ballast:{deckRegion,control:'c.ballast',weights:{w1:1,w2:1,w3:2},slots:{L1:-1,L2:-1,C1:0,C2:0,R1:1,R2:1},slotCoordinates:{L1:[3,4],L2:[3,6],C1:[5,4],C2:[5,6],R1:[7,4],R2:[7,6]},cargoTorques:{center:0,left:-2,right:2,ashore:0}},
     goal:[flag('c.bothLamps'),flag('c.farLampStaffed'),flag('c.nearLampStaffed'),flag('c.ferryStaffed'),flag('c.emptyShipSecured'),{cargo:'ashore'},{moored:true},{balance:true}]
   };
