@@ -60,8 +60,5 @@ jobs:
           test "$(git ls-remote origin refs/heads/main | cut -f1)" = 3c2bc16cba3b57d2f3ae81d3b1d9bd9f87edcf4e
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          TRANSPORT_COMMIT=$(printf 'transport: retain verified art objects [skip ci]\n' | git commit-tree "$RELEASE_TREE" -p "$GITHUB_SHA")
-          git push origin "$TRANSPORT_COMMIT":refs/heads/transport/reviewed-art-20260930
-          echo "VERIFIED_RELEASE_TREE=$RELEASE_TREE"
-          echo "TRANSPORT_COMMIT=$TRANSPORT_COMMIT"
-          echo "Verified 141-file art snapshot and retained its objects; main was not changed." >> "$GITHUB_STEP_SUMMARY"
+          python .release-transport/retain-blobs.py
+          echo "Verified 141-file art snapshot. Only data blobs were retained; workflow files and main were not changed." >> "$GITHUB_STEP_SUMMARY"
