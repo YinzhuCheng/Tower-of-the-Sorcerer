@@ -1,0 +1,579 @@
+{
+  "schema": 1,
+  "purpose": "Three original painted-scene QA assets; exact frozen r2 app; official browser evidence only",
+  "repository": "YinzhuCheng/Tower-of-the-Sorcerer",
+  "storage_branch": "transport/reviewed-art-20260930",
+  "prefix": ".release-transport/painted-viewports-r2",
+  "app_manifest_sha256": "8221d9fbbbddea8b0cc9434073698b4c50c2942cf2fab4c1d5bbc94bcd406c13",
+  "protected_refs": {
+    "main": "661296d3df912539f14f300442d962ba6c462541",
+    "candidate/b-forest-road": "9ada59a66d9579a418e25015b90c61621ce583d1",
+    "candidate/c-night-harbor": "2b6388088eeacf6c011aad4a4a207b29bd4de941",
+    "candidate/c-harbor-3d-view": "080d9142bbbfe65df4b7977ed483a5a49435e30b"
+  },
+  "files": [
+    {
+      "path": "assets/forest.png",
+      "bytes": 3269330,
+      "sha256": "9f4074fbaf51ea00b9035000b3b85460bde68b59f1afbe081dae5261007d9361",
+      "git_blob_sha": "912d63ec431446503192e3af9bac7d7133ca2c87",
+      "chunks": [
+        {
+          "path": ".release-transport/painted-viewports-r2/chunks/912d63ec431446503192e3af9bac7d7133ca2c87-000.b64",
+          "offset": 0,
+          "bytes": 131072,
+          "sha256": "3eddbb13579a53ffcf008058616a5fcb8e06647100a91c8e7f7a244a387bbd92",
+          "git_blob_sha": "d00fbf0e355131c3cde75aaa5f7ea05823e5a435"
+        },
+        {
+          "path": ".release-transport/painted-viewports-r2/chunks/912d63ec431446503192e3af9bac7d7133ca2c87-001.b64",
+          "offset": 131072,
+          "bytes": 131072,
+          "sha256": "bf6c9a6bf1a12422c791d7585a248912c74318152a3722b1de8927ee3aa09ca3",
+          "git_blob_sha": "0e893c1fc38b6ceb49e611a3b651bf10970fcc01"
+        },
+        {
+          "path": ".release-transport/painted-viewports-r2/chunks/912d63ec431446503192e3af9bac7d7133ca2c87-002.b64",
+          "offset": 262144,
+          "bytes": 131072,
+          "sha256": "3241c173ddca25238233e5c97f48954b0a00affe92a40625d5f0a835675e4b9b",
+          "git_blob_sha": "abe785cd6f8dd2c3afeb433e567df9ac21486891"
+        },
+        {
+          "path": ".release-transport/painted-viewports-r2/chunks/912d63ec431446503192e3af9bac7d7133ca2c87-003.b64",
+          "offset": 393216,
+          "bytes": 131072,
+          "sha256": "83c1723044107d22b94ecc105d31d2c0c2ebcf85523d5dc8a51cd89ee861cf2a",
+          "git_blob_sha": "8de74254251edd4ac8e544f642ab640d5b6539e8"
+        },
+        {
+          "path": ".release-transport/painted-viewports-r2/chunks/912d63ec431446503192e3af9bac7d7133ca2c87-004.b64",
+          "offset": 524288,
+          "bytes": 131072,
+          "sha256": "609bbea20634ab668f7153cdbc7ade26e99340710cf2f779da36fae3641dbacc",
+          "git_blob_sha": "e4b9aded67d1d398a9c1a19d9f700ba87767f362"
+        },
+        {
+          "path": ".release-transport/painted-viewports-r2/chunks/912d63ec431446503192e3af9bac7d7133ca2c87-005.b64",
+          "offset": 655360,
+          "bytes": 131072,
+          "sha256": "97b0b2ec262b76ab6d8885a1504059025381297a5deb45b133c6f809ef36afc2",
+          "git_blob_sha": "fa27d4878fb68d2822db5f34077eb29f28cc7f63"
+        },
+        {
+          "path": ".release-transport/painted-viewports-r2/chunks/912d63ec431446503192e3af9bac7d7133ca2c87-006.b64",
+          "offset": 786432,
+          "bytes": 131072,
+          "sha256": "b3e9cf29d582e94e3d8b9cf035b97ce3f32cccaa88431a3618d52c7fec5d48fc",
+          "git_blob_sha": "8698a14f28742cea1fe58de44441a0b018ed660b"
+        },
+        {
+          "path": ".release-transport/painted-viewports-r2/chunks/912d63ec431446503192e3af9bac7d7133ca2c87-007.b64",
+          "offset": 917504,
+          "bytes": 131072,
+          "sha256": "edc4b12b7908aee4d6faeafc1e66bd049f882f55c1cfde90ee1324707b0ac093",
+          "git_blob_sha": "d76bdff2b06b27e30f4d09038ccf794c13cd06c3"
+        },
+        {
+          "path": ".release-transport/painted-viewports-r2/chunks/912d63ec431446503192e3af9bac7d7133ca2c87-008.b64",
+          "offset": 1048576,
+          "bytes": 131072,
+          "sha256": "12ca7c4a7a1c9038e32806f58f52b89804a948dedf68e350f1c5b02685a5c2f6",
+          "git_blob_sha": "234a25b15da5222d2e834fd79d02c0c49eb1aaab"
+        },
+        {
+          "path": ".release-transport/painted-viewports-r2/chunks/912d63ec431446503192e3af9bac7d7133ca2c87-009.b64",
+          "offset": 1179648,
+          "bytes": 131072,
+          "sha256": "fc273faaae7d90270b890fb32a8ea133497d5b6ea118bf403127a941cb5ebc2b",
+          "git_blob_sha": "1daf7afee11ee0efc7bb62b5f1a9a5093b2523ed"
+        },
+        {
+          "path": ".release-transport/painted-viewports-r2/chunks/912d63ec431446503192e3af9bac7d7133ca2c87-010.b64",
+          "offset": 1310720,
+          "bytes": 131072,
+          "sha256": "61326e5070abc29452e302f2b84c04b6478411d5aecffeba5f1086a4a64db241",
+          "git_blob_sha": "d9f2e93c63ed3af54beba91782ebf673f5340cc9"
+        },
+        {
+          "path": ".release-transport/painted-viewports-r2/chunks/912d63ec431446503192e3af9bac7d7133ca2c87-011.b64",
+          "offset": 1441792,
+          "bytes": 131072,
+          "sha256": "ceca8f2e38cbb5d039ff993e5387a04d54d109061bb5aa4dd9137c01a2de929a",
+          "git_blob_sha": "e3271d4f23fd02df8c529405a088d35c14666fe8"
+        },
+        {
+          "path": ".release-transport/painted-viewports-r2/chunks/912d63ec431446503192e3af9bac7d7133ca2c87-012.b64",
+          "offset": 1572864,
+          "bytes": 131072,
+          "sha256": "a73d8b7b7585160bd7962af19e2a5a831007ff0c850621d7aed5a831dfc785a0",
+          "git_blob_sha": "95bdc75612ad21c8e1f847d524e507a9a6fb1f18"
+        },
+        {
+          "path": ".release-transport/painted-viewports-r2/chunks/912d63ec431446503192e3af9bac7d7133ca2c87-013.b64",
+          "offset": 1703936,
+          "bytes": 131072,
+          "sha256": "0271004e33a851a763fa8b57519ec3392f4686e80efaeacc4a2a89309affe2ee",
+          "git_blob_sha": "b34cb3cdec74e1504eefb2f23b106606a6535cc3"
+        },
+        {
+          "path": ".release-transport/painted-viewports-r2/chunks/912d63ec431446503192e3af9bac7d7133ca2c87-014.b64",
+          "offset": 1835008,
+          "bytes": 131072,
+          "sha256": "41dfdd9d24f8b663f0e5b905d73e7fbb07d2ddea2957b0a0be78e89538c14142",
+          "git_blob_sha": "97a1b7b7bad8d0eefad6849cbec22db94acc729e"
+        },
+        {
+          "path": ".release-transport/painted-viewports-r2/chunks/912d63ec431446503192e3af9bac7d7133ca2c87-015.b64",
+          "offset": 1966080,
+          "bytes": 131072,
+          "sha256": "8cff58802c43db4e4195dac809cb8678a345bf79810cfbe7a9f96dc8efab2599",
+          "git_blob_sha": "3b74cee6eeb4862d007f8a2caa1304e2fa93a961"
+        },
+        {
+          "path": ".release-transport/painted-viewports-r2/chunks/912d63ec431446503192e3af9bac7d7133ca2c87-016.b64",
+          "offset": 2097152,
+          "bytes": 131072,
+          "sha256": "a96d7c743db63213baa1529f9afed76a43b0b24e7df55d83ca256a8ec05e0e7f",
+          "git_blob_sha": "aea0b07f0105e2e2050a7c1f3963193cd05af67b"
+        },
+        {
+          "path": ".release-transport/painted-viewports-r2/chunks/912d63ec431446503192e3af9bac7d7133ca2c87-017.b64",
+          "offset": 2228224,
+          "bytes": 131072,
+          "sha256": "c9d775db842ba911263d2a93ad66ccfc31ee65f7b801a3cf60f6a715706db12c",
+          "git_blob_sha": "241a5662c5d1533719d17ba78692e3914e17bfb4"
+        },
+        {
+          "path": ".release-transport/painted-viewports-r2/chunks/912d63ec431446503192e3af9bac7d7133ca2c87-018.b64",
+          "offset": 2359296,
+          "bytes": 131072,
+          "sha256": "c47fcca1e182cb62a5ddadfa24daa1accadbb8331a5dbd5fb0b285c5a66a455d",
+          "git_blob_sha": "b90bfe16d8fd901f4d54f97101235b6513997866"
+        },
+        {
+          "path": ".release-transport/painted-viewports-r2/chunks/912d63ec431446503192e3af9bac7d7133ca2c87-019.b64",
+          "offset": 2490368,
+          "bytes": 131072,
+          "sha256": "c4379425c1109b66697eb8a0f86926ef1fc472a28f61698c18ffad6991c78021",
+          "git_blob_sha": "27c47838bf93fea7ef7cb859c11a55626ad6cd3a"
+        },
+        {
+          "path": ".release-transport/painted-viewports-r2/chunks/912d63ec431446503192e3af9bac7d7133ca2c87-020.b64",
+          "offset": 2621440,
+          "bytes": 131072,
+          "sha256": "cdabd503b9f83e1628cbe62b18e6fe5360dd2074746a148058fdb43eb74fa112",
+          "git_blob_sha": "d55d90e248853d8b05e66c113d200fb562850874"
+        },
+        {
+          "path": ".release-transport/painted-viewports-r2/chunks/912d63ec431446503192e3af9bac7d7133ca2c87-021.b64",
+          "offset": 2752512,
+          "bytes": 131072,
+          "sha256": "cf3aafd8ebe92b914c92351d95106f5f92dda4388e3289cd3f1a7e3c46de3b36",
+          "git_blob_sha": "f636e1cb0d815e44d7036b8b0c54c26aecc4595b"
+        },
+        {
+          "path": ".release-transport/painted-viewports-r2/chunks/912d63ec431446503192e3af9bac7d7133ca2c87-022.b64",
+          "offset": 2883584,
+          "bytes": 131072,
+          "sha256": "e84c740a6a331c8d9613b8376d2d833a3e9e3fa627340c67672fed3a0d806c33",
+          "git_blob_sha": "9e62bba4d863d7c4fb92ca0fad284ac7f88a3f19"
+        },
+        {
+          "path": ".release-transport/painted-viewports-r2/chunks/912d63ec431446503192e3af9bac7d7133ca2c87-023.b64",
+          "offset": 3014656,
+          "bytes": 131072,
+          "sha256": "0a6d4d1d1b43af5cab2f59e21e32fee86167eb0473dade82b66fa57749917b3c",
+          "git_blob_sha": "02584ff63f0897da09ec108794682b3f54ae8823"
+        },
+        {
+          "path": ".release-transport/painted-viewports-r2/chunks/912d63ec431446503192e3af9bac7d7133ca2c87-024.b64",
+          "offset": 3145728,
+          "bytes": 131072,
+          "sha256": "c26ae218f916c2a6c6d7351d374344a300bea0e8ade1bf275f02056c66c12f75",
+          "git_blob_sha": "dae516df7ae3c8b28fcd0ea02329b78cd8d610b6"
+        },
+        {
+          "path": ".release-transport/painted-viewports-r2/chunks/912d63ec431446503192e3af9bac7d7133ca2c87-025.b64",
+          "offset": 3276800,
+          "bytes": 131072,
+          "sha256": "4841b4526f8540cda315d005c4611b2985981845cbb2eb6b3a1216c4386fd53e",
+          "git_blob_sha": "39e385e040f6935c5973482778cc35d6564de381"
+        },
+        {
+          "path": ".release-transport/painted-viewports-r2/chunks/912d63ec431446503192e3af9bac7d7133ca2c87-026.b64",
+          "offset": 3407872,
+          "bytes": 131072,
+          "sha256": "e43b976b8442325a5f0f89ad92d6f45bbd24714167f9022e709e8a21e0831163",
+          "git_blob_sha": "798840d71698b2c46d291de308540aa4f7e1562a"
+        },
+        {
+          "path": ".release-transport/painted-viewports-r2/chunks/912d63ec431446503192e3af9bac7d7133ca2c87-027.b64",
+          "offset": 3538944,
+          "bytes": 131072,
+          "sha256": "cf3ba482f9e1590093c9472e94d7a12cf01fcb3e924041b9c64ec9712c6301c7",
+          "git_blob_sha": "596c8bc6e6604be53d54e397397b74511b7c680f"
+        },
+        {
+          "path": ".release-transport/painted-viewports-r2/chunks/912d63ec431446503192e3af9bac7d7133ca2c87-028.b64",
+          "offset": 3670016,
+          "bytes": 131072,
+          "sha256": "6bb19666e4e14f9f62de6a9c418267f6265dfcdb5068a9dd52ff830df9fc19e5",
+          "git_blob_sha": "f878fafb13f06b3f7e70160207ded2da6782e884"
+        },
+        {
+          "path": ".release-transport/painted-viewports-r2/chunks/912d63ec431446503192e3af9bac7d7133ca2c87-029.b64",
+          "offset": 3801088,
+          "bytes": 131072,
+          "sha256": "4484cf22c92d2398385f62e295963e4b9a897ea472544372772c5d80a65f06b8",
+          "git_blob_sha": "5331b459ca5e8ecd366c2dddea587b34f5d3d1b0"
+        },
+        {
+          "path": ".release-transport/painted-viewports-r2/chunks/912d63ec431446503192e3af9bac7d7133ca2c87-030.b64",
+          "offset": 3932160,
+          "bytes": 131072,
+          "sha256": "81617e3f01a5df28b3c4eeed318d3629f9dadd07db5f1dd5116f62d49e70c794",
+          "git_blob_sha": "57be25ffea707778837a92cc3ecba60cf586de61"
+        },
+        {
+          "path": ".release-transport/painted-viewports-r2/chunks/912d63ec431446503192e3af9bac7d7133ca2c87-031.b64",
+          "offset": 4063232,
+          "bytes": 131072,
+          "sha256": "2bf82f48821bdd2d2379e8f95c56f0bb123e3c1463e056b0cd6b2b2d64364c14",
+          "git_blob_sha": "7668457d0383e546ed834884ce60875effd9aba6"
+        },
+        {
+          "path": ".release-transport/painted-viewports-r2/chunks/912d63ec431446503192e3af9bac7d7133ca2c87-032.b64",
+          "offset": 4194304,
+          "bytes": 131072,
+          "sha256": "51e74c7549143941503942b78fed57b0f8313665868cbd16bcde849c9ede69ec",
+          "git_blob_sha": "dfd5edf2883729ee4ccad03c1ed09571d12c56b0"
+        },
+        {
+          "path": ".release-transport/painted-viewports-r2/chunks/912d63ec431446503192e3af9bac7d7133ca2c87-033.b64",
+          "offset": 4325376,
+          "bytes": 33732,
+          "sha256": "4aab3844404d7082e2b24d7053c3188acce0a463426e843fb2428dabcb8fdd51",
+          "git_blob_sha": "219ade62e2224d3e4089ddba71d4a48aa5b58a53"
+        }
+      ]
+    },
+    {
+      "path": "assets/harbor.png",
+      "bytes": 2588197,
+      "sha256": "56960a4eaff62c09bd01c1781e693ac0b1af6e4c3145746cb66dab949f275818",
+      "git_blob_sha": "5e4e4c4beae6a7d7499061cf60bd099892ad2c61",
+      "chunks": [
+        {
+          "path": ".release-transport/painted-viewports-r2/chunks/5e4e4c4beae6a7d7499061cf60bd099892ad2c61-000.b64",
+          "offset": 0,
+          "bytes": 131072,
+          "sha256": "7a2889ea7471997042f045afa3f12e724b70ef4c947f962b2bb7b99bd37b6737",
+          "git_blob_sha": "0959831549d611648bd16ab9c2d7c244072857c6"
+        },
+        {
+          "path": ".release-transport/painted-viewports-r2/chunks/5e4e4c4beae6a7d7499061cf60bd099892ad2c61-001.b64",
+          "offset": 131072,
+          "bytes": 131072,
+          "sha256": "bfd289736c25f1ff05693ee78f53c267001c50d94291e88876ace7fce86316cd",
+          "git_blob_sha": "8b5bc6c0782f7bb0fe94c0a987a7eae7060bc193"
+        },
+        {
+          "path": ".release-transport/painted-viewports-r2/chunks/5e4e4c4beae6a7d7499061cf60bd099892ad2c61-002.b64",
+          "offset": 262144,
+          "bytes": 131072,
+          "sha256": "ea5c902c8f52e77d83264e398a65b71676be4e373033b1e593d9ace0000328cd",
+          "git_blob_sha": "aa977e01bf1e2d4cb54396afb16fce893ce24671"
+        },
+        {
+          "path": ".release-transport/painted-viewports-r2/chunks/5e4e4c4beae6a7d7499061cf60bd099892ad2c61-003.b64",
+          "offset": 393216,
+          "bytes": 131072,
+          "sha256": "17e6e055e07e2a24ef827b2148068608c816a2c9d5ecb2b781270cccf9cdb7b9",
+          "git_blob_sha": "2a9df002a7770cb3efbdf238d4e6a533a7aa0726"
+        },
+        {
+          "path": ".release-transport/painted-viewports-r2/chunks/5e4e4c4beae6a7d7499061cf60bd099892ad2c61-004.b64",
+          "offset": 524288,
+          "bytes": 131072,
+          "sha256": "65938629224ff0d147bdc9661e4f2d9a3054d2b626089eeb667d62dc4f52620c",
+          "git_blob_sha": "37c1625da21613d42ee15f372a431283fb17b449"
+        },
+        {
+          "path": ".release-transport/painted-viewports-r2/chunks/5e4e4c4beae6a7d7499061cf60bd099892ad2c61-005.b64",
+          "offset": 655360,
+          "bytes": 131072,
+          "sha256": "3a5285acb6858b89725e85e3285d9f6a40f2089a3f78e06a86b33023c6ad7abb",
+          "git_blob_sha": "fa15ffd5f2e9b2afca295907090cdfcdaf8f2c64"
+        },
+        {
+          "path": ".release-transport/painted-viewports-r2/chunks/5e4e4c4beae6a7d7499061cf60bd099892ad2c61-006.b64",
+          "offset": 786432,
+          "bytes": 131072,
+          "sha256": "e0ceef0b12378669364d284dc6defc7500a11e03bd5d3f867bb8ca90efc81e42",
+          "git_blob_sha": "a0f1ada38472d9bdde4204bf98cd3600a03f342a"
+        },
+        {
+          "path": ".release-transport/painted-viewports-r2/chunks/5e4e4c4beae6a7d7499061cf60bd099892ad2c61-007.b64",
+          "offset": 917504,
+          "bytes": 131072,
+          "sha256": "de4723659583b57a5e76fc2732bdc53a052734f5887f73e45990582adcefddd2",
+          "git_blob_sha": "94df2a1fab872dde8d809ab0f1a6531b01cff5d5"
+        },
+        {
+          "path": ".release-transport/painted-viewports-r2/chunks/5e4e4c4beae6a7d7499061cf60bd099892ad2c61-008.b64",
+          "offset": 1048576,
+          "bytes": 131072,
+          "sha256": "7f414f2554bfb7d59133af8548142d3a4f71a277a7d43e818c7d003fef079e56",
+          "git_blob_sha": "f96ba2ca507b09872976b6a68391b7b7ce1957b0"
+        },
+        {
+          "path": ".release-transport/painted-viewports-r2/chunks/5e4e4c4beae6a7d7499061cf60bd099892ad2c61-009.b64",
+          "offset": 1179648,
+          "bytes": 131072,
+          "sha256": "4a683e0dced9b3c38b80d2713429a19425f1ca7e715b300cd92743e2166acb4e",
+          "git_blob_sha": "60965fd0529c4418b472265bd692cdd6e3707e50"
+        },
+        {
+          "path": ".release-transport/painted-viewports-r2/chunks/5e4e4c4beae6a7d7499061cf60bd099892ad2c61-010.b64",
+          "offset": 1310720,
+          "bytes": 131072,
+          "sha256": "3dc31910baa618342068f7a81e891082309f2e750bd416a83a18fcf6736dcb42",
+          "git_blob_sha": "4972de4114683cfb5e1722b2eab731fb0506a8ee"
+        },
+        {
+          "path": ".release-transport/painted-viewports-r2/chunks/5e4e4c4beae6a7d7499061cf60bd099892ad2c61-011.b64",
+          "offset": 1441792,
+          "bytes": 131072,
+          "sha256": "9e39b57e1e37bd78ee927307925f8ced4372b1952f25335ddb594917eb22cab3",
+          "git_blob_sha": "5f04a4babc9f5bebbfeb7d87668350f9243ef68b"
+        },
+        {
+          "path": ".release-transport/painted-viewports-r2/chunks/5e4e4c4beae6a7d7499061cf60bd099892ad2c61-012.b64",
+          "offset": 1572864,
+          "bytes": 131072,
+          "sha256": "2679f88993ae304f11040f4de57ca7aea1ae71bad8c16f5e5132d14c1969390c",
+          "git_blob_sha": "23260ba85d5b258b39e7616fb1a7cafe57977c29"
+        },
+        {
+          "path": ".release-transport/painted-viewports-r2/chunks/5e4e4c4beae6a7d7499061cf60bd099892ad2c61-013.b64",
+          "offset": 1703936,
+          "bytes": 131072,
+          "sha256": "4e035e65fb572beafe921bb920f2ed12904900b2826aec336a4f2fa03449fbb5",
+          "git_blob_sha": "9a6c78d1cc977822e870ce044c88156c9a98784f"
+        },
+        {
+          "path": ".release-transport/painted-viewports-r2/chunks/5e4e4c4beae6a7d7499061cf60bd099892ad2c61-014.b64",
+          "offset": 1835008,
+          "bytes": 131072,
+          "sha256": "5ddab9113ceb697969536818717fd0dcca3936831865f6e535a0226b0875e09b",
+          "git_blob_sha": "149936b7852411c286da670cb4746790bde60839"
+        },
+        {
+          "path": ".release-transport/painted-viewports-r2/chunks/5e4e4c4beae6a7d7499061cf60bd099892ad2c61-015.b64",
+          "offset": 1966080,
+          "bytes": 131072,
+          "sha256": "f2c831c7fda1bc868e769e56a306c806cd1f215b8b99cc03dd5e4424782aabcf",
+          "git_blob_sha": "c61d73e089bd6e918ad3e6aa65815d9449ed7caf"
+        },
+        {
+          "path": ".release-transport/painted-viewports-r2/chunks/5e4e4c4beae6a7d7499061cf60bd099892ad2c61-016.b64",
+          "offset": 2097152,
+          "bytes": 131072,
+          "sha256": "7cbb4aa4f3a3bb010aad06aaa98cadf8ac7b854ae9bf1aef866d5752fd031580",
+          "git_blob_sha": "55b8343a15006461efda5caec5de4e0acb0071a6"
+        },
+        {
+          "path": ".release-transport/painted-viewports-r2/chunks/5e4e4c4beae6a7d7499061cf60bd099892ad2c61-017.b64",
+          "offset": 2228224,
+          "bytes": 131072,
+          "sha256": "62580921e0fb91f797548deb453a3c83c26c8322be7ceb295d45247f3ec627c6",
+          "git_blob_sha": "875f3b08b2df8f0091cc3055f8791e72ad79c8e5"
+        },
+        {
+          "path": ".release-transport/painted-viewports-r2/chunks/5e4e4c4beae6a7d7499061cf60bd099892ad2c61-018.b64",
+          "offset": 2359296,
+          "bytes": 131072,
+          "sha256": "4b9fd7a506bd65c3f85963ebdc93d315d8762b552749c70918a934b4c2a6cb4a",
+          "git_blob_sha": "0f8fca4c353569b7d7c60fa798eb1f01d0bcb303"
+        },
+        {
+          "path": ".release-transport/painted-viewports-r2/chunks/5e4e4c4beae6a7d7499061cf60bd099892ad2c61-019.b64",
+          "offset": 2490368,
+          "bytes": 131072,
+          "sha256": "59496dd129ebba5fd1da5b77f232a6be39586830a3e18b7eaf7e31affa07b50e",
+          "git_blob_sha": "38d05106042d256bf66678652ba0f6905bc84b9d"
+        },
+        {
+          "path": ".release-transport/painted-viewports-r2/chunks/5e4e4c4beae6a7d7499061cf60bd099892ad2c61-020.b64",
+          "offset": 2621440,
+          "bytes": 131072,
+          "sha256": "b3431f58141e3f140df44b454a97577d23c2eb3575f8544591f7691d020e2b8e",
+          "git_blob_sha": "9e8956a5a1475cea0dc85b31a14ecf22a5d10ae9"
+        },
+        {
+          "path": ".release-transport/painted-viewports-r2/chunks/5e4e4c4beae6a7d7499061cf60bd099892ad2c61-021.b64",
+          "offset": 2752512,
+          "bytes": 131072,
+          "sha256": "8b129fa495b0e26cd0b0c6d0546866c091018c02d1652bbfb9c891af7c28ac51",
+          "git_blob_sha": "101854f8ba3fa4750466d5fcbef0bae87f7d08a2"
+        },
+        {
+          "path": ".release-transport/painted-viewports-r2/chunks/5e4e4c4beae6a7d7499061cf60bd099892ad2c61-022.b64",
+          "offset": 2883584,
+          "bytes": 131072,
+          "sha256": "12175a858932bda6d368217b45248c216b0f8ca11a49878be6ea911fc4814222",
+          "git_blob_sha": "13401c321740b0c9e823e8f981295ee1cfd6d204"
+        },
+        {
+          "path": ".release-transport/painted-viewports-r2/chunks/5e4e4c4beae6a7d7499061cf60bd099892ad2c61-023.b64",
+          "offset": 3014656,
+          "bytes": 131072,
+          "sha256": "9ce27b64bed39f45ef4fa45a70c85dadd43b5b35ee981bc83d08fcb19747f55e",
+          "git_blob_sha": "85b61298b14e312e81879afea758055a91804575"
+        },
+        {
+          "path": ".release-transport/painted-viewports-r2/chunks/5e4e4c4beae6a7d7499061cf60bd099892ad2c61-024.b64",
+          "offset": 3145728,
+          "bytes": 131072,
+          "sha256": "942d5a2e958a0b36220993be6d8ddb97fd0337aadf459573b274220f881974ac",
+          "git_blob_sha": "98372b6661180bd62682d578497bdf6162522f44"
+        },
+        {
+          "path": ".release-transport/painted-viewports-r2/chunks/5e4e4c4beae6a7d7499061cf60bd099892ad2c61-025.b64",
+          "offset": 3276800,
+          "bytes": 131072,
+          "sha256": "ddacb0acfaf1b58e547fb69d476059b7c59cb38fe642f3eede8904d46c635198",
+          "git_blob_sha": "6adab8225268becd1ed8593dee9d6a02412b28dc"
+        },
+        {
+          "path": ".release-transport/painted-viewports-r2/chunks/5e4e4c4beae6a7d7499061cf60bd099892ad2c61-026.b64",
+          "offset": 3407872,
+          "bytes": 43060,
+          "sha256": "a451e9e2c4e9ade6f377dcb673ef33063a7b2d9d853f20072be504b442974384",
+          "git_blob_sha": "336e98daf7b211aa792c56170c0b072bb7ea06dc"
+        }
+      ]
+    },
+    {
+      "path": "assets/hero.png",
+      "bytes": 1563479,
+      "sha256": "7782d68d752cd42e9e30ba389431a39f4b4b10d115f5f9073c9ecd223420834f",
+      "git_blob_sha": "90e6b5e5c904f0a5d2f06a6b3a67a8c0515146c9",
+      "chunks": [
+        {
+          "path": ".release-transport/painted-viewports-r2/chunks/90e6b5e5c904f0a5d2f06a6b3a67a8c0515146c9-000.b64",
+          "offset": 0,
+          "bytes": 131072,
+          "sha256": "72c26d32d0a303c2bd029d198b0743e59910d1b2e46a1eaac22675813996efdf",
+          "git_blob_sha": "c54963672e76b0349b1ee5e0496f5349ea418275"
+        },
+        {
+          "path": ".release-transport/painted-viewports-r2/chunks/90e6b5e5c904f0a5d2f06a6b3a67a8c0515146c9-001.b64",
+          "offset": 131072,
+          "bytes": 131072,
+          "sha256": "d79143a48a822d6d508a31f1b7d85ff3e08cd08a05862ddc576f039b76e68263",
+          "git_blob_sha": "56995644a660c748c77d5616cb8e112d7517340f"
+        },
+        {
+          "path": ".release-transport/painted-viewports-r2/chunks/90e6b5e5c904f0a5d2f06a6b3a67a8c0515146c9-002.b64",
+          "offset": 262144,
+          "bytes": 131072,
+          "sha256": "248cd8d1d040bd1fe83b65285ad6056841233d6c642f81c74b9cd42eb188469b",
+          "git_blob_sha": "1d1a249d0be2061ba3e940b36ca84f4909187c02"
+        },
+        {
+          "path": ".release-transport/painted-viewports-r2/chunks/90e6b5e5c904f0a5d2f06a6b3a67a8c0515146c9-003.b64",
+          "offset": 393216,
+          "bytes": 131072,
+          "sha256": "fd3905c0ff275e7a5912296cbc26a13fc0818d896a681cd4a57e966062e8a8b7",
+          "git_blob_sha": "094aa78057eb26d29ec24ca62a2de48d0bd1ab82"
+        },
+        {
+          "path": ".release-transport/painted-viewports-r2/chunks/90e6b5e5c904f0a5d2f06a6b3a67a8c0515146c9-004.b64",
+          "offset": 524288,
+          "bytes": 131072,
+          "sha256": "b7d83cd96fad19d23c94f313b039f1c780be65066267a80b29f76afc61e9861b",
+          "git_blob_sha": "2f9e04fc8a046efe676a7e7aff52df306d27a247"
+        },
+        {
+          "path": ".release-transport/painted-viewports-r2/chunks/90e6b5e5c904f0a5d2f06a6b3a67a8c0515146c9-005.b64",
+          "offset": 655360,
+          "bytes": 131072,
+          "sha256": "326feffa80e33f11eff2c1960da8ae000b98f30b62b9d006eb68ee4d11a6d8b2",
+          "git_blob_sha": "d5ff7cc75a7e8db28aa9b8f5a4e6b0878b0616ec"
+        },
+        {
+          "path": ".release-transport/painted-viewports-r2/chunks/90e6b5e5c904f0a5d2f06a6b3a67a8c0515146c9-006.b64",
+          "offset": 786432,
+          "bytes": 131072,
+          "sha256": "5ca8fe31b3abe53b27bb1062a7e1a99cf488634c18f2b6b96cc8da3803323a22",
+          "git_blob_sha": "ff85af0d130d6a9e80a1049d2441480f79ad0e3f"
+        },
+        {
+          "path": ".release-transport/painted-viewports-r2/chunks/90e6b5e5c904f0a5d2f06a6b3a67a8c0515146c9-007.b64",
+          "offset": 917504,
+          "bytes": 131072,
+          "sha256": "a286ca3f8a27b71e82f3cc1b1a06a0f912285e3be679fffe5ee6438bbfb21ba0",
+          "git_blob_sha": "a3ae974c27d5a94c835900b3f86fe557b4f7a389"
+        },
+        {
+          "path": ".release-transport/painted-viewports-r2/chunks/90e6b5e5c904f0a5d2f06a6b3a67a8c0515146c9-008.b64",
+          "offset": 1048576,
+          "bytes": 131072,
+          "sha256": "340997b996d9d0223fcf77116a19b40f5bc302db7863f1f8a75c226d6b2a444d",
+          "git_blob_sha": "1c9257371cf2e496675c37cde439f2b371a7b2e1"
+        },
+        {
+          "path": ".release-transport/painted-viewports-r2/chunks/90e6b5e5c904f0a5d2f06a6b3a67a8c0515146c9-009.b64",
+          "offset": 1179648,
+          "bytes": 131072,
+          "sha256": "464157bc7c0703a4b584bfe6e6543b35dd274cb0a43c4de8b45344e1a9eff4aa",
+          "git_blob_sha": "0989b19deffeeeb8425961554e479616f267dff4"
+        },
+        {
+          "path": ".release-transport/painted-viewports-r2/chunks/90e6b5e5c904f0a5d2f06a6b3a67a8c0515146c9-010.b64",
+          "offset": 1310720,
+          "bytes": 131072,
+          "sha256": "5a4512ef016dd6ef1aef844983a36035aaf2e476a9fb9127e52fe9594a1ee11d",
+          "git_blob_sha": "0ea9c34a3915e8bf4d82be6cf1a98284d13592a7"
+        },
+        {
+          "path": ".release-transport/painted-viewports-r2/chunks/90e6b5e5c904f0a5d2f06a6b3a67a8c0515146c9-011.b64",
+          "offset": 1441792,
+          "bytes": 131072,
+          "sha256": "02be1c486f32542fc0f4005cac4aa04e8c4daf82b8076d811f092320a10a0ff2",
+          "git_blob_sha": "0648205cd85abd740d3fba80778e6512b723c2c8"
+        },
+        {
+          "path": ".release-transport/painted-viewports-r2/chunks/90e6b5e5c904f0a5d2f06a6b3a67a8c0515146c9-012.b64",
+          "offset": 1572864,
+          "bytes": 131072,
+          "sha256": "206510819d94c80902d1b58a118d5a1e30df1201aec54c2c55a55210c2a07fed",
+          "git_blob_sha": "b4a659468a5cf05f957e9b7cdbd34ac6f2474f9b"
+        },
+        {
+          "path": ".release-transport/painted-viewports-r2/chunks/90e6b5e5c904f0a5d2f06a6b3a67a8c0515146c9-013.b64",
+          "offset": 1703936,
+          "bytes": 131072,
+          "sha256": "c3e1421ed470100f024ce670ced93db1104e21adcfd60e1942de8a02727e6755",
+          "git_blob_sha": "faddc98f78ccc20bef79b49df7ca29fc284b39d9"
+        },
+        {
+          "path": ".release-transport/painted-viewports-r2/chunks/90e6b5e5c904f0a5d2f06a6b3a67a8c0515146c9-014.b64",
+          "offset": 1835008,
+          "bytes": 131072,
+          "sha256": "d2c75d8dca5dd0a6f5eeb9e81321561714d11189f735ef103edf58cfd344a93c",
+          "git_blob_sha": "84948d2621988304277c7f2609783649134fdf31"
+        },
+        {
+          "path": ".release-transport/painted-viewports-r2/chunks/90e6b5e5c904f0a5d2f06a6b3a67a8c0515146c9-015.b64",
+          "offset": 1966080,
+          "bytes": 118560,
+          "sha256": "a18b4ad5feb39ffa0bba43e39b90b146aa2f13f09a91ff8c4dd41873fec573e8",
+          "git_blob_sha": "5b21760b015ef259249872686a82f4160967242e"
+        }
+      ]
+    }
+  ]
+}

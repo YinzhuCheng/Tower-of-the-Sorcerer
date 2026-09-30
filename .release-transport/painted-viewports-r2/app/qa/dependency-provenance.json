@@ -1,0 +1,41 @@
+{
+  "runtimeExternalImports": false,
+  "sourceCopies": [
+    {
+      "file": "adapters/forest-kernel/painted-path-review.js",
+      "source": "b-painted-navigation-reviewed/src/painted-path-review.js",
+      "sha256": "51637874bff27ce428d39ae4699693e83a1b164fe525bb7b3d01b4cfee733abc",
+      "copiedUnchanged": true
+    },
+    {
+      "file": "adapters/forest-kernel/navigation.js",
+      "source": "b-painted-navigation-reviewed/src/navigation.js",
+      "sha256": "2470af11efb775ad144eeacf5238611bc917c13e4f76e64b68d72ed523304fab",
+      "copiedUnchanged": true
+    },
+    {
+      "file": "adapters/forest-kernel/geometry.js",
+      "source": "b-painted-navigation-reviewed/src/geometry.js",
+      "sha256": "f7cc43a2557f858812995531f74e025444bca0ccbc372fce19f5ed797c74816b",
+      "copiedUnchanged": true
+    },
+    {
+      "file": "adapters/harbor-kernel/source-adapter.mjs",
+      "source": "c-harbor-physical-navigation/src/adapter.mjs",
+      "sha256": "904a6da5468da76a412daf3fb3f2d0809a33d24a7b8d9bb6b6177d529cdaf19c",
+      "copiedUnchanged": true
+    },
+    {
+      "file": "adapters/kernel/navigation.js",
+      "source": "c-harbor-physical-navigation/kernel/navigation.js",
+      "sha256": "2470af11efb775ad144eeacf5238611bc917c13e4f76e64b68d72ed523304fab",
+      "copiedUnchanged": true
+    },
+    {
+      "file": "adapters/kernel/geometry.js",
+      "source": "c-harbor-physical-navigation/kernel/geometry.js",
+      "sha256": "f7cc43a2557f858812995531f74e025444bca0ccbc372fce19f5ed797c74816b",
+      "copiedUnchanged": true
+    }
+  ]
+}

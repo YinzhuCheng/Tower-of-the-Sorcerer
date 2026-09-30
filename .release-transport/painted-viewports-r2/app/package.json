@@ -1,0 +1,6 @@
+{
+  "name": "painted-scene-viewports", "version": "0.2.0-art-footing-review-r2", "private": true, "type": "module",
+  "description": "Isolated original-art and neutral-pose footing review. Not a game or animation production asset.",
+  "scripts": {"test":"node --test tests/*.test.mjs", "verify":"node scripts/verify.mjs", "serve":"node scripts/serve.mjs", "screenshots":"node scripts/capture-playwright.mjs"},
+  "engines":{"node":">=22"}
+}

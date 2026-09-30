@@ -1,0 +1,60 @@
+{
+  "assets": {
+    "forest": {
+      "source": "b-runtime-art-window/04_cg/working/BG_B_RW01_双根涧实景窗口_v1.png",
+      "file": "assets/forest.png",
+      "sha256": "9f4074fbaf51ea00b9035000b3b85460bde68b59f1afbe081dae5261007d9361",
+      "size": [
+        1672,
+        941
+      ],
+      "mode": "RGB",
+      "operation": "byte-for-byte copy; no image editing"
+    },
+    "harbor": {
+      "source": "c-continuous-art-slice/04_cg/final/ENV_C2_M03_连续缆桥_空景艺术母版_v1.png",
+      "file": "assets/harbor.png",
+      "sha256": "56960a4eaff62c09bd01c1781e693ac0b1af6e4c3145746cb66dab949f275818",
+      "size": [
+        1586,
+        992
+      ],
+      "mode": "RGB",
+      "operation": "byte-for-byte copy; no image editing"
+    },
+    "hero": {
+      "source": "shared-map-character-production/hero-map-design-v1/04_cg/final/CHAR_hero_map_design_reference_four_directions_v2.png",
+      "file": "assets/hero.png",
+      "sha256": "7782d68d752cd42e9e30ba389431a39f4b4b10d115f5f9073c9ecd223420834f",
+      "size": [
+        1774,
+        887
+      ],
+      "mode": "RGBA",
+      "operation": "byte-for-byte copy; no image editing"
+    }
+  },
+  "separatorVertices": 13,
+  "silhouetteChecks": [
+    {
+      "view": "front",
+      "alphaGreater16MainComponentPixelsRetained": 220762,
+      "neighbourComponentPixelsIncluded": 0
+    },
+    {
+      "view": "back",
+      "alphaGreater16MainComponentPixelsRetained": 215056,
+      "neighbourComponentPixelsIncluded": 0
+    },
+    {
+      "view": "right",
+      "alphaGreater16MainComponentPixelsRetained": 148041,
+      "neighbourComponentPixelsIncluded": 0
+    },
+    {
+      "view": "left",
+      "alphaGreater16MainComponentPixelsRetained": 151566,
+      "neighbourComponentPixelsIncluded": 0
+    }
+  ]
+}

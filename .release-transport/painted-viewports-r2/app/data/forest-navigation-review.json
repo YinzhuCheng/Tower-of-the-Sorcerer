@@ -1,0 +1,14 @@
+{
+ "status":"approved-local-movement",
+ "scope":"named-path-only REVIEW, no arbitrary click/free keyboard walking",
+ "geometry":"r0.5.1-independent-reviewed-local-CANDIDATE",
+ "source":"b-painted-navigation-reviewed/geometry/local-navigation-r05-reviewed-candidate.json",
+ "sourceSha256":"a039a737f3676e80c5eb5200a0336e85744433a879c6850d3cce180e01bbea7b",
+ "adapterSource":"b-painted-navigation-reviewed/src/painted-path-review.js",
+ "routes":["root-to-tool","tool-to-root","west-to-tool"],
+ "metricReview":"PASS for frozen conservative body radius .32m and allowed route contracts",
+ "paintedPixelReview":"INCONCLUSIVE: full-domain edge spill; route footprint fits only including declared manual-mask uncertainty",
+ "treadAndOcclusionReview":"INCONCLUSIVE: physical disc is not a boot contact, no visual masking acceptance",
+ "gameState":"fixed review fixture only; no live rules, combat, inventory or story access",
+ "freeRoam":false
+}

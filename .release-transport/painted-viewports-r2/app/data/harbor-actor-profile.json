@@ -1,0 +1,8 @@
+{
+  "id": "C-person-footprint-r018",
+  "radius": 0.18,
+  "maxStep": 0.2,
+  "allowedModes": [
+    "person"
+  ]
+}

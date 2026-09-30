@@ -1,0 +1,542 @@
+{
+  "old_street": {
+    "position": {
+      "cellId": "old_public.cell.0",
+      "surfaceId": "old_public",
+      "x": -11,
+      "y": 25.2
+    },
+    "physical": {
+      "X": -11,
+      "Y": 1.2,
+      "Z": -25.2,
+      "cellId": "old_public.cell.0",
+      "surfaceId": "old_public"
+    },
+    "projection": {
+      "geometryPixel1680": [
+        -154.5886012684822,
+        393.98202943696595
+      ],
+      "artPixelAspectFit": [
+        -145.93900095941234,
+        372.31279683751666
+      ],
+      "legacyExpectedArtPixel": [
+        -145.93900095941234,
+        372.2192125728288
+      ],
+      "mapping": "uniform scale1586/1680, content1586x991.25 centered y+.375 in1586x992; expected geometry, uncalibrated art"
+    }
+  },
+  "west_stairs_low": {
+    "position": {
+      "cellId": "west_lower_flight.cell.19",
+      "surfaceId": "west_lower_flight",
+      "x": -8.7,
+      "y": 24
+    },
+    "physical": {
+      "X": -8.7,
+      "Y": 0.9000000000000004,
+      "Z": -24,
+      "cellId": "west_lower_flight.cell.19",
+      "surfaceId": "west_lower_flight"
+    },
+    "projection": {
+      "geometryPixel1680": [
+        -30.501575451077088,
+        402.83525159489926
+      ],
+      "artPixelAspectFit": [
+        -28.79493968179063,
+        380.6706601366132
+      ],
+      "legacyExpectedArtPixel": [
+        -28.79493968179063,
+        380.5833996020382
+      ],
+      "mapping": "uniform scale1586/1680, content1586x991.25 centered y+.375 in1586x992; expected geometry, uncalibrated art"
+    }
+  },
+  "west_stairs_turn": {
+    "position": {
+      "cellId": "west_middle.cell.20",
+      "surfaceId": "west_middle",
+      "x": -8.7,
+      "y": 19.3
+    },
+    "physical": {
+      "X": -8.7,
+      "Y": 2.9,
+      "Z": -19.3,
+      "cellId": "west_middle.cell.20",
+      "surfaceId": "west_middle"
+    },
+    "projection": {
+      "geometryPixel1680": [
+        90.20617406411111,
+        393.6037459343337
+      ],
+      "artPixelAspectFit": [
+        85.15892384861918,
+        371.95567919753165
+      ],
+      "legacyExpectedArtPixel": [
+        85.15892384861918,
+        371.86182473034194
+      ],
+      "mapping": "uniform scale1586/1680, content1586x991.25 centered y+.375 in1586x992; expected geometry, uncalibrated art"
+    }
+  },
+  "west_stairs_upper": {
+    "position": {
+      "cellId": "west_upper_flight.cell.21",
+      "surfaceId": "west_upper_flight",
+      "x": -8.7,
+      "y": 16.5
+    },
+    "physical": {
+      "X": -8.7,
+      "Y": 3.9499999999999993,
+      "Z": -16.5,
+      "cellId": "west_upper_flight.cell.21",
+      "surfaceId": "west_upper_flight"
+    },
+    "projection": {
+      "geometryPixel1680": [
+        162.11717377528703,
+        394.29610885887615
+      ],
+      "artPixelAspectFit": [
+        153.04633190928882,
+        372.60930276796284
+      ],
+      "legacyExpectedArtPixel": [
+        153.04633190928882,
+        372.5159428457192
+      ],
+      "mapping": "uniform scale1586/1680, content1586x991.25 centered y+.375 in1586x992; expected geometry, uncalibrated art"
+    }
+  },
+  "west_entry": {
+    "position": {
+      "cellId": "upper_public.cell.22",
+      "surfaceId": "upper_public",
+      "x": -8.7,
+      "y": 8.4
+    },
+    "physical": {
+      "X": -8.7,
+      "Y": 5,
+      "Z": -8.4,
+      "cellId": "upper_public.cell.22",
+      "surfaceId": "upper_public"
+    },
+    "projection": {
+      "geometryPixel1680": [
+        370.1454229397603,
+        483.2777590032635
+      ],
+      "artPixelAspectFit": [
+        349.43490522765467,
+        456.6122177256999
+      ],
+      "legacyExpectedArtPixel": [
+        349.43490522765467,
+        456.582416124988
+      ],
+      "mapping": "uniform scale1586/1680, content1586x991.25 centered y+.375 in1586x992; expected geometry, uncalibrated art"
+    }
+  },
+  "upper_bridge": {
+    "position": {
+      "cellId": "upper_public.cell.23",
+      "surfaceId": "upper_public",
+      "x": 5,
+      "y": 7.2
+    },
+    "physical": {
+      "X": 5,
+      "Y": 5,
+      "Z": -7.2,
+      "cellId": "upper_public.cell.23",
+      "surfaceId": "upper_public"
+    },
+    "projection": {
+      "geometryPixel1680": [
+        956.5174469004392,
+        358.72878338432497
+      ],
+      "artPixelAspectFit": [
+        902.998018323867,
+        339.0320538378211
+      ],
+      "legacyExpectedArtPixel": [
+        902.998018323867,
+        338.91328868309563
+      ],
+      "mapping": "uniform scale1586/1680, content1586x991.25 centered y+.375 in1586x992; expected geometry, uncalibrated art"
+    }
+  },
+  "east_junction": {
+    "position": {
+      "cellId": "upper_public.cell.23",
+      "surfaceId": "upper_public",
+      "x": 15,
+      "y": 7.2
+    },
+    "physical": {
+      "X": 15,
+      "Y": 5,
+      "Z": -7.2,
+      "cellId": "upper_public.cell.23",
+      "surfaceId": "upper_public"
+    },
+    "projection": {
+      "geometryPixel1680": [
+        1362.0306031664688,
+        253.22586154929013
+      ],
+      "artPixelAspectFit": [
+        1285.8217479892974,
+        239.43227167688937
+      ],
+      "legacyExpectedArtPixel": [
+        1285.8217479892974,
+        239.23814729228172
+      ],
+      "mapping": "uniform scale1586/1680, content1586x991.25 centered y+.375 in1586x992; expected geometry, uncalibrated art"
+    }
+  },
+  "east_highwalk": {
+    "position": {
+      "cellId": "upper_public.cell.24",
+      "surfaceId": "upper_public",
+      "x": 15,
+      "y": 0
+    },
+    "physical": {
+      "X": 15,
+      "Y": 5,
+      "Z": 0,
+      "cellId": "upper_public.cell.24",
+      "surfaceId": "upper_public"
+    },
+    "projection": {
+      "geometryPixel1680": [
+        1546.9446024237786,
+        373.16602531964554
+      ],
+      "artPixelAspectFit": [
+        1460.3893687167338,
+        352.6614977124749
+      ],
+      "legacyExpectedArtPixel": [
+        1460.3893687167338,
+        352.5530448734175
+      ],
+      "mapping": "uniform scale1586/1680, content1586x991.25 centered y+.375 in1586x992; expected geometry, uncalibrated art"
+    }
+  },
+  "east_top": {
+    "position": {
+      "cellId": "upper_public.cell.26",
+      "surfaceId": "upper_public",
+      "x": 13.1,
+      "y": -4.3
+    },
+    "physical": {
+      "X": 13.1,
+      "Y": 5,
+      "Z": 4.3,
+      "cellId": "upper_public.cell.26",
+      "surfaceId": "upper_public"
+    },
+    "projection": {
+      "geometryPixel1680": [
+        1580.3318522896816,
+        464.8425116089311
+      ],
+      "artPixelAspectFit": [
+        1491.9085224591875,
+        439.2084663165266
+      ],
+      "legacyExpectedArtPixel": [
+        1491.9085224591875,
+        439.1654966819616
+      ],
+      "mapping": "uniform scale1586/1680, content1586x991.25 centered y+.375 in1586x992; expected geometry, uncalibrated art"
+    }
+  },
+  "east_upper_stair": {
+    "position": {
+      "cellId": "east_upper_flight.cell.27",
+      "surfaceId": "east_upper_flight",
+      "x": 13.1,
+      "y": -2.1
+    },
+    "physical": {
+      "X": 13.1,
+      "Y": 4.1,
+      "Z": 2.1,
+      "cellId": "east_upper_flight.cell.27",
+      "surfaceId": "east_upper_flight"
+    },
+    "projection": {
+      "geometryPixel1680": [
+        1523.8303525166148,
+        467.5807288894522
+      ],
+      "artPixelAspectFit": [
+        1438.568416125804,
+        441.7934738206376
+      ],
+      "legacyExpectedArtPixel": [
+        1438.568416125804,
+        441.7524600555587
+      ],
+      "mapping": "uniform scale1586/1680, content1586x991.25 centered y+.375 in1586x992; expected geometry, uncalibrated art"
+    }
+  },
+  "east_turn": {
+    "position": {
+      "cellId": "east_middle.cell.28",
+      "surfaceId": "east_middle",
+      "x": 12.4,
+      "y": 0.8
+    },
+    "physical": {
+      "X": 12.4,
+      "Y": 2.9,
+      "Z": -0.8,
+      "cellId": "east_middle.cell.28",
+      "surfaceId": "east_middle"
+    },
+    "projection": {
+      "geometryPixel1680": [
+        1420.965181877132,
+        479.1721683279067
+      ],
+      "artPixelAspectFit": [
+        1341.4587967006732,
+        452.73634462384524
+      ],
+      "legacyExpectedArtPixel": [
+        1341.4587967006732,
+        452.70361045836523
+      ],
+      "mapping": "uniform scale1586/1680, content1586x991.25 centered y+.375 in1586x992; expected geometry, uncalibrated art"
+    }
+  },
+  "east_lower_stair": {
+    "position": {
+      "cellId": "east_lower_flight.cell.31",
+      "surfaceId": "east_lower_flight",
+      "x": 11.7,
+      "y": -2.1
+    },
+    "physical": {
+      "X": 11.7,
+      "Y": 1.825,
+      "Z": 2.1,
+      "cellId": "east_lower_flight.cell.31",
+      "surfaceId": "east_lower_flight"
+    },
+    "projection": {
+      "geometryPixel1680": [
+        1467.0585106393705,
+        581.9117118237591
+      ],
+      "artPixelAspectFit": [
+        1384.9730939726437,
+        549.727366043144
+      ],
+      "legacyExpectedArtPixel": [
+        1384.9730939726437,
+        549.7680172658753
+      ],
+      "mapping": "uniform scale1586/1680, content1586x991.25 centered y+.375 in1586x992; expected geometry, uncalibrated art"
+    }
+  },
+  "east_foot": {
+    "position": {
+      "cellId": "low_public.cell.13",
+      "surfaceId": "low_public",
+      "x": 11.7,
+      "y": -4.5
+    },
+    "physical": {
+      "X": 11.7,
+      "Y": 0.8,
+      "Z": 4.5,
+      "cellId": "low_public.cell.13",
+      "surfaceId": "low_public"
+    },
+    "projection": {
+      "geometryPixel1680": [
+        1528.6965103918071,
+        666.7487282707291
+      ],
+      "artPixelAspectFit": [
+        1443.1623008817894,
+        629.8175494270097
+      ],
+      "legacyExpectedArtPixel": [
+        1443.1623008817894,
+        629.9187985186317
+      ],
+      "mapping": "uniform scale1586/1680, content1586x991.25 centered y+.375 in1586x992; expected geometry, uncalibrated art"
+    }
+  },
+  "quay": {
+    "position": {
+      "cellId": "low_public.cell.12",
+      "surfaceId": "low_public",
+      "x": 4,
+      "y": -3
+    },
+    "physical": {
+      "X": 4,
+      "Y": 0.8,
+      "Z": 3,
+      "cellId": "low_public.cell.12",
+      "surfaceId": "low_public"
+    },
+    "projection": {
+      "geometryPixel1680": [
+        1177.9276302216913,
+        722.998443964882
+      ],
+      "artPixelAspectFit": [
+        1112.0197747211919,
+        682.9199596001803
+      ],
+      "legacyExpectedArtPixel": [
+        1112.0197747211919,
+        683.0613870601552
+      ],
+      "mapping": "uniform scale1586/1680, content1586x991.25 centered y+.375 in1586x992; expected geometry, uncalibrated art"
+    }
+  },
+  "quay_edge_north": {
+    "position": {
+      "cellId": "low_public.cell.12",
+      "surfaceId": "low_public",
+      "x": 2.5,
+      "y": 3.8
+    },
+    "physical": {
+      "X": 2.5,
+      "Y": 0.8,
+      "Z": -3.8,
+      "cellId": "low_public.cell.12",
+      "surfaceId": "low_public"
+    },
+    "projection": {
+      "geometryPixel1680": [
+        942.4596574832169,
+        625.5470609014681
+      ],
+      "artPixelAspectFit": [
+        889.7267956954655,
+        590.9212134462668
+      ],
+      "legacyExpectedArtPixel": [
+        889.7267956954655,
+        590.9930327754822
+      ],
+      "mapping": "uniform scale1586/1680, content1586x991.25 centered y+.375 in1586x992; expected geometry, uncalibrated art"
+    }
+  },
+  "quay_edge_south": {
+    "position": {
+      "cellId": "low_public.cell.18",
+      "surfaceId": "low_public",
+      "x": 2.5,
+      "y": -6.8
+    },
+    "physical": {
+      "X": 2.5,
+      "Y": 0.8,
+      "Z": 6.8,
+      "cellId": "low_public.cell.18",
+      "surfaceId": "low_public"
+    },
+    "projection": {
+      "geometryPixel1680": [
+        1214.6941563898115,
+        802.125635341158
+      ],
+      "artPixelAspectFit": [
+        1146.7291262108577,
+        757.6197962208789
+      ],
+      "legacyExpectedArtPixel": [
+        1146.7291262108577,
+        757.8177431032656
+      ],
+      "mapping": "uniform scale1586/1680, content1586x991.25 centered y+.375 in1586x992; expected geometry, uncalibrated art"
+    }
+  },
+  "under_bridge": {
+    "position": {
+      "cellId": "low_public.cell.10",
+      "surfaceId": "low_public",
+      "x": 5,
+      "y": 7.2
+    },
+    "physical": {
+      "X": 5,
+      "Y": 0.8,
+      "Z": -7.2,
+      "cellId": "low_public.cell.10",
+      "surfaceId": "low_public"
+    },
+    "projection": {
+      "geometryPixel1680": [
+        956.5174469004392,
+        542.5329197733748
+      ],
+      "artPixelAspectFit": [
+        902.998018323867,
+        512.5519111670075
+      ],
+      "legacyExpectedArtPixel": [
+        902.998018323867,
+        512.5644346811313
+      ],
+      "mapping": "uniform scale1586/1680, content1586x991.25 centered y+.375 in1586x992; expected geometry, uncalibrated art"
+    }
+  },
+  "low_door_front": {
+    "position": {
+      "cellId": "low_public.cell.7",
+      "surfaceId": "low_public",
+      "x": 7.5,
+      "y": 14.675
+    },
+    "physical": {
+      "X": 7.5,
+      "Y": 0.8,
+      "Z": -14.675,
+      "cellId": "low_public.cell.7",
+      "surfaceId": "low_public"
+    },
+    "projection": {
+      "geometryPixel1680": [
+        865.9190492380037,
+        391.6359776224763
+      ],
+      "artPixelAspectFit": [
+        817.4688167211153,
+        370.09801220788535
+      ],
+      "legacyExpectedArtPixel": [
+        817.4688167211153,
+        370.00275219190144
+      ],
+      "mapping": "uniform scale1586/1680, content1586x991.25 centered y+.375 in1586x992; expected geometry, uncalibrated art"
+    }
+  }
+}

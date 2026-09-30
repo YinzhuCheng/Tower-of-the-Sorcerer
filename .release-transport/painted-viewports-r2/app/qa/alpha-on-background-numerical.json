@@ -1,0 +1,633 @@
+{
+  "scope": "READ-ONLY NUMERICAL SOURCE-OVER SANITY; NOT BROWSER/SCREENSHOT/VISUAL QA",
+  "outputImagesCreated": 0,
+  "bitmapEdits": 0,
+  "result": "PASS: zero alpha leaves original backdrop unchanged, soft alpha is preserved in source-over",
+  "browserInterpolationAndHalos": "PENDING actual browser screenshots on real scenes",
+  "results": [
+    {
+      "scene": "forest",
+      "view": "front",
+      "originalBackgroundPixelsSampled": 455031,
+      "transparentSamplesUnchanged": 219261,
+      "softAlphaSourcePreserved": true,
+      "examples": [
+        {
+          "category": "empty",
+          "sourceXY": [
+            452,
+            486
+          ],
+          "sourceRGBA": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "actualBackgroundRGB": [
+            214,
+            192,
+            152
+          ],
+          "sourceOverRGB": [
+            214.0,
+            192.0,
+            152.0
+          ]
+        },
+        {
+          "category": "soft_edge",
+          "sourceXY": [
+            476,
+            504
+          ],
+          "sourceRGBA": [
+            0,
+            0,
+            0,
+            1
+          ],
+          "actualBackgroundRGB": [
+            136,
+            111,
+            91
+          ],
+          "sourceOverRGB": [
+            135.467,
+            110.565,
+            90.643
+          ]
+        },
+        {
+          "category": "body",
+          "sourceXY": [
+            302,
+            422
+          ],
+          "sourceRGBA": [
+            243,
+            234,
+            226,
+            253
+          ],
+          "actualBackgroundRGB": [
+            128,
+            120,
+            108
+          ],
+          "sourceOverRGB": [
+            242.098,
+            233.106,
+            225.075
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "forest",
+      "view": "back",
+      "originalBackgroundPixelsSampled": 417221,
+      "transparentSamplesUnchanged": 185682,
+      "softAlphaSourcePreserved": true,
+      "examples": [
+        {
+          "category": "empty",
+          "sourceXY": [
+            909,
+            468
+          ],
+          "sourceRGBA": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "actualBackgroundRGB": [
+            246,
+            229,
+            187
+          ],
+          "sourceOverRGB": [
+            246.0,
+            229.0,
+            187.0
+          ]
+        },
+        {
+          "category": "soft_edge",
+          "sourceXY": [
+            946,
+            491
+          ],
+          "sourceRGBA": [
+            0,
+            0,
+            0,
+            1
+          ],
+          "actualBackgroundRGB": [
+            129,
+            103,
+            85
+          ],
+          "sourceOverRGB": [
+            128.494,
+            102.596,
+            84.667
+          ]
+        },
+        {
+          "category": "body",
+          "sourceXY": [
+            842,
+            443
+          ],
+          "sourceRGBA": [
+            47,
+            51,
+            77,
+            252
+          ],
+          "actualBackgroundRGB": [
+            215,
+            186,
+            144
+          ],
+          "sourceOverRGB": [
+            48.976,
+            52.588,
+            77.788
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "forest",
+      "view": "right",
+      "originalBackgroundPixelsSampled": 331449,
+      "transparentSamplesUnchanged": 172791,
+      "softAlphaSourcePreserved": true,
+      "examples": [
+        {
+          "category": "empty",
+          "sourceXY": [
+            1354,
+            503
+          ],
+          "sourceRGBA": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "actualBackgroundRGB": [
+            131,
+            106,
+            82
+          ],
+          "sourceOverRGB": [
+            131.0,
+            106.0,
+            82.0
+          ]
+        },
+        {
+          "category": "soft_edge",
+          "sourceXY": [
+            1045,
+            455
+          ],
+          "sourceRGBA": [
+            127,
+            127,
+            255,
+            2
+          ],
+          "actualBackgroundRGB": [
+            252,
+            229,
+            179
+          ],
+          "sourceOverRGB": [
+            251.02,
+            228.2,
+            179.596
+          ]
+        },
+        {
+          "category": "body",
+          "sourceXY": [
+            1166,
+            404
+          ],
+          "sourceRGBA": [
+            59,
+            62,
+            86,
+            253
+          ],
+          "actualBackgroundRGB": [
+            70,
+            60,
+            54
+          ],
+          "sourceOverRGB": [
+            59.086,
+            61.984,
+            85.749
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "forest",
+      "view": "left",
+      "originalBackgroundPixelsSampled": 368992,
+      "transparentSamplesUnchanged": 207143,
+      "softAlphaSourcePreserved": true,
+      "examples": [
+        {
+          "category": "empty",
+          "sourceXY": [
+            1425,
+            511
+          ],
+          "sourceRGBA": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "actualBackgroundRGB": [
+            140,
+            122,
+            82
+          ],
+          "sourceOverRGB": [
+            140.0,
+            122.0,
+            82.0
+          ]
+        },
+        {
+          "category": "soft_edge",
+          "sourceXY": [
+            1744,
+            424
+          ],
+          "sourceRGBA": [
+            0,
+            0,
+            255,
+            1
+          ],
+          "actualBackgroundRGB": [
+            139,
+            121,
+            107
+          ],
+          "sourceOverRGB": [
+            138.455,
+            120.525,
+            107.58
+          ]
+        },
+        {
+          "category": "body",
+          "sourceXY": [
+            1663,
+            409
+          ],
+          "sourceRGBA": [
+            54,
+            91,
+            198,
+            253
+          ],
+          "actualBackgroundRGB": [
+            68,
+            54,
+            41
+          ],
+          "sourceOverRGB": [
+            54.11,
+            90.71,
+            196.769
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "harbor",
+      "view": "front",
+      "originalBackgroundPixelsSampled": 455031,
+      "transparentSamplesUnchanged": 219261,
+      "softAlphaSourcePreserved": true,
+      "examples": [
+        {
+          "category": "empty",
+          "sourceXY": [
+            452,
+            486
+          ],
+          "sourceRGBA": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "actualBackgroundRGB": [
+            186,
+            153,
+            128
+          ],
+          "sourceOverRGB": [
+            186.0,
+            153.0,
+            128.0
+          ]
+        },
+        {
+          "category": "soft_edge",
+          "sourceXY": [
+            476,
+            504
+          ],
+          "sourceRGBA": [
+            0,
+            0,
+            0,
+            1
+          ],
+          "actualBackgroundRGB": [
+            209,
+            176,
+            149
+          ],
+          "sourceOverRGB": [
+            208.18,
+            175.31,
+            148.416
+          ]
+        },
+        {
+          "category": "body",
+          "sourceXY": [
+            302,
+            422
+          ],
+          "sourceRGBA": [
+            243,
+            234,
+            226,
+            253
+          ],
+          "actualBackgroundRGB": [
+            194,
+            166,
+            145
+          ],
+          "sourceOverRGB": [
+            242.616,
+            233.467,
+            225.365
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "harbor",
+      "view": "back",
+      "originalBackgroundPixelsSampled": 417221,
+      "transparentSamplesUnchanged": 185682,
+      "softAlphaSourcePreserved": true,
+      "examples": [
+        {
+          "category": "empty",
+          "sourceXY": [
+            909,
+            468
+          ],
+          "sourceRGBA": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "actualBackgroundRGB": [
+            195,
+            163,
+            139
+          ],
+          "sourceOverRGB": [
+            195.0,
+            163.0,
+            139.0
+          ]
+        },
+        {
+          "category": "soft_edge",
+          "sourceXY": [
+            946,
+            491
+          ],
+          "sourceRGBA": [
+            0,
+            0,
+            0,
+            1
+          ],
+          "actualBackgroundRGB": [
+            186,
+            153,
+            130
+          ],
+          "sourceOverRGB": [
+            185.271,
+            152.4,
+            129.49
+          ]
+        },
+        {
+          "category": "body",
+          "sourceXY": [
+            842,
+            443
+          ],
+          "sourceRGBA": [
+            47,
+            51,
+            77,
+            252
+          ],
+          "actualBackgroundRGB": [
+            198,
+            167,
+            144
+          ],
+          "sourceOverRGB": [
+            48.776,
+            52.365,
+            77.788
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "harbor",
+      "view": "right",
+      "originalBackgroundPixelsSampled": 331449,
+      "transparentSamplesUnchanged": 172791,
+      "softAlphaSourcePreserved": true,
+      "examples": [
+        {
+          "category": "empty",
+          "sourceXY": [
+            1354,
+            503
+          ],
+          "sourceRGBA": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "actualBackgroundRGB": [
+            194,
+            161,
+            139
+          ],
+          "sourceOverRGB": [
+            194.0,
+            161.0,
+            139.0
+          ]
+        },
+        {
+          "category": "soft_edge",
+          "sourceXY": [
+            1045,
+            455
+          ],
+          "sourceRGBA": [
+            127,
+            127,
+            255,
+            2
+          ],
+          "actualBackgroundRGB": [
+            196,
+            167,
+            145
+          ],
+          "sourceOverRGB": [
+            195.459,
+            166.686,
+            145.863
+          ]
+        },
+        {
+          "category": "body",
+          "sourceXY": [
+            1166,
+            404
+          ],
+          "sourceRGBA": [
+            59,
+            62,
+            86,
+            253
+          ],
+          "actualBackgroundRGB": [
+            197,
+            167,
+            147
+          ],
+          "sourceOverRGB": [
+            60.082,
+            62.824,
+            86.478
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "harbor",
+      "view": "left",
+      "originalBackgroundPixelsSampled": 368992,
+      "transparentSamplesUnchanged": 207143,
+      "softAlphaSourcePreserved": true,
+      "examples": [
+        {
+          "category": "empty",
+          "sourceXY": [
+            1425,
+            511
+          ],
+          "sourceRGBA": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "actualBackgroundRGB": [
+            199,
+            167,
+            143
+          ],
+          "sourceOverRGB": [
+            199.0,
+            167.0,
+            143.0
+          ]
+        },
+        {
+          "category": "soft_edge",
+          "sourceXY": [
+            1744,
+            424
+          ],
+          "sourceRGBA": [
+            0,
+            0,
+            255,
+            1
+          ],
+          "actualBackgroundRGB": [
+            208,
+            177,
+            150
+          ],
+          "sourceOverRGB": [
+            207.184,
+            176.306,
+            150.412
+          ]
+        },
+        {
+          "category": "body",
+          "sourceXY": [
+            1663,
+            409
+          ],
+          "sourceRGBA": [
+            54,
+            91,
+            198,
+            253
+          ],
+          "actualBackgroundRGB": [
+            202,
+            171,
+            148
+          ],
+          "sourceOverRGB": [
+            55.161,
+            91.627,
+            197.608
+          ]
+        }
+      ]
+    }
+  ]
+}

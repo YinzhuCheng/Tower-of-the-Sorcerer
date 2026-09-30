@@ -1,0 +1,3 @@
+import fs from 'node:fs/promises';import path from 'node:path';import crypto from 'node:crypto';import {fileURLToPath} from 'node:url';
+const root=path.dirname(path.dirname(fileURLToPath(import.meta.url))),manifest=JSON.parse(await fs.readFile(path.join(root,'MANIFEST.json'),'utf8'));let count=0;
+for(const f of manifest.files){const p=path.resolve(root,f.path);if(!p.startsWith(root+path.sep))throw Error('INVALID_MANIFEST_PATH');const b=await fs.readFile(p);if(b.length!==f.bytes||crypto.createHash('sha256').update(b).digest('hex')!==f.sha256)throw Error('MANIFEST_MISMATCH:'+f.path);count++;}console.log(`Frozen manifest verified: ${count} files`);

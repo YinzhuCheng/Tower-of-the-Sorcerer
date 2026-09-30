@@ -1,0 +1,236 @@
+{
+  "package": "painted-scene-viewports-r2",
+  "version": "r2-frozen",
+  "frozenAtUTC": "2026-09-30T17:49:22.165097+00:00",
+  "supersedes": "r1",
+  "scope": "art-footing-review-only",
+  "plannedActualBrowserScreenshots": 98,
+  "browserScreenshotsProducedHere": 0,
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 5664,
+      "sha256": "7266abc03cca119f9913786760aa0982b524137f5d171815e2851ed35ad5f477"
+    },
+    {
+      "path": "adapters/forest-kernel/geometry.js",
+      "bytes": 7612,
+      "sha256": "f7cc43a2557f858812995531f74e025444bca0ccbc372fce19f5ed797c74816b"
+    },
+    {
+      "path": "adapters/forest-kernel/navigation.js",
+      "bytes": 22941,
+      "sha256": "2470af11efb775ad144eeacf5238611bc917c13e4f76e64b68d72ed523304fab"
+    },
+    {
+      "path": "adapters/forest-kernel/painted-path-review.js",
+      "bytes": 3334,
+      "sha256": "51637874bff27ce428d39ae4699693e83a1b164fe525bb7b3d01b4cfee733abc"
+    },
+    {
+      "path": "adapters/forest.mjs",
+      "bytes": 3326,
+      "sha256": "cec3a3bccb2ab25421a53b3e05f9cf71c3f477efe057bd6ce8a55bca8508019e"
+    },
+    {
+      "path": "adapters/harbor-kernel/source-adapter.mjs",
+      "bytes": 2485,
+      "sha256": "904a6da5468da76a412daf3fb3f2d0809a33d24a7b8d9bb6b6177d529cdaf19c"
+    },
+    {
+      "path": "adapters/harbor.mjs",
+      "bytes": 3480,
+      "sha256": "1733d444b7225def6f3b889ccaa22a57644afd6897156c9438420a370a005bd2"
+    },
+    {
+      "path": "adapters/kernel/geometry.js",
+      "bytes": 7612,
+      "sha256": "f7cc43a2557f858812995531f74e025444bca0ccbc372fce19f5ed797c74816b"
+    },
+    {
+      "path": "adapters/kernel/navigation.js",
+      "bytes": 22941,
+      "sha256": "2470af11efb775ad144eeacf5238611bc917c13e4f76e64b68d72ed523304fab"
+    },
+    {
+      "path": "assets/forest.png",
+      "bytes": 3269330,
+      "sha256": "9f4074fbaf51ea00b9035000b3b85460bde68b59f1afbe081dae5261007d9361"
+    },
+    {
+      "path": "assets/harbor.png",
+      "bytes": 2588197,
+      "sha256": "56960a4eaff62c09bd01c1781e693ac0b1af6e4c3145746cb66dab949f275818"
+    },
+    {
+      "path": "assets/hero.png",
+      "bytes": 1563479,
+      "sha256": "7782d68d752cd42e9e30ba389431a39f4b4b10d115f5f9073c9ecd223420834f"
+    },
+    {
+      "path": "data/forest-navigation-review.json",
+      "bytes": 938,
+      "sha256": "9ca9e465c140f28ec58d43b2ad83805454867fc7babc435d91bdc451f06b756f"
+    },
+    {
+      "path": "data/forest-reviewed-world.json",
+      "bytes": 16043,
+      "sha256": "a039a737f3676e80c5eb5200a0336e85744433a879c6850d3cce180e01bbea7b"
+    },
+    {
+      "path": "data/harbor-actor-profile.json",
+      "bytes": 112,
+      "sha256": "2848c02421aac116fff2e8f8727b6aa4b0dd7816e9fa2f97221b06274e6d1e58"
+    },
+    {
+      "path": "data/harbor-navigation-review.json",
+      "bytes": 989,
+      "sha256": "c35819d0a229b6da5e1c78c99899f0c8860f030176011ffb52e42c4d7b66e9d6"
+    },
+    {
+      "path": "data/harbor-painted-mask-contract.json",
+      "bytes": 964,
+      "sha256": "1dd7db1b961c009873a195d7c4abe8037cccb737c18d209c8aa62899753195a5"
+    },
+    {
+      "path": "data/harbor-reviewed-anchors.json",
+      "bytes": 13307,
+      "sha256": "8a2522ee1c3eb405fe1c053936c3ca89c78c4ae4bf90db5dd8640a4ee68b58c2"
+    },
+    {
+      "path": "data/harbor-reviewed-world.json",
+      "bytes": 52629,
+      "sha256": "00fb819ad5227cdccdf1baa1de366678a9be9fc2a4da960d4a38ba5690a615a6"
+    },
+    {
+      "path": "data/hero-views.json",
+      "bytes": 5701,
+      "sha256": "11f7aa117e95f4972b17ead89e29f627b523835270962ca9b2f1183cbda822be"
+    },
+    {
+      "path": "index.html",
+      "bytes": 3561,
+      "sha256": "42796b2fb01ea837d71bb29d384e7e8e4ed8ed9bc21c01b303ed0379311ce766"
+    },
+    {
+      "path": "package.json",
+      "bytes": 440,
+      "sha256": "fa65f52346aa25d38445aac6b0a4b73cc01aca971da7006cef93f26f094b1cb5"
+    },
+    {
+      "path": "qa/FROZEN_PACKAGE.md",
+      "bytes": 3202,
+      "sha256": "657b085fdbfc40ab9b02a3101741948de51c2df2fb8ff5cd7afd219d3cf13a36"
+    },
+    {
+      "path": "qa/PLAYWRIGHT_SCREENSHOT_PLAN.md",
+      "bytes": 5316,
+      "sha256": "89eb5a56aa8fd2eaf20ee75d7a946def3dd632e37ec8712f2467d1e97694b80c"
+    },
+    {
+      "path": "qa/alpha-on-background-numerical.json",
+      "bytes": 12238,
+      "sha256": "80355d3a092296ba9cba06f6ab8ec971e946866abe4e89a25bcd8eaa83550990"
+    },
+    {
+      "path": "qa/dependency-provenance.json",
+      "bytes": 1552,
+      "sha256": "1f9b0084d542a1dbdccc6c9e70f75d5817af4b90365711b34bd4a09046c4290b"
+    },
+    {
+      "path": "qa/source-audit.log",
+      "bytes": 1776,
+      "sha256": "33541b4f7f7c2b1d3bf4c91f0488e821aec6742981885a71abbf369eb2c628f9"
+    },
+    {
+      "path": "qa/source-integrity.json",
+      "bytes": 1083,
+      "sha256": "cd031e8a61667a1d4a433ac8ce7dd2c0496c8b1caa046b9d3a751e04f258d1f7"
+    },
+    {
+      "path": "qa/unit-tests.log",
+      "bytes": 3666,
+      "sha256": "652dd1123c155d7499f1a661a14e6d2864ac42e089c760cd6331e79ff22fc28a"
+    },
+    {
+      "path": "qa/verification.json",
+      "bytes": 422,
+      "sha256": "a2b9afa54fabafb3e1d769d273b3cd98e4f780e6c7b62ac34f1090425a631dfc"
+    },
+    {
+      "path": "qa/verify.log",
+      "bytes": 4086,
+      "sha256": "8f121e6801b955582a8145b2ab94daa6e74d9ceed69eb437fecde9bc59be4bc4"
+    },
+    {
+      "path": "scripts/audit-alpha-on-background.py",
+      "bytes": 2754,
+      "sha256": "d789ce0fc6c219c9013956a50c3ab1ab5caad161433132546a928a4a84aaf4c2"
+    },
+    {
+      "path": "scripts/audit-source-assets.py",
+      "bytes": 5683,
+      "sha256": "05ff1927f21cfaeb511c1bfc31d10be66ad7a085b13e9bbc7828937562ab6718"
+    },
+    {
+      "path": "scripts/capture-playwright.mjs",
+      "bytes": 10598,
+      "sha256": "31a1a70103b7a8d7c5297e3c3eb41a82837ad5ca4bd6192429f6c364aaf86c05"
+    },
+    {
+      "path": "scripts/check-manifest.mjs",
+      "bytes": 654,
+      "sha256": "9842146297a38852b26186df1793fe5e1abba5a176853babb78ce190128991a4"
+    },
+    {
+      "path": "scripts/serve.mjs",
+      "bytes": 1383,
+      "sha256": "37b1a7cb8041cd0e70d59cca4f9c2e76c3674d0ea5ab74bf9f519ad6294a6f48"
+    },
+    {
+      "path": "scripts/verify.mjs",
+      "bytes": 1600,
+      "sha256": "6af80f5772bff761a6a3c6731f7c1c174aabd17d5f78bb6240e641f2c0e9b4a6"
+    },
+    {
+      "path": "src/app.mjs",
+      "bytes": 15325,
+      "sha256": "a73a4cdcfa56f204aa071b31b0f5189048c81cb2786c27ad3749880846cf3ce5"
+    },
+    {
+      "path": "src/core.mjs",
+      "bytes": 4408,
+      "sha256": "33b9bb19a6d3f91219b91c84e7fbc8cf6c8b1dc7aa076d6a2374a95a6c7b17a5"
+    },
+    {
+      "path": "src/navigation.mjs",
+      "bytes": 871,
+      "sha256": "08f5abb81ec0d8f8e40129a92099f2beea33fb636e0f2bc9d2d742d5815bf95d"
+    },
+    {
+      "path": "src/render.mjs",
+      "bytes": 904,
+      "sha256": "a5846464c0439f492bcaa2f1885fd493dc862cd1e8c1f01f96aa82cd96ff9e46"
+    },
+    {
+      "path": "src/scenes.mjs",
+      "bytes": 2468,
+      "sha256": "fd4975138dfb466b401fe6fb17f8d88662eefdf964733deb1c75699df4d0a523"
+    },
+    {
+      "path": "styles.css",
+      "bytes": 6251,
+      "sha256": "0981aaa82f4e2baa1afeacaf602fc635bef76ff3200e43d91f265e3e29d4e1cd"
+    },
+    {
+      "path": "tests/core.test.mjs",
+      "bytes": 5730,
+      "sha256": "cb7111d778ad7031250062e8e97f581e2dd8586dfbd9f4c32c6017d6c05d2d3d"
+    },
+    {
+      "path": "tests/navigation.test.mjs",
+      "bytes": 4628,
+      "sha256": "c6e4cbe1674c9c545b7edcaa9f5eff9264164ae9fd86f0a6781b1dd2edf09775"
+    }
+  ]
+}

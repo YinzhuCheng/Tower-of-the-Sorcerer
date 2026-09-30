@@ -1,32 +1,62 @@
-name: Reconstruct reviewed art transport
+name: Reconstruct and review painted scene assets
 on:
   push:
     branches: [transport/reviewed-art-20260930]
-    paths: [.release-transport/materials-r1/READY]
+    paths: [.release-transport/painted-viewports-r2/READY]
 permissions:
   contents: write
 concurrency:
   group: reviewed-art-transport-20260930
   cancel-in-progress: false
 jobs:
-  reconstruct:
+  reconstruct-and-review:
     if: github.actor != 'github-actions[bot]'
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Verify approved texture manifest
-        run: echo "0df9f20563579d5c0aeb5ea9363f22ea0b75739c6e5dc002202e1136acc4a27a  .release-transport/materials-r1/manifest.json" | sha256sum --check --strict
+      - name: Verify exact bounded transport inputs
+        run: |
+          echo '60db00981ee8e55681ae1a929cf9b99dba4681bb3d4f5aa9dbab7c0fe3569d4d  .release-transport/painted-viewports-r2/manifest.json' | sha256sum --check --strict
+          echo '0375e7518598d1f144d7de200fd8c67d4a31ffa415276611c8021a6a24f1d989  .release-transport/painted-viewports-r2/retain-and-prepare.py' | sha256sum --check --strict
       - name: Install pinned complete-image decoder
         run: python -m pip install Pillow==12.3.0
-      - name: Verify and retain six ordinary texture blobs
+      - name: Decode original art and retain ordinary blobs only on temporary branch
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          python .release-transport/materials-r1/retain.py
-          echo "Six preview texture blobs decoded and checksum-verified. Main and workflow subtree unchanged." >> "$GITHUB_STEP_SUMMARY"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          python .release-transport/painted-viewports-r2/retain-and-prepare.py
+      - name: Test the frozen self-contained viewport
+        working-directory: .release-transport/painted-viewports-r2/app
+        run: npm test
+      - name: Check official Chrome and install Chinese fonts
+        run: |
+          google-chrome --version
+          sudo apt-get update
+          sudo apt-get install --yes fonts-noto-cjk
+      - name: Install integrity-pinned official Playwright core without install scripts
+        run: npm ci --ignore-scripts --prefix .release-transport/painted-viewports-r2/tooling
+      - name: Capture actual desktop and narrow viewports with normal sandbox
+        working-directory: .release-transport/painted-viewports-r2/app
+        env:
+          REVIEW_BROWSER_CI: '1'
+        run: |
+          export PLAYWRIGHT_MODULE="$GITHUB_WORKSPACE/.release-transport/painted-viewports-r2/tooling/node_modules/playwright-core/index.mjs"
+          export CHROMIUM_EXECUTABLE="$(command -v google-chrome)"
+          node scripts/capture-playwright.mjs
+      - name: Retain real browser evidence including failures
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: painted-viewports-r2-${{ github.sha }}
+          path: .release-transport/painted-viewports-r2/app/qa/browser-evidence/
+          if-no-files-found: warn
+          retention-days: 14

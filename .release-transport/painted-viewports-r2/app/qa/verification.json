@@ -1,0 +1,10 @@
+{
+  "atUTC": "2026-09-30T17:49:22.051Z",
+  "sourceHashes": "PASS; unchanged accepted originals",
+  "jsSyntax": "PASS",
+  "nodeTests": "PASS",
+  "browserRuntime": "PENDING: no safe Chromium runtime available in this environment",
+  "browserScreenshots": "PENDING: run scripts/capture-playwright.mjs in official CI",
+  "visualApproval": false,
+  "scope": "Isolated art/footing review; no publication or core-game changes"
+}

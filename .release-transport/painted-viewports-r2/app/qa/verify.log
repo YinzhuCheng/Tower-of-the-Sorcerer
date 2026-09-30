@@ -1,0 +1,61 @@
+
+> painted-scene-viewports@0.2.0-art-footing-review-r2 verify
+> node scripts/verify.mjs
+
+✔ original forest bytes retain the accepted SHA-256 (5.056749ms)
+✔ original harbor bytes retain the accepted SHA-256 (3.083364ms)
+✔ original hero bytes retain the accepted SHA-256 (1.95672ms)
+✔ B physical adult is exactly 68px in original registration (0.272583ms)
+✔ C preserves art aspect with 0.375px letterbox mapping, not a nonuniform stretch (0.184329ms)
+✔ C projected adult size comes from the 35m physical camera, not an arbitrary 88px sprite (0.139631ms)
+✔ forest 1180x664 frame: uniform scaling and invertible coordinates (0.304381ms)
+✔ forest 1180x664 native: uniform scaling and invertible coordinates (0.115655ms)
+✔ harbor 1180x664 frame: uniform scaling and invertible coordinates (0.113252ms)
+✔ harbor 1180x664 native: uniform scaling and invertible coordinates (0.472935ms)
+✔ forest 390x701 frame: uniform scaling and invertible coordinates (0.195315ms)
+✔ forest 390x701 native: uniform scaling and invertible coordinates (0.07876ms)
+✔ harbor 390x701 frame: uniform scaling and invertible coordinates (0.101854ms)
+✔ harbor 390x701 native: uniform scaling and invertible coordinates (0.829605ms)
+✔ front: uniform height normalization and exact foot pivot (0.201354ms)
+✔ back: uniform height normalization and exact foot pivot (0.087112ms)
+✔ right: uniform height normalization and exact foot pivot (0.035935ms)
+✔ left: uniform height normalization and exact foot pivot (0.53899ms)
+✔ back/right use a semantic winding separator instead of a single vertical cut (0.115334ms)
+✔ renderer clips semantic SOURCE coordinates and samples the original RGBA without crop/mirror/alpha cleanup (0.838698ms)
+✔ occlusion is surface-qualified and disabled unless explicitly enabled; no global Y sort (0.170859ms)
+✔ overlapping pixels cannot silently resolve different support levels (0.156346ms)
+✔ movement uses bounded reviewed advance even after a 20-second frame gap (0.15165ms)
+✔ facing names are screen-relative and never mirror character identity (0.095395ms)
+✔ all depth-critical harbor anchors carry an explicit unverified warning (0.215216ms)
+✔ B freezes the independently reviewed geometry hash and only fixed QA flags (1.83751ms)
+✔ B root → bay: original locked adapter traverses with bounded positions, no events or snap (36.379858ms)
+✔ B bay → root: original locked adapter traverses with bounded positions, no events or snap (14.526582ms)
+✔ B upper → bay: original locked adapter traverses with bounded positions, no events or snap (12.129777ms)
+✔ B arbitrary pixel clicks, unsupported direction and mid-route replacement fail closed (10.552842ms)
+✔ C exact frozen world, anchors and original pure adapter bytes are retained (0.386815ms)
+✔ C quay → bridge: explicit surface-qualified route, bounded advance (116.657619ms)
+✔ C bridge → quay: explicit surface-qualified route, bounded advance (93.862819ms)
+✔ C quay → underbridge: explicit surface-qualified route, bounded advance (78.411573ms)
+✔ C east_foot → east-top: explicit surface-qualified route, bounded advance (78.5353ms)
+✔ C east-top → east_foot: explicit surface-qualified route, bounded advance (78.099662ms)
+✔ C door → bridge: explicit surface-qualified route, bounded advance (80.456687ms)
+✔ C bridge/lower level identity is retained and no arbitrary painted pixel is a target (76.432229ms)
+✔ C same-screen upper/lower fixture remains ambiguous and never switches floors (77.817165ms)
+ℹ tests 39
+ℹ suites 0
+ℹ pass 39
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 849.479421
+{
+  "atUTC": "2026-09-30T17:49:22.051Z",
+  "sourceHashes": "PASS; unchanged accepted originals",
+  "jsSyntax": "PASS",
+  "nodeTests": "PASS",
+  "browserRuntime": "PENDING: no safe Chromium runtime available in this environment",
+  "browserScreenshots": "PENDING: run scripts/capture-playwright.mjs in official CI",
+  "visualApproval": false,
+  "scope": "Isolated art/footing review; no publication or core-game changes"
+}
