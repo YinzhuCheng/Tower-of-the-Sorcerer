@@ -1,0 +1,17 @@
+{
+  "version": "1.2",
+  "status": "next-development-art-baseline",
+  "map": "map-space-contract-v1.2.json",
+  "world": "world-schematic-v1.2.json",
+  "physical": "vessel-physical-geometry-v1.2.json",
+  "mesh": "vessel-hull-v1.2.obj",
+  "contract": "geometry-and-camera-contract-v1.2.md",
+  "runtimeIdentity": {
+    "campaignId": "voyage-c",
+    "difficultyId": "normal",
+    "contentVersion": "c-rules-prototype-v1.2-geometry",
+    "rulesVersion": "fixed-campaign-v1.1",
+    "contentHash": "c5a5f809d5548f36"
+  },
+  "frozenR3": "map-space-contract.json v1.1 / content f56a71f169fbe102 remains historical and unchanged"
+}

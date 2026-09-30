@@ -1,0 +1,429 @@
+{
+  "version": "1.2",
+  "status": "project-design schematic coordinates, not real-world navigation instructions",
+  "axes": {
+    "x": "east/right",
+    "y": "south/down",
+    "unit": "schematic art unit; region contract uses 4 units/cell; not claimed source metres"
+  },
+  "region_transforms": {
+    "C-M01": {
+      "origin": [
+        24,
+        64
+      ],
+      "yaw_deg": 0,
+      "scale": 4
+    },
+    "C-M02": {
+      "origin": [
+        -26,
+        76
+      ],
+      "yaw_deg": 0,
+      "scale": 4
+    },
+    "C-M03": {
+      "origin": [
+        -16,
+        4
+      ],
+      "yaw_deg": 0,
+      "scale": 4
+    },
+    "C-M04": {
+      "origin": [
+        96,
+        48
+      ],
+      "yaw_deg": 180,
+      "scale": 4
+    },
+    "C-M05": {
+      "origin": [
+        74,
+        32
+      ],
+      "yaw_deg": 0,
+      "scale": 4
+    }
+  },
+  "transform_formula": "world = origin + R(yaw) * [4*x,4*y]; yaw180 rotates without mirroring. D01 uses current berth vessel pose and separate inset scale.",
+  "lights": {
+    "near": {
+      "position": [
+        60,
+        40
+      ],
+      "design_focal_height": 5,
+      "mapped_landmarks": {
+        "C-M01": [
+          9,
+          -6
+        ],
+        "C-M04": [
+          9,
+          2
+        ]
+      },
+      "state": "steadily-on all night; not blinking signals",
+      "structure": "one lighthouse with front and rear views, never duplicate two near lights"
+    },
+    "far": {
+      "position": [
+        110,
+        40
+      ],
+      "design_focal_height": 8,
+      "mapped_landmarks": {
+        "C-M05": [
+          9,
+          2
+        ]
+      },
+      "state": "off until c18 then steady; low stone lantern room",
+      "height_note": "Design light heights relative to water reference, not tower staircase count. Raise plinth modestly if needed; cargo access remains short ramp, no high stair carry."
+    }
+  },
+  "navigation_alignment": {
+    "axis": [
+      [
+        60,
+        40
+      ],
+      [
+        110,
+        40
+      ]
+    ],
+    "approach_ray": [
+      [
+        -70,
+        40
+      ],
+      [
+        35,
+        40
+      ]
+    ],
+    "narrow_corridor": [
+      [
+        -30,
+        35
+      ],
+      [
+        25,
+        35
+      ],
+      [
+        25,
+        45
+      ],
+      [
+        -30,
+        45
+      ]
+    ],
+    "turning_basin": [
+      35,
+      40
+    ],
+    "meaning": "On designated inner-harbor approach, near lower light and farther higher light align. Vessels turn within inner basin before near-light land. This is not a route into the far-light island or outer sea.",
+    "sideview_rule": "A side/off-axis final shot shows two separate beacons at distinct positions. Do not shift their world coordinates merely to make two glows visible."
+  },
+  "berths": {
+    "C-M01": [
+      44,
+      84
+    ],
+    "C-M02": [
+      -6,
+      96
+    ],
+    "C-M03": [
+      4,
+      24
+    ],
+    "C-M04": [
+      76,
+      28
+    ],
+    "C-M05": [
+      94,
+      52
+    ]
+  },
+  "voyage_paths": [
+    {
+      "id": "E12",
+      "polyline": [
+        [
+          44,
+          84
+        ],
+        [
+          24,
+          106
+        ],
+        [
+          -6,
+          96
+        ]
+      ]
+    },
+    {
+      "id": "E23-short",
+      "polyline": [
+        [
+          -6,
+          96
+        ],
+        [
+          -22,
+          75
+        ],
+        [
+          -23,
+          30
+        ],
+        [
+          4,
+          24
+        ]
+      ]
+    },
+    {
+      "id": "E23-detour",
+      "polyline": [
+        [
+          -6,
+          96
+        ],
+        [
+          -36,
+          88
+        ],
+        [
+          -39,
+          26
+        ],
+        [
+          4,
+          24
+        ]
+      ]
+    },
+    {
+      "id": "E34-short",
+      "polyline": [
+        [
+          4,
+          24
+        ],
+        [
+          2,
+          8
+        ],
+        [
+          8,
+          4
+        ],
+        [
+          32,
+          -5
+        ],
+        [
+          57,
+          2
+        ],
+        [
+          76,
+          28
+        ]
+      ],
+      "gate_first": true
+    },
+    {
+      "id": "E34-detour",
+      "polyline": [
+        [
+          4,
+          24
+        ],
+        [
+          2,
+          8
+        ],
+        [
+          -8,
+          4
+        ],
+        [
+          14,
+          -13
+        ],
+        [
+          55,
+          -10
+        ],
+        [
+          76,
+          28
+        ]
+      ],
+      "gate_first": true
+    },
+    {
+      "id": "E45-fixed-inner-bend",
+      "polyline": [
+        [
+          76,
+          28
+        ],
+        [
+          85,
+          20
+        ],
+        [
+          91,
+          38
+        ],
+        [
+          94,
+          52
+        ]
+      ]
+    }
+  ],
+  "blocked_loading_branch": {
+    "polyline": [
+      [
+        44,
+        84
+      ],
+      [
+        73,
+        91
+      ],
+      [
+        102,
+        79
+      ],
+      [
+        94,
+        52
+      ]
+    ],
+    "obstacle_center": [
+      81,
+      87
+    ],
+    "obstacles": [
+      "disabled cargo barge",
+      "dragging tow cables"
+    ],
+    "night_state": "blocked",
+    "morning_state": "harbor tug clears before empty-ferry pickup",
+    "distinct_from": "navigation_alignment.narrow_corridor"
+  },
+  "personnel_path": {
+    "from_front_map": [
+      9,
+      2
+    ],
+    "to_rear_map": [
+      9,
+      2
+    ],
+    "polyline": [
+      [
+        60,
+        72
+      ],
+      [
+        60,
+        68
+      ],
+      [
+        56,
+        64
+      ],
+      [
+        60,
+        60
+      ],
+      [
+        60,
+        52
+      ],
+      [
+        60,
+        40
+      ]
+    ],
+    "features": [
+      "narrow staircase",
+      "two sharp bends",
+      "no cargo-clear width",
+      "no heavy-box loading zone at rear berth"
+    ],
+    "mode": "staff walk only; no resource/map reset"
+  },
+  "tidal_creek": {
+    "bank_gap_reference": [
+      [
+        78,
+        14
+      ],
+      [
+        88,
+        14
+      ],
+      [
+        90,
+        74
+      ],
+      [
+        77,
+        74
+      ]
+    ],
+    "far_light_side": "east",
+    "bridge": false,
+    "note": "M04 and M05 have navigable water connection only; no visible boardwalk across creek"
+  },
+  "outer_sea": {
+    "south_of_y": 145,
+    "breakwater_y": 135,
+    "state_all_variants": "closed",
+    "visible_sign": "render via reliable UI/post-typesetting; do not ask image model for readable writing"
+  },
+  "holding_area": {
+    "position": [
+      -56,
+      63
+    ],
+    "state_until_c18": "safe small craft held behind rope",
+    "state_after_c18": "first internal ferry released after both steady lights checked"
+  },
+  "occlusion_constraints": [
+    "No high warehouse on M03→near-light sightline",
+    "No high warehouse on E45→near-light sightline",
+    "Near/far light sightline must remain open along y40",
+    "Near personnel path cannot be painted as cargo road",
+    "Island gap remains water in all backgrounds"
+  ],
+  "source_vs_design": {
+    "source_facts": "Topology, route restrictions, identity, tasks, cargo path and beacon purpose from v1.1",
+    "provisional_design": "All numeric coordinates, light heights, camera placement, material palette and shoreline contour"
+  },
+  "supersedes": "world-schematic.json version1.0; world layout is unchanged",
+  "vessel_geometry": "vessel-physical-geometry-v1.2.json",
+  "vessel_transform_formula": "Right-handed boat [X starboard,Y up,Z stern] -> berth=[5+X,5.5+Z] -> schematic [east,south]=origin+R(yaw)*(scale*berth) -> right-handed 3D [east,scale*Y,south]. Determinant +scale^3. Never reflect either axis.",
+  "vessel_pose_rule": "Use current boat.dock. D01 inherits that exact pose and changes camera only. M04 yaw=180, determinant positive (rotation), never mirror.",
+  "world3d_axes": {
+    "X": "east",
+    "Y": "up",
+    "Z": "south; right-handed frame"
+  }
+}
