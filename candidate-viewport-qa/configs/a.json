@@ -1,0 +1,14 @@
+{
+  "id": "a",
+  "branch": "candidate/a-tower-rewrite",
+  "adapter": "a",
+  "packageRoot": ".",
+  "build": [
+    [
+      "node",
+      "scripts/build.mjs"
+    ]
+  ],
+  "outputDirectory": "dist",
+  "startPath": "/"
+}

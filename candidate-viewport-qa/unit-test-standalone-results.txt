@@ -1,0 +1,30 @@
+✔ all four configs specify package, output, branch and entry without guessing B/C paths (5.859378ms)
+✔ reject unsafe config paths, remote URLs, unrecognized adapters and flags (0.631325ms)
+✔ browser capture is refused outside actual explicit CI mode (0.301166ms)
+✔ Chrome flags preserve sandbox, normal GPU, security and scrollbars (0.888373ms)
+✔ path helper blocks traversal and server root escapes (4.54447ms)
+✔ A opening is observable before any canvas and never called map-ready (1.292534ms)
+✔ A readiness retains real autosave, finished asset loading and interactive shell (6.944459ms)
+✔ B and C autosave are identity-scoped and do not need A floorStates (1.099703ms)
+✔ wrong or missing campaign save cannot pass map readiness (1.070799ms)
+✔ visible B/C modal blocks movement readiness (0.523772ms)
+✔ C3D reports pending renderer rather than accepting fallback too early (4.691152ms)
+✔ C3D genuine WebGL2 failure is labeled 2D fallback (0.60229ms)
+✔ C3D WebGL2 label requires live visible 3D canvas and app renderer report (0.414347ms)
+✔ one move must be one adjacent cell, same region, without victory (0.27153ms)
+✔ PNG check verifies exact viewport pixel dimensions, not full page (0.345302ms)
+✔ serialized read-only observation compiles without page mutation methods (0.888253ms)
+✔ workflow stays on exactly one candidate branch and uses read-only checkout (0.329028ms)
+✔ source-derived C-M01 initial grid fallback reads only the isolated prototype save (6.514509ms)
+✔ an ordinary C save cannot masquerade as the C3D prototype autosave (0.389479ms)
+✔ grid fallback requires actual signal, hook view, complete grid, and hidden real canvases (2.71878ms)
+✔ continuous sample fallback requires its own visible map canvas and 121 cells (0.407566ms)
+﹣ when C3D package is present, its actual source and projection still match the fixture (2.099685ms) # C3D package absent on this candidate branch; source-derived fixture tests above still run
+ℹ tests 22
+ℹ suites 0
+ℹ pass 21
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 1
+ℹ todo 0
+ℹ duration_ms 376.164736
