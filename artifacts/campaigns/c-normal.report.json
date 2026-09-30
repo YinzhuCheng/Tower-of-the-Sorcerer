@@ -1,0 +1,108 @@
+{
+  "identity": {
+    "campaignId": "voyage-c",
+    "difficultyId": "normal",
+    "contentVersion": "c-rules-prototype-v1",
+    "rulesVersion": "fixed-campaign-v1",
+    "contentHash": "503add446805437d"
+  },
+  "status": "witness_verified",
+  "coverage": "complete-macro",
+  "claim": "No uniqueness or optimality claim",
+  "expanded": 40,
+  "generated": 240,
+  "stoppedReason": "goalFound",
+  "actions": 162,
+  "final": {
+    "identity": {
+      "campaignId": "voyage-c",
+      "difficultyId": "normal",
+      "contentVersion": "c-rules-prototype-v1",
+      "rulesVersion": "fixed-campaign-v1",
+      "contentHash": "503add446805437d"
+    },
+    "revision": 162,
+    "location": {
+      "regionId": "C-M05",
+      "x": 8,
+      "y": 3
+    },
+    "stats": {
+      "hp": 29,
+      "maxHp": 72,
+      "atk": 14,
+      "def": 10,
+      "gold": 9
+    },
+    "resources": {
+      "fuel": 1
+    },
+    "flags": {
+      "c.lampOil": false,
+      "c.manifest": true,
+      "c.crewReady": true,
+      "c.moored2": true,
+      "c.bolts": false,
+      "c.route1": "short",
+      "c.moored3": true,
+      "c.shoreLock": true,
+      "c.barrierOpen": true,
+      "c.route2": "short",
+      "c.moored4": true,
+      "c.handover": true,
+      "c.nearLampStaffed": true,
+      "c.ferryStaffed": true,
+      "c.moored5": true,
+      "c.cargoAshore": true,
+      "c.craneStowed": true,
+      "c.emptyShipSecured": true,
+      "c.cargoAtLamp": true,
+      "c.lampInstalled": true,
+      "c.bothLamps": true,
+      "c.farLampStaffed": true
+    },
+    "cleared": [
+      "c.bandage",
+      "c.centerCargo",
+      "c.coat",
+      "c.departureBrief",
+      "c.handover",
+      "c.installLamp",
+      "c.machine1",
+      "c.machine2",
+      "c.manifest",
+      "c.moor2",
+      "c.moor3",
+      "c.moor4",
+      "c.moor5",
+      "c.openBarrier",
+      "c.rollCargo",
+      "c.shiftLeft",
+      "c.shiftRight",
+      "c.shoreLock",
+      "c.signal",
+      "c.stow",
+      "c.supplies",
+      "c.unload"
+    ],
+    "visited": [
+      "C-M01",
+      "C-D01",
+      "C-M02",
+      "C-M03",
+      "C-M04",
+      "C-M05"
+    ],
+    "boat": {
+      "dock": "C-M05",
+      "moored": true,
+      "cargo": "ashore",
+      "positions": {
+        "w1": "R1",
+        "w2": "L2",
+        "w3": "C1"
+      }
+    },
+    "victory": true
+  }
+}
