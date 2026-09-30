@@ -81,3 +81,12 @@ The scene redraws on accepted state changes, resize, or label/view changes, not 
 The on-screen diagnostics show draw calls, triangles, texture/geometries counts and **CPU command-submission time only**, explicitly not GPU frame time. The ready static build is ~4.1 MiB uncompressed (Three modules ~2.0 MiB); no estimate is a measured mobile performance result. Suggested go/no-go: no more than ~250 draw calls or 60k triangles for these samples, no growing GPU resource counts after repeated refresh/view changes, input remains responsive, median post-input visual response <100 ms and p95 <200 ms on target mobile hardware. Measure actual transfer/gzip, first ready time and context-loss fallback in Vercel QA.
 
 If WebGL support, input precision, camera framing, rope/rail occlusion or performance fail, retain 2D and do not promote this view.
+
+
+## Narrow viewport correction v0.1.1 (2026-09-30)
+
+The first real cloud-browser check of deployment `a082c251183d8abbbc4c62db884e37ab4a607332` reported `WebGL2 unavailable`, correctly disabled 3D and kept 2D playable. The release owner actually moved M01 (7,7) → (6,7) and used the normal boarding action to D01, with HP60/60, ATK14, DEF8, gold8 and fuel9 unchanged. This verifies fallback/boarding on that earlier deployment, **not 3D visual/performance acceptance**.
+
+That browser's 1180×757 screenshot also exposed a regression: the pilot's natural-height CSS pushed the map bottom and movement buttons below the viewport. This correction removes those overrides. `c-viewport-layout.js` measures the real header, section padding/border and all non-map children (including renderer controls, fallback message, diagnostics and notice), then gives the map one shared integer-cell square size. Desktop uses a full-height left region and independently scrolling right sidebar. Mobile uses full-document scrolling. A short desktop scrolls rather than shrinking below a 32px logical cell pitch. No content, core, renderer, GPU settings or story/choice logic changed.
+
+20 tests now pass, including seven layout budget/source-contract tests. Their 1180×757 geometry fixtures are **modeled measurements**, not a new deployed screenshot. The corrected deployment still needs release-owner browser recheck. Read-only `window.__C_LAYOUT_QA__.snapshot()` returns the actual map/control/notice/sidebar rectangles, measured inputs and viewport-fit result to support that check. No local socket or GPU-security workaround was attempted.

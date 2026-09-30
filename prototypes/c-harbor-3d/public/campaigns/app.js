@@ -1,3 +1,4 @@
+import { installViewportLayout } from '../src/rendering/c-viewport-layout.js';
 import { installThreeView } from '../src/rendering/c-three-controller.js';
 import { projectVoyageScene } from '../src/rendering/c-adapter.js';
 import { presentContinuousScene } from '../src/rendering/continuous-map.js';
@@ -165,3 +166,6 @@ Object.defineProperty(window,'__CAMPAIGN_PREVIEW__',{value:Object.freeze({getSta
 
 threeView=installThreeView({runtime,getState:()=>state,onPick:(x,y)=>{const target=runtime.projectView(state).entities.find(e=>e.x===x&&e.y===y&&e.interactionAt&&runtime.meets(state,e.visibleWhen));if(target)walkTo(target.interactionAt.x,target.interactionAt.y);else walkTo(x,y);},onNotify:notify});
 window.__C3D_QA__=Object.freeze({snapshot:()=>({state:structuredClone(state),stateHash:runtime.stateHash(state),identity:runtime.identity,mode:playback?'certificate-replay':'player-play',view:threeView.mode(),stats:threeView.stats()}),projectTile:(x,y)=>threeView.projectTile(x,y)});
+
+const viewportLayout=installViewportLayout();
+window.__C_LAYOUT_QA__=Object.freeze({snapshot:()=>viewportLayout.snapshot()});
