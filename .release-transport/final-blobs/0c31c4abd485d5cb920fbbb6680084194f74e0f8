@@ -1,0 +1,31 @@
+{
+  "date": "2026-09-30",
+  "id": "CG_010",
+  "status": "accepted",
+  "runtime": "public/assets/anime/cg/liyue-lumi-seventeen-minute-splice-cg-v8.webp",
+  "source": "art/visual-novel/04_cg/final/2026-09-30-quality/CG_010_seventeen-minute-splice_crescent-astrolabe_v1.png",
+  "previous_sha256": "f3de9914e29afb98220d0e16334e31027689918594e40a79f969fcc21f308e19",
+  "runtime_sha256": "ceff053301f89e8c69ded8dfe6e34225752bf1548fafc6ca3d700b9699a108ed",
+  "source_sha256": "19d85cd04e9ec82454555c6638d3dc58f9f5cdbbd1c39e2e644fb3682b234135",
+  "dimensions": [
+    1672,
+    941
+  ],
+  "tool": "built-in image_gen",
+  "references": [
+    "public/assets/anime/cg/liyue-lumi-seventeen-minute-splice-cg-v8.webp@3c2bc16",
+    "art/visual-novel/01_canon/details/DETAIL_astral-boss_v1.png"
+  ],
+  "prompt": "art/visual-novel/03_intermediate/prompt_packets/2026-09-30-quality/CG010-astrolabe-prompt.txt",
+  "qa": {
+    "reviewers": 2,
+    "status": "accepted",
+    "correction": "Broad brass crescent open upper-right, smaller full sighting ring and one straight pointer",
+    "preserved": [
+      "both character identities and face expressions",
+      "hair and collar accessories",
+      "three timing lanes and ghost original tracks",
+      "observatory setting, camera framing and lighting"
+    ]
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "cg_id": "CG_008_noctia-seal",
+  "iteration": 4,
+  "imagegen_reference_order": [
+    "cg008-repair/04_cg/working/CG_008_noctia-seal_core-repair_v3.png"
+  ],
+  "canon_review_manifest": "cg008-repair/03_intermediate/reference_sets/CG_008_core-repair_v1.json",
+  "prompt_packet": "cg008-repair/03_intermediate/prompt_packets/CG_008_core-repair_v4.txt",
+  "parent_sha256": "8f4e4fc12fac1d43646dea1f699a587d4e260c54e06d09ee63cc3cb03142e0ae"
+}

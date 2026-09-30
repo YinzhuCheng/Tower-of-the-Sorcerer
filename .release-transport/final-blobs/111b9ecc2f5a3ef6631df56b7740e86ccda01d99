@@ -1,0 +1,23 @@
+{
+  "date": "2026-09-30",
+  "id": "CG_006",
+  "status": "accepted",
+  "runtime": "public/assets/anime/cg/liyue-yayu-seven-core-network-cg-audit-v3.webp",
+  "source": "art/visual-novel/04_cg/final/2026-09-30-consistency-repair/CG_006_seven-core-network_feather_v1.png",
+  "previous_sha256": "ee53d94fe42b81e259a7d3882de58cdb6f26753b62f69121509ead66aeb5734f",
+  "runtime_sha256": "09a574f20747dd3508020c7eec34451c635a7360ba664da80eda3147aa6e04f1",
+  "source_sha256": "ab5b075c9beb3e2d870b74a47c34886c443483d349ae87147d512f108bd3389c",
+  "dimensions": [
+    1672,
+    941
+  ],
+  "tool": "built-in image_gen",
+  "qa": {
+    "reviewers": 2,
+    "status": "accepted",
+    "correction": "One Yayu feather clip on her own right temple; seven network nodes remain",
+    "path": "art/visual-novel/03_intermediate/qa/2026-09-30-consistency-repair/CG006-targeted-qa.md"
+  },
+  "baseline_main": "3c2bc16cba3b57d2f3ae81d3b1d9bd9f87edcf4e",
+  "scope": "localized continuity repair; original main rendering and composition preserved"
+}

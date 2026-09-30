@@ -1,0 +1,89 @@
+{
+  "edit_target": {
+    "path": "cg008-repair/00_source/CG_008_noctia-seal_active_audit-v3.webp",
+    "sha256": "76e2c4138b44912d58c23806ea36ce2f4f587b78a0aa894592c7d360106435e9",
+    "width": 1672,
+    "height": 941,
+    "core_count": 6,
+    "seal_tablet_count": 3,
+    "role": "sole image-generation edit target"
+  },
+  "reviewed_canon": [
+    {
+      "path": "cg008-repair/01_canon/characters/hero.md",
+      "source": "audit-main/art/visual-novel/01_canon/characters/hero.md",
+      "sha256": "6eada62d7bfc82c639b25fe2387de9a51f4adc6009b46d55080c26fcd2193d50",
+      "purpose": "inspected-authoritative-canon; no redesign"
+    },
+    {
+      "path": "cg008-repair/01_canon/characters/final_queen.md",
+      "source": "audit-main/art/visual-novel/01_canon/characters/final_queen.md",
+      "sha256": "43aeaa019c35531c5cc46f1460cdcac0ba77e6f612f6fdd898419d8e1a676bed",
+      "purpose": "inspected-authoritative-canon; no redesign"
+    },
+    {
+      "path": "cg008-repair/01_canon/series-style.md",
+      "source": "audit-main/art/visual-novel/01_canon/series-style.md",
+      "sha256": "6950560bb53864df2c5247e07838e13ac61c98d77f27afff0990005f3badca89",
+      "purpose": "inspected-authoritative-canon; no redesign"
+    },
+    {
+      "path": "cg008-repair/01_canon/2026-09-04-continuity-lock.json",
+      "source": "audit-main/art/visual-novel/01_canon/2026-09-04-continuity-lock.json",
+      "sha256": "2982a9e76d6be21964a9ca3ec045934021b0b5b8e08687f9c564e9bd6375aaae",
+      "purpose": "inspected-authoritative-canon; no redesign"
+    },
+    {
+      "path": "cg008-repair/01_canon/turnarounds/CHAR_hero_turnaround_v2.png",
+      "source": "audit-main/art/visual-novel/01_canon/turnarounds/CHAR_hero_turnaround_v2.png",
+      "sha256": "d1385fe1798271e05e608204fe6d6cc99daa7961587d2e188cef7e62693cfe1b",
+      "purpose": "inspected-authoritative-canon; no redesign",
+      "width": 1448,
+      "height": 1086
+    },
+    {
+      "path": "cg008-repair/01_canon/turnarounds/CHAR_final-queen_turnaround_v1.png",
+      "source": "audit-main/art/visual-novel/01_canon/turnarounds/CHAR_final-queen_turnaround_v1.png",
+      "sha256": "9ad06627d33b9188616d9cbc9fa547a762e8933733026c101b33e8f349ef92e8",
+      "purpose": "inspected-authoritative-canon; no redesign",
+      "width": 1448,
+      "height": 1086
+    },
+    {
+      "path": "cg008-repair/01_canon/details/DETAIL_hero_v2.png",
+      "source": "audit-main/art/visual-novel/01_canon/details/DETAIL_hero_v2.png",
+      "sha256": "8f42611ee44f012b256262a251c67c5713d4056c8c3af5391e6c6976d337bfa1",
+      "purpose": "inspected-authoritative-canon; no redesign",
+      "width": 1448,
+      "height": 1086
+    },
+    {
+      "path": "cg008-repair/01_canon/details/DETAIL_final-queen_v1.png",
+      "source": "audit-main/art/visual-novel/01_canon/details/DETAIL_final-queen_v1.png",
+      "sha256": "647725e528e53392fe07ebc32bb4a112b0253d788609b1b7d92fc8e410e1077c",
+      "purpose": "inspected-authoritative-canon; no redesign",
+      "width": 1448,
+      "height": 1086
+    },
+    {
+      "path": "cg008-repair/01_canon/expressions/EXPR_hero_v1.png",
+      "source": "audit-main/art/visual-novel/01_canon/expressions/EXPR_hero_v1.png",
+      "sha256": "d1571b7c18c3fbd902109a575619a40b1ecd4d9d84180fe6e9eb585a5eb1f3f8",
+      "purpose": "inspected-authoritative-canon; no redesign",
+      "width": 1536,
+      "height": 1024
+    },
+    {
+      "path": "cg008-repair/01_canon/expressions/EXPR_final-queen_v1.png",
+      "source": "audit-main/art/visual-novel/01_canon/expressions/EXPR_final-queen_v1.png",
+      "sha256": "58c9121b08aadb699e5a47e964c30317326ae227c90ed9d292f67d0f866db2a7",
+      "purpose": "inspected-authoritative-canon; no redesign",
+      "width": 1536,
+      "height": 1024
+    }
+  ],
+  "generation_reference_order": [
+    "cg008-repair/00_source/CG_008_noctia-seal_active_audit-v3.webp"
+  ],
+  "rationale": "Minimal targeted edit; only original CG supplied to imagegen to prevent character redrawing; P0-P3 canon inspected separately."
+}

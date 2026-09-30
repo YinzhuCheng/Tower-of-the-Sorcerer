@@ -1,0 +1,32 @@
+{
+  "name": "tower-of-the-sorcerer",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "固定数值策略 RPG《失落魔法阵：少女魔塔》",
+  "license": "MIT",
+  "scripts": {
+    "dev": "node scripts/dev-server.mjs",
+    "build": "node scripts/build.mjs",
+    "test": "node --test --test-concurrency=1",
+    "validate:art": "python3 scripts/validate-runtime-art.py",
+    "validate": "node scripts/validate-game.mjs",
+    "validate:demo20": "node scripts/validate-demo-20f.mjs",
+    "validate:demo30": "node scripts/validate-demo-30f.mjs",
+    "validate:demo10": "node scripts/validate-demo-10f.mjs",
+    "prove:demo10": "node scripts/witness-demo-10f-route.mjs --require",
+    "certify:demo10:routes": "node scripts/certify-demo-10f-route-families.mjs --require",
+    "verify:demo10:pressure": "node scripts/verify-demo-10f-pressure-profile.mjs",
+    "profile:demo10:compass-merge": "node scripts/profile-demo-10f-compass-merge.mjs --require",
+    "solve:demo10": "node scripts/solve-demo-10f-existence.mjs",
+    "rebase:demo10:single-shop": "node scripts/rebase-demo-10f-single-shop.mjs",
+    "tune:demo10:tiers": "node scripts/search-demo-10f-shop-tiers.mjs",
+    "tune:demo10:late": "node scripts/tune-demo-10f-late-game.mjs",
+    "tune:demo10:portfolio": "node scripts/search-demo-10f-codesign.mjs",
+    "search:demo10:codesign": "node scripts/search-demo-10f-codesign.mjs",
+    "search:demo10:topology": "node scripts/search-demo-10f-topology.mjs",
+    "scan:demo20:feasibility": "node scripts/scan-demo-20f-feasibility.mjs",
+    "analyze:topology": "node scripts/analyze-semantic-topology.mjs",
+    "check": "npm run validate:art && npm test && npm run validate && npm run validate:demo20 && npm run validate:demo30 && npm run build"
+  }
+}
