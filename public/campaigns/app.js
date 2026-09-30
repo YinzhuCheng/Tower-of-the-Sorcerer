@@ -112,7 +112,7 @@ function render(){
  $('cargo').textContent=`灯座：${{center:'中线',left:'左侧绞盘作业',right:'右舷吊装',ashore:'已上岸'}[boat.cargo]} · ${view.balance.balanced?'配平':'尚未配平'} · 封装灯油${state.flags['c.lampOil']?'随船独立运输':'已用于远灯'}`;
  $('balance-ledger').textContent=`左右总力矩：左 ${view.balance.leftMoment} / 右 ${view.balance.rightMoment}。相等即可确认作业，中线载荷不计入左右`;
  renderForecast($('route-forecast'));
- presentContinuousScene($('map-canvas'),$('board'),projectVoyageScene(runtime,state));
+ const mapScene=projectVoyageScene(runtime,state);presentContinuousScene($('map-canvas'),$('board'),mapScene);
  $('board').replaceChildren();for(let y=0;y<11;y++)for(let x=0;x<11;x++){
   const token=view.region.map[y][x],tile=document.createElement('button');tile.className=`tile ${token==='.'?(view.region.id==='C-D01'?'deck':'floor'):token==='B'?'ship':token==='#'?'wall':''}`;tile.setAttribute('aria-label',`${x},${y}`);
   let slotInfo=null;
@@ -124,9 +124,10 @@ function render(){
   }
   if(state.location.x===x&&state.location.y===y){tile.classList.add('hero');tile.textContent='◎';}
   if(slotInfo){const label=document.createElement('small');label.textContent=slotInfo.name;tile.append(label);}
+  const contextHint=mapScene?.contextCellDescriptions?.[y]?.[x];if(contextHint&&!tile.title)tile.title=contextHint;
   tile.tabIndex=state.location.x===x&&state.location.y===y?0:-1;
   tile.setAttribute('aria-label',`${x},${y} ${tile.title||({'.':'可行地面','B':'船体，经唯一跳板登船','#':'固定机座或岸桩','X':'损坏平台，不可进入','~':'水面，不可行走'}[token]??'不可行走')}${state.location.x===x&&state.location.y===y?'，璃在这里':''}`);
-  tile.onclick=()=>{if(!playTimer&&!document.querySelector('dialog[open]')&&!pending)walkTo(x,y);};$('board').append(tile);
+  tile.onclick=()=>{if(playTimer||document.querySelector('dialog[open]')||pending)return;if(contextHint&&!entities.length&&!runtime.passable(state,x,y)){notify(contextHint);return;}walkTo(x,y);};$('board').append(tile);
  }
  $('actions').replaceChildren();
  const actions=view.interactions;

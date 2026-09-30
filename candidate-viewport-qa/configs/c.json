@@ -1,0 +1,1 @@
+{"id":"c","branch":"candidate/c-night-harbor","adapter":"c","packageRoot":".","build":[["node","scripts/build-campaign-preview.mjs"]],"outputDirectory":"dist-c-preview","startPath":"/campaigns/","expectedCampaignId":"voyage-c"}

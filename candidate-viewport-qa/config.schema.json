@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Candidate viewport QA configuration",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "branch",
+    "adapter",
+    "packageRoot",
+    "build",
+    "outputDirectory",
+    "startPath"
+  ],
+  "properties": {
+    "id": {
+      "enum": [
+        "a",
+        "b",
+        "c",
+        "c3d"
+      ]
+    },
+    "branch": {
+      "type": "string",
+      "pattern": "^candidate/[a-zA-Z0-9._/-]+$",
+      "description": "Exact reviewed candidate branch; CI refuses any other branch"
+    },
+    "adapter": {
+      "enum": [
+        "a",
+        "b",
+        "c",
+        "c3d"
+      ]
+    },
+    "packageRoot": {
+      "type": "string",
+      "description": "Repository-relative package directory; no parent traversal"
+    },
+    "build": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "array",
+        "minItems": 2,
+        "prefixItems": [
+          {
+            "enum": [
+              "node",
+              "npm"
+            ]
+          }
+        ],
+        "items": {
+          "type": "string"
+        }
+      },
+      "description": "Only one relative .mjs script per node command, or npm ci --ignore-scripts --no-audit --no-fund; no shell evaluation"
+    },
+    "outputDirectory": {
+      "type": "string",
+      "description": "Built directory relative to packageRoot; never . or source root"
+    },
+    "startPath": {
+      "type": "string",
+      "pattern": "^/(?!/)",
+      "description": "Local path only; no query string, fragment, credentials, or remote URL"
+    },
+    "expectedCampaignId": {
+      "enum": [
+        "forest-b",
+        "voyage-c"
+      ]
+    }
+  },
+  "description": "Runtime validation additionally checks adapter/id identity, safe paths and candidate-specific identity. Does not accept JS snippets, browser flags, fixture files or state mutations."
+}

@@ -18,7 +18,7 @@ Status: implementation and automated checks passed; deployed browser visual/coll
 - C geometry: `C_FERRY_HULL_01`, v1.2
 - Visual revision: `continuous-samples-r1`
 
-The texture manifest is independent of save/certificate identity. Six WebP derivatives retain native 1254×1254 dimensions and source/derivative SHA256 metadata. Axis policies follow the explicit 2×2 review: dry stone / rock / earth / water use a global 4T periodic UV as a preview experiment; root bark uses one local continuous domain per root, rotated to its axis; wood repeats only in X and spans the entire structure in Y. C uses one physical wood UV (4.8m X period, full 6m Y extent; estimated 0.2–0.3m plank width), uniformly transformed at both zooms. Preview approval does not certify final seams. A visible geometry-preview notice appears if a texture cannot load.
+The texture manifest is independent of save/certificate identity. Six WebP derivatives retain native 1254×1254 dimensions and source/derivative SHA256 metadata. Axis policies follow the explicit 2×2 review: dry stone / rock / earth / water use a global 4T periodic UV as a preview experiment; root bark uses one local continuous domain per root, rotated to its axis; wood repeats only in X and spans the entire structure in Y. C uses one physical wood UV (2.4m X period, full 6m Y extent; 8–9 source columns, approximately 0.27–0.30m plank width), uniformly transformed at both zooms. Preview approval does not certify final seams. A visible geometry-preview notice appears if a texture cannot load.
 
 ## Entry points
 

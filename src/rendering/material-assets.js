@@ -51,7 +51,7 @@ export const ACCEPTED_MAP_MATERIALS=Object.freeze([
     "previewRepeatApproved": true,
     "period": 4,
     "periodX": 4,
-    "physicalUV": "C overrides to 8 deck tiles = 4.8m width per source image; approx 0.2–0.3m planks; Y spans full 6m vessel without repeat",
+    "physicalUV": "C overrides to 4 deck tiles = 2.4m per source image (8–9 visible plank columns: approx 0.27–0.30m each); shore uses 0.6 of deck UV; Y spans full 6m vessel without repeat",
     "approval": "Root visual 2x2 review 2026-09-30; 4T repeat for stone/rock/earth/water; root local continuous; wood X-only"
   },
   {
