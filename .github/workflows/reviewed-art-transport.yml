@@ -1,0 +1,50 @@
+name: Reconstruct reviewed art transport
+on:
+  push:
+    branches: [transport/reviewed-art-20260930]
+    paths: [.release-transport/READY]
+permissions:
+  contents: write
+concurrency:
+  group: reviewed-art-transport-20260930
+  cancel-in-progress: false
+jobs:
+  reconstruct:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify manifest identity
+        run: |
+          echo "7034fa2a8cd62e3cc461e5f4e2720709e6896b0f65a0e4c53128c1d263dbb696  .release-transport/manifest.json" | sha256sum --check --strict
+      - name: Reconstruct exact approved bytes
+        id: release
+        run: python .release-transport/reconstruct.py
+      - name: Install pinned artwork decoder
+        working-directory: ${{ steps.release.outputs.worktree }}
+        run: python -m pip install --requirement scripts/requirements-art.txt
+      - name: Validate exact release
+        working-directory: ${{ steps.release.outputs.worktree }}
+        run: npm run check
+      - name: Retain reconstructed objects on temporary branch only
+        env:
+          RELEASE_TREE: ${{ steps.release.outputs.tree }}
+        run: |
+          set -euo pipefail
+          test "$(git ls-remote origin refs/heads/main | cut -f1)" = 3c2bc16cba3b57d2f3ae81d3b1d9bd9f87edcf4e
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          TRANSPORT_COMMIT=$(printf 'transport: retain verified art objects [skip ci]\n' | git commit-tree "$RELEASE_TREE" -p "$GITHUB_SHA")
+          git push origin "$TRANSPORT_COMMIT":refs/heads/transport/reviewed-art-20260930
+          echo "VERIFIED_RELEASE_TREE=$RELEASE_TREE"
+          echo "TRANSPORT_COMMIT=$TRANSPORT_COMMIT"
+          echo "Verified 141-file art snapshot and retained its objects; main was not changed." >> "$GITHUB_STEP_SUMMARY"
