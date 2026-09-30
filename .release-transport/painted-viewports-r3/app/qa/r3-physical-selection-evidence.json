@@ -1,0 +1,897 @@
+{
+  "status": "GEOMETRY_VALIDATED; painted two-boot/animation acceptance still pending",
+  "radius": 0.18,
+  "maxStep": 0.2,
+  "anchorSelections": [
+    {
+      "id": "west_entry",
+      "sourceId": "west_entry",
+      "originalWorld": {
+        "X": -8.7,
+        "Y": 5,
+        "Z": -8.4,
+        "cellId": "upper_public.cell.22",
+        "surfaceId": "upper_public"
+      },
+      "selectedWorld": {
+        "axes": "east,up,south",
+        "xyz": [
+          -8.7,
+          5,
+          -9
+        ]
+      },
+      "originalPosition": {
+        "cellId": "upper_public.cell.22",
+        "surfaceId": "upper_public",
+        "x": -8.7,
+        "y": 8.4
+      },
+      "selectedPosition": {
+        "cellId": "upper_public.cell.22",
+        "surfaceId": "upper_public",
+        "x": -8.7,
+        "y": 9
+      },
+      "originalPixel": [
+        349.43490522765467,
+        456.6122177256999
+      ],
+      "selectedPixel": [
+        334.8876035003683,
+        447.1764488894011
+      ],
+      "nativeDelta": [
+        -14.547301727286367,
+        -9.435768836298791
+      ],
+      "authoredSupports": [
+        {
+          "floorId": "west_upper_approach",
+          "authoredSurfaceId": "west_upper_approach",
+          "authoredObject": null
+        }
+      ],
+      "physicalKernelValidation": "PASS; original frozen kernel, no reduced footprint"
+    },
+    {
+      "id": "east_lower_stair",
+      "sourceId": "east_lower_stair",
+      "originalWorld": {
+        "X": 11.7,
+        "Y": 1.825,
+        "Z": 2.1,
+        "cellId": "east_lower_flight.cell.31",
+        "surfaceId": "east_lower_flight"
+      },
+      "selectedWorld": {
+        "axes": "east,up,south",
+        "xyz": [
+          11.96,
+          1.825,
+          2.1
+        ]
+      },
+      "originalPosition": {
+        "cellId": "east_lower_flight.cell.31",
+        "surfaceId": "east_lower_flight",
+        "x": 11.7,
+        "y": -2.1
+      },
+      "selectedPosition": {
+        "cellId": "east_lower_flight.cell.31",
+        "surfaceId": "east_lower_flight",
+        "x": 11.96,
+        "y": -2.1
+      },
+      "originalPixel": [
+        1384.9730939726437,
+        549.727366043144
+      ],
+      "selectedPixel": [
+        1394.9265109439452,
+        547.1377717069598
+      ],
+      "nativeDelta": [
+        9.953416971301522,
+        -2.5895943361841773
+      ],
+      "authoredSupports": [
+        {
+          "floorId": "east_lower_flight",
+          "authoredSurfaceId": "east_lower_flight",
+          "authoredObject": null
+        }
+      ],
+      "physicalKernelValidation": "PASS; original frozen kernel, no reduced footprint"
+    },
+    {
+      "id": "east-flight",
+      "sourceId": "east_upper_stair",
+      "originalWorld": {
+        "X": 13.1,
+        "Y": 4.1,
+        "Z": 2.1,
+        "cellId": "east_upper_flight.cell.27",
+        "surfaceId": "east_upper_flight"
+      },
+      "selectedWorld": {
+        "axes": "east,up,south",
+        "xyz": [
+          13.35,
+          4.1,
+          2.1
+        ]
+      },
+      "originalPosition": {
+        "cellId": "east_upper_flight.cell.27",
+        "surfaceId": "east_upper_flight",
+        "x": 13.1,
+        "y": -2.1
+      },
+      "selectedPosition": {
+        "cellId": "east_upper_flight.cell.27",
+        "surfaceId": "east_upper_flight",
+        "x": 13.35,
+        "y": -2.1
+      },
+      "originalPixel": [
+        1438.568416125804,
+        441.7934738206376
+      ],
+      "selectedPixel": [
+        1448.1390093674397,
+        439.3034792666144
+      ],
+      "nativeDelta": [
+        9.570593241635606,
+        -2.4899945540232125
+      ],
+      "authoredSupports": [
+        {
+          "floorId": "east_upper_flight",
+          "authoredSurfaceId": "east_upper_flight",
+          "authoredObject": null
+        }
+      ],
+      "physicalKernelValidation": "PASS; original frozen kernel, no reduced footprint"
+    }
+  ],
+  "routes": [
+    {
+      "from": "east_foot",
+      "to": "east-top",
+      "originalMidpointPathLength": 11.400000000000002,
+      "recomputedSelectedPathLength": 11.596160799003474,
+      "sampledSpacingMetres": 0.005,
+      "samples": 2321,
+      "maxXYStep": 0.00500000000000167,
+      "maxHeightStep": 0.002500000000000835,
+      "surfaces": [
+        "low_public",
+        "east_lower_flight",
+        "east_middle",
+        "east_upper_flight",
+        "upper_public"
+      ],
+      "portalCrossings": [
+        {
+          "kind": "portal",
+          "from": {
+            "cellId": "low_public.cell.13",
+            "surfaceId": "low_public",
+            "x": 11.96,
+            "y": -4.15
+          },
+          "to": {
+            "cellId": "east_lower_flight.cell.31",
+            "surfaceId": "east_lower_flight",
+            "x": 11.96,
+            "y": -4.15
+          },
+          "portalId": "m03.connection.17.13.31"
+        },
+        {
+          "kind": "portal",
+          "from": {
+            "cellId": "east_lower_flight.cell.31",
+            "surfaceId": "east_lower_flight",
+            "x": 11.96,
+            "y": 0.05
+          },
+          "to": {
+            "cellId": "east_middle.cell.29",
+            "surfaceId": "east_middle",
+            "x": 11.96,
+            "y": 0.05
+          },
+          "portalId": "m03.connection.16.29.31"
+        },
+        {
+          "kind": "portal",
+          "from": {
+            "cellId": "east_middle.cell.29",
+            "surfaceId": "east_middle",
+            "x": 11.96,
+            "y": 0.6
+          },
+          "to": {
+            "cellId": "east_middle.cell.28",
+            "surfaceId": "east_middle",
+            "x": 11.96,
+            "y": 0.6
+          },
+          "portalId": "seam.28.29"
+        },
+        {
+          "kind": "portal",
+          "from": {
+            "cellId": "east_middle.cell.28",
+            "surfaceId": "east_middle",
+            "x": 13.35,
+            "y": 0.6
+          },
+          "to": {
+            "cellId": "east_middle.cell.30",
+            "surfaceId": "east_middle",
+            "x": 13.35,
+            "y": 0.6
+          },
+          "portalId": "seam.28.30"
+        },
+        {
+          "kind": "portal",
+          "from": {
+            "cellId": "east_middle.cell.30",
+            "surfaceId": "east_middle",
+            "x": 13.35,
+            "y": 0.3
+          },
+          "to": {
+            "cellId": "east_upper_flight.cell.27",
+            "surfaceId": "east_upper_flight",
+            "x": 13.35,
+            "y": 0.3
+          },
+          "portalId": "m03.connection.14.27.30"
+        },
+        {
+          "kind": "portal",
+          "from": {
+            "cellId": "east_upper_flight.cell.27",
+            "surfaceId": "east_upper_flight",
+            "x": 13.35,
+            "y": -3.9
+          },
+          "to": {
+            "cellId": "upper_public.cell.25",
+            "surfaceId": "upper_public",
+            "x": 13.35,
+            "y": -3.9
+          },
+          "portalId": "m03.connection.13.25.27"
+        },
+        {
+          "kind": "portal",
+          "from": {
+            "cellId": "upper_public.cell.25",
+            "surfaceId": "upper_public",
+            "x": 13.35,
+            "y": -4.1
+          },
+          "to": {
+            "cellId": "upper_public.cell.26",
+            "surfaceId": "upper_public",
+            "x": 13.35,
+            "y": -4.1
+          },
+          "portalId": "seam.25.26"
+        }
+      ],
+      "kernelReplay": "PASS"
+    },
+    {
+      "from": "east-top",
+      "to": "east_foot",
+      "originalMidpointPathLength": 11.4,
+      "recomputedSelectedPathLength": 11.596160799003474,
+      "sampledSpacingMetres": 0.005,
+      "samples": 2321,
+      "maxXYStep": 0.005000000000001698,
+      "maxHeightStep": 0.002500000000000835,
+      "surfaces": [
+        "upper_public",
+        "east_upper_flight",
+        "east_middle",
+        "east_lower_flight",
+        "low_public"
+      ],
+      "portalCrossings": [
+        {
+          "kind": "portal",
+          "from": {
+            "cellId": "upper_public.cell.26",
+            "surfaceId": "upper_public",
+            "x": 13.35,
+            "y": -4.1
+          },
+          "to": {
+            "cellId": "upper_public.cell.25",
+            "surfaceId": "upper_public",
+            "x": 13.35,
+            "y": -4.1
+          },
+          "portalId": "seam.25.26"
+        },
+        {
+          "kind": "portal",
+          "from": {
+            "cellId": "upper_public.cell.25",
+            "surfaceId": "upper_public",
+            "x": 13.35,
+            "y": -3.9
+          },
+          "to": {
+            "cellId": "east_upper_flight.cell.27",
+            "surfaceId": "east_upper_flight",
+            "x": 13.35,
+            "y": -3.9
+          },
+          "portalId": "m03.connection.13.25.27"
+        },
+        {
+          "kind": "portal",
+          "from": {
+            "cellId": "east_upper_flight.cell.27",
+            "surfaceId": "east_upper_flight",
+            "x": 13.35,
+            "y": 0.3
+          },
+          "to": {
+            "cellId": "east_middle.cell.30",
+            "surfaceId": "east_middle",
+            "x": 13.35,
+            "y": 0.3
+          },
+          "portalId": "m03.connection.14.27.30"
+        },
+        {
+          "kind": "portal",
+          "from": {
+            "cellId": "east_middle.cell.30",
+            "surfaceId": "east_middle",
+            "x": 13.35,
+            "y": 0.6
+          },
+          "to": {
+            "cellId": "east_middle.cell.28",
+            "surfaceId": "east_middle",
+            "x": 13.35,
+            "y": 0.6
+          },
+          "portalId": "seam.28.30"
+        },
+        {
+          "kind": "portal",
+          "from": {
+            "cellId": "east_middle.cell.28",
+            "surfaceId": "east_middle",
+            "x": 11.96,
+            "y": 0.6
+          },
+          "to": {
+            "cellId": "east_middle.cell.29",
+            "surfaceId": "east_middle",
+            "x": 11.96,
+            "y": 0.6
+          },
+          "portalId": "seam.28.29"
+        },
+        {
+          "kind": "portal",
+          "from": {
+            "cellId": "east_middle.cell.29",
+            "surfaceId": "east_middle",
+            "x": 11.96,
+            "y": 0.05
+          },
+          "to": {
+            "cellId": "east_lower_flight.cell.31",
+            "surfaceId": "east_lower_flight",
+            "x": 11.96,
+            "y": 0.05
+          },
+          "portalId": "m03.connection.16.29.31"
+        },
+        {
+          "kind": "portal",
+          "from": {
+            "cellId": "east_lower_flight.cell.31",
+            "surfaceId": "east_lower_flight",
+            "x": 11.96,
+            "y": -4.15
+          },
+          "to": {
+            "cellId": "low_public.cell.13",
+            "surfaceId": "low_public",
+            "x": 11.96,
+            "y": -4.15
+          },
+          "portalId": "m03.connection.17.13.31"
+        }
+      ],
+      "kernelReplay": "PASS"
+    },
+    {
+      "from": "west_entry",
+      "to": "bridge",
+      "originalMidpointPathLength": 14.984378077281846,
+      "recomputedSelectedPathLength": 14.984378077281846,
+      "sampledSpacingMetres": 0.005,
+      "samples": 2998,
+      "maxXYStep": 0.005000000000002328,
+      "maxHeightStep": 0,
+      "surfaces": [
+        "upper_public"
+      ],
+      "portalCrossings": [
+        {
+          "kind": "portal",
+          "from": {
+            "cellId": "upper_public.cell.22",
+            "surfaceId": "upper_public",
+            "x": -8.675,
+            "y": 7.7
+          },
+          "to": {
+            "cellId": "upper_public.cell.23",
+            "surfaceId": "upper_public",
+            "x": -8.675,
+            "y": 7.7
+          },
+          "portalId": "seam.22.23"
+        }
+      ],
+      "kernelReplay": "PASS"
+    },
+    {
+      "from": "door",
+      "to": "east-flight",
+      "originalMidpointPathLength": 33.48389883844538,
+      "recomputedSelectedPathLength": 33.54691772317448,
+      "sampledSpacingMetres": 0.005,
+      "samples": 6711,
+      "maxXYStep": 0.005000000000004334,
+      "maxHeightStep": 0.002500000000001723,
+      "surfaces": [
+        "low_public",
+        "east_lower_flight",
+        "east_middle",
+        "east_upper_flight"
+      ],
+      "portalCrossings": [
+        {
+          "kind": "portal",
+          "from": {
+            "cellId": "low_public.cell.7",
+            "surfaceId": "low_public",
+            "x": 10.8,
+            "y": 14.6
+          },
+          "to": {
+            "cellId": "low_public.cell.8",
+            "surfaceId": "low_public",
+            "x": 10.8,
+            "y": 14.6
+          },
+          "portalId": "seam.7.8"
+        },
+        {
+          "kind": "portal",
+          "from": {
+            "cellId": "low_public.cell.8",
+            "surfaceId": "low_public",
+            "x": 10.8,
+            "y": 9.4
+          },
+          "to": {
+            "cellId": "low_public.cell.9",
+            "surfaceId": "low_public",
+            "x": 10.8,
+            "y": 9.4
+          },
+          "portalId": "seam.8.9"
+        },
+        {
+          "kind": "portal",
+          "from": {
+            "cellId": "low_public.cell.9",
+            "surfaceId": "low_public",
+            "x": 10.15,
+            "y": 8.9
+          },
+          "to": {
+            "cellId": "low_public.cell.11",
+            "surfaceId": "low_public",
+            "x": 10.15,
+            "y": 8.9
+          },
+          "portalId": "seam.9.11"
+        },
+        {
+          "kind": "portal",
+          "from": {
+            "cellId": "low_public.cell.11",
+            "surfaceId": "low_public",
+            "x": 10.15,
+            "y": -4.5
+          },
+          "to": {
+            "cellId": "low_public.cell.15",
+            "surfaceId": "low_public",
+            "x": 10.15,
+            "y": -4.5
+          },
+          "portalId": "seam.11.15"
+        },
+        {
+          "kind": "portal",
+          "from": {
+            "cellId": "low_public.cell.15",
+            "surfaceId": "low_public",
+            "x": 11.7,
+            "y": -4.5
+          },
+          "to": {
+            "cellId": "low_public.cell.13",
+            "surfaceId": "low_public",
+            "x": 11.7,
+            "y": -4.5
+          },
+          "portalId": "seam.13.15"
+        },
+        {
+          "kind": "portal",
+          "from": {
+            "cellId": "low_public.cell.13",
+            "surfaceId": "low_public",
+            "x": 11.96,
+            "y": -4.15
+          },
+          "to": {
+            "cellId": "east_lower_flight.cell.31",
+            "surfaceId": "east_lower_flight",
+            "x": 11.96,
+            "y": -4.15
+          },
+          "portalId": "m03.connection.17.13.31"
+        },
+        {
+          "kind": "portal",
+          "from": {
+            "cellId": "east_lower_flight.cell.31",
+            "surfaceId": "east_lower_flight",
+            "x": 11.96,
+            "y": 0.05
+          },
+          "to": {
+            "cellId": "east_middle.cell.29",
+            "surfaceId": "east_middle",
+            "x": 11.96,
+            "y": 0.05
+          },
+          "portalId": "m03.connection.16.29.31"
+        },
+        {
+          "kind": "portal",
+          "from": {
+            "cellId": "east_middle.cell.29",
+            "surfaceId": "east_middle",
+            "x": 11.96,
+            "y": 0.6
+          },
+          "to": {
+            "cellId": "east_middle.cell.28",
+            "surfaceId": "east_middle",
+            "x": 11.96,
+            "y": 0.6
+          },
+          "portalId": "seam.28.29"
+        },
+        {
+          "kind": "portal",
+          "from": {
+            "cellId": "east_middle.cell.28",
+            "surfaceId": "east_middle",
+            "x": 13.35,
+            "y": 0.6
+          },
+          "to": {
+            "cellId": "east_middle.cell.30",
+            "surfaceId": "east_middle",
+            "x": 13.35,
+            "y": 0.6
+          },
+          "portalId": "seam.28.30"
+        },
+        {
+          "kind": "portal",
+          "from": {
+            "cellId": "east_middle.cell.30",
+            "surfaceId": "east_middle",
+            "x": 13.35,
+            "y": 0.3
+          },
+          "to": {
+            "cellId": "east_upper_flight.cell.27",
+            "surfaceId": "east_upper_flight",
+            "x": 13.35,
+            "y": 0.3
+          },
+          "portalId": "m03.connection.14.27.30"
+        }
+      ],
+      "kernelReplay": "PASS"
+    },
+    {
+      "from": "bridge",
+      "to": "underbridge",
+      "originalMidpointPathLength": 54.5256895968041,
+      "recomputedSelectedPathLength": 54.35169418393592,
+      "sampledSpacingMetres": 0.005,
+      "samples": 10872,
+      "maxXYStep": 0.005000000000006111,
+      "maxHeightStep": 0.002500000000001723,
+      "surfaces": [
+        "upper_public",
+        "east_upper_flight",
+        "east_middle",
+        "east_lower_flight",
+        "low_public"
+      ],
+      "portalCrossings": [
+        {
+          "kind": "portal",
+          "from": {
+            "cellId": "upper_public.cell.23",
+            "surfaceId": "upper_public",
+            "x": 14.850000000000001,
+            "y": 6.4
+          },
+          "to": {
+            "cellId": "upper_public.cell.24",
+            "surfaceId": "upper_public",
+            "x": 14.850000000000001,
+            "y": 6.4
+          },
+          "portalId": "seam.23.24"
+        },
+        {
+          "kind": "portal",
+          "from": {
+            "cellId": "upper_public.cell.24",
+            "surfaceId": "upper_public",
+            "x": 14.850000000000001,
+            "y": -4.1
+          },
+          "to": {
+            "cellId": "upper_public.cell.26",
+            "surfaceId": "upper_public",
+            "x": 14.850000000000001,
+            "y": -4.1
+          },
+          "portalId": "seam.24.26"
+        },
+        {
+          "kind": "portal",
+          "from": {
+            "cellId": "upper_public.cell.26",
+            "surfaceId": "upper_public",
+            "x": 13.35,
+            "y": -4.1
+          },
+          "to": {
+            "cellId": "upper_public.cell.25",
+            "surfaceId": "upper_public",
+            "x": 13.35,
+            "y": -4.1
+          },
+          "portalId": "seam.25.26"
+        },
+        {
+          "kind": "portal",
+          "from": {
+            "cellId": "upper_public.cell.25",
+            "surfaceId": "upper_public",
+            "x": 13.35,
+            "y": -3.9
+          },
+          "to": {
+            "cellId": "east_upper_flight.cell.27",
+            "surfaceId": "east_upper_flight",
+            "x": 13.35,
+            "y": -3.9
+          },
+          "portalId": "m03.connection.13.25.27"
+        },
+        {
+          "kind": "portal",
+          "from": {
+            "cellId": "east_upper_flight.cell.27",
+            "surfaceId": "east_upper_flight",
+            "x": 13.35,
+            "y": 0.3
+          },
+          "to": {
+            "cellId": "east_middle.cell.30",
+            "surfaceId": "east_middle",
+            "x": 13.35,
+            "y": 0.3
+          },
+          "portalId": "m03.connection.14.27.30"
+        },
+        {
+          "kind": "portal",
+          "from": {
+            "cellId": "east_middle.cell.30",
+            "surfaceId": "east_middle",
+            "x": 13.35,
+            "y": 0.6
+          },
+          "to": {
+            "cellId": "east_middle.cell.28",
+            "surfaceId": "east_middle",
+            "x": 13.35,
+            "y": 0.6
+          },
+          "portalId": "seam.28.30"
+        },
+        {
+          "kind": "portal",
+          "from": {
+            "cellId": "east_middle.cell.28",
+            "surfaceId": "east_middle",
+            "x": 11.96,
+            "y": 0.6
+          },
+          "to": {
+            "cellId": "east_middle.cell.29",
+            "surfaceId": "east_middle",
+            "x": 11.96,
+            "y": 0.6
+          },
+          "portalId": "seam.28.29"
+        },
+        {
+          "kind": "portal",
+          "from": {
+            "cellId": "east_middle.cell.29",
+            "surfaceId": "east_middle",
+            "x": 11.96,
+            "y": 0.05
+          },
+          "to": {
+            "cellId": "east_lower_flight.cell.31",
+            "surfaceId": "east_lower_flight",
+            "x": 11.96,
+            "y": 0.05
+          },
+          "portalId": "m03.connection.16.29.31"
+        },
+        {
+          "kind": "portal",
+          "from": {
+            "cellId": "east_lower_flight.cell.31",
+            "surfaceId": "east_lower_flight",
+            "x": 11.96,
+            "y": -4.15
+          },
+          "to": {
+            "cellId": "low_public.cell.13",
+            "surfaceId": "low_public",
+            "x": 11.96,
+            "y": -4.15
+          },
+          "portalId": "m03.connection.17.13.31"
+        },
+        {
+          "kind": "portal",
+          "from": {
+            "cellId": "low_public.cell.13",
+            "surfaceId": "low_public",
+            "x": 11.7,
+            "y": -4.5
+          },
+          "to": {
+            "cellId": "low_public.cell.15",
+            "surfaceId": "low_public",
+            "x": 11.7,
+            "y": -4.5
+          },
+          "portalId": "seam.13.15"
+        },
+        {
+          "kind": "portal",
+          "from": {
+            "cellId": "low_public.cell.15",
+            "surfaceId": "low_public",
+            "x": 9.7,
+            "y": -5.4
+          },
+          "to": {
+            "cellId": "low_public.cell.16",
+            "surfaceId": "low_public",
+            "x": 9.7,
+            "y": -5.4
+          },
+          "portalId": "seam.15.16"
+        },
+        {
+          "kind": "portal",
+          "from": {
+            "cellId": "low_public.cell.16",
+            "surfaceId": "low_public",
+            "x": 9.4,
+            "y": -5.7
+          },
+          "to": {
+            "cellId": "low_public.cell.17",
+            "surfaceId": "low_public",
+            "x": 9.4,
+            "y": -5.7
+          },
+          "portalId": "seam.16.17"
+        },
+        {
+          "kind": "portal",
+          "from": {
+            "cellId": "low_public.cell.17",
+            "surfaceId": "low_public",
+            "x": 3.8,
+            "y": -5.7
+          },
+          "to": {
+            "cellId": "low_public.cell.14",
+            "surfaceId": "low_public",
+            "x": 3.8,
+            "y": -5.7
+          },
+          "portalId": "seam.14.17"
+        },
+        {
+          "kind": "portal",
+          "from": {
+            "cellId": "low_public.cell.14",
+            "surfaceId": "low_public",
+            "x": 3.8,
+            "y": -4.3
+          },
+          "to": {
+            "cellId": "low_public.cell.12",
+            "surfaceId": "low_public",
+            "x": 3.8,
+            "y": -4.3
+          },
+          "portalId": "seam.12.14"
+        },
+        {
+          "kind": "portal",
+          "from": {
+            "cellId": "low_public.cell.12",
+            "surfaceId": "low_public",
+            "x": 4.9,
+            "y": 3.8
+          },
+          "to": {
+            "cellId": "low_public.cell.10",
+            "surfaceId": "low_public",
+            "x": 4.9,
+            "y": 3.8
+          },
+          "portalId": "seam.10.12"
+        }
+      ],
+      "kernelReplay": "PASS"
+    }
+  ]
+}

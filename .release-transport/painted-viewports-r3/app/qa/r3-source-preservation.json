@@ -1,0 +1,115 @@
+{
+  "atUTC": "2026-09-30T19:26:57.259808+00:00",
+  "originalR2AllFilesUnchanged": true,
+  "r2FileCount": 46,
+  "originalThreeSourcePNGsUnchanged": true,
+  "copiedOriginalFrozenFilesUnchanged": true,
+  "frozenFileCount": 17,
+  "frozenFiles": [
+    {
+      "path": "assets/hero.png",
+      "sha256": "7782d68d752cd42e9e30ba389431a39f4b4b10d115f5f9073c9ecd223420834f"
+    },
+    {
+      "path": "assets/harbor.png",
+      "sha256": "56960a4eaff62c09bd01c1781e693ac0b1af6e4c3145746cb66dab949f275818"
+    },
+    {
+      "path": "assets/forest.png",
+      "sha256": "9f4074fbaf51ea00b9035000b3b85460bde68b59f1afbe081dae5261007d9361"
+    },
+    {
+      "path": "data/harbor-reviewed-world.json",
+      "sha256": "00fb819ad5227cdccdf1baa1de366678a9be9fc2a4da960d4a38ba5690a615a6"
+    },
+    {
+      "path": "data/forest-navigation-review.json",
+      "sha256": "9ca9e465c140f28ec58d43b2ad83805454867fc7babc435d91bdc451f06b756f"
+    },
+    {
+      "path": "data/forest-reviewed-world.json",
+      "sha256": "a039a737f3676e80c5eb5200a0336e85744433a879c6850d3cce180e01bbea7b"
+    },
+    {
+      "path": "data/hero-views.json",
+      "sha256": "11f7aa117e95f4972b17ead89e29f627b523835270962ca9b2f1183cbda822be"
+    },
+    {
+      "path": "data/harbor-painted-mask-contract.json",
+      "sha256": "1dd7db1b961c009873a195d7c4abe8037cccb737c18d209c8aa62899753195a5"
+    },
+    {
+      "path": "data/harbor-navigation-review.json",
+      "sha256": "c35819d0a229b6da5e1c78c99899f0c8860f030176011ffb52e42c4d7b66e9d6"
+    },
+    {
+      "path": "data/harbor-actor-profile.json",
+      "sha256": "2848c02421aac116fff2e8f8727b6aa4b0dd7816e9fa2f97221b06274e6d1e58"
+    },
+    {
+      "path": "data/harbor-reviewed-anchors.json",
+      "sha256": "8a2522ee1c3eb405fe1c053936c3ca89c78c4ae4bf90db5dd8640a4ee68b58c2"
+    },
+    {
+      "path": "adapters/forest-kernel/navigation.js",
+      "sha256": "2470af11efb775ad144eeacf5238611bc917c13e4f76e64b68d72ed523304fab"
+    },
+    {
+      "path": "adapters/forest-kernel/geometry.js",
+      "sha256": "f7cc43a2557f858812995531f74e025444bca0ccbc372fce19f5ed797c74816b"
+    },
+    {
+      "path": "adapters/forest-kernel/painted-path-review.js",
+      "sha256": "51637874bff27ce428d39ae4699693e83a1b164fe525bb7b3d01b4cfee733abc"
+    },
+    {
+      "path": "adapters/harbor-kernel/source-adapter.mjs",
+      "sha256": "904a6da5468da76a412daf3fb3f2d0809a33d24a7b8d9bb6b6177d529cdaf19c"
+    },
+    {
+      "path": "adapters/kernel/navigation.js",
+      "sha256": "2470af11efb775ad144eeacf5238611bc917c13e4f76e64b68d72ed523304fab"
+    },
+    {
+      "path": "adapters/kernel/geometry.js",
+      "sha256": "f7cc43a2557f858812995531f74e025444bca0ccbc372fce19f5ed797c74816b"
+    }
+  ],
+  "sourcePNGs": {
+    "forest": {
+      "source": "b-runtime-art-window/04_cg/working/BG_B_RW01_\u53cc\u6839\u6da7\u5b9e\u666f\u7a97\u53e3_v1.png",
+      "file": "assets/forest.png",
+      "sha256": "9f4074fbaf51ea00b9035000b3b85460bde68b59f1afbe081dae5261007d9361",
+      "size": [
+        1672,
+        941
+      ],
+      "mode": "RGB",
+      "operation": "byte-for-byte copy; no image editing"
+    },
+    "harbor": {
+      "source": "c-continuous-art-slice/04_cg/final/ENV_C2_M03_\u8fde\u7eed\u7f06\u6865_\u7a7a\u666f\u827a\u672f\u6bcd\u7248_v1.png",
+      "file": "assets/harbor.png",
+      "sha256": "56960a4eaff62c09bd01c1781e693ac0b1af6e4c3145746cb66dab949f275818",
+      "size": [
+        1586,
+        992
+      ],
+      "mode": "RGB",
+      "operation": "byte-for-byte copy; no image editing"
+    },
+    "hero": {
+      "source": "shared-map-character-production/hero-map-design-v1/04_cg/final/CHAR_hero_map_design_reference_four_directions_v2.png",
+      "file": "assets/hero.png",
+      "sha256": "7782d68d752cd42e9e30ba389431a39f4b4b10d115f5f9073c9ecd223420834f",
+      "size": [
+        1774,
+        887
+      ],
+      "mode": "RGBA",
+      "operation": "byte-for-byte copy; no image editing"
+    }
+  },
+  "browserScreenshotsProducedByThisRepair": 0,
+  "externalPublicationPerformed": false
+}

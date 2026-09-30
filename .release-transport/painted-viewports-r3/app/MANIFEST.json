@@ -1,0 +1,298 @@
+{
+  "package": "painted-scene-viewports-r3",
+  "version": "r3-frozen-local-depth-repair",
+  "frozenAtUTC": "2026-09-30T19:27:57.207962+00:00",
+  "supersedes": "r2; original untouched",
+  "scope": "bounded-static-depth-and-footing-repair-only",
+  "plannedActualBrowserScreenshots": 128,
+  "browserScreenshotsProducedHere": 0,
+  "visualApproval": false,
+  "nodeTestsPassed": 53,
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 3804,
+      "sha256": "264f094a76e7fb00513cdfa4d8d5b3d70bc5cb0b5098bd6c380669d8ed8b9f8b"
+    },
+    {
+      "path": "adapters/forest-kernel/geometry.js",
+      "bytes": 7612,
+      "sha256": "f7cc43a2557f858812995531f74e025444bca0ccbc372fce19f5ed797c74816b"
+    },
+    {
+      "path": "adapters/forest-kernel/navigation.js",
+      "bytes": 22941,
+      "sha256": "2470af11efb775ad144eeacf5238611bc917c13e4f76e64b68d72ed523304fab"
+    },
+    {
+      "path": "adapters/forest-kernel/painted-path-review.js",
+      "bytes": 3334,
+      "sha256": "51637874bff27ce428d39ae4699693e83a1b164fe525bb7b3d01b4cfee733abc"
+    },
+    {
+      "path": "adapters/forest.mjs",
+      "bytes": 3326,
+      "sha256": "cec3a3bccb2ab25421a53b3e05f9cf71c3f477efe057bd6ce8a55bca8508019e"
+    },
+    {
+      "path": "adapters/harbor-interior-route.mjs",
+      "bytes": 1675,
+      "sha256": "f877a58a227ac35d0fe832f3cebb6c80ca075ed244a38d545a161635adb7af71"
+    },
+    {
+      "path": "adapters/harbor-kernel/source-adapter.mjs",
+      "bytes": 2485,
+      "sha256": "904a6da5468da76a412daf3fb3f2d0809a33d24a7b8d9bb6b6177d529cdaf19c"
+    },
+    {
+      "path": "adapters/harbor.mjs",
+      "bytes": 3689,
+      "sha256": "6bb96971239ab577bf6bf44cc5a99a8f459f740e6170ee0dd1e60801a030016d"
+    },
+    {
+      "path": "adapters/kernel/geometry.js",
+      "bytes": 7612,
+      "sha256": "f7cc43a2557f858812995531f74e025444bca0ccbc372fce19f5ed797c74816b"
+    },
+    {
+      "path": "adapters/kernel/navigation.js",
+      "bytes": 22941,
+      "sha256": "2470af11efb775ad144eeacf5238611bc917c13e4f76e64b68d72ed523304fab"
+    },
+    {
+      "path": "assets/forest.png",
+      "bytes": 3269330,
+      "sha256": "9f4074fbaf51ea00b9035000b3b85460bde68b59f1afbe081dae5261007d9361"
+    },
+    {
+      "path": "assets/harbor.png",
+      "bytes": 2588197,
+      "sha256": "56960a4eaff62c09bd01c1781e693ac0b1af6e4c3145746cb66dab949f275818"
+    },
+    {
+      "path": "assets/hero.png",
+      "bytes": 1563479,
+      "sha256": "7782d68d752cd42e9e30ba389431a39f4b4b10d115f5f9073c9ecd223420834f"
+    },
+    {
+      "path": "data/forest-navigation-review.json",
+      "bytes": 938,
+      "sha256": "9ca9e465c140f28ec58d43b2ad83805454867fc7babc435d91bdc451f06b756f"
+    },
+    {
+      "path": "data/forest-reviewed-world.json",
+      "bytes": 16043,
+      "sha256": "a039a737f3676e80c5eb5200a0336e85744433a879c6850d3cce180e01bbea7b"
+    },
+    {
+      "path": "data/harbor-actor-profile.json",
+      "bytes": 112,
+      "sha256": "2848c02421aac116fff2e8f8727b6aa4b0dd7816e9fa2f97221b06274e6d1e58"
+    },
+    {
+      "path": "data/harbor-navigation-review.json",
+      "bytes": 989,
+      "sha256": "c35819d0a229b6da5e1c78c99899f0c8860f030176011ffb52e42c4d7b66e9d6"
+    },
+    {
+      "path": "data/harbor-painted-mask-contract.json",
+      "bytes": 964,
+      "sha256": "1dd7db1b961c009873a195d7c4abe8037cccb737c18d209c8aa62899753195a5"
+    },
+    {
+      "path": "data/harbor-reviewed-anchors.json",
+      "bytes": 13307,
+      "sha256": "8a2522ee1c3eb405fe1c053936c3ca89c78c4ae4bf90db5dd8640a4ee68b58c2"
+    },
+    {
+      "path": "data/harbor-reviewed-world.json",
+      "bytes": 52629,
+      "sha256": "00fb819ad5227cdccdf1baa1de366678a9be9fc2a4da960d4a38ba5690a615a6"
+    },
+    {
+      "path": "data/hero-views.json",
+      "bytes": 5701,
+      "sha256": "11f7aa117e95f4972b17ead89e29f627b523835270962ca9b2f1183cbda822be"
+    },
+    {
+      "path": "index.html",
+      "bytes": 3563,
+      "sha256": "496aa1f34529ffc44896f0f644246b99f849e39872ef8db85325983bfbb77c24"
+    },
+    {
+      "path": "package.json",
+      "bytes": 603,
+      "sha256": "4f055337b781b486faf27e4aff16784db24b539f1995f38527c7fe176fca1def"
+    },
+    {
+      "path": "qa/CHANGED_FILES.md",
+      "bytes": 1261,
+      "sha256": "136ec9bdd378065f57d1d775009b5007659c5afb5cbe9da0d8220732c1a432f8"
+    },
+    {
+      "path": "qa/FROZEN_PACKAGE.md",
+      "bytes": 1324,
+      "sha256": "d9b10154df86b87a1b0a26a0ca6cc068bf745706aa8426a1c2a52d10e205dcb5"
+    },
+    {
+      "path": "qa/PLAYWRIGHT_SCREENSHOT_PLAN.md",
+      "bytes": 3440,
+      "sha256": "909971d32cd5b0740eb175877dab20d07f21d0ddc4a8b679b766dffb9b2e8c55"
+    },
+    {
+      "path": "qa/R3-REPAIR-REGISTER.md",
+      "bytes": 6617,
+      "sha256": "0684fbcc39fffa94b077fdc3bf5213b4e1d7ab1ff870d948d10017feb9330bfe"
+    },
+    {
+      "path": "qa/alpha-on-background-numerical.json",
+      "bytes": 12238,
+      "sha256": "80355d3a092296ba9cba06f6ab8ec971e946866abe4e89a25bcd8eaa83550990"
+    },
+    {
+      "path": "qa/dependency-provenance.json",
+      "bytes": 1552,
+      "sha256": "1f9b0084d542a1dbdccc6c9e70f75d5817af4b90365711b34bd4a09046c4290b"
+    },
+    {
+      "path": "qa/r2-input-sha256.json",
+      "bytes": 4492,
+      "sha256": "281ebc2af57cb018d232b3ccf5acf54beff1c436c368fd4cfc36d1f13312e0db"
+    },
+    {
+      "path": "qa/r3-physical-selection-evidence.json",
+      "bytes": 23194,
+      "sha256": "d6d3eea7acfb95dd88890f6de28adeebe842ec84f7ce3e09c8873347c9496679"
+    },
+    {
+      "path": "qa/r3-source-preservation.json",
+      "bytes": 4005,
+      "sha256": "ae004441381740fee4884f51a14eb556f96e1c01a68934a9c536543c332543e4"
+    },
+    {
+      "path": "qa/source-audit.log",
+      "bytes": 1776,
+      "sha256": "33541b4f7f7c2b1d3bf4c91f0488e821aec6742981885a71abbf369eb2c628f9"
+    },
+    {
+      "path": "qa/source-integrity.json",
+      "bytes": 1083,
+      "sha256": "cd031e8a61667a1d4a433ac8ce7dd2c0496c8b1caa046b9d3a751e04f258d1f7"
+    },
+    {
+      "path": "qa/source-locks.log",
+      "bytes": 77,
+      "sha256": "b0b828e28211a5dc075341fb6f996362f099eedb382809bac5b42fb039065c19"
+    },
+    {
+      "path": "qa/unit-tests.log",
+      "bytes": 5225,
+      "sha256": "40656f71e9823c67d1dd5e42c8bd613fd2fd1bb050b2dd8d52085f24477a8321"
+    },
+    {
+      "path": "qa/verification.json",
+      "bytes": 474,
+      "sha256": "2475148a0583d1c0dd0f3488d3f52b017afda43b9230c65fd665c4f76612e0a3"
+    },
+    {
+      "path": "qa/verify.log",
+      "bytes": 5772,
+      "sha256": "61c09770e3b2ca9764b6b39a973c88a763acc22847886c775547407c535ddabd"
+    },
+    {
+      "path": "scripts/audit-alpha-on-background.py",
+      "bytes": 2754,
+      "sha256": "d789ce0fc6c219c9013956a50c3ab1ab5caad161433132546a928a4a84aaf4c2"
+    },
+    {
+      "path": "scripts/audit-source-assets.py",
+      "bytes": 5683,
+      "sha256": "05ff1927f21cfaeb511c1bfc31d10be66ad7a085b13e9bbc7828937562ab6718"
+    },
+    {
+      "path": "scripts/capture-plan.mjs",
+      "bytes": 879,
+      "sha256": "43b416ad9a97c79067bc6ef003352f6dcd84cec77f229ed43f5c1c90239d62e7"
+    },
+    {
+      "path": "scripts/capture-playwright.mjs",
+      "bytes": 11222,
+      "sha256": "fd6da337219bc66f9397bb0eedfb4e3943564bc213b4f0c101863da94355afe3"
+    },
+    {
+      "path": "scripts/check-manifest.mjs",
+      "bytes": 654,
+      "sha256": "9842146297a38852b26186df1793fe5e1abba5a176853babb78ce190128991a4"
+    },
+    {
+      "path": "scripts/check-source-locks.mjs",
+      "bytes": 790,
+      "sha256": "25001a20b715f661cba94e10064b8eb062fb403e626dd3458927384b84e81a70"
+    },
+    {
+      "path": "scripts/serve.mjs",
+      "bytes": 1383,
+      "sha256": "37b1a7cb8041cd0e70d59cca4f9c2e76c3674d0ea5ab74bf9f519ad6294a6f48"
+    },
+    {
+      "path": "scripts/verify.mjs",
+      "bytes": 2022,
+      "sha256": "d780958e0a2111beaf1a3a4ee02c169b39fa3085038a59f81f2221df10025c0d"
+    },
+    {
+      "path": "src/app.mjs",
+      "bytes": 15709,
+      "sha256": "41af8495175f965e3d81704da2c80908e3ca01127edbf400e8d240d96d87dd86"
+    },
+    {
+      "path": "src/core.mjs",
+      "bytes": 4408,
+      "sha256": "33b9bb19a6d3f91219b91c84e7fbc8cf6c8b1dc7aa076d6a2374a95a6c7b17a5"
+    },
+    {
+      "path": "src/depth.mjs",
+      "bytes": 1991,
+      "sha256": "c5a295dccd007103a07e54c69b932f4917a1ba50cb8aa34e79f2bd6f68cab691"
+    },
+    {
+      "path": "src/harbor-occluders.mjs",
+      "bytes": 3327,
+      "sha256": "7e368b04a0b9dac7e6853533f96c71a3b08c07b392489e3fcf51b5c2236c8248"
+    },
+    {
+      "path": "src/navigation.mjs",
+      "bytes": 871,
+      "sha256": "08f5abb81ec0d8f8e40129a92099f2beea33fb636e0f2bc9d2d742d5815bf95d"
+    },
+    {
+      "path": "src/render.mjs",
+      "bytes": 1018,
+      "sha256": "9acb8116d8687abeeeef5905b7e9647ddfe6431d76d598ee26fe9f73dc5323f6"
+    },
+    {
+      "path": "src/scenes.mjs",
+      "bytes": 2521,
+      "sha256": "2de88bc380c5e8c5d69f9cc29a13521c30a7de57657901c8cfadf9f26f8bc820"
+    },
+    {
+      "path": "styles.css",
+      "bytes": 6961,
+      "sha256": "91340fce0db439b708014ac641abad7a824a06c24b53dca6c3bd664765b6621f"
+    },
+    {
+      "path": "tests/core.test.mjs",
+      "bytes": 5828,
+      "sha256": "595974246cf1f6bf6bec1d6f68aa4f8d6d6592372433547bfc415920638449d1"
+    },
+    {
+      "path": "tests/depth-repair.test.mjs",
+      "bytes": 7005,
+      "sha256": "b54f3fdb766d85cefe87600026e3ee7d22e4f3eaee147dffcec88da2206fa4b8"
+    },
+    {
+      "path": "tests/navigation.test.mjs",
+      "bytes": 4628,
+      "sha256": "c6e4cbe1674c9c545b7edcaa9f5eff9264164ae9fd86f0a6781b1dd2edf09775"
+    }
+  ]
+}

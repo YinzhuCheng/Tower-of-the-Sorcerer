@@ -1,0 +1,964 @@
+{
+  "geometryId": "b-twin-root-bay-navigation-slice",
+  "version": "r0.5.1-independent-reviewed-local-CANDIDATE",
+  "units": "metres",
+  "axes": {
+    "x": "east",
+    "y": "north",
+    "z": "up"
+  },
+  "scope": "Independently checked local disc-navigation geometry. Pixel/tread/occlusion acceptance remains limited; no whole-root or playable-world claim.",
+  "source": {
+    "artGeometry": "b-continuous-art-slice/03_intermediate/geometry/world-geometry.json",
+    "artVersion": "forest-continuous-v2-art-slice-layout-r0.2",
+    "review": "Independent GEOS full-polygon containment and runtime adversarial review; see b-painted-navigation-reviewed/reports.",
+    "adjustments": []
+  },
+  "stateSchema": {
+    "enemyCleared": [
+      false,
+      true
+    ],
+    "rootFixed": [
+      false,
+      true
+    ],
+    "toolTaken": [
+      false,
+      true
+    ]
+  },
+  "surfaces": [
+    {
+      "id": "S04_upper_span",
+      "heightPlane": [
+        0,
+        0,
+        12
+      ]
+    },
+    {
+      "id": "S05_root_span",
+      "heightPlane": [
+        0,
+        0,
+        7.571093
+      ]
+    },
+    {
+      "id": "S06_upper_bay_steps",
+      "heightPlane": [
+        0,
+        0.5555555555555556,
+        -17.944444444444443
+      ]
+    },
+    {
+      "id": "S07_first_flight",
+      "heightPlane": [
+        0,
+        0.4263023333333331,
+        -11.100949199999988
+      ]
+    },
+    {
+      "id": "S07_turn_landing",
+      "heightPlane": [
+        0,
+        0,
+        8.85
+      ]
+    },
+    {
+      "id": "S07_second_flight",
+      "heightPlane": [
+        0.41071428571428586,
+        0,
+        -17.025000000000006
+      ]
+    },
+    {
+      "id": "S17_bay_and_top_landing",
+      "heightPlane": [
+        0,
+        0,
+        10
+      ]
+    }
+  ],
+  "floors": [
+    {
+      "id": "upper-conservative-support",
+      "surfaceId": "S04_upper_span",
+      "polygon": [
+        [
+          53.6,
+          53.15
+        ],
+        [
+          78.4,
+          53.15
+        ],
+        [
+          78.4,
+          55.35
+        ],
+        [
+          53.6,
+          55.35
+        ]
+      ]
+    },
+    {
+      "id": "root-local-support",
+      "surfaceId": "S05_root_span",
+      "polygon": [
+        [
+          60,
+          43.0
+        ],
+        [
+          63,
+          43.0
+        ],
+        [
+          63,
+          44.3
+        ],
+        [
+          60,
+          44.3
+        ]
+      ]
+    },
+    {
+      "id": "upper-flight-support",
+      "surfaceId": "S06_upper_bay_steps",
+      "polygon": [
+        [
+          64.3,
+          50.3
+        ],
+        [
+          65.7,
+          50.3
+        ],
+        [
+          65.7,
+          53.9
+        ],
+        [
+          64.3,
+          53.9
+        ]
+      ]
+    },
+    {
+      "id": "lower-first-support",
+      "surfaceId": "S07_first_flight",
+      "polygon": [
+        [
+          60.8,
+          43.8
+        ],
+        [
+          62.2,
+          43.8
+        ],
+        [
+          62.2,
+          46.8
+        ],
+        [
+          60.8,
+          46.8
+        ]
+      ]
+    },
+    {
+      "id": "turn-platform-support",
+      "surfaceId": "S07_turn_landing",
+      "polygon": [
+        [
+          60.8,
+          46.8
+        ],
+        [
+          63,
+          46.8
+        ],
+        [
+          63,
+          47.95
+        ],
+        [
+          60.8,
+          47.95
+        ]
+      ]
+    },
+    {
+      "id": "lower-second-support",
+      "surfaceId": "S07_second_flight",
+      "polygon": [
+        [
+          63,
+          46.8
+        ],
+        [
+          65.8,
+          47.4
+        ],
+        [
+          65.8,
+          48.2
+        ],
+        [
+          63,
+          47.95
+        ]
+      ]
+    },
+    {
+      "id": "bay-support",
+      "surfaceId": "S17_bay_and_top_landing",
+      "polygon": [
+        [
+          63.3,
+          48.2
+        ],
+        [
+          66.7,
+          48.2
+        ],
+        [
+          66.7,
+          50.3
+        ],
+        [
+          63.3,
+          50.3
+        ]
+      ]
+    },
+    {
+      "id": "top-landing-support",
+      "surfaceId": "S17_bay_and_top_landing",
+      "polygon": [
+        [
+          65.8,
+          46.8
+        ],
+        [
+          67.2,
+          46.8
+        ],
+        [
+          67.2,
+          48.9
+        ],
+        [
+          65.8,
+          48.9
+        ]
+      ]
+    }
+  ],
+  "cells": [
+    {
+      "id": "upper-west",
+      "surfaceId": "S04_upper_span",
+      "polygon": [
+        [
+          54,
+          53.9
+        ],
+        [
+          59.8,
+          53.9
+        ],
+        [
+          59.8,
+          54.98
+        ],
+        [
+          54,
+          54.98
+        ]
+      ]
+    },
+    {
+      "id": "upper-guard",
+      "surfaceId": "S04_upper_span",
+      "polygon": [
+        [
+          59.8,
+          53.9
+        ],
+        [
+          69.2,
+          53.9
+        ],
+        [
+          69.2,
+          54.98
+        ],
+        [
+          59.8,
+          54.98
+        ]
+      ],
+      "enabledWhen": {
+        "key": "enemyCleared",
+        "equals": true
+      }
+    },
+    {
+      "id": "upper-east",
+      "surfaceId": "S04_upper_span",
+      "polygon": [
+        [
+          69.2,
+          53.9
+        ],
+        [
+          78,
+          53.9
+        ],
+        [
+          78,
+          54.98
+        ],
+        [
+          69.2,
+          54.98
+        ]
+      ]
+    },
+    {
+      "id": "upper-stair",
+      "surfaceId": "S06_upper_bay_steps",
+      "polygon": [
+        [
+          64.64,
+          50.3
+        ],
+        [
+          65.36,
+          50.3
+        ],
+        [
+          65.36,
+          53.9
+        ],
+        [
+          64.64,
+          53.9
+        ]
+      ],
+      "enabledWhen": {
+        "key": "enemyCleared",
+        "equals": true
+      }
+    },
+    {
+      "id": "bay-north-neck",
+      "surfaceId": "S17_bay_and_top_landing",
+      "polygon": [
+        [
+          64.64,
+          49.94
+        ],
+        [
+          65.36,
+          49.94
+        ],
+        [
+          65.36,
+          50.3
+        ],
+        [
+          64.64,
+          50.3
+        ]
+      ]
+    },
+    {
+      "id": "tool-bay",
+      "surfaceId": "S17_bay_and_top_landing",
+      "polygon": [
+        [
+          63.64,
+          48.9
+        ],
+        [
+          66.36,
+          48.9
+        ],
+        [
+          66.36,
+          49.94
+        ],
+        [
+          63.64,
+          49.94
+        ]
+      ]
+    },
+    {
+      "id": "top-landing",
+      "surfaceId": "S17_bay_and_top_landing",
+      "polygon": [
+        [
+          65.8,
+          47.73
+        ],
+        [
+          66.36,
+          47.73
+        ],
+        [
+          66.36,
+          47.84
+        ],
+        [
+          65.8,
+          47.84
+        ]
+      ],
+      "enabledWhen": {
+        "key": "rootFixed",
+        "equals": true
+      }
+    },
+    {
+      "id": "top-return-neck",
+      "surfaceId": "S17_bay_and_top_landing",
+      "polygon": [
+        [
+          66.14,
+          47.84
+        ],
+        [
+          66.36,
+          47.84
+        ],
+        [
+          66.36,
+          48.9
+        ],
+        [
+          66.14,
+          48.9
+        ]
+      ],
+      "enabledWhen": {
+        "key": "rootFixed",
+        "equals": true
+      }
+    },
+    {
+      "id": "lower-second-flight",
+      "surfaceId": "S07_second_flight",
+      "polygon": [
+        [
+          63.34,
+          47.21
+        ],
+        [
+          65.46,
+          47.73
+        ],
+        [
+          65.46,
+          47.84
+        ],
+        [
+          63.34,
+          47.62
+        ]
+      ],
+      "enabledWhen": {
+        "key": "rootFixed",
+        "equals": true
+      }
+    },
+    {
+      "id": "lower-turn",
+      "surfaceId": "S07_turn_landing",
+      "polygon": [
+        [
+          61.14,
+          47.21
+        ],
+        [
+          63,
+          47.21
+        ],
+        [
+          63,
+          47.62
+        ],
+        [
+          61.14,
+          47.62
+        ]
+      ],
+      "enabledWhen": {
+        "key": "rootFixed",
+        "equals": true
+      }
+    },
+    {
+      "id": "lower-turn-neck",
+      "surfaceId": "S07_turn_landing",
+      "polygon": [
+        [
+          61.14,
+          46.8
+        ],
+        [
+          61.86,
+          46.8
+        ],
+        [
+          61.86,
+          47.21
+        ],
+        [
+          61.14,
+          47.21
+        ]
+      ],
+      "enabledWhen": {
+        "key": "rootFixed",
+        "equals": true
+      }
+    },
+    {
+      "id": "lower-first-flight",
+      "surfaceId": "S07_first_flight",
+      "polygon": [
+        [
+          61.14,
+          43.8
+        ],
+        [
+          61.86,
+          43.8
+        ],
+        [
+          61.86,
+          46.8
+        ],
+        [
+          61.14,
+          46.8
+        ]
+      ],
+      "enabledWhen": {
+        "key": "rootFixed",
+        "equals": true
+      }
+    },
+    {
+      "id": "root-local",
+      "surfaceId": "S05_root_span",
+      "polygon": [
+        [
+          60.34,
+          43.34
+        ],
+        [
+          62.66,
+          43.34
+        ],
+        [
+          62.66,
+          43.8
+        ],
+        [
+          60.34,
+          43.8
+        ]
+      ],
+      "enabledWhen": {
+        "key": "rootFixed",
+        "equals": true
+      }
+    },
+    {
+      "id": "lower-second-west-neck",
+      "surfaceId": "S07_second_flight",
+      "polygon": [
+        [
+          63,
+          47.21
+        ],
+        [
+          63.34,
+          47.21
+        ],
+        [
+          63.34,
+          47.62
+        ],
+        [
+          63,
+          47.62
+        ]
+      ],
+      "enabledWhen": {
+        "key": "rootFixed",
+        "equals": true
+      }
+    },
+    {
+      "id": "lower-second-east-neck",
+      "surfaceId": "S07_second_flight",
+      "polygon": [
+        [
+          65.46,
+          47.73
+        ],
+        [
+          65.8,
+          47.73
+        ],
+        [
+          65.8,
+          47.84
+        ],
+        [
+          65.46,
+          47.84
+        ]
+      ],
+      "enabledWhen": {
+        "key": "rootFixed",
+        "equals": true
+      }
+    }
+  ],
+  "portals": [
+    {
+      "id": "upper-west-guard",
+      "aCell": "upper-west",
+      "bCell": "upper-guard",
+      "aperture": [
+        [
+          59.8,
+          53.9
+        ],
+        [
+          59.8,
+          54.98
+        ]
+      ],
+      "kind": "seam"
+    },
+    {
+      "id": "upper-guard-east",
+      "aCell": "upper-guard",
+      "bCell": "upper-east",
+      "aperture": [
+        [
+          69.2,
+          53.9
+        ],
+        [
+          69.2,
+          54.98
+        ]
+      ],
+      "kind": "seam"
+    },
+    {
+      "id": "upper-stair-top",
+      "aCell": "upper-guard",
+      "bCell": "upper-stair",
+      "aperture": [
+        [
+          64.64,
+          53.9
+        ],
+        [
+          65.36,
+          53.9
+        ]
+      ],
+      "kind": "stairs"
+    },
+    {
+      "id": "upper-stair-bay",
+      "aCell": "upper-stair",
+      "bCell": "bay-north-neck",
+      "aperture": [
+        [
+          64.64,
+          50.3
+        ],
+        [
+          65.36,
+          50.3
+        ]
+      ],
+      "kind": "stairs"
+    },
+    {
+      "id": "bay-north",
+      "aCell": "bay-north-neck",
+      "bCell": "tool-bay",
+      "aperture": [
+        [
+          64.64,
+          49.94
+        ],
+        [
+          65.36,
+          49.94
+        ]
+      ],
+      "kind": "seam"
+    },
+    {
+      "id": "bay-south",
+      "aCell": "tool-bay",
+      "bCell": "top-return-neck",
+      "aperture": [
+        [
+          66.14,
+          48.9
+        ],
+        [
+          66.36,
+          48.9
+        ]
+      ],
+      "kind": "seam"
+    },
+    {
+      "id": "top-internal",
+      "aCell": "top-return-neck",
+      "bCell": "top-landing",
+      "aperture": [
+        [
+          66.14,
+          47.84
+        ],
+        [
+          66.36,
+          47.84
+        ]
+      ],
+      "kind": "seam"
+    },
+    {
+      "id": "lower-top",
+      "aCell": "top-landing",
+      "bCell": "lower-second-east-neck",
+      "aperture": [
+        [
+          65.8,
+          47.73
+        ],
+        [
+          65.8,
+          47.84
+        ]
+      ],
+      "kind": "stairs"
+    },
+    {
+      "id": "lower-second-bottom",
+      "aCell": "lower-second-west-neck",
+      "bCell": "lower-turn",
+      "aperture": [
+        [
+          63,
+          47.21
+        ],
+        [
+          63,
+          47.62
+        ]
+      ],
+      "kind": "stairs"
+    },
+    {
+      "id": "turn-internal",
+      "aCell": "lower-turn",
+      "bCell": "lower-turn-neck",
+      "aperture": [
+        [
+          61.14,
+          47.21
+        ],
+        [
+          61.86,
+          47.21
+        ]
+      ],
+      "kind": "seam"
+    },
+    {
+      "id": "lower-first-top",
+      "aCell": "lower-turn-neck",
+      "bCell": "lower-first-flight",
+      "aperture": [
+        [
+          61.14,
+          46.8
+        ],
+        [
+          61.86,
+          46.8
+        ]
+      ],
+      "kind": "stairs"
+    },
+    {
+      "id": "lower-root-foot",
+      "aCell": "lower-first-flight",
+      "bCell": "root-local",
+      "aperture": [
+        [
+          61.14,
+          43.8
+        ],
+        [
+          61.86,
+          43.8
+        ]
+      ],
+      "kind": "stairs"
+    },
+    {
+      "id": "lower-second-west-internal",
+      "aCell": "lower-second-west-neck",
+      "bCell": "lower-second-flight",
+      "aperture": [
+        [
+          63.34,
+          47.21
+        ],
+        [
+          63.34,
+          47.62
+        ]
+      ],
+      "kind": "seam"
+    },
+    {
+      "id": "lower-second-east-internal",
+      "aCell": "lower-second-flight",
+      "bCell": "lower-second-east-neck",
+      "aperture": [
+        [
+          65.46,
+          47.73
+        ],
+        [
+          65.46,
+          47.84
+        ]
+      ],
+      "kind": "seam"
+    }
+  ],
+  "blockers": [
+    {
+      "id": "dragger-physical-body",
+      "surfaceId": "S04_upper_span",
+      "polygon": [
+        [
+          60.2,
+          54.05
+        ],
+        [
+          68.8,
+          54.05
+        ],
+        [
+          68.8,
+          54.8
+        ],
+        [
+          60.2,
+          54.8
+        ]
+      ],
+      "enabledWhen": {
+        "key": "enemyCleared",
+        "equals": false
+      }
+    }
+  ],
+  "anchors": [
+    {
+      "id": "tool-chest",
+      "eventId": "P_blade",
+      "cellId": "tool-bay",
+      "position": [
+        65,
+        49.7
+      ],
+      "kind": "item",
+      "interactionRadius": 0.45,
+      "enabledWhen": {
+        "key": "toolTaken",
+        "equals": false
+      }
+    },
+    {
+      "id": "dragger-west-preview",
+      "eventId": "E_dragger",
+      "cellId": "upper-west",
+      "position": [
+        59.4,
+        54.4
+      ],
+      "kind": "enemy",
+      "interactionRadius": 0.45,
+      "enabledWhen": {
+        "key": "enemyCleared",
+        "equals": false
+      }
+    },
+    {
+      "id": "dragger-east-preview",
+      "eventId": "E_dragger",
+      "cellId": "upper-east",
+      "position": [
+        69.6,
+        54.4
+      ],
+      "kind": "enemy",
+      "interactionRadius": 0.45,
+      "enabledWhen": {
+        "key": "enemyCleared",
+        "equals": false
+      }
+    }
+  ],
+  "requiredConnections": [
+    {
+      "from": "upper-west",
+      "to": "tool-bay"
+    },
+    {
+      "from": "upper-east",
+      "to": "tool-bay"
+    },
+    {
+      "from": "root-local",
+      "to": "tool-bay"
+    }
+  ],
+  "proposalNotes": [
+    "Derived new candidate; all physical floors, all surface planes, state schema, blockers, anchors and required connections byte-value unchanged from r0.5.",
+    "Only seven conservative cells and six matching portals refined. Minimum center aperture 0.11m; actor radius remains0.32m. Not keyboard usability acceptance.",
+    "Full root height continuity is a distinct unaccepted candidate; local root plane must not be extrapolated to banks.",
+    "Individual stair-tread support/foot animation, headroom, shoulders, occlusion and final pixel support remain separately gated."
+  ]
+}

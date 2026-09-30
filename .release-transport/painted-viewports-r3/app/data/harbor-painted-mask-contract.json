@@ -1,0 +1,14 @@
+{
+  "status": "UNAUTHORED_AND_UNCALIBRATED",
+  "acceptedArtRole": "art mother only",
+  "originalPixels": [1586, 992],
+  "geometryReferencePixels": [1680, 1050],
+  "aspectFit": {"scale": 0.944047619047619, "contentPixels": [1586, 991.25], "offsetPixels": [0, 0.375]},
+  "physicalSupportSource": "harbor-world.json floors and blockers",
+  "conservativeCentreDomainSource": "harbor-world.json cells",
+  "paintedVisibleWalkMask": null,
+  "knownArtRisks": ["quay ground/face/waterline drift", "near rail thickness and painted holes", "east top/turn/lower stair occlusion", "door-front decoration unregistered"],
+  "navigationAuthority": false,
+  "screenOverlapCreatesPortal": false,
+  "requiredBeforeRuntimeAcceptance": ["original-art layer extraction", "hidden actual low floor restoration", "visible foot and rail clearance inspection over paths", "unregistered planter world envelope if it intrudes", "body/animation clearance separate from radius0.18 footprint"]
+}

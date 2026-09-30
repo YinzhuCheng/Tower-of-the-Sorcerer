@@ -1,0 +1,14 @@
+{
+ "status":"approved-local-movement",
+ "scope":"static physical-footprint path REVIEW; only named visible QA target identities",
+ "source":"c-harbor-physical-navigation/source/harbor-world.json",
+ "sourceSha256":"00fb819ad5227cdccdf1baa1de366678a9be9fc2a4da960d4a38ba5690a615a6",
+ "anchorSha256":"8a2522ee1c3eb405fe1c053936c3ca89c78c4ae4bf90db5dd8640a4ee68b58c2",
+ "adapterSourceSha256":"904a6da5468da76a412daf3fb3f2d0809a33d24a7b8d9bb6b6177d529cdaf19c",
+ "radiusMetres":0.18,"maxStepMetres":0.2,
+ "physicalSupportReview":"PASS: frozen 32 cells/33 portals, independently checked R7 static footprint and obstacle scope",
+ "paintedPixelReview":"UNAUTHORED_AND_UNCALIBRATED: no validated painted visible walking mask",
+ "occlusionReview":"UNVERIFIED: no accepted masks or hidden floor repaint",
+ "bodyAnimationReview":"UNVERIFIED: radius .18m foot disc does not certify shoulder, scabbard, garment, motion or camera alignment",
+ "screenYSorting":false,"freeRoam":false,"gameEffects":false
+}

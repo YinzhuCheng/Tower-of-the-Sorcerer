@@ -1,0 +1,358 @@
+{
+  "status": "QA neutral reference only; not animation or production-approved sprite",
+  "sheetSize": [
+    1774,
+    887
+  ],
+  "sourceSha256": "7782d68d752cd42e9e30ba389431a39f4b4b10d115f5f9073c9ecd223420834f",
+  "views": {
+    "front": {
+      "label": "正面",
+      "sourceRect": [
+        0,
+        0,
+        513,
+        887
+      ],
+      "clipPolygon": [
+        [
+          0,
+          0
+        ],
+        [
+          513,
+          0
+        ],
+        [
+          513,
+          887
+        ],
+        [
+          0,
+          887
+        ]
+      ],
+      "pivot": [
+        260.5,
+        860.5
+      ],
+      "crownY": 16,
+      "referenceHeight": 844.5,
+      "soleContacts": [
+        [
+          230,
+          853
+        ],
+        [
+          291,
+          868
+        ]
+      ]
+    },
+    "back": {
+      "label": "背面",
+      "sourceRect": [
+        513,
+        0,
+        532,
+        887
+      ],
+      "clipPolygon": [
+        [
+          513,
+          0
+        ],
+        [
+          987,
+          0
+        ],
+        [
+          986,
+          80
+        ],
+        [
+          982,
+          160
+        ],
+        [
+          978,
+          240
+        ],
+        [
+          961,
+          320
+        ],
+        [
+          963,
+          383
+        ],
+        [
+          986,
+          462
+        ],
+        [
+          992,
+          513
+        ],
+        [
+          992,
+          593
+        ],
+        [
+          992,
+          673
+        ],
+        [
+          992,
+          753
+        ],
+        [
+          993,
+          833
+        ],
+        [
+          993,
+          886
+        ],
+        [
+          513,
+          886
+        ]
+      ],
+      "pivot": [
+        742.5,
+        853.0
+      ],
+      "crownY": 27,
+      "referenceHeight": 826.0,
+      "soleContacts": [
+        [
+          720,
+          847
+        ],
+        [
+          765,
+          859
+        ]
+      ]
+    },
+    "right": {
+      "label": "朝画右 · 本人右侧近",
+      "sourceRect": [
+        920,
+        0,
+        438,
+        887
+      ],
+      "clipPolygon": [
+        [
+          987,
+          0
+        ],
+        [
+          986,
+          80
+        ],
+        [
+          982,
+          160
+        ],
+        [
+          978,
+          240
+        ],
+        [
+          961,
+          320
+        ],
+        [
+          963,
+          383
+        ],
+        [
+          986,
+          462
+        ],
+        [
+          992,
+          513
+        ],
+        [
+          992,
+          593
+        ],
+        [
+          992,
+          673
+        ],
+        [
+          992,
+          753
+        ],
+        [
+          993,
+          833
+        ],
+        [
+          993,
+          886
+        ],
+        [
+          1358,
+          886
+        ],
+        [
+          1358,
+          0
+        ]
+      ],
+      "pivot": [
+        1212.5,
+        845.5
+      ],
+      "crownY": 29,
+      "referenceHeight": 816.5,
+      "soleContacts": [
+        [
+          1178,
+          837
+        ],
+        [
+          1247,
+          854
+        ]
+      ]
+    },
+    "left": {
+      "label": "朝画左 · 本人左侧近",
+      "sourceRect": [
+        1358,
+        0,
+        416,
+        887
+      ],
+      "clipPolygon": [
+        [
+          1358,
+          0
+        ],
+        [
+          1774,
+          0
+        ],
+        [
+          1774,
+          887
+        ],
+        [
+          1358,
+          887
+        ]
+      ],
+      "pivot": [
+        1531.5,
+        848.5
+      ],
+      "crownY": 26,
+      "referenceHeight": 822.5,
+      "soleContacts": [
+        [
+          1495,
+          859
+        ],
+        [
+          1568,
+          838
+        ]
+      ]
+    }
+  },
+  "semanticSeparator": {
+    "path": [
+      [
+        987,
+        0
+      ],
+      [
+        986,
+        80
+      ],
+      [
+        982,
+        160
+      ],
+      [
+        978,
+        240
+      ],
+      [
+        961,
+        320
+      ],
+      [
+        963,
+        383
+      ],
+      [
+        986,
+        462
+      ],
+      [
+        992,
+        513
+      ],
+      [
+        992,
+        593
+      ],
+      [
+        992,
+        673
+      ],
+      [
+        992,
+        753
+      ],
+      [
+        993,
+        833
+      ],
+      [
+        993,
+        886
+      ]
+    ],
+    "allSampledSeparatorPixelsAlpha": 0,
+    "clearanceAudit": "5x5 all-zero-alpha neighbourhood along raster-sampled path",
+    "method": "per-row source-alpha read and semantic component identification; source alpha never thresholded in renderer",
+    "sourceBitmapModified": false
+  },
+  "heightMethod": "Each view uniformly scaled by its own crown-to-contact height; width is never stretched independently. Foot pivots visually authored from original complete boots, pending in-browser art review.",
+  "checks": [
+    {
+      "view": "front",
+      "alphaGreater16MainComponentPixelsRetained": 220762,
+      "neighbourComponentPixelsIncluded": 0
+    },
+    {
+      "view": "back",
+      "alphaGreater16MainComponentPixelsRetained": 215056,
+      "neighbourComponentPixelsIncluded": 0
+    },
+    {
+      "view": "right",
+      "alphaGreater16MainComponentPixelsRetained": 148041,
+      "neighbourComponentPixelsIncluded": 0
+    },
+    {
+      "view": "left",
+      "alphaGreater16MainComponentPixelsRetained": 151566,
+      "neighbourComponentPixelsIncluded": 0
+    }
+  ],
+  "limitations": [
+    "Low-alpha edge noise and original alpha252–253 body interiors are preserved",
+    "Actual camera agreement/foot contact require browser screenshot review",
+    "Contact pivots are authored QA measurements, not motion-capture or complete walk-cycle grounding"
+  ]
+}

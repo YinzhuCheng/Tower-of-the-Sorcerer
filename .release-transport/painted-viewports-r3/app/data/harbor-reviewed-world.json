@@ -1,0 +1,3206 @@
+{
+  "geometryId": "C-M03-R7-local-physical-navigation",
+  "version": "0.1.0-source-grounded-conservative",
+  "stateSchema": {},
+  "surfaces": [
+    {
+      "id": "old_public",
+      "heightPlane": [
+        0,
+        0,
+        1.2
+      ]
+    },
+    {
+      "id": "three_step_transition",
+      "heightPlane": [
+        -0.4444444444444445,
+        0,
+        -3.2444444444444445
+      ]
+    },
+    {
+      "id": "low_public",
+      "heightPlane": [
+        0,
+        0,
+        0.8
+      ]
+    },
+    {
+      "id": "west_lower_flight",
+      "heightPlane": [
+        0,
+        -0.5,
+        12.9
+      ]
+    },
+    {
+      "id": "west_middle",
+      "heightPlane": [
+        0,
+        0,
+        2.9
+      ]
+    },
+    {
+      "id": "west_upper_flight",
+      "heightPlane": [
+        0,
+        -0.5,
+        12.2
+      ]
+    },
+    {
+      "id": "upper_public",
+      "heightPlane": [
+        0,
+        0,
+        5
+      ]
+    },
+    {
+      "id": "east_upper_flight",
+      "heightPlane": [
+        0,
+        -0.5,
+        3.05
+      ]
+    },
+    {
+      "id": "east_middle",
+      "heightPlane": [
+        0,
+        0,
+        2.9
+      ]
+    },
+    {
+      "id": "east_lower_flight",
+      "heightPlane": [
+        0,
+        0.5,
+        2.875
+      ]
+    }
+  ],
+  "floors": [
+    {
+      "id": "old_public_street",
+      "surfaceId": "old_public",
+      "polygon": [
+        [
+          -13,
+          25.8
+        ],
+        [
+          -10,
+          25.8
+        ],
+        [
+          -10,
+          24.6
+        ],
+        [
+          -13,
+          24.6
+        ]
+      ],
+      "source": "M03_main_connections_r6.json",
+      "authoredSurfaceId": "old_public_street"
+    },
+    {
+      "id": "three_step_transition",
+      "surfaceId": "three_step_transition",
+      "polygon": [
+        [
+          -10,
+          25.8
+        ],
+        [
+          -9.1,
+          25.8
+        ],
+        [
+          -9.1,
+          24.6
+        ],
+        [
+          -10,
+          24.6
+        ]
+      ],
+      "source": "M03_main_connections_r6.json",
+      "authoredSurfaceId": "three_step_transition"
+    },
+    {
+      "id": "west_street_north",
+      "surfaceId": "low_public",
+      "polygon": [
+        [
+          -9.1,
+          25.8
+        ],
+        [
+          -7.8,
+          25.8
+        ],
+        [
+          -7.8,
+          24.6
+        ],
+        [
+          -9.1,
+          24.6
+        ]
+      ],
+      "source": "M03_main_connections_r6.json",
+      "authoredSurfaceId": "west_street_north"
+    },
+    {
+      "id": "west_street_south",
+      "surfaceId": "low_public",
+      "polygon": [
+        [
+          -9.6,
+          24.6
+        ],
+        [
+          -7.8,
+          24.6
+        ],
+        [
+          -7.8,
+          24.2
+        ],
+        [
+          -9.6,
+          24.2
+        ]
+      ],
+      "source": "M03_main_connections_r6.json",
+      "authoredSurfaceId": "west_street_south"
+    },
+    {
+      "id": "west_lower_flight",
+      "surfaceId": "west_lower_flight",
+      "polygon": [
+        [
+          -9.6,
+          24.2
+        ],
+        [
+          -7.8,
+          24.2
+        ],
+        [
+          -7.8,
+          20
+        ],
+        [
+          -9.6,
+          20
+        ]
+      ],
+      "source": "M03_main_connections_r6.json",
+      "authoredSurfaceId": "west_lower_flight"
+    },
+    {
+      "id": "west_middle_landing",
+      "surfaceId": "west_middle",
+      "polygon": [
+        [
+          -9.6,
+          20
+        ],
+        [
+          -7.8,
+          20
+        ],
+        [
+          -7.8,
+          18.6
+        ],
+        [
+          -9.6,
+          18.6
+        ]
+      ],
+      "source": "M03_main_connections_r6.json",
+      "authoredSurfaceId": "west_middle_landing"
+    },
+    {
+      "id": "west_upper_flight",
+      "surfaceId": "west_upper_flight",
+      "polygon": [
+        [
+          -9.6,
+          18.6
+        ],
+        [
+          -7.8,
+          18.6
+        ],
+        [
+          -7.8,
+          14.4
+        ],
+        [
+          -9.6,
+          14.4
+        ]
+      ],
+      "source": "M03_main_connections_r6.json",
+      "authoredSurfaceId": "west_upper_flight"
+    },
+    {
+      "id": "west_upper_approach",
+      "surfaceId": "upper_public",
+      "polygon": [
+        [
+          -10.2,
+          14.4
+        ],
+        [
+          -7.8,
+          14.4
+        ],
+        [
+          -7.8,
+          8.4
+        ],
+        [
+          -10.2,
+          8.4
+        ]
+      ],
+      "source": "M03_main_connections_r6.json",
+      "authoredSurfaceId": "west_upper_approach"
+    },
+    {
+      "id": "main_bridge",
+      "surfaceId": "upper_public",
+      "polygon": [
+        [
+          -10,
+          8.4
+        ],
+        [
+          14,
+          8.4
+        ],
+        [
+          14,
+          6
+        ],
+        [
+          -10,
+          6
+        ]
+      ],
+      "source": "M03_main_connections_r6.json",
+      "authoredSurfaceId": "main_bridge"
+    },
+    {
+      "id": "east_bridge_junction",
+      "surfaceId": "upper_public",
+      "polygon": [
+        [
+          14,
+          8.4
+        ],
+        [
+          16.1,
+          8.4
+        ],
+        [
+          16.1,
+          5.5
+        ],
+        [
+          14,
+          5.5
+        ]
+      ],
+      "source": "M03_main_connections_r6.json",
+      "authoredSurfaceId": "east_bridge_junction"
+    },
+    {
+      "id": "east_upper_promenade",
+      "surfaceId": "upper_public",
+      "polygon": [
+        [
+          13.9,
+          5.5
+        ],
+        [
+          16.1,
+          5.5
+        ],
+        [
+          16.1,
+          -5.6
+        ],
+        [
+          13.9,
+          -5.6
+        ]
+      ],
+      "source": "M03_main_connections_r6.json",
+      "authoredSurfaceId": "east_upper_promenade"
+    },
+    {
+      "id": "east_landing_connector",
+      "surfaceId": "upper_public",
+      "polygon": [
+        [
+          13.7,
+          -3.9
+        ],
+        [
+          13.9,
+          -3.9
+        ],
+        [
+          13.9,
+          -4.8
+        ],
+        [
+          13.7,
+          -4.8
+        ]
+      ],
+      "source": "M03_main_connections_r6.json",
+      "authoredSurfaceId": "east_landing_connector"
+    },
+    {
+      "id": "east_top_landing",
+      "surfaceId": "upper_public",
+      "polygon": [
+        [
+          12.5,
+          -3.9
+        ],
+        [
+          13.7,
+          -3.9
+        ],
+        [
+          13.7,
+          -4.8
+        ],
+        [
+          12.5,
+          -4.8
+        ]
+      ],
+      "source": "M03_main_connections_r6.json",
+      "authoredSurfaceId": "east_top_landing"
+    },
+    {
+      "id": "east_upper_flight",
+      "surfaceId": "east_upper_flight",
+      "polygon": [
+        [
+          12.55,
+          0.3
+        ],
+        [
+          13.65,
+          0.3
+        ],
+        [
+          13.65,
+          -3.9
+        ],
+        [
+          12.55,
+          -3.9
+        ]
+      ],
+      "source": "M03_main_connections_r6.json",
+      "authoredSurfaceId": "east_upper_flight"
+    },
+    {
+      "id": "east_middle_back",
+      "surfaceId": "east_middle",
+      "polygon": [
+        [
+          11.15,
+          1.45
+        ],
+        [
+          13.65,
+          1.45
+        ],
+        [
+          13.65,
+          0.3
+        ],
+        [
+          11.15,
+          0.3
+        ]
+      ],
+      "source": "M03_main_connections_r6.json",
+      "authoredSurfaceId": "east_middle_back"
+    },
+    {
+      "id": "east_middle_front",
+      "surfaceId": "east_middle",
+      "polygon": [
+        [
+          11.15,
+          0.3
+        ],
+        [
+          12.55,
+          0.3
+        ],
+        [
+          12.55,
+          0.05
+        ],
+        [
+          11.15,
+          0.05
+        ]
+      ],
+      "source": "M03_main_connections_r6.json",
+      "authoredSurfaceId": "east_middle_front"
+    },
+    {
+      "id": "east_lower_flight",
+      "surfaceId": "east_lower_flight",
+      "polygon": [
+        [
+          11.15,
+          0.05
+        ],
+        [
+          12.25,
+          0.05
+        ],
+        [
+          12.25,
+          -4.15
+        ],
+        [
+          11.15,
+          -4.15
+        ]
+      ],
+      "source": "M03_main_connections_r6.json",
+      "authoredSurfaceId": "east_lower_flight"
+    },
+    {
+      "id": "east_low_public",
+      "surfaceId": "low_public",
+      "polygon": [
+        [
+          10.5,
+          -4.15
+        ],
+        [
+          13,
+          -4.15
+        ],
+        [
+          13,
+          -5.6
+        ],
+        [
+          10.5,
+          -5.6
+        ]
+      ],
+      "source": "M03_main_connections_r6.json",
+      "authoredSurfaceId": "east_low_public"
+    },
+    {
+      "id": "R-B-shore.triangle.0",
+      "surfaceId": "low_public",
+      "polygon": [
+        [
+          -15,
+          29
+        ],
+        [
+          -15,
+          20
+        ],
+        [
+          -10,
+          16
+        ]
+      ],
+      "source": "harbor-master-v2.json / R7 mesh",
+      "authoredObject": "R-B-shore"
+    },
+    {
+      "id": "R-B-shore.triangle.1",
+      "surfaceId": "low_public",
+      "polygon": [
+        [
+          -15,
+          29
+        ],
+        [
+          -10,
+          16
+        ],
+        [
+          -5,
+          13
+        ]
+      ],
+      "source": "harbor-master-v2.json / R7 mesh",
+      "authoredObject": "R-B-shore"
+    },
+    {
+      "id": "R-B-shore.triangle.2",
+      "surfaceId": "low_public",
+      "polygon": [
+        [
+          -15,
+          29
+        ],
+        [
+          -5,
+          13
+        ],
+        [
+          6,
+          12
+        ]
+      ],
+      "source": "harbor-master-v2.json / R7 mesh",
+      "authoredObject": "R-B-shore"
+    },
+    {
+      "id": "R-B-shore.triangle.3",
+      "surfaceId": "low_public",
+      "polygon": [
+        [
+          6,
+          4
+        ],
+        [
+          1.82,
+          4
+        ],
+        [
+          1.82,
+          -7
+        ]
+      ],
+      "source": "harbor-master-v2.json / R7 mesh",
+      "authoredObject": "R-B-shore"
+    },
+    {
+      "id": "R-B-shore.triangle.4",
+      "surfaceId": "low_public",
+      "polygon": [
+        [
+          6,
+          4
+        ],
+        [
+          1.82,
+          -7
+        ],
+        [
+          7,
+          -10
+        ]
+      ],
+      "source": "harbor-master-v2.json / R7 mesh",
+      "authoredObject": "R-B-shore"
+    },
+    {
+      "id": "R-B-shore.triangle.5",
+      "surfaceId": "low_public",
+      "polygon": [
+        [
+          6,
+          12
+        ],
+        [
+          6,
+          4
+        ],
+        [
+          7,
+          -10
+        ]
+      ],
+      "source": "harbor-master-v2.json / R7 mesh",
+      "authoredObject": "R-B-shore"
+    },
+    {
+      "id": "R-B-shore.triangle.6",
+      "surfaceId": "low_public",
+      "polygon": [
+        [
+          6,
+          12
+        ],
+        [
+          7,
+          -10
+        ],
+        [
+          14,
+          -8
+        ]
+      ],
+      "source": "harbor-master-v2.json / R7 mesh",
+      "authoredObject": "R-B-shore"
+    },
+    {
+      "id": "R-B-shore.triangle.7",
+      "surfaceId": "low_public",
+      "polygon": [
+        [
+          6,
+          12
+        ],
+        [
+          14,
+          -8
+        ],
+        [
+          14,
+          5
+        ]
+      ],
+      "source": "harbor-master-v2.json / R7 mesh",
+      "authoredObject": "R-B-shore"
+    },
+    {
+      "id": "R-B-shore.triangle.8",
+      "surfaceId": "low_public",
+      "polygon": [
+        [
+          6,
+          12
+        ],
+        [
+          14,
+          5
+        ],
+        [
+          16,
+          11
+        ]
+      ],
+      "source": "harbor-master-v2.json / R7 mesh",
+      "authoredObject": "R-B-shore"
+    },
+    {
+      "id": "R-B-shore.triangle.9",
+      "surfaceId": "low_public",
+      "polygon": [
+        [
+          -15,
+          29
+        ],
+        [
+          6,
+          12
+        ],
+        [
+          16,
+          11
+        ]
+      ],
+      "source": "harbor-master-v2.json / R7 mesh",
+      "authoredObject": "R-B-shore"
+    },
+    {
+      "id": "R-B-shore.triangle.10",
+      "surfaceId": "low_public",
+      "polygon": [
+        [
+          -15,
+          29
+        ],
+        [
+          16,
+          11
+        ],
+        [
+          20,
+          18
+        ]
+      ],
+      "source": "harbor-master-v2.json / R7 mesh",
+      "authoredObject": "R-B-shore"
+    },
+    {
+      "id": "R-B-shore.triangle.11",
+      "surfaceId": "low_public",
+      "polygon": [
+        [
+          -15,
+          29
+        ],
+        [
+          20,
+          18
+        ],
+        [
+          18,
+          27
+        ]
+      ],
+      "source": "harbor-master-v2.json / R7 mesh",
+      "authoredObject": "R-B-shore"
+    },
+    {
+      "id": "R-B-shore.triangle.12",
+      "surfaceId": "low_public",
+      "polygon": [
+        [
+          18,
+          27
+        ],
+        [
+          6,
+          32
+        ],
+        [
+          -15,
+          29
+        ]
+      ],
+      "source": "harbor-master-v2.json / R7 mesh",
+      "authoredObject": "R-B-shore"
+    },
+    {
+      "id": "M03-low-working-quay.triangle.0",
+      "surfaceId": "low_public",
+      "polygon": [
+        [
+          1.82,
+          4
+        ],
+        [
+          1.82,
+          -7
+        ],
+        [
+          9.5,
+          -7
+        ]
+      ],
+      "source": "harbor-master-v2.json / R7 mesh",
+      "authoredObject": "M03-low-working-quay"
+    },
+    {
+      "id": "M03-low-working-quay.triangle.1",
+      "surfaceId": "low_public",
+      "polygon": [
+        [
+          9.5,
+          -7
+        ],
+        [
+          9.5,
+          12
+        ],
+        [
+          4,
+          12
+        ]
+      ],
+      "source": "harbor-master-v2.json / R7 mesh",
+      "authoredObject": "M03-low-working-quay"
+    },
+    {
+      "id": "M03-low-working-quay.triangle.2",
+      "surfaceId": "low_public",
+      "polygon": [
+        [
+          9.5,
+          -7
+        ],
+        [
+          4,
+          12
+        ],
+        [
+          4,
+          4
+        ]
+      ],
+      "source": "harbor-master-v2.json / R7 mesh",
+      "authoredObject": "M03-low-working-quay"
+    },
+    {
+      "id": "M03-low-working-quay.triangle.3",
+      "surfaceId": "low_public",
+      "polygon": [
+        [
+          9.5,
+          -7
+        ],
+        [
+          4,
+          4
+        ],
+        [
+          1.82,
+          4
+        ]
+      ],
+      "source": "harbor-master-v2.json / R7 mesh",
+      "authoredObject": "M03-low-working-quay"
+    }
+  ],
+  "cells": [
+    {
+      "id": "old_public.cell.0",
+      "surfaceId": "old_public",
+      "polygon": [
+        [
+          -12,
+          24.95
+        ],
+        [
+          -10,
+          24.95
+        ],
+        [
+          -10,
+          25.45
+        ],
+        [
+          -12,
+          25.45
+        ]
+      ],
+      "authoredCenterDomainXZ": [
+        -12,
+        -10,
+        -25.45,
+        -24.95
+      ]
+    },
+    {
+      "id": "three_step_transition.cell.1",
+      "surfaceId": "three_step_transition",
+      "polygon": [
+        [
+          -10,
+          24.95
+        ],
+        [
+          -9.1,
+          24.95
+        ],
+        [
+          -9.1,
+          25.45
+        ],
+        [
+          -10,
+          25.45
+        ]
+      ],
+      "authoredCenterDomainXZ": [
+        -10,
+        -9.1,
+        -25.45,
+        -24.95
+      ]
+    },
+    {
+      "id": "low_public.cell.2",
+      "surfaceId": "low_public",
+      "polygon": [
+        [
+          -9.1,
+          24.95
+        ],
+        [
+          -1.5,
+          24.95
+        ],
+        [
+          -1.5,
+          25.45
+        ],
+        [
+          -9.1,
+          25.45
+        ]
+      ],
+      "authoredCenterDomainXZ": [
+        -9.1,
+        -1.5,
+        -25.45,
+        -24.95
+      ]
+    },
+    {
+      "id": "low_public.cell.3",
+      "surfaceId": "low_public",
+      "polygon": [
+        [
+          -9.1,
+          24.2
+        ],
+        [
+          -8.25,
+          24.2
+        ],
+        [
+          -8.25,
+          24.95
+        ],
+        [
+          -9.1,
+          24.95
+        ]
+      ],
+      "authoredCenterDomainXZ": [
+        -9.1,
+        -8.25,
+        -24.95,
+        -24.2
+      ]
+    },
+    {
+      "id": "low_public.cell.4",
+      "surfaceId": "low_public",
+      "polygon": [
+        [
+          -2.1,
+          15.6
+        ],
+        [
+          -1.5,
+          15.6
+        ],
+        [
+          -1.5,
+          24.95
+        ],
+        [
+          -2.1,
+          24.95
+        ]
+      ],
+      "authoredCenterDomainXZ": [
+        -2.1,
+        -1.5,
+        -24.95,
+        -15.6
+      ]
+    },
+    {
+      "id": "low_public.cell.5",
+      "surfaceId": "low_public",
+      "polygon": [
+        [
+          -2.1,
+          15
+        ],
+        [
+          4.5,
+          15
+        ],
+        [
+          4.5,
+          15.6
+        ],
+        [
+          -2.1,
+          15.6
+        ]
+      ],
+      "authoredCenterDomainXZ": [
+        -2.1,
+        4.5,
+        -15.6,
+        -15
+      ]
+    },
+    {
+      "id": "low_public.cell.6",
+      "surfaceId": "low_public",
+      "polygon": [
+        [
+          4,
+          14.75
+        ],
+        [
+          4.5,
+          14.75
+        ],
+        [
+          4.5,
+          15
+        ],
+        [
+          4,
+          15
+        ]
+      ],
+      "authoredCenterDomainXZ": [
+        4,
+        4.5,
+        -15,
+        -14.75
+      ]
+    },
+    {
+      "id": "low_public.cell.7",
+      "surfaceId": "low_public",
+      "polygon": [
+        [
+          4,
+          14.6
+        ],
+        [
+          11,
+          14.6
+        ],
+        [
+          11,
+          14.75
+        ],
+        [
+          4,
+          14.75
+        ]
+      ],
+      "authoredCenterDomainXZ": [
+        4,
+        11,
+        -14.75,
+        -14.6
+      ]
+    },
+    {
+      "id": "low_public.cell.8",
+      "surfaceId": "low_public",
+      "polygon": [
+        [
+          10.6,
+          9.4
+        ],
+        [
+          11,
+          9.4
+        ],
+        [
+          11,
+          14.6
+        ],
+        [
+          10.6,
+          14.6
+        ]
+      ],
+      "authoredCenterDomainXZ": [
+        10.6,
+        11,
+        -14.6,
+        -9.4
+      ]
+    },
+    {
+      "id": "low_public.cell.9",
+      "surfaceId": "low_public",
+      "polygon": [
+        [
+          4.5,
+          8.9
+        ],
+        [
+          11,
+          8.9
+        ],
+        [
+          11,
+          9.4
+        ],
+        [
+          4.5,
+          9.4
+        ]
+      ],
+      "authoredCenterDomainXZ": [
+        4.5,
+        11,
+        -9.4,
+        -8.9
+      ]
+    },
+    {
+      "id": "low_public.cell.10",
+      "surfaceId": "low_public",
+      "polygon": [
+        [
+          4.5,
+          3.8
+        ],
+        [
+          5.3,
+          3.8
+        ],
+        [
+          5.3,
+          8.9
+        ],
+        [
+          4.5,
+          8.9
+        ]
+      ],
+      "authoredCenterDomainXZ": [
+        4.5,
+        5.3,
+        -8.9,
+        -3.8
+      ]
+    },
+    {
+      "id": "low_public.cell.11",
+      "surfaceId": "low_public",
+      "polygon": [
+        [
+          9.9,
+          -4.5
+        ],
+        [
+          10.4,
+          -4.5
+        ],
+        [
+          10.4,
+          8.9
+        ],
+        [
+          9.9,
+          8.9
+        ]
+      ],
+      "authoredCenterDomainXZ": [
+        9.9,
+        10.4,
+        -8.9,
+        4.5
+      ]
+    },
+    {
+      "id": "low_public.cell.12",
+      "surfaceId": "low_public",
+      "polygon": [
+        [
+          2.5,
+          -4.3
+        ],
+        [
+          5.3,
+          -4.3
+        ],
+        [
+          5.3,
+          3.8
+        ],
+        [
+          2.5,
+          3.8
+        ]
+      ],
+      "authoredCenterDomainXZ": [
+        2.5,
+        5.3,
+        -3.8,
+        4.3
+      ]
+    },
+    {
+      "id": "low_public.cell.13",
+      "surfaceId": "low_public",
+      "polygon": [
+        [
+          11.4,
+          -4.5
+        ],
+        [
+          12,
+          -4.5
+        ],
+        [
+          12,
+          -4.15
+        ],
+        [
+          11.4,
+          -4.15
+        ]
+      ],
+      "authoredCenterDomainXZ": [
+        11.4,
+        12,
+        4.15,
+        4.5
+      ]
+    },
+    {
+      "id": "low_public.cell.14",
+      "surfaceId": "low_public",
+      "polygon": [
+        [
+          2.5,
+          -5.7
+        ],
+        [
+          5.1,
+          -5.7
+        ],
+        [
+          5.1,
+          -4.3
+        ],
+        [
+          2.5,
+          -4.3
+        ]
+      ],
+      "authoredCenterDomainXZ": [
+        2.5,
+        5.1,
+        4.3,
+        5.7
+      ]
+    },
+    {
+      "id": "low_public.cell.15",
+      "surfaceId": "low_public",
+      "polygon": [
+        [
+          9,
+          -5.4
+        ],
+        [
+          12,
+          -5.4
+        ],
+        [
+          12,
+          -4.5
+        ],
+        [
+          9,
+          -4.5
+        ]
+      ],
+      "authoredCenterDomainXZ": [
+        9,
+        12,
+        4.5,
+        5.4
+      ]
+    },
+    {
+      "id": "low_public.cell.16",
+      "surfaceId": "low_public",
+      "polygon": [
+        [
+          9,
+          -5.7
+        ],
+        [
+          10.4,
+          -5.7
+        ],
+        [
+          10.4,
+          -5.4
+        ],
+        [
+          9,
+          -5.4
+        ]
+      ],
+      "authoredCenterDomainXZ": [
+        9,
+        10.4,
+        5.4,
+        5.7
+      ]
+    },
+    {
+      "id": "low_public.cell.17",
+      "surfaceId": "low_public",
+      "polygon": [
+        [
+          2.5,
+          -6.5
+        ],
+        [
+          9.8,
+          -6.5
+        ],
+        [
+          9.8,
+          -5.7
+        ],
+        [
+          2.5,
+          -5.7
+        ]
+      ],
+      "authoredCenterDomainXZ": [
+        2.5,
+        9.8,
+        5.7,
+        6.5
+      ]
+    },
+    {
+      "id": "low_public.cell.18",
+      "surfaceId": "low_public",
+      "polygon": [
+        [
+          2.5,
+          -6.8
+        ],
+        [
+          5.1,
+          -6.8
+        ],
+        [
+          5.1,
+          -6.5
+        ],
+        [
+          2.5,
+          -6.5
+        ]
+      ],
+      "authoredCenterDomainXZ": [
+        2.5,
+        5.1,
+        6.5,
+        6.8
+      ]
+    },
+    {
+      "id": "west_lower_flight.cell.19",
+      "surfaceId": "west_lower_flight",
+      "polygon": [
+        [
+          -9.1,
+          20
+        ],
+        [
+          -8.25,
+          20
+        ],
+        [
+          -8.25,
+          24.2
+        ],
+        [
+          -9.1,
+          24.2
+        ]
+      ],
+      "authoredCenterDomainXZ": [
+        -9.1,
+        -8.25,
+        -24.2,
+        -20
+      ]
+    },
+    {
+      "id": "west_middle.cell.20",
+      "surfaceId": "west_middle",
+      "polygon": [
+        [
+          -9.1,
+          18.6
+        ],
+        [
+          -8.25,
+          18.6
+        ],
+        [
+          -8.25,
+          20
+        ],
+        [
+          -9.1,
+          20
+        ]
+      ],
+      "authoredCenterDomainXZ": [
+        -9.1,
+        -8.25,
+        -20,
+        -18.6
+      ]
+    },
+    {
+      "id": "west_upper_flight.cell.21",
+      "surfaceId": "west_upper_flight",
+      "polygon": [
+        [
+          -9.1,
+          14.4
+        ],
+        [
+          -8.25,
+          14.4
+        ],
+        [
+          -8.25,
+          18.6
+        ],
+        [
+          -9.1,
+          18.6
+        ]
+      ],
+      "authoredCenterDomainXZ": [
+        -9.1,
+        -8.25,
+        -18.6,
+        -14.4
+      ]
+    },
+    {
+      "id": "upper_public.cell.22",
+      "surfaceId": "upper_public",
+      "polygon": [
+        [
+          -9.1,
+          7.7
+        ],
+        [
+          -8.25,
+          7.7
+        ],
+        [
+          -8.25,
+          14.4
+        ],
+        [
+          -9.1,
+          14.4
+        ]
+      ],
+      "authoredCenterDomainXZ": [
+        -9.1,
+        -8.25,
+        -14.4,
+        -7.7
+      ]
+    },
+    {
+      "id": "upper_public.cell.23",
+      "surfaceId": "upper_public",
+      "polygon": [
+        [
+          -9.1,
+          6.4
+        ],
+        [
+          15.4,
+          6.4
+        ],
+        [
+          15.4,
+          7.7
+        ],
+        [
+          -9.1,
+          7.7
+        ]
+      ],
+      "authoredCenterDomainXZ": [
+        -9.1,
+        15.4,
+        -7.7,
+        -6.4
+      ]
+    },
+    {
+      "id": "upper_public.cell.24",
+      "surfaceId": "upper_public",
+      "polygon": [
+        [
+          14.3,
+          -4.1
+        ],
+        [
+          15.4,
+          -4.1
+        ],
+        [
+          15.4,
+          6.4
+        ],
+        [
+          14.3,
+          6.4
+        ]
+      ],
+      "authoredCenterDomainXZ": [
+        14.3,
+        15.4,
+        -6.4,
+        4.1
+      ]
+    },
+    {
+      "id": "upper_public.cell.25",
+      "surfaceId": "upper_public",
+      "polygon": [
+        [
+          12.8,
+          -4.1
+        ],
+        [
+          13.4,
+          -4.1
+        ],
+        [
+          13.4,
+          -3.9
+        ],
+        [
+          12.8,
+          -3.9
+        ]
+      ],
+      "authoredCenterDomainXZ": [
+        12.8,
+        13.4,
+        3.9,
+        4.1
+      ]
+    },
+    {
+      "id": "upper_public.cell.26",
+      "surfaceId": "upper_public",
+      "polygon": [
+        [
+          12.8,
+          -4.5
+        ],
+        [
+          15.4,
+          -4.5
+        ],
+        [
+          15.4,
+          -4.1
+        ],
+        [
+          12.8,
+          -4.1
+        ]
+      ],
+      "authoredCenterDomainXZ": [
+        12.8,
+        15.4,
+        4.1,
+        4.5
+      ]
+    },
+    {
+      "id": "east_upper_flight.cell.27",
+      "surfaceId": "east_upper_flight",
+      "polygon": [
+        [
+          12.8,
+          -3.9
+        ],
+        [
+          13.4,
+          -3.9
+        ],
+        [
+          13.4,
+          0.3
+        ],
+        [
+          12.8,
+          0.3
+        ]
+      ],
+      "authoredCenterDomainXZ": [
+        12.8,
+        13.4,
+        -0.3,
+        3.9
+      ]
+    },
+    {
+      "id": "east_middle.cell.28",
+      "surfaceId": "east_middle",
+      "polygon": [
+        [
+          11.4,
+          0.6
+        ],
+        [
+          13.4,
+          0.6
+        ],
+        [
+          13.4,
+          1.1
+        ],
+        [
+          11.4,
+          1.1
+        ]
+      ],
+      "authoredCenterDomainXZ": [
+        11.4,
+        13.4,
+        -1.1,
+        -0.6
+      ]
+    },
+    {
+      "id": "east_middle.cell.29",
+      "surfaceId": "east_middle",
+      "polygon": [
+        [
+          11.4,
+          0.05
+        ],
+        [
+          12,
+          0.05
+        ],
+        [
+          12,
+          0.6
+        ],
+        [
+          11.4,
+          0.6
+        ]
+      ],
+      "authoredCenterDomainXZ": [
+        11.4,
+        12,
+        -0.6,
+        -0.05
+      ]
+    },
+    {
+      "id": "east_middle.cell.30",
+      "surfaceId": "east_middle",
+      "polygon": [
+        [
+          12.8,
+          0.3
+        ],
+        [
+          13.4,
+          0.3
+        ],
+        [
+          13.4,
+          0.6
+        ],
+        [
+          12.8,
+          0.6
+        ]
+      ],
+      "authoredCenterDomainXZ": [
+        12.8,
+        13.4,
+        -0.6,
+        -0.3
+      ]
+    },
+    {
+      "id": "east_lower_flight.cell.31",
+      "surfaceId": "east_lower_flight",
+      "polygon": [
+        [
+          11.4,
+          -4.15
+        ],
+        [
+          12,
+          -4.15
+        ],
+        [
+          12,
+          0.05
+        ],
+        [
+          11.4,
+          0.05
+        ]
+      ],
+      "authoredCenterDomainXZ": [
+        11.4,
+        12,
+        -0.05,
+        4.15
+      ]
+    }
+  ],
+  "portals": [
+    {
+      "id": "m03.connection.01.0.1",
+      "aCell": "old_public.cell.0",
+      "bCell": "three_step_transition.cell.1",
+      "aperture": [
+        [
+          -10,
+          25.45
+        ],
+        [
+          -10,
+          24.95
+        ]
+      ],
+      "kind": "stairs",
+      "sourcePortalId": "m03.connection.01"
+    },
+    {
+      "id": "m03.connection.02.1.2",
+      "aCell": "three_step_transition.cell.1",
+      "bCell": "low_public.cell.2",
+      "aperture": [
+        [
+          -9.1,
+          25.45
+        ],
+        [
+          -9.1,
+          24.95
+        ]
+      ],
+      "kind": "stairs",
+      "sourcePortalId": "m03.connection.02"
+    },
+    {
+      "id": "seam.2.3",
+      "aCell": "low_public.cell.2",
+      "bCell": "low_public.cell.3",
+      "aperture": [
+        [
+          -9.1,
+          24.95
+        ],
+        [
+          -8.25,
+          24.95
+        ]
+      ],
+      "kind": "seam"
+    },
+    {
+      "id": "seam.2.4",
+      "aCell": "low_public.cell.2",
+      "bCell": "low_public.cell.4",
+      "aperture": [
+        [
+          -2.1,
+          24.95
+        ],
+        [
+          -1.5,
+          24.95
+        ]
+      ],
+      "kind": "seam"
+    },
+    {
+      "id": "m03.connection.04.3.19",
+      "aCell": "low_public.cell.3",
+      "bCell": "west_lower_flight.cell.19",
+      "aperture": [
+        [
+          -9.1,
+          24.2
+        ],
+        [
+          -8.25,
+          24.2
+        ]
+      ],
+      "kind": "stairs",
+      "sourcePortalId": "m03.connection.04"
+    },
+    {
+      "id": "seam.4.5",
+      "aCell": "low_public.cell.4",
+      "bCell": "low_public.cell.5",
+      "aperture": [
+        [
+          -2.1,
+          15.6
+        ],
+        [
+          -1.5,
+          15.6
+        ]
+      ],
+      "kind": "seam"
+    },
+    {
+      "id": "seam.5.6",
+      "aCell": "low_public.cell.5",
+      "bCell": "low_public.cell.6",
+      "aperture": [
+        [
+          4,
+          15
+        ],
+        [
+          4.5,
+          15
+        ]
+      ],
+      "kind": "seam"
+    },
+    {
+      "id": "seam.6.7",
+      "aCell": "low_public.cell.6",
+      "bCell": "low_public.cell.7",
+      "aperture": [
+        [
+          4,
+          14.75
+        ],
+        [
+          4.5,
+          14.75
+        ]
+      ],
+      "kind": "seam"
+    },
+    {
+      "id": "seam.7.8",
+      "aCell": "low_public.cell.7",
+      "bCell": "low_public.cell.8",
+      "aperture": [
+        [
+          10.6,
+          14.6
+        ],
+        [
+          11,
+          14.6
+        ]
+      ],
+      "kind": "seam"
+    },
+    {
+      "id": "seam.8.9",
+      "aCell": "low_public.cell.8",
+      "bCell": "low_public.cell.9",
+      "aperture": [
+        [
+          10.6,
+          9.4
+        ],
+        [
+          11,
+          9.4
+        ]
+      ],
+      "kind": "seam"
+    },
+    {
+      "id": "seam.9.10",
+      "aCell": "low_public.cell.9",
+      "bCell": "low_public.cell.10",
+      "aperture": [
+        [
+          4.5,
+          8.9
+        ],
+        [
+          5.3,
+          8.9
+        ]
+      ],
+      "kind": "seam"
+    },
+    {
+      "id": "seam.9.11",
+      "aCell": "low_public.cell.9",
+      "bCell": "low_public.cell.11",
+      "aperture": [
+        [
+          9.9,
+          8.9
+        ],
+        [
+          10.4,
+          8.9
+        ]
+      ],
+      "kind": "seam"
+    },
+    {
+      "id": "seam.10.12",
+      "aCell": "low_public.cell.10",
+      "bCell": "low_public.cell.12",
+      "aperture": [
+        [
+          4.5,
+          3.8
+        ],
+        [
+          5.3,
+          3.8
+        ]
+      ],
+      "kind": "seam"
+    },
+    {
+      "id": "seam.11.15",
+      "aCell": "low_public.cell.11",
+      "bCell": "low_public.cell.15",
+      "aperture": [
+        [
+          9.9,
+          -4.5
+        ],
+        [
+          10.4,
+          -4.5
+        ]
+      ],
+      "kind": "seam"
+    },
+    {
+      "id": "seam.12.14",
+      "aCell": "low_public.cell.12",
+      "bCell": "low_public.cell.14",
+      "aperture": [
+        [
+          2.5,
+          -4.3
+        ],
+        [
+          5.1,
+          -4.3
+        ]
+      ],
+      "kind": "seam"
+    },
+    {
+      "id": "seam.13.15",
+      "aCell": "low_public.cell.13",
+      "bCell": "low_public.cell.15",
+      "aperture": [
+        [
+          11.4,
+          -4.5
+        ],
+        [
+          12,
+          -4.5
+        ]
+      ],
+      "kind": "seam"
+    },
+    {
+      "id": "m03.connection.17.13.31",
+      "aCell": "low_public.cell.13",
+      "bCell": "east_lower_flight.cell.31",
+      "aperture": [
+        [
+          11.4,
+          -4.15
+        ],
+        [
+          12,
+          -4.15
+        ]
+      ],
+      "kind": "stairs",
+      "sourcePortalId": "m03.connection.17"
+    },
+    {
+      "id": "seam.14.17",
+      "aCell": "low_public.cell.14",
+      "bCell": "low_public.cell.17",
+      "aperture": [
+        [
+          2.5,
+          -5.7
+        ],
+        [
+          5.1,
+          -5.7
+        ]
+      ],
+      "kind": "seam"
+    },
+    {
+      "id": "seam.15.16",
+      "aCell": "low_public.cell.15",
+      "bCell": "low_public.cell.16",
+      "aperture": [
+        [
+          9,
+          -5.4
+        ],
+        [
+          10.4,
+          -5.4
+        ]
+      ],
+      "kind": "seam"
+    },
+    {
+      "id": "seam.16.17",
+      "aCell": "low_public.cell.16",
+      "bCell": "low_public.cell.17",
+      "aperture": [
+        [
+          9,
+          -5.7
+        ],
+        [
+          9.8,
+          -5.7
+        ]
+      ],
+      "kind": "seam"
+    },
+    {
+      "id": "seam.17.18",
+      "aCell": "low_public.cell.17",
+      "bCell": "low_public.cell.18",
+      "aperture": [
+        [
+          2.5,
+          -6.5
+        ],
+        [
+          5.1,
+          -6.5
+        ]
+      ],
+      "kind": "seam"
+    },
+    {
+      "id": "m03.connection.05.19.20",
+      "aCell": "west_lower_flight.cell.19",
+      "bCell": "west_middle.cell.20",
+      "aperture": [
+        [
+          -9.1,
+          20
+        ],
+        [
+          -8.25,
+          20
+        ]
+      ],
+      "kind": "stairs",
+      "sourcePortalId": "m03.connection.05"
+    },
+    {
+      "id": "m03.connection.06.20.21",
+      "aCell": "west_middle.cell.20",
+      "bCell": "west_upper_flight.cell.21",
+      "aperture": [
+        [
+          -9.1,
+          18.6
+        ],
+        [
+          -8.25,
+          18.6
+        ]
+      ],
+      "kind": "stairs",
+      "sourcePortalId": "m03.connection.06"
+    },
+    {
+      "id": "m03.connection.07.21.22",
+      "aCell": "west_upper_flight.cell.21",
+      "bCell": "upper_public.cell.22",
+      "aperture": [
+        [
+          -9.1,
+          14.4
+        ],
+        [
+          -8.25,
+          14.4
+        ]
+      ],
+      "kind": "stairs",
+      "sourcePortalId": "m03.connection.07"
+    },
+    {
+      "id": "seam.22.23",
+      "aCell": "upper_public.cell.22",
+      "bCell": "upper_public.cell.23",
+      "aperture": [
+        [
+          -9.1,
+          7.7
+        ],
+        [
+          -8.25,
+          7.7
+        ]
+      ],
+      "kind": "seam"
+    },
+    {
+      "id": "seam.23.24",
+      "aCell": "upper_public.cell.23",
+      "bCell": "upper_public.cell.24",
+      "aperture": [
+        [
+          14.3,
+          6.4
+        ],
+        [
+          15.4,
+          6.4
+        ]
+      ],
+      "kind": "seam"
+    },
+    {
+      "id": "seam.24.26",
+      "aCell": "upper_public.cell.24",
+      "bCell": "upper_public.cell.26",
+      "aperture": [
+        [
+          14.3,
+          -4.1
+        ],
+        [
+          15.4,
+          -4.1
+        ]
+      ],
+      "kind": "seam"
+    },
+    {
+      "id": "seam.25.26",
+      "aCell": "upper_public.cell.25",
+      "bCell": "upper_public.cell.26",
+      "aperture": [
+        [
+          12.8,
+          -4.1
+        ],
+        [
+          13.4,
+          -4.1
+        ]
+      ],
+      "kind": "seam"
+    },
+    {
+      "id": "m03.connection.13.25.27",
+      "aCell": "upper_public.cell.25",
+      "bCell": "east_upper_flight.cell.27",
+      "aperture": [
+        [
+          12.8,
+          -3.9
+        ],
+        [
+          13.4,
+          -3.9
+        ]
+      ],
+      "kind": "stairs",
+      "sourcePortalId": "m03.connection.13"
+    },
+    {
+      "id": "m03.connection.14.27.30",
+      "aCell": "east_upper_flight.cell.27",
+      "bCell": "east_middle.cell.30",
+      "aperture": [
+        [
+          12.8,
+          0.3
+        ],
+        [
+          13.4,
+          0.3
+        ]
+      ],
+      "kind": "stairs",
+      "sourcePortalId": "m03.connection.14"
+    },
+    {
+      "id": "seam.28.29",
+      "aCell": "east_middle.cell.28",
+      "bCell": "east_middle.cell.29",
+      "aperture": [
+        [
+          11.4,
+          0.6
+        ],
+        [
+          12,
+          0.6
+        ]
+      ],
+      "kind": "seam"
+    },
+    {
+      "id": "seam.28.30",
+      "aCell": "east_middle.cell.28",
+      "bCell": "east_middle.cell.30",
+      "aperture": [
+        [
+          12.8,
+          0.6
+        ],
+        [
+          13.4,
+          0.6
+        ]
+      ],
+      "kind": "seam"
+    },
+    {
+      "id": "m03.connection.16.29.31",
+      "aCell": "east_middle.cell.29",
+      "bCell": "east_lower_flight.cell.31",
+      "aperture": [
+        [
+          11.4,
+          0.05
+        ],
+        [
+          12,
+          0.05
+        ]
+      ],
+      "kind": "stairs",
+      "sourcePortalId": "m03.connection.16"
+    }
+  ],
+  "blockers": [
+    {
+      "id": "bridge-near-rail",
+      "surfaceId": "upper_public",
+      "polygon": [
+        [
+          -10.05,
+          6.01
+        ],
+        [
+          14.05,
+          6.01
+        ],
+        [
+          14.05,
+          6.11
+        ],
+        [
+          -10.05,
+          6.11
+        ]
+      ],
+      "source": "build_harbor_review.py, unchanged R7"
+    },
+    {
+      "id": "bridge-far-rail-open-west",
+      "surfaceId": "upper_public",
+      "polygon": [
+        [
+          -7.85,
+          8.29
+        ],
+        [
+          14.05,
+          8.29
+        ],
+        [
+          14.05,
+          8.39
+        ],
+        [
+          -7.85,
+          8.39
+        ]
+      ],
+      "source": "build_harbor_review.py, unchanged R7"
+    },
+    {
+      "id": "west-approach-west-rail",
+      "surfaceId": "upper_public",
+      "polygon": [
+        [
+          -10.22,
+          8.36
+        ],
+        [
+          -10.14,
+          8.36
+        ],
+        [
+          -10.14,
+          14.44
+        ],
+        [
+          -10.22,
+          14.44
+        ]
+      ],
+      "source": "build_harbor_review.py, unchanged R7"
+    },
+    {
+      "id": "west-approach-east-rail",
+      "surfaceId": "upper_public",
+      "polygon": [
+        [
+          -7.86,
+          8.36
+        ],
+        [
+          -7.78,
+          8.36
+        ],
+        [
+          -7.78,
+          14.44
+        ],
+        [
+          -7.86,
+          14.44
+        ]
+      ],
+      "source": "build_harbor_review.py, unchanged R7"
+    },
+    {
+      "id": "promenade-outer-rail",
+      "surfaceId": "upper_public",
+      "polygon": [
+        [
+          15.955,
+          -5.045
+        ],
+        [
+          16.045,
+          -5.045
+        ],
+        [
+          16.045,
+          7.845
+        ],
+        [
+          15.955,
+          7.845
+        ]
+      ],
+      "source": "build_harbor_review.py, unchanged R7"
+    },
+    {
+      "id": "promenade-south-rail",
+      "surfaceId": "upper_public",
+      "polygon": [
+        [
+          12.555,
+          -5.045
+        ],
+        [
+          16.045,
+          -5.045
+        ],
+        [
+          16.045,
+          -4.955
+        ],
+        [
+          12.555,
+          -4.955
+        ]
+      ],
+      "source": "build_harbor_review.py, unchanged R7"
+    },
+    {
+      "id": "west-outer-rail.west_lower_flight",
+      "surfaceId": "west_lower_flight",
+      "polygon": [
+        [
+          -9.66,
+          14.36
+        ],
+        [
+          -9.58,
+          14.36
+        ],
+        [
+          -9.58,
+          24.24
+        ],
+        [
+          -9.66,
+          24.24
+        ]
+      ],
+      "source": "build_harbor_review.py, unchanged R7"
+    },
+    {
+      "id": "west-inner-rail.west_lower_flight",
+      "surfaceId": "west_lower_flight",
+      "polygon": [
+        [
+          -7.82,
+          14.36
+        ],
+        [
+          -7.74,
+          14.36
+        ],
+        [
+          -7.74,
+          24.24
+        ],
+        [
+          -7.82,
+          24.24
+        ]
+      ],
+      "source": "build_harbor_review.py, unchanged R7"
+    },
+    {
+      "id": "west-outer-rail.west_middle",
+      "surfaceId": "west_middle",
+      "polygon": [
+        [
+          -9.66,
+          14.36
+        ],
+        [
+          -9.58,
+          14.36
+        ],
+        [
+          -9.58,
+          24.24
+        ],
+        [
+          -9.66,
+          24.24
+        ]
+      ],
+      "source": "build_harbor_review.py, unchanged R7"
+    },
+    {
+      "id": "west-inner-rail.west_middle",
+      "surfaceId": "west_middle",
+      "polygon": [
+        [
+          -7.82,
+          14.36
+        ],
+        [
+          -7.74,
+          14.36
+        ],
+        [
+          -7.74,
+          24.24
+        ],
+        [
+          -7.82,
+          24.24
+        ]
+      ],
+      "source": "build_harbor_review.py, unchanged R7"
+    },
+    {
+      "id": "west-outer-rail.west_upper_flight",
+      "surfaceId": "west_upper_flight",
+      "polygon": [
+        [
+          -9.66,
+          14.36
+        ],
+        [
+          -9.58,
+          14.36
+        ],
+        [
+          -9.58,
+          24.24
+        ],
+        [
+          -9.66,
+          24.24
+        ]
+      ],
+      "source": "build_harbor_review.py, unchanged R7"
+    },
+    {
+      "id": "west-inner-rail.west_upper_flight",
+      "surfaceId": "west_upper_flight",
+      "polygon": [
+        [
+          -7.82,
+          14.36
+        ],
+        [
+          -7.74,
+          14.36
+        ],
+        [
+          -7.74,
+          24.24
+        ],
+        [
+          -7.82,
+          24.24
+        ]
+      ],
+      "source": "build_harbor_review.py, unchanged R7"
+    },
+    {
+      "id": "east-lower-rail",
+      "surfaceId": "east_lower_flight",
+      "polygon": [
+        [
+          11.08,
+          -4.19
+        ],
+        [
+          11.16,
+          -4.19
+        ],
+        [
+          11.16,
+          1.47
+        ],
+        [
+          11.08,
+          1.47
+        ]
+      ],
+      "source": "build_harbor_review.py, unchanged R7"
+    },
+    {
+      "id": "east-upper-rail",
+      "surfaceId": "east_upper_flight",
+      "polygon": [
+        [
+          13.64,
+          -3.94
+        ],
+        [
+          13.72,
+          -3.94
+        ],
+        [
+          13.72,
+          1.47
+        ],
+        [
+          13.64,
+          1.47
+        ]
+      ],
+      "source": "build_harbor_review.py, unchanged R7"
+    },
+    {
+      "id": "east-turn-back-rail",
+      "surfaceId": "east_middle",
+      "polygon": [
+        [
+          11.08,
+          1.39
+        ],
+        [
+          13.72,
+          1.39
+        ],
+        [
+          13.72,
+          1.47
+        ],
+        [
+          11.08,
+          1.47
+        ]
+      ],
+      "source": "build_harbor_review.py, unchanged R7"
+    },
+    {
+      "id": "east-turn-west-rail",
+      "surfaceId": "east_middle",
+      "polygon": [
+        [
+          11.08,
+          0.05
+        ],
+        [
+          11.16,
+          0.05
+        ],
+        [
+          11.16,
+          1.47
+        ],
+        [
+          11.08,
+          1.47
+        ]
+      ],
+      "source": "build_harbor_review.py, unchanged R7"
+    },
+    {
+      "id": "east-turn-east-rail",
+      "surfaceId": "east_middle",
+      "polygon": [
+        [
+          13.64,
+          0.3
+        ],
+        [
+          13.72,
+          0.3
+        ],
+        [
+          13.72,
+          1.47
+        ],
+        [
+          13.64,
+          1.47
+        ]
+      ],
+      "source": "build_harbor_review.py, unchanged R7"
+    },
+    {
+      "id": "bridge-lamp.-6",
+      "surfaceId": "upper_public",
+      "polygon": [
+        [
+          -6.035,
+          8.305
+        ],
+        [
+          -5.965,
+          8.305
+        ],
+        [
+          -5.965,
+          8.375
+        ],
+        [
+          -6.035,
+          8.375
+        ]
+      ],
+      "source": "build_harbor_review.py, unchanged R7"
+    },
+    {
+      "id": "bridge-lamp.12",
+      "surfaceId": "upper_public",
+      "polygon": [
+        [
+          11.965,
+          8.305
+        ],
+        [
+          12.035,
+          8.305
+        ],
+        [
+          12.035,
+          8.375
+        ],
+        [
+          11.965,
+          8.375
+        ]
+      ],
+      "source": "build_harbor_review.py, unchanged R7"
+    },
+    {
+      "id": "main-east-pier",
+      "surfaceId": "low_public",
+      "polygon": [
+        [
+          8.35,
+          6.55
+        ],
+        [
+          9.65,
+          6.55
+        ],
+        [
+          9.65,
+          7.8500000000000005
+        ],
+        [
+          8.35,
+          7.8500000000000005
+        ]
+      ],
+      "source": "build_harbor_review.py, unchanged R7"
+    },
+    {
+      "id": "barrel-north",
+      "surfaceId": "low_public",
+      "polygon": [
+        [
+          5.622,
+          3.122
+        ],
+        [
+          6.378,
+          3.122
+        ],
+        [
+          6.378,
+          3.878
+        ],
+        [
+          5.622,
+          3.878
+        ]
+      ],
+      "source": "build_harbor_review.py, unchanged R7"
+    },
+    {
+      "id": "barrel-south",
+      "surfaceId": "low_public",
+      "polygon": [
+        [
+          7.622,
+          -5.378
+        ],
+        [
+          8.378,
+          -5.378
+        ],
+        [
+          8.378,
+          -4.622
+        ],
+        [
+          7.622,
+          -4.622
+        ]
+      ],
+      "source": "build_harbor_review.py, unchanged R7"
+    },
+    {
+      "id": "barrel-street",
+      "surfaceId": "low_public",
+      "polygon": [
+        [
+          9.622,
+          13.622
+        ],
+        [
+          10.378,
+          13.622
+        ],
+        [
+          10.378,
+          14.378
+        ],
+        [
+          9.622,
+          14.378
+        ]
+      ],
+      "source": "build_harbor_review.py, unchanged R7"
+    },
+    {
+      "id": "barrel-west",
+      "surfaceId": "low_public",
+      "polygon": [
+        [
+          -6.378,
+          14.622
+        ],
+        [
+          -5.622,
+          14.622
+        ],
+        [
+          -5.622,
+          15.378
+        ],
+        [
+          -6.378,
+          15.378
+        ]
+      ],
+      "source": "build_harbor_review.py, unchanged R7"
+    },
+    {
+      "id": "quay-lamp-south",
+      "surfaceId": "low_public",
+      "polygon": [
+        [
+          5.765,
+          -5.035
+        ],
+        [
+          5.835,
+          -5.035
+        ],
+        [
+          5.835,
+          -4.965
+        ],
+        [
+          5.765,
+          -4.965
+        ]
+      ],
+      "source": "build_harbor_review.py, unchanged R7"
+    },
+    {
+      "id": "quay-lamp-north",
+      "surfaceId": "low_public",
+      "polygon": [
+        [
+          7.965,
+          1.965
+        ],
+        [
+          8.035,
+          1.965
+        ],
+        [
+          8.035,
+          2.035
+        ],
+        [
+          7.965,
+          2.035
+        ]
+      ],
+      "source": "build_harbor_review.py, unchanged R7"
+    },
+    {
+      "id": "street-lamp",
+      "surfaceId": "low_public",
+      "polygon": [
+        [
+          4.965,
+          14.965
+        ],
+        [
+          5.035,
+          14.965
+        ],
+        [
+          5.035,
+          15.035
+        ],
+        [
+          4.965,
+          15.035
+        ]
+      ],
+      "source": "build_harbor_review.py, unchanged R7"
+    },
+    {
+      "id": "sea-glass-base",
+      "surfaceId": "low_public",
+      "polygon": [
+        [
+          7.82,
+          9.82
+        ],
+        [
+          8.18,
+          9.82
+        ],
+        [
+          8.18,
+          10.18
+        ],
+        [
+          7.82,
+          10.18
+        ]
+      ],
+      "source": "build_harbor_review.py, unchanged R7"
+    },
+    {
+      "id": "awning-foot-west",
+      "surfaceId": "low_public",
+      "polygon": [
+        [
+          6.140000000000001,
+          10.74
+        ],
+        [
+          6.26,
+          10.74
+        ],
+        [
+          6.26,
+          10.860000000000001
+        ],
+        [
+          6.140000000000001,
+          10.860000000000001
+        ]
+      ],
+      "source": "build_harbor_review.py, unchanged R7"
+    },
+    {
+      "id": "awning-foot-east",
+      "surfaceId": "low_public",
+      "polygon": [
+        [
+          9.34,
+          10.74
+        ],
+        [
+          9.46,
+          10.74
+        ],
+        [
+          9.46,
+          10.860000000000001
+        ],
+        [
+          9.34,
+          10.860000000000001
+        ]
+      ],
+      "source": "build_harbor_review.py, unchanged R7"
+    },
+    {
+      "id": "bollard-north",
+      "surfaceId": "low_public",
+      "polygon": [
+        [
+          1.85,
+          2.35
+        ],
+        [
+          2.15,
+          2.35
+        ],
+        [
+          2.15,
+          2.65
+        ],
+        [
+          1.85,
+          2.65
+        ]
+      ],
+      "source": "build_harbor_review.py, unchanged R7"
+    },
+    {
+      "id": "bollard-south",
+      "surfaceId": "low_public",
+      "polygon": [
+        [
+          1.85,
+          -2.65
+        ],
+        [
+          2.15,
+          -2.65
+        ],
+        [
+          2.15,
+          -2.35
+        ],
+        [
+          1.85,
+          -2.35
+        ]
+      ],
+      "source": "build_harbor_review.py, unchanged R7"
+    },
+    {
+      "id": "bridge-keeper",
+      "surfaceId": "low_public",
+      "polygon": [
+        [
+          -7.66,
+          18.19
+        ],
+        [
+          -2.34,
+          18.19
+        ],
+        [
+          -2.34,
+          23.81
+        ],
+        [
+          -7.66,
+          23.81
+        ]
+      ],
+      "source": "build_harbor_review.py, unchanged R7"
+    },
+    {
+      "id": "canal-bakery",
+      "surfaceId": "low_public",
+      "polygon": [
+        [
+          4.6899999999999995,
+          15.94
+        ],
+        [
+          10.31,
+          15.94
+        ],
+        [
+          10.31,
+          22.06
+        ],
+        [
+          4.6899999999999995,
+          22.06
+        ]
+      ],
+      "source": "build_harbor_review.py, unchanged R7"
+    },
+    {
+      "id": "lamp-service-house",
+      "surfaceId": "low_public",
+      "polygon": [
+        [
+          11.69,
+          19.44
+        ],
+        [
+          16.31,
+          19.44
+        ],
+        [
+          16.31,
+          24.56
+        ],
+        [
+          11.69,
+          24.56
+        ]
+      ],
+      "source": "build_harbor_review.py, unchanged R7"
+    },
+    {
+      "id": "resting-bench",
+      "surfaceId": "low_public",
+      "polygon": [
+        [
+          6.85,
+          11.675
+        ],
+        [
+          9.15,
+          11.675
+        ],
+        [
+          9.15,
+          12.325
+        ],
+        [
+          6.85,
+          12.325
+        ]
+      ],
+      "source": "build_harbor_review.py, unchanged R7"
+    },
+    {
+      "id": "bridge-keeper-closed-threshold",
+      "surfaceId": "low_public",
+      "polygon": [
+        [
+          -5.575,
+          17.35
+        ],
+        [
+          -4.425,
+          17.35
+        ],
+        [
+          -4.425,
+          18.25
+        ],
+        [
+          -5.575,
+          18.25
+        ]
+      ],
+      "source": "build_harbor_review.py, unchanged R7"
+    },
+    {
+      "id": "canal-bakery-closed-threshold",
+      "surfaceId": "low_public",
+      "polygon": [
+        [
+          6.925,
+          15.1
+        ],
+        [
+          8.075,
+          15.1
+        ],
+        [
+          8.075,
+          16
+        ],
+        [
+          6.925,
+          16
+        ]
+      ],
+      "source": "build_harbor_review.py, unchanged R7"
+    },
+    {
+      "id": "lamp-service-house-closed-threshold",
+      "surfaceId": "low_public",
+      "polygon": [
+        [
+          13.425,
+          18.6
+        ],
+        [
+          14.575,
+          18.6
+        ],
+        [
+          14.575,
+          19.5
+        ],
+        [
+          13.425,
+          19.5
+        ]
+      ],
+      "source": "build_harbor_review.py, unchanged R7"
+    }
+  ],
+  "anchors": [],
+  "metadata": {
+    "scope": "empty-berth static local physical witness; no gameplay, ship, gangway, gate, art collision or body certificate",
+    "axes": "navigation x=X east, y=-Z north, height=Y up",
+    "nominalLowSurface": "R-B mesh intentionally at .798; semantic .8 retained from source, explicit 2mm anti-z-fight normalization",
+    "stairConvention": "continuous source height planes over physical .15m or .133333m risers",
+    "actorRadius": 0.18
+  }
+}

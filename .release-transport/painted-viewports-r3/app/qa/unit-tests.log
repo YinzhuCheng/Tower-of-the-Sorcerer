@@ -1,0 +1,66 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> painted-scene-viewports@0.3.0-local-depth-footing-review-r3 test
+> node --test tests/*.test.mjs
+
+✔ original forest bytes retain the accepted SHA-256 (5.268528ms)
+✔ original harbor bytes retain the accepted SHA-256 (3.461957ms)
+✔ original hero bytes retain the accepted SHA-256 (2.139687ms)
+✔ B physical adult is exactly 68px in original registration (0.375548ms)
+✔ C preserves art aspect with 0.375px letterbox mapping, not a nonuniform stretch (0.239061ms)
+✔ C projected adult size comes from the 35m physical camera, not an arbitrary 88px sprite (0.187824ms)
+✔ forest 1180x664 frame: uniform scaling and invertible coordinates (0.283589ms)
+✔ forest 1180x664 native: uniform scaling and invertible coordinates (0.174904ms)
+✔ harbor 1180x664 frame: uniform scaling and invertible coordinates (0.103536ms)
+✔ harbor 1180x664 native: uniform scaling and invertible coordinates (0.307875ms)
+✔ forest 390x701 frame: uniform scaling and invertible coordinates (0.118179ms)
+✔ forest 390x701 native: uniform scaling and invertible coordinates (0.133792ms)
+✔ harbor 390x701 frame: uniform scaling and invertible coordinates (0.143728ms)
+✔ harbor 390x701 native: uniform scaling and invertible coordinates (0.114373ms)
+✔ front: uniform height normalization and exact foot pivot (0.256158ms)
+✔ back: uniform height normalization and exact foot pivot (0.098309ms)
+✔ right: uniform height normalization and exact foot pivot (0.082765ms)
+✔ left: uniform height normalization and exact foot pivot (0.091709ms)
+✔ back/right use a semantic winding separator instead of a single vertical cut (0.209617ms)
+✔ renderer clips semantic SOURCE coordinates and samples the original RGBA without crop/mirror/alpha cleanup (1.211332ms)
+✔ occlusion is surface-qualified and disabled unless explicitly enabled; no global Y sort (0.30446ms)
+✔ overlapping pixels cannot silently resolve different support levels (0.276178ms)
+✔ movement uses bounded reviewed advance even after a 20-second frame gap (0.170017ms)
+✔ facing names are screen-relative and never mirror character identity (0.158249ms)
+✔ all depth-critical harbor anchors carry an explicit unverified warning (0.140042ms)
+✔ door remains low street and deck restores its physically foreground pixels (152.501765ms)
+✔ upper actor never gets a blanket deck, but near rail crosses its lower coat (1.192103ms)
+✔ open underbridge endpoint is not falsely occluded by deck or rails (20.266764ms)
+✔ same named surface on opposite sides of a rail changes local physical depth (0.332323ms)
+✔ local depth clips individual polygons, rather than using global anchor/screen Y (0.3441ms)
+✔ multi-part original redraw retains empty holes, one source draw, no alpha fade (1.087385ms)
+✔ interior anchor changes are real validated X/Z, not an image offset or radius shrink (184.215092ms)
+✔ east_foot → east-top: recomputed immutable route retains legal portals, height and continuous dense samples (326.618222ms)
+✔ east-top → east_foot: recomputed immutable route retains legal portals, height and continuous dense samples (342.96337ms)
+✔ west_entry → bridge: recomputed immutable route retains legal portals, height and continuous dense samples (221.431122ms)
+✔ door → east-flight: recomputed immutable route retains legal portals, height and continuous dense samples (617.357481ms)
+✔ routine notice and depth warning are outside playfield DOM (0.669061ms)
+✔ bounded r3 screenshot plan has 128 true browser captures and 18 dense stair checkpoints (0.175395ms)
+✔ original kernel rejects an out-of-aperture r3 route and a stale length (159.951492ms)
+✔ B freezes the independently reviewed geometry hash and only fixed QA flags (2.352689ms)
+✔ B root → bay: original locked adapter traverses with bounded positions, no events or snap (47.073099ms)
+✔ B bay → root: original locked adapter traverses with bounded positions, no events or snap (20.220544ms)
+✔ B upper → bay: original locked adapter traverses with bounded positions, no events or snap (17.608884ms)
+✔ B arbitrary pixel clicks, unsupported direction and mid-route replacement fail closed (13.032482ms)
+✔ C exact frozen world, anchors and original pure adapter bytes are retained (0.902024ms)
+✔ C quay → bridge: explicit surface-qualified route, bounded advance (192.455877ms)
+✔ C bridge → quay: explicit surface-qualified route, bounded advance (152.444177ms)
+✔ C quay → underbridge: explicit surface-qualified route, bounded advance (87.725448ms)
+✔ C east_foot → east-top: explicit surface-qualified route, bounded advance (104.503455ms)
+✔ C east-top → east_foot: explicit surface-qualified route, bounded advance (92.482233ms)
+✔ C door → bridge: explicit surface-qualified route, bounded advance (169.017705ms)
+✔ C bridge/lower level identity is retained and no arbitrary painted pixel is a target (98.220888ms)
+✔ C same-screen upper/lower fixture remains ambiguous and never switches floors (85.30069ms)
+ℹ tests 53
+ℹ suites 0
+ℹ pass 53
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2157.25273

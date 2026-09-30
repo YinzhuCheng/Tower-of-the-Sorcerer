@@ -1,0 +1,8 @@
+{
+  "name": "painted-review-ci-tooling",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "playwright-core": "1.63.0"
+  }
+}
