@@ -5,6 +5,7 @@ import { join, resolve } from 'node:path';
 import { tmpdir } from 'node:os';
 import { spawn, spawnSync } from 'node:child_process';
 import { createServer } from 'node:net';
+import { captureBootExpression, SKIP_OPENING_EXPRESSION } from './screenshot-boot-contract.mjs';
 
 const AUTO_SAVE_KEY = 'lost-magic-tower:auto:v1';
 const FLOOR_COUNT = 10;
@@ -154,7 +155,6 @@ function floorLoadExpression(floorIndex) {
     state.logs = [\`截图模式：第 ${floorIndex + 1} 阵地图总览。\`];
     localStorage.setItem(storageKey, JSON.stringify(state));
     document.querySelector('#btn-load')?.click();
-    document.querySelector('#modal-root')?.classList.add('hidden');
     return { floor: ${floorIndex + 1}, anchor };
   })()`;
 }
@@ -211,15 +211,21 @@ async function main() {
       mobile: false
     });
     await client.send('Page.navigate', { url: options.url });
-    await waitFor(
-      () => evaluate(client, "Boolean(document.querySelector('#game-container canvas') && localStorage.getItem('lost-magic-tower:auto:v1') && document.querySelector('#loading-note')?.classList.contains('hidden'))"),
-      'The 10F demo did not finish booting with a canvas renderer.'
-    );
-    // onReady hides the loading note immediately before opening the initial
-    // dialogue. Give that final modal mutation time to settle, then suppress
-    // it so every floor image captures the map rather than story UI.
-    await sleep(300);
-    await evaluate(client, "document.querySelector('#modal-root')?.classList.add('hidden')");
+    const bootExpression = captureBootExpression(AUTO_SAVE_KEY);
+    await waitFor(async () => {
+      const boot = await evaluate(client, bootExpression);
+      return boot.ready || boot.openingCanSkip;
+    }, 'Neither a skippable opening GAL nor a ready tactical map appeared.', 300);
+    const initialBoot = await evaluate(client, bootExpression);
+    if (initialBoot.openingCanSkip) {
+      if (!await evaluate(client, SKIP_OPENING_EXPRESSION)) {
+        throw new Error('The opening GAL could not be released through its own skip control.');
+      }
+    }
+    await waitFor(async () => (await evaluate(client, bootExpression)).ready,
+      'The tactical map did not become ready after releasing the opening GAL.', 450);
+    // Readiness requires the real canvas, valid autosave, finished art loading,
+    // a closed GAL and an interactive shell. Do not hide the story to fake it.
 
     const manifest = [];
     for (let floorIndex = 0; floorIndex < FLOOR_COUNT; floorIndex += 1) {
@@ -228,7 +234,8 @@ async function main() {
         () => evaluate(client, `document.querySelector('#floor-number')?.textContent === '第 ${floorIndex + 1} 阵'`),
         `Floor ${floorIndex + 1} did not become active in the rendered demo.`
       );
-      await evaluate(client, "document.querySelector('#modal-root')?.classList.add('hidden')");
+      await waitFor(async () => (await evaluate(client, captureBootExpression(AUTO_SAVE_KEY))).ready,
+        `Floor ${floorIndex + 1} lost tactical readiness before capture.`, 450);
       await sleep(250);
       const image = await client.send('Page.captureScreenshot', {
         format: 'png',
@@ -246,6 +253,15 @@ async function main() {
     }
     await writeFile(join(output, 'manifest.json'), `${JSON.stringify(manifest, null, 2)}\n`);
   } catch (error) {
+    if (client) {
+      try {
+        const boot = await evaluate(client, captureBootExpression(AUTO_SAVE_KEY));
+        await writeFile(join(output, 'boot-diagnostic.json'), `${JSON.stringify(boot, null, 2)}\n`);
+        error.message += `\nBoot diagnostic: ${JSON.stringify(boot)}`;
+      } catch (diagnosticError) {
+        error.message += `\nBoot diagnostic unavailable: ${diagnosticError.message}`;
+      }
+    }
     const stderr = chromeStderr.join('').trim();
     if (stderr) error.message = `${error.message}\nChrome stderr:\n${stderr.slice(-2_000)}`;
     throw error;
