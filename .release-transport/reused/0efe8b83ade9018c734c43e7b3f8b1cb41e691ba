@@ -1,0 +1,36 @@
+{
+  "editTarget": {
+    "path": "public/assets/anime/cg/liyue-yayu-seven-core-network-cg-audit-v3.webp",
+    "baseline_commit": "3c2bc16cba3b57d2f3ae81d3b1d9bd9f87edcf4e",
+    "sha256": "ee53d94fe42b81e259a7d3882de58cdb6f26753b62f69121509ead66aeb5734f"
+  },
+  "reference": {
+    "path": "art/visual-novel/01_canon/turnarounds/CHAR_shadow-boss_turnaround_v2.png",
+    "baseline_commit": "3c2bc16cba3b57d2f3ae81d3b1d9bd9f87edcf4e",
+    "sha256": "131fc0f668cc5493e9fbd6f277ae42753ba2c17e58178ab91768bf6221e2eebf"
+  },
+  "stage": "R2-accessory-placement-only",
+  "mode": "built-in-imagegen-edit",
+  "reviewed_anchors": [
+    {
+      "path": "art/visual-novel/01_canon/characters/shadow_boss.md",
+      "sha256": "26b7ad6e0a3139fbc9cc7ae6ff41e1ae1142474857ae75d8cd0187b1e885bbdf"
+    },
+    {
+      "path": "art/visual-novel/01_canon/turnarounds/CHAR_shadow-boss_turnaround_v2.png",
+      "sha256": "131fc0f668cc5493e9fbd6f277ae42753ba2c17e58178ab91768bf6221e2eebf"
+    },
+    {
+      "path": "art/visual-novel/01_canon/details/DETAIL_shadow-boss_v1.png",
+      "sha256": "016452ddc9ab04e521dc186a85371ccd0c8705c88c7a5fef495b9085f4a91203"
+    },
+    {
+      "path": "art/visual-novel/01_canon/standees/STANDEE_shadow-boss_neutral_v1.png",
+      "sha256": "86a51f5b9ff6ea9982b809329da5bd34f663d09d5f3bc343736ec905beaa5f03"
+    },
+    {
+      "path": "art/visual-novel/01_canon/expressions/EXPR_shadow-boss_v1.png",
+      "sha256": "bd80e789b1a2e6fa748dde895e170fb220081803fe78e1ef63f24d0fc4e776a5"
+    }
+  ]
+}

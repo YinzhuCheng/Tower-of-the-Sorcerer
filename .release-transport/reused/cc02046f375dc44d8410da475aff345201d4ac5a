@@ -1,0 +1,11 @@
+{
+  "asset": "merchant-knowing",
+  "status": "accepted",
+  "references": [
+    "art/visual-novel/01_canon/turnarounds/CHAR_merchant_turnaround_v1.png",
+    "art/visual-novel/01_canon/standees/STANDEE_merchant_neutral_v1.png"
+  ],
+  "canon": "GAL-SIMPLE-1.1",
+  "goal": "Match accepted canon, square amber lantern plus small strapped ledger; genuine alpha; no ornament drift",
+  "exact_prompt": "merchant-knowing-prompt.txt"
+}

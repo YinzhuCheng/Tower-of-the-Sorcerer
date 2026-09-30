@@ -35,6 +35,23 @@ jobs:
       - name: Validate exact release
         working-directory: ${{ steps.release.outputs.worktree }}
         run: npm run check
+      - name: Verify validation left the approved bytes unchanged
+        env:
+          RELEASE_WORKTREE: ${{ steps.release.outputs.worktree }}
+          RELEASE_TREE: ${{ steps.release.outputs.tree }}
+        run: |
+          python - <<'PY_VERIFY'
+          import hashlib, json, os, pathlib, subprocess
+          root = pathlib.Path(os.environ['RELEASE_WORKTREE'])
+          manifest = json.loads(pathlib.Path('.release-transport/manifest.json').read_text())
+          for f in manifest['files']:
+              p = root / f['path']
+              assert p.is_file() and not p.is_symlink()
+              assert hashlib.sha256(p.read_bytes()).hexdigest() == f['sha256'], f['path']
+          subprocess.run(['git','diff','--exit-code'],cwd=root,check=True)
+          tree = subprocess.check_output(['git','write-tree'],cwd=root,text=True).strip()
+          assert tree == os.environ['RELEASE_TREE'] == 'f65612101f0dc07704c46530ccb766978da26404'
+          PY_VERIFY
       - name: Retain reconstructed objects on temporary branch only
         env:
           RELEASE_TREE: ${{ steps.release.outputs.tree }}
