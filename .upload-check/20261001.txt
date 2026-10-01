@@ -1,0 +1,4 @@
+Tower of the Sorcerer upload connectivity check
+Purpose: verify a small UTF-8 upload and exact readback on a temporary branch.
+Date: 2026-10-01
+Production files are unchanged.
