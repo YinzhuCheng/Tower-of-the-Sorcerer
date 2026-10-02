@@ -1,3 +1,5 @@
+import { projectForestEntry, projectEntryControl, presentForestEntry, preloadForestEntry, forestEntryAvailability, setStoryEntryBackdrop } from '../src/rendering/forest-entry.js';
+import { applyForestPortrait } from '../src/rendering/forest-cast-art.js';
 import { projectForestScene } from '../src/rendering/b-adapter.js';
 import { presentContinuousScene, fitCampaignMapViewport } from '../src/rendering/continuous-map.js';
 import { createForestCampaign } from '../src/campaigns/b/content.js';
@@ -7,7 +9,7 @@ import { forestPlayerCopy, forestMapTitle, forestActionVisible, forestDeferredNo
 const $=id=>document.getElementById(id),runtime=createForestCampaign();
 let storage,volatileStorage=false;try{storage=window.localStorage;storage.getItem('campaign-storage-check');}catch{volatileStorage=true;const memory=new Map();storage={getItem:key=>memory.get(key)??null,setItem:(key,value)=>memory.set(key,value),removeItem:key=>memory.delete(key)};}
 const session=createForestPreviewSession(runtime,storage),story=session.story;
-let logs=[],statusTimer,selected=null,busy=false,lastIssueCount=0;
+let logs=[],statusTimer,selected=null,busy=false,lastIssueCount=0,readableMap=false,gridFallback=false;
 const el=(tag,text,className)=>{const node=document.createElement(tag);if(text!=null)node.textContent=text;if(className)node.className=className;return node;};
 function notify(text){$('status').textContent=text;$('status').hidden=false;clearTimeout(statusTimer);statusTimer=setTimeout(()=>$('status').hidden=true,6500);}
 function addLog(text){logs.unshift(text);logs=logs.slice(0,8);}
@@ -29,9 +31,11 @@ function budgetLines(container){const state=session.state,b=story.budget(state);
 function renderStory(){
  if(!session.isStoryOpen()){if($('story').open)$('story').close();return;}
  const scene=session.current(),turn=session.turn();if(!turn)return;
+ applyForestPortrait($('story-portrait'),turn);
+ setStoryEntryBackdrop($('story-backdrop'),scene);$('story-art-label').textContent=scene.regionId==='B-01'?'南坡村口 · 原生场景候选':'角色头像已接入 · 本区背景待制作';
  $('story-title').textContent=scene.title;$('story-speaker').textContent=turn.speaker||'旁白';$('story-copy').textContent=turn.kind==='choice-prompt'?forestChoicePrompt(scene):turn.text;$('story-progress').textContent=`${session.presentation.turnIndex+1} / ${scene.turns.length}`;$('story-notice').textContent=scene.stateNotice??'';
  const stage=turn.stage??{},location=runtime.region(stage.locationId?.slice(0,4))?.title??runtime.region(session.state.location.regionId).title;
- $('story-location').textContent=location;$('story-camera').textContent=stage.camera==='exterior-empty-shot'?'初雪空景 · 人物不入画':stage.offscreen?.[turn.voicePortrait]?'声音从画面外传来':'场景与人物以文字呈现';
+ $('story-location').textContent=location;$('story-camera').textContent=stage.camera==='exterior-empty-shot'?'初雪空景 · 人物不入画':stage.offscreen?.[turn.voicePortrait]?'声音从画面外传来':'角色头像沿用已验收设定';
  $('story-stage').dataset.backdropAssetId=stage.backdropAssetId??scene.backdropAssetId??'';$('story-stage').dataset.cgAssetId=stage.cgAssetId??'';$('story-stage').dataset.camera=stage.camera??'scene';$('story-stage').dataset.locationId=stage.locationId??'';
  $('story-planning').hidden=!scene.budget&&!scene.routePanel&&!scene.battlePanel&&!scene.shopPanel&&!scene.checklist;
  $('story-forecast').replaceChildren();if(!$('story-planning').hidden){budgetLines($('story-forecast'));if(scene.routePanel){for(const row of forestPublicRows(runtime,story,session.state))$('story-forecast').append(el('p',`${row.title}：${row.description}；原路${row.original}`));}if(scene.battlePanel){const panel=story.actionPanel(session.state,scene.battlePanel.entityId),enemy=runtime.entity(panel.entityId).enemy,b=panel.battle;$('story-forecast').append(el('p',`${panel.title}：生命${enemy.hp} / 攻${enemy.atk} / 防${enemy.def}；${b?`当前构筑预计损失 ${Number.isFinite(b.totalDamage)?b.totalDamage:'无法破防'} 生命`:'已拆除'}`));}if(scene.shopPanel)for(const panel of scene.shopPanel)$('story-forecast').append(el('p',`${forestPlayerCopy(runtime.entity(panel.entityId)).title}`));}
@@ -50,7 +54,11 @@ function render(){
  $('stats').replaceChildren();for(const[label,value]of [['生命',`${state.stats.hp}/${state.stats.maxHp}`],['攻击',state.stats.atk],['防御',state.stats.def],['金币',state.stats.gold]]){const div=el('div',null,'stat');div.append(el('small',label),el('strong',value));$('stats').append(div);}
  $('heat-summary').textContent=`暖脂 ${b.currentHeat} · 必留 ${b.requiredValveReserve} · 自由 ${b.availableOptionalHeat}`;$('heat-note').textContent=b.frozen?`暖点已定案 · 公共库存 ${b.publicHeat} 份`:`支阀已关 ${b.closedValves}/4${state.cleared.includes('b03.heatBox')?'':' · 节火匣尚未领取'}`;
  $('wedge-summary').textContent=`缚根楔 ${b.wedges.remaining} / ${b.wedges.total}`;$('works-summary').textContent=`公共路段 ${publicRows.filter(row=>row.publicReady).length}/4 已通 · ${publicRows.filter(row=>row.person&&!row.publicReady).length} 处仅人行`;
- presentContinuousScene($('map-canvas'),$('board'),projectForestScene(runtime,state));
+ const entry=projectForestEntry(runtime,state);$('map-stage').dataset.aspect='1';
+ presentContinuousScene($('map-canvas'),$('board'),entry?null:projectForestScene(runtime,state));
+ const nativeArt=Boolean(entry&&!gridFallback&&presentForestEntry($('map-canvas'),$('board'),$('map-stage'),entry,{readable:readableMap,selected})),availability=forestEntryAvailability();
+ $('art-status').textContent=entry?(nativeArt?'B01 · 源场景 / 独立角色与物件':gridFallback?'B01 · 已切换棋盘备用':availability.failed.length?'B01 · 图片加载失败，使用可操作棋盘':'B01 · 场景载入中，暂用可操作棋盘'):'本区沿用原呈现 · 场景美术尚未接入';
+ $('map-readability').hidden=!entry;$('map-fallback').hidden=!entry;$('map-readability').disabled=!nativeArt;$('map-readability').setAttribute('aria-pressed',String(readableMap));$('map-readability').textContent=readableMap?'隐藏清晰路面':'显示清晰路面';$('map-fallback').setAttribute('aria-pressed',String(gridFallback));$('map-fallback').textContent=gridFallback?'返回场景美术':'棋盘备用';
  $('board').replaceChildren();for(let y=0;y<view.region.map.length;y++)for(let x=0;x<view.region.map[y].length;x++){
  const token=view.region.map[y][x],tile=el('button',null,`tile ${{'.':'floor','T':'tree','^':'rock','~':'water','#':'wall','O':'trunk'}[token]??'wall'}`);
  const visible=view.entities.filter(e=>e.x===x&&e.y===y&&runtime.meets(state,e.visibleWhen)&&forestActionVisible(runtime,state,e)),alive=visible.filter(e=>!e.completed),entity=alive.find(e=>e.blocking)??alive.find(e=>e.kind==='anchor')??alive[0]??visible[0];
@@ -58,6 +66,7 @@ function render(){
  if(state.location.x===x&&state.location.y===y){tile.classList.add('hero');tile.replaceChildren(document.createTextNode('◎'));}
  if(selected?.region===view.region.id&&selected.x===x&&selected.y===y)tile.classList.add('selected');
  tile.tabIndex=state.location.x===x&&state.location.y===y?0:-1;
+ if(nativeArt)projectEntryControl(tile,entry.cells[y*11+x]);
  const title=tile.title||{'.':'可行地面','T':'林木','^':'岩壁','~':'溪水','#':'墙体','O':'树干'}[token];tile.setAttribute('aria-label',`${x},${y} ${title}${state.location.x===x&&state.location.y===y?'，璃在这里':''}`);tile.onclick=()=>{if(gameBlocked())return;selected={region:view.region.id,x,y};$('tile-info').textContent=title;walk(forestWalkPath(runtime,session.state,x,y));};$('board').append(tile);}
  const nearby=forestRegionActions(runtime,story,state).sort((a,b)=>Number(b.inReach)-Number(a.inReach)),closedPaths=nearby.filter(a=>a.edge&&!state.visited.includes(a.edge.to)&&!runtime.meets(state,a.edge.requires)),actions=nearby.filter(a=>!closedPaths.includes(a));$('actions').replaceChildren();for(const action of actions){const row=el('div',null,'action-row'),title=el('h3',action.title);row.dataset.entityId=action.action.entityId??action.action.edgeId;const detail=el('p',action.details.join('\n'));if(!action.preview.legal)detail.classList.add('unavailable');const buttons=el('div',null,'action-buttons');if(!action.inReach){const go=el('button',action.reachable?`走近 · ${action.path.length} 步`:'暂时走不到');go.disabled=!action.reachable||state.victory;go.onclick=()=>walk(action.path);buttons.append(go);}const button=el('button',action.buttonLabel);button.disabled=!action.inReach||!action.preview.legal||state.victory;button.onclick=()=>request(action.action);buttons.append(button);row.append(title,detail,buttons);$('actions').append(row);}
  if(closedPaths.length){const paths=el('details');paths.append(el('summary',`还有 ${closedPaths.length} 条尚未开通的小路`),el('p','先沿已经开通的山路走。完整的连接关系可以在山路全图查看。'));for(const reason of new Set(closedPaths.map(a=>a.details.at(-1))))paths.append(el('p',reason));$('actions').append(paths);}
@@ -77,6 +86,8 @@ function load(slot){if(slot==='manual'&&!confirm('读取手动档会回到那时
 $('load-auto').onclick=()=>load('auto');$('load-manual').onclick=()=>load('manual');$('new').onclick=()=>{if(!confirm('从南坡村口重新开始？当前自动档会更新，手动档保留。'))return;session.restart();$('settings').close();selected=null;logs=[];render();};
 for(const button of document.querySelectorAll('[data-dir]'))button.onclick=()=>move(button.dataset.dir);
 document.addEventListener('keydown',event=>{if(gameBlocked()||/INPUT|TEXTAREA|SELECT/.test(event.target.tagName))return;const direction={ArrowUp:'up',ArrowDown:'down',ArrowLeft:'left',ArrowRight:'right',w:'up',a:'left',s:'down',d:'right'}[event.key];if(direction){event.preventDefault();move(direction);}});
+$('map-readability').onclick=()=>{readableMap=!readableMap;render();};$('map-fallback').onclick=()=>{gridFallback=!gridFallback;render();};
+applyForestPortrait($('hero-avatar'),{portrait:'hero'});preloadForestEntry(render);
 render();if(volatileStorage)notify('此浏览器暂不能写入本地存档；进度仅保留在本页，关闭前请勿离开');else if(session.restored.issues.length)notify('旧存档无法读取，原始内容已保留。请到玩法与存档中明确重新开始');else if(session.restored.source)notify('已恢复整段旅程与对话，启动没有覆盖旧进度');
 // Read-only QA snapshot. No resource, location or story-unlock mutator is exposed.
-Object.defineProperty(window,'__FOREST_PREVIEW__',{value:Object.freeze({getState:()=>structuredClone(session.state),getPresentation:()=>structuredClone(session.presentation),getIdentity:()=>runtime.identity})});
+Object.defineProperty(window,'__FOREST_PREVIEW__',{value:Object.freeze({getState:()=>structuredClone(session.state),getPresentation:()=>structuredClone(session.presentation),getIdentity:()=>runtime.identity,getVisualState:()=>({renderer:$('board').dataset.renderer,region:session.state.location.regionId,art:forestEntryAvailability(),readable:readableMap,gridFallback})})});

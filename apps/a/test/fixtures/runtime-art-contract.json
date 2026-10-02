@@ -1557,6 +1557,11 @@
       "bytes": 66668
     },
     {
+      "path": "public/assets/anime/themes/theme-cat-wing-accepted-20261001.png",
+      "bytes": 1969757,
+      "sha256": "ba7648262038f2e4524617b18d39a2d789d32b317cdf851d767f11084951d04b"
+    },
+    {
       "path": "public/assets/anime/themes/theme-echo-court.webp",
       "sha256": "9368d8ff201d1989fb09ac2ed2a81b5572a809a54760b0e18ee11d4bb94a2a9c",
       "bytes": 168622
@@ -1635,11 +1640,6 @@
       "path": "public/assets/anime/themes/theme-forest-sanctuary.webp",
       "sha256": "d683b46a1ed960a810191e884ab073cf66e86158f601e71de5d293f8e35047ad",
       "bytes": 110616
-    },
-    {
-      "path": "public/assets/anime/themes/theme-moon-white-vestibule.webp",
-      "sha256": "d57d330b55868bf97d7f3c193f0086496ee446acb6377cecf4e8e7fa2f8dde0c",
-      "bytes": 59682
     },
     {
       "path": "public/assets/anime/themes/theme-night-shelter-v8.webp",

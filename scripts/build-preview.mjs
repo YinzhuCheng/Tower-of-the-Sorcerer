@@ -48,8 +48,8 @@ await writeFile(join(out, 'index.html'), `<!doctype html>
 <meta name="robots" content="noindex,nofollow"><title>魔塔 · 历史骨架候选</title>
 <style>body{font:18px/1.7 system-ui,sans-serif;max-width:760px;margin:4rem auto;padding:0 1.5rem;color:#253246;background:#f7f8fa}h1{line-height:1.3}li{margin:1.2rem 0}a{color:#174d95}small{color:#556274}</style></head>
 <body><h1>魔塔 · 历史骨架候选</h1><p>从历史来源重建的 A / B / C 独立预览入口。不是失落的最新本地版本，也不代表最终美术验收。</p>
-<ul><li><a href="/a/">A · 少女魔塔</a><br><small>保留候选提交的历史构建与运行时素材。</small></li>
-<li><a href="/b/campaigns-b/">B · 山路把冬天带回家</a><br><small>标准规则文字与棋盘预览；森林背景、角色及 CG 待验。</small></li>
+<ul><li><a href="/a/">A · 少女魔塔</a><br><small>历史核心保留，猫书房已接入确认背景；完整美术验收尚未完成。</small></li>
+<li><a href="/b/campaigns-b/">B · 山路把冬天带回家</a><br><small>B01 已接入源场景美术与规范角色立绘；其余地图保留原模式，完整美术验收尚未完成。</small></li>
 <li><a href="/c/campaigns/">C · 双灯夜航</a><br><small>固定视角试作，暂用几何色块；六张历史材质缺失，实机 WebGL、遮挡及性能尚未验收。</small></li></ul>
 <p>本页只统一入口与静态文件路径。发布是否成功、实际画面、玩法和存读档仍需在可访问的浏览器中逐项验证。</p></body></html>\n`);
 console.log(`Historical candidate packaged in dist; ${changedFiles} generated A text files rebased; no app source files edited.`);

@@ -130,7 +130,7 @@ const GAL_BACKDROPS = Object.freeze({
   auditChamber: galArtUrl('/assets/anime/themes/theme-audit-chamber-v8.webp'),
   relayGallery: galArtUrl('/assets/anime/themes/theme-relay-gallery-v8.webp'),
   triageIndex: galArtUrl('/assets/anime/themes/theme-triage-index-v8.webp'),
-  moonWhiteVestibule: galArtUrl('/assets/anime/themes/theme-moon-white-vestibule.webp'),
+  moonWhiteVestibule: galArtUrl('/assets/anime/themes/theme-cat-wing-accepted-20261001.png'),
   twinScoreGreenhouse: galArtUrl('/assets/anime/themes/theme-twin-score-greenhouse.webp'),
   foldedArchiveMarket: galArtUrl('/assets/anime/themes/theme-folded-archive-market.webp'),
   finalIndexRoom: galArtUrl('/assets/anime/themes/theme-final-index-room.webp'),

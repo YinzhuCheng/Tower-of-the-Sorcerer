@@ -35,7 +35,7 @@ test('new CG beats, locations and identity routes are wired without checkerboard
   ]) assert.match(source, new RegExp(`liyue-${stem}-cg-audit-v3\\.webp`));
 
   for (const backdrop of [
-    'theme-moon-white-vestibule.webp', 'theme-twin-score-greenhouse.webp',
+    'theme-cat-wing-accepted-20261001.png', 'theme-twin-score-greenhouse.webp',
     'theme-folded-archive-market.webp', 'theme-final-index-room.webp',
     'theme-ember-lighthouse-writein.webp'
   ]) assert.match(main, new RegExp(backdrop.replace('.', '\\.')));

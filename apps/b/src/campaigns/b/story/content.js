@@ -4868,7 +4868,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1021,
           "speaker": "绯叶",
           "portrait": "fox_boss",
-          "text": "我还没舍得摘。等你们看完别处再说。",
+          "text": "我还没舍得摘。你们先想一想。",
           "branch": "common",
           "expression": "watchful"
         }
@@ -4902,7 +4902,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1031,
           "speaker": "璃",
           "portrait": "hero",
-          "text": "嗯。别处少下来的，我们已经想过了。",
+          "text": "嗯。先把这间保住。",
           "branch": "invest",
           "expression": "guarded"
         },
@@ -4947,7 +4947,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1045,
           "speaker": "璃",
           "portrait": "hero",
-          "text": "先不动盒子。能移的先移，等看过另外两处再回来。",
+          "text": "先不动盒子。能移的先移，暖脂的事我再想想。",
           "branch": "defer",
           "expression": "guarded"
         },
@@ -5035,7 +5035,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1059,
           "speaker": "绯叶",
           "portrait": "fox_boss",
-          "text": "不够两份了，就照说好的取种、移栽。你们来时帮我端一盆。",
+          "text": "能移的盆先搬到避风处。来，帮我端这一盆。",
           "branch": "unaffordable",
           "expression": "watchful"
         }
@@ -5576,7 +5576,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1177,
           "speaker": "璃",
           "portrait": "hero",
-          "text": "这两份给这里。其他地方，我们照不投入的办法做。",
+          "text": "这两份给候车屋。把槽盖打开吧。",
           "branch": "invest",
           "expression": "guarded"
         },
@@ -5679,7 +5679,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1199,
           "speaker": "工队住民",
           "portrait": null,
-          "text": "门不响了，日间班次也排好。暖槽还空着，要不要用，看看余量再定。",
+          "text": "暖槽还空着。门窗、柴火、白天的车次，都得顾着。",
           "branch": "uninvested"
         }
       ],
@@ -9187,7 +9187,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1937,
           "speaker": "绯叶",
           "portrait": "fox_boss",
-          "text": "先收在这里，用的时候再来取。",
+          "text": "剩下的送进公用库了。匣子我来收好。",
           "branch": "reserve",
           "expression": "watchful"
         }

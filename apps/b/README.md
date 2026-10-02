@@ -1,60 +1,26 @@
-# B · 山路把冬天带回家 — recovered gameplay backbone
+# B visible-art r1 · review candidate
 
-This is a clean, minimal reconstruction of the immutable September 30 source at
-`YinzhuCheng/Tower-of-the-Sorcerer@9ada59a66d9579a418e25015b90c61621ce583d1`.
-It is **old full-story v1.1 / outline v1.2**, not the missing B v2.2 editorial source,
-not the October 1 source-world geometry, and not finished forest artwork.
+An isolated presentation-only candidate based on sealed `b-dialogue-r1`. Not published, not browser-accepted, and not the unguarded `b-opening-r1` opening.
 
-## Reproduce (Node.js 22+; no package dependencies)
+## Visible runtime changes
 
-```sh
-npm test
-npm run build
-npm run validate
-```
+- The initial HUD shows 璃's accepted 512×512 canonical face. Source dialogue speakers 璃 / 珂珂 / 纱雾 / 米露 show accepted face crops. All five character files are unchanged source copies; offscreen and winter-empty-shot portrait prohibitions are retained.
+- B01 uses a new source-locked native 1400×1100 backdrop, not a wallpaper behind a square grid. Its 121 interactive buttons follow exact source-camera cell polygons; player, old timber puppet, old guard plate and the original B02 portal are separate live draws.
+- The accepted neutral hero standee is displayed at an exact projected foot anchor and 1.66 m source-camera head height. It is a static token, not a restored walking rig or walking animation.
+- Thirty-nine geometry-derived cell masks apply independently to dynamic sprites. No blanket foreground overlay is used. Hero name/foot ring and the portal label are explicit readability UI above occlusion.
+- Clear-route overlay and an explicit reversible grid fallback are available. Missing/invalid-size scene assets fall back to the operative grid. Graphics stay within the scene or story-image panel; controls remain in document flow.
+- B07/B09 retain their pre-existing continuous samples. All other regions retain their existing presentation. No full-campaign art coverage is claimed.
 
-The build produces `dist-b-preview/campaigns-b/index.html`. Serve the entire
-`dist-b-preview` directory using a static server; do not open the HTML as file://.
-Built modules and six preview materials use relative paths and require no CDN.
-No deployment is performed by these scripts.
+## Preserved
 
-## Preserved boundaries
+Every non-rendering source file is byte-identical to `b-dialogue-r1`: rules identity, source dialogue, queue/save handling, 30 regions, 66 portals, resource mechanics, legal actions and confirmation behavior. Sixteen actual winning-route replays (11,738 actions) and B01 pathfinder checks agree exactly against the baseline.
 
-- Rules identity: `forest-b`, normal, `b-frozen-standard-v1`,
-  `fixed-campaign-v1.1`, content hash `a12cd07ee1ccc762`
-- 30 regions, 66 directional reciprocal portals, 156 unique entities
-- 94 story scenes, 921 classified source paragraphs, 858 visible turns
-- Original battle reducer, resources, receipts, save identities, and player copy
-- 16 original winning-route certificates are executable test inputs, not a claim
-  of global optimality or proof that every possible route wins
-- Six texture materials are approved historical preview experiments only;
-  final seamless/scale acceptance remains pending
-- Story environment and CG IDs remain semantic placeholders; no tower-art
-  fallback and no newly generated forest art has been introduced
+## Reproduce
 
-All restored source files retain exact Git blob bytes. New reconstruction files
-are this README and package.json. The bounded recovery-check script and full immutable
-source provenance and current test evidence are kept separately in `qa/b` at the
-rebuild root. Historical source docs remain under `docs/campaigns`; their old
-completion claims are not fresh browser validation.
+Node.js 22+, no dependencies. Copy this directory to disposable `work/` or `.cache/` space. Run `npm test`, `npm run build`, and `npm run validate`. Output is `dist-b-preview`, entry `/campaigns-b/`. Serve only through an authorized preview; this work does not deploy.
 
-## Current verification (2026-10-02)
+The sibling `qa/b-visual-r1` records source hashes, exact route equality, app event wiring, missing-image fallback, asset closure, static viewport budgets and renderer-unit PNGs. Those PNGs call the actual map draw function using Node Canvas; they are not screenshots of a browser, DOM layout or deployed game.
 
-25 existing tests pass, including UI-session replay of all 16 certificates,
-confirm/cancel/repeated-click safety, save corruption/quota isolation, map cuts,
-and a DOM-double smoke test of the actual app. Build and static validation pass.
-A separate direct reducer replay of all certificates also passes.
+## Remaining acceptance
 
-Browser visual/interaction verification is pending: the shared cloud browser
-returned `ERR_BLOCKED_BY_CLIENT` for localhost, and no alternate route was used.
-DOM doubles and static validation are not browser acceptance.
-
-## Next bounded gaps
-
-1. Recover or explicitly reconstruct the later B v2.2 source before integrating
-   newer prose; retain this baseline as independently reproducible evidence
-2. Reconstruct source-grounded continuous forest geometry, camera/occlusion and
-   route semantics before producing new environment art
-3. Review on an authorized browser preview, including saves, confirms, long GAL
-   text and narrow-screen controls
-4. Integrate only reviewed matching forest art, preserving gameplay hashes
+Authorized browser review of 1744×885 and mobile layouts, image loading on the deployed origin, real pointer/keyboard/touch, and final visual approval remain pending. Mobile renders preserve source scale, making the hero roughly 17 px tall at 366 px scene width; dedicated movement/actions and readable/grid modes remain available. Two gateway cells legitimately occlude most of the static standee, with persistent name/foot location UI.
