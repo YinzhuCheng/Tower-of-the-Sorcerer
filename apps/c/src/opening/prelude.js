@@ -4,11 +4,36 @@ import {mountOpening} from './ui.js';
 // state initialization, checkpoints or gameplay handlers. Closing unfinished
 // reading keeps the native modal open and the startup promise unresolved.
 export async function startOpeningPrelude({document:doc=document,fetch:read=fetch,skip=false}={}){
-  const dialog=doc.getElementById('opening-dialog'),root=doc.getElementById('opening-root');
-  // Protect the native loading modal even before fetch resolves.
-  dialog.addEventListener('cancel',event=>event.preventDefault());
+  const dialog=doc.getElementById('opening-dialog'),root=doc.getElementById('opening-root'),review=doc.getElementById('opening-review');
+  let opening,controller,ui,started=skip,resolveReady;
+  // A native close request can still close the dialog after cancel. While fresh
+  // startup is pending, neither Escape nor a close event is an explicit Finish.
+  function pausePending(){
+    if(started)return;
+    if(controller){if(controller.snapshot().open)controller.present('close');ui.render();}
+    if(!dialog.open)dialog.showModal();
+  }
+  doc.addEventListener('keydown',event=>{
+    if(started||event.key!=='Escape')return;
+    event.preventDefault();event.stopPropagation();pausePending();
+  },true);
+  dialog.addEventListener('cancel',event=>{
+    event.preventDefault();
+    if(!started){pausePending();return;}
+    if(controller){controller.present('close');ui.render();dialog.close();review.focus();}
+  });
+  dialog.addEventListener('close',()=>{
+    if(dialog.open)return; // Ignore a stale close event after a newer reopen.
+    if(!started){pausePending();return;}
+    if(controller?.snapshot().open){controller.present('close');ui.render();review.focus();}
+  });
+  // Install recovery before loading/awaiting Finish, not after the startup gate.
+  review.onclick=()=>{
+    if(doc.querySelector('dialog[open]'))return;
+    if(controller){controller.present('reopen');ui.render();}
+    if(!started||controller)dialog.showModal();
+  };
   if(!skip)dialog.showModal();
-  let opening,controller;
   try {
   const response=await read(new URL('../../opening/opening.json',import.meta.url));
   if(!response.ok)throw Error(`Opening load failed: ${response.status}`);
@@ -16,23 +41,17 @@ export async function startOpeningPrelude({document:doc=document,fetch:read=fetc
   controller=createOpeningPresentation(opening,{alreadyStarted:skip});
   } catch(error) {
     if(!skip)throw error;
-    const review=doc.getElementById('opening-review');review.disabled=true;review.title='开场回顾未能载入，原存档仍可继续';
+    review.disabled=true;review.title='开场回顾未能载入，原存档仍可继续';
     return Object.freeze({blocked:()=>false,replacesOriginalOpening:()=>false,snapshot:()=>({open:false,finished:true,unavailable:true})});
   }
-  let started=skip,resolveReady;
   const ready=new Promise(resolve=>{resolveReady=resolve;});
-  const ui=mountOpening(root,controller,{document:doc,onChange:v=>{
-    if(v.finished&&!v.open){dialog.close();if(!started){started=true;resolveReady();}else doc.getElementById('opening-review')?.focus();}
+  ui=mountOpening(root,controller,{document:doc,onChange:v=>{
+    if(v.finished&&!v.open){
+      // Retire the pending close guard before close can dispatch its event.
+      const wasStarted=started;if(!started){started=true;resolveReady();}
+      dialog.close();if(wasStarted)review.focus();
+    }
   }});
-  dialog.addEventListener('cancel',event=>{
-    event.preventDefault();controller.present('close');ui.render();
-    if(controller.snapshot().finished){dialog.close();doc.getElementById('opening-review')?.focus();}
-  });
   if(!skip)await ready;
-  const review=doc.getElementById('opening-review');
-  review.onclick=()=>{
-    if(doc.querySelector('dialog[open]'))return;
-    controller.present('reopen');ui.render();dialog.showModal();
-  };
   return Object.freeze({blocked:controller.blocked,replacesOriginalOpening:controller.replacesOriginalOpening,snapshot:controller.snapshot});
 }
