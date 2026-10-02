@@ -1,0 +1,1000 @@
+{
+  "identity": {
+    "campaignId": "forest-b",
+    "difficultyId": "normal",
+    "contentVersion": "b-frozen-standard-v1",
+    "rulesVersion": "fixed-campaign-v1.1",
+    "contentHash": "a12cd07ee1ccc762"
+  },
+  "source": {
+    "fullVersion": "1.1",
+    "fullSha256": "5af55e3c0ff3d00d7653e2e36212cf1ecad8f1a3fccad13c2c634d6a258e839f",
+    "outlineVersion": "1.2",
+    "outlineSha256": "cd7ec8c8ae0835cc8cb02d069c1d8d5dc22d935ba77ff214337860773e63b350",
+    "roadsSha256": "9f7c70715421e2869514ed429639ba27b320434e017dd9a5ae6b17a2f90c3dc2"
+  },
+  "claim": "At least one independently replayed winning route per listed configuration; not optimality, uniqueness, exhaustive search, or tuned three-difficulty certification.",
+  "status": "standard-witnesses-verified",
+  "cases": [
+    {
+      "name": "zero-wedge-greenhouse-lodge",
+      "identity": {
+        "campaignId": "forest-b",
+        "difficultyId": "normal",
+        "contentVersion": "b-frozen-standard-v1",
+        "rulesVersion": "fixed-campaign-v1.1",
+        "contentHash": "a12cd07ee1ccc762"
+      },
+      "status": "witness_verified",
+      "coverage": "witness-restricted",
+      "atomicActions": 716,
+      "finalHp": 35,
+      "resources": {
+        "heat": 0,
+        "wedges": 2,
+        "publicHeat": 0
+      },
+      "warmPoints": [
+        "greenhouse",
+        "lodge"
+      ],
+      "wedgeSites": [],
+      "unfoughtWedgeEnemies": [],
+      "visited": [
+        "B-01",
+        "B-02",
+        "B-03",
+        "B-04",
+        "B-05",
+        "B-06",
+        "B-07",
+        "B-08",
+        "B-09",
+        "B-10",
+        "B-11",
+        "B-12",
+        "B-13",
+        "B-14",
+        "B-15",
+        "B-16",
+        "B-17",
+        "B-18",
+        "B-19",
+        "B-20",
+        "B-21",
+        "B-22",
+        "B-23",
+        "B-24",
+        "B-25",
+        "B-26",
+        "B-27",
+        "B-28",
+        "B-29",
+        "B-30"
+      ],
+      "certificate": "artifacts/campaigns/b-normal-zero-wedge-greenhouse-lodge.certificate.json"
+    },
+    {
+      "name": "zero-wedge-greenhouse-pear",
+      "identity": {
+        "campaignId": "forest-b",
+        "difficultyId": "normal",
+        "contentVersion": "b-frozen-standard-v1",
+        "rulesVersion": "fixed-campaign-v1.1",
+        "contentHash": "a12cd07ee1ccc762"
+      },
+      "status": "witness_verified",
+      "coverage": "witness-restricted",
+      "atomicActions": 708,
+      "finalHp": 35,
+      "resources": {
+        "heat": 0,
+        "wedges": 2,
+        "publicHeat": 1
+      },
+      "warmPoints": [
+        "greenhouse",
+        "pear"
+      ],
+      "wedgeSites": [],
+      "unfoughtWedgeEnemies": [],
+      "visited": [
+        "B-01",
+        "B-02",
+        "B-03",
+        "B-04",
+        "B-05",
+        "B-06",
+        "B-07",
+        "B-08",
+        "B-09",
+        "B-10",
+        "B-11",
+        "B-12",
+        "B-13",
+        "B-14",
+        "B-15",
+        "B-16",
+        "B-17",
+        "B-18",
+        "B-19",
+        "B-20",
+        "B-21",
+        "B-22",
+        "B-23",
+        "B-24",
+        "B-25",
+        "B-26",
+        "B-27",
+        "B-28",
+        "B-29",
+        "B-30"
+      ],
+      "certificate": "artifacts/campaigns/b-normal-zero-wedge-greenhouse-pear.certificate.json"
+    },
+    {
+      "name": "zero-wedge-lodge-pear",
+      "identity": {
+        "campaignId": "forest-b",
+        "difficultyId": "normal",
+        "contentVersion": "b-frozen-standard-v1",
+        "rulesVersion": "fixed-campaign-v1.1",
+        "contentHash": "a12cd07ee1ccc762"
+      },
+      "status": "witness_verified",
+      "coverage": "witness-restricted",
+      "atomicActions": 702,
+      "finalHp": 35,
+      "resources": {
+        "heat": 0,
+        "wedges": 2,
+        "publicHeat": 1
+      },
+      "warmPoints": [
+        "lodge",
+        "pear"
+      ],
+      "wedgeSites": [],
+      "unfoughtWedgeEnemies": [],
+      "visited": [
+        "B-01",
+        "B-02",
+        "B-03",
+        "B-04",
+        "B-05",
+        "B-06",
+        "B-07",
+        "B-08",
+        "B-09",
+        "B-10",
+        "B-11",
+        "B-12",
+        "B-13",
+        "B-14",
+        "B-15",
+        "B-16",
+        "B-17",
+        "B-18",
+        "B-19",
+        "B-20",
+        "B-21",
+        "B-22",
+        "B-23",
+        "B-24",
+        "B-25",
+        "B-26",
+        "B-27",
+        "B-28",
+        "B-29",
+        "B-30"
+      ],
+      "certificate": "artifacts/campaigns/b-normal-zero-wedge-lodge-pear.certificate.json"
+    },
+    {
+      "name": "late-return-greenhouse-pear",
+      "identity": {
+        "campaignId": "forest-b",
+        "difficultyId": "normal",
+        "contentVersion": "b-frozen-standard-v1",
+        "rulesVersion": "fixed-campaign-v1.1",
+        "contentHash": "a12cd07ee1ccc762"
+      },
+      "status": "witness_verified",
+      "coverage": "witness-restricted",
+      "atomicActions": 857,
+      "finalHp": 35,
+      "resources": {
+        "heat": 0,
+        "wedges": 2,
+        "publicHeat": 1
+      },
+      "warmPoints": [
+        "greenhouse",
+        "pear"
+      ],
+      "wedgeSites": [],
+      "unfoughtWedgeEnemies": [],
+      "visited": [
+        "B-01",
+        "B-02",
+        "B-03",
+        "B-04",
+        "B-05",
+        "B-06",
+        "B-07",
+        "B-08",
+        "B-09",
+        "B-10",
+        "B-11",
+        "B-12",
+        "B-13",
+        "B-14",
+        "B-15",
+        "B-16",
+        "B-17",
+        "B-18",
+        "B-19",
+        "B-20",
+        "B-21",
+        "B-22",
+        "B-23",
+        "B-24",
+        "B-25",
+        "B-26",
+        "B-27",
+        "B-28",
+        "B-29",
+        "B-30"
+      ],
+      "certificate": "artifacts/campaigns/b-normal-late-return-greenhouse-pear.certificate.json"
+    },
+    {
+      "name": "partial-none",
+      "identity": {
+        "campaignId": "forest-b",
+        "difficultyId": "normal",
+        "contentVersion": "b-frozen-standard-v1",
+        "rulesVersion": "fixed-campaign-v1.1",
+        "contentHash": "a12cd07ee1ccc762"
+      },
+      "status": "witness_verified",
+      "coverage": "witness-restricted",
+      "atomicActions": 692,
+      "finalHp": 35,
+      "resources": {
+        "heat": 0,
+        "wedges": 2,
+        "publicHeat": 4
+      },
+      "warmPoints": [],
+      "wedgeSites": [],
+      "unfoughtWedgeEnemies": [],
+      "visited": [
+        "B-01",
+        "B-02",
+        "B-03",
+        "B-04",
+        "B-05",
+        "B-06",
+        "B-07",
+        "B-08",
+        "B-09",
+        "B-10",
+        "B-11",
+        "B-12",
+        "B-13",
+        "B-14",
+        "B-15",
+        "B-16",
+        "B-17",
+        "B-18",
+        "B-19",
+        "B-20",
+        "B-21",
+        "B-22",
+        "B-23",
+        "B-24",
+        "B-25",
+        "B-26",
+        "B-27",
+        "B-28",
+        "B-29",
+        "B-30"
+      ],
+      "certificate": "artifacts/campaigns/b-normal-partial-none.certificate.json"
+    },
+    {
+      "name": "wedge-7",
+      "identity": {
+        "campaignId": "forest-b",
+        "difficultyId": "normal",
+        "contentVersion": "b-frozen-standard-v1",
+        "rulesVersion": "fixed-campaign-v1.1",
+        "contentHash": "a12cd07ee1ccc762"
+      },
+      "status": "witness_verified",
+      "coverage": "witness-restricted",
+      "atomicActions": 714,
+      "finalHp": 100,
+      "resources": {
+        "heat": 0,
+        "wedges": 1,
+        "publicHeat": 0
+      },
+      "warmPoints": [
+        "greenhouse",
+        "lodge"
+      ],
+      "wedgeSites": [
+        7
+      ],
+      "unfoughtWedgeEnemies": [
+        7
+      ],
+      "visited": [
+        "B-01",
+        "B-02",
+        "B-03",
+        "B-04",
+        "B-05",
+        "B-06",
+        "B-07",
+        "B-08",
+        "B-09",
+        "B-10",
+        "B-11",
+        "B-12",
+        "B-13",
+        "B-14",
+        "B-15",
+        "B-16",
+        "B-17",
+        "B-18",
+        "B-19",
+        "B-20",
+        "B-21",
+        "B-22",
+        "B-23",
+        "B-24",
+        "B-25",
+        "B-26",
+        "B-27",
+        "B-28",
+        "B-29",
+        "B-30"
+      ],
+      "certificate": "artifacts/campaigns/b-normal-wedge-7.certificate.json"
+    },
+    {
+      "name": "wedge-16",
+      "identity": {
+        "campaignId": "forest-b",
+        "difficultyId": "normal",
+        "contentVersion": "b-frozen-standard-v1",
+        "rulesVersion": "fixed-campaign-v1.1",
+        "contentHash": "a12cd07ee1ccc762"
+      },
+      "status": "witness_verified",
+      "coverage": "witness-restricted",
+      "atomicActions": 716,
+      "finalHp": 105,
+      "resources": {
+        "heat": 0,
+        "wedges": 1,
+        "publicHeat": 0
+      },
+      "warmPoints": [
+        "greenhouse",
+        "lodge"
+      ],
+      "wedgeSites": [
+        16
+      ],
+      "unfoughtWedgeEnemies": [
+        16
+      ],
+      "visited": [
+        "B-01",
+        "B-02",
+        "B-03",
+        "B-04",
+        "B-05",
+        "B-06",
+        "B-07",
+        "B-08",
+        "B-09",
+        "B-10",
+        "B-11",
+        "B-12",
+        "B-13",
+        "B-14",
+        "B-15",
+        "B-16",
+        "B-17",
+        "B-18",
+        "B-19",
+        "B-20",
+        "B-21",
+        "B-22",
+        "B-23",
+        "B-24",
+        "B-25",
+        "B-26",
+        "B-27",
+        "B-28",
+        "B-29",
+        "B-30"
+      ],
+      "certificate": "artifacts/campaigns/b-normal-wedge-16.certificate.json"
+    },
+    {
+      "name": "wedge-21",
+      "identity": {
+        "campaignId": "forest-b",
+        "difficultyId": "normal",
+        "contentVersion": "b-frozen-standard-v1",
+        "rulesVersion": "fixed-campaign-v1.1",
+        "contentHash": "a12cd07ee1ccc762"
+      },
+      "status": "witness_verified",
+      "coverage": "witness-restricted",
+      "atomicActions": 716,
+      "finalHp": 140,
+      "resources": {
+        "heat": 0,
+        "wedges": 1,
+        "publicHeat": 0
+      },
+      "warmPoints": [
+        "greenhouse",
+        "lodge"
+      ],
+      "wedgeSites": [
+        21
+      ],
+      "unfoughtWedgeEnemies": [
+        21
+      ],
+      "visited": [
+        "B-01",
+        "B-02",
+        "B-03",
+        "B-04",
+        "B-05",
+        "B-06",
+        "B-07",
+        "B-08",
+        "B-09",
+        "B-10",
+        "B-11",
+        "B-12",
+        "B-13",
+        "B-14",
+        "B-15",
+        "B-16",
+        "B-17",
+        "B-18",
+        "B-19",
+        "B-20",
+        "B-21",
+        "B-22",
+        "B-23",
+        "B-24",
+        "B-25",
+        "B-26",
+        "B-27",
+        "B-28",
+        "B-29",
+        "B-30"
+      ],
+      "certificate": "artifacts/campaigns/b-normal-wedge-21.certificate.json"
+    },
+    {
+      "name": "wedge-24",
+      "identity": {
+        "campaignId": "forest-b",
+        "difficultyId": "normal",
+        "contentVersion": "b-frozen-standard-v1",
+        "rulesVersion": "fixed-campaign-v1.1",
+        "contentHash": "a12cd07ee1ccc762"
+      },
+      "status": "witness_verified",
+      "coverage": "witness-restricted",
+      "atomicActions": 716,
+      "finalHp": 107,
+      "resources": {
+        "heat": 0,
+        "wedges": 1,
+        "publicHeat": 0
+      },
+      "warmPoints": [
+        "greenhouse",
+        "lodge"
+      ],
+      "wedgeSites": [
+        24
+      ],
+      "unfoughtWedgeEnemies": [
+        24
+      ],
+      "visited": [
+        "B-01",
+        "B-02",
+        "B-03",
+        "B-04",
+        "B-05",
+        "B-06",
+        "B-07",
+        "B-08",
+        "B-09",
+        "B-10",
+        "B-11",
+        "B-12",
+        "B-13",
+        "B-14",
+        "B-15",
+        "B-16",
+        "B-17",
+        "B-18",
+        "B-19",
+        "B-20",
+        "B-21",
+        "B-22",
+        "B-23",
+        "B-24",
+        "B-25",
+        "B-26",
+        "B-27",
+        "B-28",
+        "B-29",
+        "B-30"
+      ],
+      "certificate": "artifacts/campaigns/b-normal-wedge-24.certificate.json"
+    },
+    {
+      "name": "wedges-7-16",
+      "identity": {
+        "campaignId": "forest-b",
+        "difficultyId": "normal",
+        "contentVersion": "b-frozen-standard-v1",
+        "rulesVersion": "fixed-campaign-v1.1",
+        "contentHash": "a12cd07ee1ccc762"
+      },
+      "status": "witness_verified",
+      "coverage": "witness-restricted",
+      "atomicActions": 714,
+      "finalHp": 170,
+      "resources": {
+        "heat": 0,
+        "wedges": 0,
+        "publicHeat": 0
+      },
+      "warmPoints": [
+        "greenhouse",
+        "lodge"
+      ],
+      "wedgeSites": [
+        7,
+        16
+      ],
+      "unfoughtWedgeEnemies": [
+        7,
+        16
+      ],
+      "visited": [
+        "B-01",
+        "B-02",
+        "B-03",
+        "B-04",
+        "B-05",
+        "B-06",
+        "B-07",
+        "B-08",
+        "B-09",
+        "B-10",
+        "B-11",
+        "B-12",
+        "B-13",
+        "B-14",
+        "B-15",
+        "B-16",
+        "B-17",
+        "B-18",
+        "B-19",
+        "B-20",
+        "B-21",
+        "B-22",
+        "B-23",
+        "B-24",
+        "B-25",
+        "B-26",
+        "B-27",
+        "B-28",
+        "B-29",
+        "B-30"
+      ],
+      "certificate": "artifacts/campaigns/b-normal-wedges-7-16.certificate.json"
+    },
+    {
+      "name": "wedges-7-21",
+      "identity": {
+        "campaignId": "forest-b",
+        "difficultyId": "normal",
+        "contentVersion": "b-frozen-standard-v1",
+        "rulesVersion": "fixed-campaign-v1.1",
+        "contentHash": "a12cd07ee1ccc762"
+      },
+      "status": "witness_verified",
+      "coverage": "witness-restricted",
+      "atomicActions": 714,
+      "finalHp": 205,
+      "resources": {
+        "heat": 0,
+        "wedges": 0,
+        "publicHeat": 0
+      },
+      "warmPoints": [
+        "greenhouse",
+        "lodge"
+      ],
+      "wedgeSites": [
+        7,
+        21
+      ],
+      "unfoughtWedgeEnemies": [
+        7,
+        21
+      ],
+      "visited": [
+        "B-01",
+        "B-02",
+        "B-03",
+        "B-04",
+        "B-05",
+        "B-06",
+        "B-07",
+        "B-08",
+        "B-09",
+        "B-10",
+        "B-11",
+        "B-12",
+        "B-13",
+        "B-14",
+        "B-15",
+        "B-16",
+        "B-17",
+        "B-18",
+        "B-19",
+        "B-20",
+        "B-21",
+        "B-22",
+        "B-23",
+        "B-24",
+        "B-25",
+        "B-26",
+        "B-27",
+        "B-28",
+        "B-29",
+        "B-30"
+      ],
+      "certificate": "artifacts/campaigns/b-normal-wedges-7-21.certificate.json"
+    },
+    {
+      "name": "wedges-7-24",
+      "identity": {
+        "campaignId": "forest-b",
+        "difficultyId": "normal",
+        "contentVersion": "b-frozen-standard-v1",
+        "rulesVersion": "fixed-campaign-v1.1",
+        "contentHash": "a12cd07ee1ccc762"
+      },
+      "status": "witness_verified",
+      "coverage": "witness-restricted",
+      "atomicActions": 714,
+      "finalHp": 172,
+      "resources": {
+        "heat": 0,
+        "wedges": 0,
+        "publicHeat": 0
+      },
+      "warmPoints": [
+        "greenhouse",
+        "lodge"
+      ],
+      "wedgeSites": [
+        7,
+        24
+      ],
+      "unfoughtWedgeEnemies": [
+        7,
+        24
+      ],
+      "visited": [
+        "B-01",
+        "B-02",
+        "B-03",
+        "B-04",
+        "B-05",
+        "B-06",
+        "B-07",
+        "B-08",
+        "B-09",
+        "B-10",
+        "B-11",
+        "B-12",
+        "B-13",
+        "B-14",
+        "B-15",
+        "B-16",
+        "B-17",
+        "B-18",
+        "B-19",
+        "B-20",
+        "B-21",
+        "B-22",
+        "B-23",
+        "B-24",
+        "B-25",
+        "B-26",
+        "B-27",
+        "B-28",
+        "B-29",
+        "B-30"
+      ],
+      "certificate": "artifacts/campaigns/b-normal-wedges-7-24.certificate.json"
+    },
+    {
+      "name": "wedges-16-21",
+      "identity": {
+        "campaignId": "forest-b",
+        "difficultyId": "normal",
+        "contentVersion": "b-frozen-standard-v1",
+        "rulesVersion": "fixed-campaign-v1.1",
+        "contentHash": "a12cd07ee1ccc762"
+      },
+      "status": "witness_verified",
+      "coverage": "witness-restricted",
+      "atomicActions": 716,
+      "finalHp": 210,
+      "resources": {
+        "heat": 0,
+        "wedges": 0,
+        "publicHeat": 0
+      },
+      "warmPoints": [
+        "greenhouse",
+        "lodge"
+      ],
+      "wedgeSites": [
+        16,
+        21
+      ],
+      "unfoughtWedgeEnemies": [
+        16,
+        21
+      ],
+      "visited": [
+        "B-01",
+        "B-02",
+        "B-03",
+        "B-04",
+        "B-05",
+        "B-06",
+        "B-07",
+        "B-08",
+        "B-09",
+        "B-10",
+        "B-11",
+        "B-12",
+        "B-13",
+        "B-14",
+        "B-15",
+        "B-16",
+        "B-17",
+        "B-18",
+        "B-19",
+        "B-20",
+        "B-21",
+        "B-22",
+        "B-23",
+        "B-24",
+        "B-25",
+        "B-26",
+        "B-27",
+        "B-28",
+        "B-29",
+        "B-30"
+      ],
+      "certificate": "artifacts/campaigns/b-normal-wedges-16-21.certificate.json"
+    },
+    {
+      "name": "wedges-16-24",
+      "identity": {
+        "campaignId": "forest-b",
+        "difficultyId": "normal",
+        "contentVersion": "b-frozen-standard-v1",
+        "rulesVersion": "fixed-campaign-v1.1",
+        "contentHash": "a12cd07ee1ccc762"
+      },
+      "status": "witness_verified",
+      "coverage": "witness-restricted",
+      "atomicActions": 716,
+      "finalHp": 177,
+      "resources": {
+        "heat": 0,
+        "wedges": 0,
+        "publicHeat": 0
+      },
+      "warmPoints": [
+        "greenhouse",
+        "lodge"
+      ],
+      "wedgeSites": [
+        16,
+        24
+      ],
+      "unfoughtWedgeEnemies": [
+        16,
+        24
+      ],
+      "visited": [
+        "B-01",
+        "B-02",
+        "B-03",
+        "B-04",
+        "B-05",
+        "B-06",
+        "B-07",
+        "B-08",
+        "B-09",
+        "B-10",
+        "B-11",
+        "B-12",
+        "B-13",
+        "B-14",
+        "B-15",
+        "B-16",
+        "B-17",
+        "B-18",
+        "B-19",
+        "B-20",
+        "B-21",
+        "B-22",
+        "B-23",
+        "B-24",
+        "B-25",
+        "B-26",
+        "B-27",
+        "B-28",
+        "B-29",
+        "B-30"
+      ],
+      "certificate": "artifacts/campaigns/b-normal-wedges-16-24.certificate.json"
+    },
+    {
+      "name": "wedges-21-24",
+      "identity": {
+        "campaignId": "forest-b",
+        "difficultyId": "normal",
+        "contentVersion": "b-frozen-standard-v1",
+        "rulesVersion": "fixed-campaign-v1.1",
+        "contentHash": "a12cd07ee1ccc762"
+      },
+      "status": "witness_verified",
+      "coverage": "witness-restricted",
+      "atomicActions": 716,
+      "finalHp": 212,
+      "resources": {
+        "heat": 0,
+        "wedges": 0,
+        "publicHeat": 0
+      },
+      "warmPoints": [
+        "greenhouse",
+        "lodge"
+      ],
+      "wedgeSites": [
+        21,
+        24
+      ],
+      "unfoughtWedgeEnemies": [
+        21,
+        24
+      ],
+      "visited": [
+        "B-01",
+        "B-02",
+        "B-03",
+        "B-04",
+        "B-05",
+        "B-06",
+        "B-07",
+        "B-08",
+        "B-09",
+        "B-10",
+        "B-11",
+        "B-12",
+        "B-13",
+        "B-14",
+        "B-15",
+        "B-16",
+        "B-17",
+        "B-18",
+        "B-19",
+        "B-20",
+        "B-21",
+        "B-22",
+        "B-23",
+        "B-24",
+        "B-25",
+        "B-26",
+        "B-27",
+        "B-28",
+        "B-29",
+        "B-30"
+      ],
+      "certificate": "artifacts/campaigns/b-normal-wedges-21-24.certificate.json"
+    },
+    {
+      "name": "revisit-bypassed-enemies",
+      "identity": {
+        "campaignId": "forest-b",
+        "difficultyId": "normal",
+        "contentVersion": "b-frozen-standard-v1",
+        "rulesVersion": "fixed-campaign-v1.1",
+        "contentHash": "a12cd07ee1ccc762"
+      },
+      "status": "witness_verified",
+      "coverage": "witness-restricted",
+      "atomicActions": 911,
+      "finalHp": 118,
+      "resources": {
+        "heat": 0,
+        "wedges": 0,
+        "publicHeat": 0
+      },
+      "warmPoints": [
+        "greenhouse",
+        "lodge"
+      ],
+      "wedgeSites": [
+        7,
+        16
+      ],
+      "unfoughtWedgeEnemies": [],
+      "visited": [
+        "B-01",
+        "B-02",
+        "B-03",
+        "B-04",
+        "B-05",
+        "B-06",
+        "B-07",
+        "B-08",
+        "B-09",
+        "B-10",
+        "B-11",
+        "B-12",
+        "B-13",
+        "B-14",
+        "B-15",
+        "B-16",
+        "B-17",
+        "B-18",
+        "B-19",
+        "B-20",
+        "B-21",
+        "B-22",
+        "B-23",
+        "B-24",
+        "B-25",
+        "B-26",
+        "B-27",
+        "B-28",
+        "B-29",
+        "B-30"
+      ],
+      "certificate": "artifacts/campaigns/b-normal-revisit-bypassed-enemies.certificate.json"
+    }
+  ]
+}

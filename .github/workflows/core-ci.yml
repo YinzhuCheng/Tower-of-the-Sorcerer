@@ -1,0 +1,39 @@
+name: Recovered core CI
+on:
+  push:
+    branches: [dot/rebuild-core-20261002]
+  pull_request:
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        app: [a, b, c]
+    defaults:
+      run:
+        working-directory: apps/${{ matrix.app }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - uses: actions/setup-python@v5
+        if: matrix.app == 'a'
+        with:
+          python-version: '3.12'
+      - name: Install pinned artwork decoder
+        if: matrix.app == 'a'
+        run: python -m pip install --requirement scripts/requirements-art.txt
+      - name: Install pinned Three.js without lifecycle scripts
+        if: matrix.app == 'c'
+        run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Check A or C
+        if: matrix.app != 'b'
+        run: npm run check
+      - name: Check B
+        if: matrix.app == 'b'
+        run: npm test && npm run build && npm run validate

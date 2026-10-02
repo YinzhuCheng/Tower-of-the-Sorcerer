@@ -1,0 +1,1705 @@
+{
+  "schema": 2,
+  "purpose": "Actual shipped runtime byte-integrity facts, not art acceptance or production history.",
+  "named": {
+    "assets": [
+      {
+        "character_id": "cat_boss"
+      },
+      {
+        "character_id": "fox_boss"
+      },
+      {
+        "character_id": "whale_boss"
+      },
+      {
+        "character_id": "sword_boss"
+      },
+      {
+        "character_id": "dragon_boss"
+      },
+      {
+        "character_id": "astral_boss"
+      },
+      {
+        "character_id": "shadow_boss"
+      },
+      {
+        "character_id": "final_queen"
+      },
+      {
+        "character_id": "echo_regent"
+      },
+      {
+        "character_id": "arcane_sovereign"
+      },
+      {
+        "character_id": "palace_warden_v2"
+      },
+      {
+        "character_id": "black_seal_keeper_v2"
+      },
+      {
+        "character_id": "act3_archive_warden"
+      },
+      {
+        "character_id": "act3_last_custodian"
+      },
+      {
+        "character_id": "merchant"
+      }
+    ]
+  },
+  "files": [
+    {
+      "path": "public/assets/anime/avatars/arcane-sovereign-avatar-regret.webp",
+      "sha256": "cda040223c852c21788daa1221776e801980da7a6a9ba89718a8c4cf135123ee",
+      "bytes": 57784
+    },
+    {
+      "path": "public/assets/anime/avatars/archive-warden-avatar-duty.webp",
+      "sha256": "ef7d3205f0d10e025e250938c055705e5bfa1a02fa12fd364328395a8ab4267b",
+      "bytes": 52178
+    },
+    {
+      "path": "public/assets/anime/avatars/astral-boss-avatar-focus.webp",
+      "sha256": "b0099b649045eb9e2cd1af0593f92984d6972f830357786389ea294c66308b0d",
+      "bytes": 45346
+    },
+    {
+      "path": "public/assets/anime/avatars/black-seal-keeper-avatar-watchful.webp",
+      "sha256": "1229719cc4ebd31cb7ccd1b707695e3d53b554f3564e99c6813de57ad3d544ba",
+      "bytes": 49990
+    },
+    {
+      "path": "public/assets/anime/avatars/cat-boss-avatar-alert-v8.webp",
+      "sha256": "b17f918c2dcdbac6ce302a8a129272342386da2227262e4d82ca270dae22249b",
+      "bytes": 48880
+    },
+    {
+      "path": "public/assets/anime/avatars/dragon-boss-avatar-embers-audit-v3.webp",
+      "sha256": "f7e09ecb29d64cac923df4bb5626be2ebb21ec46fdf5b92ff4e3aa0de3f627c8",
+      "bytes": 72304
+    },
+    {
+      "path": "public/assets/anime/avatars/echo-regent-avatar-grave.webp",
+      "sha256": "d3b5019acc210922a2527231ff5cb570b060f373a6e6522e40767e57e333d73d",
+      "bytes": 47844
+    },
+    {
+      "path": "public/assets/anime/avatars/fox-boss-avatar-watchful-v8.webp",
+      "sha256": "581f93961f0e3947d07387dc5774403dfcd8b8b7b2032e4c78e9b468ad34a081",
+      "bytes": 59260
+    },
+    {
+      "path": "public/assets/anime/avatars/last-custodian-avatar-grave.webp",
+      "sha256": "ccb4e58e74b573ed10edfcdf87e3ea3526333583b9577969036159164cd22b41",
+      "bytes": 54878
+    },
+    {
+      "path": "public/assets/anime/avatars/liyue-avatar-embers-cel.webp",
+      "sha256": "9961e00cb33a39a62e0664405cb70387030ff78109732c0a4287f9cb052315f6",
+      "bytes": 60998
+    },
+    {
+      "path": "public/assets/anime/avatars/liyue-avatar-guarded-cel.webp",
+      "sha256": "3a077f2acf3357b1b69d8a0073ff04a5fdc0de4d132973965d892dd7bebfc756",
+      "bytes": 60418
+    },
+    {
+      "path": "public/assets/anime/avatars/liyue-avatar-resolve-cel.webp",
+      "sha256": "b65342b229e130c04fd967cda48f309894b8b6af13b23066a35e5b0178b82449",
+      "bytes": 58612
+    },
+    {
+      "path": "public/assets/anime/avatars/liyue-avatar-stern-cel.webp",
+      "sha256": "83f30cdc4ed079664e02417443ee6c5b36f66c7d52ee935052c9c38aad411770",
+      "bytes": 58542
+    },
+    {
+      "path": "public/assets/anime/avatars/merchant-avatar-knowing.webp",
+      "sha256": "7b471c82c9cab45e524020277b6ae4ad19e6f4dae81695b550513e7fb2f52902",
+      "bytes": 63922
+    },
+    {
+      "path": "public/assets/anime/avatars/noctia-avatar-cold-cel.webp",
+      "sha256": "72e19c22ba633ed43fe9c2506114a528ba4ee73274e33de3dc7e17e8fb2f2b3c",
+      "bytes": 52886
+    },
+    {
+      "path": "public/assets/anime/avatars/noctia-avatar-grave-cel.webp",
+      "sha256": "c4bd85091a9247ddb1d266054127359d21fcfecd66d1d5d5f24648c39e76e016",
+      "bytes": 53798
+    },
+    {
+      "path": "public/assets/anime/avatars/noctia-avatar-knowing-cel.webp",
+      "sha256": "0e9e58e7f9b912cf0be9fa78384adf28c3af009fa3dae4d2434ce947ceaf7722",
+      "bytes": 54010
+    },
+    {
+      "path": "public/assets/anime/avatars/noctia-avatar-sorrow-cel.webp",
+      "sha256": "3703916862817f505c0a36ce93973a6d2eef5c9db50944f5a166afb712a51ec5",
+      "bytes": 53606
+    },
+    {
+      "path": "public/assets/anime/avatars/palace-warden-avatar-duty.webp",
+      "sha256": "f0635ae16877f67961c55318ce3cdc301d1c0b79e9d9bdad2ed8f0b4fffc5fcd",
+      "bytes": 50758
+    },
+    {
+      "path": "public/assets/anime/avatars/shadow-boss-avatar-guarded.webp",
+      "sha256": "0090f4bd045fced4a9fcef8f9b570cd31ac1e5a39869c8165356cae81531a0fc",
+      "bytes": 45152
+    },
+    {
+      "path": "public/assets/anime/avatars/shawu-avatar-focus-cel.webp",
+      "sha256": "a848d3a4e0c8abc23adb6dda23a8c501cbe0ceb787d50dc4d6158f5d949edb05",
+      "bytes": 47896
+    },
+    {
+      "path": "public/assets/anime/avatars/shawu-avatar-gentle-cel.webp",
+      "sha256": "e7d359301060c0880f70ecbe04aee48785049aa5ce3e0b31c90a51843745b87a",
+      "bytes": 46938
+    },
+    {
+      "path": "public/assets/anime/avatars/shawu-avatar-lament-cel.webp",
+      "sha256": "b155d8c4836a96616ac59323b75b415d27410a9c7419e33d29110c7297e39e50",
+      "bytes": 48536
+    },
+    {
+      "path": "public/assets/anime/avatars/shawu-avatar-watchful-cel.webp",
+      "sha256": "273e1b792b8fb68e12df18badc3cb133cd7210dd6ec22390f3aeb26a9a070b54",
+      "bytes": 48508
+    },
+    {
+      "path": "public/assets/anime/avatars/sword-boss-avatar-stern-v8.webp",
+      "sha256": "28de5991a478f11aee39126ebd2305709bae1505bb7e699200a6f3fcfcd0a567",
+      "bytes": 56682
+    },
+    {
+      "path": "public/assets/anime/avatars/whale-boss-avatar-lament-audit-v3.webp",
+      "sha256": "f3bdec1751672efc156af1a9caa9172f4a4e84c4bca06cc3ebed8d9346caca18",
+      "bytes": 59024
+    },
+    {
+      "path": "public/assets/anime/b64/chibi.b64",
+      "sha256": "8c46ad69e9fbef9141ed19780330d8b31539a79e0d13b63b5c9946a286f8fecf",
+      "bytes": 12948
+    },
+    {
+      "path": "public/assets/anime/b64/items.b64",
+      "sha256": "f3fe79aec52d1a6dfaabdea8eb4a702327dcb396de43c3e5399cd779f8d6b6f2",
+      "bytes": 16708
+    },
+    {
+      "path": "public/assets/anime/b64/portraits.b64",
+      "sha256": "8af85cd3b5ec0f7760938597dd234717ac6b30673dd32af2a63a818257a7d441",
+      "bytes": 15944
+    },
+    {
+      "path": "public/assets/anime/b64/tiles.b64",
+      "sha256": "7551dbf9bf678ecc945b2209a32911ae74b5df163f3b9499cb3ee07239a782f5",
+      "bytes": 10784
+    },
+    {
+      "path": "public/assets/anime/cg/liyue-archive-warden-entry-cg-audit-v3.webp",
+      "sha256": "5d3ba88167c1acd151b800b628fccc9033f0f9d0f67fa97e58095cfe9a975b48",
+      "bytes": 419958
+    },
+    {
+      "path": "public/assets/anime/cg/liyue-critical-cg.webp",
+      "sha256": "fb4f56e1d58599502767f636748dd3b651cd4072f15c147b011f2750abcf5ebb",
+      "bytes": 301736
+    },
+    {
+      "path": "public/assets/anime/cg/liyue-defeat-cg.webp",
+      "sha256": "012c8806f064e4bb5f2c41e60cf4f24c3e286972dc92f8d75138b361cc522141",
+      "bytes": 277714
+    },
+    {
+      "path": "public/assets/anime/cg/liyue-echo-ledger-cg-audit-v3.webp",
+      "sha256": "e7efa605d0b8d80ba5b5d0ea9cf7b9f1c9f2ce05e510489c54f2e3b19e2d2aca",
+      "bytes": 442952
+    },
+    {
+      "path": "public/assets/anime/cg/liyue-lanyin-northstar-arrival-cg-v8.webp",
+      "sha256": "4577dd3f6d79965dc2df23f12790f60e60a5dc44e5a0d16e6398f02bbff8f670",
+      "bytes": 413896
+    },
+    {
+      "path": "public/assets/anime/cg/liyue-lighthouse-archive-cg.webp",
+      "sha256": "7b0892f38699119b7ca2386b8984439e5130f203b58fe97e4b0a9b2ee9a1d560",
+      "bytes": 416100
+    },
+    {
+      "path": "public/assets/anime/cg/liyue-lumi-seventeen-minute-splice-cg-v8.webp",
+      "sha256": "ceff053301f89e8c69ded8dfe6e34225752bf1548fafc6ca3d700b9699a108ed",
+      "bytes": 389380
+    },
+    {
+      "path": "public/assets/anime/cg/liyue-noctia-afterlight-cg.webp",
+      "sha256": "6425fdf569a753a7ebb5329c7eeb083cc7d627d8822df54719bee176b25a3a63",
+      "bytes": 292424
+    },
+    {
+      "path": "public/assets/anime/cg/liyue-noctia-archive-storm-cg-audit-v3.webp",
+      "sha256": "9c0b22567e3baac6f64200106856f3a9ac2c49da53915af8b49a53d02a4aeea6",
+      "bytes": 526720
+    },
+    {
+      "path": "public/assets/anime/cg/liyue-noctia-missing-fourth-step-cg-audit-v3.webp",
+      "sha256": "dfc491ebe5eea4a19a381dcfff7ea0ac1f6cc119f3bdde82f141d9871457fa8b",
+      "bytes": 444720
+    },
+    {
+      "path": "public/assets/anime/cg/liyue-noctia-missing-page-cg-audit-v3.webp",
+      "sha256": "30b996a80a48f32a9d55ff1d8b6a91ef7f184af35b9bed724db0eaec35a96076",
+      "bytes": 325126
+    },
+    {
+      "path": "public/assets/anime/cg/liyue-noctia-seal-cg-audit-v3.webp",
+      "sha256": "6d5ea280f420922a5a1dd779245c1eec81463deada39a3952db0bce81cdf1ab0",
+      "bytes": 567028
+    },
+    {
+      "path": "public/assets/anime/cg/liyue-noctia-sovereign-cg-audit-v3.webp",
+      "sha256": "5eed07d3db8e6f6d11cbc678afe7e5c4b883c1920571a3e4e367e7deead31f4f",
+      "bytes": 355766
+    },
+    {
+      "path": "public/assets/anime/cg/liyue-noctia-truth-cg-audit-v3.webp",
+      "sha256": "cc4044a2948c973cf11d87fcad753969b7bb4c5952b52c585be4ac68f279c3d2",
+      "bytes": 319274
+    },
+    {
+      "path": "public/assets/anime/cg/liyue-prologue-tower-cg.webp",
+      "sha256": "5cbaae22d83a1ab8b15b0fe0f7da1c7bde59257a8e66dc41722430dc1cf368af",
+      "bytes": 352188
+    },
+    {
+      "path": "public/assets/anime/cg/liyue-seven-cantos-severed-cg-audit-v3.webp",
+      "sha256": "18f8466ecdd3cdb4205aa4839f5e5154c3831254dcb513dca3fc784ebed083bc",
+      "bytes": 413350
+    },
+    {
+      "path": "public/assets/anime/cg/liyue-traceable-revocation-cg-audit-v3.webp",
+      "sha256": "c098e19e0b876269f63405b44f7afe11da7f30eeeb02d0448e602fb55adfad0c",
+      "bytes": 401888
+    },
+    {
+      "path": "public/assets/anime/cg/liyue-yayu-intercepted-receipt-cg-audit-v3.webp",
+      "sha256": "e807a522a7f3c522898c04dfb40e10973046cd137bab50afb186c68ac9c0d016",
+      "bytes": 458860
+    },
+    {
+      "path": "public/assets/anime/cg/liyue-yayu-seven-core-network-cg-audit-v3.webp",
+      "sha256": "09a574f20747dd3508020c7eec34451c635a7360ba664da80eda3147aa6e04f1",
+      "bytes": 411488
+    },
+    {
+      "path": "public/assets/anime/characters/b2-20260921/arcane-sovereign-acceptance-b2.webp",
+      "sha256": "d2708abba81b6639ea2b24c5e245689dc115f49c3d8a6801348d1379aac350cc",
+      "bytes": 130100
+    },
+    {
+      "path": "public/assets/anime/characters/b2-20260921/arcane-sovereign-regret-b2.webp",
+      "sha256": "ce51e2a669809b44fea4d698b83941f9fbac4704b0b17b02d93b89a8205f544a",
+      "bytes": 130192
+    },
+    {
+      "path": "public/assets/anime/characters/b2-20260921/archive-warden-duty-b2.webp",
+      "sha256": "b7b58ef93ac0fccd7f2251dd93d13bc3155345c6ead1b4149ccf8201651e3920",
+      "bytes": 145568
+    },
+    {
+      "path": "public/assets/anime/characters/b2-20260921/astral-boss-focus-b2.webp",
+      "sha256": "988bf71a660ea1e73a19f68b893968f906d74e3721b896fc89f8ed7257515fb5",
+      "bytes": 118290
+    },
+    {
+      "path": "public/assets/anime/characters/b2-20260921/black-seal-keeper-watchful-b2.webp",
+      "sha256": "7799c02fb07d5feba9e980a3004feddb80731d0288996a47d0c77177813190b5",
+      "bytes": 176672
+    },
+    {
+      "path": "public/assets/anime/characters/b2-20260921/cat-boss-alert-b2.webp",
+      "sha256": "aa54a17f60a0ced84a05256dc62e7a90984403f536e563a147b20ebe1d9c89ca",
+      "bytes": 210586
+    },
+    {
+      "path": "public/assets/anime/characters/b2-20260921/dragon-boss-embers-b2.webp",
+      "sha256": "92b20a84fd38bb69c4514a23913ea3e428a1aa734d0965552c9cd6a00d3c9455",
+      "bytes": 261994
+    },
+    {
+      "path": "public/assets/anime/characters/b2-20260921/echo-regent-grave-b2.webp",
+      "sha256": "f401ceb92b1b1e0eee8547e2384dcce9f3ca9693eaeab7dbe35d075ea8bacb76",
+      "bytes": 113684
+    },
+    {
+      "path": "public/assets/anime/characters/b2-20260921/echo-regent-release-b2.webp",
+      "sha256": "6dd350a8d688df126643fd0a19e3fc81e4e1a706a25370e89c867fdfdffcf855",
+      "bytes": 113226
+    },
+    {
+      "path": "public/assets/anime/characters/b2-20260921/final-queen-cold-b2.webp",
+      "sha256": "0b7a9c61e7a8462c2d10c3253267b47b72b3445b8565fafae180fdeccd16d3ca",
+      "bytes": 245610
+    },
+    {
+      "path": "public/assets/anime/characters/b2-20260921/final-queen-knowing-b2.webp",
+      "sha256": "553852645e0c50bc2d44d8383d55380cf85a694786b42d36d8772c1626d4b425",
+      "bytes": 229756
+    },
+    {
+      "path": "public/assets/anime/characters/b2-20260921/final-queen-resolve-b2.webp",
+      "sha256": "3e04cd236d87995aec1c00ccc9c8432c8537d570ad8edce76a60f99b25ec32f0",
+      "bytes": 242632
+    },
+    {
+      "path": "public/assets/anime/characters/b2-20260921/final-queen-sorrow-b2.webp",
+      "sha256": "26fbb3e1fbac2d84cd96a59e2ff2a87b901a73e6eac9b98b1fb564bc26f35165",
+      "bytes": 285968
+    },
+    {
+      "path": "public/assets/anime/characters/b2-20260921/fox-boss-watchful-b2.webp",
+      "sha256": "7e507a62fb9df8760dfcde3b3a4a77738e8a813c192bc3578a6685d779537c21",
+      "bytes": 225132
+    },
+    {
+      "path": "public/assets/anime/characters/b2-20260921/guide-focus-b2.webp",
+      "sha256": "afb3d5053bf8c1621876993ba65c0e312841f96d7aa20afb6562bda2a8856461",
+      "bytes": 225948
+    },
+    {
+      "path": "public/assets/anime/characters/b2-20260921/guide-gentle-b2.webp",
+      "sha256": "a52d900ac91755263fcccf29ba05ccc0fc3c23cd05e6e8712b1935bc369ed15b",
+      "bytes": 245552
+    },
+    {
+      "path": "public/assets/anime/characters/b2-20260921/guide-lament-b2.webp",
+      "sha256": "ffad29427c5d7f629f3569535e08a178ed9b1ea238b197022c489dc8ae15bb86",
+      "bytes": 207116
+    },
+    {
+      "path": "public/assets/anime/characters/b2-20260921/guide-watchful-b2.webp",
+      "sha256": "68c155fe9f330abf0c3ab7642db31cf3ee3991b0b807bb6a0470112070088694",
+      "bytes": 250318
+    },
+    {
+      "path": "public/assets/anime/characters/b2-20260921/hero-embers-b2.webp",
+      "sha256": "54a91b3f7c40e14cf39f77521f095a9d5a3215a979222947526e37c9787eba6f",
+      "bytes": 380758
+    },
+    {
+      "path": "public/assets/anime/characters/b2-20260921/hero-guarded-b2.webp",
+      "sha256": "8da330f0a20d1aee565c3e970fbc2d94a709d25c757e6d26696b40f677277ceb",
+      "bytes": 296928
+    },
+    {
+      "path": "public/assets/anime/characters/b2-20260921/hero-resolve-b2.webp",
+      "sha256": "a6a2caf5016596f3a545961ee01dc9fa674d7e53b58dbef95304c932ec2545f3",
+      "bytes": 283384
+    },
+    {
+      "path": "public/assets/anime/characters/b2-20260921/last-custodian-release-b2.webp",
+      "sha256": "81d1c8894cdb172a2d503cbc881ae79ba4a906382a2b5c1fb5e206292f2d3e19",
+      "bytes": 165212
+    },
+    {
+      "path": "public/assets/anime/characters/b2-20260921/palace-warden-duty-b2.webp",
+      "sha256": "ffa6645d38c29ffc27b75d15c7bd07b02a9ff4657848398f5ca91c30b59d63b7",
+      "bytes": 230076
+    },
+    {
+      "path": "public/assets/anime/characters/b2-20260921/shadow-boss-guarded-b2.webp",
+      "sha256": "2b1d7d825cc573956265dbe7005bd85c9d7c9000f0af1c628b1b33e14f760490",
+      "bytes": 147462
+    },
+    {
+      "path": "public/assets/anime/characters/b2-20260921/sword-boss-stern-b2.webp",
+      "sha256": "93941d67e271afcc960d2dca00ad5ab3be73aca1861bf67965803806b0a84ab1",
+      "bytes": 198380
+    },
+    {
+      "path": "public/assets/anime/characters/b2-20260921/whale-boss-lament-b2.webp",
+      "sha256": "87c7c4de984d4c94a65670543f00051c7926bf7cc710724d40b01b5a0690b704",
+      "bytes": 222808
+    },
+    {
+      "path": "public/assets/anime/characters/merchant-keke-knowing-hd.png",
+      "sha256": "7025aed9bfa08bcaff356806424242a7b8030de65e2f11a19e9c7c9bac2daa75",
+      "bytes": 1575680
+    },
+    {
+      "path": "public/assets/anime/enemies/act3/archive-lancer-map-384.webp",
+      "sha256": "c94147301586fc62b4a997fbe07dcdece51fd83550cdbbc19bd2bbdc2cd9f2c0",
+      "bytes": 21930
+    },
+    {
+      "path": "public/assets/anime/enemies/act3/archive-marshal-map-384.webp",
+      "sha256": "01f8620ac0e42ea8c511f9a02cddfc024e6ca791a97617f91e947c012985ab48",
+      "bytes": 25862
+    },
+    {
+      "path": "public/assets/anime/enemies/act3/ash-custodian-map-384.webp",
+      "sha256": "cf73815e94c2e3f19bf5ae14687656c1be41b947b185dc0521a51b4ad05a4a7f",
+      "bytes": 23276
+    },
+    {
+      "path": "public/assets/anime/enemies/act3/audit-bailiff-map-384.webp",
+      "sha256": "659a675ccf5a8ac172c9b4a57f432ffa579847ebe61a71816072a2a7968c963f",
+      "bytes": 20328
+    },
+    {
+      "path": "public/assets/anime/enemies/act3/cinder-scribe-map-384.webp",
+      "sha256": "733f86f294c980c99d99b45911dc4e5834136415ebc148f695d342a9194ed2a9",
+      "bytes": 27774
+    },
+    {
+      "path": "public/assets/anime/enemies/act3/errata-cantor-map-384.webp",
+      "sha256": "4c808201b2de535811a8f7c8d726cd7464537b35dae1fe81c62ecfe329f32326",
+      "bytes": 27448
+    },
+    {
+      "path": "public/assets/anime/enemies/act3/errata-core-map-384.webp",
+      "sha256": "12aed6328b3db254cd71f53b47593b35db6597055ec00964b693f96015cff863",
+      "bytes": 26204
+    },
+    {
+      "path": "public/assets/anime/enemies/act3/index-beast-map-384.webp",
+      "sha256": "b96f479eba5b7fe1ca4c574a78a0702fb4df000109476ac3639d0a1a84300cf4",
+      "bytes": 37540
+    },
+    {
+      "path": "public/assets/anime/enemies/act3/ledger-mage-map-384.webp",
+      "sha256": "a2afb827bd1479d03238d9d81e6d6e726ee5545a90a44365c1edd3f8e4758433",
+      "bytes": 39798
+    },
+    {
+      "path": "public/assets/anime/enemies/act3/margin-duelist-map-384.webp",
+      "sha256": "5ed56c80c4196814db311fee4f6dfde00a0d38c1c063dbc0bb5142d0f1587db3",
+      "bytes": 25904
+    },
+    {
+      "path": "public/assets/anime/enemies/act3/relay-conductor-map-384.webp",
+      "sha256": "fbd0fea713000ea04f1fbc1143f85cc741ad3c975354556a11b27124352b9052",
+      "bytes": 24624
+    },
+    {
+      "path": "public/assets/anime/enemies/act3/relay-runner-map-384.webp",
+      "sha256": "73d13b74c2d88d6737529709885ee97da2b175f73dcdd49b6b9e094883700257",
+      "bytes": 27888
+    },
+    {
+      "path": "public/assets/anime/enemies/act3/shelf-warden-map-384.webp",
+      "sha256": "91d147e7d16285106c90eb5a0791d5de9434a5c9d60567a7528f728fe3c53bf1",
+      "bytes": 32692
+    },
+    {
+      "path": "public/assets/anime/enemies/act3/shelter-warden-map-384.webp",
+      "sha256": "8dc2af7ec042379e6543fb9780031aacb81c9b8c56a5f2c963706c75b257b458",
+      "bytes": 34152
+    },
+    {
+      "path": "public/assets/anime/enemies/act3/triage-knight-map-384.webp",
+      "sha256": "f3334d80f47002461e8876f3f432b9deb0fd945d29984af27dcf990063c8ef51",
+      "bytes": 26910
+    },
+    {
+      "path": "public/assets/anime/enemies/canonical-gal-20260930/act3-archive-warden-map.webp",
+      "sha256": "7037dfb1f00da3fce7acd7f140335aaef2ecbcdb2ad6a9067784b4786455d373",
+      "bytes": 39088
+    },
+    {
+      "path": "public/assets/anime/enemies/canonical-gal-20260930/act3-last-custodian-map.webp",
+      "sha256": "e99e26778b7ee8282fc1589c6a38c47bd95c1a41cec17f4e0b8801ffabd6a76a",
+      "bytes": 50184
+    },
+    {
+      "path": "public/assets/anime/enemies/canonical-gal-20260930/arcane-sovereign-map.webp",
+      "sha256": "28c6bd2e92e31a64f50c982e505357060884c2d2c2ba8879927b6e2a65f0f7f8",
+      "bytes": 35258
+    },
+    {
+      "path": "public/assets/anime/enemies/canonical-gal-20260930/astral-boss-map.webp",
+      "sha256": "3d7f55986bbb8824744e9f1149b8e378682d16714a974b54558a88511ab26b01",
+      "bytes": 37064
+    },
+    {
+      "path": "public/assets/anime/enemies/canonical-gal-20260930/black-seal-keeper-v2-map.webp",
+      "sha256": "2abc94cb8ffd839f95e8c2cb53bd9aa6dc953bbe822c8ab13bb32ca01ce1b280",
+      "bytes": 41430
+    },
+    {
+      "path": "public/assets/anime/enemies/canonical-gal-20260930/cat-boss-map.webp",
+      "sha256": "25debe637d5eab0cf2f5d9b66615ad9ad7def8f44e75f349bea1db62e1016065",
+      "bytes": 50962
+    },
+    {
+      "path": "public/assets/anime/enemies/canonical-gal-20260930/dragon-boss-map.webp",
+      "sha256": "a67753a956500967212b6444300ba217cea910bd1842bccc7ad7bab8d1ef43f9",
+      "bytes": 70186
+    },
+    {
+      "path": "public/assets/anime/enemies/canonical-gal-20260930/echo-regent-map.webp",
+      "sha256": "66972b2450036daf51d7c9731b4932b0e72e5e8cef22b24f4e289861f6e15082",
+      "bytes": 31512
+    },
+    {
+      "path": "public/assets/anime/enemies/canonical-gal-20260930/final-queen-map.webp",
+      "sha256": "0edcaf89e94b297479e7a8b8388e3599c09c919059208f90f90af9e355f358a3",
+      "bytes": 59302
+    },
+    {
+      "path": "public/assets/anime/enemies/canonical-gal-20260930/fox-boss-map.webp",
+      "sha256": "57795ee821e800e2bcdc720bb5e52e00e18489db42ee97f54b51035687dcade8",
+      "bytes": 53408
+    },
+    {
+      "path": "public/assets/anime/enemies/canonical-gal-20260930/merchant-map.webp",
+      "sha256": "e472aec54b7bb9c7f0199a237016ee2911e41a7fb15013d55e926a14a1e7582e",
+      "bytes": 44120
+    },
+    {
+      "path": "public/assets/anime/enemies/canonical-gal-20260930/palace-warden-v2-map.webp",
+      "sha256": "051018396bd7759155f3e04f61a4121f7f0a0b3a45a30bf25dd93263ff2c4b43",
+      "bytes": 54234
+    },
+    {
+      "path": "public/assets/anime/enemies/canonical-gal-20260930/shadow-boss-map.webp",
+      "sha256": "30ee90318aef958ba6c435175dd02acc8a87a0c22201ee59e88ffd079303752d",
+      "bytes": 35344
+    },
+    {
+      "path": "public/assets/anime/enemies/canonical-gal-20260930/sword-boss-map.webp",
+      "sha256": "bb2e0a2bd92dadb5112dd745b407f1a7d488f2b400aa6ee0fdbaef0fefccdac3",
+      "bytes": 60574
+    },
+    {
+      "path": "public/assets/anime/enemies/canonical-gal-20260930/whale-boss-map.webp",
+      "sha256": "c4282a77acf530f319d0b9191914cabb722b616f4c3045bf0472a69d407b1d71",
+      "bytes": 64682
+    },
+    {
+      "path": "public/assets/anime/enemies/manifest.json",
+      "sha256": "b74993315a6022912ac9be408010daf625f0809688ba9058e67b04c01b7ef176",
+      "bytes": 10852
+    },
+    {
+      "path": "public/assets/anime/enemies/v1/aether-warden-map-128.webp",
+      "sha256": "c8e752af843e8113cac54eb47bb2fdadfe08bd834e612c3f7153fe5215c081f5",
+      "bytes": 5408
+    },
+    {
+      "path": "public/assets/anime/enemies/v1/arcane-gatekeeper-map-128.webp",
+      "sha256": "4bda1049c6d498344ba4669c831dc037d17ba4d8ce4b15edebdd1b7b6e5d6953",
+      "bytes": 5342
+    },
+    {
+      "path": "public/assets/anime/enemies/v1/black-seal-keeper-map-128.webp",
+      "sha256": "c0701844dfe94896a84438767069bbc65455b9359207855ce6ae41de0ba0e448",
+      "bytes": 5118
+    },
+    {
+      "path": "public/assets/anime/enemies/v1/cat-mage-map-128.webp",
+      "sha256": "e85376a4b53931190a41beace16704b0e3c4eac929b42914ee116f180e0fc23b",
+      "bytes": 5392
+    },
+    {
+      "path": "public/assets/anime/enemies/v1/cat-scout-map-128.webp",
+      "sha256": "d7af74a05fcbfc12a443a6462f52dcd4024d8c8253280e377d5d3c25ca78ae0a",
+      "bytes": 4416
+    },
+    {
+      "path": "public/assets/anime/enemies/v1/crown-blade-map-128.webp",
+      "sha256": "82a174c7dfba1542d2851d82baee0e97a485f8385fbc3378c055cf8912b614ce",
+      "bytes": 4274
+    },
+    {
+      "path": "public/assets/anime/enemies/v1/crown-cantor-map-128.webp",
+      "sha256": "129e08019f1979cf8a3f1cc03d90a6a021ba4c5270d53cb0c9e1edf6d23360da",
+      "bytes": 6088
+    },
+    {
+      "path": "public/assets/anime/enemies/v1/crown-magus-map-128.webp",
+      "sha256": "f3196f797d2a657b5fb970ae25ac71c8a604d93e4dc7d3d2def022ff1d8b8fcd",
+      "bytes": 5990
+    },
+    {
+      "path": "public/assets/anime/enemies/v1/dragon-whelp-map-128.webp",
+      "sha256": "84e5cd63e5db4490e67c9443844a48f4a41ce6d359514be6e52b17a6d0ee1e0b",
+      "bytes": 5896
+    },
+    {
+      "path": "public/assets/anime/enemies/v1/eclipse-mage-map-128.webp",
+      "sha256": "a122f8356bd158f7bda003e295f917776abaace8f1dac6e198b1f0ccfe89be4d",
+      "bytes": 4246
+    },
+    {
+      "path": "public/assets/anime/enemies/v1/flame-caster-map-128.webp",
+      "sha256": "d3aa4e49688c0123e56e8ce5e4da77bcb2fa2529a4ecd045d9981b2d71862ad2",
+      "bytes": 5832
+    },
+    {
+      "path": "public/assets/anime/enemies/v1/fox-acolyte-map-128.webp",
+      "sha256": "d2293d43aba945d047749a7001b34ed7eada3ac1ca48a43b08a011d0d67f6889",
+      "bytes": 5114
+    },
+    {
+      "path": "public/assets/anime/enemies/v1/fox-archer-map-128.webp",
+      "sha256": "43e2ec0435e9012c92e4d42360102731032d4b9a8c103e9d60c0d46aae7dd4cf",
+      "bytes": 4698
+    },
+    {
+      "path": "public/assets/anime/enemies/v1/liyue-awakened-map-128.webp",
+      "sha256": "aee1256c2478b93e5da12fd2273f9d97baa7a8785b641ab74e68ec9996d5d4f2",
+      "bytes": 4654
+    },
+    {
+      "path": "public/assets/anime/enemies/v1/mana-sentinel-map-128.webp",
+      "sha256": "41ee7ebf0f6e26273243e641550d8fe2fbb10461b10d5fab20cbed8b73847ec6",
+      "bytes": 5376
+    },
+    {
+      "path": "public/assets/anime/enemies/v1/mana-wisp-map-128.webp",
+      "sha256": "ae9216aef4c35713ec45f4863196f4bf63d482ed9ebd39f4b1c9a79d8c715d48",
+      "bytes": 5138
+    },
+    {
+      "path": "public/assets/anime/enemies/v1/mirror-cantor-map-128.webp",
+      "sha256": "44ec614937e4c9395b90cb832226db0514e5094fb3b89989c696b892798a790a",
+      "bytes": 5752
+    },
+    {
+      "path": "public/assets/anime/enemies/v1/mirror-doll-map-128.webp",
+      "sha256": "8247a4659275654f0cb6b401636bac0528ceda5586fa4e7cbf126d5afa486b3d",
+      "bytes": 5486
+    },
+    {
+      "path": "public/assets/anime/enemies/v1/mirror-duelist-map-128.webp",
+      "sha256": "df619bd5e3f91abd326235552576f93f7adb52ae731d048856780a5b9f2bbacd",
+      "bytes": 6572
+    },
+    {
+      "path": "public/assets/anime/enemies/v1/mirror-huntress-map-128.webp",
+      "sha256": "3afa8a31f43bc9517b793837e78e414380eea244ccd4a4e3129dea47feaec461",
+      "bytes": 5670
+    },
+    {
+      "path": "public/assets/anime/enemies/v1/mote-map-128.webp",
+      "sha256": "4601c609ba401a4507f108e99902834fd713aa58a2eca2b7bf8f14e8c7800f68",
+      "bytes": 5454
+    },
+    {
+      "path": "public/assets/anime/enemies/v1/origin-core-map-128.webp",
+      "sha256": "ddc5162a24d0d5bce39448c26a3c63003b3206a85ec32a6b053855ddf177b545",
+      "bytes": 6264
+    },
+    {
+      "path": "public/assets/anime/enemies/v1/palace-warden-map-128.webp",
+      "sha256": "edeba39375e1c0f5c3f428c068175086e417efb4bdfe3e6c9d987135f850c1e3",
+      "bytes": 4604
+    },
+    {
+      "path": "public/assets/anime/enemies/v1/prism-archivist-map-128.webp",
+      "sha256": "0ae1f008539c6ba5b0365bf8235f40f4e297e6ab99a7ae1281e68c2cd6278c38",
+      "bytes": 5666
+    },
+    {
+      "path": "public/assets/anime/enemies/v1/resonance-blade-map-128.webp",
+      "sha256": "b27895a1fb3994bb77abf064e6e726183a60149e194847625776a8d39e565956",
+      "bytes": 6334
+    },
+    {
+      "path": "public/assets/anime/enemies/v1/resonance-cantor-map-128.webp",
+      "sha256": "a0f9d965b4935115c6a73882914649e568d040bafc115f807895acf1c9fb2ed2",
+      "bytes": 6190
+    },
+    {
+      "path": "public/assets/anime/enemies/v1/rune-cantor-map-128.webp",
+      "sha256": "458833442a854e4cb47a8dd58fab722a7d65402b1f498ede0a7e650381f6d7b2",
+      "bytes": 5868
+    },
+    {
+      "path": "public/assets/anime/enemies/v1/shadow-ninja-map-128.webp",
+      "sha256": "ac24a66bb76166a17964dfd6f0f8c1c104471ab225b17bb07c0d7a6b041fb2fa",
+      "bytes": 4922
+    },
+    {
+      "path": "public/assets/anime/enemies/v1/silence-guard-map-128.webp",
+      "sha256": "26c11b3628939c464576c41c77b8f7370ff893b0b7f232578638ba48ba912e59",
+      "bytes": 4152
+    },
+    {
+      "path": "public/assets/anime/enemies/v1/spectrum-marshal-map-128.webp",
+      "sha256": "c6363069649bd341109c9dca9598c4d843e517380ab691d4c12230ff2079b7dc",
+      "bytes": 6126
+    },
+    {
+      "path": "public/assets/anime/enemies/v1/spellblade-duelist-map-128.webp",
+      "sha256": "d51a4349b7eff3da67fb05168117b32bfac5235e0e2fd34c55414d0751d1d74d",
+      "bytes": 4238
+    },
+    {
+      "path": "public/assets/anime/enemies/v1/star-witch-map-128.webp",
+      "sha256": "0b2b9757a1114a595043de8c21cbda005bbecab94cebe6aaf644dd3fcd6b7182",
+      "bytes": 5896
+    },
+    {
+      "path": "public/assets/anime/enemies/v1/sword-apprentice-map-128.webp",
+      "sha256": "2ae5fbd389c43404af1e5e4d5a471bbaa1b2fe55db0fcbcf0192d06b0ebb928a",
+      "bytes": 3776
+    },
+    {
+      "path": "public/assets/anime/enemies/v1/sword-knight-map-128.webp",
+      "sha256": "6c7b38f4beac76083abf77e33fb8f2de08e551cc31c01e9893b3e165ff396343",
+      "bytes": 4186
+    },
+    {
+      "path": "public/assets/anime/enemies/v1/tide-lancer-map-128.webp",
+      "sha256": "5834107957690b3f22b931aa22d7cbe00bcf9c5eb0c3cb71ba40c65a8a8f5679",
+      "bytes": 5042
+    },
+    {
+      "path": "public/assets/anime/enemies/v1/triune-arbiter-map-128.webp",
+      "sha256": "35be2cd65332cd1f6216aa2e780bbb82af13da7d8ad245836cc346e6c31399b9",
+      "bytes": 6154
+    },
+    {
+      "path": "public/assets/anime/enemies/v1/void-herald-map-128.webp",
+      "sha256": "a3e2ed67a5c4b0327d1834eeb007cf242eca707f4dfed655431ca97b3ecf9f0b",
+      "bytes": 5566
+    },
+    {
+      "path": "public/assets/anime/enemies/v1/void-priestess-map-128.webp",
+      "sha256": "4df7202fdfef0f8b9e0b21e033a2af6498e0ad953ea9c209f2f4c05a3b8f511b",
+      "bytes": 5842
+    },
+    {
+      "path": "public/assets/anime/enemies/v1/whale-singer-map-128.webp",
+      "sha256": "ca2fae81c3f616e82d632b3237c025ee6444721f93351b0995e52ed62a4534f8",
+      "bytes": 6014
+    },
+    {
+      "path": "public/assets/anime/enemies/v2/void-core-map-384.webp",
+      "sha256": "9cca803e0fab0387f93c48692af889dd0245c6cde16ac9d5e653d17144909211",
+      "bytes": 58890
+    },
+    {
+      "path": "public/assets/anime/enemies/v3/blade-priestess-map-384.webp",
+      "sha256": "9821d968ddf7313e7d193214e30f3359eda59bf832172034b89b0eeafa80a991",
+      "bytes": 52936
+    },
+    {
+      "path": "public/assets/anime/enemies/v3/comet-archer-map-384.webp",
+      "sha256": "bbcec18db4593eaabcd65b723bcd135c55fbd743b8b56958868f564fde383040",
+      "bytes": 63334
+    },
+    {
+      "path": "public/assets/anime/enemies/v3/crown-knight-map-384.webp",
+      "sha256": "fdb57cb30851026166ede8489aa8ddae66c2997201f2c202a4800404437b5e01",
+      "bytes": 50508
+    },
+    {
+      "path": "public/assets/anime/enemies/v3/crown-shade-map-384.webp",
+      "sha256": "d170febbc144bf922415ccd97ebb4004b1d400cb14cf1e1b743073662b080b4a",
+      "bytes": 49572
+    },
+    {
+      "path": "public/assets/anime/enemies/v3/dragon-guard-map-384.webp",
+      "sha256": "a1634f29fe80b782d0206167504870da56b2d9af36c81c42ee2685fcadc3d606",
+      "bytes": 49044
+    },
+    {
+      "path": "public/assets/anime/enemies/v3/dusk-dragon-map-384.webp",
+      "sha256": "aadc48881e4ea03f7c8b5f0ae6a09b604a545901bb59896693e4a7e912bed2c0",
+      "bytes": 58794
+    },
+    {
+      "path": "public/assets/anime/enemies/v3/hush-cantor-map-384.webp",
+      "sha256": "5afb57760ad10c1fec59f829a9133fc75954ba768dfce1e83c2b0daeb2c5dbc9",
+      "bytes": 62092
+    },
+    {
+      "path": "public/assets/anime/enemies/v3/hush-vault-blade-map-384.webp",
+      "sha256": "1e39bae7170154abe53b99fa3e5e8b990e1051b0e9adb9695926b8e8933a2ee7",
+      "bytes": 50240
+    },
+    {
+      "path": "public/assets/anime/enemies/v3/hush-vault-cantor-map-384.webp",
+      "sha256": "3b7e4a0e69ab30927718eb0adf5a983a318a77d54cfb73529deaf75cc0a28686",
+      "bytes": 48976
+    },
+    {
+      "path": "public/assets/anime/enemies/v3/mute-guard-map-384.webp",
+      "sha256": "c1e37568962d159a6e2263050b6d5fb2d776225d4c752193b685760ce8fe5444",
+      "bytes": 29060
+    },
+    {
+      "path": "public/assets/anime/enemies/v3/null-cantor-map-384.webp",
+      "sha256": "ff0546a3f9886917d29ee94e8c90e6c890e8622e9035524c3fb7efe7cf486559",
+      "bytes": 60108
+    },
+    {
+      "path": "public/assets/anime/enemies/v3/outer-crown-map-384.webp",
+      "sha256": "d1312bd85eb87c088a6c846d77be9d3dab83727bbc502b2b803b9f6c37de41c5",
+      "bytes": 44360
+    },
+    {
+      "path": "public/assets/anime/enemies/v3/shadow-ward-blade-map-384.webp",
+      "sha256": "81da71022441d54de4b6bee6620b28585f5aa804a6b285e151b77e4588bd20cf",
+      "bytes": 50932
+    },
+    {
+      "path": "public/assets/anime/enemies/v3/shadow-ward-cantor-map-384.webp",
+      "sha256": "06df5bfa418a0654a7c44ee04e1ffa21dfa7ed4af0c96fa3a6ef6b625af07ef7",
+      "bytes": 60092
+    },
+    {
+      "path": "public/assets/anime/enemies/v3/shell-guard-map-384.webp",
+      "sha256": "6a8ea346a3d4012f39c75e687c6334e458c6bf78ddd672f19fc5231706838b81",
+      "bytes": 56418
+    },
+    {
+      "path": "public/assets/anime/enemies/v3/star-sentinel-map-384.webp",
+      "sha256": "e96dce4436ee3afe66a9be46ebf180e83f4a47482375f5c051dec7b38ca32220",
+      "bytes": 51422
+    },
+    {
+      "path": "public/assets/anime/enemies/v3/vine-druid-map-384.webp",
+      "sha256": "3660f5dfd5029bf19fa3f2d46d51ea2735334ed5fb7045afa5ca9d1e0256212f",
+      "bytes": 68076
+    },
+    {
+      "path": "public/assets/anime/items/astral-codex.webp",
+      "sha256": "004919a250e69ca96622f927a6932afac84ef79b87be517b201b8ba5619d4b92",
+      "bytes": 56696
+    },
+    {
+      "path": "public/assets/anime/items/holy-elixir.webp",
+      "sha256": "2c6d2f6a749c2d42b72d4e128b5c73b64977cf5a9834c5cd66f1e52d8a158848",
+      "bytes": 34426
+    },
+    {
+      "path": "public/assets/anime/items/mana-flask.webp",
+      "sha256": "0e4615d6c660582f694bd9a406b1460a76025012fbb518c729d788e9e5667754",
+      "bytes": 44576
+    },
+    {
+      "path": "public/assets/anime/items/manifest.json",
+      "sha256": "117bbf8f9a360f12eece59c04d8162fe9a9b918e5be8eacdc922ad26a62ed57e",
+      "bytes": 632
+    },
+    {
+      "path": "public/assets/anime/items/moon-compass.webp",
+      "sha256": "406f40e1a886cfc8e94ccf37e31813916035f4c6787f0e9acd83362f38f5a147",
+      "bytes": 64120
+    },
+    {
+      "path": "public/assets/anime/map/atlases/environment-1.b64",
+      "sha256": "a8181725dd5549ba6b47bbf80e96cc63c2c701bf66b82b3fa84964a90d132df6",
+      "bytes": 107789
+    },
+    {
+      "path": "public/assets/anime/map/atlases/environment-2.b64",
+      "sha256": "8a9480b2121678b5061899af698272f421804ae9856b6c9350b657a59e7738ea",
+      "bytes": 107789
+    },
+    {
+      "path": "public/assets/anime/map/atlases/environment-3.b64",
+      "sha256": "89cb56522e59ca9cc84556b2d330ef21ba9ccacea22aa843713469c6f3022c63",
+      "bytes": 107789
+    },
+    {
+      "path": "public/assets/anime/map/atlases/environment-4.b64",
+      "sha256": "1b682c97de6cd50fbbd2c4eca0b4422fef4c575827f8db86f44968f2352a52ea",
+      "bytes": 107789
+    },
+    {
+      "path": "public/assets/anime/map/atlases/environment-5.b64",
+      "sha256": "f0332aa95c43f6243e2326c80f953e8c143ec478d894b66d093887f4132b097c",
+      "bytes": 107789
+    },
+    {
+      "path": "public/assets/anime/map/atlases/featured-v2-01.b64",
+      "sha256": "64768e37fc02ad18fdb97cb388d7241e4b346bad8cc64f66737727650847c517",
+      "bytes": 8000
+    },
+    {
+      "path": "public/assets/anime/map/atlases/featured-v2-02.b64",
+      "sha256": "f5cf9ea7e80985fc60fda4896a1c2a7eaa7ad39ee47396cd285308bd6f575f58",
+      "bytes": 8000
+    },
+    {
+      "path": "public/assets/anime/map/atlases/featured-v2-03.b64",
+      "sha256": "4bfc3ca66ca08b604188bd216391d3f699d50bd6606a3a80eb996ebf2b9130a4",
+      "bytes": 16000
+    },
+    {
+      "path": "public/assets/anime/map/atlases/featured-v2-04.b64",
+      "sha256": "963e2a8bc1370d7fd3bd5b1f20e15914311edc7726d14a3571f857a35c401375",
+      "bytes": 16000
+    },
+    {
+      "path": "public/assets/anime/map/atlases/featured-v2-05a1.b64",
+      "sha256": "49114327cfa61a94b2e02fadd60820a7e64a4c6f9513407ecde1927395a241e8",
+      "bytes": 4000
+    },
+    {
+      "path": "public/assets/anime/map/atlases/featured-v2-05a2.b64",
+      "sha256": "d2f81102bcd4eabc35082536c75013c5e52ba1f057391e2b9737597199b623fb",
+      "bytes": 4000
+    },
+    {
+      "path": "public/assets/anime/map/atlases/featured-v2-05b.b64",
+      "sha256": "f7b6acdca10962accb67d29dc494b1ecc50dc65a1d5930e325c6fd5a4580579b",
+      "bytes": 8000
+    },
+    {
+      "path": "public/assets/anime/map/atlases/featured-v2-06.b64",
+      "sha256": "9ff5a9d3b53512fef95e066000d806fcd3f2f25f1dc40029d1e1df1a1e12e8fc",
+      "bytes": 16000
+    },
+    {
+      "path": "public/assets/anime/map/atlases/featured-v2-07a.b64",
+      "sha256": "1567936f5a25f16d2146a45cc6edeb4c92e9e5d09bbc4741853f0f3827f18c43",
+      "bytes": 16000
+    },
+    {
+      "path": "public/assets/anime/map/atlases/featured-v2-08.b64",
+      "sha256": "cd8fa9a22146cbca72e9539a6ce1b5bfc673bc6ce9e3700d5c575f3e803588b3",
+      "bytes": 180
+    },
+    {
+      "path": "public/assets/anime/map/atlases/runtime/environment.webp",
+      "sha256": "4416dd4fd595c4f7be040ddea2f0e92a86897931ee4b786074a7752342bf511a",
+      "bytes": 404204
+    },
+    {
+      "path": "public/assets/anime/map/atlases/runtime/featured-v2.webp",
+      "sha256": "3e3a3e6ea341ec420e3a67707c85612218c90f19c324db52949684262c245ae6",
+      "bytes": 72134
+    },
+    {
+      "path": "public/assets/anime/map/atlases/runtime/gameplay-v10.webp",
+      "sha256": "dd1b308334377c46e36cd2bdcb634a20d450fa0c1547f8bc50af9d204e23c79d",
+      "bytes": 13554
+    },
+    {
+      "path": "public/assets/anime/map/atlases/runtime/hero-portrait-v4.webp",
+      "sha256": "3dc585ee37e29044d886718a9471b7519ba8f7bd2274b7edf465ea562e907f46",
+      "bytes": 22464
+    },
+    {
+      "path": "public/assets/anime/map/atlases/runtime/hero-v6.webp",
+      "sha256": "6746d5421f40362aea990ac9e807eab1632c10bf68edc0a57c12ca717a8c814f",
+      "bytes": 250808
+    },
+    {
+      "path": "public/assets/anime/map/atlases/runtime/ui-v8.webp",
+      "sha256": "857a56998c8d6c625f1a343bf9bac29084b899be04f19cc2d77a3678d246e4ec",
+      "bytes": 32362
+    },
+    {
+      "path": "public/assets/anime/map/atlases/runtime/v4-combined.webp",
+      "sha256": "584116240b9c6f575ec36045c641b714f07e5fb7281f6ef56c0b244bd3eb0e5d",
+      "bytes": 420830
+    },
+    {
+      "path": "public/assets/anime/map/atlases/runtime/wall-materials-v6.webp",
+      "sha256": "1b1e50afdc51456c72370ff48f4b6cc8370529990446d2547b72560363c28184",
+      "bytes": 50566
+    },
+    {
+      "path": "public/assets/anime/map/atlases/v10/gameplay-v10-ultra-01.b64",
+      "sha256": "368227bd4e7ab17d82b7287991df1f907845d169e96ecb1935c76e29214518be",
+      "bytes": 9100
+    },
+    {
+      "path": "public/assets/anime/map/atlases/v10/gameplay-v10-ultra-02-fixed.b64",
+      "sha256": "e85cb70790adae68f9ba52b9f7503751afe3e4b3ee79d2f3fa7d2201b92f53b0",
+      "bytes": 8972
+    },
+    {
+      "path": "public/assets/anime/map/atlases/v4/combined-01.b64",
+      "sha256": "465fd1703af6372b8504374e0fc35738f9beb74abd071180b6ccf25b9eae198a",
+      "bytes": 80161
+    },
+    {
+      "path": "public/assets/anime/map/atlases/v4/combined-02.b64",
+      "sha256": "1de2e11291968b7b001e13ef1e37d22cc1b604f44e11a776aa42ae6838d9640b",
+      "bytes": 80161
+    },
+    {
+      "path": "public/assets/anime/map/atlases/v4/combined-03.b64",
+      "sha256": "abeeceafe631c78138e4d0a8ed4b706908372b3219e617110d13d2e628a3d8db",
+      "bytes": 80161
+    },
+    {
+      "path": "public/assets/anime/map/atlases/v4/combined-04.b64",
+      "sha256": "b631dd34d43c15c72d0d8ef90ef0143322bfa57d05f85c1f898223a13d565445",
+      "bytes": 80161
+    },
+    {
+      "path": "public/assets/anime/map/atlases/v4/combined-05.b64",
+      "sha256": "9dd913c1d3f10625021e5833a04f3a9c1e041a572f0da44cda5b5e63f5a62c8a",
+      "bytes": 80161
+    },
+    {
+      "path": "public/assets/anime/map/atlases/v4/combined-06.b64",
+      "sha256": "4ba07c58d3135ce4719f897424a85eafe20f6fd10fe0578b35c368892c10d536",
+      "bytes": 80161
+    },
+    {
+      "path": "public/assets/anime/map/atlases/v4/combined-07.b64",
+      "sha256": "7c8f18a4c747a31bb207d099ee96f2ec9a670353691e3d885762cdf89827ab3c",
+      "bytes": 80149
+    },
+    {
+      "path": "public/assets/anime/map/atlases/v4/portrait-01.b64",
+      "sha256": "02f291726569177fee1ba3513a04d188240a88afbffb1ef28549caf609d724f2",
+      "bytes": 9985
+    },
+    {
+      "path": "public/assets/anime/map/atlases/v4/portrait-02.b64",
+      "sha256": "811d88d9dcc767d8f1c2561486b20d142a754019d4626c6b9465181fc9be9bdb",
+      "bytes": 9985
+    },
+    {
+      "path": "public/assets/anime/map/atlases/v4/portrait-03.b64",
+      "sha256": "dd1a74033cf3b555b7d83133f05994fd63c980ed3d4cb9d84cae72afdae5f367",
+      "bytes": 9985
+    },
+    {
+      "path": "public/assets/anime/map/atlases/v6/hero/hero-v6-00.b64",
+      "sha256": "ac9cb838a5161054ded3fd10b4b35a506ffea7c26c431e97c023c5dd0081b0de",
+      "bytes": 24000
+    },
+    {
+      "path": "public/assets/anime/map/atlases/v6/hero/hero-v6-01.b64",
+      "sha256": "786e2d1e0df052514e3f1ab0c016d00bfd5913492ce0fa4a3a1eb738a24a5820",
+      "bytes": 24000
+    },
+    {
+      "path": "public/assets/anime/map/atlases/v6/hero/hero-v6-02.b64",
+      "sha256": "dbd0a9cb100a86f91e37a12c0622825e4397ef1a3469a1e6c34260df2e05fde0",
+      "bytes": 24000
+    },
+    {
+      "path": "public/assets/anime/map/atlases/v6/hero/hero-v6-03.b64",
+      "sha256": "0b157925d7ceff9e8e851dbed449a4a8d023e63edf9e1a70010f09f4f0015803",
+      "bytes": 24000
+    },
+    {
+      "path": "public/assets/anime/map/atlases/v6/hero/hero-v6-04.b64",
+      "sha256": "00d51921dca77eb6f98942bd9c6f09fe53e074a44a63a1746c70f373ed4c5813",
+      "bytes": 24000
+    },
+    {
+      "path": "public/assets/anime/map/atlases/v6/hero/hero-v6-05.b64",
+      "sha256": "fa7244ca6a8b82703a3d9235fc0435e17989ad554d6cae6e27846a49641809bb",
+      "bytes": 24000
+    },
+    {
+      "path": "public/assets/anime/map/atlases/v6/hero/hero-v6-06.b64",
+      "sha256": "e549ef025bb0dd020942a97af3fa2f1356878ad0a445e3aaa29383c2f8340a53",
+      "bytes": 24000
+    },
+    {
+      "path": "public/assets/anime/map/atlases/v6/hero/hero-v6-07.b64",
+      "sha256": "b52c94560f601247844582c2c2b4c257a87a7a041625ea6438418374fa0ac220",
+      "bytes": 24000
+    },
+    {
+      "path": "public/assets/anime/map/atlases/v6/hero/hero-v6-08.b64",
+      "sha256": "c0dce509364eb9292bbf0c6cbe54e1fc60afcbfc073e5a7654b22c5bb0823b02",
+      "bytes": 24000
+    },
+    {
+      "path": "public/assets/anime/map/atlases/v6/hero/hero-v6-09.b64",
+      "sha256": "03f95d7be00d09ca5b8933b855da6d6402f6071930a10ba5fce5f157eef3889a",
+      "bytes": 24000
+    },
+    {
+      "path": "public/assets/anime/map/atlases/v6/hero/hero-v6-10.b64",
+      "sha256": "1a23e87efa3bfb9ce56784f23a7800887a3769e4734c880fa2ea69a23d053f85",
+      "bytes": 24000
+    },
+    {
+      "path": "public/assets/anime/map/atlases/v6/hero/hero-v6-11.b64",
+      "sha256": "3bb0e39c5b4c0759954736c5403de76b28077e883de909357ec275f67935faa6",
+      "bytes": 24000
+    },
+    {
+      "path": "public/assets/anime/map/atlases/v6/hero/hero-v6-12.b64",
+      "sha256": "d87207d2c5cc81788334611d7e9d9262894745cd0a70fe6ce6e72143684d723b",
+      "bytes": 24000
+    },
+    {
+      "path": "public/assets/anime/map/atlases/v6/hero/hero-v6-13.b64",
+      "sha256": "95897eed030b071c8d39bf43e013858992257f6174673df80946d783d921cd93",
+      "bytes": 22412
+    },
+    {
+      "path": "public/assets/anime/map/atlases/v6/wall-materials-v6-01.b64",
+      "sha256": "fc787263a776606ede6174da3bf8e77300b7822e43b6b5e4892fa1eb7d7d774b",
+      "bytes": 7600
+    },
+    {
+      "path": "public/assets/anime/map/atlases/v6/wall-materials-v6-02.b64",
+      "sha256": "c1415fb97c05d9a769ff5647eac2c182ecf6fba18917d8e374ff0128e30b79bb",
+      "bytes": 7600
+    },
+    {
+      "path": "public/assets/anime/map/atlases/v6/wall-materials-v6-03.b64",
+      "sha256": "e80071067e8d6911239ef8cd42ebc9be2133ede5d9bd8dcdcf93d27eecd3c8bb",
+      "bytes": 7600
+    },
+    {
+      "path": "public/assets/anime/map/atlases/v6/wall-materials-v6-04a.b64",
+      "sha256": "e6e4cf017bb05971af83edf31b9e5adbc70e02bde42a42678854941b03925d76",
+      "bytes": 3800
+    },
+    {
+      "path": "public/assets/anime/map/atlases/v6/wall-materials-v6-04b.b64",
+      "sha256": "e2cfe54bc5cc5bed4faea16bbb0a82216236039f727d3c328b662699cec28151",
+      "bytes": 3800
+    },
+    {
+      "path": "public/assets/anime/map/atlases/v6/wall-materials-v6-05.b64",
+      "sha256": "75b55be4d27087d7ed02d3a81e4cd8116cbc93d166907882b317bd521f8a63f4",
+      "bytes": 7600
+    },
+    {
+      "path": "public/assets/anime/map/atlases/v6/wall-materials-v6-06a.b64",
+      "sha256": "df7d0df2209fa6212ddafcb37c2cf1b0649c240f560538de6cc1e5dcc60e02fb",
+      "bytes": 3800
+    },
+    {
+      "path": "public/assets/anime/map/atlases/v6/wall-materials-v6-06b.b64",
+      "sha256": "97f62bc54acb99120d2979e37aab9bc34371baeac982f4d569f74bd3d2b49d54",
+      "bytes": 3800
+    },
+    {
+      "path": "public/assets/anime/map/atlases/v6/wall-materials-v6-07a.b64",
+      "sha256": "ac30d1c97d4a986047cca98ceb49e32d6349ff2afeac317549a95f451fe6090a",
+      "bytes": 3800
+    },
+    {
+      "path": "public/assets/anime/map/atlases/v6/wall-materials-v6-07b.b64",
+      "sha256": "2b1d1af3d86268d85876a298041c589900fdf091820daf8681060cb20c6e6790",
+      "bytes": 3800
+    },
+    {
+      "path": "public/assets/anime/map/atlases/v6/wall-materials-v6-08a.b64",
+      "sha256": "322ed78724f48a8fe0d66f85317b05be4494e3863141d53889260aea06d60025",
+      "bytes": 3800
+    },
+    {
+      "path": "public/assets/anime/map/atlases/v6/wall-materials-v6-08b.b64",
+      "sha256": "c08799af8ec84888347795f81ff7f3789c1163ddf3d394f340118d781ca6eece",
+      "bytes": 3800
+    },
+    {
+      "path": "public/assets/anime/map/atlases/v6/wall-materials-v6-09a.b64",
+      "sha256": "5dc05a02081fce2c997c4efe170455e80327bac195d9ac77ab95a2cfa22917c3",
+      "bytes": 3800
+    },
+    {
+      "path": "public/assets/anime/map/atlases/v6/wall-materials-v6-09b.b64",
+      "sha256": "3a78129999685475e5ba19fe4335443fce043bc07dc81922aebdb7a8bb3b56d2",
+      "bytes": 2824
+    },
+    {
+      "path": "public/assets/anime/map/interactables/aether-prism.webp",
+      "sha256": "dc500831c778fbf3a415f32709e17fd9383be7b7f86f17e66318173ce78933e0",
+      "bytes": 35522
+    },
+    {
+      "path": "public/assets/anime/map/interactables/arcane-battery.webp",
+      "sha256": "e728c764ddfe2ec905f069c8fa64ab2d4422a76733e787db44d772df205fbc36",
+      "bytes": 23978
+    },
+    {
+      "path": "public/assets/anime/map/interactables/archive-index-seal.webp",
+      "sha256": "b69bc31556976b52f613c6af749165a71dfdf9ec5106dc274b5c558fe6de29e2",
+      "bytes": 33850
+    },
+    {
+      "path": "public/assets/anime/map/interactables/audit-ledger.webp",
+      "sha256": "4cea89431da2cf758394b13ad911dd94686604e3294f916235a4419640550987",
+      "bytes": 32296
+    },
+    {
+      "path": "public/assets/anime/map/interactables/conduit-codex.webp",
+      "sha256": "e17b8955c9c243efffd1242e5020e18aecb419a6ae10209994c5ff605b169b99",
+      "bytes": 38976
+    },
+    {
+      "path": "public/assets/anime/map/interactables/crown-capacitor.webp",
+      "sha256": "e9828f6fa1b6d2644a1625d6a1dec0437b538fa7aa2f8dc7da14cd5ad2e29807",
+      "bytes": 46490
+    },
+    {
+      "path": "public/assets/anime/map/interactables/dragon-scale-talisman.webp",
+      "sha256": "25daf370868376a5e9222ef8503c2db9999126f25eb52b0b27390a574ef57d4f",
+      "bytes": 37014
+    },
+    {
+      "path": "public/assets/anime/map/interactables/dual-switch-seal.webp",
+      "sha256": "7e62fd2d3ad3fdeb8a3f7dc2e27709c3d600151a69826b8e76870e6a382ab163",
+      "bytes": 55262
+    },
+    {
+      "path": "public/assets/anime/map/interactables/guardian-vault-seal.webp",
+      "sha256": "36101847c7253347bb503a323e067ad5c002cdedb5476be309f97ecd8243219d",
+      "bytes": 45032
+    },
+    {
+      "path": "public/assets/anime/map/interactables/lucky-coin.webp",
+      "sha256": "9c156233baf2c9884375fc83baa66effde58235286e42ecbe7bce1c7cd44f32b",
+      "bytes": 45238
+    },
+    {
+      "path": "public/assets/anime/map/interactables/mirror-reservoir.webp",
+      "sha256": "2d9fec0d9badf17478d2fa53390bcf0a1b8296ee9b554a42eb3c87c5fa070b4c",
+      "bytes": 33762
+    },
+    {
+      "path": "public/assets/anime/map/interactables/moon-blade.webp",
+      "sha256": "da92aea3b99612c235c3f919b7f2ad67f4952ef592ee85c22083773ca8c88e1d",
+      "bytes": 18940
+    },
+    {
+      "path": "public/assets/anime/map/interactables/origin-focus.webp",
+      "sha256": "e037c1c720196fd64fab349425b12ceab07a4e9d27381d043a91fe1b66ea425c",
+      "bytes": 39266
+    },
+    {
+      "path": "public/assets/anime/map/interactables/relay-capacitor.webp",
+      "sha256": "c05077a70393a60a7d43ea104f0c26312e64e16f2c0ed15dc61628dfe063725f",
+      "bytes": 26018
+    },
+    {
+      "path": "public/assets/anime/map/interactables/rune-sequence-seal.webp",
+      "sha256": "67b9477ab484273f321215c03404afc1f07d3e70b6558cdcd4f148df237f8905",
+      "bytes": 48540
+    },
+    {
+      "path": "public/assets/anime/map/interactables/seal-charter-archive.webp",
+      "sha256": "905a14203ef8ad803cac549e0b5f5e9d88535d250334895847ef93cc41827b69",
+      "bytes": 20150
+    },
+    {
+      "path": "public/assets/anime/map/interactables/seal-protocol.webp",
+      "sha256": "4932234a99caed96870cbfe361e84610a727df0616e0f8d486f43f0f66f981dc",
+      "bytes": 31212
+    },
+    {
+      "path": "public/assets/anime/map/interactables/shelter-aegis.webp",
+      "sha256": "cbe32c65f0b6e3d2b09dd843ca1cbc5d07a13305b06798c42a93fab008911cd1",
+      "bytes": 38684
+    },
+    {
+      "path": "public/assets/anime/map/interactables/silent-ward-earring.webp",
+      "sha256": "9e0305efd58541d5ad9c5121bc93a33de73ae118017d80faf77bcf8f1b5866a3",
+      "bytes": 29588
+    },
+    {
+      "path": "public/assets/anime/map/interactables/single-switch-seal.webp",
+      "sha256": "23bb77879e25ccb258f22606087e60a809c88273b10a005b71d85fedfab66cd6",
+      "bytes": 49868
+    },
+    {
+      "path": "public/assets/anime/map/interactables/switch-ember.webp",
+      "sha256": "e19d6a39f8b095d3b1183ec5061e11319dde47bf03b29853d607f0bbe655b7fd",
+      "bytes": 33410
+    },
+    {
+      "path": "public/assets/anime/map/interactables/switch-forge.webp",
+      "sha256": "bb21dde17d453728795303de0cde97b429566a026f24aa3a7f6138716c6b9148",
+      "bytes": 37264
+    },
+    {
+      "path": "public/assets/anime/map/interactables/switch-hush.webp",
+      "sha256": "c894da90a2518eab40226bbdb068dfe667e8ab8ebacea3da71fc29a25b57402d",
+      "bytes": 23082
+    },
+    {
+      "path": "public/assets/anime/map/interactables/switch-tide.webp",
+      "sha256": "325491a6666c2a53a27624443aaea1fbf44fd123ecc624708a97ed193e8f9214",
+      "bytes": 34564
+    },
+    {
+      "path": "public/assets/anime/map/interactables/vine-seal.webp",
+      "sha256": "e748dfd513b130df785b474fe0229e2965e1a1e6ede02634754b85aba111c5e5",
+      "bytes": 61784
+    },
+    {
+      "path": "public/assets/anime/map/interactables/vine-switch.webp",
+      "sha256": "3a41dd5420e3a2e144e47ab6457d27c2034703d3e98c488a94f7a4adaa65001f",
+      "bytes": 38058
+    },
+    {
+      "path": "public/assets/anime/map/manifest.json",
+      "sha256": "d05b26fe675287c044e74099de974aa7de5920e1caed0630a15832ec54b4c407",
+      "bytes": 14013
+    },
+    {
+      "path": "public/assets/anime/portraits/v1/aether-warden-portrait-runtime.webp",
+      "sha256": "5a6fda863f10e7bf777b50415887ee984a7fb6d03661494d7e77b10c085f1a3b",
+      "bytes": 49782
+    },
+    {
+      "path": "public/assets/anime/portraits/v1/arcane-gatekeeper-portrait-runtime.webp",
+      "sha256": "337734e4468ecb8cf1c0821df456900f96b39fabd915d0ad178b5f2580d2f558",
+      "bytes": 46482
+    },
+    {
+      "path": "public/assets/anime/portraits/v1/black-seal-keeper-portrait-runtime.webp",
+      "sha256": "f607cd84cb8638c6dad2534da78a974b1895c70f1a4cb510130dfad0ad546155",
+      "bytes": 45752
+    },
+    {
+      "path": "public/assets/anime/portraits/v1/cat-mage-portrait-runtime.webp",
+      "sha256": "38e50fb6d6eb035b0a8fcb055dd517739daab61901498c7681dc17ae21c0c85f",
+      "bytes": 48544
+    },
+    {
+      "path": "public/assets/anime/portraits/v1/cat-scout-portrait-runtime.webp",
+      "sha256": "1fcc94202a4b92fa2f9fff031f5e26225ffb3731865d5fa900c4956dc3050b49",
+      "bytes": 33942
+    },
+    {
+      "path": "public/assets/anime/portraits/v1/crown-blade-portrait-runtime.webp",
+      "sha256": "d7b16bd8141a1ec7202721ccf228a1e9b51c71ad3075c448c315cfae58e11c1e",
+      "bytes": 38038
+    },
+    {
+      "path": "public/assets/anime/portraits/v1/crown-cantor-portrait-runtime.webp",
+      "sha256": "c1d57a3df1764bfa887600f14d8fce68cbb1fe164960032ca105488d74a5ff13",
+      "bytes": 59372
+    },
+    {
+      "path": "public/assets/anime/portraits/v1/crown-magus-portrait-runtime.webp",
+      "sha256": "cf1276b28a0a0c10af7c5221bcc5b36043082b9b88fade2a4125235ab8197c36",
+      "bytes": 55664
+    },
+    {
+      "path": "public/assets/anime/portraits/v1/dragon-whelp-portrait-runtime.webp",
+      "sha256": "aacea8adb9accd3950c47b22d8c2b8569a1031e1ece053223ed3e1eb57c46a05",
+      "bytes": 48190
+    },
+    {
+      "path": "public/assets/anime/portraits/v1/eclipse-mage-portrait-runtime.webp",
+      "sha256": "24d7f2fcd86a0c0af9c59fb72382bcd69c2d3d50fade7ee12c0305a90cfdae51",
+      "bytes": 39700
+    },
+    {
+      "path": "public/assets/anime/portraits/v1/flame-caster-portrait-runtime.webp",
+      "sha256": "87c6b95718e3e27aab888c4720cff8a3d4d3fab6641fd83759efeb2abee3ff43",
+      "bytes": 52734
+    },
+    {
+      "path": "public/assets/anime/portraits/v1/fox-acolyte-portrait-runtime.webp",
+      "sha256": "337cbb07627c6f2f5a73d2f1982d0e8cea7b872d26eae3058f5af110c5bfb43f",
+      "bytes": 44356
+    },
+    {
+      "path": "public/assets/anime/portraits/v1/fox-archer-portrait-runtime.webp",
+      "sha256": "d27d2397f7a8fba80e883f7c389c15f51bc14d10d9d58d8f3d99d46d40c071a3",
+      "bytes": 39732
+    },
+    {
+      "path": "public/assets/anime/portraits/v1/liyue-awakened-portrait-runtime.webp",
+      "sha256": "676e67baf86e98873b7f8bfd049baa61b7db5e6365f4ce97a056ed2897b689d3",
+      "bytes": 43686
+    },
+    {
+      "path": "public/assets/anime/portraits/v1/mana-sentinel-portrait-runtime.webp",
+      "sha256": "ef18eecc2b1e02cc4b39b153eed928d432ddbb0badcc6ec1334f42b8efa8a7d8",
+      "bytes": 48390
+    },
+    {
+      "path": "public/assets/anime/portraits/v1/mana-wisp-portrait-runtime.webp",
+      "sha256": "1710ed78ddccee3b18a08951283113293a33346667c9f1553d903ab7297f19f9",
+      "bytes": 46366
+    },
+    {
+      "path": "public/assets/anime/portraits/v1/mirror-cantor-portrait-runtime.webp",
+      "sha256": "e5847d2a16a5a1d5d82b7ecf1efbcb423096e495632e71a2837202658ea2f713",
+      "bytes": 55698
+    },
+    {
+      "path": "public/assets/anime/portraits/v1/mirror-doll-portrait-runtime.webp",
+      "sha256": "da8da16dccc33ae25060f5acf9e1202cbd5b9b1607f46d92ac7b8ebbd6f7e10d",
+      "bytes": 46914
+    },
+    {
+      "path": "public/assets/anime/portraits/v1/mirror-duelist-portrait-runtime.webp",
+      "sha256": "46f17a8f4267e2e416ac6fbf044d722863d00eff9ae2363a27b73e7a8deaf9e9",
+      "bytes": 57902
+    },
+    {
+      "path": "public/assets/anime/portraits/v1/mirror-huntress-portrait-runtime.webp",
+      "sha256": "b146ac9afe39f6e6b57d0d36428e28a2a8315eedb8089589cc2e08f1f14345ab",
+      "bytes": 52114
+    },
+    {
+      "path": "public/assets/anime/portraits/v1/mote-portrait-runtime.webp",
+      "sha256": "dcb0580a9e76734a76cf87d99cd8c9f59a3ad7ba03659646a986c27afaf8b858",
+      "bytes": 43444
+    },
+    {
+      "path": "public/assets/anime/portraits/v1/origin-core-portrait-runtime.webp",
+      "sha256": "e91d8047950719cb6db9ae0980b0c322febd45bd8d08cc82f90240dd455b8a49",
+      "bytes": 60460
+    },
+    {
+      "path": "public/assets/anime/portraits/v1/palace-warden-portrait-runtime.webp",
+      "sha256": "ca5b7d7341d19a0c073ec3061b85538978ffbad75907c45697229f20405e55eb",
+      "bytes": 39920
+    },
+    {
+      "path": "public/assets/anime/portraits/v1/prism-archivist-portrait-runtime.webp",
+      "sha256": "a7e5d98489c95ef2049049ebed4e47e70902cc5394423d5102160b26d1e4bff2",
+      "bytes": 53936
+    },
+    {
+      "path": "public/assets/anime/portraits/v1/resonance-blade-portrait-runtime.webp",
+      "sha256": "2023ff50e7aeaa306537456039d1923dc045e680ee3c9c475a8494493365214f",
+      "bytes": 60712
+    },
+    {
+      "path": "public/assets/anime/portraits/v1/resonance-cantor-portrait-runtime.webp",
+      "sha256": "79a18c71d303395fb2a6e1d55dee29361525c9e13af71474ffee94513a84bfe8",
+      "bytes": 57542
+    },
+    {
+      "path": "public/assets/anime/portraits/v1/rune-cantor-portrait-runtime.webp",
+      "sha256": "c024b9ecf76afd29ecde23437c742f0dd31fa30c2bf08568534ee4f29401d5c8",
+      "bytes": 57528
+    },
+    {
+      "path": "public/assets/anime/portraits/v1/shadow-ninja-portrait-runtime.webp",
+      "sha256": "9918d47d9ffd7aefe82c4e6ec987f5b2e7db0819a52c6e7b8373c0e8918858a2",
+      "bytes": 40504
+    },
+    {
+      "path": "public/assets/anime/portraits/v1/silence-guard-portrait-runtime.webp",
+      "sha256": "6dd9ead69194d4dd2adc9f005947130d06a01e8e0be92a5f8588d270eb0825c4",
+      "bytes": 33930
+    },
+    {
+      "path": "public/assets/anime/portraits/v1/spectrum-marshal-portrait-runtime.webp",
+      "sha256": "fd4d7ad969cdec4d9c7cf362fc8277fdf9be467885d4f4242da7ea338f6f9016",
+      "bytes": 59806
+    },
+    {
+      "path": "public/assets/anime/portraits/v1/spellblade-duelist-portrait-runtime.webp",
+      "sha256": "f37a28f85a729adac08d2994fd363201864d7582db68732499868ebdeb801fd1",
+      "bytes": 34370
+    },
+    {
+      "path": "public/assets/anime/portraits/v1/star-witch-portrait-runtime.webp",
+      "sha256": "8290d5762966ab5a7494635f276d51f0c34fef01df753eab95624bd8182ac43c",
+      "bytes": 52356
+    },
+    {
+      "path": "public/assets/anime/portraits/v1/sword-apprentice-portrait-runtime.webp",
+      "sha256": "17732d79a71b6b0a670762a95932d9a1f56ad055ae5ec2b971634e516544d597",
+      "bytes": 30036
+    },
+    {
+      "path": "public/assets/anime/portraits/v1/sword-knight-portrait-runtime.webp",
+      "sha256": "c89ea49646f4633ee6679ce627aa44909d5be9fc1534e0f14693d02aab5d2778",
+      "bytes": 35598
+    },
+    {
+      "path": "public/assets/anime/portraits/v1/tide-lancer-portrait-runtime.webp",
+      "sha256": "8d3b45899503c3ad62fb7678db331d5a8f4a807e14d7c5357f8c307743592dda",
+      "bytes": 46222
+    },
+    {
+      "path": "public/assets/anime/portraits/v1/triune-arbiter-portrait-runtime.webp",
+      "sha256": "9cffbe9256df1d1fe4f4255dc2e382a4ea35ca23de2a47747618b9596937141c",
+      "bytes": 60264
+    },
+    {
+      "path": "public/assets/anime/portraits/v1/void-herald-portrait-runtime.webp",
+      "sha256": "8492a787de080c771acf06b479e7aeafda3e7d166fde5421eecf014b1ea2d759",
+      "bytes": 51250
+    },
+    {
+      "path": "public/assets/anime/portraits/v1/void-priestess-portrait-runtime.webp",
+      "sha256": "8f8097a0be50a99cdba432ca1afb7ee71d7fd822bc0c5a87a482f75f4886d359",
+      "bytes": 53176
+    },
+    {
+      "path": "public/assets/anime/portraits/v1/whale-singer-portrait-runtime.webp",
+      "sha256": "c4de9079bf4d66611f0d35d236b2c4d89e2e8d46eae4c24a89cade4bd32c245c",
+      "bytes": 59836
+    },
+    {
+      "path": "public/assets/anime/themes/theme-archive-storm.webp",
+      "sha256": "5283b8379134dcfca8eef0d8c42e461a009c8a132aa718c55a5cf405e05ba9bc",
+      "bytes": 71610
+    },
+    {
+      "path": "public/assets/anime/themes/theme-ash-registry.webp",
+      "sha256": "0b5cbede7a0f9dc3d801bb62c5d88434433efb575f4f8b1fc43b07923fdf93bc",
+      "bytes": 54408
+    },
+    {
+      "path": "public/assets/anime/themes/theme-audit-chamber-v8.webp",
+      "sha256": "8dd38ac0770422f357f4bf7e6cb04bcea11648db1e6bd41bd973224079eed5d9",
+      "bytes": 66668
+    },
+    {
+      "path": "public/assets/anime/themes/theme-echo-court.webp",
+      "sha256": "9368d8ff201d1989fb09ac2ed2a81b5572a809a54760b0e18ee11d4bb94a2a9c",
+      "bytes": 168622
+    },
+    {
+      "path": "public/assets/anime/themes/theme-ember-lighthouse-writein.webp",
+      "sha256": "38dbe9dc50bb5df622ffd812b457182ca3e7c0986bd8f0671cc8f59bb9e35e2d",
+      "bytes": 72156
+    },
+    {
+      "path": "public/assets/anime/themes/theme-ember-lighthouse.webp",
+      "sha256": "ffc4f06a0b727b50795c1db8f6012b0ab2acaca21e538bf3b667023ff35e26cc",
+      "bytes": 73734
+    },
+    {
+      "path": "public/assets/anime/themes/theme-final-index-room.webp",
+      "sha256": "44576b8a929f77d860dbea2df0f2908162b1c4d2d4fb90edd1871ed7d9fe52b6",
+      "bytes": 63730
+    },
+    {
+      "path": "public/assets/anime/themes/theme-floor03-tide-navigation.webp",
+      "sha256": "7404018a855f2cc97d7b4d0252d722eda5c43970330357424b560092cb8d300b",
+      "bytes": 275824
+    },
+    {
+      "path": "public/assets/anime/themes/theme-floor05-red-vein-shelter.webp",
+      "sha256": "055fa0e5cc40e82f15bc19417ad27f9815653c347e49cddf0bd4fb17484893b9",
+      "bytes": 210952
+    },
+    {
+      "path": "public/assets/anime/themes/theme-floor11-sun-revival-corridor.webp",
+      "sha256": "ca8d15e6891816fea4b55bf8e8882d88d2bee50459d7c0565e8d0b140e4b4902",
+      "bytes": 240604
+    },
+    {
+      "path": "public/assets/anime/themes/theme-floor13-red-vein-pulse-forge.webp",
+      "sha256": "edf29fb79baa6a92b2e279bde01a30d951d20c30242369b96ca56d77664c06be",
+      "bytes": 262942
+    },
+    {
+      "path": "public/assets/anime/themes/theme-floor14-sun-three-arrow-arena.webp",
+      "sha256": "1206292b899b3dbf88215a8999fb306fd9f9f13cfe52d5692da4563850210661",
+      "bytes": 256986
+    },
+    {
+      "path": "public/assets/anime/themes/theme-floor16-tide-mirror-hall.webp",
+      "sha256": "c895f1a03a5c0855663da055276c8fecd6563efcfaf40e6d51bd5bf2d09761dc",
+      "bytes": 297148
+    },
+    {
+      "path": "public/assets/anime/themes/theme-floor17-sun-three-crown-court.webp",
+      "sha256": "978d4726debbe31455836395a7bbd92f9b17d2a93074710faf8def1d25f7b8d7",
+      "bytes": 285800
+    },
+    {
+      "path": "public/assets/anime/themes/theme-floor18-tide-sky-waterway.webp",
+      "sha256": "6b665e7854c1dca483247f673b9a911b5bf195e75e0a131f296339f696b67275",
+      "bytes": 327578
+    },
+    {
+      "path": "public/assets/anime/themes/theme-floor19-echo-court-interior.webp",
+      "sha256": "daa65bf7d24c1c9895f8a88d3ec7b91ea2b5e7f586983fe853db3fb54a046570",
+      "bytes": 211384
+    },
+    {
+      "path": "public/assets/anime/themes/theme-folded-archive-market.webp",
+      "sha256": "98284192e476350e51f93b7c2055fda0b0b681ab534c7c1de4c44e56259c3fc6",
+      "bytes": 89744
+    },
+    {
+      "path": "public/assets/anime/themes/theme-forest-approach.webp",
+      "sha256": "1a64e9a5cba7a7a3cce3ff0b8b51803e8c20a55269c194849c9b7fd000f1d8da",
+      "bytes": 112172
+    },
+    {
+      "path": "public/assets/anime/themes/theme-forest-sanctuary.webp",
+      "sha256": "d683b46a1ed960a810191e884ab073cf66e86158f601e71de5d293f8e35047ad",
+      "bytes": 110616
+    },
+    {
+      "path": "public/assets/anime/themes/theme-moon-white-vestibule.webp",
+      "sha256": "d57d330b55868bf97d7f3c193f0086496ee446acb6377cecf4e8e7fa2f8dde0c",
+      "bytes": 59682
+    },
+    {
+      "path": "public/assets/anime/themes/theme-night-shelter-v8.webp",
+      "sha256": "db4e7cbbcb89869748e9af5d5eb01e9fa598718945b7911510b9f026d7102383",
+      "bytes": 72946
+    },
+    {
+      "path": "public/assets/anime/themes/theme-night-tower.webp",
+      "sha256": "310cea65d5b0cf298cf842a5363bbed93d45cfa70df18afe6c3e2c942c81e1b4",
+      "bytes": 62972
+    },
+    {
+      "path": "public/assets/anime/themes/theme-ocean-archive.webp",
+      "sha256": "b59431dc89e3cbf418d247bd5e31b202222e448a8ad6ab0c0c5174e92cd56c32",
+      "bytes": 45778
+    },
+    {
+      "path": "public/assets/anime/themes/theme-origin-core.webp",
+      "sha256": "b0adf60e6d4de6ec98e7b7a3072b62e6c9419652b53243f2eb1dd3c052030599",
+      "bytes": 77900
+    },
+    {
+      "path": "public/assets/anime/themes/theme-red-vein.webp",
+      "sha256": "65791278c826001a1a825ca5cbfe10ada2053bf3012a3cda504a7d729add2d73",
+      "bytes": 63004
+    },
+    {
+      "path": "public/assets/anime/themes/theme-relay-gallery-v8.webp",
+      "sha256": "861e91703d2328a5df3aba400dfc0acad77b688be34edc3b1d78402ea4d60d58",
+      "bytes": 76592
+    },
+    {
+      "path": "public/assets/anime/themes/theme-star-mirror.webp",
+      "sha256": "5d7325adb1cca165c0da5d75fae0568a4691c343ee2060fe50587aeb3f850f82",
+      "bytes": 63258
+    },
+    {
+      "path": "public/assets/anime/themes/theme-sun-sanctum.webp",
+      "sha256": "8353029e9d1144be920511be57e02821544dac37f77d3acb5a81a74e8664f85e",
+      "bytes": 122722
+    },
+    {
+      "path": "public/assets/anime/themes/theme-triage-index-v8.webp",
+      "sha256": "a13710cbcc1f1efbb3a22cda9efa3268e34685a050e6e4ad7b2c5ef807af5508",
+      "bytes": 98110
+    },
+    {
+      "path": "public/assets/anime/themes/theme-twin-score-greenhouse.webp",
+      "sha256": "9f99769b0baee6df4ffa8d2713119376c45fcda38541f422d1eaa9923f538ef8",
+      "bytes": 146890
+    },
+    {
+      "path": "public/assets/anime/transitions/seal-shatter.webp",
+      "sha256": "0d8d439ce6d9f979d92f3f96d866fca62818c5ab15cdc656c27d46335fb84996",
+      "bytes": 86582
+    },
+    {
+      "path": "public/assets/anime/transitions/witness-entry.webp",
+      "sha256": "10409794d88df56679a58109f4a114403b17d2168186fb729f381c4289566f54",
+      "bytes": 51082
+    }
+  ]
+}

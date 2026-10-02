@@ -1,0 +1,1160 @@
+{
+  "id": "voyage-c",
+  "difficulty": "normal",
+  "version": "c-rules-prototype-v1",
+  "title": "双灯夜航 · 规则原型",
+  "source": {
+    "fullSha256": "4dfcfba4fb686dfec5e9b0ac5bce22a70323f8ff68b1712048c661ee89328f1f",
+    "outlineSha256": "22dc7a6b0419aeb9f61869625f850b92f5d609c27c96d3be0cbfc566593edcd0"
+  },
+  "initial": {
+    "location": {
+      "regionId": "C-M01",
+      "x": 7,
+      "y": 7
+    },
+    "stats": {
+      "hp": 60,
+      "maxHp": 60,
+      "atk": 14,
+      "def": 8,
+      "gold": 8
+    },
+    "resources": {
+      "fuel": 9
+    },
+    "flags": {
+      "c.lampOil": true
+    },
+    "boat": {
+      "dock": "C-M01",
+      "moored": true,
+      "cargo": "center",
+      "positions": {
+        "w1": "L1",
+        "w2": "L2",
+        "w3": "C1"
+      }
+    }
+  },
+  "regions": [
+    {
+      "id": "C-M01",
+      "title": "近灯正面装卸码头",
+      "map": [
+        "~~~~~~~~~~~",
+        "~~~~~~~...~",
+        "~~~~~~~...~",
+        "~~~~BBB#..~",
+        "~~~~BBB...~",
+        "~~~~BBB...~",
+        "~~~~BBB...~",
+        "~~~~BB....~",
+        "~~~~BBB#..~",
+        "~~~~~~~...~",
+        "~~~~~~~~~~~"
+      ],
+      "arrival": {
+        "x": 7,
+        "y": 7
+      },
+      "entities": [
+        {
+          "id": "C-M01.boat",
+          "x": 5,
+          "y": 7,
+          "title": "经唯一跳板登船",
+          "kind": "anchor"
+        },
+        {
+          "id": "c.manifest",
+          "x": 9,
+          "y": 2,
+          "title": "核对货单、航线与次晨归船",
+          "kind": "operation",
+          "requires": null,
+          "effects": {
+            "flags": {
+              "c.manifest": true
+            }
+          },
+          "storyId": "c01"
+        },
+        {
+          "id": "c.coat",
+          "x": 9,
+          "y": 5,
+          "title": "护航护具 · 5金币，防御+2",
+          "kind": "shop",
+          "price": 5,
+          "effects": {
+            "stats": {
+              "def": 2
+            }
+          }
+        },
+        {
+          "id": "c.departureBrief",
+          "x": 7,
+          "y": 3,
+          "title": "确认三人出航分工",
+          "kind": "operation",
+          "requires": {
+            "flag": "c.manifest"
+          },
+          "effects": {
+            "flags": {
+              "c.crewReady": true
+            }
+          },
+          "storyId": "c02"
+        }
+      ]
+    },
+    {
+      "id": "C-M02",
+      "title": "旧修船坞",
+      "map": [
+        "~~~~~~~~~~~",
+        "~~~~~~~...~",
+        "~~~~~~~...~",
+        "~~~~BBB#..~",
+        "~~~~BBB...~",
+        "~~~~BBB...~",
+        "~~~~BBB...~",
+        "~~~~BB....~",
+        "~~~~BBB#..~",
+        "~~~~~~~...~",
+        "~~~~~~~~~~~"
+      ],
+      "arrival": {
+        "x": 7,
+        "y": 7
+      },
+      "entities": [
+        {
+          "id": "C-M02.boat",
+          "x": 5,
+          "y": 7,
+          "title": "经唯一跳板登船",
+          "kind": "anchor"
+        },
+        {
+          "id": "c.supplies",
+          "x": 9,
+          "y": 5,
+          "title": "领取预备螺栓与2份船油",
+          "kind": "pickup",
+          "effects": {
+            "resources": {
+              "fuel": 2
+            },
+            "flags": {
+              "c.bolts": true
+            }
+          },
+          "storyId": "c05"
+        },
+        {
+          "id": "c.machine1",
+          "x": 8,
+          "y": 3,
+          "title": "轨道巡检车一 · 短航道障碍",
+          "kind": "enemy",
+          "blocking": true,
+          "enemy": {
+            "name": "岸电巡检车一",
+            "hp": 40,
+            "atk": 16,
+            "def": 4,
+            "gold": 3
+          }
+        },
+        {
+          "id": "c.bandage",
+          "x": 9,
+          "y": 8,
+          "title": "一次性护航药包 · 当前/上限生命+12",
+          "kind": "pickup",
+          "effects": {
+            "stats": {
+              "hp": 12,
+              "maxHp": 12
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "C-M03",
+      "title": "缆桥中转站",
+      "map": [
+        "~~~~~~~~~~~",
+        "~~~~~~~...~",
+        "~~~~~~~...~",
+        "~~~~BBB#..~",
+        "~~~~BBB...~",
+        "~~~~BBB...~",
+        "~~~~BBB...~",
+        "~~~~BB....~",
+        "~~~~BBB#..~",
+        "~~~~~~~...~",
+        "~~~~~~~~~~~"
+      ],
+      "arrival": {
+        "x": 7,
+        "y": 7
+      },
+      "entities": [
+        {
+          "id": "C-M03.boat",
+          "x": 5,
+          "y": 7,
+          "title": "经唯一跳板登船",
+          "kind": "anchor"
+        },
+        {
+          "id": "c.shoreLock",
+          "x": 7,
+          "y": 3,
+          "title": "让塞蕾娜接管岸锁、约定口令",
+          "kind": "operation",
+          "requires": null,
+          "effects": {
+            "flags": {
+              "c.shoreLock": true
+            }
+          },
+          "storyId": "c08"
+        },
+        {
+          "id": "c.machine2",
+          "x": 8,
+          "y": 1,
+          "title": "轨道巡检车二 · 后段短航道障碍",
+          "kind": "enemy",
+          "blocking": true,
+          "enemy": {
+            "name": "岸电巡检车二",
+            "hp": 48,
+            "atk": 15,
+            "def": 6,
+            "gold": 3
+          }
+        }
+      ]
+    },
+    {
+      "id": "C-M04",
+      "title": "近灯背面泊位",
+      "map": [
+        "~~~~~~~~~~~",
+        "~~~~~~~...~",
+        "~~~~~~~...~",
+        "~~~~BBB#..~",
+        "~~~~BBB...~",
+        "~~~~BBB...~",
+        "~~~~BBB...~",
+        "~~~~BB....~",
+        "~~~~BBB#..~",
+        "~~~~~~~...~",
+        "~~~~~~~~~~~"
+      ],
+      "arrival": {
+        "x": 7,
+        "y": 7
+      },
+      "entities": [
+        {
+          "id": "C-M04.boat",
+          "x": 5,
+          "y": 7,
+          "title": "经唯一跳板登船",
+          "kind": "anchor"
+        },
+        {
+          "id": "c.handover",
+          "x": 9,
+          "y": 2,
+          "title": "确认近灯交班与纱雾末段航行",
+          "kind": "operation",
+          "requires": null,
+          "effects": {
+            "flags": {
+              "c.handover": true
+            }
+          },
+          "storyId": "c13"
+        }
+      ]
+    },
+    {
+      "id": "C-M05",
+      "title": "远灯内侧泊位与低灯室",
+      "map": [
+        "~~~~~~~~~~~",
+        "~~~~~~~...~",
+        "~~~~~~~...~",
+        "~~~~BBB#..X",
+        "~~~~BBB...X",
+        "~~~~BBB...X",
+        "~~~~BBB...~",
+        "~~~~BB....~",
+        "~~~~BBB#..~",
+        "~~~~~~~...~",
+        "~~~~~~~~~~~"
+      ],
+      "arrival": {
+        "x": 7,
+        "y": 7
+      },
+      "entities": [
+        {
+          "id": "C-M05.boat",
+          "x": 5,
+          "y": 7,
+          "title": "经唯一跳板登船",
+          "kind": "anchor"
+        },
+        {
+          "id": "c.rollCargo",
+          "x": 8,
+          "y": 5,
+          "title": "沿短滚道把已卸灯座送入低灯室",
+          "kind": "operation",
+          "requires": [
+            {
+              "cargo": "ashore"
+            },
+            {
+              "flag": "c.craneStowed"
+            }
+          ],
+          "effects": {
+            "flags": {
+              "c.cargoAtLamp": true
+            }
+          },
+          "storyId": "c16"
+        },
+        {
+          "id": "c.installLamp",
+          "x": 9,
+          "y": 2,
+          "title": "安装灯座、螺栓与封装灯油",
+          "kind": "operation",
+          "requires": [
+            {
+              "flag": "c.cargoAtLamp"
+            },
+            {
+              "flag": "c.bolts"
+            },
+            {
+              "flag": "c.lampOil"
+            }
+          ],
+          "effects": {
+            "flags": {
+              "c.lampInstalled": true,
+              "c.bolts": false,
+              "c.lampOil": false
+            }
+          },
+          "storyId": "c17"
+        },
+        {
+          "id": "c.signal",
+          "x": 7,
+          "y": 3,
+          "title": "与近灯互认灯号并开放内港窄口",
+          "kind": "operation",
+          "requires": [
+            {
+              "flag": "c.lampInstalled"
+            },
+            {
+              "flag": "c.nearLampStaffed"
+            },
+            {
+              "flag": "c.ferryStaffed"
+            }
+          ],
+          "effects": {
+            "flags": {
+              "c.bothLamps": true,
+              "c.farLampStaffed": true
+            }
+          },
+          "storyId": "c18"
+        }
+      ]
+    },
+    {
+      "id": "C-D01",
+      "title": "渡船甲板 · 同一艘船",
+      "map": [
+        "~~~~~~~~~~~",
+        "~~.......~~",
+        "~~.......~~",
+        "~~.......~~",
+        "~~.......~~",
+        "~~.......~~",
+        "~~.......~~",
+        "~~.......~~",
+        "~~.......~~",
+        "~~.......~~",
+        "~~~~~~~~~~~"
+      ],
+      "arrival": {
+        "x": 7,
+        "y": 7
+      },
+      "entities": [
+        {
+          "id": "c.deckGangway",
+          "x": 8,
+          "y": 7,
+          "title": "返回当前泊位",
+          "kind": "anchor"
+        },
+        {
+          "id": "c.helm",
+          "x": 5,
+          "y": 8,
+          "title": "舵位 / 离岸确认",
+          "kind": "anchor"
+        },
+        {
+          "id": "c.ballast",
+          "x": 5,
+          "y": 5,
+          "title": "三枚配重控制位",
+          "kind": "anchor"
+        },
+        {
+          "id": "c.moor2",
+          "x": 7,
+          "y": 9,
+          "title": "按口令完成安全靠泊",
+          "kind": "operation",
+          "requires": [
+            {
+              "dock": "C-M02"
+            },
+            {
+              "moored": false
+            },
+            {
+              "cargo": "center"
+            },
+            {
+              "balance": true
+            }
+          ],
+          "effects": {
+            "moored": true,
+            "flags": {
+              "c.moored2": true
+            }
+          },
+          "storyId": null,
+          "visibleWhen": {
+            "dock": "C-M02"
+          }
+        },
+        {
+          "id": "c.moor3",
+          "x": 7,
+          "y": 9,
+          "title": "按口令完成安全靠泊",
+          "kind": "operation",
+          "requires": [
+            {
+              "dock": "C-M03"
+            },
+            {
+              "moored": false
+            },
+            {
+              "cargo": "center"
+            },
+            {
+              "balance": true
+            }
+          ],
+          "effects": {
+            "moored": true,
+            "flags": {
+              "c.moored3": true
+            }
+          },
+          "storyId": "c07",
+          "visibleWhen": {
+            "dock": "C-M03"
+          }
+        },
+        {
+          "id": "c.moor4",
+          "x": 7,
+          "y": 9,
+          "title": "按口令完成安全靠泊",
+          "kind": "operation",
+          "requires": [
+            {
+              "dock": "C-M04"
+            },
+            {
+              "moored": false
+            },
+            {
+              "cargo": "center"
+            },
+            {
+              "balance": true
+            }
+          ],
+          "effects": {
+            "moored": true,
+            "flags": {
+              "c.moored4": true
+            }
+          },
+          "storyId": null,
+          "visibleWhen": {
+            "dock": "C-M04"
+          }
+        },
+        {
+          "id": "c.moor5",
+          "x": 7,
+          "y": 9,
+          "title": "双缆系泊远灯内侧",
+          "kind": "operation",
+          "requires": [
+            {
+              "dock": "C-M05"
+            },
+            {
+              "moored": false
+            },
+            {
+              "cargo": "center"
+            },
+            {
+              "balance": true
+            }
+          ],
+          "effects": {
+            "moored": true,
+            "flags": {
+              "c.moored5": true
+            }
+          },
+          "storyId": "c15",
+          "visibleWhen": {
+            "dock": "C-M05"
+          }
+        },
+        {
+          "id": "c.shiftLeft",
+          "x": 5,
+          "y": 3,
+          "title": "把灯座左移，露出船端绞盘",
+          "kind": "operation",
+          "requires": [
+            {
+              "dock": "C-M03"
+            },
+            {
+              "moored": true
+            },
+            {
+              "cargo": "center"
+            },
+            {
+              "flag": "c.shoreLock"
+            }
+          ],
+          "effects": {
+            "cargo": "left"
+          },
+          "storyId": "c08",
+          "visibleWhen": {
+            "dock": "C-M03"
+          }
+        },
+        {
+          "id": "c.openBarrier",
+          "x": 4,
+          "y": 3,
+          "title": "牵引开浮栅，收到岸锁回应",
+          "kind": "operation",
+          "requires": [
+            {
+              "dock": "C-M03"
+            },
+            {
+              "moored": true
+            },
+            {
+              "cargo": "left"
+            },
+            {
+              "balance": true
+            },
+            {
+              "flag": "c.shoreLock"
+            }
+          ],
+          "effects": {
+            "flags": {
+              "c.barrierOpen": true
+            }
+          },
+          "storyId": "c08",
+          "interactionAt": {
+            "x": 4,
+            "y": 4
+          },
+          "visibleWhen": {
+            "dock": "C-M03"
+          }
+        },
+        {
+          "id": "c.centerCargo",
+          "x": 5,
+          "y": 3,
+          "title": "浮栅作业完成，货架归中",
+          "kind": "operation",
+          "requires": [
+            {
+              "dock": "C-M03"
+            },
+            {
+              "moored": true
+            },
+            {
+              "cargo": "left"
+            },
+            {
+              "flag": "c.barrierOpen"
+            }
+          ],
+          "effects": {
+            "cargo": "center"
+          },
+          "storyId": "c10",
+          "visibleWhen": {
+            "dock": "C-M03"
+          }
+        },
+        {
+          "id": "c.shiftRight",
+          "x": 5,
+          "y": 3,
+          "title": "把灯座移到右舷固定吊点",
+          "kind": "operation",
+          "requires": [
+            {
+              "dock": "C-M05"
+            },
+            {
+              "moored": true
+            },
+            {
+              "cargo": "center"
+            }
+          ],
+          "effects": {
+            "cargo": "right"
+          },
+          "storyId": "c16",
+          "visibleWhen": {
+            "dock": "C-M05"
+          }
+        },
+        {
+          "id": "c.unload",
+          "x": 8,
+          "y": 3,
+          "title": "确认配平，手摇船吊臂卸货",
+          "kind": "operation",
+          "requires": [
+            {
+              "dock": "C-M05"
+            },
+            {
+              "moored": true
+            },
+            {
+              "cargo": "right"
+            },
+            {
+              "balance": true
+            }
+          ],
+          "effects": {
+            "cargo": "ashore",
+            "flags": {
+              "c.cargoAshore": true
+            }
+          },
+          "storyId": "c16",
+          "visibleWhen": {
+            "dock": "C-M05"
+          }
+        },
+        {
+          "id": "c.stow",
+          "x": 8,
+          "y": 3,
+          "title": "空船配平后收妥空吊臂",
+          "kind": "operation",
+          "requires": [
+            {
+              "dock": "C-M05"
+            },
+            {
+              "moored": true
+            },
+            {
+              "cargo": "ashore"
+            },
+            {
+              "balance": true
+            }
+          ],
+          "effects": {
+            "flags": {
+              "c.craneStowed": true,
+              "c.emptyShipSecured": true
+            }
+          },
+          "storyId": "c16",
+          "visibleWhen": {
+            "dock": "C-M05"
+          }
+        }
+      ]
+    }
+  ],
+  "transitions": [
+    {
+      "id": "C-M01.board",
+      "title": "登船",
+      "anchor": "C-M01.boat",
+      "to": "C-D01",
+      "requires": [
+        {
+          "dock": "C-M01"
+        },
+        {
+          "moored": true
+        }
+      ]
+    },
+    {
+      "id": "C-M02.board",
+      "title": "登船",
+      "anchor": "C-M02.boat",
+      "to": "C-D01",
+      "requires": [
+        {
+          "dock": "C-M02"
+        },
+        {
+          "moored": true
+        }
+      ]
+    },
+    {
+      "id": "C-M03.board",
+      "title": "登船",
+      "anchor": "C-M03.boat",
+      "to": "C-D01",
+      "requires": [
+        {
+          "dock": "C-M03"
+        },
+        {
+          "moored": true
+        }
+      ]
+    },
+    {
+      "id": "C-M04.board",
+      "title": "登船",
+      "anchor": "C-M04.boat",
+      "to": "C-D01",
+      "requires": [
+        {
+          "dock": "C-M04"
+        },
+        {
+          "moored": true
+        }
+      ]
+    },
+    {
+      "id": "C-M05.board",
+      "title": "登船",
+      "anchor": "C-M05.boat",
+      "to": "C-D01",
+      "requires": [
+        {
+          "dock": "C-M05"
+        },
+        {
+          "moored": true
+        }
+      ]
+    },
+    {
+      "id": "c.leaveDeck",
+      "title": "回到当前泊位岸上",
+      "anchor": "c.deckGangway",
+      "to": "@dock",
+      "requires": {
+        "moored": true
+      }
+    },
+    {
+      "id": "c.sail12",
+      "anchor": "c.helm",
+      "to": "C-D01",
+      "at": {
+        "x": 5,
+        "y": 8
+      },
+      "title": "离岸至旧坞 · 2油",
+      "requires": [
+        {
+          "dock": "C-M01"
+        },
+        {
+          "moored": true
+        },
+        {
+          "cargo": "center"
+        },
+        {
+          "balance": true
+        },
+        {
+          "flag": "c.manifest"
+        },
+        {
+          "flag": "c.crewReady"
+        }
+      ],
+      "cost": {
+        "fuel": 2
+      },
+      "departure": {
+        "from": "C-M01",
+        "to": "C-M02"
+      },
+      "storyId": "c04",
+      "effects": {}
+    },
+    {
+      "id": "c.sail23.short",
+      "anchor": "c.helm",
+      "to": "C-D01",
+      "at": {
+        "x": 5,
+        "y": 8
+      },
+      "title": "短航道至缆桥 · 3油",
+      "requires": [
+        {
+          "dock": "C-M02"
+        },
+        {
+          "moored": true
+        },
+        {
+          "cargo": "center"
+        },
+        {
+          "balance": true
+        },
+        {
+          "flag": "c.bolts"
+        },
+        {
+          "cleared": "c.machine1"
+        }
+      ],
+      "cost": {
+        "fuel": 3
+      },
+      "departure": {
+        "from": "C-M02",
+        "to": "C-M03"
+      },
+      "storyId": "c07",
+      "effects": {
+        "flags": {
+          "c.route1": "short"
+        }
+      }
+    },
+    {
+      "id": "c.sail23.bypass",
+      "anchor": "c.helm",
+      "to": "C-D01",
+      "at": {
+        "x": 5,
+        "y": 8
+      },
+      "title": "绕航道至缆桥 · 4油",
+      "requires": [
+        {
+          "dock": "C-M02"
+        },
+        {
+          "moored": true
+        },
+        {
+          "cargo": "center"
+        },
+        {
+          "balance": true
+        },
+        {
+          "flag": "c.bolts"
+        }
+      ],
+      "cost": {
+        "fuel": 4
+      },
+      "departure": {
+        "from": "C-M02",
+        "to": "C-M03"
+      },
+      "storyId": "c07",
+      "effects": {
+        "flags": {
+          "c.route1": "bypass"
+        }
+      }
+    },
+    {
+      "id": "c.sail34.short",
+      "anchor": "c.helm",
+      "to": "C-D01",
+      "at": {
+        "x": 5,
+        "y": 8
+      },
+      "title": "浮栅后短道至近灯背面 · 3油",
+      "requires": [
+        {
+          "dock": "C-M03"
+        },
+        {
+          "moored": true
+        },
+        {
+          "cargo": "center"
+        },
+        {
+          "balance": true
+        },
+        {
+          "flag": "c.barrierOpen"
+        },
+        {
+          "cleared": "c.machine2"
+        }
+      ],
+      "cost": {
+        "fuel": 3
+      },
+      "departure": {
+        "from": "C-M03",
+        "to": "C-M04"
+      },
+      "storyId": "c11",
+      "effects": {
+        "flags": {
+          "c.route2": "short"
+        }
+      }
+    },
+    {
+      "id": "c.sail34.bypass",
+      "anchor": "c.helm",
+      "to": "C-D01",
+      "at": {
+        "x": 5,
+        "y": 8
+      },
+      "title": "浮栅后绕道至近灯背面 · 4油",
+      "requires": [
+        {
+          "dock": "C-M03"
+        },
+        {
+          "moored": true
+        },
+        {
+          "cargo": "center"
+        },
+        {
+          "balance": true
+        },
+        {
+          "flag": "c.barrierOpen"
+        }
+      ],
+      "cost": {
+        "fuel": 4
+      },
+      "departure": {
+        "from": "C-M03",
+        "to": "C-M04"
+      },
+      "storyId": "c11",
+      "effects": {
+        "flags": {
+          "c.route2": "bypass"
+        }
+      }
+    },
+    {
+      "id": "c.sail45",
+      "anchor": "c.helm",
+      "to": "C-D01",
+      "at": {
+        "x": 5,
+        "y": 8
+      },
+      "title": "末航段至远灯 · 2油",
+      "requires": [
+        {
+          "dock": "C-M04"
+        },
+        {
+          "moored": true
+        },
+        {
+          "cargo": "center"
+        },
+        {
+          "balance": true
+        },
+        {
+          "flag": "c.handover"
+        }
+      ],
+      "cost": {
+        "fuel": 2
+      },
+      "departure": {
+        "from": "C-M04",
+        "to": "C-M05"
+      },
+      "storyId": "c14",
+      "effects": {
+        "flags": {
+          "c.nearLampStaffed": true,
+          "c.ferryStaffed": true
+        }
+      }
+    }
+  ],
+  "visualLinks": [
+    {
+      "id": "c.winch",
+      "regionId": "C-D01",
+      "body": {
+        "x": 5,
+        "y": 3
+      },
+      "controlEntityId": "c.openBarrier",
+      "operator": {
+        "x": 4,
+        "y": 4
+      },
+      "meaning": "同一牵引绞盘：机身与侧面手柄，非遥控装置"
+    }
+  ],
+  "ballast": {
+    "deckRegion": "C-D01",
+    "control": "c.ballast",
+    "weights": {
+      "w1": 1,
+      "w2": 1,
+      "w3": 2
+    },
+    "slots": {
+      "L1": -1,
+      "L2": -1,
+      "C1": 0,
+      "C2": 0,
+      "R1": 1,
+      "R2": 1
+    },
+    "slotCoordinates": {
+      "L1": [
+        3,
+        4
+      ],
+      "L2": [
+        3,
+        6
+      ],
+      "C1": [
+        5,
+        4
+      ],
+      "C2": [
+        5,
+        6
+      ],
+      "R1": [
+        7,
+        4
+      ],
+      "R2": [
+        7,
+        6
+      ]
+    },
+    "cargoTorques": {
+      "center": 0,
+      "left": -2,
+      "right": 2,
+      "ashore": 0
+    }
+  },
+  "goal": [
+    {
+      "flag": "c.bothLamps"
+    },
+    {
+      "flag": "c.farLampStaffed"
+    },
+    {
+      "flag": "c.nearLampStaffed"
+    },
+    {
+      "flag": "c.ferryStaffed"
+    },
+    {
+      "flag": "c.emptyShipSecured"
+    },
+    {
+      "cargo": "ashore"
+    },
+    {
+      "moored": true
+    },
+    {
+      "balance": true
+    }
+  ]
+}

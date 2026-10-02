@@ -1,0 +1,92 @@
+[
+  {
+    "file": "src/core/battle.js",
+    "source": "tower-campaigns/src/core/battle.js",
+    "sha256": "a2352851ff6c3feb1c398916565457c0cf7a07e24d167503da48f7531b125eec"
+  },
+  {
+    "file": "src/core/campaign.js",
+    "source": "tower-campaigns/src/core/campaign.js",
+    "sha256": "e280d14000ddd35b9812fa83a6b97d160a831c3951a6a5a4694285bc8014b698"
+  },
+  {
+    "file": "src/game/magic-blade.js",
+    "source": "tower-campaigns/src/game/magic-blade.js",
+    "sha256": "01fada2dd5afc16b87c188baf558eecf7602f6a5ea8b33507b4281c53c332360"
+  },
+  {
+    "file": "src/solver/state.js",
+    "source": "tower-campaigns/src/solver/state.js",
+    "sha256": "929bd3a14f316c88504f799de36268456ad895aafab3d8571927b7edee2a1f4c"
+  },
+  {
+    "file": "src/solver/campaign-adapter.js",
+    "source": "tower-campaigns/src/solver/campaign-adapter.js",
+    "sha256": "2fc15a0e682a55c6dcad539864fdd9a23af00a1f2c9fc58fbc7297342d64bd9e"
+  },
+  {
+    "file": "src/solver/campaign-replay.js",
+    "source": "tower-campaigns/src/solver/campaign-replay.js",
+    "sha256": "a0b996bbef7ea3db6b9556ebf7c91c41f7fd2552dd20bee3cdce127fd1c1b327"
+  },
+  {
+    "file": "src/campaigns/c/content.js",
+    "source": "tower-campaigns/src/campaigns/c/content.js",
+    "sha256": "3b2f81f29a193169c3d5a092debc26fbe00f447e830ee1a51e53b0ed24edf97e"
+  },
+  {
+    "file": "src/campaigns/c/planning.js",
+    "source": "tower-campaigns/src/campaigns/c/planning.js",
+    "sha256": "73ffd6053dcd97d97ea38efe1f821e0829d28381b274e6882365d3f0c8da0427"
+  },
+  {
+    "file": "src/campaigns/c/story/index.js",
+    "source": "tower-campaigns/src/campaigns/c/story/index.js",
+    "sha256": "d9d5f0005fa445da7d910e61b0c754f7caf8ae20150391c35f0f6c992c577512"
+  },
+  {
+    "file": "src/campaigns/c/story/content.js",
+    "source": "tower-campaigns/src/campaigns/c/story/content.js",
+    "sha256": "e7c8ea83c703567e259cb0e7b1f44e7b826e03b0daac180d6a164b4a9237d521"
+  },
+  {
+    "file": "src/campaigns/c/story/presentation.js",
+    "source": "tower-campaigns/src/campaigns/c/story/presentation.js",
+    "sha256": "3583e1c5f5f04e4363171a52be9f9944b027e29b1e13469da0ba4f026db59d06"
+  },
+  {
+    "file": "src/rendering/continuous-map.js",
+    "source": "tower-campaigns/src/rendering/continuous-map.js",
+    "sha256": "b3781165cedd1b422f22aef89537676dd3ce2b9e5287beca07136d50cccc1b70"
+  },
+  {
+    "file": "src/rendering/material-assets.js",
+    "source": "tower-campaigns/src/rendering/material-assets.js",
+    "sha256": "241213be95db5199ca77c3ce5e84430488c970ff2451db7ae71d3daf25bb3fb6"
+  },
+  {
+    "file": "src/rendering/c-adapter.js",
+    "source": "tower-campaigns/src/rendering/c-adapter.js",
+    "sha256": "d9014a2bdb892cf74ddcbd021d98d094f5a5144f94687e360c9c73be0c8908df"
+  },
+  {
+    "file": "public/campaigns/app.js",
+    "source": "tower-campaigns/public/campaigns/app.js",
+    "sha256": "886b7bd8ef7b71c89546e47d70ab7afe46afbe0e6a138923b1c5d525775deded"
+  },
+  {
+    "file": "public/campaigns/styles.css",
+    "source": "tower-campaigns/public/campaigns/styles.css",
+    "sha256": "8ba012e81bca67fa65740084ea85bad3eaebe9239c7d6a00d267a14833c853b5"
+  },
+  {
+    "file": "public/campaigns/index.html",
+    "source": "tower-campaigns/public/campaigns/index.html",
+    "sha256": "84043945c1c2250202d8f9e07f371eb978dd38bb8fd1154dce09bc57a7b64934"
+  },
+  {
+    "file": "public/campaigns/c-normal.certificate.json",
+    "source": "tower-campaigns/public/campaigns/c-normal.certificate.json",
+    "sha256": "95299eb0280015ffdaca7451b0aead6cd1583342297136b021ded14b6c24e898"
+  }
+]

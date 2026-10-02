@@ -1,0 +1,7565 @@
+{
+  "schemaVersion": 1,
+  "identity": {
+    "campaignId": "forest-b",
+    "difficultyId": "normal",
+    "contentVersion": "b-frozen-standard-v1",
+    "rulesVersion": "fixed-campaign-v1.1",
+    "contentHash": "a12cd07ee1ccc762"
+  },
+  "source": "forest-authored-itinerary-real-grid-bfs-v1",
+  "coverage": "witness-restricted",
+  "initialStateHash": "dc2ace52227d067b",
+  "steps": [
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "dc2ace52227d067b",
+      "after": "5626f10422d713df",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "5626f10422d713df",
+      "after": "0179b38bfdd95b8f",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "interact",
+        "entityId": "b01.timberPuppet"
+      },
+      "before": "0179b38bfdd95b8f",
+      "after": "daf24d60f3569688",
+      "events": [
+        {
+          "type": "battle",
+          "entityId": "b01.timberPuppet",
+          "battle": {
+            "winnable": true,
+            "reason": null,
+            "heroDamage": 14,
+            "physicalDamage": 14,
+            "magicTier": 0,
+            "magicCost": 0,
+            "magicBonusPerHit": 0,
+            "magicAffordable": true,
+            "enemyDamage": 6,
+            "rounds": 3,
+            "counterAttacks": 2,
+            "totalDamage": 12,
+            "remainingHp": 438
+          }
+        },
+        {
+          "type": "enemy",
+          "entityId": "b01.timberPuppet",
+          "title": "旧运木偶",
+          "storyId": "b01_post"
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "daf24d60f3569688",
+      "after": "4a3e18bd6dc1aa5e",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "4a3e18bd6dc1aa5e",
+      "after": "1f731b6c384097ca",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "1f731b6c384097ca",
+      "after": "5d26445f018c703e",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "interact",
+        "entityId": "b01.guardPlate"
+      },
+      "before": "5d26445f018c703e",
+      "after": "9f36019047db3824",
+      "events": [
+        {
+          "type": "pickup",
+          "entityId": "b01.guardPlate",
+          "title": "护送旧护片 · 防御+2",
+          "storyId": null
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "9f36019047db3824",
+      "after": "ac13a19cb7191670",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "ac13a19cb7191670",
+      "after": "f58f91140f3ee478",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "f58f91140f3ee478",
+      "after": "c196b5825ff929e9",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "c196b5825ff929e9",
+      "after": "6b7794330fa4f30b",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "6b7794330fa4f30b",
+      "after": "e1ab90b390f28985",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "e1ab90b390f28985",
+      "after": "30de634e8a88e81b",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "traverse",
+        "edgeId": "b.edge.01-02"
+      },
+      "before": "30de634e8a88e81b",
+      "after": "6ea5c86625a1aceb",
+      "events": [
+        {
+          "type": "traverse",
+          "edgeId": "b.edge.01-02",
+          "cost": {},
+          "storyId": "b02_enter"
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "6ea5c86625a1aceb",
+      "after": "55e5a2f93e6a10d3",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "55e5a2f93e6a10d3",
+      "after": "5a4225dd9ba58cf7",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "5a4225dd9ba58cf7",
+      "after": "a1a164eb1ed0278d",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "a1a164eb1ed0278d",
+      "after": "625cfe0e3ef77667",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "interact",
+        "entityId": "b02.winterPlan"
+      },
+      "before": "625cfe0e3ef77667",
+      "after": "15a1dae4ba4130fd",
+      "events": [
+        {
+          "type": "operation",
+          "entityId": "b02.winterPlan",
+          "title": "听取住民自选去处与基础越冬分工",
+          "storyId": "b02_enter"
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "15a1dae4ba4130fd",
+      "after": "b9c2f27dea52eb06",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "b9c2f27dea52eb06",
+      "after": "efba53ddfd8b6b8c",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "efba53ddfd8b6b8c",
+      "after": "809b925fcb9f41aa",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "809b925fcb9f41aa",
+      "after": "76bd8a395bc8b9f4",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "76bd8a395bc8b9f4",
+      "after": "d85b8a354caa21a6",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "d85b8a354caa21a6",
+      "after": "5dff16fa5c47dec6",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "5dff16fa5c47dec6",
+      "after": "9765d501935fe84a",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "traverse",
+        "edgeId": "b.edge.02-03"
+      },
+      "before": "9765d501935fe84a",
+      "after": "d92ca0701063b317",
+      "events": [
+        {
+          "type": "traverse",
+          "edgeId": "b.edge.02-03",
+          "cost": {},
+          "storyId": "b03_enter"
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "d92ca0701063b317",
+      "after": "60cc66dcbd375c1b",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "60cc66dcbd375c1b",
+      "after": "3700696bce238523",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "3700696bce238523",
+      "after": "bc43f64caefd2aaa",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "bc43f64caefd2aaa",
+      "after": "917e4eedbd99d3e8",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "interact",
+        "entityId": "b03.heatBox"
+      },
+      "before": "917e4eedbd99d3e8",
+      "after": "dc36d47e93964722",
+      "events": [
+        {
+          "type": "pickup",
+          "entityId": "b03.heatBox",
+          "title": "领取唯一节火匣 · 暖脂8份，四阀保留4份",
+          "storyId": "b03_rules"
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "dc36d47e93964722",
+      "after": "cf35be7e95836180",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "cf35be7e95836180",
+      "after": "f556f024fc061fba",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "f556f024fc061fba",
+      "after": "148f8bb45afa8ddc",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "interact",
+        "entityId": "b03.routeBrief"
+      },
+      "before": "148f8bb45afa8ddc",
+      "after": "80e5a2208b8da5dc",
+      "events": [
+        {
+          "type": "operation",
+          "entityId": "b03.routeBrief",
+          "title": "查看四阀、三暖点及四处根楔的全部用途",
+          "storyId": "b03_exit"
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "left"
+      },
+      "before": "80e5a2208b8da5dc",
+      "after": "040a37e6324de56a",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "left"
+      },
+      "before": "040a37e6324de56a",
+      "after": "4f2d309de583f828",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "traverse",
+        "edgeId": "b.edge.03-02"
+      },
+      "before": "4f2d309de583f828",
+      "after": "61260c9234a53ccb",
+      "events": [
+        {
+          "type": "traverse",
+          "edgeId": "b.edge.03-02",
+          "cost": {},
+          "storyId": null
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "61260c9234a53ccb",
+      "after": "fefd4a50bba6a6aa",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "fefd4a50bba6a6aa",
+      "after": "df39dbc7ce18a75e",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "df39dbc7ce18a75e",
+      "after": "e690c6002c7a5c2a",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "left"
+      },
+      "before": "e690c6002c7a5c2a",
+      "after": "6b01bd42e6cecb46",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "left"
+      },
+      "before": "6b01bd42e6cecb46",
+      "after": "2177072bb055f95a",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "left"
+      },
+      "before": "2177072bb055f95a",
+      "after": "eb7b5ff891882c8e",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "traverse",
+        "edgeId": "b.edge.02-04"
+      },
+      "before": "eb7b5ff891882c8e",
+      "after": "33fc21be3b1e0952",
+      "events": [
+        {
+          "type": "traverse",
+          "edgeId": "b.edge.02-04",
+          "cost": {},
+          "storyId": "b04_enter"
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "33fc21be3b1e0952",
+      "after": "6bd1fef45d71c610",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "6bd1fef45d71c610",
+      "after": "f1209561a0e35a4e",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "f1209561a0e35a4e",
+      "after": "01d8af4403c9bf58",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "01d8af4403c9bf58",
+      "after": "0deb8c40433a7d9f",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "0deb8c40433a7d9f",
+      "after": "1c57729a4d02a56d",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "interact",
+        "entityId": "b04.housing"
+      },
+      "before": "1c57729a4d02a56d",
+      "after": "37a53c65f8baf05b",
+      "events": [
+        {
+          "type": "operation",
+          "entityId": "b04.housing",
+          "title": "检查集中住所的门窗、试烧和分担搬运",
+          "storyId": "b04_enter"
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "37a53c65f8baf05b",
+      "after": "7e260366fa280471",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "7e260366fa280471",
+      "after": "5ccd5294a5f5f073",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "5ccd5294a5f5f073",
+      "after": "6160bf79dcf13dc5",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "6160bf79dcf13dc5",
+      "after": "671c99f4f3011b0d",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "671c99f4f3011b0d",
+      "after": "6e3998a274a70c85",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "6e3998a274a70c85",
+      "after": "ba49d841fb8013bd",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "ba49d841fb8013bd",
+      "after": "4f1f2618cc43da9d",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "4f1f2618cc43da9d",
+      "after": "36841ee09b9e1832",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "36841ee09b9e1832",
+      "after": "cfdf946f4972f5a2",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "interact",
+        "entityId": "b04.bandages"
+      },
+      "before": "cfdf946f4972f5a2",
+      "after": "a44a2fd2ec08c72b",
+      "events": [
+        {
+          "type": "pickup",
+          "entityId": "b04.bandages",
+          "title": "学舍现存护送药包 · 生命/上限+35",
+          "storyId": null
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "a44a2fd2ec08c72b",
+      "after": "e765e70c9612f7ab",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "e765e70c9612f7ab",
+      "after": "028522458df8d41f",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "028522458df8d41f",
+      "after": "9ef2e30218272517",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "9ef2e30218272517",
+      "after": "3d82b0a46387b681",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "3d82b0a46387b681",
+      "after": "2cc78ff2bf0d6803",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "traverse",
+        "edgeId": "b.edge.04-05"
+      },
+      "before": "2cc78ff2bf0d6803",
+      "after": "aaab4e095629fb2c",
+      "events": [
+        {
+          "type": "traverse",
+          "edgeId": "b.edge.04-05",
+          "cost": {},
+          "storyId": "b05_pre"
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "aaab4e095629fb2c",
+      "after": "266844473803b70e",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "266844473803b70e",
+      "after": "9fafec8f78d69fab",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "interact",
+        "entityId": "b05.sluicePuppet"
+      },
+      "before": "9fafec8f78d69fab",
+      "after": "26a1fceb90dc6961",
+      "events": [
+        {
+          "type": "battle",
+          "entityId": "b05.sluicePuppet",
+          "battle": {
+            "winnable": true,
+            "reason": null,
+            "heroDamage": 12,
+            "physicalDamage": 12,
+            "magicTier": 0,
+            "magicCost": 0,
+            "magicBonusPerHit": 0,
+            "magicAffordable": true,
+            "enemyDamage": 7,
+            "rounds": 4,
+            "counterAttacks": 3,
+            "totalDamage": 21,
+            "remainingHp": 452
+          }
+        },
+        {
+          "type": "enemy",
+          "entityId": "b05.sluicePuppet",
+          "title": "取水维护偶",
+          "storyId": null
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "26a1fceb90dc6961",
+      "after": "9a73948b94c4052d",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "9a73948b94c4052d",
+      "after": "b32c367ae78b0e69",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "b32c367ae78b0e69",
+      "after": "7121d838684dc9ed",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "7121d838684dc9ed",
+      "after": "e77e23d1b6d9c409",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "e77e23d1b6d9c409",
+      "after": "ec26ce8a242e6cdd",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "ec26ce8a242e6cdd",
+      "after": "1cbea7116789b1f9",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "1cbea7116789b1f9",
+      "after": "4523eee9f1418d25",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "interact",
+        "entityId": "b05.valve"
+      },
+      "before": "4523eee9f1418d25",
+      "after": "fad7647cf19b7597",
+      "events": [
+        {
+          "type": "operation",
+          "entityId": "b05.valve",
+          "title": "关闭第一支阀 · 暖脂1份",
+          "storyId": "b05_valve"
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "fad7647cf19b7597",
+      "after": "bf367a158701a27a",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "bf367a158701a27a",
+      "after": "d8595bf54f35e39e",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "d8595bf54f35e39e",
+      "after": "9cc9361faa09997a",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "9cc9361faa09997a",
+      "after": "64aa9a90105056b6",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "interact",
+        "entityId": "b05.pipeWorks"
+      },
+      "before": "64aa9a90105056b6",
+      "after": "e81855c236dff4ed",
+      "events": [
+        {
+          "type": "operation",
+          "entityId": "b05.pipeWorks",
+          "title": "现场接好普通保温管，保留自然溪水",
+          "storyId": "b05_valve"
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "e81855c236dff4ed",
+      "after": "bcf5f0dcc1d3d551",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "bcf5f0dcc1d3d551",
+      "after": "d94921401d416085",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "traverse",
+        "edgeId": "b.edge.05-06"
+      },
+      "before": "d94921401d416085",
+      "after": "1420d7432489adfb",
+      "events": [
+        {
+          "type": "traverse",
+          "edgeId": "b.edge.05-06",
+          "cost": {},
+          "storyId": "b06_enter"
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "1420d7432489adfb",
+      "after": "114ea855b50dde29",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "114ea855b50dde29",
+      "after": "106dcdbee67c8dc3",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "106dcdbee67c8dc3",
+      "after": "814fede4865ecaa8",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "interact",
+        "entityId": "b06.edgeTool"
+      },
+      "before": "814fede4865ecaa8",
+      "after": "5ec367b1189e85ec",
+      "events": [
+        {
+          "type": "pickup",
+          "entityId": "b06.edgeTool",
+          "title": "有限磨刃石 · 攻击+3",
+          "storyId": null
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "5ec367b1189e85ec",
+      "after": "05f85016f05eff9a",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "05f85016f05eff9a",
+      "after": "a5b8efae4b0baad4",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "a5b8efae4b0baad4",
+      "after": "ceff0d0ebb0e9ade",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "ceff0d0ebb0e9ade",
+      "after": "426fb3e48bb7cf30",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "426fb3e48bb7cf30",
+      "after": "6b38d5263ef53186",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "interact",
+        "entityId": "b06.sawPuppet"
+      },
+      "before": "6b38d5263ef53186",
+      "after": "751103af44e20535",
+      "events": [
+        {
+          "type": "battle",
+          "entityId": "b06.sawPuppet",
+          "battle": {
+            "winnable": true,
+            "reason": null,
+            "heroDamage": 14,
+            "physicalDamage": 14,
+            "magicTier": 0,
+            "magicCost": 0,
+            "magicBonusPerHit": 0,
+            "magicAffordable": true,
+            "enemyDamage": 10,
+            "rounds": 4,
+            "counterAttacks": 3,
+            "totalDamage": 30,
+            "remainingHp": 422
+          }
+        },
+        {
+          "type": "enemy",
+          "entityId": "b06.sawPuppet",
+          "title": "倒杉锯木偶",
+          "storyId": null
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "751103af44e20535",
+      "after": "94dbf62ae1ee5dcd",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "94dbf62ae1ee5dcd",
+      "after": "5896edf78ca99b7b",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "5896edf78ca99b7b",
+      "after": "31aebae63e788837",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "31aebae63e788837",
+      "after": "92535610ab6ea031",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "92535610ab6ea031",
+      "after": "818b841e10c9babb",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "818b841e10c9babb",
+      "after": "49c9755eb3cf50b1",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "interact",
+        "entityId": "b06.freightWorks"
+      },
+      "before": "49c9755eb3cf50b1",
+      "after": "bd4d1e16ab457d0c",
+      "events": [
+        {
+          "type": "operation",
+          "entityId": "b06.freightWorks",
+          "title": "清走倒杉与弹石，把主货道清到轻车宽度",
+          "storyId": "b06_post"
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "bd4d1e16ab457d0c",
+      "after": "0747c42d34a465f2",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "0747c42d34a465f2",
+      "after": "08668df8f8a21240",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "left"
+      },
+      "before": "08668df8f8a21240",
+      "after": "a05a844f781e6242",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "a05a844f781e6242",
+      "after": "98e5dd878bb8152a",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "98e5dd878bb8152a",
+      "after": "4f85375d99497e1a",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "4f85375d99497e1a",
+      "after": "616667110315cd15",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "interact",
+        "entityId": "b06.resinFragments"
+      },
+      "before": "616667110315cd15",
+      "after": "dd357dcba99f2882",
+      "events": [
+        {
+          "type": "pickup",
+          "entityId": "b06.resinFragments",
+          "title": "普通树脂换存的药包 · 生命/上限+25，不补节火匣",
+          "storyId": null
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "dd357dcba99f2882",
+      "after": "8c9a3338300e5292",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "8c9a3338300e5292",
+      "after": "2f1f1dd082084f4e",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "2f1f1dd082084f4e",
+      "after": "5250544ec2565aee",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "5250544ec2565aee",
+      "after": "bfe40f02dd714940",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "bfe40f02dd714940",
+      "after": "de40799a44a4aa52",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "traverse",
+        "edgeId": "b.edge.06-07"
+      },
+      "before": "de40799a44a4aa52",
+      "after": "2c36222c895d4a81",
+      "events": [
+        {
+          "type": "traverse",
+          "edgeId": "b.edge.06-07",
+          "cost": {},
+          "storyId": "b07_enter"
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "2c36222c895d4a81",
+      "after": "00d1ea8af087bccf",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "interact",
+        "entityId": "b07.wedges"
+      },
+      "before": "00d1ea8af087bccf",
+      "after": "b7055724c8459a93",
+      "events": [
+        {
+          "type": "pickup",
+          "entityId": "b07.wedges",
+          "title": "领取仅有的两枚缚根楔 · 07/16/21/24四点共用",
+          "storyId": "b07_rules"
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "b7055724c8459a93",
+      "after": "637b47793f1d4380",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "637b47793f1d4380",
+      "after": "24c4bdbaafb6a208",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "24c4bdbaafb6a208",
+      "after": "1a319401d7c16a1e",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "1a319401d7c16a1e",
+      "after": "256024db4b3852dc",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "interact",
+        "entityId": "b07.fixRoot"
+      },
+      "before": "256024db4b3852dc",
+      "after": "65c3b7171fa206f7",
+      "events": [
+        {
+          "type": "operation",
+          "entityId": "b07.fixRoot",
+          "title": "固定既存侧根 · 消耗一枚楔，仅开放人行",
+          "storyId": "b07_choice"
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "interact",
+        "entityId": "b07.rootWorks"
+      },
+      "before": "65c3b7171fa206f7",
+      "after": "bbd34945051e6f90",
+      "events": [
+        {
+          "type": "operation",
+          "entityId": "b07.rootWorks",
+          "title": "侧根现场铺板补栏加斜撑，隔离旧路后试过轻车",
+          "storyId": "b07_choice"
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "bbd34945051e6f90",
+      "after": "3cdef8fe809213ae",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "3cdef8fe809213ae",
+      "after": "80016da863b4fcec",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "80016da863b4fcec",
+      "after": "72db9bbda2d2161e",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "72db9bbda2d2161e",
+      "after": "92a5b005529882e8",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "92a5b005529882e8",
+      "after": "5e3ed4ddcbf4f893",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "5e3ed4ddcbf4f893",
+      "after": "85ba11bc7fd31cb1",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "85ba11bc7fd31cb1",
+      "after": "c3dcf415036faa87",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "c3dcf415036faa87",
+      "after": "44a77d46480512a7",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "traverse",
+        "edgeId": "b.edge.07-08"
+      },
+      "before": "44a77d46480512a7",
+      "after": "4ea56d702bba48cf",
+      "events": [
+        {
+          "type": "traverse",
+          "edgeId": "b.edge.07-08",
+          "cost": {},
+          "storyId": "b08_enter"
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "4ea56d702bba48cf",
+      "after": "8ef4e80e7ab80a13",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "8ef4e80e7ab80a13",
+      "after": "d2c6a355f0593c73",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "d2c6a355f0593c73",
+      "after": "ebdf7fe2ffedf52f",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "ebdf7fe2ffedf52f",
+      "after": "78570e1710a1cd07",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "78570e1710a1cd07",
+      "after": "1fbe529bf6c13b49",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "1fbe529bf6c13b49",
+      "after": "1e86482525bf6472",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "1e86482525bf6472",
+      "after": "c52807d8239c1e18",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "interact",
+        "entityId": "b08.campSupply"
+      },
+      "before": "c52807d8239c1e18",
+      "after": "d257b6ef0b95f6f2",
+      "events": [
+        {
+          "type": "pickup",
+          "entityId": "b08.campSupply",
+          "title": "首次宿营现存补给 · 生命/上限+60",
+          "storyId": null
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "interact",
+        "entityId": "b08.firewood"
+      },
+      "before": "d257b6ef0b95f6f2",
+      "after": "ac30d269a5f4243f",
+      "events": [
+        {
+          "type": "operation",
+          "entityId": "b08.firewood",
+          "title": "拨开进气口，留下明晨的柴",
+          "storyId": "b08_night"
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "ac30d269a5f4243f",
+      "after": "3e6a282473dd7057",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "3e6a282473dd7057",
+      "after": "b1044249e333c987",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "b1044249e333c987",
+      "after": "3ee92433604bfbc7",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "3ee92433604bfbc7",
+      "after": "b86bbe634094e9d3",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "b86bbe634094e9d3",
+      "after": "9dee929ddf50a54b",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "9dee929ddf50a54b",
+      "after": "b6107c700857cda7",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "traverse",
+        "edgeId": "b.edge.08-09"
+      },
+      "before": "b6107c700857cda7",
+      "after": "a7d7e5e143becffb",
+      "events": [
+        {
+          "type": "traverse",
+          "edgeId": "b.edge.08-09",
+          "cost": {},
+          "storyId": "b09_enter"
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "a7d7e5e143becffb",
+      "after": "3a8e8d232004caa7",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "3a8e8d232004caa7",
+      "after": "1cde2511d8f00cbf",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "interact",
+        "entityId": "b09.rivetGuard"
+      },
+      "before": "1cde2511d8f00cbf",
+      "after": "90d36a8b359d9d5a",
+      "events": [
+        {
+          "type": "pickup",
+          "entityId": "b09.rivetGuard",
+          "title": "石基工具匣护具 · 防御+2",
+          "storyId": null
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "90d36a8b359d9d5a",
+      "after": "5c64e8a2db9910d2",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "5c64e8a2db9910d2",
+      "after": "5d3e9fc42c6118ea",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "5d3e9fc42c6118ea",
+      "after": "e60be20438e75dec",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "e60be20438e75dec",
+      "after": "e310dec8235e2372",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "interact",
+        "entityId": "b09.foundationRig"
+      },
+      "before": "e310dec8235e2372",
+      "after": "fc37df2cb6d51a6a",
+      "events": [
+        {
+          "type": "battle",
+          "entityId": "b09.foundationRig",
+          "battle": {
+            "winnable": true,
+            "reason": null,
+            "heroDamage": 12,
+            "physicalDamage": 12,
+            "magicTier": 0,
+            "magicCost": 0,
+            "magicBonusPerHit": 0,
+            "magicAffordable": true,
+            "enemyDamage": 11,
+            "rounds": 6,
+            "counterAttacks": 5,
+            "totalDamage": 55,
+            "remainingHp": 452
+          }
+        },
+        {
+          "type": "enemy",
+          "entityId": "b09.foundationRig",
+          "title": "旧石基拖拽架",
+          "storyId": null
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "fc37df2cb6d51a6a",
+      "after": "b05896597db40042",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "b05896597db40042",
+      "after": "fd092d4969116321",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "interact",
+        "entityId": "b09.bridgeWorks"
+      },
+      "before": "fd092d4969116321",
+      "after": "8e9f7ca918b29c7e",
+      "events": [
+        {
+          "type": "operation",
+          "entityId": "b09.bridgeWorks",
+          "title": "架梁、钉板、加栏并现场试过分批轻车",
+          "storyId": "b09_post"
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "8e9f7ca918b29c7e",
+      "after": "391bb8052d9c9f7c",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "391bb8052d9c9f7c",
+      "after": "edb8ad8543da2ed2",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "edb8ad8543da2ed2",
+      "after": "933e5e8d707846fc",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "traverse",
+        "edgeId": "b.edge.09-10"
+      },
+      "before": "933e5e8d707846fc",
+      "after": "d64789b8a9cbcb40",
+      "events": [
+        {
+          "type": "traverse",
+          "edgeId": "b.edge.09-10",
+          "cost": {},
+          "storyId": "b10_enter"
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "d64789b8a9cbcb40",
+      "after": "47f5ad5ef5c5cb3e",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "47f5ad5ef5c5cb3e",
+      "after": "daab49701369c4cc",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "daab49701369c4cc",
+      "after": "3aa288669885d80c",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "3aa288669885d80c",
+      "after": "f742a59e70e3c80c",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "interact",
+        "entityId": "b10.supportWorks"
+      },
+      "before": "f742a59e70e3c80c",
+      "after": "8f3dd737dcdef5bd",
+      "events": [
+        {
+          "type": "operation",
+          "entityId": "b10.supportWorks",
+          "title": "把路根重量交给普通石木支架",
+          "storyId": "b10_enter"
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "8f3dd737dcdef5bd",
+      "after": "49b5f01b855d8cf1",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "49b5f01b855d8cf1",
+      "after": "73eacd9cc229d911",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "interact",
+        "entityId": "b10.valve"
+      },
+      "before": "73eacd9cc229d911",
+      "after": "9d151cc25a0aebfb",
+      "events": [
+        {
+          "type": "operation",
+          "entityId": "b10.valve",
+          "title": "关闭第二支阀 · 暖脂1份",
+          "storyId": "b10_valve"
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "9d151cc25a0aebfb",
+      "after": "6f7d36e6591f62f3",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "6f7d36e6591f62f3",
+      "after": "380feb71ed9a8b1b",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "left"
+      },
+      "before": "380feb71ed9a8b1b",
+      "after": "8006a1c546b9a7eb",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "left"
+      },
+      "before": "8006a1c546b9a7eb",
+      "after": "05265a0ec320cdf7",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "05265a0ec320cdf7",
+      "after": "84e41efbcd19b8a7",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "84e41efbcd19b8a7",
+      "after": "7b76435320609793",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "7b76435320609793",
+      "after": "e58ed2d834cfb24c",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "e58ed2d834cfb24c",
+      "after": "b393bb2c1863e6fa",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "b393bb2c1863e6fa",
+      "after": "98f5e05ac80e08c4",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "traverse",
+        "edgeId": "b.edge.10-11"
+      },
+      "before": "98f5e05ac80e08c4",
+      "after": "3e70ab6aff25c52e",
+      "events": [
+        {
+          "type": "traverse",
+          "edgeId": "b.edge.10-11",
+          "cost": {},
+          "storyId": "b11_enter"
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "3e70ab6aff25c52e",
+      "after": "f21ec017de0c4cb4",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "f21ec017de0c4cb4",
+      "after": "8e880a513110b03e",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "8e880a513110b03e",
+      "after": "7cebf973610c52d8",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "7cebf973610c52d8",
+      "after": "f4096dfff4035288",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "f4096dfff4035288",
+      "after": "b68f6c117ce43bd8",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "left"
+      },
+      "before": "b68f6c117ce43bd8",
+      "after": "01c05bfca28ee9dc",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "left"
+      },
+      "before": "01c05bfca28ee9dc",
+      "after": "1afd0ceb81ae0449",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "left"
+      },
+      "before": "1afd0ceb81ae0449",
+      "after": "988741c34a790709",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "988741c34a790709",
+      "after": "81b1305614d2e1d7",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "81b1305614d2e1d7",
+      "after": "5aca2506f73b8681",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "5aca2506f73b8681",
+      "after": "7b174f9bf681db07",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "7b174f9bf681db07",
+      "after": "235b387436d9690d",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "interact",
+        "entityId": "b11.returnPuppet"
+      },
+      "before": "235b387436d9690d",
+      "after": "5a07f46703e2e221",
+      "events": [
+        {
+          "type": "battle",
+          "entityId": "b11.returnPuppet",
+          "battle": {
+            "winnable": true,
+            "reason": null,
+            "heroDamage": 10,
+            "physicalDamage": 10,
+            "magicTier": 0,
+            "magicCost": 0,
+            "magicBonusPerHit": 0,
+            "magicAffordable": true,
+            "enemyDamage": 12,
+            "rounds": 8,
+            "counterAttacks": 7,
+            "totalDamage": 84,
+            "remainingHp": 368
+          }
+        },
+        {
+          "type": "enemy",
+          "entityId": "b11.returnPuppet",
+          "title": "风铃坡归材偶",
+          "storyId": null
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "left"
+      },
+      "before": "5a07f46703e2e221",
+      "after": "e2b7e1a5e2d1185b",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "left"
+      },
+      "before": "e2b7e1a5e2d1185b",
+      "after": "663ef45afd5d854d",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "663ef45afd5d854d",
+      "after": "da2fb52d63e98593",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "da2fb52d63e98593",
+      "after": "3ee5e9216c59fb5f",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "3ee5e9216c59fb5f",
+      "after": "c2b003ece0a8bc57",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "c2b003ece0a8bc57",
+      "after": "87d39efd83297c03",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "87d39efd83297c03",
+      "after": "9ea0e7779a154d8b",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "interact",
+        "entityId": "b11.roadWorks"
+      },
+      "before": "9ea0e7779a154d8b",
+      "after": "3acaaaf99641cf38",
+      "events": [
+        {
+          "type": "operation",
+          "entityId": "b11.roadWorks",
+          "title": "拆残轨、修防滑绳与货场方向车辙",
+          "storyId": "b11_post"
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "3acaaaf99641cf38",
+      "after": "7ae77b0832e07c2a",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "7ae77b0832e07c2a",
+      "after": "b9baf61b8f697ab8",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "b9baf61b8f697ab8",
+      "after": "7f06a533ca9656c6",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "7f06a533ca9656c6",
+      "after": "8cd6fd19e491efa8",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "8cd6fd19e491efa8",
+      "after": "8b2a91900b773324",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "8b2a91900b773324",
+      "after": "642554c39f345a15",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "642554c39f345a15",
+      "after": "58aacafde0949db5",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "58aacafde0949db5",
+      "after": "c195d00bf041c475",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "left"
+      },
+      "before": "c195d00bf041c475",
+      "after": "58fa10f6116d1711",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "left"
+      },
+      "before": "58fa10f6116d1711",
+      "after": "cf994f9c13af8351",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "left"
+      },
+      "before": "cf994f9c13af8351",
+      "after": "320e7ccc1330f495",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "left"
+      },
+      "before": "320e7ccc1330f495",
+      "after": "95422bdc046d99ad",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "left"
+      },
+      "before": "95422bdc046d99ad",
+      "after": "baecd360e3ae8c51",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "left"
+      },
+      "before": "baecd360e3ae8c51",
+      "after": "22dcb46082357da1",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "left"
+      },
+      "before": "22dcb46082357da1",
+      "after": "554599bb6dbdf13d",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "554599bb6dbdf13d",
+      "after": "268cc42f565d9e80",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "interact",
+        "entityId": "b11.steelEdge"
+      },
+      "before": "268cc42f565d9e80",
+      "after": "b20c7c1a56e058e0",
+      "events": [
+        {
+          "type": "pickup",
+          "entityId": "b11.steelEdge",
+          "title": "归材站现存钢片 · 攻击+3",
+          "storyId": null
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "b20c7c1a56e058e0",
+      "after": "fd819eaf57b61630",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "fd819eaf57b61630",
+      "after": "5d1060c8652ca5e8",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "5d1060c8652ca5e8",
+      "after": "dad33cf70daf0318",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "dad33cf70daf0318",
+      "after": "3e20ab5d1a217d38",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "3e20ab5d1a217d38",
+      "after": "ec149ea6ebfe7650",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "ec149ea6ebfe7650",
+      "after": "4c0654f9e6c9f2b8",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "4c0654f9e6c9f2b8",
+      "after": "d3cd380f4daf5128",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "d3cd380f4daf5128",
+      "after": "5d2e3d8863608028",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "traverse",
+        "edgeId": "b.edge.11-12"
+      },
+      "before": "5d2e3d8863608028",
+      "after": "d035eb20a98926f0",
+      "events": [
+        {
+          "type": "traverse",
+          "edgeId": "b.edge.11-12",
+          "cost": {},
+          "storyId": "b12_enter"
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "d035eb20a98926f0",
+      "after": "a6f26545a0132e0c",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "a6f26545a0132e0c",
+      "after": "ecd8e1cc5a4daa50",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "ecd8e1cc5a4daa50",
+      "after": "9fe3bde6fc5d43fc",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "9fe3bde6fc5d43fc",
+      "after": "8580ebb6e752624e",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "8580ebb6e752624e",
+      "after": "18f46c644a5e74a0",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "interact",
+        "entityId": "b12.overlook"
+      },
+      "before": "18f46c644a5e74a0",
+      "after": "107b4d11fa5fc6b0",
+      "events": [
+        {
+          "type": "operation",
+          "entityId": "b12.overlook",
+          "title": "在望台看清正常季节里的河谷田地与炉烟",
+          "storyId": "b12_enter"
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "107b4d11fa5fc6b0",
+      "after": "5f06ffff1124a416",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "5f06ffff1124a416",
+      "after": "c9ec0495b5ac24b8",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "c9ec0495b5ac24b8",
+      "after": "f32282675f17f2d2",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "f32282675f17f2d2",
+      "after": "07f90de189344c5d",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "07f90de189344c5d",
+      "after": "01fcc73190a24671",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "01fcc73190a24671",
+      "after": "c3f8a64b0406e77d",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "c3f8a64b0406e77d",
+      "after": "58a6cac0bf92c177",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "58a6cac0bf92c177",
+      "after": "7f86332c33ec5a09",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "7f86332c33ec5a09",
+      "after": "6cf316ae5cc8ce1f",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "6cf316ae5cc8ce1f",
+      "after": "71b43e63146063ed",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "traverse",
+        "edgeId": "b.edge.12-13"
+      },
+      "before": "71b43e63146063ed",
+      "after": "7cd8fd51311cfa1b",
+      "events": [
+        {
+          "type": "traverse",
+          "edgeId": "b.edge.12-13",
+          "cost": {},
+          "storyId": "b13_enter"
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "7cd8fd51311cfa1b",
+      "after": "68db4576a5397509",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "68db4576a5397509",
+      "after": "e0fd0ff1d546c5c7",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "e0fd0ff1d546c5c7",
+      "after": "6dee587094953590",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "6dee587094953590",
+      "after": "26c0cc64ed2ced12",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "26c0cc64ed2ced12",
+      "after": "24fbf21b77700740",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "24fbf21b77700740",
+      "after": "5e93993c7c04b2fe",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "5e93993c7c04b2fe",
+      "after": "e59c4e348564b3a0",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "e59c4e348564b3a0",
+      "after": "2e84ace627e6db4a",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "interact",
+        "entityId": "b13.freightManifest"
+      },
+      "before": "2e84ace627e6db4a",
+      "after": "89f9445fee724886",
+      "events": [
+        {
+          "type": "operation",
+          "entityId": "b13.freightManifest",
+          "title": "核对已换冬料、大车拆载与轻车分批交付",
+          "storyId": "b13_enter"
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "89f9445fee724886",
+      "after": "8dae3589d1ba5dd2",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "8dae3589d1ba5dd2",
+      "after": "e4bcb4078b82c902",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "left"
+      },
+      "before": "e4bcb4078b82c902",
+      "after": "9623084e6a2ec89c",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "left"
+      },
+      "before": "9623084e6a2ec89c",
+      "after": "39cc5fb6f05f85f9",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "interact",
+        "entityId": "b13.coatShop"
+      },
+      "before": "39cc5fb6f05f85f9",
+      "after": "8d084695f6c403e3",
+      "events": [
+        {
+          "type": "shop",
+          "entityId": "b13.coatShop",
+          "title": "护路厚护衣 · 12金币，防御+3，现货一件",
+          "storyId": "b13_shop"
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "interact",
+        "entityId": "b13.edgeShop"
+      },
+      "before": "8d084695f6c403e3",
+      "after": "0ad2c9db725a5cd3",
+      "events": [
+        {
+          "type": "shop",
+          "entityId": "b13.edgeShop",
+          "title": "开路钢刃 · 10金币，攻击+3，现货一件",
+          "storyId": "b13_shop"
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "left"
+      },
+      "before": "0ad2c9db725a5cd3",
+      "after": "182b6f34073ab331",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "left"
+      },
+      "before": "182b6f34073ab331",
+      "after": "8f372839dfe659b7",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "left"
+      },
+      "before": "8f372839dfe659b7",
+      "after": "2cbcd6091d970fc1",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "traverse",
+        "edgeId": "b.edge.13-14"
+      },
+      "before": "2cbcd6091d970fc1",
+      "after": "6a012e1b1c0460e5",
+      "events": [
+        {
+          "type": "traverse",
+          "edgeId": "b.edge.13-14",
+          "cost": {},
+          "storyId": "b14_enter"
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "6a012e1b1c0460e5",
+      "after": "5d6e7cf9683e5709",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "5d6e7cf9683e5709",
+      "after": "0550de8165a6d90b",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "0550de8165a6d90b",
+      "after": "7025bb77f73898b5",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "7025bb77f73898b5",
+      "after": "acae6075df2157e6",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "interact",
+        "entityId": "b14.lodging"
+      },
+      "before": "acae6075df2157e6",
+      "after": "a4d58b3bb8038293",
+      "events": [
+        {
+          "type": "operation",
+          "entityId": "b14.lodging",
+          "title": "核对住户亲自选择的床位、食宿与期限",
+          "storyId": "b14_enter"
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "a4d58b3bb8038293",
+      "after": "6269d3e4abcf64b9",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "6269d3e4abcf64b9",
+      "after": "0f74d443dff78b67",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "0f74d443dff78b67",
+      "after": "979287c918b08fc9",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "979287c918b08fc9",
+      "after": "acf00fbec35187db",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "acf00fbec35187db",
+      "after": "942ff7eab6ddf7f9",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "942ff7eab6ddf7f9",
+      "after": "ab9130a6cc8b5307",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "ab9130a6cc8b5307",
+      "after": "1f2876d46ecdb991",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "1f2876d46ecdb991",
+      "after": "da851a7f0cbe8e53",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "interact",
+        "entityId": "b14.learningPlan"
+      },
+      "before": "da851a7f0cbe8e53",
+      "after": "2e4a740bbcc4fa4a",
+      "events": [
+        {
+          "type": "operation",
+          "entityId": "b14.learningPlan",
+          "title": "纱雾亲自谈妥一季学习与帮工食宿",
+          "storyId": "b14_greenhouse"
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "left"
+      },
+      "before": "2e4a740bbcc4fa4a",
+      "after": "e3fb0ef2a14d6b90",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "left"
+      },
+      "before": "e3fb0ef2a14d6b90",
+      "after": "4e7d7964e1ec7b3a",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "left"
+      },
+      "before": "4e7d7964e1ec7b3a",
+      "after": "3f7a027f9f9db77c",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "left"
+      },
+      "before": "3f7a027f9f9db77c",
+      "after": "5d500d7f69b92e02",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "left"
+      },
+      "before": "5d500d7f69b92e02",
+      "after": "6ce7c95594369098",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "traverse",
+        "edgeId": "b.edge.14-13"
+      },
+      "before": "6ce7c95594369098",
+      "after": "ed940a5b06de052e",
+      "events": [
+        {
+          "type": "traverse",
+          "edgeId": "b.edge.14-13",
+          "cost": {},
+          "storyId": null
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "ed940a5b06de052e",
+      "after": "cf1d9128b0a3b306",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "cf1d9128b0a3b306",
+      "after": "b235a3ece33d60f2",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "b235a3ece33d60f2",
+      "after": "667635d38f71bba2",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "667635d38f71bba2",
+      "after": "6c4697b74da414df",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "6c4697b74da414df",
+      "after": "caa5f975bee2ff4b",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "caa5f975bee2ff4b",
+      "after": "b0b2e72a0ac2cf83",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "b0b2e72a0ac2cf83",
+      "after": "985e4c5a675532a7",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "traverse",
+        "edgeId": "b.edge.13-15"
+      },
+      "before": "985e4c5a675532a7",
+      "after": "2914b5557bd9076e",
+      "events": [
+        {
+          "type": "traverse",
+          "edgeId": "b.edge.13-15",
+          "cost": {},
+          "storyId": "b15_enter"
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "2914b5557bd9076e",
+      "after": "bc219c2ce53ef3c6",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "bc219c2ce53ef3c6",
+      "after": "81d6a965fee02c52",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "81d6a965fee02c52",
+      "after": "2031a74f380ad662",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "interact",
+        "entityId": "b15.cablePuppet"
+      },
+      "before": "2031a74f380ad662",
+      "after": "d2a07d108a07d9e6",
+      "events": [
+        {
+          "type": "battle",
+          "entityId": "b15.cablePuppet",
+          "battle": {
+            "winnable": true,
+            "reason": null,
+            "heroDamage": 15,
+            "physicalDamage": 15,
+            "magicTier": 0,
+            "magicCost": 0,
+            "magicBonusPerHit": 0,
+            "magicAffordable": true,
+            "enemyDamage": 11,
+            "rounds": 6,
+            "counterAttacks": 5,
+            "totalDamage": 55,
+            "remainingHp": 313
+          }
+        },
+        {
+          "type": "enemy",
+          "entityId": "b15.cablePuppet",
+          "title": "卷索维护偶",
+          "storyId": null
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "left"
+      },
+      "before": "d2a07d108a07d9e6",
+      "after": "17dd6639936b03de",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "left"
+      },
+      "before": "17dd6639936b03de",
+      "after": "345b27543ed362be",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "345b27543ed362be",
+      "after": "698388208662fb30",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "698388208662fb30",
+      "after": "a94723d318327b9e",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "interact",
+        "entityId": "b15.cableWorks"
+      },
+      "before": "a94723d318327b9e",
+      "after": "eb0839b7d725ae4e",
+      "events": [
+        {
+          "type": "operation",
+          "entityId": "b15.cableWorks",
+          "title": "工队检修轮组并试载 · 索道仅运物资",
+          "storyId": "b15_post"
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "eb0839b7d725ae4e",
+      "after": "32a8c183c9118c64",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "32a8c183c9118c64",
+      "after": "012e702670b3803e",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "012e702670b3803e",
+      "after": "1915f75a8a69b550",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "1915f75a8a69b550",
+      "after": "794d8d674013083e",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "interact",
+        "entityId": "b15.deliverWinter"
+      },
+      "before": "794d8d674013083e",
+      "after": "64ae465f048a67f7",
+      "events": [
+        {
+          "type": "operation",
+          "entityId": "b15.deliverWinter",
+          "title": "以索道及已修西石路送达基础冬料",
+          "storyId": "b15_post"
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "64ae465f048a67f7",
+      "after": "c8e383b786efa19d",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "c8e383b786efa19d",
+      "after": "21ee1ef8f80b83e6",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "21ee1ef8f80b83e6",
+      "after": "8ddb2d1768b8f5d8",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "8ddb2d1768b8f5d8",
+      "after": "2473dfa29e59f4ca",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "2473dfa29e59f4ca",
+      "after": "f825187994e7cb30",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "f825187994e7cb30",
+      "after": "2eed1a31ee7f5b66",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "2eed1a31ee7f5b66",
+      "after": "3a812a8fcce2a6a8",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "3a812a8fcce2a6a8",
+      "after": "09f04cd81c379fc0",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "09f04cd81c379fc0",
+      "after": "0494684ee498feb4",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "0494684ee498feb4",
+      "after": "f2bc18ae3e3ed04c",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "interact",
+        "entityId": "b15.trailPack"
+      },
+      "before": "f2bc18ae3e3ed04c",
+      "after": "7894f20533970a89",
+      "events": [
+        {
+          "type": "pickup",
+          "entityId": "b15.trailPack",
+          "title": "货场预留护送包 · 生命/上限+55",
+          "storyId": null
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "7894f20533970a89",
+      "after": "4290254b0cffbe0e",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "4290254b0cffbe0e",
+      "after": "0b155e6fb88e5d9e",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "0b155e6fb88e5d9e",
+      "after": "6bf7b86b5939940a",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "6bf7b86b5939940a",
+      "after": "7e8ee66cadd31822",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "7e8ee66cadd31822",
+      "after": "0bc505a710d56a70",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "0bc505a710d56a70",
+      "after": "347679953d0eec8a",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "interact",
+        "entityId": "b15.cableTool"
+      },
+      "before": "347679953d0eec8a",
+      "after": "c5b5b04659a6a970",
+      "events": [
+        {
+          "type": "pickup",
+          "entityId": "b15.cableTool",
+          "title": "索道仓现存开路工具 · 攻击+2",
+          "storyId": null
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "c5b5b04659a6a970",
+      "after": "663f1b195412dfc2",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "663f1b195412dfc2",
+      "after": "a4fa98721a46a844",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "traverse",
+        "edgeId": "b.edge.15-16"
+      },
+      "before": "a4fa98721a46a844",
+      "after": "48ba78a1572c8914",
+      "events": [
+        {
+          "type": "traverse",
+          "edgeId": "b.edge.15-16",
+          "cost": {},
+          "storyId": "b16_enter"
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "48ba78a1572c8914",
+      "after": "faa7849ceb49c075",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "faa7849ceb49c075",
+      "after": "7a2122dd0a029b33",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "7a2122dd0a029b33",
+      "after": "6a08e9f796769b71",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "6a08e9f796769b71",
+      "after": "af006e0bb2dba6ad",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "interact",
+        "entityId": "b16.originalEnemy"
+      },
+      "before": "af006e0bb2dba6ad",
+      "after": "74cf0e1d00edcfe8",
+      "events": [
+        {
+          "type": "battle",
+          "entityId": "b16.originalEnemy",
+          "battle": {
+            "winnable": true,
+            "reason": null,
+            "heroDamage": 16,
+            "physicalDamage": 16,
+            "magicTier": 0,
+            "magicCost": 0,
+            "magicBonusPerHit": 0,
+            "magicAffordable": true,
+            "enemyDamage": 14,
+            "rounds": 6,
+            "counterAttacks": 5,
+            "totalDamage": 70,
+            "remainingHp": 298
+          }
+        },
+        {
+          "type": "enemy",
+          "entityId": "b16.originalEnemy",
+          "title": "往返拖架",
+          "storyId": "b16_route"
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "interact",
+        "entityId": "b16.originalWorks"
+      },
+      "before": "74cf0e1d00edcfe8",
+      "after": "e1f6df7b489d087b",
+      "events": [
+        {
+          "type": "operation",
+          "entityId": "b16.originalWorks",
+          "title": "原路现场清残件、修栏与验收轻车",
+          "storyId": "b16_route"
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "e1f6df7b489d087b",
+      "after": "6c17273b4f363747",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "6c17273b4f363747",
+      "after": "d4d7df41f9df8c63",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "d4d7df41f9df8c63",
+      "after": "fdbbbf83a60378e7",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "fdbbbf83a60378e7",
+      "after": "20f9ac357b268b7b",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "20f9ac357b268b7b",
+      "after": "c7c2b6ab3e43018a",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "c7c2b6ab3e43018a",
+      "after": "0921c5e37f7238a6",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "0921c5e37f7238a6",
+      "after": "822361754c856800",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "822361754c856800",
+      "after": "2ee2ee346142db6a",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "2ee2ee346142db6a",
+      "after": "62cf4b7296d499e8",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "62cf4b7296d499e8",
+      "after": "971f154f48179cce",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "traverse",
+        "edgeId": "b.edge.16-17"
+      },
+      "before": "971f154f48179cce",
+      "after": "fd8f26f7110ea768",
+      "events": [
+        {
+          "type": "traverse",
+          "edgeId": "b.edge.16-17",
+          "cost": {},
+          "storyId": "b17_enter"
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "fd8f26f7110ea768",
+      "after": "b7c8b4eb2ed6e34c",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "b7c8b4eb2ed6e34c",
+      "after": "71af5ba3e80fc8dc",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "71af5ba3e80fc8dc",
+      "after": "3fd93d87987a5928",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "3fd93d87987a5928",
+      "after": "97a2ac17e70293e5",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "97a2ac17e70293e5",
+      "after": "cecbd87922db838d",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "cecbd87922db838d",
+      "after": "376c87d365b9b1b1",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "376c87d365b9b1b1",
+      "after": "075faea4d365104f",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "075faea4d365104f",
+      "after": "53979586e9bca3c1",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "53979586e9bca3c1",
+      "after": "746aa8557da1e66b",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "interact",
+        "entityId": "b17.inspectSeeds"
+      },
+      "before": "746aa8557da1e66b",
+      "after": "03f85f471dd8e84b",
+      "events": [
+        {
+          "type": "operation",
+          "entityId": "b17.inspectSeeds",
+          "title": "查看可移栽、取种与无法保存的真实范围",
+          "storyId": "b17_enter"
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "03f85f471dd8e84b",
+      "after": "79d5d26ae4e6d281",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "79d5d26ae4e6d281",
+      "after": "b711f56d12b6c103",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "b711f56d12b6c103",
+      "after": "339ebe6f39733b8d",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "left"
+      },
+      "before": "339ebe6f39733b8d",
+      "after": "6d21866b29e6dbf2",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "left"
+      },
+      "before": "6d21866b29e6dbf2",
+      "after": "dfb0a45d462cfdde",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "left"
+      },
+      "before": "dfb0a45d462cfdde",
+      "after": "97c6d2876225e872",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "left"
+      },
+      "before": "97c6d2876225e872",
+      "after": "038ecf85ebb17716",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "038ecf85ebb17716",
+      "after": "bc8f89b6493b94a2",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "bc8f89b6493b94a2",
+      "after": "feb9adb60a00c37e",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "feb9adb60a00c37e",
+      "after": "7dc5d0eb39a07dd2",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "interact",
+        "entityId": "b17.warmgreenhouse"
+      },
+      "before": "7dc5d0eb39a07dd2",
+      "after": "8d346112e5660661",
+      "events": [
+        {
+          "type": "operation",
+          "entityId": "b17.warmgreenhouse",
+          "title": "为温室密封内间投入2份暖脂 · 不可取回",
+          "storyId": "b17_offer"
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "8d346112e5660661",
+      "after": "9b6d10ac15448da9",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "9b6d10ac15448da9",
+      "after": "0e001ee0dce6dba5",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "0e001ee0dce6dba5",
+      "after": "b7fade68788faa14",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "b7fade68788faa14",
+      "after": "18db0b5b6296c404",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "18db0b5b6296c404",
+      "after": "e4708d4686d00628",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "e4708d4686d00628",
+      "after": "a617f4b90c9d2ed8",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "a617f4b90c9d2ed8",
+      "after": "fb1fe8d15a018a94",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "fb1fe8d15a018a94",
+      "after": "f18a2abaff26eb64",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "traverse",
+        "edgeId": "b.edge.17-18"
+      },
+      "before": "f18a2abaff26eb64",
+      "after": "38f6fb21439c4f01",
+      "events": [
+        {
+          "type": "traverse",
+          "edgeId": "b.edge.17-18",
+          "cost": {},
+          "storyId": "b18_enter"
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "38f6fb21439c4f01",
+      "after": "3de5661c55f70c2d",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "3de5661c55f70c2d",
+      "after": "7d34e093bcf4b061",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "7d34e093bcf4b061",
+      "after": "4066601a4afef93d",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "4066601a4afef93d",
+      "after": "813a9d93d1f6f6bc",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "813a9d93d1f6f6bc",
+      "after": "6665412f635c5838",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "6665412f635c5838",
+      "after": "e1b06b33587878cc",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "e1b06b33587878cc",
+      "after": "9a68003cc83ad250",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "9a68003cc83ad250",
+      "after": "4ae3374ccb2dfad2",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "4ae3374ccb2dfad2",
+      "after": "ef9c71321fedbc64",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "ef9c71321fedbc64",
+      "after": "18898aa9f4471782",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "18898aa9f4471782",
+      "after": "0e1edbd3cf9d51f8",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "0e1edbd3cf9d51f8",
+      "after": "64511ae9c2defa4a",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "64511ae9c2defa4a",
+      "after": "75987ff8bfb14a14",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "75987ff8bfb14a14",
+      "after": "77534856dc0e65fd",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "left"
+      },
+      "before": "77534856dc0e65fd",
+      "after": "4777127ff3092861",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "left"
+      },
+      "before": "4777127ff3092861",
+      "after": "3dc04569d88d5fdd",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "left"
+      },
+      "before": "3dc04569d88d5fdd",
+      "after": "9ac81543764b7799",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "left"
+      },
+      "before": "9ac81543764b7799",
+      "after": "2fe6c04f82180be5",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "left"
+      },
+      "before": "2fe6c04f82180be5",
+      "after": "59a0c5141aeee911",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "left"
+      },
+      "before": "59a0c5141aeee911",
+      "after": "726f95ba13135045",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "left"
+      },
+      "before": "726f95ba13135045",
+      "after": "48eb2c21102b7929",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "48eb2c21102b7929",
+      "after": "cc517b7c611f7f6f",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "cc517b7c611f7f6f",
+      "after": "0e869e13e7db8a5d",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "0e869e13e7db8a5d",
+      "after": "5b996444020dd311",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "5b996444020dd311",
+      "after": "0a7a727467da2007",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "0a7a727467da2007",
+      "after": "f1a6d1c1862298ed",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "f1a6d1c1862298ed",
+      "after": "22c35f48d8b2b8cf",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "interact",
+        "entityId": "b18.oldSeat"
+      },
+      "before": "22c35f48d8b2b8cf",
+      "after": "c18f0dd005d9e971",
+      "events": [
+        {
+          "type": "operation",
+          "entityId": "b18.oldSeat",
+          "title": "在旧石座旁说清这一次各自愿意做的事",
+          "storyId": "b18_private"
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "left"
+      },
+      "before": "c18f0dd005d9e971",
+      "after": "01423decce87efc7",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "left"
+      },
+      "before": "01423decce87efc7",
+      "after": "db712567ec36506d",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "left"
+      },
+      "before": "db712567ec36506d",
+      "after": "74091eadfbd2cfc7",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "left"
+      },
+      "before": "74091eadfbd2cfc7",
+      "after": "c19f23958038f4f1",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "c19f23958038f4f1",
+      "after": "de6b5e14688db5cf",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "de6b5e14688db5cf",
+      "after": "331298a1a175dfa2",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "331298a1a175dfa2",
+      "after": "2a3423ef9d585e86",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "2a3423ef9d585e86",
+      "after": "124ea9229c75ca4e",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "124ea9229c75ca4e",
+      "after": "73559071b14b4292",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "73559071b14b4292",
+      "after": "b04a2613d9e849da",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "b04a2613d9e849da",
+      "after": "2f3876a2a4600bc6",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "2f3876a2a4600bc6",
+      "after": "ccbefc7f787a3fee",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "ccbefc7f787a3fee",
+      "after": "cc34702271abc62a",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "cc34702271abc62a",
+      "after": "dc83fc8e92ec789c",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "dc83fc8e92ec789c",
+      "after": "9d7796fff05834e6",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "9d7796fff05834e6",
+      "after": "c2404bf632b30f31",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "traverse",
+        "edgeId": "b.edge.18-19"
+      },
+      "before": "c2404bf632b30f31",
+      "after": "7cf22bebef0c5ff2",
+      "events": [
+        {
+          "type": "traverse",
+          "edgeId": "b.edge.18-19",
+          "cost": {},
+          "storyId": "b19_enter"
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "left"
+      },
+      "before": "7cf22bebef0c5ff2",
+      "after": "93df41b7e7ad6038",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "left"
+      },
+      "before": "93df41b7e7ad6038",
+      "after": "b9decd3bf4ff1aaa",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "left"
+      },
+      "before": "b9decd3bf4ff1aaa",
+      "after": "760e247fae9b2a74",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "760e247fae9b2a74",
+      "after": "6a33151cc2391460",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "6a33151cc2391460",
+      "after": "0d49445005b121f8",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "0d49445005b121f8",
+      "after": "894ee7d6f8693ca4",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "894ee7d6f8693ca4",
+      "after": "022c88a518f2052c",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "022c88a518f2052c",
+      "after": "7401b4b1e479f0b0",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "7401b4b1e479f0b0",
+      "after": "6cbae96d05aef543",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "6cbae96d05aef543",
+      "after": "59ee630bbf3385fd",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "59ee630bbf3385fd",
+      "after": "17ef3b682c0891d3",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "17ef3b682c0891d3",
+      "after": "f360594ad6101b41",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "f360594ad6101b41",
+      "after": "2a2fb7079fe46de7",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "2a2fb7079fe46de7",
+      "after": "ee067e1672b609c1",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "ee067e1672b609c1",
+      "after": "3029138a0e3a8ee3",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "left"
+      },
+      "before": "3029138a0e3a8ee3",
+      "after": "8589a1a3ea3769d1",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "interact",
+        "entityId": "b19.lodgeWorks"
+      },
+      "before": "8589a1a3ea3769d1",
+      "after": "eaeddb039faf585f",
+      "events": [
+        {
+          "type": "operation",
+          "entityId": "b19.lodgeWorks",
+          "title": "修好普通门窗和柴炉，排好日间通行与清雪",
+          "storyId": "b19_enter"
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "interact",
+        "entityId": "b19.reservePack"
+      },
+      "before": "eaeddb039faf585f",
+      "after": "c478b13c3eef1b04",
+      "events": [
+        {
+          "type": "pickup",
+          "entityId": "b19.reservePack",
+          "title": "卸料坪最后一份护送补给 · 生命/上限+70",
+          "storyId": null
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "c478b13c3eef1b04",
+      "after": "593e4105b2f09f29",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "593e4105b2f09f29",
+      "after": "c52e352b8fbf02df",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "c52e352b8fbf02df",
+      "after": "343e48fda55b95e3",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "343e48fda55b95e3",
+      "after": "3c69e111e5fc15f7",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "interact",
+        "entityId": "b19.snowGuard"
+      },
+      "before": "3c69e111e5fc15f7",
+      "after": "2570960c259f1b68",
+      "events": [
+        {
+          "type": "pickup",
+          "entityId": "b19.snowGuard",
+          "title": "候车屋预存防风护片 · 防御+2",
+          "storyId": null
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "2570960c259f1b68",
+      "after": "cee2e9af66c11700",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "cee2e9af66c11700",
+      "after": "f477b7266509a400",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "f477b7266509a400",
+      "after": "a0281c70492738a0",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "a0281c70492738a0",
+      "after": "6d4be35b40fe6f8e",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "interact",
+        "entityId": "b19.warmlodge"
+      },
+      "before": "6d4be35b40fe6f8e",
+      "after": "796527898826ff45",
+      "events": [
+        {
+          "type": "operation",
+          "entityId": "b19.warmlodge",
+          "title": "为候车暖屋一冬底温投入2份暖脂 · 不可取回",
+          "storyId": "b19_offer"
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "796527898826ff45",
+      "after": "9c73d75c8e082b36",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "left"
+      },
+      "before": "9c73d75c8e082b36",
+      "after": "1f71c37ceb60206a",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "1f71c37ceb60206a",
+      "after": "a2d9f9e6084c95a2",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "a2d9f9e6084c95a2",
+      "after": "805d95307a385556",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "805d95307a385556",
+      "after": "f477cd37aa537bf8",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "f477cd37aa537bf8",
+      "after": "076211d71fc3a982",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "076211d71fc3a982",
+      "after": "5431c646425ddd08",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "traverse",
+        "edgeId": "b.edge.19-20"
+      },
+      "before": "5431c646425ddd08",
+      "after": "97eef0a87954adb9",
+      "events": [
+        {
+          "type": "traverse",
+          "edgeId": "b.edge.19-20",
+          "cost": {},
+          "storyId": "b20_enter"
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "97eef0a87954adb9",
+      "after": "df45b79e8ec25a8f",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "df45b79e8ec25a8f",
+      "after": "6202b2d3568e25fd",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "6202b2d3568e25fd",
+      "after": "f6a57f7ea12d20fe",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "interact",
+        "entityId": "b20.supportWorks"
+      },
+      "before": "f6a57f7ea12d20fe",
+      "after": "cca4d7812b04177e",
+      "events": [
+        {
+          "type": "operation",
+          "entityId": "b20.supportWorks",
+          "title": "装好第三支架、清出闸室外侧北脊通路",
+          "storyId": "b20_enter"
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "cca4d7812b04177e",
+      "after": "1ee1a682547531ce",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "1ee1a682547531ce",
+      "after": "e76175c790538712",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "e76175c790538712",
+      "after": "88887d76b7054fc2",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "88887d76b7054fc2",
+      "after": "a778e484072551b6",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "interact",
+        "entityId": "b20.valve"
+      },
+      "before": "a778e484072551b6",
+      "after": "986e144763817960",
+      "events": [
+        {
+          "type": "operation",
+          "entityId": "b20.valve",
+          "title": "关闭第三支阀 · 暖脂1份",
+          "storyId": "b20_valve"
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "986e144763817960",
+      "after": "2cc17a8001698020",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "2cc17a8001698020",
+      "after": "643684918eb2bf6c",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "643684918eb2bf6c",
+      "after": "379375d5f71aa256",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "379375d5f71aa256",
+      "after": "77506527bf160a27",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "traverse",
+        "edgeId": "b.edge.20-21"
+      },
+      "before": "77506527bf160a27",
+      "after": "fa9de9ec8c38db79",
+      "events": [
+        {
+          "type": "traverse",
+          "edgeId": "b.edge.20-21",
+          "cost": {},
+          "storyId": "b21_enter"
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "fa9de9ec8c38db79",
+      "after": "bf9f94555af659d3",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "bf9f94555af659d3",
+      "after": "2c044ee70da97f21",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "2c044ee70da97f21",
+      "after": "cf08b7b121dfedcf",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "cf08b7b121dfedcf",
+      "after": "a7935d3ef3baa523",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "a7935d3ef3baa523",
+      "after": "4a7c11c967629a5f",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "4a7c11c967629a5f",
+      "after": "72cb8429b365ff73",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "72cb8429b365ff73",
+      "after": "e7bd2d788705af7f",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "e7bd2d788705af7f",
+      "after": "9d97440c80f8724b",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "interact",
+        "entityId": "b21.fixRoot"
+      },
+      "before": "9d97440c80f8724b",
+      "after": "362f5daf35d09625",
+      "events": [
+        {
+          "type": "operation",
+          "entityId": "b21.fixRoot",
+          "title": "固定既存侧根 · 消耗一枚楔，仅开放人行",
+          "storyId": "b21_route"
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "interact",
+        "entityId": "b21.rootWorks"
+      },
+      "before": "362f5daf35d09625",
+      "after": "6a457833fc04c0a0",
+      "events": [
+        {
+          "type": "operation",
+          "entityId": "b21.rootWorks",
+          "title": "侧根现场铺板补栏加斜撑，隔离旧路后试过轻车",
+          "storyId": "b21_route"
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "6a457833fc04c0a0",
+      "after": "67ef9b8c88ab5fd0",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "67ef9b8c88ab5fd0",
+      "after": "7911194c8c386710",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "7911194c8c386710",
+      "after": "89387976b1d42f2e",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "89387976b1d42f2e",
+      "after": "20b6273642c94510",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "20b6273642c94510",
+      "after": "52fd91ff0d5d9c9a",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "52fd91ff0d5d9c9a",
+      "after": "f6e25ff42d5b7538",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "traverse",
+        "edgeId": "b.edge.21-22"
+      },
+      "before": "f6e25ff42d5b7538",
+      "after": "90b45b436998a873",
+      "events": [
+        {
+          "type": "traverse",
+          "edgeId": "b.edge.21-22",
+          "cost": {},
+          "storyId": "b22_enter"
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "90b45b436998a873",
+      "after": "420909104090364b",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "420909104090364b",
+      "after": "9d22b152f5b9b410",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "9d22b152f5b9b410",
+      "after": "29dfabaed7b1e228",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "interact",
+        "entityId": "b22.inspectUpperRoad"
+      },
+      "before": "29dfabaed7b1e228",
+      "after": "b2d758aa597a5878",
+      "events": [
+        {
+          "type": "operation",
+          "entityId": "b22.inspectUpperRoad",
+          "title": "接应工队逐段查过到上门的既有石道",
+          "storyId": "b22_enter"
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "b2d758aa597a5878",
+      "after": "3f4bf5f843266a0a",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "3f4bf5f843266a0a",
+      "after": "a43e008b24f2a854",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "a43e008b24f2a854",
+      "after": "c86f0ffc7def73da",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "c86f0ffc7def73da",
+      "after": "256d91746cfd606c",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "256d91746cfd606c",
+      "after": "f0894aa32421c24e",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "f0894aa32421c24e",
+      "after": "0b3817a1d27167b4",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "0b3817a1d27167b4",
+      "after": "e07707a90c1dd89a",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "e07707a90c1dd89a",
+      "after": "2d97a484ecbdecf0",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "interact",
+        "entityId": "b22.shareDuties"
+      },
+      "before": "2d97a484ecbdecf0",
+      "after": "d3464f85286085bb",
+      "events": [
+        {
+          "type": "operation",
+          "entityId": "b22.shareDuties",
+          "title": "米露重排工作，纱雾只答应离开前两次温标课",
+          "storyId": "b22_after"
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "d3464f85286085bb",
+      "after": "18f5274cefc08cbf",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "18f5274cefc08cbf",
+      "after": "d66173e0d3625777",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "d66173e0d3625777",
+      "after": "49413222ce9a4505",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "49413222ce9a4505",
+      "after": "c0b2501061e9d65b",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "left"
+      },
+      "before": "c0b2501061e9d65b",
+      "after": "6b39a81e7a6f1325",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "6b39a81e7a6f1325",
+      "after": "5aae65bde6219a01",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "5aae65bde6219a01",
+      "after": "035b817232ea2b21",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "left"
+      },
+      "before": "035b817232ea2b21",
+      "after": "559f8485e5458de7",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "interact",
+        "entityId": "b22.windGuard"
+      },
+      "before": "559f8485e5458de7",
+      "after": "c39ae33f8153d0a7",
+      "events": [
+        {
+          "type": "pickup",
+          "entityId": "b22.windGuard",
+          "title": "驿台预存护肩与修刃包 · 防御+2，攻击+2",
+          "storyId": null
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "c39ae33f8153d0a7",
+      "after": "1cf60531ecd72d65",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "1cf60531ecd72d65",
+      "after": "411e0a4a6e501161",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "411e0a4a6e501161",
+      "after": "f62a1f56c0a1835d",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "f62a1f56c0a1835d",
+      "after": "c6e9bca58c0b42d3",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "traverse",
+        "edgeId": "b.edge.22-23"
+      },
+      "before": "c6e9bca58c0b42d3",
+      "after": "e09900a2e8a8d558",
+      "events": [
+        {
+          "type": "traverse",
+          "edgeId": "b.edge.22-23",
+          "cost": {},
+          "storyId": null
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "e09900a2e8a8d558",
+      "after": "7e2b2da2566a93c8",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "7e2b2da2566a93c8",
+      "after": "f32db46df2832ed8",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "f32db46df2832ed8",
+      "after": "77c6db6a1253d220",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "77c6db6a1253d220",
+      "after": "b5dc8ab48249b7a8",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "b5dc8ab48249b7a8",
+      "after": "ff4f2ac3f000c841",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "interact",
+        "entityId": "b23.acceptRing"
+      },
+      "before": "ff4f2ac3f000c841",
+      "after": "74408e4aa5271536",
+      "events": [
+        {
+          "type": "operation",
+          "entityId": "b23.acceptRing",
+          "title": "逐项验收公共环路，实际试通分批轻车",
+          "storyId": "b23_enter"
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "74408e4aa5271536",
+      "after": "e21a5338d5a66a3a",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "e21a5338d5a66a3a",
+      "after": "86ac6fd31636b532",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "traverse",
+        "edgeId": "b.edge.23-24"
+      },
+      "before": "86ac6fd31636b532",
+      "after": "c8dc2bb6ee27306e",
+      "events": [
+        {
+          "type": "traverse",
+          "edgeId": "b.edge.23-24",
+          "cost": {},
+          "storyId": "b24_enter"
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "c8dc2bb6ee27306e",
+      "after": "172613dbe03362f8",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "172613dbe03362f8",
+      "after": "675a14ff49eda876",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "675a14ff49eda876",
+      "after": "952b1cb7f2e629a4",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "952b1cb7f2e629a4",
+      "after": "9eecfa1e3353258e",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "9eecfa1e3353258e",
+      "after": "142dbaff2e788cfa",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "142dbaff2e788cfa",
+      "after": "66e3fb7352e4e9ad",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "interact",
+        "entityId": "b24.originalEnemy"
+      },
+      "before": "66e3fb7352e4e9ad",
+      "after": "41bf6d543b035e4e",
+      "events": [
+        {
+          "type": "battle",
+          "entityId": "b24.originalEnemy",
+          "battle": {
+            "winnable": true,
+            "reason": null,
+            "heroDamage": 17,
+            "physicalDamage": 17,
+            "magicTier": 0,
+            "magicCost": 0,
+            "magicBonusPerHit": 0,
+            "magicAffordable": true,
+            "enemyDamage": 12,
+            "rounds": 7,
+            "counterAttacks": 6,
+            "totalDamage": 72,
+            "remainingHp": 296
+          }
+        },
+        {
+          "type": "enemy",
+          "entityId": "b24.originalEnemy",
+          "title": "正门压材偶",
+          "storyId": "b24_route"
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "interact",
+        "entityId": "b24.originalWorks"
+      },
+      "before": "41bf6d543b035e4e",
+      "after": "c2448338f51304cf",
+      "events": [
+        {
+          "type": "operation",
+          "entityId": "b24.originalWorks",
+          "title": "原路现场清残件、修栏与验收轻车",
+          "storyId": "b24_route"
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "c2448338f51304cf",
+      "after": "c400aaddf1e0304b",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "c400aaddf1e0304b",
+      "after": "1edba944c96b8613",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "1edba944c96b8613",
+      "after": "30a1672bb124aa37",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "30a1672bb124aa37",
+      "after": "7b9258b81fc8636f",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "7b9258b81fc8636f",
+      "after": "60805b38fe9a805b",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "60805b38fe9a805b",
+      "after": "63800d93fede3c9b",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "interact",
+        "entityId": "b24.retrieveHandrail"
+      },
+      "before": "63800d93fede3c9b",
+      "after": "69c4d08de275ab56",
+      "events": [
+        {
+          "type": "operation",
+          "entityId": "b24.retrieveHandrail",
+          "title": "通过已施工的库门抬出整根检修扶手",
+          "storyId": "b24_route"
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "69c4d08de275ab56",
+      "after": "3a50f64dade05769",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "3a50f64dade05769",
+      "after": "696e4e5863cf38e3",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "interact",
+        "entityId": "b24.shutdownDiagram"
+      },
+      "before": "696e4e5863cf38e3",
+      "after": "73b22c7978b956f9",
+      "events": [
+        {
+          "type": "operation",
+          "entityId": "b24.shutdownDiagram",
+          "title": "提前查看副柄→护臂→总阀的固定停机顺序",
+          "storyId": "b24_warning"
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "73b22c7978b956f9",
+      "after": "b10f03040659eeb7",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "b10f03040659eeb7",
+      "after": "f827ac563af63269",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "f827ac563af63269",
+      "after": "fca735668e0bf3c3",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "fca735668e0bf3c3",
+      "after": "4238a3c9ccea5929",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "left"
+      },
+      "before": "4238a3c9ccea5929",
+      "after": "49c5bcee7246ee87",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "left"
+      },
+      "before": "49c5bcee7246ee87",
+      "after": "46aae845a1c2f351",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "left"
+      },
+      "before": "46aae845a1c2f351",
+      "after": "754bf878931e5c83",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "left"
+      },
+      "before": "754bf878931e5c83",
+      "after": "ca9c980db9a01a5e",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "ca9c980db9a01a5e",
+      "after": "06165efeea699552",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "06165efeea699552",
+      "after": "7be1f31c8181731a",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "7be1f31c8181731a",
+      "after": "3799bacbaa1d96fe",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "3799bacbaa1d96fe",
+      "after": "26d4f0c570dac18e",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "left"
+      },
+      "before": "26d4f0c570dac18e",
+      "after": "2fe1061bce7d1d5c",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "traverse",
+        "edgeId": "b.edge.24-23"
+      },
+      "before": "2fe1061bce7d1d5c",
+      "after": "3bddbf1e360a69d3",
+      "events": [
+        {
+          "type": "traverse",
+          "edgeId": "b.edge.24-23",
+          "cost": {},
+          "storyId": null
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "3bddbf1e360a69d3",
+      "after": "7b1bca3205100e97",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "7b1bca3205100e97",
+      "after": "92f813d41050e937",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "92f813d41050e937",
+      "after": "c724f472e25a79ab",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "c724f472e25a79ab",
+      "after": "f91a9358ae2a982a",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "f91a9358ae2a982a",
+      "after": "dac3337a60e998de",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "dac3337a60e998de",
+      "after": "49e0fb8ac4cf06ae",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "traverse",
+        "edgeId": "b.edge.23-25"
+      },
+      "before": "49e0fb8ac4cf06ae",
+      "after": "6bc603f11aed9a53",
+      "events": [
+        {
+          "type": "traverse",
+          "edgeId": "b.edge.23-25",
+          "cost": {},
+          "storyId": "b25_enter"
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "6bc603f11aed9a53",
+      "after": "b1b48e19aa5770e9",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "b1b48e19aa5770e9",
+      "after": "c9cf7cb605eaf9af",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "c9cf7cb605eaf9af",
+      "after": "c803f9996d6ad431",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "c803f9996d6ad431",
+      "after": "a6db39c2287a3a1b",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "a6db39c2287a3a1b",
+      "after": "193884cf10501bd7",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "193884cf10501bd7",
+      "after": "77e38ae2b70d3ef7",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "interact",
+        "entityId": "b25.valve"
+      },
+      "before": "77e38ae2b70d3ef7",
+      "after": "60e946cee0c47f0c",
+      "events": [
+        {
+          "type": "operation",
+          "entityId": "b25.valve",
+          "title": "关闭第四支阀 · 暖脂1份",
+          "storyId": "b25_valve"
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "60e946cee0c47f0c",
+      "after": "f5cdf83f80294212",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "f5cdf83f80294212",
+      "after": "fcfc02e8e740d618",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "fcfc02e8e740d618",
+      "after": "538812cddca8c022",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "interact",
+        "entityId": "b25.waterTest"
+      },
+      "before": "538812cddca8c022",
+      "after": "7dcb36dd9e94fa54",
+      "events": [
+        {
+          "type": "operation",
+          "entityId": "b25.waterTest",
+          "title": "试通已铺重力管，确认普通水源持续流动",
+          "storyId": "b25_exit"
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "7dcb36dd9e94fa54",
+      "after": "715a7b86f326f492",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "left"
+      },
+      "before": "715a7b86f326f492",
+      "after": "55e0962634c7355e",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "left"
+      },
+      "before": "55e0962634c7355e",
+      "after": "929d3373b9e81342",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "929d3373b9e81342",
+      "after": "b5b2912ba90b32b8",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "b5b2912ba90b32b8",
+      "after": "a790b23c10572efe",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "a790b23c10572efe",
+      "after": "8befa70c5f80bccb",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "8befa70c5f80bccb",
+      "after": "9445a01673681c4d",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "9445a01673681c4d",
+      "after": "67493ba04f4ff15f",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "traverse",
+        "edgeId": "b.edge.25-03"
+      },
+      "before": "67493ba04f4ff15f",
+      "after": "6ff2fb30f9e09252",
+      "events": [
+        {
+          "type": "traverse",
+          "edgeId": "b.edge.25-03",
+          "cost": {},
+          "storyId": "b03_enter"
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "interact",
+        "entityId": "b24.installHandrail"
+      },
+      "before": "6ff2fb30f9e09252",
+      "after": "17cc957de9ade996",
+      "events": [
+        {
+          "type": "operation",
+          "entityId": "b24.installHandrail",
+          "title": "在检修入口实装从干根库抬来的扶手",
+          "storyId": "b24_warning"
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "17cc957de9ade996",
+      "after": "9cbb688e7b0d3822",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "9cbb688e7b0d3822",
+      "after": "7fb18b87576dec46",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "left"
+      },
+      "before": "7fb18b87576dec46",
+      "after": "2a0cdb84901a1cae",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "left"
+      },
+      "before": "2a0cdb84901a1cae",
+      "after": "1a1c93543188f3e2",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "left"
+      },
+      "before": "1a1c93543188f3e2",
+      "after": "f45d3d41069b3efa",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "left"
+      },
+      "before": "f45d3d41069b3efa",
+      "after": "9c16302acb71d157",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "9c16302acb71d157",
+      "after": "ff8acee13d44d6b1",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "ff8acee13d44d6b1",
+      "after": "b8d99a972bfbb273",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "interact",
+        "entityId": "b26.readinessReview"
+      },
+      "before": "b8d99a972bfbb273",
+      "after": "0db67ae2daf7cc0d",
+      "events": [
+        {
+          "type": "operation",
+          "entityId": "b26.readinessReview",
+          "title": "逐项核对四阀、冬料、住所、水路与实装扶手",
+          "storyId": "b26_review"
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "traverse",
+        "edgeId": "b.edge.03-26"
+      },
+      "before": "0db67ae2daf7cc0d",
+      "after": "96526e6b56b513bd",
+      "events": [
+        {
+          "type": "traverse",
+          "edgeId": "b.edge.03-26",
+          "cost": {},
+          "storyId": null
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "96526e6b56b513bd",
+      "after": "98d82f6ac2642099",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "interact",
+        "entityId": "b26.supper"
+      },
+      "before": "98d82f6ac2642099",
+      "after": "c9c632cfcaa547c0",
+      "events": [
+        {
+          "type": "operation",
+          "entityId": "b26.supper",
+          "title": "在侧院吃完最后一个暖夜的饭",
+          "storyId": "b26_enter"
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "c9c632cfcaa547c0",
+      "after": "4345f240a4b1c136",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "4345f240a4b1c136",
+      "after": "c7494450b03598cc",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "c7494450b03598cc",
+      "after": "4a1012431020be8e",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "4a1012431020be8e",
+      "after": "df53fe8051764e46",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "interact",
+        "entityId": "b26.drawer"
+      },
+      "before": "df53fe8051764e46",
+      "after": "6f325b2677be2711",
+      "events": [
+        {
+          "type": "operation",
+          "entityId": "b26.drawer",
+          "title": "纱雾收拾抽屉，带饭去相邻外廊",
+          "storyId": "b26_shawu"
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "6f325b2677be2711",
+      "after": "74fef7ec0acabd8f",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "74fef7ec0acabd8f",
+      "after": "9c10b68f89ee13f1",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "9c10b68f89ee13f1",
+      "after": "33aaaa81f53b559b",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "33aaaa81f53b559b",
+      "after": "83b67f59f25e6da1",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "traverse",
+        "edgeId": "b.edge.26-03"
+      },
+      "before": "83b67f59f25e6da1",
+      "after": "d950f8f9f706ce0c",
+      "events": [
+        {
+          "type": "traverse",
+          "edgeId": "b.edge.26-03",
+          "cost": {},
+          "storyId": "b03_enter"
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "d950f8f9f706ce0c",
+      "after": "7cd487cfa9aa37ac",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "7cd487cfa9aa37ac",
+      "after": "cb0931a9c0976260",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "cb0931a9c0976260",
+      "after": "8861ca67a9201258",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "8861ca67a9201258",
+      "after": "ba8094662408109b",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "ba8094662408109b",
+      "after": "4de97c468a2f4377",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "interact",
+        "entityId": "b26.confirmHeat.5"
+      },
+      "before": "4de97c468a2f4377",
+      "after": "62df5ebe01154b05",
+      "events": [
+        {
+          "type": "operation",
+          "entityId": "b26.confirmHeat.5",
+          "title": "最终确认现有暖点；未投处采用普通方案；余0份移交公共库存",
+          "storyId": "b26_review"
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "62df5ebe01154b05",
+      "after": "2b08b3c0e70fa027",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "2b08b3c0e70fa027",
+      "after": "42d31ee5065406c1",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "42d31ee5065406c1",
+      "after": "58734bafac097db7",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "58734bafac097db7",
+      "after": "d46b3568e7022c35",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "traverse",
+        "edgeId": "b.edge.03-27"
+      },
+      "before": "d46b3568e7022c35",
+      "after": "2d0cfc46893ddd89",
+      "events": [
+        {
+          "type": "traverse",
+          "edgeId": "b.edge.03-27",
+          "cost": {},
+          "storyId": "b27_enter"
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "2d0cfc46893ddd89",
+      "after": "d25bf76656bb46d3",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "d25bf76656bb46d3",
+      "after": "b0614a24e875ef19",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "b0614a24e875ef19",
+      "after": "9757d588f5e918a0",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "9757d588f5e918a0",
+      "after": "727c51428705d26a",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "interact",
+        "entityId": "b27.packPersonalThings"
+      },
+      "before": "727c51428705d26a",
+      "after": "6133a8b2d2ecb304",
+      "events": [
+        {
+          "type": "operation",
+          "entityId": "b27.packPersonalThings",
+          "title": "带走茶与便当盖，留下一张供检修休息的折床",
+          "storyId": "b27_enter"
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "6133a8b2d2ecb304",
+      "after": "41c2d41d692ad3d0",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "41c2d41d692ad3d0",
+      "after": "404fb32b99794ea8",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "404fb32b99794ea8",
+      "after": "c72e656ab2657914",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "c72e656ab2657914",
+      "after": "7f1a8a9e6d327534",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "7f1a8a9e6d327534",
+      "after": "1fc4b0fd45687e98",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "1fc4b0fd45687e98",
+      "after": "3e7bf0f184cb6400",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "3e7bf0f184cb6400",
+      "after": "a7f65dbeda187a3c",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "a7f65dbeda187a3c",
+      "after": "3becf7c936b84e01",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "3becf7c936b84e01",
+      "after": "05b420c030213c49",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "05b420c030213c49",
+      "after": "47b25eebd97390c5",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "47b25eebd97390c5",
+      "after": "d07e2e02f5497135",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "traverse",
+        "edgeId": "b.edge.27-28"
+      },
+      "before": "d07e2e02f5497135",
+      "after": "68be07026c7b7c57",
+      "events": [
+        {
+          "type": "traverse",
+          "edgeId": "b.edge.27-28",
+          "cost": {},
+          "storyId": null
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "68be07026c7b7c57",
+      "after": "93de55d5c85a925d",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "93de55d5c85a925d",
+      "after": "f619d4dfb4d92983",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "interact",
+        "entityId": "b28.serviceLever"
+      },
+      "before": "f619d4dfb4d92983",
+      "after": "6f5a41145607ba00",
+      "events": [
+        {
+          "type": "operation",
+          "entityId": "b28.serviceLever",
+          "title": "先拨检修副柄，露出驱动；总阀保持原位",
+          "storyId": "b28_pre"
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "6f5a41145607ba00",
+      "after": "1a963cb682fff658",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "1a963cb682fff658",
+      "after": "fe23dab89796dfa8",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "fe23dab89796dfa8",
+      "after": "d314b7e20417c8ad",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "d314b7e20417c8ad",
+      "after": "1baa086dcf4b9f75",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "1baa086dcf4b9f75",
+      "after": "0ffd23cbfb0b6845",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "0ffd23cbfb0b6845",
+      "after": "1fd2f10b6a347981",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "interact",
+        "entityId": "b28.guardDrive"
+      },
+      "before": "1fd2f10b6a347981",
+      "after": "ec6c7c2891c650c3",
+      "events": [
+        {
+          "type": "battle",
+          "entityId": "b28.guardDrive",
+          "battle": {
+            "winnable": true,
+            "reason": null,
+            "heroDamage": 17,
+            "physicalDamage": 17,
+            "magicTier": 0,
+            "magicCost": 0,
+            "magicBonusPerHit": 0,
+            "magicAffordable": true,
+            "enemyDamage": 13,
+            "rounds": 8,
+            "counterAttacks": 7,
+            "totalDamage": 91,
+            "remainingHp": 205
+          }
+        },
+        {
+          "type": "enemy",
+          "entityId": "b28.guardDrive",
+          "title": "失灵护根机关",
+          "storyId": "b28_post"
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "ec6c7c2891c650c3",
+      "after": "2b71e217c68b2363",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "2b71e217c68b2363",
+      "after": "17c2460452078a2f",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "17c2460452078a2f",
+      "after": "d6eabc3eba3f1f07",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "interact",
+        "entityId": "b28.stopMainValve"
+      },
+      "before": "d6eabc3eba3f1f07",
+      "after": "33bae096be79d657",
+      "events": [
+        {
+          "type": "operation",
+          "entityId": "b28.stopMainValve",
+          "title": "诺克缇娅转总阀，璃落机械锁",
+          "storyId": "b28_post"
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "33bae096be79d657",
+      "after": "4b19db072d35e0fb",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "4b19db072d35e0fb",
+      "after": "bcdd445de07e6790",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "bcdd445de07e6790",
+      "after": "7064248944295e00",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "left"
+      },
+      "before": "7064248944295e00",
+      "after": "a2c904c400d26f9e",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "a2c904c400d26f9e",
+      "after": "9898117c81c11250",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "9898117c81c11250",
+      "after": "3b4b187cefdaf1e6",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "3b4b187cefdaf1e6",
+      "after": "3fc188b6973bd3c4",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "3fc188b6973bd3c4",
+      "after": "89704c8fdb989fce",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "89704c8fdb989fce",
+      "after": "76bb15336f12c538",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "left"
+      },
+      "before": "76bb15336f12c538",
+      "after": "598636b2e69cd178",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "traverse",
+        "edgeId": "b.edge.28-27"
+      },
+      "before": "598636b2e69cd178",
+      "after": "531380a01b68aa1d",
+      "events": [
+        {
+          "type": "traverse",
+          "edgeId": "b.edge.28-27",
+          "cost": {},
+          "storyId": null
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "531380a01b68aa1d",
+      "after": "f4714b6e6ae19710",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "f4714b6e6ae19710",
+      "after": "02e20092f0bb32c8",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "02e20092f0bb32c8",
+      "after": "a91547a23784e970",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "a91547a23784e970",
+      "after": "25d18b815367a688",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "25d18b815367a688",
+      "after": "0607ff903fb7d8f8",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "0607ff903fb7d8f8",
+      "after": "f2fa1a45ac155240",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "left"
+      },
+      "before": "f2fa1a45ac155240",
+      "after": "9acac5ab1c4758c0",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "left"
+      },
+      "before": "9acac5ab1c4758c0",
+      "after": "5f5157cbcf81add8",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "left"
+      },
+      "before": "5f5157cbcf81add8",
+      "after": "7654512733f4b970",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "left"
+      },
+      "before": "7654512733f4b970",
+      "after": "ef7f4cce82814680",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "left"
+      },
+      "before": "ef7f4cce82814680",
+      "after": "2dbdd9eaab8d25d3",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "left"
+      },
+      "before": "2dbdd9eaab8d25d3",
+      "after": "49507448fc1b794f",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "49507448fc1b794f",
+      "after": "01448b2f9b33c7fb",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "01448b2f9b33c7fb",
+      "after": "49ae373db2791d2b",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "left"
+      },
+      "before": "49ae373db2791d2b",
+      "after": "1686fc23c75113af",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "traverse",
+        "edgeId": "b.edge.27-03"
+      },
+      "before": "1686fc23c75113af",
+      "after": "7bdfcd43a24f7215",
+      "events": [
+        {
+          "type": "traverse",
+          "edgeId": "b.edge.27-03",
+          "cost": {},
+          "storyId": null
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "7bdfcd43a24f7215",
+      "after": "f843e44ee88b7213",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "f843e44ee88b7213",
+      "after": "ede5f6cf74e8e431",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "left"
+      },
+      "before": "ede5f6cf74e8e431",
+      "after": "f18163ad0320ad59",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "left"
+      },
+      "before": "f18163ad0320ad59",
+      "after": "a2caab9e5a962eb1",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "left"
+      },
+      "before": "a2caab9e5a962eb1",
+      "after": "d4139671daa07c90",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "traverse",
+        "edgeId": "b.edge.03-29"
+      },
+      "before": "d4139671daa07c90",
+      "after": "ee1642f7cbd0544e",
+      "events": [
+        {
+          "type": "traverse",
+          "edgeId": "b.edge.03-29",
+          "cost": {},
+          "storyId": null
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "ee1642f7cbd0544e",
+      "after": "122fbd617441ee62",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "122fbd617441ee62",
+      "after": "788dc946a5e78f32",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "788dc946a5e78f32",
+      "after": "fda0f7bfb521e70e",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "fda0f7bfb521e70e",
+      "after": "84c816bc906ec09e",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "84c816bc906ec09e",
+      "after": "0c81ed7f38e3ba4a",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "0c81ed7f38e3ba4a",
+      "after": "12adc41dccbe5d0a",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "12adc41dccbe5d0a",
+      "after": "b52d77ab50565446",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "b52d77ab50565446",
+      "after": "91635cec09d8b06e",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "91635cec09d8b06e",
+      "after": "080c61db92311b0b",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "080c61db92311b0b",
+      "after": "7f919ce99128a02f",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "7f919ce99128a02f",
+      "after": "7943203d8201b35f",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "7943203d8201b35f",
+      "after": "e65001346bcf921b",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "interact",
+        "entityId": "b29.homecoming"
+      },
+      "before": "e65001346bcf921b",
+      "after": "7c76a4ea18085457",
+      "events": [
+        {
+          "type": "operation",
+          "entityId": "b29.homecoming",
+          "title": "诺克缇娅走回自己的房间，不再续一班值守",
+          "storyId": "b29_home"
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "7c76a4ea18085457",
+      "after": "a146401c45171faf",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "a146401c45171faf",
+      "after": "06caa63188c8a7bf",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "06caa63188c8a7bf",
+      "after": "1a2521a2ecef6e97",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "1a2521a2ecef6e97",
+      "after": "715af498df2ef945",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "715af498df2ef945",
+      "after": "7704e94c630fbddb",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "7704e94c630fbddb",
+      "after": "b2b21747984a1119",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "b2b21747984a1119",
+      "after": "cd9f1d18282f1e81",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "cd9f1d18282f1e81",
+      "after": "b8aafb6a9532cd81",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "b8aafb6a9532cd81",
+      "after": "120565ff18d36541",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "120565ff18d36541",
+      "after": "c810fcc0e3e6b159",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "c810fcc0e3e6b159",
+      "after": "26b1732a603eab61",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "traverse",
+        "edgeId": "b.edge.29-30"
+      },
+      "before": "26b1732a603eab61",
+      "after": "61977f9d3f8c3259",
+      "events": [
+        {
+          "type": "traverse",
+          "edgeId": "b.edge.29-30",
+          "cost": {},
+          "storyId": null
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "61977f9d3f8c3259",
+      "after": "9adb206a129bc463",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "9adb206a129bc463",
+      "after": "3bc117da3fbd8bcd",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "3bc117da3fbd8bcd",
+      "after": "1d01248feb88a67b",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "1d01248feb88a67b",
+      "after": "a8e4a51b2999d916",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "a8e4a51b2999d916",
+      "after": "23a82c46bd25f176",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "23a82c46bd25f176",
+      "after": "6fe16e7b135c786a",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "6fe16e7b135c786a",
+      "after": "a765d92484c0efe2",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "interact",
+        "entityId": "b30.together"
+      },
+      "before": "a765d92484c0efe2",
+      "after": "14fe28d99e5cb5d7",
+      "events": [
+        {
+          "type": "operation",
+          "entityId": "b30.together",
+          "title": "这一季一起下山，按约去河谷学习与冬市",
+          "storyId": "b30_end_together"
+        }
+      ]
+    }
+  ],
+  "final": {
+    "identity": {
+      "campaignId": "forest-b",
+      "difficultyId": "normal",
+      "contentVersion": "b-frozen-standard-v1",
+      "rulesVersion": "fixed-campaign-v1.1",
+      "contentHash": "a12cd07ee1ccc762"
+    },
+    "revision": 714,
+    "location": {
+      "regionId": "B-30",
+      "x": 4,
+      "y": 1
+    },
+    "stats": {
+      "hp": 205,
+      "maxHp": 695,
+      "atk": 31,
+      "def": 19,
+      "gold": 28
+    },
+    "resources": {
+      "heat": 0,
+      "wedges": 0,
+      "publicHeat": 0
+    },
+    "flags": {
+      "b01.basicEntrance": true,
+      "b02.winterPlanKnown": true,
+      "b03.heatBoxOwned": true,
+      "b03.routeBriefKnown": true,
+      "b04.housingReady": true,
+      "b05.valveClosed": true,
+      "b05.waterInsulated": true,
+      "b06.freightCleared": true,
+      "b07.wedgesOwned": true,
+      "b07.rootFixed": true,
+      "b07.rootWorksDone": true,
+      "b08.morningWoodKept": true,
+      "b09.realBridgeBuilt": true,
+      "b10.supportsInstalled": true,
+      "b10.valveClosed": true,
+      "b11.roadRepaired": true,
+      "b12.valleySeen": true,
+      "b13.freightPlanned": true,
+      "b14.residentLodgingAgreed": true,
+      "b14.shawuLearningAgreed": true,
+      "b15.cableLoadTested": true,
+      "b15.winterSuppliesDelivered": true,
+      "b16.originalCleared": true,
+      "b16.originalWorksDone": true,
+      "b17.optionsKnown": true,
+      "b.warm.greenhouse": true,
+      "b18.wordsSpoken": true,
+      "b19.ordinaryLodgeReady": true,
+      "b.warm.lodge": true,
+      "b20.supportsInstalled": true,
+      "b20.northExitReady": true,
+      "b20.valveClosed": true,
+      "b21.rootFixed": true,
+      "b21.rootWorksDone": true,
+      "b22.upperRoadChecked": true,
+      "b22.dutiesShared": true,
+      "b23.ringOpen": true,
+      "b24.originalCleared": true,
+      "b24.originalWorksDone": true,
+      "b24.handrailRetrieved": true,
+      "b24.shutdownSequenceKnown": true,
+      "b25.valveClosed": true,
+      "b25.gravityWaterTested": true,
+      "b24.handrailInstalled": true,
+      "b26.shutdownReady": true,
+      "b26.supperDone": true,
+      "b26.drawerPacked": true,
+      "b26.heatPlanFrozen": true,
+      "b26.keyHandedOver": true,
+      "b.ordinary.greenhouse": false,
+      "b.ordinary.pear": true,
+      "b.ordinary.lodge": false,
+      "b27.personalThingsPacked": true,
+      "b28.serviceLeverSet": true,
+      "b28.mainValveStopped": true,
+      "b29.noctiaHome": true,
+      "b30.ending": "together",
+      "b30.epilogueComplete": true
+    },
+    "cleared": [
+      "b01.guardPlate",
+      "b01.timberPuppet",
+      "b02.winterPlan",
+      "b03.heatBox",
+      "b03.routeBrief",
+      "b04.bandages",
+      "b04.housing",
+      "b05.pipeWorks",
+      "b05.sluicePuppet",
+      "b05.valve",
+      "b06.edgeTool",
+      "b06.freightWorks",
+      "b06.resinFragments",
+      "b06.sawPuppet",
+      "b07.fixRoot",
+      "b07.rootWorks",
+      "b07.wedges",
+      "b08.campSupply",
+      "b08.firewood",
+      "b09.bridgeWorks",
+      "b09.foundationRig",
+      "b09.rivetGuard",
+      "b10.supportWorks",
+      "b10.valve",
+      "b11.returnPuppet",
+      "b11.roadWorks",
+      "b11.steelEdge",
+      "b12.overlook",
+      "b13.coatShop",
+      "b13.edgeShop",
+      "b13.freightManifest",
+      "b14.learningPlan",
+      "b14.lodging",
+      "b15.cablePuppet",
+      "b15.cableTool",
+      "b15.cableWorks",
+      "b15.deliverWinter",
+      "b15.trailPack",
+      "b16.originalEnemy",
+      "b16.originalWorks",
+      "b17.inspectSeeds",
+      "b17.warmgreenhouse",
+      "b18.oldSeat",
+      "b19.lodgeWorks",
+      "b19.reservePack",
+      "b19.snowGuard",
+      "b19.warmlodge",
+      "b20.supportWorks",
+      "b20.valve",
+      "b21.fixRoot",
+      "b21.rootWorks",
+      "b22.inspectUpperRoad",
+      "b22.shareDuties",
+      "b22.windGuard",
+      "b23.acceptRing",
+      "b24.installHandrail",
+      "b24.originalEnemy",
+      "b24.originalWorks",
+      "b24.retrieveHandrail",
+      "b24.shutdownDiagram",
+      "b25.valve",
+      "b25.waterTest",
+      "b26.confirmHeat.5",
+      "b26.drawer",
+      "b26.readinessReview",
+      "b26.supper",
+      "b27.packPersonalThings",
+      "b28.guardDrive",
+      "b28.serviceLever",
+      "b28.stopMainValve",
+      "b29.homecoming",
+      "b30.together"
+    ],
+    "visited": [
+      "B-01",
+      "B-02",
+      "B-03",
+      "B-04",
+      "B-05",
+      "B-06",
+      "B-07",
+      "B-08",
+      "B-09",
+      "B-10",
+      "B-11",
+      "B-12",
+      "B-13",
+      "B-14",
+      "B-15",
+      "B-16",
+      "B-17",
+      "B-18",
+      "B-19",
+      "B-20",
+      "B-21",
+      "B-22",
+      "B-23",
+      "B-24",
+      "B-25",
+      "B-26",
+      "B-27",
+      "B-28",
+      "B-29",
+      "B-30"
+    ],
+    "boat": null,
+    "victory": true
+  },
+  "claim": "at-least-one-replayed-winning-route",
+  "certificateHash": "6d90e23defa102bd"
+}

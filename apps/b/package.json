@@ -1,0 +1,1 @@
+{"name":"tower-b-recovered-core","private":true,"type":"module","scripts":{"test":"node --test test/campaign-b-*.test.js","build":"node scripts/build-b-preview.mjs","validate":"node scripts/validate-b-preview-build.mjs"}}

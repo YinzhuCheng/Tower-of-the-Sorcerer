@@ -1,3 +1,0 @@
-# Source pre-edit QA
-
-Inspected at full resolution 1672×941. Exactly six small unframed rainbow diamond cores: red, orange, green, cyan, blue, magenta. Yellow is missing. Three distinct larger dark-silver-framed red seal tablets at upper-left, upper-right and bottom-center are present. Scene card requires exactly seven cores and exactly three tablets. Repair is limited to adding yellow and re-spacing the core column; all scene and character details remain locked. Tower P0 character text, P1 turnarounds, P2 accessory boards and P3 expressions for both protagonists reviewed; no Luo character rules applied.

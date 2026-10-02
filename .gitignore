@@ -1,10 +1,7 @@
-# Build output
-dist/
-generated_images/
-
-# Local tooling
-.DS_Store
-*.log
-.vscode/
-.idea/
-.vercel/
+**/node_modules/
+**/dist/
+**/dist-b-preview/
+**/__pycache__/
+**/.cache/
+.env
+.env.*

@@ -1,111 +1,28 @@
-# 失落魔法阵：少女魔塔
+# Tower of the Sorcerer: recovered core candidate
 
-一款保留经典魔塔核心规则的浏览器固定数值策略 RPG。主角 **绫星·璃** 被“无声女王”夺去魔力，只能依靠剑术、资源规划与精确计算闯入三十层魔法阵。王座之后，余烬登记库仍在重放未送达的求援；璃必须在三份互斥修复章程中选择一条，才能登上余烬灯塔。
+This isolated candidate contains the minimal reproducible A/B/C build and test cores. It is a reconstruction from older verified sources, not recovery of missing latest local work or acceptance of final art. Main and historical branches are unchanged.
 
-## 游戏内容
+## Requirements and commands
 
-- **固定数值战斗**：没有暴击、闪避或随机浮动；主角先攻，战前可精确计算损伤。
-- **30 个完整楼层**：前十层建立卡片、商店与核心资源账本；F11–F20 加入魔力附刃、分流卡门与王座会战；F21–F30 为余烬登记库与灯塔终局。
-- **二次元魔法派系**：猫娘、狐巫、鲸鱼娘、女剑士、龙娘、星图魔女、影术少女与无声王庭。
-- **经典魔塔资源**：三色“魔法卡片”与对应结界门、攻防宝石、药水、武器、防具、金币商店与可选支路。
-- **宝物系统**：魔眼图鉴、层间罗盘、招财星币、静谧耳坠、圣辉原液等。
-- **解谜机关**：单开关、双开关联动、A-B-C 顺序符文、消耗三色卡的三相结界。
-- **完整存档**：自动存档、手动存档、读档与重开，数据保存在浏览器 `localStorage`。
-- **王座前共鸣会战**：四名曾经的 Boss 中选择三名出战，分配总计 120 MP；敌方三名忠诚随从的顺序与 MP 均公开。胜者保留剩余生命进入下一轮，并为最终两相 Boss 施加对应削弱。
-- **高难但非唯一解**：会战共 240 个合法部署，当前有 22 个胜利方案；数值回归门槛要求保留 12–36 个胜利方案，避免单解陷阱或无脑碾压。
-- **第三幕互斥章程**：夜航护送用月卡换残局减击；逐页校验用星卡换双相弱点；灯塔接力用日/月卡换两次定时 MP 回充。三条侧库互斥，价格、敌人与回报都免费公开。
-- **校场先后手**：F27 三名守卫都必须击败，但最先处理的一人会永久锁定护送减击、校验拆解或清场补魔之一；不是免费奖励菜单，而是以首战伤害和错失另外两项支援换来的终局准备。
-- **多资源终局压力**：F25 的缺页封条要求日曜 ×1、月辉 ×2、星蚀 ×1；F26 商店产出较低，F29 以前移守卫、伏击与收束书架迫使玩家把卡片、MP、金币和路线一起算，而不是只堆生命。
-- **经验证的终局压力**：F27 三条首战线和 F30 两相均已上调压力；上线前以同一组合变异重放三条章程和三条「章程＋先后手」路线，确保难在决策与执行、而非封死任一互斥路线。
-- **路线复盘**：求解器会输出已签路线、关键卡门、会战部署、MP 分账、最低容错战与关键分歧预演；情报免费公开，帮助玩家复盘，而非靠反复读档试错。
-- **桌面与移动端**：方向键 / WASD、相邻格点击、屏幕方向键；布局自适应手机与桌面。
-- **双渲染器容错**：优先使用开源 Phaser 3；CDN 不可用时自动切换到本地 Canvas 2D 渲染器。
+Node.js 22+, npm, Python 3.12+.
 
-## 战斗公式
+    python3 -m pip install -r apps/a/scripts/requirements-art.txt
+    npm --prefix apps/c ci --ignore-scripts --no-audit --no-fund
+    npm run check
 
-当 `主角攻击 <= 敌人防御` 时无法破防。普通敌人的固定损伤为：
+A and B have no npm dependencies. C pins Three.js 0.180.0 in its lockfile.
+`npm test` runs all three test suites. `npm run build` builds all three games.
 
-```text
-攻击回合数 = ceil(敌人生命 / (主角攻击 - 敌人防御))
-敌人单次伤害 = max(敌人攻击 - 主角防御, 0)
-总损伤 = (攻击回合数 - 1) × 敌人单次伤害
-```
+## Preview outputs
 
-特殊规则：
+- A: serve `apps/a/dist/`; entry `/`
+- B: serve `apps/b/dist-b-preview/`; entry `/campaigns-b/`
+- C: serve `apps/c/dist/`; entry `/campaigns/`
 
-- **先制攻击**：敌人额外反击一次。
-- **二连击**：每次反击造成两段物理伤害。
-- **魔法攻击**：无视防御；“静谧耳坠”可将每段魔法伤害降低 20%。
-- 总损伤必须严格小于当前生命，战斗才允许开始。
+Use an authorized static HTTP server, not file://. No backend or runtime CDN is required. No deployment is configured by this candidate. Cloud localhost browser access was blocked; actual browser gameplay, WebGL, layout, save-button flow and visual acceptance are still unverified.
 
-## 本地运行
+## Scope and provenance
 
-项目没有构建期第三方依赖，Node.js 18+ 即可：
+A derives from 661296d3df912539f14f300442d962ba6c462541; B from 9ada59a66d9579a418e25015b90c61621ce583d1; C from 080d9142bbbfe65df4b7977ed483a5a49435e30b plus 2b6388088eeacf6c011aad4a4a207b29bd4de941. See each app README for exact reconstruction limits. C intentionally uses geometry-only rendering because six historical materials are unavailable; B materials are historical previews, not accepted final forest art.
 
-```bash
-npm run dev
-```
-
-打开 `http://localhost:4173`。
-
-生产构建：
-
-```bash
-npm run build
-```
-
-静态产物会写入 `dist/`。
-
-## 测试与可通关性验证
-
-美术完整性检查使用 Python 3.10+ 和固定版本的 Pillow。首次运行完整检查前安装：
-
-```bash
-python3 -m pip install -r scripts/requirements-art.txt
-```
-
-`npm run validate:art` 会完整解码运行时图片，检查所有被引用的图集格子和确定性重组来源；仅检查文件头不能发现局部花屏或被截断的图片。生产构建本身仍无需 Python。
-
-```bash
-npm run check
-```
-
-该命令依次执行：
-
-1. `scripts/validate-runtime-art.py`：严格解码全部运行时美术，校验文件引用、图集格子与重组谱系。
-2. `node --test`：战斗公式、卡片门、宝物、机关、符文、商店、存档、终局 Boss 与会战测试。
-3. `scripts/validate-game.mjs`：自动求解基础战役，要求回收七枚核心、击败最终 Boss 且剩余生命大于 0。
-4. `scripts/validate-demo-20f.mjs`：从 F10 已验证路线继续求解 F11–F20，重放完整证书，并检查车轮战胜利窗口。
-5. `scripts/validate-demo-30f.mjs`：以高压第二幕证书为前缀，重放三条 F21–F30 章程路线，并额外证明三条「章程＋F27 先后手」高难路线均可由权威回放通关。
-6. 静态生产构建。
-
-地图、敌人布置、资源或数值调整后应始终重新运行该命令。自动求解器不是唯一通关路线，只用于证明当前版本至少存在一条合法通关路径。
-
-要测试更高压候选可运行 `MUTATION=act3-mana-cache-minus10,act3-f29-ledger-forward npm run validate:demo30`。候选最多两项，覆盖敌人数值、MP/商店/卡片资源、语义迷宫交换和可选敌人布置；楼梯、剧情、章程合同与强制守卫身份始终锁定。候选只有在三条互斥章程和三条校场优先路线都能由权威回放通关时才可保留。
-
-要查看完整的「章程 × F27 首战守卫」决策面，可运行 `DECISION_MATRIX=1 npm run validate:demo30`。它会回放全部 9 种不可逆组合，报告每格是否可通、最低生命裕量与每条章程/守卫轴的覆盖情况；这是平衡诊断，不会把九种组合误设为发行门槛。
-
-## 项目结构
-
-```text
-src/game/data.js             楼层、敌人、物品、剧情与商店数据
-src/game/engine.js           与渲染无关的固定数值规则引擎
-src/game/war-council.js      王座前车轮战、MP 分配与最终战削弱规则
-src/game/act3-charters.js    F21 互斥章程、终局规则与接力 MP 回充
-src/game/act3-handoff-priorities.js F27 首击优先、终局规则与清场 MP 回充
-src/game/demo-30-floor-content.js F21–F30 地图、敌人、物品与剧情
-src/tuner/demo-30-floor-mutations.js 受限的资源、拓扑与敌人布置候选树
-src/solver/decision-intuition.js 只影响搜索顺序的关键分歧预演（不参与证明剪枝）
-src/game/scene.js            Phaser 渲染器
-src/game/canvas-scene.js     离线 Canvas 2D 回退渲染器
-src/main.js                  UI、弹窗、存档与启动流程
-scripts/validate-game.mjs    自动通关求解与数值回归验证
-scripts/validate-demo-20f.mjs F10–F20 通关、会战与最终战验证
-scripts/validate-demo-30f.mjs F10–F30 章程与 F27 优先路线的回放验证
-scripts/generate_portraits.py 原创 SVG 头像生成器
-test/engine.test.js          规则单元测试
-```
-
-## 美术与许可
-
-项目内角色头像均由 `scripts/generate_portraits.py` 使用 SVG 几何图元生成，不使用第三方动漫 IP 或来源不明素材。代码与项目内原创素材采用 [MIT License](LICENSE)。Phaser 的许可信息见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。
+Valuable production art, canon, recovery evidence and historical QA fixtures are preserved separately in verified Library checkpoints. They are not build dependencies. Dependencies, generated output, rejected drafts and caches are not published here. Runtime art and executable test fixtures remain where required by the sealed core.
