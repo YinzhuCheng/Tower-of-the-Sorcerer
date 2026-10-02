@@ -3,7 +3,9 @@
   "private": true,
   "scripts": {
     "test": "npm --prefix apps/a test && npm --prefix apps/b test && npm --prefix apps/c test",
-    "build": "npm --prefix apps/a run build && npm --prefix apps/b run build && npm --prefix apps/c run build",
-    "check": "npm --prefix apps/a run check && npm --prefix apps/b test && npm --prefix apps/b run build && npm --prefix apps/b run validate && npm --prefix apps/c run check"
+    "build": "node scripts/build-preview.mjs",
+    "check": "npm --prefix apps/a run check && npm --prefix apps/b test && npm --prefix apps/b run build && npm --prefix apps/b run validate && npm --prefix apps/c run check",
+    "build:apps": "npm --prefix apps/a run build && npm --prefix apps/b run build && npm --prefix apps/c run build",
+    "install:preview": "npm --prefix apps/c ci --ignore-scripts --no-audit --no-fund"
   }
 }
