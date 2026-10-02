@@ -1,26 +1,46 @@
-# B visible-art r1 · review candidate
+# B finite continuous forest r1
 
-An isolated presentation-only candidate based on sealed `b-dialogue-r1`. Not published, not browser-accepted, and not the unguarded `b-opening-r1` opening.
+An isolated playable presentation candidate based on `b-visual-r1`. B01 (南坡村口), B02 (回枝广场), and B03 (树心外廊) share one finite registered source world, with a gradually following neighborhood camera. This is a native geometry/material proof with the accepted static hero, not finished anime environment art or a restored walking rig. No procedural infinite generation is involved.
 
-## Visible runtime changes
+## Run
 
-- The initial HUD shows 璃's accepted 512×512 canonical face. Source dialogue speakers 璃 / 珂珂 / 纱雾 / 米露 show accepted face crops. All five character files are unchanged source copies; offscreen and winter-empty-shot portrait prohibitions are retained.
-- B01 uses a new source-locked native 1400×1100 backdrop, not a wallpaper behind a square grid. Its 121 interactive buttons follow exact source-camera cell polygons; player, old timber puppet, old guard plate and the original B02 portal are separate live draws.
-- The accepted neutral hero standee is displayed at an exact projected foot anchor and 1.66 m source-camera head height. It is a static token, not a restored walking rig or walking animation.
-- Thirty-nine geometry-derived cell masks apply independently to dynamic sprites. No blanket foreground overlay is used. Hero name/foot ring and the portal label are explicit readability UI above occlusion.
-- Clear-route overlay and an explicit reversible grid fallback are available. Missing/invalid-size scene assets fall back to the operative grid. Graphics stay within the scene or story-image panel; controls remain in document flow.
-- B07/B09 retain their pre-existing continuous samples. All other regions retain their existing presentation. No full-campaign art coverage is claimed.
+Node.js 22+, no package dependencies:
 
-## Preserved
+    npm test
+    npm run build
+    npm run validate
+    python3 -m http.server 8080 --directory dist-b-preview
 
-Every non-rendering source file is byte-identical to `b-dialogue-r1`: rules identity, source dialogue, queue/save handling, 30 regions, 66 portals, resource mechanics, legal actions and confirmation behavior. Sixteen actual winning-route replays (11,738 actions) and B01 pathfinder checks agree exactly against the baseline.
+Open `/campaigns-b/` on an authorized host. The parent coordinates browser validation; this candidate performs no deployment or provider writes.
 
-## Reproduce
+## Play and compare
 
-Node.js 22+, no dependencies. Copy this directory to disposable `work/` or `.cache/` space. Run `npm test`, `npm run build`, and `npm run validate`. Output is `dist-b-preview`, entry `/campaigns-b/`. Serve only through an authorized preview; this work does not deploy.
+- Direction keys, WASD, or on-screen arrows move through the original legal source cells
+- At the exact 01↔02 or 02↔03 portal anchor, continue outward to request the original portal action; crossing animates through that existing edge
+- Click-to-walk displays each safe source move. Battles and costly actions retain their original confirmations
+- Movement is serialized, so held keys or rapid reversals cannot advance game state far ahead of the displayed actor
+- First-entry dialogue remains queued until visible motion finishes. Dialogue text and saved presentation are unchanged
+- `查看原单区呈现` restores the former B01 source-image view or original regional renderer. B01 also retains its grid fallback. These view changes do not mutate saves or resources
+- All other destinations retain original graph-driven transitions. This does not claim thirty-region continuity
 
-The sibling `qa/b-visual-r1` records source hashes, exact route equality, app event wiring, missing-image fallback, asset closure, static viewport budgets and renderer-unit PNGs. Those PNGs call the actual map draw function using Node Canvas; they are not screenshots of a browser, DOM layout or deployed game.
+## World and authority
 
-## Remaining acceptance
+Source cell scale is 1.2 m, with region X origins 0 / 14.4 / 28.8 m and negative world Y for increasing source row. The 4.8 m joins are render-only embodiments of two existing reciprocal edges. They add no gameplay cells, pickup locations, pathfinder nodes, free routes, or resource regeneration. The immutable reducer still commits one atomic `traverse` receipt, at its original destination and cost. An in-flight save therefore restores the real destination, with camera/motion reconstructed from that saved location.
 
-Authorized browser review of 1744×885 and mobile layouts, image loading on the deployed origin, real pointer/keyboard/touch, and final visual approval remain pending. Mobile renders preserve source scale, making the hero roughly 17 px tall at 366 px scene width; dedicated movement/actions and readable/grid modes remain available. Two gateway cells legitimately occlude most of the static standee, with persistent name/foot location UI.
+The shared native source supplies cell polygons, feet, 1.66 m head anchors, sloped support samples, and 16-bit source depth. Actor motion follows those source samples in either direction. Camera translation and zoom crop the same atlas. Per-sprite depth masking is applied at intrinsic atlas pixels; the actor foot ring/name remains an explicit readability indicator above occlusion. The camera orientation is fixed.
+
+No non-rendering source file differs from `b-visual-r1`: the 30-region/66-transition graph, 156 entities, fixed-number rules, original story, session/save code, solver and certificates are preserved. Sixteen winning certificates (11,738 actions) agree exactly against the baseline.
+
+## Asset loading and fallback
+
+Runtime background and depth use lossless WebP encodings of the canonical native PNG exports. The ingest receipt verifies every decoded RGBA byte, including depth channels and transparency. Only the runtime encoding is shipped in the public asset payload. The canonical source contract is preserved unchanged as data, alongside a separate encoding manifest.
+
+The background remains above the earlier 2.5 MB preview budget; exact measured bytes and checksums are recorded in the runtime asset manifest and QA ingest receipt. Both images must load at their declared dimensions and depth decode successfully before native rendering activates. Until then, or on failure, the same finite source world remains operable in an explicitly labeled structural fallback. Legacy B01 masks are loaded only when requesting the old single-region view.
+
+## Verification and limits
+
+Focused tests cover source registration, every source-cell direction, both joins/repeated reverse crossings, exactly-once dispatch, collision/resource constraints, pickup finiteness, save/load, continuous movement/camera, native samples/depth, asset hashes/failure, real app DOM/RAF input wiring, delayed story display, and old-view resize/observer races. Full existing certificate and story tests are also run.
+
+Renderer PNGs are produced by the actual draw functions in Node Canvas. They are not browser screenshots and do not establish browser layout, touch, loading performance, or final art acceptance. Localhost browser access was not retried or bypassed. Deployed desktop/mobile interaction review remains a separate gate.
+
+Remaining work: actual browser verification, broader source-world coverage, final forest art review, a source-matched walking rig, and any larger-world streaming/occlusion performance work. Native geometry does not alter the original historical 11×11 logic regions.

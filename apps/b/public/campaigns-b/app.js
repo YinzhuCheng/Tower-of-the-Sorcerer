@@ -1,34 +1,37 @@
+import { projectForestWorld, hasForestWorld, forestWorldMoveAction } from '../src/rendering/forest-world.js';
+import { createForestWorldDisplay } from '../src/rendering/forest-world-view.js';
 import { projectForestEntry, projectEntryControl, presentForestEntry, preloadForestEntry, forestEntryAvailability, setStoryEntryBackdrop } from '../src/rendering/forest-entry.js';
 import { applyForestPortrait } from '../src/rendering/forest-cast-art.js';
 import { projectForestScene } from '../src/rendering/b-adapter.js';
 import { presentContinuousScene, fitCampaignMapViewport } from '../src/rendering/continuous-map.js';
 import { createForestCampaign } from '../src/campaigns/b/content.js';
 import { createForestPreviewSession } from '../src/campaigns/b/preview-session.js';
-import { forestActionView, forestRegionActions, forestWalkPath, forestPublicRows, forestChecklist } from '../src/campaigns/b/view.js';
+import { forestActionView, forestRegionActions, forestWalkPath, forestApproach, forestPublicRows, forestChecklist } from '../src/campaigns/b/view.js';
 import { forestPlayerCopy, forestMapTitle, forestActionVisible, forestDeferredNotice, forestChoicePrompt, forestLockedReason, forestActionResult } from '../src/campaigns/b/player-copy.js';
 const $=id=>document.getElementById(id),runtime=createForestCampaign();
 let storage,volatileStorage=false;try{storage=window.localStorage;storage.getItem('campaign-storage-check');}catch{volatileStorage=true;const memory=new Map();storage={getItem:key=>memory.get(key)??null,setItem:(key,value)=>memory.set(key,value),removeItem:key=>memory.delete(key)};}
-const session=createForestPreviewSession(runtime,storage),story=session.story;
-let logs=[],statusTimer,selected=null,busy=false,lastIssueCount=0,readableMap=false,gridFallback=false;
+const session=createForestPreviewSession(runtime,storage),story=session.story,worldDisplay=createForestWorldDisplay(runtime,()=>render());
+let logs=[],statusTimer,selected=null,busy=false,lastIssueCount=0,readableMap=false,gridFallback=false,worldMode=true;
 const el=(tag,text,className)=>{const node=document.createElement(tag);if(text!=null)node.textContent=text;if(className)node.className=className;return node;};
 function notify(text){$('status').textContent=text;$('status').hidden=false;clearTimeout(statusTimer);statusTimer=setTimeout(()=>$('status').hidden=true,6500);}
 function addLog(text){logs.unshift(text);logs=logs.slice(0,8);}
 function modalOpen(){return Boolean(document.querySelector('dialog[open]'));}
-function gameBlocked(){return busy||modalOpen()||session.pending||session.isStoryOpen();}
+function gameBlocked(){return busy||worldDisplay.isMoving()||modalOpen()||session.pending||session.isStoryOpen();}
 function report(result){if(!result.ok){notify(result.reason);return false;}if(result.events){for(const event of result.events){if(event.type==='battle')addLog(`拆除${runtime.entity(event.entityId).title}，损失 ${event.battle.totalDamage} 生命`);else if(event.type==='traverse')addLog(`来到${runtime.region(session.state.location.regionId).title}`);else if(event.title&&event.type!=='enemy')addLog(forestActionResult(runtime,event));}}return true;}
 function showConfirmation(result){$('confirm-title').textContent=result.title;$('confirm-copy').textContent=result.details.join('\n');$('confirm-yes').disabled=false;if(!$('confirmation').open)$('confirmation').showModal();}
-function request(action,{fromChoice=false}={}){if(busy||session.pending)return;if(!fromChoice&&modalOpen())return;
- if(fromChoice&&!runtime.inReach(session.state,action.entityId)){const result=session.approachChoice(action);if(!report(result))return;}
+function request(action,{fromChoice=false}={}){if(busy||worldDisplay.isMoving()||session.pending)return;if(!fromChoice&&modalOpen())return;
+ if(fromChoice&&!runtime.inReach(session.state,action.entityId)){const start=session.state,path=forestApproach(runtime,start,action.entityId),result=session.approachChoice(action);if(!report(result))return;worldDisplay.animatePath(start.location,path);}
  const result=session.request(action,{fromChoice});if(!report(result))return;render();if(result.confirmation)showConfirmation(result);
 }
-function walk(path){if(gameBlocked())return;if(path==null){notify('没有安全步行路线；请先处理挡路的敌人、侧根或施工');return;}
- busy=true;for(const action of path){const result=session.move(action);if(!report(result))break;if(session.isStoryOpen())break;}busy=false;render();}
-function move(direction){if(gameBlocked())return;report(session.move({type:'move',direction}));render();}
+async function walk(path){if(gameBlocked())return;if(path==null){notify('没有安全步行路线；请先处理挡路的敌人、侧根或施工');return;}
+ busy=true;try{for(const action of path){const result=session.move(action);if(!report(result))break;render();if(session.isStoryOpen())break;if(worldMode&&typeof requestAnimationFrame==='function')await new Promise(resolve=>{const wait=()=>worldDisplay.isMoving()?requestAnimationFrame(wait):resolve();requestAnimationFrame(wait);});}}finally{busy=false;render();}}
+function move(direction){if(gameBlocked())return;const action=worldMode?forestWorldMoveAction(runtime,session.state,direction):{type:'move',direction};if(action.type==='traverse'){request(action);return;}report(session.move(action));render();}
 $('confirm-cancel').onclick=()=>{session.cancel();$('confirmation').close();render();};
 $('confirmation').addEventListener('cancel',()=>{session.cancel();});
 $('confirm-yes').onclick=()=>{if(!$('confirmation').open)return;$('confirm-yes').disabled=true;$('confirmation').close();report(session.confirm());render();};
 function budgetLines(container){const state=session.state,b=story.budget(state);container.append(el('p',`暖脂剩余 ${b.currentHeat} · 四阀必留 ${b.requiredValveReserve} · 可自由分配 ${b.availableOptionalHeat}；已关 ${b.closedValves}/4 支阀${b.frozen?'，暖点方案已确定':''}`));for(const p of b.points)container.append(el('p',`${p.title}：${p.cost}份 · ${p.invested?'已投入':b.frozen?'普通方案':p.affordable?'尚未投入':'自由余量不足'}${!p.invested&&!b.frozen&&!p.affordable?`（还差 ${Math.max(0,p.cost-b.availableOptionalHeat)} 份）`:''}`));if(b.publicHeat)container.append(el('p',`公共库存保留 ${b.publicHeat} 份，不再用于暖点选择`));}
 function renderStory(){
+ if(worldDisplay.isMoving())return; // Preserve queued story; show it after visible travel completes.
  if(!session.isStoryOpen()){if($('story').open)$('story').close();return;}
  const scene=session.current(),turn=session.turn();if(!turn)return;
  applyForestPortrait($('story-portrait'),turn);
@@ -54,11 +57,14 @@ function render(){
  $('stats').replaceChildren();for(const[label,value]of [['生命',`${state.stats.hp}/${state.stats.maxHp}`],['攻击',state.stats.atk],['防御',state.stats.def],['金币',state.stats.gold]]){const div=el('div',null,'stat');div.append(el('small',label),el('strong',value));$('stats').append(div);}
  $('heat-summary').textContent=`暖脂 ${b.currentHeat} · 必留 ${b.requiredValveReserve} · 自由 ${b.availableOptionalHeat}`;$('heat-note').textContent=b.frozen?`暖点已定案 · 公共库存 ${b.publicHeat} 份`:`支阀已关 ${b.closedValves}/4${state.cleared.includes('b03.heatBox')?'':' · 节火匣尚未领取'}`;
  $('wedge-summary').textContent=`缚根楔 ${b.wedges.remaining} / ${b.wedges.total}`;$('works-summary').textContent=`公共路段 ${publicRows.filter(row=>row.publicReady).length}/4 已通 · ${publicRows.filter(row=>row.person&&!row.publicReady).length} 处仅人行`;
- const entry=projectForestEntry(runtime,state);$('map-stage').dataset.aspect='1';
- presentContinuousScene($('map-canvas'),$('board'),entry?null:projectForestScene(runtime,state));
- const nativeArt=Boolean(entry&&!gridFallback&&presentForestEntry($('map-canvas'),$('board'),$('map-stage'),entry,{readable:readableMap,selected})),availability=forestEntryAvailability();
- $('art-status').textContent=entry?(nativeArt?'B01 · 源场景 / 独立角色与物件':gridFallback?'B01 · 已切换棋盘备用':availability.failed.length?'B01 · 图片加载失败，使用可操作棋盘':'B01 · 场景载入中，暂用可操作棋盘'):'本区沿用原呈现 · 场景美术尚未接入';
- $('map-readability').hidden=!entry;$('map-fallback').hidden=!entry;$('map-readability').disabled=!nativeArt;$('map-readability').setAttribute('aria-pressed',String(readableMap));$('map-readability').textContent=readableMap?'隐藏清晰路面':'显示清晰路面';$('map-fallback').setAttribute('aria-pressed',String(gridFallback));$('map-fallback').textContent=gridFallback?'返回场景美术':'棋盘备用';
+ const entry=projectForestEntry(runtime,state),worldModel=worldMode?projectForestWorld(runtime,state):null;$('map-stage').dataset.aspect='1';
+ const continuousWorld=worldDisplay.present($('map-canvas'),$('board'),$('map-stage'),worldModel,{readable:readableMap,selected});
+ if(!continuousWorld){if(entry)preloadForestEntry(render);if(!worldModel)worldDisplay.reset(state.location);presentContinuousScene($('map-canvas'),$('board'),entry?null:projectForestScene(runtime,state));}
+ const nativeArt=Boolean(!continuousWorld&&entry&&!gridFallback&&presentForestEntry($('map-canvas'),$('board'),$('map-stage'),entry,{readable:readableMap,selected})),availability=forestEntryAvailability();
+ $('art-status').textContent=continuousWorld?(worldDisplay.snapshot().art==='native-shared-atlas'?'B01–B03 同一源世界 · 跟随镜头 / 原生遮挡':worldDisplay.snapshot().native.failed.length?'共享场景加载失败 · 可操作结构备用':'B01–B03 共享场景载入中 · 结构备用 / 跟随镜头'):entry?(nativeArt?'B01 · 源场景 / 独立角色与物件':gridFallback?'B01 · 已切换棋盘备用':availability.failed.length?'B01 · 图片加载失败，使用可操作棋盘':'B01 · 场景载入中，暂用可操作棋盘'):'本区沿用原呈现 · 场景美术尚未接入';
+ $('map-world-mode').hidden=!hasForestWorld(state.location.regionId);$('map-world-mode').setAttribute('aria-pressed',String(worldMode));$('map-world-mode').textContent=worldMode?'查看原单区呈现':'返回连续世界';
+ $('map-readability').hidden=!entry&&!continuousWorld;$('map-fallback').hidden=!entry||continuousWorld;$('map-readability').disabled=!nativeArt&&!continuousWorld;$('map-readability').setAttribute('aria-pressed',String(readableMap));$('map-readability').textContent=readableMap?'隐藏清晰路面':'显示清晰路面';$('map-fallback').setAttribute('aria-pressed',String(gridFallback));$('map-fallback').textContent=gridFallback?'返回场景美术':'棋盘备用';
+ $('board').setAttribute('aria-label',continuousWorld?'连续森林，方向键跟随璃行走；已连接01至03，其他出口通过操作面板':'11乘11森林地图');
  $('board').replaceChildren();for(let y=0;y<view.region.map.length;y++)for(let x=0;x<view.region.map[y].length;x++){
  const token=view.region.map[y][x],tile=el('button',null,`tile ${{'.':'floor','T':'tree','^':'rock','~':'water','#':'wall','O':'trunk'}[token]??'wall'}`);
  const visible=view.entities.filter(e=>e.x===x&&e.y===y&&runtime.meets(state,e.visibleWhen)&&forestActionVisible(runtime,state,e)),alive=visible.filter(e=>!e.completed),entity=alive.find(e=>e.blocking)??alive.find(e=>e.kind==='anchor')??alive[0]??visible[0];
@@ -66,8 +72,9 @@ function render(){
  if(state.location.x===x&&state.location.y===y){tile.classList.add('hero');tile.replaceChildren(document.createTextNode('◎'));}
  if(selected?.region===view.region.id&&selected.x===x&&selected.y===y)tile.classList.add('selected');
  tile.tabIndex=state.location.x===x&&state.location.y===y?0:-1;
- if(nativeArt)projectEntryControl(tile,entry.cells[y*11+x]);
+ if(nativeArt)projectEntryControl(tile,entry.cells[y*11+x]);if(continuousWorld)tile.dataset.worldLocal=`${x},${y}`;
  const title=tile.title||{'.':'可行地面','T':'林木','^':'岩壁','~':'溪水','#':'墙体','O':'树干'}[token];tile.setAttribute('aria-label',`${x},${y} ${title}${state.location.x===x&&state.location.y===y?'，璃在这里':''}`);tile.onclick=()=>{if(gameBlocked())return;selected={region:view.region.id,x,y};$('tile-info').textContent=title;walk(forestWalkPath(runtime,session.state,x,y));};$('board').append(tile);}
+ if(continuousWorld)worldDisplay.refreshControls();
  const nearby=forestRegionActions(runtime,story,state).sort((a,b)=>Number(b.inReach)-Number(a.inReach)),closedPaths=nearby.filter(a=>a.edge&&!state.visited.includes(a.edge.to)&&!runtime.meets(state,a.edge.requires)),actions=nearby.filter(a=>!closedPaths.includes(a));$('actions').replaceChildren();for(const action of actions){const row=el('div',null,'action-row'),title=el('h3',action.title);row.dataset.entityId=action.action.entityId??action.action.edgeId;const detail=el('p',action.details.join('\n'));if(!action.preview.legal)detail.classList.add('unavailable');const buttons=el('div',null,'action-buttons');if(!action.inReach){const go=el('button',action.reachable?`走近 · ${action.path.length} 步`:'暂时走不到');go.disabled=!action.reachable||state.victory;go.onclick=()=>walk(action.path);buttons.append(go);}const button=el('button',action.buttonLabel);button.disabled=!action.inReach||!action.preview.legal||state.victory;button.onclick=()=>request(action.action);buttons.append(button);row.append(title,detail,buttons);$('actions').append(row);}
  if(closedPaths.length){const paths=el('details');paths.append(el('summary',`还有 ${closedPaths.length} 条尚未开通的小路`),el('p','先沿已经开通的山路走。完整的连接关系可以在山路全图查看。'));for(const reason of new Set(closedPaths.map(a=>a.details.at(-1))))paths.append(el('p',reason));$('actions').append(paths);}
  const deferred=forestDeferredNotice(state);if(deferred)$('actions').append(el('p',deferred,'hint'));
@@ -76,18 +83,19 @@ function render(){
  $('revisit').hidden=!revisits[Number(state.location.regionId.slice(2))]||Boolean(session.current());
  $('save-info').textContent=`霜径标准 · ${state.visited.length} 处到访 · ${state.victory?'一起走完了这一季':'旅程进行中'}`;
  const issues=session.issues;if(issues.length>lastIssueCount){lastIssueCount=issues.length;notify(issues.at(-1).reason);}
- renderStory();fitCampaignMapViewport($('map-canvas'));
+ renderStory();if(!continuousWorld)fitCampaignMapViewport($('map-canvas'));
 }
 $('plan').onclick=()=>{if(gameBlocked())return;const content=$('plan-content'),state=session.state,b=story.budget(state);content.replaceChildren(el('h3','节火匣与三处暖点'),el('p',`节火匣总共 ${b.boxTotal} 份，不会再补。四个支阀各用 1 份，共留 4 份；其余最多 4 份可分给暖点。温室 2 份、老梨树 1 份、候车屋 2 份，不能三处全投。`));budgetLines(content);const combinations=el('details'),summary=el('summary','现有投入还能组成哪些方案');combinations.append(summary);for(const c of b.combinations)combinations.append(el('p',`${c.selected.map(id=>b.points.find(p=>p.id===id).title).join(' + ')||'全用普通方案'}：还需 ${c.additionalCost} 份，余 ${c.remaining} 份`));content.append(combinations,el('h3','四处路口，两枚缚根楔'),el('p',`07 / 16 / 21 / 24 四处共用 ${b.wedges.total} 枚缚根楔，现在手上有 ${b.wedges.remaining} 枚。固定侧根每处用 1 枚，只够人走；两条路都要各自施工才能过轻车。不用楔，也能打通原路。`));for(const row of forestPublicRows(runtime,story,state)){const div=el('div',null,'site-row');div.append(el('strong',`${row.title} · ${row.description}`),el('p',`原路：${row.original}；侧根：${row.root}`));const enemy=runtime.entity(`b${String(row.site).padStart(2,'0')}.originalEnemy`),battle=story.actionPanel(state,enemy.id).battle;div.append(el('p',`${enemy.title}：生命 ${enemy.enemy.hp} / 攻击 ${enemy.enemy.atk} / 防御 ${enemy.enemy.def}；${battle?Number.isFinite(battle.totalDamage)?`以现在的装备会损失 ${battle.totalDamage} 生命，击败得 ${enemy.enemy.gold} 金币`:'现在无法破防':'已清除'}。绕过不会清除敌人，也不会得到这笔金币。`));content.append(div);}for(const[title,conditions]of [['让轻车走通环路',runtime.spec.semantics.ringRequirements],['把基础冬料送到',runtime.entity('b15.deliverWinter').requires],['停暖前还要准备什么',runtime.spec.semantics.readyRequirements]]){content.append(el('h3',title));const missing=forestChecklist(runtime,state,conditions);if(!missing.length)content.append(el('p','这一项已经准备好了'));else for(const row of missing)content.append(el('p',row.text));}$('plans').showModal();};
 $('world').onclick=()=>{if(gameBlocked())return;const state=session.state,content=$('world-content');content.replaceChildren();for(const region of runtime.spec.regions){const box=el('div',null,`world-region${region.id===state.location.regionId?' current':''}`);box.append(el('strong',`${region.id.slice(2)} ${region.title}`),el('span',` · ${state.visited.includes(region.id)?'已到访':'未到访'}`));const list=el('ul');for(const edge of runtime.spec.transitions.filter(e=>runtime.entity(e.anchor).regionId===region.id)){const open=runtime.meets(state,edge.requires),item=el('li',`↔ ${runtime.region(edge.to).title}${open?'':'（尚未开放）'}`,open?'':'locked');item.title=open?'':forestLockedReason(runtime,state,null,edge,{legal:false});list.append(item);}box.append(list);content.append(box);}$('world-map').showModal();};
 $('help').onclick=()=>{if(gameBlocked())return;$('settings').showModal();};for(const b of document.querySelectorAll('[data-close]'))b.onclick=()=>$(b.dataset.close).close();
 $('save').onclick=()=>notify(session.save()?'手动档已保存，包含当前对话':'保存没有成功，请保留本页');
-function load(slot){if(slot==='manual'&&!confirm('读取手动档会回到那时的整段旅程和对话。继续？'))return;if(report(session.load(slot))){$('settings').close();selected=null;logs=[];render();notify('已恢复旅程和当前对话');}}
-$('load-auto').onclick=()=>load('auto');$('load-manual').onclick=()=>load('manual');$('new').onclick=()=>{if(!confirm('从南坡村口重新开始？当前自动档会更新，手动档保留。'))return;session.restart();$('settings').close();selected=null;logs=[];render();};
+function load(slot){if(slot==='manual'&&!confirm('读取手动档会回到那时的整段旅程和对话。继续？'))return;if(report(session.load(slot))){$('settings').close();selected=null;logs=[];worldDisplay.reset(session.state.location);render();notify('已恢复旅程和当前对话');}}
+$('load-auto').onclick=()=>load('auto');$('load-manual').onclick=()=>load('manual');$('new').onclick=()=>{if(!confirm('从南坡村口重新开始？当前自动档会更新，手动档保留。'))return;session.restart();$('settings').close();selected=null;logs=[];worldDisplay.reset(session.state.location);render();};
 for(const button of document.querySelectorAll('[data-dir]'))button.onclick=()=>move(button.dataset.dir);
-document.addEventListener('keydown',event=>{if(gameBlocked()||/INPUT|TEXTAREA|SELECT/.test(event.target.tagName))return;const direction={ArrowUp:'up',ArrowDown:'down',ArrowLeft:'left',ArrowRight:'right',w:'up',a:'left',s:'down',d:'right'}[event.key];if(direction){event.preventDefault();move(direction);}});
+document.addEventListener('keydown',event=>{if(/INPUT|TEXTAREA|SELECT/.test(event.target.tagName))return;const direction={ArrowUp:'up',ArrowDown:'down',ArrowLeft:'left',ArrowRight:'right',w:'up',a:'left',s:'down',d:'right'}[event.key];if(!direction)return;if(worldDisplay.isMoving()||busy){event.preventDefault();return;}if(gameBlocked())return;event.preventDefault();move(direction);});
+$('map-world-mode').onclick=()=>{if(busy||worldDisplay.isMoving())return;worldMode=!worldMode;worldDisplay.reset(session.state.location);render();};
 $('map-readability').onclick=()=>{readableMap=!readableMap;render();};$('map-fallback').onclick=()=>{gridFallback=!gridFallback;render();};
-applyForestPortrait($('hero-avatar'),{portrait:'hero'});preloadForestEntry(render);
+applyForestPortrait($('hero-avatar'),{portrait:'hero'});
 render();if(volatileStorage)notify('此浏览器暂不能写入本地存档；进度仅保留在本页，关闭前请勿离开');else if(session.restored.issues.length)notify('旧存档无法读取，原始内容已保留。请到玩法与存档中明确重新开始');else if(session.restored.source)notify('已恢复整段旅程与对话，启动没有覆盖旧进度');
 // Read-only QA snapshot. No resource, location or story-unlock mutator is exposed.
-Object.defineProperty(window,'__FOREST_PREVIEW__',{value:Object.freeze({getState:()=>structuredClone(session.state),getPresentation:()=>structuredClone(session.presentation),getIdentity:()=>runtime.identity,getVisualState:()=>({renderer:$('board').dataset.renderer,region:session.state.location.regionId,art:forestEntryAvailability(),readable:readableMap,gridFallback})})});
+Object.defineProperty(window,'__FOREST_PREVIEW__',{value:Object.freeze({getState:()=>structuredClone(session.state),getPresentation:()=>structuredClone(session.presentation),getIdentity:()=>runtime.identity,getVisualState:()=>({renderer:$('board').dataset.renderer,region:session.state.location.regionId,art:forestEntryAvailability(),readable:readableMap,gridFallback,worldMode,world:worldDisplay.snapshot()})})});

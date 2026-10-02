@@ -1,0 +1,60 @@
+import { preloadNativeWorld, nativeWorldAssets, nativeWorldAvailability, nativeWorldSample, nativeWorldCell, projectNativeControl, drawNativeForestWorld } from './forest-world-native.js';
+import { createWorldMotion, worldToScreen, screenToWorld, cameraViewport, FOREST_WORLD_REVISION, worldPoint } from './forest-world.js';
+import { compileBoundaryRuns } from './continuous-map.js';
+const heroAsset=new URL('../../assets/forest-canonical/hero-neutral.png',import.meta.url).href;
+let heroImage=null,heroFailed=false;
+const noise=(x,y)=>{const n=Math.sin(x*127.1+y*311.7)*43758.5453123;return n-Math.floor(n);};
+function path(ctx,points){ctx.beginPath();ctx.moveTo(...points[0]);for(const p of points.slice(1))ctx.lineTo(...p);}
+function dot(ctx,x,y,r,fill){ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fillStyle=fill;ctx.fill();}
+const corridorCell=(cell,model)=>model.seams.some(s=>cell.y===5&&cell.x>=s.a.x-.5&&cell.x<=s.b.x-.5);
+function text(ctx,label,x,y,scale,{color='#efe4c3',small=false}={}){ctx.save();ctx.font=`600 ${(small?11:13)/scale}px system-ui,sans-serif`;ctx.textAlign='center';ctx.textBaseline='middle';const width=ctx.measureText(label).width;ctx.fillStyle='#10251fdd';ctx.fillRect(x-width/2-.07,y-.15,width+.14,.3);ctx.fillStyle=color;ctx.fillText(label,x,y);ctx.restore();}
+export function drawForestWorld(ctx,model,motion,{width=800,height=500,dpr=1,readable=false,selected=null,image=heroImage}={}){
+ const viewport=cameraViewport(width,height),camera=motion.camera??model.hero,hero=motion.hero??model.hero,scale=viewport.scale;
+ ctx.save();ctx.setTransform(dpr,0,0,dpr,0,0);ctx.fillStyle='#14271f';ctx.fillRect(0,0,width,height);ctx.translate(width/2-camera.x*scale,height*.56-camera.y*scale);ctx.scale(scale,scale);
+ const key=c=>`${c.x},${c.y}`,floors=new Set(model.cells.map(key));
+ // A single world-coordinate ground field is clipped to authored cells + the
+ // existing edge's render-only corridor. No rectangle is painted per region.
+ ctx.save();ctx.beginPath();for(const c of model.cells)ctx.rect(c.x,c.y,1,1);for(const s of model.seams)ctx.rect(s.a.x-.5,s.a.y-.5,s.b.x-s.a.x+1,1);ctx.clip();ctx.fillStyle='#6d7353';ctx.fillRect(-1,-1,37,13);
+ for(let y=-1;y<12;y+=.28)for(let x=-1;x<36;x+=.38){const n=noise(x,y);dot(ctx,x+n*.15,y+n*.1,.018+n*.019,n>.5?'#a7a17b77':'#354e373f');}
+ ctx.restore();
+ // This exposed union edge is a readability proxy, not final terrain art.
+ for(const b of compileBoundaryRuns(model.cells.map(c=>[c.x,c.y]))){if(b.points.every(p=>model.seams.some(s=>p[0]>s.a.x-.51&&p[0]<s.b.x+.51&&p[1]>=5&&p[1]<=6)))continue;path(ctx,b.points);ctx.strokeStyle='#b2ad7b88';ctx.lineWidth=.06;ctx.stroke();}
+ for(const s of model.seams){for(const y of[5,6]){path(ctx,[[s.a.x-.5,y],[s.b.x+.5,y]]);ctx.strokeStyle='#a1a178';ctx.lineWidth=.07;ctx.stroke();}text(ctx,'↔', (s.a.x+s.b.x)/2,5.5,scale,{color:'#e5d8a5'});}
+ for(const c of model.scenery){if(floors.has(key(c))||corridorCell(c,model))continue;const near=model.cells.some(f=>Math.abs(f.x-c.x)<=1&&Math.abs(f.y-c.y)<=1);if(!near)continue;
+  const n=noise(c.x,c.y),x=c.x+.5+(n-.5)*.14,y=c.y+.5+(noise(c.y,c.x)-.5)*.12;
+  if(c.token==='O'){dot(ctx,x,y,.44,'#443f28');dot(ctx,x-.08,y-.13,.3,'#655c39');}
+  else if(c.token==='#'){ctx.fillStyle='#536257';ctx.fillRect(c.x+.05,c.y+.05,.9,.9);path(ctx,[[c.x+.1,c.y+.2],[c.x+.85,c.y+.2]]);ctx.strokeStyle='#86947a';ctx.lineWidth=.045;ctx.stroke();}
+  else{dot(ctx,x+.03,y+.1,.42,'#0c1e1888');for(const[dx,dy,r,color]of[[0,0,.43,'#2d4b37'],[-.18,-.08,.29,'#3a5840'],[.12,-.14,.31,'#456044'],[.02,-.22,.23,'#577247']])dot(ctx,x+dx,y+dy,r*(.88+n*.2),color);}
+ }
+ if(readable)for(const c of model.cells){ctx.fillStyle=c.passable?'#fff2aa22':'#e5a98122';ctx.fillRect(c.x+.02,c.y+.02,.96,.96);ctx.strokeStyle='#e5d6a64d';ctx.lineWidth=.016;ctx.strokeRect(c.x+.02,c.y+.02,.96,.96);}
+ for(const r of model.regions)text(ctx,r.source.title,r.origin[0]+5.5,.38,scale,{small:true});
+ const actors=[...model.objects.map(o=>({...o,kind:o.kind})),{kind:'hero',id:'hero',x:hero.x,y:hero.y,active:true}].sort((a,b)=>a.y-b.y);
+ for(const o of actors){dot(ctx,o.x,o.y,.2,o.active?'#06171366':'#06171344');ctx.save();ctx.globalAlpha=o.active?1:.7;
+  if(o.kind==='hero'){
+   // Accepted static standee remains identifiable at the moving foot anchor.
+   // This is intentionally not claimed to be a restored walking rig.
+   if(image){const h=1.4,k=h/1510;ctx.drawImage(image,o.x-590*k,o.y-1523*k,1024*k,1536*k);}else{dot(ctx,o.x,o.y-.45,.24,'#cbccb7');text(ctx,'璃',o.x,o.y-.45,scale);}
+   ctx.beginPath();ctx.ellipse(o.x,o.y,.23,.085,0,0,Math.PI*2);ctx.strokeStyle='#f5df9c';ctx.lineWidth=.035;ctx.stroke();text(ctx,'璃',o.x,o.y+.27,scale);
+  }else if(o.kind==='enemy'){ctx.fillStyle='#a77b4e';ctx.fillRect(o.x-.28,o.y-.5,.56,.34);dot(ctx,o.x-.19,o.y-.12,.105,'#342e28');dot(ctx,o.x+.19,o.y-.12,.105,'#342e28');text(ctx,'旧运木偶',o.x,o.y+.26,scale,{small:true});}
+  else if(o.kind==='pickup'){ctx.fillStyle='#d9cca0';path(ctx,[[o.x-.18,o.y-.5],[o.x+.18,o.y-.5],[o.x+.15,o.y-.17],[o.x,o.y],[o.x-.15,o.y-.17]]);ctx.closePath();ctx.fill();text(ctx,o.id==='b03.heatBox'?'节火匣':'旧护片',o.x,o.y+.23,scale,{small:true});}
+  else if(o.kind==='anchor'){const seam=model.seams.some(s=>s.forward+'.portal'===o.id||s.backward+'.portal'===o.id);text(ctx,(seam?'→ ':'↗ ')+o.portal?.to.slice(2),o.x,o.y+.13,scale,{color:seam?'#ffedb5':'#bbcdb9',small:true});}
+  else{ctx.fillStyle='#c0aa74';ctx.fillRect(o.x-.23,o.y-.26,.46,.21);dot(ctx,o.x,o.y-.38,.065,'#ece1b8');}
+  ctx.restore();
+ }
+ if(selected){const p=worldPoint({regionId:selected.region,x:selected.x,y:selected.y});if(p){ctx.strokeStyle='#ffe4a0';ctx.lineWidth=.04;ctx.strokeRect(p.x-.47,p.y-.47,.94,.94);}}
+ ctx.restore();return {...viewport,camera:{...camera},hero:{...hero},heroHeightPixels:1.4*scale,visibleWorldWidth:width/scale,regions:model.regions.map(r=>r.id),art:'structural-proxy',finite:true};
+}
+export function createForestWorldDisplay(runtime,onReady=()=>{}){
+ const motion=createWorldMotion(runtime);let canvas,board,stage,model,options,active=false,frame=null,lastTime=0,lastView=null,nativeCamera=null,layer=null;
+ function projectControls(){if(!lastView||!model||!board?.children)return;for(const tile of board.children){const[x,y]=String(tile.dataset.worldLocal??'').split(',').map(Number);if(!Number.isFinite(x)||!Number.isFinite(y))continue;if(lastView.projection==='native'){projectNativeControl(tile,nativeWorldCell(model.activeRegion,x,y),lastView.camera,lastView);continue;}const p=worldPoint({regionId:model.activeRegion,x:x-.5,y:y-.5}),v=worldToScreen(p,lastView.camera,lastView);Object.assign(tile.style,{position:'absolute',left:`${v.x}px`,top:`${v.y}px`,width:`${lastView.scale}px`,height:`${lastView.scale}px`});}}
+ function draw(){if(!active||!model)return;const context=canvas.getContext?.('2d');if(!context)return;const box=canvas.getBoundingClientRect?.()??{width:800,height:500},width=box.width||800,height=box.height||500,dpr=globalThis.devicePixelRatio||1;const w=Math.round(width*dpr),h=Math.round(height*dpr);if(canvas.width!==w||canvas.height!==h){canvas.width=w;canvas.height=h;}const native=nativeWorldAssets();if(native){const sample=nativeWorldSample(motion.snapshot().hero??model.hero);nativeCamera??={x:sample.footPx[0],y:sample.footPx[1]};const createLayer=(w,h)=>{layer??=document.createElement('canvas');if(layer.width!==w||layer.height!==h){layer.width=w;layer.height=h;}return layer;};lastView=drawNativeForestWorld(context,model,motion.snapshot(),native,{width,height,dpr,...options,image:heroImage,createLayer,camera:nativeCamera});}else{lastView=drawForestWorld(context,model,motion.snapshot(),{width,height,dpr,...options});}projectControls();}
+ function animate(time){frame=null;if(!active)return;const dt=lastTime?(time-lastTime)/1000:0;lastTime=time;const wasMoving=motion.snapshot().moving;motion.tick(dt);if(nativeCamera){const sample=nativeWorldSample(motion.snapshot().hero);if(sample){const a=1-Math.exp(-Math.min(.1,Math.max(0,dt))*7);nativeCamera={x:nativeCamera.x+(sample.footPx[0]-nativeCamera.x)*a,y:nativeCamera.y+(sample.footPx[1]-nativeCamera.y)*a};}}draw();if(typeof requestAnimationFrame==='function')frame=requestAnimationFrame(animate);if(wasMoving&&!motion.snapshot().moving)onReady();}
+ function present(nextCanvas,nextBoard,nextStage,nextModel,nextOptions={}){
+  if(!nextModel||!nextCanvas?.getContext?.('2d')){stop();return false;}
+  canvas=nextCanvas;board=nextBoard;stage=nextStage;model=nextModel;options=nextOptions;motion.sync(model.location);active=true;canvas.hidden=false;canvas.dataset.region=model.activeRegion;canvas.dataset.artRevision=FOREST_WORLD_REVISION;board.dataset.renderer='continuous-world';stage.style.width='';stage.style.height='';stage.dataset.aspect='world';
+  if(!heroImage&&!heroFailed&&typeof Image==='function'){heroFailed=true;const image=new Image();image.onload=()=>{heroImage=image;heroFailed=false;draw();};image.onerror=()=>{heroFailed=true;};image.src=heroAsset;}
+  preloadNativeWorld(()=>{nativeCamera=null;draw();onReady();});draw();if(frame==null&&typeof requestAnimationFrame==='function'){lastTime=0;frame=requestAnimationFrame(animate);}return true;
+ }
+ function stop(){active=false;lastTime=0;if(frame!=null&&typeof cancelAnimationFrame==='function')cancelAnimationFrame(frame);frame=null;}
+ return {present,stop,animatePath(start,path){let location={...start};for(const a of path??[]){const delta={up:[0,-1],down:[0,1],left:[-1,0],right:[1,0]}[a.direction];if(!delta)continue;location={...location,x:location.x+delta[0],y:location.y+delta[1]};motion.sync(location);}},refreshControls:projectControls,reset(location){motion.reset(location);nativeCamera=null;},isCrossing:()=>active&&motion.snapshot().crossing,isMoving:()=>active&&motion.snapshot().moving,snapshot:()=>({active,...motion.snapshot(),viewport:lastView&&{width:lastView.width,height:lastView.height,scale:lastView.scale,heroHeightPixels:lastView.heroHeightPixels,visibleWorldWidth:lastView.visibleWorldWidth},art:lastView?.art??'structural-proxy',native:nativeWorldAvailability(),nativeCamera:nativeCamera&&{...nativeCamera},heroImageLoaded:Boolean(heroImage),finite:true}),hitTest(px,py){return lastView?screenToWorld({x:px,y:py},lastView.camera,lastView):null;}};
+}

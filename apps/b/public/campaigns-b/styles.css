@@ -25,3 +25,13 @@
 .art-options>div{display:flex;gap:5px;flex-wrap:wrap;justify-content:flex-end}.map-stage #map-canvas{border:0;border-radius:10px;box-shadow:inset 0 0 0 1px #667556}.map-stage:has(#board[data-renderer="native-b01"])+.map-footer{max-width:850px}
 @media(max-width:680px){.map-stage:has(#board[data-renderer="native-b01"]){width:100%;height:auto;aspect-ratio:14/11}.art-options{align-items:flex-start}.art-options>div{max-width:170px}.direction-pad button{width:40px;height:36px}.map-footer>span{max-width:205px}}
 @media(max-width:680px){.art-options button,.explore-tools button,.action-row button{min-height:38px}.direction-pad button{min-width:44px;min-height:40px}.art-options span{font-size:.7rem}.map-footer{align-items:center;gap:8px}.map-footer>span{max-width:190px}}
+
+/* Continuous candidate: a neighborhood viewport, never fit an entire region/atlas. */
+.map-stage:has(#board[data-renderer="continuous-world"]){width:100%;height:clamp(360px,58dvh,620px);max-height:none;aspect-ratio:auto}
+.map-stage #board[data-renderer="continuous-world"]{position:absolute;inset:0;width:100%;height:100%;display:block;margin:0;padding:0;border:0;background:transparent;box-shadow:none;overflow:hidden;border-radius:10px}
+#board[data-renderer="continuous-world"] .tile{position:absolute;background:transparent!important;color:transparent!important;border:0;box-shadow:none!important;border-radius:0;font-size:0;opacity:1;outline:0!important}
+#board[data-renderer="continuous-world"] .tile>*{visibility:hidden}
+#board[data-renderer="continuous-world"] .tile:focus-visible{outline:2px solid #ffe1a0!important;outline-offset:-3px}
+#board[data-renderer="continuous-world"] .tile:hover{background:#f3e8a516!important}
+.map-stage:has(#board[data-renderer="continuous-world"])+.map-footer{max-width:100%}
+@media(max-width:680px){.map-stage:has(#board[data-renderer="continuous-world"]){height:440px;min-height:360px;max-height:64dvh}.art-options>div{max-width:220px}.direction-pad button{width:46px;height:44px}}
