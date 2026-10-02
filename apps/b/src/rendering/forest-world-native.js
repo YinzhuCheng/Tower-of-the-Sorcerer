@@ -41,7 +41,7 @@ export function drawNativeForestWorld(ctx,model,motion,native,{width=800,height=
   else if(o.kind==='enemy'){lc.fillStyle='#916438';lc.fillRect(x-18,y-29,36,23);lc.strokeStyle='#302e25';lc.lineWidth=3;lc.strokeRect(x-18,y-29,36,23);for(const wx of[x-12,x+12]){lc.fillStyle='#352f28';lc.beginPath();lc.arc(wx,y-5,6,0,Math.PI*2);lc.fill();}}
   else if(o.kind==='pickup'){lc.fillStyle='#c7c0a0';lc.beginPath();lc.moveTo(x-12,y-28);lc.lineTo(x+12,y-28);lc.lineTo(x+10,y-7);lc.lineTo(x,y);lc.lineTo(x-10,y-7);lc.closePath();lc.fill();}
   else if(o.kind!=='anchor'){lc.fillStyle='#b19460';lc.fillRect(x-17,y-18,34,14);}
-  lc.restore();if(o.kind!=='anchor'){const pixels=lc.getImageData(0,0,lw,lh);depthPixels+=occludeNativeSprite(pixels.data,lw,lh,left,top,sample,native.depth);lc.putImageData(pixels,0,0);ctx.drawImage(layer,left,top);drawn++;}
+  lc.restore();if(o.kind!=='anchor'){const pixels=lc.getImageData(0,0,lw,lh);depthPixels+=occludeNativeSprite(pixels.data,lw,lh,left,top,sample,native.depth);lc.clearRect(0,0,lw,lh);lc.putImageData(pixels,0,0);ctx.drawImage(layer,left,top);drawn++;}
   if(o.kind==='hero'){ctx.beginPath();ctx.ellipse(x,y,15,5,0,0,Math.PI*2);ctx.strokeStyle='#f5d88d';ctx.lineWidth=2/zoom;ctx.stroke();badge(ctx,'璃',x,y+17/zoom,view);}
   else if(o.kind==='anchor')badge(ctx,'↔ '+o.portal.to.slice(2),x,y+9/zoom,view,o.active?'#f5e0a9':'#b5c8ad');
   else if(readable)badge(ctx,o.title,x,y+18/zoom,view);

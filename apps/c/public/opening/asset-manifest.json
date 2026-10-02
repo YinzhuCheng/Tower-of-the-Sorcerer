@@ -1,0 +1,23 @@
+{
+  "schema": "c-opening-portrait-assets/v1",
+  "assets": [
+    {
+      "id": "hero",
+      "name": "璃",
+      "file": "assets/portraits/liyue-avatar-resolve-cel.webp",
+      "sha256": "b65342b229e130c04fd967cda48f309894b8b6af13b23066a35e5b0178b82449",
+      "width": 512,
+      "height": 512,
+      "expression": "quiet resolve"
+    },
+    {
+      "id": "merchant",
+      "name": "珂珂",
+      "file": "assets/portraits/merchant-avatar-knowing.webp",
+      "sha256": "7b471c82c9cab45e524020277b6ae4ad19e6f4dae81695b550513e7fb2f52902",
+      "width": 512,
+      "height": 512,
+      "expression": "knowing smile"
+    }
+  ]
+}

@@ -1,0 +1,452 @@
+{
+  "schema": "tower-new-opening-draft/v1",
+  "id": "C-opening-rebuild-r1",
+  "language": "zh-CN",
+  "status": "NEW_DRAFT_FOR_INDEPENDENT_READING_NOT_INTEGRATED",
+  "historicalRecovery": false,
+  "replacesMaster": false,
+  "scope": "meal→windowwish→manifest→finishshift; c01 editorial candidate only",
+  "candidateBoundary": "C only; A/B/C remain distinct story/art packages, each eventually three difficulties; no selection or acceptance implied",
+  "sceneSpaceStatus": "shore-side window/table is NEW provisional off-map presentation detail; not canonical recovered geometry",
+  "scenes": [
+    {
+      "id": "C.OPEN.R1.meal",
+      "title": "一碗还热的汤",
+      "location": "C-M01 岸侧窗台旁的临时饭桌；NEW 场景提案，非已恢复地图室内",
+      "present": [
+        "hero",
+        "merchant"
+      ],
+      "turns": [
+        {
+          "id": "C.OPEN.R1.meal.T01",
+          "speaker": "旁白",
+          "text": "天还没有全黑。近灯码头旁，珂珂把小账本从汤碗边挪开，腾出一块能放盘子的地方。方形琥珀灯搁在窗台上，还没点。",
+          "provenance": "NEW",
+          "oldTurnIds": []
+        },
+        {
+          "id": "C.OPEN.R1.meal.T02",
+          "speaker": "珂珂",
+          "text": "先吃。你再看着我，这碗也不会自己少。",
+          "provenance": "NEW",
+          "oldTurnIds": []
+        },
+        {
+          "id": "C.OPEN.R1.meal.T03",
+          "speaker": "璃",
+          "text": "你的饼还没动。",
+          "provenance": "NEW",
+          "oldTurnIds": []
+        },
+        {
+          "id": "C.OPEN.R1.meal.T04",
+          "speaker": "旁白",
+          "text": "珂珂低头看了一眼。璃把盘子推回桌子中间，没有把手收走。",
+          "provenance": "NEW",
+          "oldTurnIds": []
+        },
+        {
+          "id": "C.OPEN.R1.meal.T05",
+          "speaker": "珂珂",
+          "text": "行，一人一半。把手放开，我掰。",
+          "provenance": "NEW",
+          "oldTurnIds": []
+        },
+        {
+          "id": "C.OPEN.R1.meal.T06",
+          "speaker": "旁白",
+          "text": "薄饼掰开时落下几粒碎屑。珂珂把厚的一半放到璃面前，璃拿走了另一半。",
+          "provenance": "NEW",
+          "oldTurnIds": []
+        },
+        {
+          "id": "C.OPEN.R1.meal.T07",
+          "speaker": "珂珂",
+          "text": "挑小的做什么？",
+          "provenance": "NEW",
+          "oldTurnIds": []
+        },
+        {
+          "id": "C.OPEN.R1.meal.T08",
+          "speaker": "璃",
+          "text": "你从坐下就一直在算账。吃得比我少。",
+          "provenance": "NEW",
+          "oldTurnIds": []
+        },
+        {
+          "id": "C.OPEN.R1.meal.T09",
+          "speaker": "旁白",
+          "text": "珂珂看了看自己那半块饼，终于把账本合上。",
+          "provenance": "NEW",
+          "oldTurnIds": []
+        },
+        {
+          "id": "C.OPEN.R1.meal.T10",
+          "speaker": "珂珂",
+          "text": "那汤底归你。我不爱吃葱。",
+          "provenance": "NEW",
+          "oldTurnIds": []
+        },
+        {
+          "id": "C.OPEN.R1.meal.T11",
+          "speaker": "璃",
+          "text": "早说。",
+          "provenance": "NEW",
+          "oldTurnIds": []
+        },
+        {
+          "id": "C.OPEN.R1.meal.T12",
+          "speaker": "旁白",
+          "text": "璃把碗端近些。等她低头喝汤，珂珂才咬了第一口饼。",
+          "provenance": "NEW",
+          "oldTurnIds": []
+        }
+      ]
+    },
+    {
+      "id": "C.OPEN.R1.windowwish",
+      "title": "窗边的位置",
+      "location": "同一饭桌与岸侧窗口；窗景只含近岸水面，不断言未验远景视线",
+      "present": [
+        "hero",
+        "merchant"
+      ],
+      "turns": [
+        {
+          "id": "C.OPEN.R1.windowwish.T01",
+          "speaker": "旁白",
+          "text": "窗外，船身轻晃，系缆绷紧时轻轻作响。璃把空碗放下，朝窗口挪了挪椅子。",
+          "provenance": "NEW",
+          "oldTurnIds": []
+        },
+        {
+          "id": "C.OPEN.R1.windowwish.T02",
+          "speaker": "珂珂",
+          "text": "还没吃完就想上船？",
+          "provenance": "NEW",
+          "oldTurnIds": []
+        },
+        {
+          "id": "C.OPEN.R1.windowwish.T03",
+          "speaker": "璃",
+          "text": "我在想，什么时候能只坐船。",
+          "provenance": "NEW",
+          "oldTurnIds": []
+        },
+        {
+          "id": "C.OPEN.R1.windowwish.T04",
+          "speaker": "珂珂",
+          "text": "只坐？",
+          "provenance": "NEW",
+          "oldTurnIds": []
+        },
+        {
+          "id": "C.OPEN.R1.windowwish.T05",
+          "speaker": "璃",
+          "text": "不用护着货，也不用一靠岸就起来。找个窗边的位置，把热饭慢慢吃完。",
+          "provenance": "NEW",
+          "oldTurnIds": []
+        },
+        {
+          "id": "C.OPEN.R1.windowwish.T06",
+          "speaker": "旁白",
+          "text": "她用指尖拢起盘边的碎屑。说到“慢慢”的时候，自己先笑了。",
+          "provenance": "NEW",
+          "oldTurnIds": []
+        },
+        {
+          "id": "C.OPEN.R1.windowwish.T07",
+          "speaker": "珂珂",
+          "text": "那得挑白天。晚上窗上全是你自己的脸。",
+          "provenance": "NEW",
+          "oldTurnIds": []
+        },
+        {
+          "id": "C.OPEN.R1.windowwish.T08",
+          "speaker": "璃",
+          "text": "那就白天。",
+          "provenance": "NEW",
+          "oldTurnIds": []
+        },
+        {
+          "id": "C.OPEN.R1.windowwish.T09",
+          "speaker": "旁白",
+          "text": "珂珂顺着她的目光看了一会儿，才把桌角卷着的货单拿过来。",
+          "provenance": "NEW",
+          "oldTurnIds": []
+        },
+        {
+          "id": "C.OPEN.R1.windowwish.T10",
+          "speaker": "珂珂",
+          "text": "今晚这趟，可没有那样的位置。要跟着灯座走，到远灯才能歇。",
+          "provenance": "NEW",
+          "oldTurnIds": []
+        },
+        {
+          "id": "C.OPEN.R1.windowwish.T11",
+          "speaker": "璃",
+          "text": "我知道。这趟我接。",
+          "provenance": "NEW",
+          "oldTurnIds": []
+        },
+        {
+          "id": "C.OPEN.R1.windowwish.T12",
+          "speaker": "珂珂",
+          "text": "不再想想？",
+          "provenance": "NEW",
+          "oldTurnIds": []
+        },
+        {
+          "id": "C.OPEN.R1.windowwish.T13",
+          "speaker": "璃",
+          "text": "饭还热着的时候，你没把这张纸塞给我。我也不能喝完汤，就让你再去找人。",
+          "provenance": "NEW",
+          "oldTurnIds": []
+        },
+        {
+          "id": "C.OPEN.R1.windowwish.T14",
+          "speaker": "旁白",
+          "text": "珂珂捏着货单的手松了一点。",
+          "provenance": "NEW",
+          "oldTurnIds": []
+        },
+        {
+          "id": "C.OPEN.R1.windowwish.T15",
+          "speaker": "珂珂",
+          "text": "汤不收你这份人情。事情听完了，再答应。",
+          "provenance": "NEW",
+          "oldTurnIds": []
+        }
+      ]
+    },
+    {
+      "id": "C.OPEN.R1.manifest",
+      "title": "纸上的一趟路",
+      "location": "同一岸侧饭桌；谈论已装船货物，不在文本中登船或搬货",
+      "present": [
+        "hero",
+        "merchant"
+      ],
+      "turns": [
+        {
+          "id": "C.OPEN.R1.manifest.T01",
+          "speaker": "旁白",
+          "text": "璃擦掉桌上的一小点汤水，等珂珂把货单摊平。",
+          "provenance": "NEW",
+          "oldTurnIds": []
+        },
+        {
+          "id": "C.OPEN.R1.manifest.T02",
+          "speaker": "珂珂",
+          "text": "船上那只箱子，装的是一整副灯座。送到远灯，里面也得是好的。",
+          "provenance": "COMPRESSED",
+          "oldTurnIds": [
+            "c01.L88",
+            "c01.L92"
+          ]
+        },
+        {
+          "id": "C.OPEN.R1.manifest.T03",
+          "speaker": "璃",
+          "text": "怕震，还是怕侧放？",
+          "provenance": "RETAINED",
+          "oldTurnIds": [
+            "c01.L94"
+          ]
+        },
+        {
+          "id": "C.OPEN.R1.manifest.T04",
+          "speaker": "珂珂",
+          "text": "别侧放，也别拿侧面顶东西。白线那面朝上，里面的托架怕压歪。到那边，纱雾会告诉你从哪儿扶。",
+          "provenance": "COMPRESSED",
+          "oldTurnIds": [
+            "c01.L96"
+          ]
+        },
+        {
+          "id": "C.OPEN.R1.manifest.T05",
+          "speaker": "璃",
+          "text": "我听她的。校灯的事，我不会。",
+          "provenance": "COMPRESSED",
+          "oldTurnIds": [
+            "c01.L98",
+            "c02.L172"
+          ],
+          "provenanceNote": "只保留职责边界；没有把 c02 的在场人物或交接搬进开场"
+        },
+        {
+          "id": "C.OPEN.R1.manifest.T06",
+          "speaker": "珂珂",
+          "text": "小物舱里还有校准箱、手工具和封好的灯油。灯油别给船机烧，写着“船用”的才是。",
+          "provenance": "COMPRESSED",
+          "oldTurnIds": [
+            "c01.L104",
+            "c01.L106",
+            "c01.L108"
+          ]
+        },
+        {
+          "id": "C.OPEN.R1.manifest.T07",
+          "speaker": "旁白",
+          "text": "珂珂把航线纸压在货单下面，露出一串沿水道排开的地名。",
+          "provenance": "NEW",
+          "oldTurnIds": []
+        },
+        {
+          "id": "C.OPEN.R1.manifest.T08",
+          "speaker": "珂珂",
+          "text": "先到旧修船坞取螺栓和预备船油，再过缆桥，绕到近灯背面，最后去远灯。船油要照这张纸算。",
+          "provenance": "COMPRESSED",
+          "oldTurnIds": [
+            "c01.L110",
+            "c03.L232"
+          ],
+          "provenanceNote": "路线顺序以 apps/c/src/campaigns/c/content.js 为准；L232 为制作指示，不是旧对白"
+        },
+        {
+          "id": "C.OPEN.R1.manifest.T09",
+          "speaker": "璃",
+          "text": "船今晚停哪儿？",
+          "provenance": "RETAINED",
+          "oldTurnIds": [
+            "c01.L118"
+          ]
+        },
+        {
+          "id": "C.OPEN.R1.manifest.T10",
+          "speaker": "珂珂",
+          "text": "远灯内侧的双桩泊位。卸完货就把船留在那里。明早修港拖轮清开装卸支道，再接空船回来。",
+          "provenance": "COMPRESSED",
+          "oldTurnIds": [
+            "c01.L120"
+          ]
+        },
+        {
+          "id": "C.OPEN.R1.manifest.T11",
+          "speaker": "璃",
+          "text": "所以这份油只算送到，不算回来。",
+          "provenance": "RETAINED",
+          "oldTurnIds": [
+            "c01.L122"
+          ]
+        },
+        {
+          "id": "C.OPEN.R1.manifest.T12",
+          "speaker": "珂珂",
+          "text": "对。今晚维修水道只放去远灯的船，不走逆行。卸完还得把空船配平，吊臂收好，缆绳系牢。",
+          "provenance": "COMPRESSED",
+          "oldTurnIds": [
+            "c01.L124",
+            "c01.L134"
+          ],
+          "provenanceNote": "终点职责合并交代一次，不声称现在已完成"
+        },
+        {
+          "id": "C.OPEN.R1.manifest.T13",
+          "speaker": "旁白",
+          "text": "璃看完纸上最后一个地名，把卷起来的纸角压住。",
+          "provenance": "NEW",
+          "oldTurnIds": []
+        },
+        {
+          "id": "C.OPEN.R1.manifest.T14",
+          "speaker": "璃",
+          "text": "好。现在可以算我答应了。",
+          "provenance": "NEW",
+          "oldTurnIds": []
+        },
+        {
+          "id": "C.OPEN.R1.manifest.T15",
+          "speaker": "珂珂",
+          "text": "嗯。明早我还等着换那块护木呢。",
+          "provenance": "COMPRESSED",
+          "oldTurnIds": [
+            "c01.L126"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "C.OPEN.R1.finishshift",
+      "title": "收起这一桌",
+      "location": "同一岸侧临时饭桌至通往既有码头的门口；不自动移动游戏角色",
+      "present": [
+        "hero",
+        "merchant"
+      ],
+      "turns": [
+        {
+          "id": "C.OPEN.R1.finishshift.T01",
+          "speaker": "旁白",
+          "text": "珂珂把小账本的皮带扣好。璃将两只空碗摞在一起，又把那只还沾着饼屑的盘子垫到下面。",
+          "provenance": "NEW",
+          "oldTurnIds": []
+        },
+        {
+          "id": "C.OPEN.R1.finishshift.T02",
+          "speaker": "珂珂",
+          "text": "放着，我来收。",
+          "provenance": "NEW",
+          "oldTurnIds": []
+        },
+        {
+          "id": "C.OPEN.R1.finishshift.T03",
+          "speaker": "璃",
+          "text": "你把今天的账收好。我把今天的汤收好。",
+          "provenance": "NEW",
+          "oldTurnIds": []
+        },
+        {
+          "id": "C.OPEN.R1.finishshift.T04",
+          "speaker": "旁白",
+          "text": "珂珂笑了一声，把账本放稳，接过她手里的碗。",
+          "provenance": "NEW",
+          "oldTurnIds": []
+        },
+        {
+          "id": "C.OPEN.R1.finishshift.T05",
+          "speaker": "珂珂",
+          "text": "这边收完了。你先去码头，等我看过绑带，再一起听出航的安排。",
+          "provenance": "NEW",
+          "oldTurnIds": []
+        },
+        {
+          "id": "C.OPEN.R1.finishshift.T06",
+          "speaker": "璃",
+          "text": "我在跳板边等你。",
+          "provenance": "NEW",
+          "oldTurnIds": []
+        },
+        {
+          "id": "C.OPEN.R1.finishshift.T07",
+          "speaker": "旁白",
+          "text": "璃把椅子推回桌下，走到门口，又回头看了看窗边。",
+          "provenance": "NEW",
+          "oldTurnIds": []
+        },
+        {
+          "id": "C.OPEN.R1.finishshift.T08",
+          "speaker": "珂珂",
+          "text": "记着呢。白天，窗边。",
+          "provenance": "NEW",
+          "oldTurnIds": []
+        },
+        {
+          "id": "C.OPEN.R1.finishshift.T09",
+          "speaker": "璃",
+          "text": "还得是热饭。",
+          "provenance": "NEW",
+          "oldTurnIds": []
+        },
+        {
+          "id": "C.OPEN.R1.finishshift.T10",
+          "speaker": "旁白",
+          "text": "珂珂抬起空碗，朝她晃了一下。璃这才转身，向码头走去。",
+          "provenance": "NEW",
+          "oldTurnIds": []
+        }
+      ]
+    }
+  ]
+}

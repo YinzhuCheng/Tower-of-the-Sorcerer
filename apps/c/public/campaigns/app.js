@@ -1,3 +1,5 @@
+import { startOpeningPrelude } from '../src/opening/prelude.js';
+import { withoutReplacedOpening } from '../src/opening/presentation.js';
 import { installViewportLayout } from '../src/rendering/c-viewport-layout.js';
 import { installThreeView } from '../src/rendering/c-three-controller.js';
 import { projectVoyageScene } from '../src/rendering/c-adapter.js';
@@ -11,6 +13,7 @@ import { replayCampaignCertificate } from '../src/solver/campaign-replay.js';
 const runtime=createVoyageCampaign(),repo=createSaveRepository({getItem:key=>localStorage.getItem('c3d-prototype:'+key),setItem:(key,value)=>localStorage.setItem('c3d-prototype:'+key,value),removeItem:key=>localStorage.removeItem('c3d-prototype:'+key)},runtime,{validatePresentation:validPresentation}),$=id=>document.getElementById(id);
 function validPresentation(p){return p==null||(Array.isArray(p.seenIds)&&p.seenIds.every(x=>typeof x==='string')&&Array.isArray(p.queue)&&p.queue.every(scene=>typeof scene.title==='string'&&Array.isArray(scene.turns)&&scene.turns.every(turn=>typeof turn.text==='string'))&&Number.isInteger(p.turnIndex)&&p.turnIndex>=0);}
 const restored=repo.restore(),story=createVoyageStory(runtime),planning=createVoyagePlanning(runtime);
+const openingGate=await startOpeningPrelude({skip:Boolean(restored.source)}).catch(error=>{document.getElementById('opening-root').textContent=`开场载入失败：${error.message}。游戏尚未启动，请刷新重试。`;throw error;});
 const emptyPresentation=()=>({seenIds:[],queue:[],turnIndex:0});
 let presentation=restored.presentation??emptyPresentation();
 let state=restored.state??runtime.initialState(),allowAutoSave=restored.allowAutoSave,logs=[],pending=null,playback=null,playIndex=0,playTimer=null;
@@ -23,6 +26,7 @@ function checkpoint(){const slot=`checkpoint:${state.boat.dock}`;if(repo.inspect
 checkpoint();
 
 function enqueueStory(result,{display=true}={}) {
+ if(openingGate.replacesOriginalOpening())result=withoutReplacedOpening(result);
  presentation.seenIds=result.seenIds;
  presentation.queue.push(...result.scenes);
  if(result.narrativeConflicts?.length){for(const problem of result.narrativeConflicts)addLog(`剧情状态核对：${problem.reason}`);}
@@ -64,6 +68,7 @@ $('story-skip').onclick=()=>{const scene=presentation.queue[0];const choiceIndex
 $('story').addEventListener('cancel',event=>event.preventDefault());
 
 function apply(action,{replay=false}={}){
+ if(openingGate.blocked())return false;
  if(!replay&&playback){notify('当前是证书回放；请读档或重新开始后游玩');return false;}
  const before=state;const estimate=runtime.preview(state,action);if(!estimate.legal){notify(estimate.reason);return false;}const result=runtime.dispatch(state,action);
  if(!result.ok){notify(result.reason);return false;}
@@ -77,6 +82,7 @@ function apply(action,{replay=false}={}){
  return true;
 }
 function walkTo(x,y){
+ if(openingGate.blocked())return;
  if(playTimer||pending||document.querySelector('dialog[open]'))return;
  const paths=reachablePaths(runtime,state),key=`${x},${y}`;
  let path=paths.get(key);
@@ -94,6 +100,7 @@ function describe(action,preview){
  return parts.join('\n');
 }
 function request(action){
+ if(openingGate.blocked())return;
  if(document.querySelector('dialog[open]')||pending||playTimer)return;
  const preview=runtime.preview(state,action);const title=action.title;action=Object.fromEntries(Object.entries(action).filter(([key])=>['type','entityId','edgeId','weightId','slot'].includes(key)));if(!preview.legal){notify(preview.reason);return;}
  const consumes=preview.nextState&&(Object.entries(state.resources).some(([id,value])=>(preview.nextState.resources[id]??0)<value)||preview.nextState.stats.gold<state.stats.gold);
@@ -149,15 +156,15 @@ function render(){
 }
 for(const button of document.querySelectorAll('[data-dir]'))button.onclick=()=>{if(!document.querySelector('dialog[open]')&&!pending&&!playTimer)apply({type:'move',direction:button.dataset.dir});};
 document.addEventListener('keydown',event=>{if(document.querySelector('dialog[open]')||playTimer)return;const direction={ArrowUp:'up',ArrowDown:'down',ArrowLeft:'left',ArrowRight:'right',w:'up',a:'left',s:'down',d:'right'}[event.key];if(direction){event.preventDefault();apply({type:'move',direction});}});
-$('save').onclick=()=>{repo.save('manual',state,presentation);notify('手动档已保存；自动档继续独立更新');};
-function load(slot){try{const info=repo.inspect(slot);if(info.status==='invalid')throw new Error(info.reason);const saved=info.state;if(!saved){notify('这个槽还没有存档');return;}stopReplay();playback=null;state=saved;presentation=info.presentation??emptyPresentation();allowAutoSave=true;render();enqueueStory(story.location(state,{seenIds:presentation.seenIds}));notify(`已读取${slot==='auto'?'自动':'手动'}档`);}catch(error){const result=repo.restore({preferred:slot,fallback:null});notify(`存档损坏，原始内容已保留副本：${result.issues[0]?.reason??error.message}`);}}
+$('save').onclick=()=>{if(openingGate.blocked())return;repo.save('manual',state,presentation);notify('手动档已保存；自动档继续独立更新');};
+function load(slot){if(openingGate.blocked())return;try{const info=repo.inspect(slot);if(info.status==='invalid')throw new Error(info.reason);const saved=info.state;if(!saved){notify('这个槽还没有存档');return;}stopReplay();playback=null;state=saved;presentation=info.presentation??emptyPresentation();allowAutoSave=true;render();enqueueStory(story.location(state,{seenIds:presentation.seenIds}));notify(`已读取${slot==='auto'?'自动':'手动'}档`);}catch(error){const result=repo.restore({preferred:slot,fallback:null});notify(`存档损坏，原始内容已保留副本：${result.issues[0]?.reason??error.message}`);}}
 $('load-auto').onclick=()=>load('auto');$('load-manual').onclick=()=>load('manual');
-$('new').onclick=()=>{if(!confirm('重新开始当前C标准原型？手动档仍保留。'))return;stopReplay();playback=null;state=runtime.initialState();presentation=emptyPresentation();allowAutoSave=true;logs=[];for(let i=1;i<=5;i++)repo.remove(`checkpoint:C-M0${i}`);checkpoint();persist();render();};
-$('checkpoint').onclick=()=>{const savedInfo=repo.inspect(`checkpoint:${$('checkpoint-select').value}`),saved=savedInfo.state;if(!saved){notify('所选泊位没有检查点');return;}if(!confirm('恢复抵达所选泊位时的整份状态？之后的战斗、消耗和作业一起回退。'))return;stopReplay();playback=null;state=saved;presentation=savedInfo.presentation??emptyPresentation();allowAutoSave=true;persist();render();showStory();};
+$('new').onclick=()=>{if(openingGate.blocked())return;if(!confirm('重新开始当前C标准原型？手动档仍保留。'))return;stopReplay();playback=null;state=runtime.initialState();presentation=emptyPresentation();allowAutoSave=true;logs=[];for(let i=1;i<=5;i++)repo.remove(`checkpoint:C-M0${i}`);checkpoint();persist();render();};
+$('checkpoint').onclick=()=>{if(openingGate.blocked())return;const savedInfo=repo.inspect(`checkpoint:${$('checkpoint-select').value}`),saved=savedInfo.state;if(!saved){notify('所选泊位没有检查点');return;}if(!confirm('恢复抵达所选泊位时的整份状态？之后的战斗、消耗和作业一起回退。'))return;stopReplay();playback=null;state=saved;presentation=savedInfo.presentation??emptyPresentation();allowAutoSave=true;persist();render();showStory();};
 function stopReplay(){if(playTimer)clearInterval(playTimer);playTimer=null;}
-$('replay-load').onclick=async()=>{try{const certificate=await(await fetch(new URL('./c-normal.certificate.json',import.meta.url))).json();const result=replayCampaignCertificate(runtime,certificate);if(!result.ok)throw new Error(result.reason);if(!confirm('从新游戏初态开始逐条回放？这次回放不会覆盖自动档。'))return;stopReplay();playback=certificate;playIndex=0;state=runtime.initialState();presentation=emptyPresentation();logs=[];$('replay-step').disabled=false;$('replay-auto').disabled=false;render();}catch(error){notify(`证书未能载入：${error.message}`);}};
-function stepReplay(){if($('story').open)return;if(!playback||playIndex>=playback.steps.length){stopReplay();return;}const step=playback.steps[playIndex];if(runtime.stateHash(state)!==step.before){notify('回放前态不一致，已停止');stopReplay();return;}if(apply(step.action,{replay:true})){if(runtime.stateHash(state)!==step.after){notify('回放后态不一致，已停止');stopReplay();return;}playIndex++;render();}else stopReplay();}
-$('replay-step').onclick=stepReplay;$('replay-auto').onclick=()=>{if(playTimer){stopReplay();return;}playTimer=setInterval(stepReplay,60);};
+$('replay-load').onclick=async()=>{if(openingGate.blocked())return;try{const certificate=await(await fetch(new URL('./c-normal.certificate.json',import.meta.url))).json();if(openingGate.blocked())return;const result=replayCampaignCertificate(runtime,certificate);if(!result.ok)throw new Error(result.reason);if(!confirm('从新游戏初态开始逐条回放？这次回放不会覆盖自动档。'))return;stopReplay();playback=certificate;playIndex=0;state=runtime.initialState();presentation=emptyPresentation();logs=[];$('replay-step').disabled=false;$('replay-auto').disabled=false;render();}catch(error){notify(`证书未能载入：${error.message}`);}};
+function stepReplay(){if(openingGate.blocked())return;if($('story').open)return;if(!playback||playIndex>=playback.steps.length){stopReplay();return;}const step=playback.steps[playIndex];if(runtime.stateHash(state)!==step.before){notify('回放前态不一致，已停止');stopReplay();return;}if(apply(step.action,{replay:true})){if(runtime.stateHash(state)!==step.after){notify('回放后态不一致，已停止');stopReplay();return;}playIndex++;render();}else stopReplay();}
+$('replay-step').onclick=stepReplay;$('replay-auto').onclick=()=>{if(openingGate.blocked())return;if(playTimer){stopReplay();return;}playTimer=setInterval(stepReplay,60);};
 render();enqueueStory(story.location(state,{seenIds:presentation.seenIds}));
 if(restored.issues.length)notify(`检测到损坏存档并保留原始副本。${restored.source?'已恢复'+restored.source+'档':'请明确选择重新开始；未覆盖原档'}`);
 else if(restored.source)notify(`已恢复${restored.source==='auto'?'自动':'手动'}档，启动未覆盖进度`);
