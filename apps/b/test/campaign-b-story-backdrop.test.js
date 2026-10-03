@@ -6,7 +6,7 @@ import {readFileSync} from 'node:fs';
 import {createForestCampaign} from '../src/campaigns/b/content.js';
 import {createForestStory,FOREST_STORY_CONTENT} from '../src/campaigns/b/story/index.js';
 import {createSaveRepository} from '../src/core/campaign.js';
-import {FOREST_GAL_BACKDROP,FOREST_GAL_CAST} from '../src/rendering/forest-gal-assets.js';
+import {FOREST_GAL_BACKDROP,FOREST_GAL_CAST,FOREST_GAL_ENVIRONMENTS,FOREST_GAL_DAILY_CAST} from '../src/rendering/forest-gal-assets.js';
 import {forestGalActors,forestGalBackdrop} from '../src/rendering/forest-gal-stage.js';
 
 const runtime=createForestCampaign(),html=readFileSync(new URL('../public/campaigns-b/index.html',import.meta.url),'utf8');
@@ -33,7 +33,7 @@ async function app(storage=memory()) {
  const window={localStorage:storage,addEventListener(){}};
  const names=['window','document','Image','confirm','setTimeout','clearTimeout','requestAnimationFrame','cancelAnimationFrame'],original=Object.fromEntries(names.map(n=>[n,globalThis[n]]));
  Object.assign(globalThis,{window,document,Image:undefined,confirm:()=>true,setTimeout:()=>0,clearTimeout(){},requestAnimationFrame:undefined,cancelAnimationFrame:undefined});
- try {const code=readFileSync(new URL('../public/campaigns-b/app.js',import.meta.url),'utf8').replaceAll("from '../src/",`from '${new URL('../src/',import.meta.url).href}`)+`\n// backdrop integration ${++nonce}`;await import(`data:text/javascript;base64,${Buffer.from(code).toString('base64')}`);return {get:id=>nodes.get(id),storage,qa:window.__FOREST_PREVIEW__,key:(key,type='keydown')=>events[type]?.({key,target:{tagName:'BODY'},preventDefault(){}}),cleanup:()=>Object.assign(globalThis,original)};}
+ try {const code=readFileSync(new URL('../public/campaigns-b/app.js',import.meta.url),'utf8').replaceAll("from '../src/",`from '${new URL('../src/',import.meta.url).href}`)+`\n// backdrop integration ${++nonce}`;await import(`data:text/javascript;base64,${Buffer.from(code).toString('base64')}`);return {get:id=>nodes.get(id),storage,qa:window.__FOREST_PREVIEW__,key:(key,type='keydown',extra={})=>events[type]?.({key,target:{tagName:'BODY'},preventDefault(){},...extra}),cleanup:()=>Object.assign(globalThis,original)};}
  catch(error){Object.assign(globalThis,original);throw error;}
 }
 const withApp=async(storage,fn)=>{const e=await app(storage);try{await fn(e);}finally{e.cleanup();}};
@@ -66,7 +66,7 @@ test('older stage-less queue resolves canonical B01 metadata without changing sa
 
 test('B02 review while player is in B01 never borrows the entry image',async()=>{
  const storage=memory(),state=runtime.initialState(),review=scene('b02_enter',state);saveQueue(storage,state,[review]);
- await withApp(storage,e=>{assert.equal(e.qa.getState().location.regionId,'B-01');assert.equal(e.get('story-backdrop').hidden,true);assert.equal(e.get('story-backdrop').src,'');assert.match(e.get('story-art-label').textContent,/本区背景待制作/);assert.equal(e.get('story-location').textContent,runtime.region('B-02').title);});
+ await withApp(storage,e=>{assert.equal(e.qa.getState().location.regionId,'B-01');assert.equal(e.get('story-backdrop').hidden,true);assert.match(e.get('story-backdrop').src,/b02-return-branch-square.webp$/);assert.match(e.get('story-art-label').textContent,/回枝广场.*载入中/);e.get('story-backdrop').loaded();assert.equal(e.get('story-backdrop').hidden,false);assert.equal(e.get('story-location').textContent,runtime.region('B-02').title);});
 });
 
 test('asynchronous failure stays honest across next/pause/resume and preserves play',()=>withApp(memory(),e=>{
@@ -76,20 +76,22 @@ test('asynchronous failure stays honest across next/pause/resume and preserves p
 
 test('stale asynchronous image callbacks cannot resurrect B01 during B02 review',async()=>{
  const storage=memory(),state=runtime.initialState(),first=scene(),second=scene('b02_enter',state);saveQueue(storage,state,[first,second]);
- await withApp(storage,e=>{const image=e.get('story-backdrop'),oldLoad=image.onload,oldError=image.onerror;assert.equal(typeof oldLoad,'function');e.get('story-skip').onclick();assert.equal(e.qa.getPresentation().queue[0].sceneId,'b02_enter');assert.equal(image.hidden,true);assert.equal(image.src,'');image.naturalWidth=backdrop.width;image.naturalHeight=backdrop.height;oldLoad();oldError();assert.equal(image.hidden,true);assert.match(e.get('story-art-label').textContent,/本区背景待制作/);});
+ await withApp(storage,e=>{const image=e.get('story-backdrop'),oldLoad=image.onload,oldError=image.onerror;assert.equal(typeof oldLoad,'function');e.get('story-skip').onclick();assert.equal(e.qa.getPresentation().queue[0].sceneId,'b02_enter');assert.equal(image.hidden,true);assert.match(image.src,/b02-return-branch-square.webp$/);image.naturalWidth=backdrop.width;image.naturalHeight=backdrop.height;oldLoad();oldError();assert.equal(image.hidden,true);assert.match(e.get('story-art-label').textContent,/回枝广场.*载入中/);image.loaded();assert.equal(image.hidden,false);assert.match(e.get('story-art-label').textContent,/回枝广场/);});
 });
 
 test('unexpected dimensions fail closed rather than marking the backdrop ready',()=>withApp(memory(),e=>{e.get('story-backdrop').loaded(1,1);assert.equal(e.get('story-backdrop').hidden,true);assert.match(e.get('story-art-label').textContent,/背景加载失败/);}));
 
 
-test('actual entry renders only explicit cast with stable nodes and speaking emphasis',()=>withApp(memory(),e=>{
- const stage=e.get('story-actors'),first=[...stage.children];assert.deepEqual(first.map(i=>i.dataset.characterId),['merchant','hero','guide']);
- for(const image of first){assert.equal(image.hidden,true);image.loaded(1024,1536);assert.equal(image.hidden,false);assert.match(image.src,/assets\/forest-(gal|canonical)\//);}
- assert.equal(e.get('story-portrait').hidden,true,'narration has no face');
- e.get('story-next').onclick();assert.deepEqual(stage.children,first);assert.equal(stage.children[0].dataset.speaking,'true');assert.equal(stage.children[1].dataset.speaking,'false');assert.equal(stage.children[0].srcWrites,1);e.get('story-portrait').loaded(512,512);assert.equal(e.get('story-portrait').hidden,false);
- assert.equal(e.get('story-copy').textContent,'再帮我扶一下。别扶灯，扶背包下边。');
- const p=e.qa.getPresentation(),s=e.qa.getState();e.get('story-close').onclick();assert.equal(e.get('story').open,false);assert.equal(stage.children.length,0);assert.equal(e.qa.getPresentation().turnIndex,p.turnIndex);assert.deepEqual(e.qa.getState(),s);
- e.get('resume-story').onclick();assert.equal(stage.children.length,3);assert.equal(e.qa.getPresentation().turnIndex,p.turnIndex);assert.deepEqual(e.qa.getState(),s);
+test('daily entry preserves truthful action shots and stable dialogue actor nodes',()=>withApp(memory(),e=>{
+ const stage=e.get('story-actors');assert.equal(stage.children.length,0,'arrival action uses the environment');
+ e.get('story-next').onclick();const first=[...stage.children];assert.deepEqual(first.map(i=>i.dataset.characterId),['merchant','hero']);
+ for(const image of first){assert.equal(image.hidden,true);image.loaded(1024,1536);assert.equal(image.hidden,false);}
+ assert.match(first[1].src,/hero-daily-sheathed-r1.webp$/);assert.equal(first[0].dataset.speaking,'true');assert.equal(first[0].srcWrites,1);
+ e.get('story-portrait').loaded(512,512);assert.equal(e.get('story-portrait').hidden,false);
+ const p=e.qa.getPresentation(),state=e.qa.getState();e.get('story-close').onclick();assert.equal(stage.children.length,0);assert.equal(e.qa.getPresentation().turnIndex,p.turnIndex);assert.deepEqual(e.qa.getState(),state);
+ e.get('resume-story').onclick();assert.equal(stage.children.length,2);assert.equal(e.qa.getPresentation().turnIndex,p.turnIndex);assert.deepEqual(e.qa.getState(),state);
+ e.get('story-next').onclick();assert.equal(stage.children.length,0,'supporting the backpack uses the authored action/environment shot');
+ e.get('story-next').onclick();const next=[...stage.children];e.get('story-next').onclick();assert.deepEqual(stage.children,next,'consecutive safe dialogue keeps actor nodes');
 }));
 
 test('late backdrop, actor and portrait callbacks cannot revive dismissed art',()=>withApp(memory(),e=>{
@@ -105,7 +107,7 @@ test('empty and offscreen shots clear previous actors and prohibit implicit hero
  assert.deepEqual(forestGalActors({stage:{actors:{hero:{}},camera:'exterior-empty-shot'}}),[]);
  assert.deepEqual(forestGalActors({stage:{actors:{hero:{}},camera:'winter-interior-closeup',winterClothing:'worn-outside-not-rendered-in-unapproved-art'}}),[]);
  const storage=memory(),state=runtime.initialState(),empty=scene('b30_enter',state);assert.equal(empty.turns[0].stage.camera,'exterior-empty-shot');saveQueue(storage,state,[scene(),empty]);
- await withApp(storage,e=>{const image=e.get('story-actors').children[0],late=image.onload;e.get('story-skip').onclick();assert.equal(e.get('story-actors').children.length,0);assert.equal(e.get('story-portrait').hidden,true);image.naturalWidth=1024;image.naturalHeight=1536;late();assert.equal(image.hidden,true);assert.equal(e.get('story-backdrop').src,'');});
+ await withApp(storage,e=>{e.get('story-next').onclick();const image=e.get('story-actors').children[0],late=image.onload;e.get('story-skip').onclick();assert.equal(e.get('story-actors').children.length,0);assert.equal(e.get('story-portrait').hidden,true);image.naturalWidth=1024;image.naturalHeight=1536;late();assert.equal(image.hidden,true);assert.equal(e.get('story-backdrop').src,'');});
 });
 
 test('only explicitly authored B01 scene/location/variant triplets bind village pixels',()=>{
@@ -123,14 +125,14 @@ test('conditional choice keeps the exact session handlers and gameplay state',as
 test('compact landscape scene metadata uses the footer below dialogue, outside actor faces',()=>{
  const css=readFileSync(new URL('../public/campaigns-b/styles.css',import.meta.url),'utf8'),compact=css.slice(css.indexOf('/* Compact landscape metadata'));
  assert.match(compact,/@media\(max-height:520px\) and \(orientation:landscape\)/);
- assert.match(compact,/story-scene-heading\{top:auto;bottom:0;left:2\.5%;right:2\.5%;height:3%/);
+ assert.match(compact,/story-scene-heading\{top:auto;bottom:0;left:3%;right:3%;max-width:none;height:4%/);
  assert.match(compact,/story-scene-heading \.eyebrow\{display:none/);
  assert.match(compact,/story-scene-heading \.story-art-label\{align-self:auto;font-size:inherit;line-height:1/);
  for(const [width,height]of [[844,390],[667,375],[568,320],[960,480]]){
-  const footer={x:.025*width,y:.97*height,width:.95*width,height:.03*height};
-  const dialogueBottom=.97*height;
-  // Reviewed merchant face source box; final 94%-height contain geometry.
-  const scale=Math.min(.43*width/1024,.94*height/1536),top=.96*height-1536*scale;
+  const footer={x:.03*width,y:.96*height,width:.94*width,height:.04*height};
+  const dialogueBottom=.96*height;
+  // Reviewed merchant face source box; middle-depth 86% contain geometry.
+  const scale=Math.min(.41*width/1024,.86*height/1536),top=.97*height-1536*scale;
   const face={y:top+70*scale,bottom:top+254*scale};
   assert.ok(footer.y>=dialogueBottom,'metadata starts below the dialogue frame');
   assert.ok(face.bottom<footer.y,`${width}x${height}: face stays above metadata`);
@@ -139,8 +141,39 @@ test('compact landscape scene metadata uses the footer below dialogue, outside a
 
 
 test('two-person portrait scenes explicitly override the narrower desktop actor width',()=>{
- const css=readFileSync(new URL('../public/campaigns-b/styles.css',import.meta.url),'utf8'),mobile=css.slice(css.indexOf('/* Explicit two-person mobile specificity'));
- assert.match(mobile,/@media\(max-width:680px\) and \(orientation:portrait\)\{\.story-dialog \.story-actors\[data-count="2"\] \.story-actor\{width:74%\}/);
- const post=scene('b01_post'),spoken=post.turns.find(t=>t.portrait==='guide');assert.ok(spoken);assert.deepEqual(forestGalActors(spoken).map(a=>a.id),['hero','guide']);
- const imageWidth=.74*390,imageHeight=Math.min(.67*844,imageWidth*1.5);assert.ok(imageHeight>400);assert.ok(imageHeight<=.67*844);
+ const css=readFileSync(new URL('../public/campaigns-b/styles.css',import.meta.url),'utf8'),mobile=css.slice(css.indexOf('/* Portrait:'));
+ assert.match(mobile,/\.story-dialog \.story-actors\[data-count="2"\] \.story-actor\{width:78%\}/);
+ const post=scene('b29_shawu'),spoken=post.turns.find(t=>t.id==='b29_shawu.L1809');assert.ok(spoken);assert.deepEqual(forestGalActors(spoken).map(a=>a.id).sort(),['guide','hero']);
+ const imageWidth=.78*390,imageHeight=Math.min(.64*844,.75*844-118,imageWidth*1.5);assert.ok(imageHeight>400);assert.ok(imageHeight<=.67*844);
 });
+
+
+test('reader tools preserve state/queue/turn and Escape restores tools before pausing',()=>withApp(memory(),e=>{
+ e.get('story-next').onclick();const state=e.qa.getState(),presentation=e.qa.getPresentation(),stored=[...e.storage.entries];
+ e.get('story-history').onclick();assert.equal(e.get('story-history-panel').hidden,false);assert.equal(e.get('story-history-entries').children.length,2);assert.equal(e.get('story-body').inert,true);
+ e.get('story').dispatch('cancel',{preventDefault(){}});assert.equal(e.get('story').open,true);assert.equal(e.get('story-history-panel').hidden,true);assert.deepEqual(e.qa.getPresentation(),presentation);
+ e.get('story-hide').onclick();assert.equal(e.get('story-body').hidden,true);assert.equal(e.get('story-restore').hidden,false);
+ e.get('story').dispatch('cancel',{preventDefault(){}});assert.equal(e.get('story').open,true);assert.equal(e.get('story-body').hidden,false);assert.deepEqual(e.qa.getPresentation(),presentation);assert.deepEqual(e.qa.getState(),state);assert.deepEqual([...e.storage.entries],stored);
+ e.get('story').dispatch('cancel',{preventDefault(){}});assert.equal(e.get('story').open,false);assert.equal(e.qa.getPresentation().paused,true);e.get('resume-story').onclick();assert.equal(e.get('story-body').hidden,false);assert.equal(e.get('story').dataset.readerMode,'reading');assert.equal(e.qa.getPresentation().turnIndex,presentation.turnIndex);assert.deepEqual(e.qa.getState(),state);
+}));
+
+test('eight-pouch insert is exactly bounded and clears actor and portrait layers',async()=>{
+ const state=runtime.initialState(),rules=scene('b03_rules',state),storage=memory();saveQueue(storage,state,[rules]);
+ await withApp(storage,e=>{const before=e.qa.getState(),image=e.get('story-backdrop');assert.match(image.src,/b03-eight-heat-pouches-open.webp$/);assert.equal(e.get('story').dataset.artPresentation,'object-insert');assert.equal(e.get('story-actors').children.length,0);assert.equal(e.get('story-portrait').src,'');
+ image.loaded(1672,941);assert.equal(image.hidden,false);assert.equal(e.get('story-copy').textContent,rules.turns[0].text);
+ const old=image.onload;while(e.qa.getPresentation().queue[0].turns[e.qa.getPresentation().turnIndex].id!=='b03_rules.L207')e.get('story-next').onclick();
+ assert.match(image.src,/b03-tree-heart-veranda.webp$/);assert.equal(e.get('story').dataset.artPresentation,'environment');assert.equal(image.hidden,true);old();assert.equal(image.hidden,true);assert.match(e.get('story-art-label').textContent,/载入中/);image.loaded(1672,941);assert.equal(image.hidden,false);assert.deepEqual(e.qa.getState(),before);
+ });
+});
+
+test('new art failures, repeated reopen and wrong dimensions remain safe',async()=>{
+ for(const id of ['b02_enter','b03_enter','b03_rules']){const storage=memory(),state=runtime.initialState();saveQueue(storage,state,[scene(id,state)]);
+ await withApp(storage,e=>{const image=e.get('story-backdrop'),p=e.qa.getPresentation();image.failed();assert.equal(image.hidden,true);assert.match(e.get('story-art-label').textContent,/背景加载失败/);e.get('story-close').onclick();e.get('resume-story').onclick();image.loaded(1,1);assert.equal(image.hidden,true);assert.deepEqual(e.qa.getState(),state);assert.equal(e.qa.getPresentation().turnIndex,p.turnIndex);});}
+});
+
+test('history arrows keep browser scrolling default and never move the game',()=>withApp(memory(),e=>{
+ e.get('story-history').onclick();const before=e.qa.getState();let prevented=false;
+ // The document handler is the same one used by ordinary arrow map input.
+ e.key('ArrowDown','keydown',{target:e.get('story-history-entries'),preventDefault(){prevented=true;}});assert.equal(prevented,false);assert.deepEqual(e.qa.getState(),before);
+ const source=readFileSync(new URL('../public/campaigns-b/app.js',import.meta.url),'utf8');assert.match(source,/if\(modalOpen\(\)\|\|session.pending\|\|session.isStoryOpen\(\)\)\{clearHeldMovement\(\);return;\}event.preventDefault\(\)/);
+}));

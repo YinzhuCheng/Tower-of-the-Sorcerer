@@ -1,3 +1,4 @@
+import {createForestGalReader} from '../src/rendering/forest-gal-reader.js';
 import {presentForestGal,clearForestGal} from '../src/rendering/forest-gal-stage.js';
 import {createFineForestSaveExtension} from '../src/rendering/forest-fine-save.js';
 import {createFineForestAppAdapter} from '../src/rendering/forest-fine-app.js';
@@ -40,12 +41,14 @@ $('confirm-cancel').onclick=()=>{fine.cancel();session.cancel();$('confirmation'
 $('confirmation').addEventListener('cancel',()=>{fine.cancel();session.cancel();render();});
 // Each confirmation callback is installed with its exact generation-bound token.
 function budgetLines(container){const state=session.state,b=story.budget(state);container.append(el('p',`暖脂剩余 ${b.currentHeat} · 四阀必留 ${b.requiredValveReserve} · 可自由分配 ${b.availableOptionalHeat}；已关 ${b.closedValves}/4 支阀${b.frozen?'，暖点方案已确定':''}`));for(const p of b.points)container.append(el('p',`${p.title}：${p.cost}份 · ${p.invested?'已投入':b.frozen?'普通方案':p.affordable?'尚未投入':'自由余量不足'}${!p.invested&&!b.frozen&&!p.affordable?`（还差 ${Math.max(0,p.cost-b.availableOptionalHeat)} 份）`:''}`));if(b.publicHeat)container.append(el('p',`公共库存保留 ${b.publicHeat} 份，不再用于暖点选择`));}
-const galNodes=()=>({backdrop:$('story-backdrop'),actors:$('story-actors'),portrait:$('story-portrait'),label:$('story-art-label'),stage:$('story-stage')});
+const galNodes=()=>({dialog:$('story'),backdrop:$('story-backdrop'),actors:$('story-actors'),portrait:$('story-portrait'),label:$('story-art-label'),stage:$('story-stage')});
+const galReader=createForestGalReader({dialog:$('story'),stage:$('story-stage'),body:$('story-body'),historyButton:$('story-history'),historyPanel:$('story-history-panel'),historyEntries:$('story-history-entries'),historyClose:$('story-history-close'),hideButton:$('story-hide'),restoreButton:$('story-restore'),historyTitle:$('story-history-title')});
 function renderStory(){
  if(worldDisplay.isCoarseMoving())return; // Coarse portal travel finishes visibly; fine partial steps pause behind story.
- if(!session.isStoryOpen()){clearForestGal(galNodes());if($('story').open)$('story').close();return;}
+ if(!session.isStoryOpen()){galReader.reset();clearForestGal(galNodes());if($('story').open)$('story').close();return;}
  const scene=session.current(),turn=session.turn();if(!turn)return;
  const backdrop=presentForestGal(galNodes(),scene,turn);
+ galReader.sync(scene,session.presentation.turnIndex,forestChoicePrompt(scene));
  $('story-title').textContent=scene.title;$('story-speaker').textContent=turn.speaker||'旁白';$('story-copy').textContent=turn.kind==='choice-prompt'?forestChoicePrompt(scene):turn.text;$('story-progress').textContent=`${session.presentation.turnIndex+1} / ${scene.turns.length}`;$('story-notice').textContent=scene.stateNotice??'';$('story-notice').hidden=!scene.stateNotice;
  const stage=turn.stage??{},location=runtime.region(backdrop.regionId)?.title??scene.title;
  $('story-location').textContent=location;$('story-camera').textContent=stage.camera==='exterior-empty-shot'?'初雪空景 · 人物不入画':stage.offscreen?.[turn.voicePortrait]?'声音从画面外传来':'';
@@ -60,7 +63,7 @@ function renderStory(){
  if(!$('story').open&&!document.querySelector('dialog[open]'))$('story').showModal();
 }
 $('story-close').onclick=()=>{session.pause();render();};
-$('story-next').onclick=()=>{session.advance();render();};$('story-skip').onclick=()=>{session.skip();render();};$('story-pause').onclick=()=>{session.pause();render();};$('story').addEventListener('cancel',event=>{event.preventDefault();session.pause();render();});$('resume-story').onclick=()=>{session.resume();render();};
+$('story-next').onclick=()=>{session.advance();render();};$('story-skip').onclick=()=>{session.skip();render();};$('story-pause').onclick=()=>{session.pause();render();};$('story').addEventListener('cancel',event=>{event.preventDefault();if(galReader.dismiss())return;session.pause();render();});$('resume-story').onclick=()=>{session.resume();render();};
 const revisits={5:'b05_revisit',7:'b07_revisit',17:'b17_revisit',18:'b18_revisit',19:'b19_revisit'};
 $('revisit').onclick=()=>{report(session.revisit(revisits[Number(session.state.location.regionId.slice(2))]));render();};
 function render(){
@@ -106,7 +109,7 @@ function load(slot){clearHeldMovement({invalidate:true});session.cancel();if($('
 $('load-auto').onclick=()=>load('auto');$('load-manual').onclick=()=>load('manual');$('new').onclick=()=>{clearHeldMovement({invalidate:true});session.cancel();if(!confirm('从南坡村口重新开始？当前自动档会更新，手动档保留。'))return;clearHeldMovement();session.restart();$('settings').close();selected=null;logs=[];worldDisplay.reset(session.state.location);render();};
 $('board').onclick=event=>{if(!fine.active||event.target!==$('board')||modalOpen()||session.pending||session.isStoryOpen())return;const box=$('board').getBoundingClientRect(),id=worldDisplay.fineHitTest(event.clientX-box.left,event.clientY-box.top);if(id){clearHeldMovement();const r=fine.click(id);if(!r.ok)report(r);}};
 for(const button of document.querySelectorAll('[data-dir]'))button.onclick=()=>move(button.dataset.dir);
-document.addEventListener('keydown',event=>{const key=movementKey(event);if(editableMovementTarget(event.target)){clearHeldMovement();return;}if(!key)return;if(event.ctrlKey||event.metaKey||event.altKey){clearHeldMovement();return;}event.preventDefault();if(modalOpen()||session.pending||session.isStoryOpen()){clearHeldMovement();return;}if(event.repeat)return;heldMovement.press(event);if(fine.active){if(!busy&&!backgroundPaused)fine.press(key.direction);return;}if(!worldDisplay.isMoving()&&!busy){lastHeldStep=typeof performance==='object'?performance.now():0;move(key.direction);}if(heldFrame==null&&typeof requestAnimationFrame==='function')heldFrame=requestAnimationFrame(heldTick);});
+document.addEventListener('keydown',event=>{const key=movementKey(event);if(editableMovementTarget(event.target)){clearHeldMovement();return;}if(!key)return;if(event.ctrlKey||event.metaKey||event.altKey){clearHeldMovement();return;}if(modalOpen()||session.pending||session.isStoryOpen()){clearHeldMovement();return;}event.preventDefault();if(event.repeat)return;heldMovement.press(event);if(fine.active){if(!busy&&!backgroundPaused)fine.press(key.direction);return;}if(!worldDisplay.isMoving()&&!busy){lastHeldStep=typeof performance==='object'?performance.now():0;move(key.direction);}if(heldFrame==null&&typeof requestAnimationFrame==='function')heldFrame=requestAnimationFrame(heldTick);});
 document.addEventListener('keyup',event=>{if(!heldMovement.release(event))return;const direction=heldMovement.direction();if(!direction)clearHeldMovement({release:true});else if(fine.active)fine.press(direction);});
 document.addEventListener('visibilitychange',()=>{if(document.hidden)clearHeldMovement();});
 document.addEventListener('focusin',()=>{backgroundPaused=false;clearHeldMovement();});

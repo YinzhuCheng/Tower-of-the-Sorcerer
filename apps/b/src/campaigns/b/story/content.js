@@ -1,4 +1,4 @@
-// Authored opening B-opening-r1 layered on sealed b-dialogue-r1; no gameplay changes.
+// B prose depth pass 2026-10-03. Turn IDs, branch gates, runtime and saved queues are unchanged.
 export const FOREST_STORY_CONTENT = {
   "id": "forest-b-gal-v1.1",
   "schemaVersion": 1,
@@ -156,7 +156,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 7,
           "speaker": "旁白",
           "portrait": null,
-          "text": "山下的风吹过璃的披肩。再走几步，风忽然暖了。屋檐还滴着昨夜的雨，倒扣的木盆边已经钻出嫩草。",
+          "text": "离村四年，璃还是记得南坡最后几级石阶。她跟着珂珂的货队回来，山下的冷风尚未吹干披肩，迎面已经暖了。屋檐滴着昨夜的雨，倒扣的木盆旁长出一簇嫩草。",
           "branch": "common",
           "kind": "narration"
         },
@@ -174,7 +174,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 11,
           "speaker": "旁白",
           "portrait": null,
-          "text": "璃托住木框背包，等珂珂跨上那级歪台阶。",
+          "text": "璃赶紧托住背包底下的木框。珂珂腾出一只手扶墙，跨过歪斜的台阶；挂在包上的灯轻轻撞了一下，璃等她站稳才松手。",
           "branch": "common",
           "kind": "narration"
         },
@@ -183,7 +183,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 13,
           "speaker": "璃",
           "portrait": "hero",
-          "text": "这么多年，这块台阶还是歪的。",
+          "text": "小心这级，右边低。我小时候在这里摔过，没想到四年了，它还等着绊我。",
           "branch": "common",
           "expression": "guarded"
         },
@@ -192,7 +192,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 15,
           "speaker": "珂珂",
           "portrait": "merchant",
-          "text": "它不歪，我这趟就能少停三次。",
+          "text": "那你回来得正好，认路的人多出点力。等车上的东西卸完，我得找米露说说这块石头。",
           "branch": "common",
           "expression": "knowing"
         },
@@ -201,7 +201,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 17,
           "speaker": "纱雾",
           "portrait": "guide",
-          "text": "璃？",
+          "text": "……璃？",
           "branch": "common",
           "expression": "gentle"
         },
@@ -210,7 +210,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 19,
           "speaker": "旁白",
           "portrait": null,
-          "text": "璃抬头。纱雾站在门楼下，手里捏着一张折得很小的旧地图。",
+          "text": "门楼下，纱雾把一张旧地图捏在手里，原本要说的话停住了。璃望见她，手还托在已经离开的背包下面，过了一会儿才收回来。",
           "branch": "common",
           "kind": "narration"
         },
@@ -219,7 +219,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 21,
           "speaker": "璃",
           "portrait": "hero",
-          "text": "我……这次跟货队来的。",
+          "text": "珂珂这趟送货上山，我就跟来了。也想回来看看你。",
           "branch": "common",
           "expression": "guarded"
         },
@@ -228,7 +228,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 23,
           "speaker": "纱雾",
           "portrait": "guide",
-          "text": "我看见了。",
+          "text": "你还知道回来。我刚才远远看着，怕又认错人。",
           "branch": "common",
           "expression": "gentle"
         },
@@ -237,7 +237,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 25,
           "speaker": "珂珂",
           "portrait": "merchant",
-          "text": "只跟来一个背包。车还在下面，那几级台阶，我可不敢让骡子试。",
+          "text": "人是我带到门口了，车可还在下面。你们慢慢说，先让我把这个包放下，肩膀快跟木框长在一起了。",
           "branch": "common",
           "expression": "knowing"
         },
@@ -246,7 +246,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 27,
           "speaker": "旁白",
           "portrait": null,
-          "text": "纱雾向旁边让开，目光还停在璃身上。",
+          "text": "璃接住珂珂卸下的一边背带，借着弯腰避开纱雾的目光。纱雾朝村里让了让，手中的地图却没有收好，纸角贴着指节。",
           "branch": "common",
           "kind": "narration"
         },
@@ -255,7 +255,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 29,
           "speaker": "纱雾",
           "portrait": "guide",
-          "text": "先进来吧。广场烧了热水。",
+          "text": "放门楼里面吧，地是干的。广场烧了热水……璃，你也先喝一口，披肩还湿着。",
           "branch": "common",
           "expression": "gentle"
         },
@@ -264,7 +264,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 31,
           "speaker": "旁白",
           "portrait": null,
-          "text": "两位住民提着行囊出来，绕向门楼下通往坡口的窄道。其中一人朝纱雾挥了挥手。",
+          "text": "两位住民提着行囊从村里出来。窄道只能错开身子过，其中一人把包换到另一只手，朝纱雾招呼。",
           "branch": "common",
           "kind": "narration"
         },
@@ -273,7 +273,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 33,
           "speaker": "住民",
           "portrait": null,
-          "text": "我们去河谷看看屋子。米露问起来，你替我说一声，后天回来搬箱子。",
+          "text": "我们去河谷看屋子。米露问起来，你替我说一声，后天回来搬箱子。还有一箱沉的，得等车。",
           "branch": "common"
         },
         {
@@ -290,7 +290,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 37,
           "speaker": "璃",
           "portrait": "hero",
-          "text": "怎么这时候搬家？",
+          "text": "这就要搬下山了？出了什么事？",
           "branch": "common",
           "expression": "guarded"
         },
@@ -299,7 +299,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 39,
           "speaker": "旁白",
           "portrait": null,
-          "text": "纱雾低头，把地图沿旧折痕压了一下。",
+          "text": "纱雾送他们走过门洞，才低头把地图沿旧折痕压平。方才见到璃的那一点笑意已经收了。",
           "branch": "common",
           "kind": "narration"
         },
@@ -308,7 +308,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 41,
           "speaker": "纱雾",
           "portrait": "guide",
-          "text": "今年要停暖。老师说，树心撑不了下一冬了。",
+          "text": "今年要停暖。老师一直守着树心，可它已经撑不了下一冬。有人先去河谷找住处，留下的人也得准备炉子和冬衣。",
           "branch": "common",
           "expression": "gentle"
         },
@@ -317,7 +317,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 43,
           "speaker": "旁白",
           "portrait": null,
-          "text": "璃看向屋檐下的新草。",
+          "text": "璃的目光落回木盆旁的嫩草。她小时候总在这里脱下厚外套，进村就用不着了；眼前的屋檐、热气，几乎都没有变。",
           "branch": "common",
           "kind": "narration"
         },
@@ -326,7 +326,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 45,
           "speaker": "璃",
           "portrait": "hero",
-          "text": "可这里还这么暖。",
+          "text": "我一路还在想，回来就能暖和了。树都这样了，怎么还在发热？",
           "branch": "common",
           "expression": "guarded"
         },
@@ -335,7 +335,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 47,
           "speaker": "纱雾",
           "portrait": "guide",
-          "text": "嗯。进村再说吧。",
+          "text": "它还在用以前留下的。老师会跟你说清楚。先进去吧，大家都在广场。",
           "branch": "common",
           "expression": "gentle"
         },
@@ -344,7 +344,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 49,
           "speaker": "旁白",
           "portrait": null,
-          "text": "窄道里忽然响起木轮空转的声音。刚走过去的住民抱着行囊退了回来。",
+          "text": "话音未落，窄道里响起木轮刮石的声音。刚过去的住民抱着行囊退回来，一只包掉在转角，木头重重撞上了墙。",
           "branch": "common",
           "kind": "narration"
         }
@@ -378,7 +378,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 53,
           "speaker": "旁白",
           "portrait": null,
-          "text": "旧运木偶横在路口，断掉的前轮抵着挡土墙，后轮却还在推。住民刚探身去拿落下的东西，它的载木臂就抬了起来。",
+          "text": "旧运木偶横在窄口，载着木头的身子歪向挡土墙。前轮已经断了，后轮仍不停地推。住民伸手想捡行囊，载木臂忽然从他头顶抬起，碎屑落在包上。",
           "branch": "common",
           "kind": "narration"
         },
@@ -387,7 +387,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 55,
           "speaker": "璃",
           "portrait": "hero",
-          "text": "先退回来。",
+          "text": "回来！东西先放着，人退到我身后。",
           "branch": "common",
           "expression": "guarded"
         },
@@ -396,7 +396,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 57,
           "speaker": "纱雾",
           "portrait": "guide",
-          "text": "它要把木头送去溪边。以前这里没有这面墙。",
+          "text": "它还在往溪边送木头。以前这里没有这面墙，路改了，它一直照旧走。",
           "branch": "common",
           "expression": "gentle"
         },
@@ -405,7 +405,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 59,
           "speaker": "珂珂",
           "portrait": "merchant",
-          "text": "人能绕，行李绕不过去。",
+          "text": "我拦着后面的人。璃，这里两边都是墙，行李和小车都挤不过去。",
           "branch": "common",
           "expression": "knowing"
         },
@@ -414,7 +414,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 61,
           "speaker": "璃",
           "portrait": "hero",
-          "text": "旁边那个开关呢？",
+          "text": "纱雾，墙边那个开关还能用吗？",
           "branch": "common",
           "expression": "guarded"
         },
@@ -423,7 +423,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 63,
           "speaker": "纱雾",
           "portrait": "guide",
-          "text": "试过了。传动线断在里面，关不住它。",
+          "text": "我试过，关不住。线断在底座里面了；它一动，就把那个口压住。",
           "branch": "common",
           "expression": "gentle"
         },
@@ -432,7 +432,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 65,
           "speaker": "旁白",
           "portrait": null,
-          "text": "璃右手拔剑。",
+          "text": "璃等住民退过门楼，右手拔出剑。她沿墙看清木臂来回扫过的位置，又把落在脚边的行囊踢到身后。",
           "branch": "common",
           "kind": "narration"
         },
@@ -441,7 +441,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 67,
           "speaker": "璃",
           "portrait": "hero",
-          "text": "那就拆驱动核。你们退到门楼后面，别从它手臂下面钻。",
+          "text": "我去拆驱动核。纱雾，帮我看住转角；珂珂，别让人过来抢东西，等轮子彻底停下再搬。",
           "branch": "common",
           "expression": "guarded"
         }
@@ -480,7 +480,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 73,
           "speaker": "旁白",
           "portrait": null,
-          "text": "木臂垂下来。璃等轮子完全停住，把剑收回左腰。两位住民搬开轻些的木块，行囊终于过了窄口。",
+          "text": "载木臂终于垂下来。璃仍盯着后轮，等最后一声空转停了，才把剑收回左腰。两位住民试着搬开轻些的木块，将行囊从窄口一件件递过去。",
           "branch": "common",
           "kind": "narration"
         },
@@ -497,7 +497,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 77,
           "speaker": "璃",
           "portrait": "hero",
-          "text": "等它冷了再搬。先拿那块石头垫住轮子。",
+          "text": "先别碰，还烫着。拿那块石头垫住轮子，等核凉了再搬。",
           "branch": "common",
           "expression": "guarded"
         },
@@ -506,7 +506,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 79,
           "speaker": "旁白",
           "portrait": null,
-          "text": "她弯腰去提方才放下的包。",
+          "text": "璃弯腰去提自己的包，手指碰到背带时，才发觉纱雾还站在身后。",
           "branch": "common",
           "kind": "narration"
         },
@@ -515,7 +515,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 81,
           "speaker": "纱雾",
           "portrait": "guide",
-          "text": "璃。",
+          "text": "璃，等一下。",
           "branch": "common",
           "expression": "gentle"
         },
@@ -524,7 +524,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 83,
           "speaker": "旁白",
           "portrait": null,
-          "text": "璃抬起头。",
+          "text": "她转过身。纱雾看了一眼已经安静的木偶，又看回她，绷着的肩这才慢慢放下来。",
           "branch": "common",
           "kind": "narration"
         },
@@ -533,7 +533,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 85,
           "speaker": "纱雾",
           "portrait": "guide",
-          "text": "你连“好了”都不说一声。",
+          "text": "下回弄好了，跟我们说一声。我刚才一直看着你的手，还以为你哪里受伤了。",
           "branch": "common",
           "expression": "gentle"
         },
@@ -542,7 +542,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 87,
           "speaker": "璃",
           "portrait": "hero",
-          "text": "……好了。",
+          "text": "没受伤。刚才顾着看轮子，忘了你们还在等。……现在好了。",
           "branch": "common",
           "expression": "guarded"
         },
@@ -551,7 +551,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 89,
           "speaker": "旁白",
           "portrait": null,
-          "text": "纱雾嘴角动了一下，转身时慢了半步。",
+          "text": "纱雾伸手替她拨开挂在背带上的一小片木屑。动作做到一半，两人都停了停，随后纱雾把那片木屑捏下来。",
           "branch": "common",
           "kind": "narration"
         },
@@ -560,7 +560,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 91,
           "speaker": "纱雾",
           "portrait": "guide",
-          "text": "那走吧。水还热着。",
+          "text": "那就进去。刚才有好多话想问你，一急，都忘了。先把水喝了再说。",
           "branch": "common",
           "expression": "gentle"
         }
@@ -594,7 +594,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 95,
           "speaker": "旁白",
           "portrait": null,
-          "text": "广场上堆着装粮的筐和拆下来的窗框。米露把圆盾靠在桌腿旁，伸脚让尾巴避开一块湿砖。",
+          "text": "回枝广场比璃记忆中挤了许多。装粮的筐靠着根盘，拆下的窗框一面面排在墙边。米露把圆盾靠在桌腿旁，抱着一摞布起身，尾巴险些扫进脚边的水洼。",
           "branch": "common",
           "kind": "narration"
         },
@@ -603,7 +603,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 97,
           "speaker": "米露",
           "portrait": "cat_boss",
-          "text": "封门缝的布放在学舍了。要下山搬东西的，今晚来告诉我，得用几趟车。",
+          "text": "封门缝的布都放学舍了，按各家的窗拿，别一卷全抱走。要下山搬东西的，今晚来告诉我得用几趟车，我好给你们留位置。",
           "branch": "common",
           "expression": "alert"
         },
@@ -612,7 +612,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 99,
           "speaker": "旁白",
           "portrait": null,
-          "text": "璃看了一眼窗框，又看向忙着打包的人。",
+          "text": "有人举着窗框问钉子放在哪里，另一边又在喊缺一个粮筐。璃等米露放下手里的布才走过去，目光仍停在那些行囊上。",
           "branch": "common",
           "kind": "narration"
         },
@@ -621,7 +621,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 101,
           "speaker": "璃",
           "portrait": "hero",
-          "text": "听纱雾说，要停暖了。能不能先把人送到河谷？冬天到了再走，怕来不及。",
+          "text": "纱雾说树心撑不住了。要不先把人送到河谷？路上那些坏木偶我来清，别等冷起来了还困在这里。",
           "branch": "common",
           "expression": "guarded"
         },
@@ -630,7 +630,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 103,
           "speaker": "旁白",
           "portrait": null,
-          "text": "抱着窗框的住民停了一下。",
+          "text": "抱窗框的住民没有接话，只把压在臂弯里的旧木头抱紧了些。璃这才认出他是在往家里搬。",
           "branch": "common",
           "kind": "narration"
         },
@@ -639,7 +639,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 105,
           "speaker": "住民",
           "portrait": null,
-          "text": "我先不走。窑在这里，今年的粮也晒在这里。这个窗框补好，还能用。",
+          "text": "我先不走。窑在这里，粮也晒在这里，到了下面怎么过日子，还没想好。这窗框补一补能用，我先把自己屋里弄暖。",
           "branch": "common"
         },
         {
@@ -647,7 +647,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 107,
           "speaker": "另一位住民",
           "portrait": null,
-          "text": "我要下去。昨天看了间靠灶的屋子，还得再去问问。",
+          "text": "我倒想早点下去。昨天看的屋子靠着灶，价钱还得再问问。你要清路，先让我能带着箱子过就好。",
           "branch": "common"
         },
         {
@@ -655,7 +655,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 109,
           "speaker": "璃",
           "portrait": "hero",
-          "text": "那我先把下山的路清出来。",
+          "text": "好。想下去的先走，留下的……我也把上来的路清出来。",
           "branch": "common",
           "expression": "guarded"
         },
@@ -664,7 +664,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 111,
           "speaker": "米露",
           "portrait": "cat_boss",
-          "text": "好。不过别只清到人能走。留下的也等着砖和柴上来。",
+          "text": "对，先让车过得去。下山的行李、上山的砖和柴，都等同一条路。你能跨过去的地方，车轮可跨不过去。",
           "branch": "common",
           "expression": "alert"
         },
@@ -673,7 +673,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 113,
           "speaker": "旁白",
           "portrait": null,
-          "text": "她伸手去抽茶杯底下的路图，杯底留了一个湿圈。珂珂连忙抬起纸角。",
+          "text": "米露去抽茶杯底下的路图，杯子晃了一下，热水沿货场的位置洇开。珂珂连忙托住纸角，把干布塞过去。",
           "branch": "common",
           "kind": "narration"
         },
@@ -682,7 +682,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 115,
           "speaker": "珂珂",
           "portrait": "merchant",
-          "text": "别淹货场。砖还在那儿。",
+          "text": "先救救我的货场。真正的砖还没运上来，图上的倒快泡烂了。",
           "branch": "common",
           "expression": "knowing"
         },
@@ -700,7 +700,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 119,
           "speaker": "米露",
           "portrait": "cat_boss",
-          "text": "南坡能走人，车得走西石道。断了几段，还有坏木偶占着。先沿西面下到河谷，再从北坡绕回来。",
+          "text": "你看，南坡这条窄道能走人，大车进不来。车得走西石道，下到河谷，再绕北坡回来；几段桥坏了，旧木偶也还占着路。",
           "branch": "common",
           "expression": "alert"
         },
@@ -709,7 +709,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 121,
           "speaker": "璃",
           "portrait": "hero",
-          "text": "工队怎么过去？",
+          "text": "工队跟着我们走？有些地方连工具都不好搬。",
           "branch": "common",
           "expression": "guarded"
         },
@@ -718,7 +718,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 123,
           "speaker": "米露",
           "portrait": "cat_boss",
-          "text": "小径能背工具，运不了整车门板。你们清出落脚处，他们跟着补桥、接管。",
+          "text": "他们能沿小径背工具，整块门板就没办法了。你们清出能站人的地方，他们再补桥、接管；先别替大家把所有活都揽下来。",
           "branch": "common",
           "expression": "alert"
         },
@@ -727,7 +727,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 125,
           "speaker": "璃",
           "portrait": "hero",
-          "text": "还剩多少时间？",
+          "text": "离下雪还有多久？要先把哪几段赶出来？",
           "branch": "common",
           "expression": "guarded"
         },
@@ -736,7 +736,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 127,
           "speaker": "珂珂",
           "portrait": "merchant",
-          "text": "照往年的雪期，还有六周。可别当成最后一天才搬，一车装不下那么多人家的东西。",
+          "text": "照往年，还有六周。可一车装不下这么多户的东西，雨天又走得慢。前面多耽误一趟，后面就得有人半夜收箱子。",
           "branch": "common",
           "expression": "knowing"
         },
@@ -745,7 +745,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 129,
           "speaker": "米露",
           "portrait": "cat_boss",
-          "text": "争取前两周把这一轮停暖做完。后面试炉子、补门窗，还得留些日子。",
+          "text": "先用两周把这轮停暖做完。门窗补过还得试炉子，运货也得留余地。哪一段来不及，回来告诉我，我们再排。",
           "branch": "common",
           "expression": "alert"
         },
@@ -754,7 +754,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 131,
           "speaker": "旁白",
           "portrait": null,
-          "text": "璃又看了看那位住民手里的窗框，伸手扶了一把，让他靠稳在墙边。",
+          "text": "那位住民抱着窗框想挪到墙边，腾不出手。璃扶住另一端，和他一起把它靠稳；木框上磨亮的一处，刚好容下一只手。",
           "branch": "common",
           "kind": "narration"
         },
@@ -763,7 +763,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 133,
           "speaker": "璃",
           "portrait": "hero",
-          "text": "我刚才只想着往下送。",
+          "text": "刚才我连你们要留下什么都没问，就想往下送了。车回来的时候，我会看着把东西带上来。",
           "branch": "common",
           "expression": "guarded"
         },
@@ -772,7 +772,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 135,
           "speaker": "米露",
           "portrait": "cat_boss",
-          "text": "回来时也别空着车。",
+          "text": "好。等你回来，看看这窗装得怎么样。我还欠他半袋灰呢。",
           "branch": "common",
           "expression": "alert"
         },
@@ -781,7 +781,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 137,
           "speaker": "旁白",
           "portrait": null,
-          "text": "纱雾把自己的旧地图收好，挨到桌边。",
+          "text": "纱雾在旁边听了许久，把旧地图仔细收好，走到米露摊开的路图前。她的指尖从暖溪往西，沿着熟悉的根路划过去。",
           "branch": "common",
           "kind": "narration"
         },
@@ -790,7 +790,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 139,
           "speaker": "纱雾",
           "portrait": "guide",
-          "text": "根路我认识。我陪她去。",
+          "text": "这边几条根路我都走过，阀口也认得。我陪璃去，工队不用到地方再找入口。",
           "branch": "common",
           "expression": "gentle"
         },
@@ -799,7 +799,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 141,
           "speaker": "米露",
           "portrait": "cat_boss",
-          "text": "树心那边呢？",
+          "text": "你出去这一趟，树心那边谁接？老师这些天可没怎么合过眼。",
           "branch": "common",
           "expression": "alert"
         },
@@ -808,7 +808,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 143,
           "speaker": "旁白",
           "portrait": null,
-          "text": "纱雾的手停了一下。",
+          "text": "纱雾的手停在图上。她朝外廊方向看了一眼，刚才已经走近桌边的半步又收了回去。",
           "branch": "common",
           "kind": "narration"
         },
@@ -817,7 +817,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 145,
           "speaker": "纱雾",
           "portrait": "guide",
-          "text": "我先去问老师。",
+          "text": "我先去跟老师说。把能交的都交清楚，再出发。",
           "branch": "common",
           "expression": "gentle"
         }
@@ -851,7 +851,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 151,
           "speaker": "璃",
           "portrait": "hero",
-          "text": "哪一段先通，最能帮上忙？",
+          "text": "先从哪一段动手？你告诉我现在最急的，我照着来。",
           "branch": "response1",
           "expression": "guarded"
         },
@@ -860,7 +860,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 153,
           "speaker": "米露",
           "portrait": "cat_boss",
-          "text": "先去树心找老师。出来经学舍去暖溪，先看看管口，再接着清西石道。",
+          "text": "先到树心找老师，把停暖的事问清楚。出来经过学舍，再去暖溪看管口，沿西石道往河谷走。别到了岔口才猜。",
           "branch": "response1",
           "expression": "alert"
         },
@@ -869,7 +869,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 157,
           "speaker": "璃",
           "portrait": "hero",
-          "text": "我还没问他们，就先说把人送走了。",
+          "text": "我刚才说得太快了。等回来，我想听听他们各家怎么打算，省得帮了倒忙。",
           "branch": "response2",
           "expression": "guarded"
         },
@@ -878,7 +878,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 159,
           "speaker": "米露",
           "portrait": "cat_boss",
-          "text": "那等回来，挨家问问。先帮我把车能走的路弄出来。",
+          "text": "有的是机会。先帮我把车道接出来，他们想带什么、想住哪儿，才有得选。",
           "branch": "response2",
           "expression": "alert"
         }
@@ -931,7 +931,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 159,
           "speaker": "旁白",
           "portrait": null,
-          "text": "墙上是一排温标，桌上放着凉掉的饭。诺克缇娅站在三个红菱封印片前，调整其中一枚的位置。",
+          "text": "外廊比广场更热。墙上的温标排得密密麻麻，桌边一碗饭已经凉了。纱雾放轻脚步：这是她平日跟着老师照看根流的地方。诺克缇娅正把三枚红菱封印片中的一枚向下移，听见脚步也没有回头。",
           "branch": "common",
           "kind": "narration"
         },
@@ -940,7 +940,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 161,
           "speaker": "诺克缇娅",
           "portrait": "final_queen",
-          "text": "别站在那块铜板上。会热。",
+          "text": "铜板上别站人，会烫。纱雾，把他们领到桌子这边来。",
           "branch": "common",
           "expression": "cold"
         },
@@ -949,7 +949,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 163,
           "speaker": "璃",
           "portrait": "hero",
-          "text": "（挪开脚）你知道我要问什么？",
+          "text": "（挪开脚，望了一眼凉饭）外面的人在搬家，你这里却还这么热。真的一点办法也没有了？",
           "branch": "common",
           "expression": "guarded"
         },
@@ -958,7 +958,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 165,
           "speaker": "诺克缇娅",
           "portrait": "final_queen",
-          "text": "每个进来的人都先问：还能不能暖一冬。",
+          "text": "大家都这样问。我若还能稳稳当当地许下一冬，早就去广场说了。绯叶，把那只囊给她看。",
           "branch": "common",
           "expression": "cold"
         },
@@ -967,7 +967,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 167,
           "speaker": "绯叶",
           "portrait": "fox_boss",
-          "text": "（把一截干瘪的树脂囊放在布上）这些囊是去年长成的。今年一个新的也没有。",
+          "text": "（把干瘪的树脂囊放在布上）去年长的，捏这里，已经空了。今年我们查过所有能长新囊的地方，一个也没有。",
           "branch": "common",
           "expression": "watchful"
         },
@@ -976,7 +976,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 169,
           "speaker": "纱雾",
           "portrait": "guide",
-          "text": "可是根里还在发热。",
+          "text": "可我每天看温标，它还升得上去。昨天外侧那根，摸起来也还是热的。",
           "branch": "common",
           "expression": "gentle"
         },
@@ -985,7 +985,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 171,
           "speaker": "绯叶",
           "portrait": "fox_boss",
-          "text": "它在用剩下的。和仓里有粮、田里今年没有收成，是两回事。",
+          "text": "那是它还在消耗旧的。存粮能再吃几顿，田里这一年没长出粮食，这件事却不会自己过去。",
           "branch": "common",
           "expression": "watchful"
         },
@@ -994,7 +994,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 173,
           "speaker": "绯叶",
           "portrait": "fox_boss",
-          "text": "它得休眠。可停下来，春天也未必能恢复。",
+          "text": "让它歇下来，还有恢复的机会。继续撑着，我们连剩下的组织也保不住；至于明年春天能醒多少，我现在不敢答应你们。",
           "branch": "common",
           "expression": "watchful"
         },
@@ -1003,7 +1003,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 175,
           "speaker": "旁白",
           "portrait": null,
-          "text": "诺克缇娅将三个封印片一并压低，温标缓缓回到刻线间。",
+          "text": "温标的红线又抬了一点。诺克缇娅停下话，把三枚封印片一起压低。几个人都没有再开口，直到红线缓缓落回刻线间。",
           "branch": "common",
           "kind": "narration"
         },
@@ -1012,7 +1012,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 177,
           "speaker": "诺克缇娅",
           "portrait": "final_queen",
-          "text": "所以村子得先有别的过法。不能等它醒了才决定。",
+          "text": "先把村里过冬的办法安排好。树什么时候能醒，谁都说不准，总不能叫大家一直等着。",
           "branch": "common",
           "expression": "cold"
         },
@@ -1021,7 +1021,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 179,
           "speaker": "璃",
           "portrait": "hero",
-          "text": "先把你带出去呢？",
+          "text": "你已经守多久了？如果先把你带出去，让它自己慢慢停呢？",
           "branch": "common",
           "expression": "guarded"
         },
@@ -1030,7 +1030,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 181,
           "speaker": "诺克缇娅",
           "portrait": "final_queen",
-          "text": "现在离开，几处回水会倒流。冬用管接上以后也会被冲坏。得先把这些支流关好。",
+          "text": "几处回水会先倒灌，连新接的冬用管也会冲坏。我得守到支流一处处关好，才能放开这里。",
           "branch": "common",
           "expression": "cold"
         },
@@ -1039,7 +1039,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 183,
           "speaker": "纱雾",
           "portrait": "guide",
-          "text": "四个支阀，然后总阀。",
+          "text": "四处支阀都关好，再动总阀。我认识那些阀口，带璃过去会快些。",
           "branch": "common",
           "expression": "gentle"
         },
@@ -1048,7 +1048,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 185,
           "speaker": "诺克缇娅",
           "portrait": "final_queen",
-          "text": "对。你知道路，璃能处理失控的维护偶。米露的人接普通管、补石基。这几件事得一起做。",
+          "text": "好。失控的维护偶交给璃，根流你来看。米露的工队接管、补石基。哪边还没稳，就等他们稳了再关，别为了让我早点出去冒险。",
           "branch": "common",
           "expression": "cold"
         }
@@ -1073,7 +1073,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 189,
           "speaker": "旁白",
           "portrait": null,
-          "text": "绯叶打开隔热匣。八只小囊嵌在匣内，颜色像很深的蜜。窗外并没有夕阳，囊里却各自浮着一线斜照。",
+          "text": "绯叶把隔热匣搬到空处，掀开盖子。八只小囊嵌在软衬里，深蜜色的囊中各有一线暖光。纱雾凑近了看，脸上也映出那种熟悉的颜色。",
           "branch": "common",
           "kind": "narration"
         },
@@ -1082,7 +1082,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 191,
           "speaker": "纱雾",
           "portrait": "guide",
-          "text": "去年晒场上的光，也是这个颜色。",
+          "text": "去年晒场上的光就是这样。我还记得大家把这些一只只收进去，以为今年能换新的。",
           "branch": "common",
           "expression": "gentle"
         },
@@ -1091,7 +1091,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 193,
           "speaker": "绯叶",
           "portrait": "fox_boss",
-          "text": "就是去年留下的。封好了以后，它跑得慢。原想着今年有新的，再把这些换出来。",
+          "text": "我也这么想。封起来的还保存得好，只是等了一年，替换的没长出来。",
           "branch": "common",
           "expression": "watchful"
         },
@@ -1100,7 +1100,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 195,
           "speaker": "璃",
           "portrait": "hero",
-          "text": "现在只剩这八份？",
+          "text": "能用的，就这八份了？还有没有别处存着的？",
           "branch": "common",
           "expression": "guarded"
         },
@@ -1109,7 +1109,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 197,
           "speaker": "绯叶",
           "portrait": "fox_boss",
-          "text": "只有这些完整封存的。路上能捡到的是干树脂，点灯、补缝都可以，拼不回一只储热囊。",
+          "text": "完整封住热量的只剩这些。路上那些干树脂能点灯、补缝，攒得再多也做不回储热囊。你们别为了这个多跑冤枉路。",
           "branch": "common",
           "expression": "watchful"
         },
@@ -1136,7 +1136,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 203,
           "speaker": "璃",
           "portrait": "hero",
-          "text": "这些给树吃，能不能等到明年？",
+          "text": "拿这八份去养树呢？先撑过冬天，哪怕村里少暖一点。",
           "branch": "common",
           "expression": "guarded"
         },
@@ -1145,7 +1145,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 205,
           "speaker": "绯叶",
           "portrait": "fox_boss",
-          "text": "只够暖一小块地方，长不回它蓄热的组织。它得停下来，收住剩下的力气。",
+          "text": "我试算过。它们够暖一间小屋，补不了整棵树坏掉的蓄热组织。给了树，几处支阀也没东西用了。",
           "branch": "common",
           "expression": "watchful"
         },
@@ -1154,7 +1154,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 207,
           "speaker": "纱雾",
           "portrait": "guide",
-          "text": "（合上四个标盖）这四份留给路。剩下的呢？",
+          "text": "（把四个标盖逐一合好）那这四份谁都别动。剩下四份，要用在哪儿？",
           "branch": "common",
           "expression": "gentle"
         },
@@ -1163,7 +1163,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 209,
           "speaker": "绯叶",
           "portrait": "fox_boss",
-          "text": "温室的内间，两份；老梨树脱暖移栽，一份；半山那间石屋，两份。你们到地方再看，它们各自能留下什么。",
+          "text": "暖生温室的内间要两份；老梨树脱暖移栽要一份；半山候车屋留一冬底温，要两份。每一处都有要紧的缘故。到温室和梨树那边我带你们看，候车屋就问修屋的人。",
           "branch": "common",
           "expression": "watchful"
         },
@@ -1172,7 +1172,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 211,
           "speaker": "璃",
           "portrait": "hero",
-          "text": "一共五份。",
+          "text": "加起来五份。少的这一份，真没有办法补上？",
           "branch": "common",
           "expression": "guarded"
         },
@@ -1181,7 +1181,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 213,
           "speaker": "绯叶",
           "portrait": "fox_boss",
-          "text": "是。",
+          "text": "没有。所以至少有一处得照普通办法过冬。能留下多少、留不下什么，我都会说清楚。",
           "branch": "common",
           "expression": "watchful"
         },
@@ -1190,7 +1190,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 215,
           "speaker": "旁白",
           "portrait": null,
-          "text": "璃收回伸向匣子的手。",
+          "text": "璃伸出去的手停在匣沿。八只囊挨得很近，看上去还满满当当；纱雾合上的四个盖子，却已经占去了一半。",
           "branch": "common",
           "kind": "narration"
         },
@@ -1199,7 +1199,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 217,
           "speaker": "纱雾",
           "portrait": "guide",
-          "text": "可以先都看过，再开盖吗？",
+          "text": "先别打开剩下的。我们把三处都看过，听完那里的人怎么说，再决定，行吗？",
           "branch": "common",
           "expression": "gentle"
         },
@@ -1208,7 +1208,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 219,
           "speaker": "绯叶",
           "portrait": "fox_boss",
-          "text": "当然。一旦送进根槽，就抽不回来了。封着的时候，先别急。",
+          "text": "行。只要还封着，就能等。送进根槽以后抽不回来，想得慢一点没关系。",
           "branch": "common",
           "expression": "watchful"
         },
@@ -1217,7 +1217,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 221,
           "speaker": "诺克缇娅",
           "portrait": "final_queen",
-          "text": "粮柴、学舍的炉子另排好了。大家商量过，这四份留给那三处。你们看过再定。",
+          "text": "粮柴和学舍的炉子已经另有安排，四份暖脂不用再拿去补这些。村里商量过，留给那三处；你们把情况看明白，回来一起核对。",
           "branch": "common",
           "expression": "cold"
         },
@@ -1226,7 +1226,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 223,
           "speaker": "璃",
           "portrait": "hero",
-          "text": "我去看。没用上的地方，也按说好的办法做完。",
+          "text": "我会把每一处都看清。用不上的那边，也得把能做的做好，不能关上匣子就走。",
           "branch": "common",
           "expression": "guarded"
         }
@@ -1256,7 +1256,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 229,
           "speaker": "纱雾",
           "portrait": "guide",
-          "text": "我跟璃走到河谷，再从北边回来。你这边……",
+          "text": "我陪璃走到河谷，再从北边绕回来。第三排温标这几天总往上抬，我要不要先——",
           "branch": "common",
           "expression": "gentle"
         },
@@ -1265,7 +1265,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 231,
           "speaker": "诺克缇娅",
           "portrait": "final_queen",
-          "text": "米露已经安排人送饭和看温标。有异常就按铃，我做复杂的那部分。",
+          "text": "米露已经安排人来看，也有人送饭。红线过刻度就按铃，他们认得；复杂的我来做。你把看路的东西带齐。",
           "branch": "common",
           "expression": "cold"
         },
@@ -1274,7 +1274,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 233,
           "speaker": "纱雾",
           "portrait": "guide",
-          "text": "我也能再留两天。",
+          "text": "我再留两天也行。等这边平一点，追上她们。",
           "branch": "common",
           "expression": "gentle"
         },
@@ -1283,7 +1283,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 235,
           "speaker": "诺克缇娅",
           "portrait": "final_queen",
-          "text": "你留两天，路就晚两天有人看。去吧，回来告诉我哪段扶手松了。",
+          "text": "外面的新管也等着你看。去吧，回来告诉我哪段路能走，哪段扶手还松着，我出门时好有个数。",
           "branch": "common",
           "expression": "cold"
         },
@@ -1292,7 +1292,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 237,
           "speaker": "旁白",
           "portrait": null,
-          "text": "纱雾点头，仍站着。诺克缇娅把凉饭端离温标架。",
+          "text": "纱雾点了头，仍在桌边站着。诺克缇娅将凉饭端到面前，拿起筷子，见她不走，又抬起眼。",
           "branch": "common",
           "kind": "narration"
         },
@@ -1301,7 +1301,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 239,
           "speaker": "诺克缇娅",
           "portrait": "final_queen",
-          "text": "不是在赶你。我只是想趁饭还不算太凉，吃掉它。",
+          "text": "还看着我做什么，怕我又把饭放凉？行，我现在吃。你们出门的时候，替我把外头的风挡一挡。",
           "branch": "common",
           "expression": "cold"
         }
@@ -1431,7 +1431,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 265,
           "speaker": "旁白",
           "portrait": null,
-          "text": "走出学舍时，纱雾回头看炉墙。",
+          "text": "走出学舍，纱雾又回头看了一眼。有人已经接过她刚才扶着的炉砖，蹲在那儿重新比位置。",
           "branch": "common",
           "kind": "narration"
         },
@@ -1440,7 +1440,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 267,
           "speaker": "纱雾",
           "portrait": "guide",
-          "text": "我以前总觉得，不在这里看着，就会漏掉什么。",
+          "text": "这块砖我还想再看一遍。还有窗边的缝……以前每次出门，总有一处让我觉得没弄好。",
           "branch": "common",
           "expression": "gentle"
         },
@@ -1449,7 +1449,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 269,
           "speaker": "璃",
           "portrait": "hero",
-          "text": "现在呢？",
+          "text": "要回去跟他们说吗？我在这儿等你。",
           "branch": "common",
           "expression": "guarded"
         },
@@ -1458,7 +1458,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 271,
           "speaker": "纱雾",
           "portrait": "guide",
-          "text": "现在也觉得。不过他们好像知道自己在做什么。",
+          "text": "他们已经看见了，正拿灰补。我再站回去，好像也只是在旁边着急。",
           "branch": "common",
           "expression": "gentle"
         },
@@ -1467,7 +1467,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 273,
           "speaker": "璃",
           "portrait": "hero",
-          "text": "那先漏掉这一会儿吧。",
+          "text": "那先去溪口。真漏了什么，回来时再问问。",
           "branch": "common",
           "expression": "guarded"
         },
@@ -1476,7 +1476,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 275,
           "speaker": "旁白",
           "portrait": null,
-          "text": "纱雾轻轻碰了碰她的披肩，没有回答“好”，却往溪口走了。",
+          "text": "纱雾的手还搭在门框上。她看着里面的人把砖放稳，才松开手，跟上璃。",
           "branch": "common",
           "kind": "narration"
         }
@@ -1615,7 +1615,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 303,
           "speaker": "旁白",
           "portrait": null,
-          "text": "纱雾伸手浸进溪水，很快抽回来，接着又放进去。",
+          "text": "纱雾把手伸进溪水，凉意一下爬上手腕，她很快抽了回来。看见璃蹲下，她又试着将指尖放进去。",
           "branch": "common",
           "kind": "narration",
           "phase": "pipeWorks"
@@ -1625,7 +1625,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 305,
           "speaker": "纱雾",
           "portrait": "guide",
-          "text": "凉。不痛。",
+          "text": "真凉。以前这条溪，冬天洗手都不用缩着。",
           "branch": "common",
           "expression": "gentle",
           "phase": "pipeWorks"
@@ -1635,7 +1635,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 307,
           "speaker": "璃",
           "portrait": "hero",
-          "text": "你以为会痛？",
+          "text": "要不要擦干？手一直湿着，风吹过来更冷。",
           "branch": "common",
           "expression": "guarded",
           "phase": "pipeWorks"
@@ -1645,7 +1645,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 309,
           "speaker": "纱雾",
           "portrait": "guide",
-          "text": "以前冬天路过河谷，我总把手缩在袖子里。回来又觉得，没有必要试了。",
+          "text": "再等一下。我以前路过河谷，总把手收在袖子里，觉得回村就好了。现在连这里也要这样了。",
           "branch": "common",
           "expression": "gentle",
           "phase": "pipeWorks"
@@ -1665,7 +1665,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 313,
           "speaker": "璃",
           "portrait": "hero",
-          "text": "以后洗菜要快一点。",
+          "text": "下次洗菜，我来提桶热水兑着。总有办法，不用每回都把手泡红。",
           "branch": "common",
           "expression": "guarded",
           "phase": "pipeWorks"
@@ -1675,7 +1675,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 315,
           "speaker": "纱雾",
           "portrait": "guide",
-          "text": "（笑出很轻的一声）你想到的是这个？",
+          "text": "（笑了一下）我还没想到洗菜呢，你已经要提水了。",
           "branch": "common",
           "expression": "gentle",
           "phase": "pipeWorks"
@@ -1685,7 +1685,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 317,
           "speaker": "璃",
           "portrait": "hero",
-          "text": "不然呢？",
+          "text": "刚才看见你缩手，就想到了。冷得难受的时候，别硬撑。",
           "branch": "common",
           "expression": "guarded",
           "phase": "pipeWorks"
@@ -1695,7 +1695,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 319,
           "speaker": "纱雾",
           "portrait": "guide",
-          "text": "我刚才在想，这条溪是不是已经不认识我了。",
+          "text": "嗯。刚才根一暗，我心里空了一下，还以为水也会跟着没了。",
           "branch": "common",
           "expression": "gentle",
           "phase": "pipeWorks"
@@ -1705,7 +1705,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 321,
           "speaker": "旁白",
           "portrait": null,
-          "text": "她看着水从手指间过去，慢慢放松了手。",
+          "text": "水仍从石缝间流出来，绕过她的手指。纱雾等了一会儿，慢慢把手抽回来，甩掉指尖的水。",
           "branch": "common",
           "kind": "narration",
           "phase": "pipeWorks"
@@ -1715,7 +1715,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 323,
           "speaker": "纱雾",
           "portrait": "guide",
-          "text": "好像也没有。",
+          "text": "还好，它还在流。回去要跟学舍说一声，记得烧热水。",
           "branch": "common",
           "expression": "gentle",
           "phase": "pipeWorks"
@@ -2343,7 +2343,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 453,
           "speaker": "旁白",
           "portrait": null,
-          "text": "天黑后，三人在驿棚里点起普通柴火。珂珂把木框背包靠墙放好，单卷床垫铺在干处。纱雾坐下来，却还把星盘悬在手边。",
+          "text": "天黑以后，三人才在空驿棚里坐下来。珂珂把木框背包靠墙放稳，将单卷床垫铺在干处，脱鞋时长长地叹了口气。普通柴火噼啪作响，纱雾却还将星盘悬在手边，光落在棚外。",
           "branch": "common",
           "kind": "narration"
         },
@@ -2352,7 +2352,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 455,
           "speaker": "珂珂",
           "portrait": "merchant",
-          "text": "它也要值夜？",
+          "text": "你让它歇一会儿吧。照得我总以为门口有人，鞋都不敢脱另一只。",
           "branch": "common",
           "expression": "knowing"
         },
@@ -2361,7 +2361,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 457,
           "speaker": "纱雾",
           "portrait": "guide",
-          "text": "不是。我只是想看看根流。",
+          "text": "我看看根流有没有变。出门这么久没盯着，总觉得少做了一件事。",
           "branch": "common",
           "expression": "gentle"
         },
@@ -2370,7 +2370,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 459,
           "speaker": "珂珂",
           "portrait": "merchant",
-          "text": "棚柱是石头。门梁也不靠它暖，放心。",
+          "text": "这棚子靠石柱站着，门梁也不吃暖根。真要少做什么，先把脚烤干，明早可没人背得动你。",
           "branch": "common",
           "expression": "knowing"
         },
@@ -2379,7 +2379,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 461,
           "speaker": "旁白",
           "portrait": null,
-          "text": "纱雾把星盘移到靠近自己的一侧，没有让它继续照着棚外。",
+          "text": "纱雾将星盘收近，终于让棚外暗下来。她把脚挪向火边，怀里的纸角露了出来；璃认出那道补过的折痕，目光停住了。",
           "branch": "common",
           "kind": "narration"
         },
@@ -2388,7 +2388,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 463,
           "speaker": "璃",
           "portrait": "hero",
-          "text": "你想看冬市吗？",
+          "text": "冬市的图，你还留着？我记得这里裂过一道口子。",
           "branch": "common",
           "expression": "guarded"
         },
@@ -2397,7 +2397,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 465,
           "speaker": "纱雾",
           "portrait": "guide",
-          "text": "（摸到收在怀里的地图）你看见了。",
+          "text": "（按住纸角）修过两回了。再折坏，得重画一张。",
           "branch": "common",
           "expression": "gentle"
         },
@@ -2406,7 +2406,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 467,
           "speaker": "璃",
           "portrait": "hero",
-          "text": "还是以前那张？",
+          "text": "让我看看？四年了，上面的路可能都变了。",
           "branch": "common",
           "expression": "guarded"
         },
@@ -2415,7 +2415,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 469,
           "speaker": "纱雾",
           "portrait": "guide",
-          "text": "边上几条街已经换过名字。珂珂告诉我的。",
+          "text": "有几条街换了名字，珂珂每次回来，我都会问。新名字写在旁边，你先别把它当废图收起来。",
           "branch": "common",
           "expression": "gentle"
         },
@@ -2424,7 +2424,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 471,
           "speaker": "珂珂",
           "portrait": "merchant",
-          "text": "那家卖热梨饼的还在，摆摊的人换成女儿了。别按旧图找入口，会走到她家后院。",
+          "text": "卖热梨饼那家还在，摊子搬过，换成女儿卖了。我给你指的那个口记清楚，顺着旧图走，就得敲人家后院的门。",
           "branch": "common",
           "expression": "knowing"
         },
@@ -2433,7 +2433,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 473,
           "speaker": "旁白",
           "portrait": null,
-          "text": "纱雾笑了一下，又低头把纸角压平。",
+          "text": "纱雾笑着把图展开给璃看。原先空白的边缘，已经添了细细的字；璃想用手指按住卷角，又怕碰脏，先在衣服上擦了擦手。",
           "branch": "common",
           "kind": "narration"
         },
@@ -2442,7 +2442,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 475,
           "speaker": "璃",
           "portrait": "hero",
-          "text": "等路通了，我带你去。",
+          "text": "等这条路通了，我陪你去。今年一定——",
           "branch": "common",
           "expression": "guarded"
         },
@@ -2451,7 +2451,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 477,
           "speaker": "纱雾",
           "portrait": "guide",
-          "text": "你知道今年什么时候开吗？",
+          "text": "先等等。你知道今年哪天开，货队什么时候下山吗？",
           "branch": "common",
           "expression": "gentle"
         },
@@ -2460,7 +2460,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 479,
           "speaker": "璃",
           "portrait": "hero",
-          "text": "还不知道。",
+          "text": "还没问。我以为，到了再打听也来得及。",
           "branch": "common",
           "expression": "guarded"
         },
@@ -2469,7 +2469,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 481,
           "speaker": "纱雾",
           "portrait": "guide",
-          "text": "我问过了。",
+          "text": "我问过了。你要去，我告诉你；别话说完又走了，留我一个人猜到底是哪一年。",
           "branch": "common",
           "expression": "gentle"
         },
@@ -2478,7 +2478,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 483,
           "speaker": "旁白",
           "portrait": null,
-          "text": "璃望着她，收回了下一句“到时再安排”。",
+          "text": "璃把压着纸角的手放平，没有再往下许诺。火苗晃了一下，旧图上后来添的字比原来的深。",
           "branch": "common",
           "kind": "narration"
         },
@@ -2487,7 +2487,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 485,
           "speaker": "璃",
           "portrait": "hero",
-          "text": "那你告诉我。",
+          "text": "好，你说。我这回记清楚，免得还不如你认得路。",
           "branch": "common",
           "expression": "guarded"
         }
@@ -2512,7 +2512,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 489,
           "speaker": "旁白",
           "portrait": null,
-          "text": "夜里，纱雾突然坐起，伸手找星盘。璃被轻微的金属声惊醒。",
+          "text": "夜里，璃被轻微的金属声惊醒。纱雾已经坐了起来，一只手摸向星盘，另一只手去找并不在身边的灯。",
           "branch": "common",
           "kind": "narration"
         },
@@ -2521,7 +2521,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 491,
           "speaker": "璃",
           "portrait": "hero",
-          "text": "怎么了？",
+          "text": "纱雾？别急，火还没灭。你在找什么？",
           "branch": "common",
           "expression": "guarded"
         },
@@ -2530,7 +2530,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 493,
           "speaker": "纱雾",
           "portrait": "guide",
-          "text": "我忘了看第三排温标。",
+          "text": "第三排温标。我没看就睡了，老师那边——",
           "branch": "common",
           "expression": "gentle"
         },
@@ -2539,7 +2539,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 495,
           "speaker": "旁白",
           "portrait": null,
-          "text": "她看见棚柱和已烧短的木柴，声音慢了下来。",
+          "text": "她说到一半，借着火光看见石柱和珂珂靠墙的背包。棚外只有风声，方才已经抬起的手慢慢放了下来。",
           "branch": "common",
           "kind": "narration"
         },
@@ -2548,7 +2548,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 497,
           "speaker": "纱雾",
           "portrait": "guide",
-          "text": "这里只有一堆火。",
+          "text": "我睡糊涂了。这里没有第三排，只有这堆火。",
           "branch": "common",
           "expression": "gentle"
         },
@@ -2557,7 +2557,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 499,
           "speaker": "璃",
           "portrait": "hero",
-          "text": "（拨开一块挡住进气口的柴）还有我。珂珂睡得挺好。",
+          "text": "（拨开堵住进气口的短柴）嗯。珂珂也睡着，刚才还翻了个身。没有人叫你。",
           "branch": "common",
           "expression": "guarded"
         },
@@ -2566,7 +2566,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 501,
           "speaker": "纱雾",
           "portrait": "guide",
-          "text": "你不用跟我一起醒。",
+          "text": "把你吵醒了。你白天也走了一路，躺回去吧。",
           "branch": "common",
           "expression": "gentle"
         },
@@ -2575,7 +2575,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 503,
           "speaker": "璃",
           "portrait": "hero",
-          "text": "我已经醒了。",
+          "text": "已经醒了，我把火拨开就躺。你手凉不凉，过来烤一下？",
           "branch": "common",
           "expression": "guarded"
         },
@@ -2584,7 +2584,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 505,
           "speaker": "旁白",
           "portrait": null,
-          "text": "璃把手停在剩下的柴边，没有立刻添得更满。",
+          "text": "璃顺手伸向剩下的柴，纱雾轻轻压住她的手腕。那一小堆是特意拣出来的干柴，最上面的一根还没有折短。",
           "branch": "common",
           "kind": "narration"
         },
@@ -2593,7 +2593,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 507,
           "speaker": "璃",
           "portrait": "hero",
-          "text": "还冷吗？",
+          "text": "不用添？后半夜会更冷。",
           "branch": "common",
           "expression": "guarded"
         },
@@ -2602,7 +2602,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 509,
           "speaker": "纱雾",
           "portrait": "guide",
-          "text": "不冷。你别把明早的也烧了。",
+          "text": "现在还暖。明早还得生火、烧水，先把那根留下，冷了我叫你。",
           "branch": "common",
           "expression": "gentle"
         },
@@ -2611,7 +2611,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 511,
           "speaker": "旁白",
           "portrait": null,
-          "text": "两人望着同一根留下的木柴，安静了一会儿。",
+          "text": "璃收回手，将那根柴往干处推了推。纱雾靠近火坐了一会儿，直到呼吸慢下来，两人才重新拢好铺盖。",
           "branch": "common",
           "kind": "narration"
         },
@@ -2620,7 +2620,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 513,
           "speaker": "璃",
           "portrait": "hero",
-          "text": "明天先看断栈道，还是先去西枝台？",
+          "text": "明天先去断栈道吧？要是你想先看西枝台，我们再改。",
           "branch": "common",
           "expression": "guarded"
         },
@@ -2629,7 +2629,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 515,
           "speaker": "纱雾",
           "portrait": "guide",
-          "text": "断栈道。我要知道以后大家从哪边走。",
+          "text": "先看断栈道。我想亲眼看看车要怎么过，也省得到了后面一直惦记。",
           "branch": "common",
           "expression": "gentle"
         },
@@ -2638,7 +2638,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 517,
           "speaker": "璃",
           "portrait": "hero",
-          "text": "好。",
+          "text": "那就先去那里。睡吧，天亮了再看图。",
           "branch": "common",
           "expression": "guarded"
         }
@@ -3337,7 +3337,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 663,
           "speaker": "旁白",
           "portrait": null,
-          "text": "山路突然开阔。谷底的田已收割，屋顶颜色深浅不一，几道炉烟向侧面飘。远处没有发亮的根，只有路、桥与分开的菜畦。",
+          "text": "走出树林，山路一下开阔了。谷底的田收割过，露出深浅不同的土色；几道炉烟沿屋顶斜着飘，桥上慢慢过去一辆车。纱雾停在望台边，望了许久。远处没有发亮的根。",
           "branch": "common",
           "kind": "narration"
         },
@@ -3346,7 +3346,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 665,
           "speaker": "纱雾",
           "portrait": "guide",
-          "text": "他们把田空着。",
+          "text": "那几块田都空着。今年不再种了吗？",
           "branch": "common",
           "expression": "gentle"
         },
@@ -3355,7 +3355,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 667,
           "speaker": "珂珂",
           "portrait": "merchant",
-          "text": "让地歇一阵。有的人种过冬的菜，有的人把活排到开春。不是每块地都得每个月长东西。",
+          "text": "有的种越冬菜，有的等开春。忙完收成，也要修工具、补房顶，地歇一歇，人还有别的活。",
           "branch": "common",
           "expression": "knowing"
         },
@@ -3364,7 +3364,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 669,
           "speaker": "纱雾",
           "portrait": "guide",
-          "text": "我知道。书上也这么写。",
+          "text": "书上讲过。我还记得那张轮种的图。",
           "branch": "common",
           "expression": "gentle"
         },
@@ -3373,7 +3373,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 671,
           "speaker": "旁白",
           "portrait": null,
-          "text": "她又往前走了一步。",
+          "text": "她往前走了一步，手扶住石边。空田旁有人提着东西回屋，炉烟仍稳稳地升着，并没有谁急着去把土地填满。",
           "branch": "common",
           "kind": "narration"
         },
@@ -3382,7 +3382,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 673,
           "speaker": "纱雾",
           "portrait": "guide",
-          "text": "可我以前站在村里，会觉得空下来的地方特别可惜。",
+          "text": "可我在村里看书时，总觉得这么大一块地空着，好可惜。现在他们就住在旁边，好像也没那么着急。",
           "branch": "common",
           "expression": "gentle"
         },
@@ -3391,7 +3391,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 675,
           "speaker": "璃",
           "portrait": "hero",
-          "text": "我第一次看见，也想过是不是收成不好。",
+          "text": "我第一次下来，也以为是收成不好。问了人家，才知道是刚收完，不用再抢着种。",
           "branch": "common",
           "expression": "guarded"
         },
@@ -3400,7 +3400,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 677,
           "speaker": "纱雾",
           "portrait": "guide",
-          "text": "你从来没告诉过我。",
+          "text": "你回来要是早一点，我们可以一起说这些。也用不着我每次见到珂珂，都先问你最近在哪儿。",
           "branch": "common",
           "expression": "gentle"
         },
@@ -3409,7 +3409,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 679,
           "speaker": "璃",
           "portrait": "hero",
-          "text": "我总想着，等带你下来，你自己就能看见。",
+          "text": "我总想等自己把路认全了，再回来带你走，沿途哪里能住、哪里能吃东西，都安排好。",
           "branch": "common",
           "expression": "guarded"
         },
@@ -3418,7 +3418,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 681,
           "speaker": "纱雾",
           "portrait": "guide",
-          "text": "你一走就是四年。",
+          "text": "可我连你什么时候回来都不知道。璃，这一等就是四年。",
           "branch": "common",
           "expression": "gentle"
         },
@@ -3427,7 +3427,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 683,
           "speaker": "旁白",
           "portrait": null,
-          "text": "璃的手垂在剑鞘旁，没有用别的事情接开这个话头。",
+          "text": "璃低下头，拇指沿剑鞘口蹭了一下。前头的珂珂放慢脚步，绕到望台另一侧，给她们留出一段距离。",
           "branch": "common",
           "kind": "narration"
         },
@@ -3436,7 +3436,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 685,
           "speaker": "璃",
           "portrait": "hero",
-          "text": "是。",
+          "text": "我知道。一直没回来，也一直没把缘故跟你说清楚。",
           "branch": "common",
           "expression": "guarded"
         }
@@ -3461,7 +3461,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 691,
           "speaker": "璃",
           "portrait": "hero",
-          "text": "我想先攒够钱，认全路，找个能住的地方。然后再来找你。",
+          "text": "刚下山时，我连落脚的地方都没有。后来能接护送的活了，就想再攒一点，把路和住处都摸熟。每次觉得还差一点，回来的日子就往后推。",
           "branch": "response1",
           "expression": "guarded"
         },
@@ -3470,7 +3470,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 693,
           "speaker": "纱雾",
           "portrait": "guide",
-          "text": "我等过你。",
+          "text": "第一年，我真的等过。珂珂的货队到村口，我都会过去看看。",
           "branch": "response1",
           "expression": "gentle"
         },
@@ -3479,7 +3479,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 695,
           "speaker": "旁白",
           "portrait": null,
-          "text": "璃抬起头。",
+          "text": "璃抬起头，张了张嘴。纱雾仍望着下面的田，却把放在石边的手收回来，攥住了地图。",
           "branch": "response1",
           "kind": "narration"
         },
@@ -3488,7 +3488,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 697,
           "speaker": "纱雾",
           "portrait": "guide",
-          "text": "第一年真的等了。后来我开始自己问冬市什么时候开。我不是每一天都坐在这里，等你回来接我。",
+          "text": "后来我知道你不会跟着每趟车回来，就自己问冬市、问河谷。我还有想做的事，不能每一年都等你先准备好。",
           "branch": "response1",
           "expression": "gentle"
         },
@@ -3497,7 +3497,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 699,
           "speaker": "璃",
           "portrait": "hero",
-          "text": "我知道。",
+          "text": "我以为你留在树心很忙，没想到你还一直——",
           "branch": "response1",
           "expression": "guarded"
         },
@@ -3506,7 +3506,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 701,
           "speaker": "纱雾",
           "portrait": "guide",
-          "text": "你刚刚才知道。",
+          "text": "一直问。你现在听见了，下回就别再替我猜了。",
           "branch": "response1",
           "expression": "gentle"
         },
@@ -3515,7 +3515,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 703,
           "speaker": "旁白",
           "portrait": null,
-          "text": "璃没能接上话。",
+          "text": "璃点了点头。这一次她没有说“早知道”，也没有拿路上的难处接着解释。",
           "branch": "response1",
           "kind": "narration"
         },
@@ -3524,7 +3524,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 707,
           "speaker": "璃",
           "portrait": "hero",
-          "text": "你现在还想跟我去吗？",
+          "text": "你现在还愿意一起去吗？我想听你怎么打算，再看我们能一起走哪一段。",
           "branch": "response2",
           "expression": "guarded"
         },
@@ -3533,7 +3533,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 709,
           "speaker": "纱雾",
           "portrait": "guide",
-          "text": "想。但不是照你原先想的那样，收拾好东西，就一直跟着你走。",
+          "text": "愿意。我也有想住的地方、想学的东西，去了以后，可能不会一直跟着你的货队走。",
           "branch": "response2",
           "expression": "gentle"
         },
@@ -3542,7 +3542,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 711,
           "speaker": "璃",
           "portrait": "hero",
-          "text": "我原先也没有想得那么清楚。",
+          "text": "你说。我以前只想过把你带出去，后面的事，自己也没有想清楚。",
           "branch": "response2",
           "expression": "guarded"
         },
@@ -3551,7 +3551,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 713,
           "speaker": "纱雾",
           "portrait": "guide",
-          "text": "那为什么不回来告诉我？",
+          "text": "那为什么不回来跟我商量？你一句也不说，我连问都不知道去哪里问。",
           "branch": "response2",
           "expression": "gentle"
         },
@@ -3560,7 +3560,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 715,
           "speaker": "璃",
           "portrait": "hero",
-          "text": "怕你发现。我连自己要去哪儿都没定，就先说了要带你看冬市。",
+          "text": "怕见了面，你问我什么时候能去，我答不上来。我先把话说满了，后来每次想回来，都觉得自己还欠着你。",
           "branch": "response2",
           "expression": "guarded"
         },
@@ -3569,7 +3569,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 719,
           "speaker": "旁白",
           "portrait": null,
-          "text": "山下有一辆车停在屋前。有人开门，替车上的人扶住一块长木板。",
+          "text": "山下一辆车停在屋前，有人推开门，帮忙扶住伸出车尾的长木板。两个人挪了几次位置，才把板抬进院子。璃望着那扇一直敞着的门。",
           "branch": "common",
           "kind": "narration"
         },
@@ -3578,7 +3578,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 721,
           "speaker": "璃",
           "portrait": "hero",
-          "text": "我总觉得，空着手回来见你，很难看。",
+          "text": "我一直觉得，空着手回来见你很难看。好像当年走得那么有把握，回头就得拿出点什么。",
           "branch": "common",
           "expression": "guarded"
         },
@@ -3587,7 +3587,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 723,
           "speaker": "纱雾",
           "portrait": "guide",
-          "text": "你早一点回来吃顿饭，也可以。",
+          "text": "带不来冬市，回来吃顿饭也行。你一声不响地不回来，我才真的不知道该怎么办。",
           "branch": "common",
           "expression": "gentle"
         },
@@ -3596,7 +3596,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 725,
           "speaker": "旁白",
           "portrait": null,
-          "text": "璃看了她一会儿，慢慢点头。",
+          "text": "璃看向她，终于把搁在剑鞘旁的手放下来。纱雾眼圈有些红，仍直直看着她，等一个回答。",
           "branch": "common",
           "kind": "narration"
         },
@@ -3605,7 +3605,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 727,
           "speaker": "璃",
           "portrait": "hero",
-          "text": "我听见了。",
+          "text": "以后有话我会回来跟你说。没准备好的，也告诉你，不让你去问一趟趟货队。",
           "branch": "common",
           "expression": "guarded"
         },
@@ -3614,7 +3614,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 729,
           "speaker": "纱雾",
           "portrait": "guide",
-          "text": "我想住一阵。学照料普通的温室，不用根流，什么时候开窗，什么时候别浇水。这些我已经想了很久。",
+          "text": "那我也先告诉你。我想在河谷住一冬，学照料普通温室。什么时候开窗，什么时候别浇水，不用根流也能养好植物，我想试。",
           "branch": "common",
           "expression": "gentle"
         },
@@ -3623,7 +3623,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 731,
           "speaker": "璃",
           "portrait": "hero",
-          "text": "我能陪你去问吗？",
+          "text": "你准备去哪里问？我陪你过去，到了门口，你先说。",
           "branch": "common",
           "expression": "guarded"
         },
@@ -3632,7 +3632,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 733,
           "speaker": "纱雾",
           "portrait": "guide",
-          "text": "能。等我说完，你再说。",
+          "text": "好。我在心里练过好多遍，你别一看我停顿，就替我全答了。",
           "branch": "common",
           "expression": "gentle"
         },
@@ -3641,7 +3641,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 735,
           "speaker": "旁白",
           "portrait": null,
-          "text": "前头的珂珂朝货场指了指，隔着一段路等她们。璃没有立刻催纱雾，和她再看了一会儿谷底的烟。",
+          "text": "珂珂在前头指了指货场的方向，仍靠着路边等。璃应了一声，没有马上迈步；纱雾把地图收好，两人又看了一会儿谷底的烟，才并肩追上去。",
           "branch": "common",
           "kind": "narration"
         }
@@ -3877,7 +3877,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 783,
           "speaker": "珂珂",
           "portrait": "merchant",
-          "text": "看是什么事。能在这趟带的，我带；下一趟的，换另一支货队。总不能每次都说“就多一天”。",
+          "text": "能随这趟带的，我就带。下一趟让别的货队接，装车的人又不止我一个。我若一直不回，家里的人也得天天等消息。",
           "branch": "common",
           "expression": "knowing"
         },
@@ -3886,7 +3886,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 785,
           "speaker": "纱雾",
           "portrait": "guide",
-          "text": "（小声）别人不会生气吗？",
+          "text": "（摸着账本边的带子）要是有人急着用，怪你偏偏这时候走呢？",
           "branch": "common",
           "expression": "gentle"
         },
@@ -3895,7 +3895,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 787,
           "speaker": "珂珂",
           "portrait": "merchant",
-          "text": "有时会失望。我也会。失望完了，再想剩下的事怎么办。",
+          "text": "那就先帮他找接货的人，把哪班能到说清楚。耽误了当然难受，可我总得回去，不能嘴上答应家里，日子却一推再推。",
           "branch": "common",
           "expression": "knowing"
         },
@@ -3904,7 +3904,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 789,
           "speaker": "旁白",
           "portrait": null,
-          "text": "珂珂系紧账本外的带子，没把这句话说成劝告。",
+          "text": "珂珂将账本的带子系紧，又解开，检查了一遍夹在里面的货单。纱雾看着她，没有再问第三次。",
           "branch": "common",
           "kind": "narration"
         },
@@ -4129,7 +4129,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 837,
           "speaker": "璃",
           "portrait": "hero",
-          "text": "我听懂了。",
+          "text": "好。明天到门口我等你，要我陪着就叫我。",
           "branch": "common",
           "expression": "guarded"
         },
@@ -4138,7 +4138,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 839,
           "speaker": "纱雾",
           "portrait": "guide",
-          "text": "那明天我先问。你刚才差点全替我说完了。",
+          "text": "陪着可以，说话让我先来。刚才听见你开口，我差一点又把练好的话咽回去了。",
           "branch": "common",
           "expression": "gentle"
         },
@@ -4147,7 +4147,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 841,
           "speaker": "旁白",
           "portrait": null,
-          "text": "璃向里侧让开，给她空出一步。",
+          "text": "院子里的雨声已经停了。璃往内侧让开，手离开了门闩，让出门前的位置。",
           "branch": "common",
           "kind": "narration"
         },
@@ -4156,7 +4156,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 843,
           "speaker": "璃",
           "portrait": "hero",
-          "text": "你开吧。",
+          "text": "那你来。我跟着。",
           "branch": "common",
           "expression": "guarded"
         },
@@ -4525,7 +4525,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 919,
           "speaker": "璃",
           "portrait": "hero",
-          "text": "不是因为我在等你？",
+          "text": "好。回山的路还长，有想停下来做的事就跟我说，我们一起商量。",
           "branch": "common",
           "expression": "guarded",
           "phase": "delivery"
@@ -4535,7 +4535,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 921,
           "speaker": "纱雾",
           "portrait": "guide",
-          "text": "不是。我自己还想把它做完。",
+          "text": "这回我想清楚了。温室那边也等得到，我们先把山上的事做完，再按约好的日子下来。",
           "branch": "common",
           "expression": "gentle",
           "phase": "delivery"
@@ -4868,7 +4868,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 991,
           "speaker": "旁白",
           "portrait": null,
-          "text": "几排植物挂着简单标记，一些已移到土盆里。靠内侧的多年生植株开着细白花。",
+          "text": "温室里的土腥气扑面而来。几排植物系着简单标记，搬走的盆在架上留下浅色圆印；最里侧的植株仍开着细白花，隔门一开，花瓣便轻轻颤起来。",
           "branch": "common",
           "kind": "narration"
         },
@@ -4895,7 +4895,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 997,
           "speaker": "绯叶",
           "portrait": "fox_boss",
-          "text": "还有几个不结籽的品系。有些是慢慢分株养出来的，种子留不住它们现在的样子。",
+          "text": "嗯，还有几个不结籽的品系。只能一株株分出来养；留了种子，也长不回它们现在的样子。",
           "branch": "common",
           "expression": "watchful"
         },
@@ -4913,7 +4913,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1001,
           "speaker": "绯叶",
           "portrait": "fox_boss",
-          "text": "外间用炉子，能留这些耐冷的。两份暖脂给的是里面那一小间，关好隔门，整冬慢慢放。那些白花经不起一会儿热、一会儿冷，也不能挨烟。",
+          "text": "外间能用，耐冷的已经搬出来了。里面的白花受不了忽冷忽热，也怕烟。两份暖脂封在内间，整冬慢慢放，才守得住那一点温度。",
           "branch": "common",
           "expression": "watchful"
         },
@@ -4922,7 +4922,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1003,
           "speaker": "旁白",
           "portrait": null,
-          "text": "她将一盆挪进内间，又停下来，把它稍稍转了半圈。",
+          "text": "绯叶将一盆挪进内间。盆已放稳，她的手还托着盆沿，又轻轻转了半圈，让枝头避开隔门的阴影。",
           "branch": "common",
           "kind": "narration"
         },
@@ -4940,7 +4940,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1007,
           "speaker": "绯叶",
           "portrait": "fox_boss",
-          "text": "这根侧枝只剩三个芽。它去年开了七朵，我还记着。",
+          "text": "这根侧枝只剩三个芽，得给它留光。去年还开过七朵，我每天进来都数，怕漏了一朵。",
           "branch": "common",
           "expression": "watchful"
         },
@@ -4949,7 +4949,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1009,
           "speaker": "旁白",
           "portrait": null,
-          "text": "纱雾跟着数了一遍。",
+          "text": "纱雾也跟着数了一遍。绯叶没有催她，只将快要碰到门框的一片叶子拨回里面。",
           "branch": "common",
           "kind": "narration"
         },
@@ -4958,7 +4958,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1011,
           "speaker": "璃",
           "portrait": "hero",
-          "text": "不放暖脂，能带走多少？",
+          "text": "如果最后给不了这两份，你这里能保下哪些？你直说，我得听明白。",
           "branch": "common",
           "expression": "guarded"
         },
@@ -4967,7 +4967,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1013,
           "speaker": "绯叶",
           "portrait": "fox_boss",
-          "text": "外面这些，种子，能活的分株。里面有几样留不住。我会做标本。",
+          "text": "外间这些、收好的种子，还有能耐冷的分株。里面几样会死，我会留标本。花压进纸里以后，就再也开不了了。",
           "branch": "common",
           "expression": "watchful"
         },
@@ -4994,7 +4994,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1019,
           "speaker": "旁白",
           "portrait": null,
-          "text": "她打开压花夹，纸还是空的。",
+          "text": "绯叶打开压花夹，里面夹着干净的纸。她看了一眼枝头，又把夹子合拢，手掌在封皮上停了停。",
           "branch": "common",
           "kind": "narration"
         },
@@ -5003,7 +5003,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1021,
           "speaker": "绯叶",
           "portrait": "fox_boss",
-          "text": "我还没舍得摘。你们先想一想。",
+          "text": "我还没舍得摘。要是真留不住，总得挑最完整的一枝。你们先看，不用现在就回答我。",
           "branch": "common",
           "expression": "watchful"
         }
@@ -5037,7 +5037,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1031,
           "speaker": "璃",
           "portrait": "hero",
-          "text": "嗯。先把这间保住。",
+          "text": "嗯，这两份留给内间。你照刚才说的办法做，我们帮你把门封好。",
           "branch": "invest",
           "expression": "guarded"
         },
@@ -5055,7 +5055,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1035,
           "speaker": "绯叶",
           "portrait": "fox_boss",
-          "text": "好。今晚我把最后一道门缝封上。",
+          "text": "好。叶子别压着，盖板慢一点落。今晚我把最后那道门缝也封上。",
           "branch": "invest",
           "expression": "watchful"
         },
@@ -5073,7 +5073,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1039,
           "speaker": "绯叶",
           "portrait": "fox_boss",
-          "text": "这一冬我来照看。春天以后，还得另想办法。",
+          "text": "这一冬我守着它们，春天再试别的养法。你们下次来，先隔着玻璃看，别为了看花把热都放跑了。",
           "branch": "invest",
           "expression": "watchful"
         },
@@ -5082,7 +5082,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1045,
           "speaker": "璃",
           "portrait": "hero",
-          "text": "先不动盒子。能移的先移，暖脂的事我再想想。",
+          "text": "盒子先不开，我还得想想。哪些盆现在就能搬？你指给我，我先把这些挪好。",
           "branch": "defer",
           "expression": "guarded"
         },
@@ -5091,7 +5091,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1047,
           "speaker": "绯叶",
           "portrait": "fox_boss",
-          "text": "好。外面的盆现在就能搬，不用等你最后选完才干活。",
+          "text": "廊下那一排，避风又能照到光。端盆底，别抓枝条，这几天叶子一碰就掉。",
           "branch": "defer",
           "expression": "watchful"
         },
@@ -5199,7 +5199,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1063,
           "speaker": "旁白",
           "portrait": null,
-          "text": "温室外的坡地上有一棵低而偏斜的梨树。粗枝留下两道旧绳磨过的痕迹，绳早已不在。树下露着被坐得发亮的平根。",
+          "text": "坡上的老梨树比记忆里低，树身偏向一侧。粗枝上两道旧绳痕还在，绳却早已收走。纱雾拨开树下的草，露出一截被坐得发亮的平根，伸手摸了摸。",
           "branch": "common",
           "kind": "narration"
         },
@@ -5208,7 +5208,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1065,
           "speaker": "纱雾",
           "portrait": "guide",
-          "text": "这里比我记得的小。",
+          "text": "以前坐在这里，脚还够不到地。现在看，怎么就这么一小块？",
           "branch": "common",
           "expression": "gentle"
         },
@@ -5217,7 +5217,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1067,
           "speaker": "璃",
           "portrait": "hero",
-          "text": "是我们长高了。",
+          "text": "你往里坐一点，我看看。……真的小了，小时候还觉得能躺下。",
           "branch": "common",
           "expression": "guarded"
         },
@@ -5226,7 +5226,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1069,
           "speaker": "纱雾",
           "portrait": "guide",
-          "text": "你那时总坐右边，觉得靠近路口，喊一声就有人看见。",
+          "text": "你总抢右边，说靠着路口，喊一声就有人来。我在左边，回去得抖半天领子。",
           "branch": "common",
           "expression": "gentle"
         },
@@ -5235,7 +5235,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1071,
           "speaker": "璃",
           "portrait": "hero",
-          "text": "左边会有树皮掉到领子里。",
+          "text": "左边老掉树皮。我那时说得好听，其实是不想换过去。",
           "branch": "common",
           "expression": "guarded"
         },
@@ -5244,7 +5244,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1073,
           "speaker": "旁白",
           "portrait": null,
-          "text": "纱雾走到左边，用手拢住裙摆，坐在露出的平根旁。璃在她身边蹲下。",
+          "text": "纱雾拢着裙摆坐到左边，抬头看她。璃蹲在右侧，摸到平根上一道旧裂纹，手指不由得沿着划了一遍。",
           "branch": "common",
           "kind": "narration"
         },
@@ -5253,7 +5253,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1075,
           "speaker": "纱雾",
           "portrait": "guide",
-          "text": "我还以为你是故意把难坐的位置让给我。",
+          "text": "我就知道。每回我一说硌，你就说再坐一会儿，马上有人经过了。",
           "branch": "common",
           "expression": "gentle"
         },
@@ -5262,7 +5262,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1077,
           "speaker": "璃",
           "portrait": "hero",
-          "text": "也不是完全没有。",
+          "text": "那今天你坐右边吧。我试试左边到底有多难坐。",
           "branch": "common",
           "expression": "guarded"
         },
@@ -5271,7 +5271,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1079,
           "speaker": "旁白",
           "portrait": null,
-          "text": "纱雾用肩轻碰了一下璃，又看回树上的旧绳痕。",
+          "text": "纱雾用肩轻轻碰了她一下，没有立刻换。两人顺着旧绳痕望向枝头，绯叶从温室过来，在几步外蹲下，拨开一小片根土。",
           "branch": "common",
           "kind": "narration"
         },
@@ -5280,7 +5280,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1081,
           "speaker": "绯叶",
           "portrait": "fox_boss",
-          "text": "（停在几步外，拨开一小片根土）它是个暖生老品种，根这些年又坏了一半。外头还看着绿，底下已经离不开那条暖根。",
+          "text": "先看看这里。它是暖生老品种，根这些年坏了一半；上面还绿着，底下却已经靠那条暖根撑着了。",
           "branch": "common",
           "expression": "watchful"
         },
@@ -5316,7 +5316,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1089,
           "speaker": "绯叶",
           "portrait": "fox_boss",
-          "text": "这次移栽能做完，根能保下来。开春别急着要它结果。先让它活稳。",
+          "text": "能把这次脱暖、分根和移栽做完，保住活根。开春别急着要它结果，得先让它慢慢养回来。",
           "branch": "common",
           "expression": "watchful"
         },
@@ -5334,7 +5334,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1093,
           "speaker": "绯叶",
           "portrait": "fox_boss",
-          "text": "我能留下枝样，木料以后也能用。但这棵树，照我们现在的条件，留不住。不是今晚就倒；停暖以后，它会一点点干下去。",
+          "text": "枝样能留，木料以后也能用，这棵活树留不住。停暖后会慢慢干下去；你们现在看它还有叶子，别把这当成它能熬过去。",
           "branch": "common",
           "expression": "watchful"
         },
@@ -5343,7 +5343,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1095,
           "speaker": "旁白",
           "portrait": null,
-          "text": "纱雾拂去树根上的一点土，没有把露出的地方重新踩实。",
+          "text": "纱雾的笑意收了。她拂去根上的浮土，手停在那截发亮的木纹旁，没有再往上坐。",
           "branch": "common",
           "kind": "narration"
         },
@@ -5352,7 +5352,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1097,
           "speaker": "绯叶",
           "portrait": "fox_boss",
-          "text": "你们坐一会儿。我去看看门里那几盆。",
+          "text": "我先去看温室。你们想问什么，再叫我，根土留着别踩。",
           "branch": "common",
           "expression": "watchful"
         }
@@ -5377,7 +5377,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1101,
           "speaker": "纱雾",
           "portrait": "guide",
-          "text": "我想留。刚才一听见可以移栽，心里先松了一下。",
+          "text": "我想留它，是真的。听见还能移栽时，心里一下就松了，好像我们小时候坐过的地方还能再等一年。",
           "branch": "common",
           "expression": "gentle"
         },
@@ -5386,7 +5386,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1103,
           "speaker": "璃",
           "portrait": "hero",
-          "text": "那就——",
+          "text": "我也是。每次想起村里，就会想起这里。",
           "branch": "common",
           "expression": "guarded"
         },
@@ -5395,7 +5395,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1105,
           "speaker": "纱雾",
           "portrait": "guide",
-          "text": "可我也看见温室了。绯叶连那根枝条开过几朵花都记得。",
+          "text": "可我也记得温室里那几个芽。绯叶一盆盆数过，我到了自己的梨树底下，才明白她为什么一直舍不得合上压花夹。",
           "branch": "common",
           "expression": "gentle"
         },
@@ -5404,7 +5404,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1107,
           "speaker": "旁白",
           "portrait": null,
-          "text": "她低头摸到旧绳磨出的浅沟。",
+          "text": "她把手指放进旧绳磨出的浅沟，沿着沟底摸过去。璃在旁边坐下来，听她慢慢说，没有急着找一句能让她宽心的话。",
           "branch": "common",
           "kind": "narration"
         },
@@ -5413,7 +5413,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1109,
           "speaker": "纱雾",
           "portrait": "guide",
-          "text": "别光因为我想留，就答应。图上还有石屋，得一起想。",
+          "text": "我想把这些告诉你。想留的有好几处，每一处都舍不得；你不用一听见我难过，就赶紧答应替我把它们全留下。",
           "branch": "common",
           "expression": "gentle"
         },
@@ -5422,7 +5422,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1111,
           "speaker": "璃",
           "portrait": "hero",
-          "text": "（坐到她旁边）我也想留。",
+          "text": "那你就慢慢说。我也想再和你坐在这里，想起来的时候，一样会难过。我们可以一起惦记着。",
           "branch": "common",
           "expression": "guarded"
         },
@@ -5431,7 +5431,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1113,
           "speaker": "旁白",
           "portrait": null,
-          "text": "纱雾轻轻碰了碰她的肩。",
+          "text": "纱雾靠过来，肩膀轻轻碰着她。两人望着枝头坐了一会儿，风把叶子翻过一面，露出淡些的背色。",
           "branch": "common",
           "kind": "narration"
         }
@@ -5456,7 +5456,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1121,
           "speaker": "璃",
           "portrait": "hero",
-          "text": "留它。我也想再看到它。",
+          "text": "这一份给梨树。我想过了，要把它活着搬走。绯叶，麻烦你过来看看根槽。",
           "branch": "invest",
           "expression": "guarded"
         },
@@ -5465,7 +5465,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1123,
           "speaker": "纱雾",
           "portrait": "guide",
-          "text": "那等它搬好了，我们去新地方坐。别让它还留在这里受风。",
+          "text": "等搬好了，我们在新地方放张凳子。它刚长好的根，别再让我们坐坏了。",
           "branch": "invest",
           "expression": "gentle"
         },
@@ -5483,7 +5483,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1131,
           "speaker": "璃",
           "portrait": "hero",
-          "text": "先去看半山的屋子。回来之前，我们不替这棵树说最后一句。",
+          "text": "先不动这一份。去看看半山候车屋，再回来商量；根土怎么护，你再教我们一遍。",
           "branch": "defer",
           "expression": "guarded"
         },
@@ -5492,7 +5492,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1133,
           "speaker": "纱雾",
           "portrait": "guide",
-          "text": "（起身拍掉手上的土）好。它也不是现在就要消失。",
+          "text": "（起身拍掉手上的土）好。现在还能好好看它，别一着急，就只顾着告别。",
           "branch": "defer",
           "expression": "gentle"
         }
@@ -5553,7 +5553,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1141,
           "speaker": "璃",
           "portrait": "hero",
-          "text": "还可以留。代价和刚才一样，不会因为我们回来就变轻。",
+          "text": "这一份还留得出来。我们再看看根，再把另外两处一起想一遍，别只因为走回来就急着点头。",
           "branch": "affordable",
           "expression": "guarded"
         },
@@ -5562,7 +5562,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1143,
           "speaker": "纱雾",
           "portrait": "guide",
-          "text": "我知道用到哪里去了。让我坐一会儿，坐完再走。",
+          "text": "我知道暖脂用到哪里了。那些地方也要紧，只是看见它还这样绿着，心里还是难受。让我坐一会儿吧。",
           "branch": "unaffordable",
           "expression": "gentle"
         },
@@ -5600,7 +5600,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1149,
           "speaker": "旁白",
           "portrait": null,
-          "text": "石屋厚墙里嵌着旧暖脂槽。门前清出的平地能停两三辆轻车，炉边备着劈柴，窗扇已修好。",
+          "text": "候车屋的门已经修好，推开时只响了一小声。厚石墙里嵌着旧暖脂槽，炉边的柴劈得整整齐齐。门外新清出的平地够停两三辆轻车，有人正把碎石踢到边上。",
           "branch": "common",
           "kind": "narration"
         },
@@ -5626,7 +5626,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1155,
           "speaker": "工队住民",
           "portrait": null,
-          "text": "墙和地面整冬留一点底温，水壶不结冰，进门不用从头烧。要坐暖、煮茶，仍得添柴。",
+          "text": "墙和地面能整冬带一点底温，水壶不结冰。晚来的推门就能歇，不用先穿着湿衣服等炉子烧起来；想坐暖、煮茶，还是得添柴。",
           "branch": "common"
         },
         {
@@ -5634,7 +5634,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1157,
           "speaker": "纱雾",
           "portrait": "guide",
-          "text": "不用它呢？",
+          "text": "如果不用暖脂，赶路的人到了这里怎么办？",
           "branch": "common",
           "expression": "gentle"
         },
@@ -5643,7 +5643,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1159,
           "speaker": "工队住民",
           "portrait": null,
-          "text": "门窗已经修了，柴炉也能用。我们按白天几班走，有人先来点火，天气坏就少走一趟。就是等屋里暖起来，得多穿着衣服坐一会儿。",
+          "text": "屋子照样开，门窗和柴炉都弄好了。我们排白天的班，近处的人先来生火；天气不好就少走一趟。大家得早点出门，也得多等炉子一会儿。",
           "branch": "common"
         },
         {
@@ -5651,7 +5651,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1161,
           "speaker": "旁白",
           "portrait": null,
-          "text": "璃拿起桌上的空杯，杯底凉得像门外的石头。",
+          "text": "璃拿起一只空杯，凉意贴住掌心。工人见她看杯子，顺手指了指炉边水壶，又弯腰把滚出来的一根柴塞回去。",
           "branch": "common",
           "kind": "narration"
         },
@@ -5660,7 +5660,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1163,
           "speaker": "璃",
           "portrait": "hero",
-          "text": "谁先来点火？",
+          "text": "先来点火的人，得比货队早多久？一直让那几户跑，会不会顾不过来？",
           "branch": "common",
           "expression": "guarded"
         },
@@ -5669,7 +5669,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1165,
           "speaker": "工队住民",
           "portrait": null,
-          "text": "住近处的几户轮着来。暖脂放不放，我们都得有人关门、扫雪。他们商量的是这一冬，明年开春再排。",
+          "text": "几户轮着来，已经商量过这一冬怎么排。用了暖脂，也还有扫雪、关门的活；有人有事得换班，不能光把暖槽填上就都不管了。",
           "branch": "common"
         },
         {
@@ -5677,7 +5677,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1167,
           "speaker": "纱雾",
           "portrait": "guide",
-          "text": "等开课以后，我往返也会经过这里。",
+          "text": "等开课了，我往返也经过这里。要是有人一起等，至少能坐着把手烤干，再接着走。",
           "branch": "common",
           "expression": "gentle"
         },
@@ -5686,7 +5686,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1169,
           "speaker": "旁白",
           "portrait": null,
-          "text": "她把杯子并回另一只旁边，先没有去碰节火匣。",
+          "text": "纱雾把杯子放回另一只旁边，抬眼看看厚墙。这里没有她小时候的回忆，可她已经能想见自己带着行李推开这扇门的样子。",
           "branch": "common",
           "kind": "narration"
         }
@@ -5938,7 +5938,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1223,
           "speaker": "旁白",
           "portrait": null,
-          "text": "璃握稳锁柄。纱雾盯着温标，过了一会儿，却低头看了一眼节火匣。",
+          "text": "璃握着锁柄，手心被金属硌得发白。纱雾盯住温标，等红线不再上冲，才低头看了一眼节火匣，拇指反复擦着盒角。",
           "branch": "common",
           "kind": "narration"
         },
@@ -5947,7 +5947,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1225,
           "speaker": "纱雾",
           "portrait": "guide",
-          "text": "老师，要是我回来多守一阵……",
+          "text": "老师，我回来再多守一阵的话，能不能……",
           "branch": "common",
           "expression": "gentle"
         },
@@ -5956,7 +5956,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1227,
           "speaker": "旁白",
           "portrait": null,
-          "text": "话刚出口，她自己停住了。",
+          "text": "她自己停住了。管里传来轻轻的回声，后半句话却怎么也说不出来。",
           "branch": "common",
           "kind": "narration"
         },
@@ -5965,7 +5965,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1229,
           "speaker": "诺克缇娅",
           "portrait": "final_queen",
-          "text": "多守一阵，做什么？",
+          "text": "你想让我再留哪一处？说给我听。",
           "branch": "common",
           "expression": "cold"
         },
@@ -5974,7 +5974,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1231,
           "speaker": "纱雾",
           "portrait": "guide",
-          "text": "我知道。不会多出暖脂，也不能再让树过一个这样的冬天。",
+          "text": "我知道守再久，也不会多出一份暖脂。可走到那里，亲手摸过了，就总想再找个办法。",
           "branch": "common",
           "expression": "gentle"
         },
@@ -5983,7 +5983,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1233,
           "speaker": "诺克缇娅",
           "portrait": "final_queen",
-          "text": "那你刚才想到什么了？",
+          "text": "是梨树，还是温室？",
           "branch": "common",
           "expression": "cold"
         },
@@ -5992,7 +5992,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1235,
           "speaker": "纱雾",
           "portrait": "guide",
-          "text": "梨树。还有那几盆白花。我走到一个地方，就想把它留下。好像只要我说我不走了，你就能答应。",
+          "text": "都有。绯叶一盆盆搬，我却想着以后去河谷。刚才忽然觉得，要是说我不走了，也许就不用眼看着这些东西少掉。",
           "branch": "common",
           "expression": "gentle"
         },
@@ -6001,7 +6001,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1237,
           "speaker": "旁白",
           "portrait": null,
-          "text": "管口那边安静了一阵。",
+          "text": "通话管那头安静了一会儿。纱雾贴近管口，只听见老师挪动椅子的声音，没有听见那个她其实知道不会有的办法。",
           "branch": "common",
           "kind": "narration"
         },
@@ -6010,7 +6010,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1239,
           "speaker": "诺克缇娅",
           "portrait": "final_queen",
-          "text": "我也想答应。窗外那盆，我养了九年。",
+          "text": "窗外那盆白花，我养了九年。我也想留。你肯陪我守着，我当然舍不得让你走，可我答应不了把所有花都保住。",
           "branch": "common",
           "expression": "cold"
         },
@@ -6019,7 +6019,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1241,
           "speaker": "纱雾",
           "portrait": "guide",
-          "text": "我不知道。",
+          "text": "九年了？我还以为那盆每年都会换新的。",
           "branch": "common",
           "expression": "gentle"
         },
@@ -6028,7 +6028,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1243,
           "speaker": "诺克缇娅",
           "portrait": "final_queen",
-          "text": "你第一次来值房，问过我它是不是纸做的。",
+          "text": "你第一次来值房，问我花是不是纸做的。我叫你摸，你又怕摸坏了，站在那里看了半天。",
           "branch": "common",
           "expression": "cold"
         },
@@ -6037,7 +6037,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1245,
           "speaker": "旁白",
           "portrait": null,
-          "text": "纱雾按住嘴角，笑意没能停很久。",
+          "text": "纱雾捂着嘴笑了一下，紧接着鼻尖又酸起来。她松开节火匣的盒角，把手放在冰凉的管壁上。",
           "branch": "common",
           "kind": "narration"
         },
@@ -6046,7 +6046,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1247,
           "speaker": "纱雾",
           "portrait": "guide",
-          "text": "我还想去河谷。这样说出来，好像很贪心。",
+          "text": "老师，我还是想去河谷。怕你这里难，也舍不得那些花，可我想去。",
           "branch": "common",
           "expression": "gentle"
         },
@@ -6055,7 +6055,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1249,
           "speaker": "诺克缇娅",
           "portrait": "final_queen",
-          "text": "你想去做什么？",
+          "text": "那就跟我说说，你去那里做什么。一直听你说“以后”，这回有地方了吗？",
           "branch": "common",
           "expression": "cold"
         },
@@ -6064,7 +6064,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1251,
           "speaker": "璃",
           "portrait": "hero",
-          "text": "（仍握着锁柄）她找了一间温——",
+          "text": "（仍握着锁柄）纱雾，老师听着呢，跟她说吧。",
           "branch": "common",
           "expression": "guarded"
         },
@@ -6073,7 +6073,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1253,
           "speaker": "纱雾",
           "portrait": "guide",
-          "text": "我自己说。",
+          "text": "嗯。老师，我找到地方了。",
           "branch": "common",
           "expression": "gentle"
         },
@@ -6082,7 +6082,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1255,
           "speaker": "旁白",
           "portrait": null,
-          "text": "璃停下。",
+          "text": "璃朝她点了点头，仍替她握稳锁柄。纱雾望了她一眼，贴近管口，把接下来的话说清楚。",
           "branch": "common",
           "kind": "narration"
         },
@@ -6091,7 +6091,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1257,
           "speaker": "纱雾",
           "portrait": "guide",
-          "text": "照料普通温室。一季，已经谈好了。春天回来试种。我就是想学。",
+          "text": "普通温室，学一冬，食宿和帮工都谈好了。春天回来试种。我已经想了很久，想看看不用暖根，自己能把苗养成什么样。",
           "branch": "common",
           "expression": "gentle"
         },
@@ -6100,7 +6100,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1259,
           "speaker": "诺克缇娅",
           "portrait": "final_queen",
-          "text": "那把到的日子告诉人家。别像我，茶买了，回家的日子一年没定。",
+          "text": "好。把到的日子跟人家说准，山上的事也早一点交出去。我的茶从春天放到现在，还老想着回家再喝，你可别学这个。",
           "branch": "common",
           "expression": "cold"
         },
@@ -6109,7 +6109,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1261,
           "speaker": "旁白",
           "portrait": null,
-          "text": "纱雾看着温标，等红线完全稳住，才松开一直拢着匣角的手。",
+          "text": "纱雾应了一声，重新望向温标。等红线彻底稳住，她才发觉自己的手终于不再抓着匣角。",
           "branch": "common",
           "kind": "narration"
         },
@@ -6118,7 +6118,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1263,
           "speaker": "诺克缇娅",
           "portrait": "final_queen",
-          "text": "锁柄可以松手。纱雾，把门关好再走。你们不必为了陪我说话，一直站在风口。",
+          "text": "可以松手了，璃。纱雾，走的时候把门关严，我这边听见风直往管里灌。路上说话，别又站在风口受凉。",
           "branch": "common",
           "expression": "cold"
         }
@@ -6157,7 +6157,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1271,
           "speaker": "璃",
           "portrait": "hero",
-          "text": "刚才我替你说了。",
+          "text": "刚才你贴着管口半天没出声，我也跟着紧张。后来听你说到温室，才放心一点。",
           "branch": "common",
           "expression": "guarded"
         },
@@ -6166,7 +6166,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1273,
           "speaker": "纱雾",
           "portrait": "guide",
-          "text": "我知道你是想帮忙。",
+          "text": "我怕一听见老师的声音，就又改口说我不去了。还好，说出来以后，她真的在听。",
           "branch": "common",
           "expression": "gentle"
         },
@@ -6175,7 +6175,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1275,
           "speaker": "璃",
           "portrait": "hero",
-          "text": "下回我等你先说。",
+          "text": "她还记得你小时候问的那盆花。等你学回来，也带她看看新种的吧。",
           "branch": "common",
           "expression": "guarded"
         },
@@ -6184,7 +6184,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1277,
           "speaker": "纱雾",
           "portrait": "guide",
-          "text": "（把地图转向山脊）也不用什么都等。那边的门，帮我扶一下。",
+          "text": "（折好地图，伸手去推重门）到时候再问她愿不愿意去，她还想先在自己家坐坐呢。这个门真重，帮我扶一下。",
           "branch": "common",
           "expression": "gentle"
         },
@@ -6450,7 +6450,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1335,
           "speaker": "旁白",
           "portrait": null,
-          "text": "米露在驿台检查回村的工料，盾靠在腿边。她见到两人，先把手里的绳卷收紧。",
+          "text": "米露蹲在驿台边，将回村的几捆工料重新捆紧。圆盾靠着腿，绳头从她指间滑了两次。看见两人，她先伸手指向上门的方向，话已经到了嘴边。",
           "branch": "common",
           "kind": "narration"
         },
@@ -6459,7 +6459,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1337,
           "speaker": "米露",
           "portrait": "cat_boss",
-          "text": "东边的支架到了，前头到上门也查过了。你们——",
+          "text": "东边的支架到了，到上门那段也查过。正好，学舍后面几天的——",
           "branch": "common",
           "expression": "alert"
         },
@@ -6468,7 +6468,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1339,
           "speaker": "纱雾",
           "portrait": "guide",
-          "text": "米露，我想先说一件自己的事。",
+          "text": "米露，先让我说一件事。是我自己接下来想做的。",
           "branch": "common",
           "expression": "gentle"
         },
@@ -6477,7 +6477,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1341,
           "speaker": "旁白",
           "portrait": null,
-          "text": "米露抬起头。璃退到一旁，把门口挡路的工具箱挪开，留在听得见的地方。",
+          "text": "米露抬头，仍抓着半截绳。璃挪开门边的工具箱，让送料的人过去，随后留在一旁，没有替纱雾开口。",
           "branch": "common",
           "kind": "narration"
         },
@@ -6495,7 +6495,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1345,
           "speaker": "纱雾",
           "portrait": "guide",
-          "text": "这次停暖，我做到总阀关好。之后我去河谷学一季，第一场雪前后去。学舍、苗圃和家家户户的温标，我不能再像以前那样，谁一叫就过去。",
+          "text": "这次停暖，我会做到总阀关好。之后去河谷学一冬，第一场雪前后走。学舍、苗圃，还有各家的温标，你要另外排人了；我在下面上课，不能一叫就赶回来。",
           "branch": "common",
           "expression": "gentle"
         },
@@ -6504,7 +6504,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1347,
           "speaker": "旁白",
           "portrait": null,
-          "text": "米露的手还握着绳卷。过了片刻，她才把绳放下。",
+          "text": "米露看着她，过了一会儿才把绳卷放下。脚边的工料仍有一捆松着，她却暂时没有去拉。",
           "branch": "common",
           "kind": "narration"
         },
@@ -6513,7 +6513,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1349,
           "speaker": "米露",
           "portrait": "cat_boss",
-          "text": "我昨天还把学舍那一份算在你身上。那里的老人认识你，你去，他们肯听。",
+          "text": "你走一冬？我昨天还把学舍那班填给你了。那几位老人认得你，新人去，他们说温标不准，未必肯听。",
           "branch": "common",
           "expression": "alert"
         },
@@ -6522,7 +6522,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1351,
           "speaker": "纱雾",
           "portrait": "guide",
-          "text": "我知道。所以我一直不敢先说。",
+          "text": "我知道他们信我。我就是一想到这个，一直不敢告诉你，可再不说，又得把整个冬天都答应下来。",
           "branch": "common",
           "expression": "gentle"
         },
@@ -6531,7 +6531,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1353,
           "speaker": "米露",
           "portrait": "cat_boss",
-          "text": "早两天说，我就……",
+          "text": "你要早两天说，我至少还能先找——",
           "branch": "common",
           "expression": "alert"
         },
@@ -6540,7 +6540,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1355,
           "speaker": "旁白",
           "portrait": null,
-          "text": "她说到一半，看见纱雾收紧了手，停了一下。",
+          "text": "米露说到一半，见纱雾的手又攥紧了。她低头揉了揉压红的指节，吐出一口气，把那句责怪咽回去。",
           "branch": "common",
           "kind": "narration"
         },
@@ -6549,7 +6549,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1357,
           "speaker": "米露",
           "portrait": "cat_boss",
-          "text": "算了。我现在知道了。你走以前，教他们认两次标记，行不行？我找两个人跟着学。",
+          "text": "我现在去找两个人。你走以前，带他们认两次标记，陪着到学舍教，行不行？老人看见是你教的，总能放心一些。",
           "branch": "common",
           "expression": "alert"
         },
@@ -6558,7 +6558,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1359,
           "speaker": "纱雾",
           "portrait": "guide",
-          "text": "行。两次做完，平时轮谁来看，你们自己排。",
+          "text": "行，我教两次，也把容易看错的地方写下来。之后每天轮到谁、有人请假谁补，你来排，别又全写回我名字下面。",
           "branch": "common",
           "expression": "gentle"
         },
@@ -6567,7 +6567,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1361,
           "speaker": "米露",
           "portrait": "cat_boss",
-          "text": "嗯。",
+          "text": "好，我排。哪两个人定下了，今晚就告诉你。",
           "branch": "common",
           "expression": "alert"
         },
@@ -6576,7 +6576,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1363,
           "speaker": "旁白",
           "portrait": null,
-          "text": "门外的人喊了一声要借短绳。米露把手里的递出去，回来时仍皱着眉，却把图上纱雾名字旁的一笔划掉了。",
+          "text": "门外有人借短绳，米露把手里的递出去。回来后，她摊开图册，划掉纱雾名字旁的一笔，又留了两格，准备写新的名字。",
           "branch": "common",
           "kind": "narration"
         },
@@ -6585,7 +6585,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1365,
           "speaker": "米露",
           "portrait": "cat_boss",
-          "text": "头几天估计乱一点。你别听见乱，就又全接回去。",
+          "text": "头几天肯定有人认错。你教的时候，让他们自己报一遍，别看着慢，就伸手全做了。",
           "branch": "common",
           "expression": "alert"
         },
@@ -6594,7 +6594,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1367,
           "speaker": "纱雾",
           "portrait": "guide",
-          "text": "你也别每次都来问我“就今天”。",
+          "text": "那你也帮我记着。等我忍不住又去看，提醒我说好的两次。可别一边提醒，一边问我能不能“就今天”。",
           "branch": "common",
           "expression": "gentle"
         },
@@ -6603,7 +6603,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1369,
           "speaker": "旁白",
           "portrait": null,
-          "text": "两人看了对方一眼。",
+          "text": "米露看了她一眼，尾巴在凳腿边扫过。纱雾仍等着，没有先笑着把自己的要求收回去。",
           "branch": "common",
           "kind": "narration"
         },
@@ -6612,7 +6612,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1371,
           "speaker": "米露",
           "portrait": "cat_boss",
-          "text": "好。你记着，我也记着。",
+          "text": "记着了。你把那一季学好，春天回来，我还想看看你带回什么新苗。",
           "branch": "common",
           "expression": "alert"
         }
@@ -6691,7 +6691,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1387,
           "speaker": "米露",
           "portrait": "cat_boss",
-          "text": "以前我总觉得，问“能不能再帮一下”没什么。她一答应，我就放心了。",
+          "text": "以前叫她一声，她总会过来。我就想着这件有人管了，下一件也先问她，没去想她是不是已经没空了。",
           "branch": "common",
           "expression": "alert"
         },
@@ -6700,7 +6700,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1389,
           "speaker": "璃",
           "portrait": "hero",
-          "text": "现在她没答应。",
+          "text": "她怕你为难，憋了一路才开口。你刚才皱眉的时候，她又差一点往回缩。",
           "branch": "common",
           "expression": "guarded"
         },
@@ -6709,7 +6709,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1391,
           "speaker": "米露",
           "portrait": "cat_boss",
-          "text": "嗯，我得自己把剩下的排出来。",
+          "text": "我是真为难，少这么一个熟手，得挨个找人学。可她已经把想做的说清楚了，我总不能装作没听见。",
           "branch": "common",
           "expression": "alert"
         },
@@ -6718,7 +6718,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1393,
           "speaker": "璃",
           "portrait": "hero",
-          "text": "你也想下山？",
+          "text": "你呢？这一冬，就准备一直留在山上？",
           "branch": "common",
           "expression": "guarded"
         },
@@ -6727,7 +6727,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1395,
           "speaker": "米露",
           "portrait": "cat_boss",
-          "text": "想。货路刚通，当然还得忙一阵。但等第一轮巡护稳了，我也要去买点不用替别人捎的东西。",
+          "text": "先把这轮巡护排稳。之后我也要下去买点自己的东西，不用每回进铺子，先掏出别人托带的单子。",
           "branch": "common",
           "expression": "alert"
         },
@@ -6736,7 +6736,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1397,
           "speaker": "璃",
           "portrait": "hero",
-          "text": "那你想好了再告诉一起排班的人。",
+          "text": "哪天想好了，跟接班的人说一声。我可不想下次回来，还听你说“等忙完这阵”。",
           "branch": "common",
           "expression": "guarded"
         },
@@ -6745,7 +6745,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1399,
           "speaker": "米露",
           "portrait": "cat_boss",
-          "text": "（看她一眼）你刚学会的话，就拿来教我了？",
+          "text": "（抬眼看她）你才回来几天，这就管到我身上了？",
           "branch": "common",
           "expression": "alert"
         },
@@ -6754,7 +6754,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1401,
           "speaker": "璃",
           "portrait": "hero",
-          "text": "是。",
+          "text": "听着熟吧。我在路上刚挨过一遍。",
           "branch": "common",
           "expression": "guarded"
         },
@@ -6955,7 +6955,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1445,
           "speaker": "璃",
           "portrait": "hero",
-          "text": "刚回来那天，我真觉得把大家带走就好了。",
+          "text": "刚回来时，我以为清出一条下山路，把大家送走就算帮上忙了。没想到光是这个窗框，就有人舍不得放。",
           "branch": "response1",
           "expression": "guarded"
         },
@@ -6973,7 +6973,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1449,
           "speaker": "璃",
           "portrait": "hero",
-          "text": "现在觉得我得先站开一点，别堵着他们自己走的门。",
+          "text": "先听他怎么住，再看看车怎么送。想走想留，都得有路可用。我也不用见一个人，就替他收一份行李。",
           "branch": "response1",
           "expression": "guarded"
         },
@@ -7390,7 +7390,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1539,
           "speaker": "旁白",
           "portrait": null,
-          "text": "从回水台回到树心外廊，只隔村内一小段路。诺克缇娅坐在桌前，三个封印片静止地放在规定位置，没有继续追着温标调整。",
+          "text": "从回水台回到树心外廊，只走过村内一小段路。诺克缇娅已经坐下，三枚封印片停在各自的位置。她伸手摸了摸杯子，却没有像从前那样，喝到一半就起身去追温标。",
           "branch": "common",
           "kind": "narration"
         },
@@ -7399,7 +7399,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1541,
           "speaker": "诺克缇娅",
           "portrait": "final_queen",
-          "text": "安静得有点不习惯。",
+          "text": "刚才有一会儿，只听见窗外的人说话。我还以为温标坏了，特意又看了一遍。",
           "branch": "common",
           "expression": "cold"
         },
@@ -7408,7 +7408,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1543,
           "speaker": "纱雾",
           "portrait": "guide",
-          "text": "你可以先睡一会儿。",
+          "text": "四边都稳了，你可以先睡一会儿。我们在桌边，不乱动东西。",
           "branch": "common",
           "expression": "gentle"
         },
@@ -7417,7 +7417,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1545,
           "speaker": "诺克缇娅",
           "portrait": "final_queen",
-          "text": "可以。但我先想拜托璃一件事。",
+          "text": "睡当然要睡。不过璃，先帮我带一样东西回来，好不好？",
           "branch": "common",
           "expression": "cold"
         },
@@ -7435,7 +7435,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1549,
           "speaker": "诺克缇娅",
           "portrait": "final_queen",
-          "text": "米露那里有我家的备用钥匙。前年修门闩时留给她的。请你帮我拿来。",
+          "text": "我家的备用钥匙在米露那里，前年修门闩时留下的。你去找她拿来，我怕等会儿又忙得忘了。",
           "branch": "common",
           "expression": "cold"
         },
@@ -7444,7 +7444,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1551,
           "speaker": "璃",
           "portrait": "hero",
-          "text": "你想先回去看一眼？",
+          "text": "等总阀关好，就回家？你不用再在这里守一夜了？",
           "branch": "common",
           "expression": "guarded"
         },
@@ -7453,7 +7453,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1553,
           "speaker": "诺克缇娅",
           "portrait": "final_queen",
-          "text": "我想总阀关好以后，就回去。不先在这里等一夜，看看还有没有谁想叫我。",
+          "text": "嗯。以前每次想走，总觉得再留一夜稳妥些。明天早上有人一喊，又留下了。这回我想关好就走。",
           "branch": "common",
           "expression": "cold"
         },
@@ -7462,7 +7462,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1555,
           "speaker": "旁白",
           "portrait": null,
-          "text": "纱雾望着桌上的凉茶，过了一会儿才坐到另一把椅子上。",
+          "text": "纱雾看向桌上的凉茶，坐到了另一把椅子上。她的手放在膝头，好一会儿没有去碰温标架。",
           "branch": "common",
           "kind": "narration"
         },
@@ -7471,7 +7471,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1557,
           "speaker": "纱雾",
           "portrait": "guide",
-          "text": "我也想过，等一切都安稳了再走。",
+          "text": "我也是。总觉得把所有事都做完了，出门才安心，可每次临走，都还能找出一件。",
           "branch": "common",
           "expression": "gentle"
         },
@@ -7480,7 +7480,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1559,
           "speaker": "诺克缇娅",
           "portrait": "final_queen",
-          "text": "这几个月，根流越来越乱。我总觉得再守一天，第二天也许好一点。连屋里漏雨，都是别人去替我补的。",
+          "text": "这些月根流越来越乱，我就想，再守一天，也许明天会好。后来连家里漏了雨，都是别人替我补；问我屋里东西往哪搬，我竟想不起来。",
           "branch": "common",
           "expression": "cold"
         },
@@ -7489,7 +7489,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1561,
           "speaker": "璃",
           "portrait": "hero",
-          "text": "你现在想回去做什么？",
+          "text": "那回去以后，先做什么？茶也放那边喝？",
           "branch": "common",
           "expression": "guarded"
         },
@@ -7498,7 +7498,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1563,
           "speaker": "诺克缇娅",
           "portrait": "final_queen",
-          "text": "（认真想了想）把窗打开。那里应该有很久没有人住的味道。",
+          "text": "（想了一会儿）先把窗打开。再坐下来，看看我自己的屋子。我都快记不清晚上的风从哪边进来了。",
           "branch": "common",
           "expression": "cold"
         },
@@ -7507,7 +7507,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1565,
           "speaker": "纱雾",
           "portrait": "guide",
-          "text": "然后呢？",
+          "text": "开完窗呢？",
           "branch": "common",
           "expression": "gentle"
         },
@@ -7516,7 +7516,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1567,
           "speaker": "诺克缇娅",
           "portrait": "final_queen",
-          "text": "不知道。能不能先不知道？",
+          "text": "先坐着。没有人等我报下一个温标的话，我大概能坐很久。",
           "branch": "common",
           "expression": "cold"
         },
@@ -7525,7 +7525,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1569,
           "speaker": "旁白",
           "portrait": null,
-          "text": "纱雾点头。她没有立刻替老师列一张新的工作单。",
+          "text": "纱雾望着她，慢慢点头。椅子旁的旧根仍温热，她却没有再问明天该由谁坐在这里。",
           "branch": "common",
           "kind": "narration"
         },
@@ -7534,7 +7534,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1571,
           "speaker": "璃",
           "portrait": "hero",
-          "text": "我去拿钥匙。",
+          "text": "我去拿钥匙。回来放在你看得见的地方，免得又随手压到图下面。",
           "branch": "common",
           "expression": "guarded"
         }
@@ -7708,7 +7708,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1607,
           "speaker": "旁白",
           "portrait": null,
-          "text": "抽屉敞着，纱雾把几件生活用品摆在桌上。璃站在门侧。",
+          "text": "纱雾拉开一格抽屉，把要带走的生活用品摆到桌上，又将暂时用不上的一件放了回去。璃站在门侧，看着她来回比较，没有伸手替她装包。",
           "branch": "common",
           "kind": "narration"
         },
@@ -7717,7 +7717,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1609,
           "speaker": "璃",
           "portrait": "hero",
-          "text": "收拾好了吗？",
+          "text": "这几样先带着？剩下的地方，给你留空？",
           "branch": "common",
           "expression": "guarded"
         },
@@ -7726,7 +7726,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1611,
           "speaker": "纱雾",
           "portrait": "guide",
-          "text": "这格好了。剩下的明天再看。",
+          "text": "嗯，这一格先收好。别全塞进去，我到了客舍才知道还缺什么。",
           "branch": "common",
           "expression": "gentle"
         },
@@ -7735,7 +7735,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1613,
           "speaker": "璃",
           "portrait": "hero",
-          "text": "你真的不用一次带完。",
+          "text": "缺了跟货队说。下次回来，也能自己拿。",
           "branch": "common",
           "expression": "guarded"
         },
@@ -7744,7 +7744,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1615,
           "speaker": "纱雾",
           "portrait": "guide",
-          "text": "我知道。春天我还会回来。",
+          "text": "我知道。春天还回来住，这屋子又不会因为我走一冬，就不让我进了。",
           "branch": "common",
           "expression": "gentle"
         },
@@ -7753,7 +7753,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1617,
           "speaker": "旁白",
           "portrait": null,
-          "text": "她拿起那张旧冬市地图，没有藏回抽屉，而是放在准备带走的东西最上面。",
+          "text": "她拿起旧冬市地图，展开检查了一下折痕，放在要带走的东西最上面。这次璃看见了，她也没有往别的东西下面藏。",
           "branch": "common",
           "kind": "narration"
         },
@@ -7762,7 +7762,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1619,
           "speaker": "纱雾",
           "portrait": "guide",
-          "text": "走吧。做完之后，我想回来睡在这里。",
+          "text": "走吧，饭该送过去了。总阀关好以后，我想回自己的床上睡，抽屉明天再管。",
           "branch": "common",
           "expression": "gentle"
         }
@@ -7807,7 +7807,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1627,
           "speaker": "纱雾",
           "portrait": "guide",
-          "text": "我们吃过了。你慢慢吃，还热。",
+          "text": "我们都吃过了。汤在下面，先别一口气全翻出来，碗还烫。",
           "branch": "common",
           "expression": "gentle",
           "phase": "review"
@@ -7817,7 +7817,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1629,
           "speaker": "旁白",
           "portrait": null,
-          "text": "诺克缇娅抬了抬眉，先夹了一口菜。",
+          "text": "诺克缇娅的手果然在碗底停了一下。她看了纱雾一眼，先夹了一口菜，三个人都笑得很轻。",
           "branch": "common",
           "kind": "narration",
           "phase": "review"
@@ -7827,7 +7827,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1631,
           "speaker": "绯叶",
           "portrait": "fox_boss",
-          "text": "进检修道以前，把暖脂都用在哪里再看一遍。要回哪处看看，现在还能走。",
+          "text": "进检修道前，再看看匣子。哪几处用了暖脂，哪几处得按普通办法过冬，还有想回去看的，现在就去。合上以后，这一冬就照定好的办。",
           "branch": "common",
           "expression": "watchful",
           "phase": "review"
@@ -7855,7 +7855,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1647,
           "speaker": "璃",
           "portrait": "hero",
-          "text": "照这个安排走。",
+          "text": "我看清楚了，就照现在的安排。剩下的也按说好的送进公共库存。",
           "branch": "confirm",
           "expression": "guarded"
         },
@@ -7864,7 +7864,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1649,
           "speaker": "纱雾",
           "portrait": "guide",
-          "text": "我也知道哪些没能留下。我们去把最后的事做完。",
+          "text": "嗯。留不住的那些，我还是会难过。可路和屋子都准备好了，老师也该回家了，我们去关总阀。",
           "branch": "confirm",
           "expression": "gentle"
         },
@@ -8071,7 +8071,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1685,
           "speaker": "诺克缇娅",
           "portrait": "final_queen",
-          "text": "忙的时候，确实方便。后来根流一天比一天难控，“忙的时候”就没有停过。",
+          "text": "起初就想省一点来回的工夫。后来根流一乱，我把铺盖也搬来了；茶都买好了，回家的那一天却一直往后挪。",
           "branch": "common",
           "expression": "cold",
           "phase": "beforePack"
@@ -8121,7 +8121,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1695,
           "speaker": "诺克缇娅",
           "portrait": "final_queen",
-          "text": "先留着。以后有人进来检查设备，累了也可以躺一下。但不住在这里等下一班。",
+          "text": "先留着，检修的人累了还能躺一会儿。就是别像我，把整个冬天都挤在这张床上。",
           "branch": "common",
           "expression": "cold",
           "phase": "packed"
@@ -8192,7 +8192,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1709,
           "speaker": "旁白",
           "portrait": null,
-          "text": "纱雾抬眼看她，像是刚刚又听懂了一层意思。",
+          "text": "纱雾低头看了看主轴下的卡舌，又望向老师一直绷着的手。她把星盘移近，仔细核对最后一遍。",
           "branch": "common",
           "kind": "narration"
         },
@@ -8201,7 +8201,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1711,
           "speaker": "纱雾",
           "portrait": "guide",
-          "text": "我记住了。",
+          "text": "记住了。卡好以后，我再看一遍回流，咱们一起松手。",
           "branch": "common",
           "expression": "gentle"
         }
@@ -8368,7 +8368,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1745,
           "speaker": "旁白",
           "portrait": null,
-          "text": "沉默。没有新的警铃。",
+          "text": "水声渐渐低下去。三个人都还站在原处，等着习惯中的那一声警铃；许久过去，铃没有响。",
           "branch": "common",
           "kind": "narration",
           "phase": "stopped"
@@ -8378,7 +8378,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1747,
           "speaker": "纱雾",
           "portrait": "guide",
-          "text": "老师？",
+          "text": "老师，手可以放下了。你还抓着袖子。",
           "branch": "common",
           "expression": "gentle",
           "phase": "stopped"
@@ -8388,7 +8388,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1749,
           "speaker": "诺克缇娅",
           "portrait": "final_queen",
-          "text": "（望着自己空下来的手）我想等它再响一下。",
+          "text": "（慢慢松开手）嗯。我总觉得它下一刻就会叫，脚一挪开，就来不及回来了。",
           "branch": "common",
           "expression": "cold",
           "phase": "stopped"
@@ -8398,7 +8398,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1751,
           "speaker": "璃",
           "portrait": "hero",
-          "text": "那就再站一会儿。",
+          "text": "那就站一会儿。我在旁边，等你想走了再走。",
           "branch": "common",
           "expression": "guarded",
           "phase": "stopped"
@@ -8408,7 +8408,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1753,
           "speaker": "旁白",
           "portrait": null,
-          "text": "诺克缇娅听过一阵水声，收回三枚封印片。",
+          "text": "诺克缇娅又听过一阵水声，收回三枚封印片。她把空出来的手落在身侧，这回没有再伸向锁柄。",
           "branch": "common",
           "kind": "narration",
           "phase": "stopped"
@@ -8418,7 +8418,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1755,
           "speaker": "诺克缇娅",
           "portrait": "final_queen",
-          "text": "够了。走吧。",
+          "text": "好了。走吧，别让你们陪我在这里站一夜。",
           "branch": "common",
           "expression": "cold",
           "phase": "stopped"
@@ -8564,7 +8564,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1785,
           "speaker": "旁白",
           "portrait": null,
-          "text": "诺克缇娅自己打开家门。屋里已经做过她同意的基本修补，摆设仍然是她自己的。她先开窗，让夜里的凉气进来。",
+          "text": "诺克缇娅自己把钥匙插进锁孔，转了一下才推开门。屋里做过她同意的基本修补，桌椅仍在熟悉的位置。她先走到窗边，拨开窗栓，让夜里的凉气吹散积了很久的闷味。",
           "branch": "common",
           "kind": "narration"
         },
@@ -8573,7 +8573,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1787,
           "speaker": "纱雾",
           "portrait": "guide",
-          "text": "会冷。",
+          "text": "慢一点开，外面已经冷了。你刚从树心出来，披肩要不要再拢上？",
           "branch": "common",
           "expression": "gentle"
         },
@@ -8582,7 +8582,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1789,
           "speaker": "诺克缇娅",
           "portrait": "final_queen",
-          "text": "开一小会儿。我想换换气。",
+          "text": "开一小会儿就好。我想闻闻外面的风。那盏灯，替我放桌边吧。",
           "branch": "common",
           "expression": "cold"
         },
@@ -8591,7 +8591,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1791,
           "speaker": "旁白",
           "portrait": null,
-          "text": "纱雾打开从检修道带来的小包，把两包茶递给璃，再取出便当盖。璃把茶放在桌上，纱雾把盖子交给屋主。",
+          "text": "纱雾打开检修道带来的小包，把两包茶递给璃，又取出便当盖。璃将茶放在灯旁，纱雾把盖子交回诺克缇娅手中。普通灯光落在桌面，照出一小块久未用过的木纹。",
           "branch": "common",
           "kind": "narration"
         },
@@ -8600,7 +8600,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1793,
           "speaker": "诺克缇娅",
           "portrait": "final_queen",
-          "text": "明天中午，如果我没出来——",
+          "text": "明天中午，要是我还没出来，你们过来——",
           "branch": "common",
           "expression": "cold"
         },
@@ -8609,7 +8609,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1795,
           "speaker": "旁白",
           "portrait": null,
-          "text": "纱雾的神情下意识紧了一下。",
+          "text": "纱雾立刻抬头，手还扶在包口。诺克缇娅看见她紧起来的神情，停了一下，才把话说完。",
           "branch": "common",
           "kind": "narration"
         },
@@ -8618,7 +8618,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1797,
           "speaker": "诺克缇娅",
           "portrait": "final_queen",
-          "text": "来叫我吃饭。敲门就好，不用敲警铃。",
+          "text": "叫我吃饭。敲门就行，别敲警铃。我大概会睡过头。",
           "branch": "common",
           "expression": "cold"
         },
@@ -8627,7 +8627,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1799,
           "speaker": "纱雾",
           "portrait": "guide",
-          "text": "（呼出一口气）好。",
+          "text": "（长长呼出一口气）好。那我敲门，你得应一声，别隔着被子说了，我在外面听不见。",
           "branch": "common",
           "expression": "gentle"
         },
@@ -8636,7 +8636,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1801,
           "speaker": "璃",
           "portrait": "hero",
-          "text": "那我们回去了。",
+          "text": "我们先回去。窗透完气记得关，明天见。",
           "branch": "common",
           "expression": "guarded"
         },
@@ -8645,7 +8645,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1803,
           "speaker": "旁白",
           "portrait": null,
-          "text": "诺克缇娅点头，自己关上门。窗边亮起一盏普通灯。",
+          "text": "诺克缇娅点头，送她们到门口，自己将门合上。璃与纱雾走出几步，窗边的灯仍亮着；这回，她们没有再站在外头等铃声。",
           "branch": "common",
           "kind": "narration"
         }
@@ -8679,7 +8679,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1809,
           "speaker": "纱雾",
           "portrait": "guide",
-          "text": "我现在该做什么？",
+          "text": "一下安静下来，真不习惯。我还在想，回去前是不是要再看一遍……",
           "branch": "common",
           "expression": "gentle"
         },
@@ -8688,7 +8688,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1811,
           "speaker": "璃",
           "portrait": "hero",
-          "text": "你刚才不是说，想回自己屋里睡？",
+          "text": "你在收抽屉时说，想回自己的床上睡。那边的窗关好了吗？",
           "branch": "common",
           "expression": "guarded"
         },
@@ -8697,7 +8697,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1813,
           "speaker": "纱雾",
           "portrait": "guide",
-          "text": "是。",
+          "text": "关好了。被子早上也收进去了。",
           "branch": "common",
           "expression": "gentle"
         },
@@ -8706,7 +8706,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1815,
           "speaker": "旁白",
           "portrait": null,
-          "text": "她轻轻笑了一下，像觉得这个答案简单得有些陌生。",
+          "text": "说完，她自己先笑了。原来不用再想别的安排，屋里已经有一张能躺下的床，今晚也没有谁等她值夜。",
           "branch": "common",
           "kind": "narration"
         },
@@ -8715,7 +8715,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1817,
           "speaker": "纱雾",
           "portrait": "guide",
-          "text": "那我回去睡觉。",
+          "text": "那我回去睡。你也早点休息，明天吃饭时再见。",
           "branch": "common",
           "expression": "gentle"
         }
@@ -9617,7 +9617,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 1997,
           "speaker": "旁白",
           "portrait": null,
-          "text": "河谷，室内的客舍近景。纱雾把地图摊到桌上，璃往旁边挪开水杯，给她空出完整的一角。",
+          "text": "河谷客舍里，纱雾解开包，先把那张旧地图摊到桌上。璃将水杯挪远一点，用手掌压住总往上卷的一角。",
           "branch": "common",
           "kind": "narration"
         },
@@ -9653,7 +9653,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 2005,
           "speaker": "璃",
           "portrait": "hero",
-          "text": "今天也没有一切都准备好。",
+          "text": "还有好多没想好。我下午要去货场问护送的活，住处也得再看看。不过冬市那天，我给自己留着。",
           "branch": "common",
           "expression": "guarded"
         },
@@ -9662,7 +9662,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 2007,
           "speaker": "纱雾",
           "portrait": "guide",
-          "text": "今天已经来了。",
+          "text": "那就等你问完，回来这里吃饭。我把去摊位的路画好，可别再走错门。",
           "branch": "common",
           "expression": "gentle"
         },
@@ -9680,7 +9680,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 2011,
           "speaker": "旁白",
           "portrait": null,
-          "text": "两人在客舍桌前把同一张地图转了个方向，窗外是正常冬季的光。",
+          "text": "璃点头，沿着纱雾指的街口看过去。两个人各压住地图一角，把它转向窗光；旧折痕终于平下来，能看清新添的路了。",
           "branch": "common",
           "kind": "narration"
         },
@@ -9689,7 +9689,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 2013,
           "speaker": "旁白",
           "portrait": null,
-          "text": "这次，她们先一起走到今天。",
+          "text": "楼下有人叫吃饭。纱雾收起地图，璃替她端起水杯，两人一前一后走出房门。",
           "branch": "common",
           "kind": "narration"
         }
@@ -9867,7 +9867,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 2049,
           "speaker": "纱雾",
           "portrait": "guide",
-          "text": "以前我总以为，走开以后，别人就接不上我留下的那一段。",
+          "text": "学舍后来怎么样？我在温室第一次轮休那天，满脑子还是他们会不会认错温标。",
           "branch": "common",
           "expression": "gentle"
         },
@@ -9876,7 +9876,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 2051,
           "speaker": "璃",
           "portrait": "hero",
-          "text": "现在有人接，也有人慢一点再接。没有你想的那么快，可在接。",
+          "text": "有人接上了，也有做得慢的。你教过的那两次没白费，剩下的让他们继续学。你在这里，也还在一天一天学开窗和浇水呢。",
           "branch": "common",
           "expression": "guarded"
         },
@@ -9885,7 +9885,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 2053,
           "speaker": "纱雾",
           "portrait": "guide",
-          "text": "那我再住一阵。春天回去试试新种法。",
+          "text": "那我就安心再学一阵。春天回去，先试两排苗，种成什么样，再慢慢跟大家说。",
           "branch": "common",
           "expression": "gentle"
         },
@@ -9912,7 +9912,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 2059,
           "speaker": "旁白",
           "portrait": null,
-          "text": "她们住在路的两端，也确实见到了彼此。",
+          "text": "这次饭吃完，璃把下一趟过来的日子说给她听。纱雾收好杯子，送她到门口，仍有些舍不得，却知道该在哪一天等那声敲门。",
           "branch": "common",
           "kind": "narration"
         }
