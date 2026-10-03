@@ -1,5 +1,6 @@
 import { B01_PROJECTION, B01_ART_ASSETS } from './forest-entry-contract.js';
 import { forestActionVisible } from '../campaigns/b/player-copy.js';
+import { FOREST_STORY_CONTENT } from '../campaigns/b/story/content.js';
 // Source-camera projection is presentation-only. Never grants a route or action.
 export const B01_RENDER_REVISION='b01-source-render-r1';
 const imageCache=new Map(),failures=new Set(),listeners=new Set();let started=false;
@@ -67,4 +68,37 @@ export function presentForestEntry(canvas,board,stage,model,{readable=false,sele
  let display=displays.get(canvas);if(!display){display={};display.draw=()=>{if(canvas.hidden||canvas.dataset.region!=='B-01'||board.dataset.renderer!=='native-b01')return;const width=canvas.getBoundingClientRect?.().width||638,height=width*contract.height/contract.width,dpr=globalThis.devicePixelRatio||1;canvas.width=Math.round(width*dpr);canvas.height=Math.round(height*dpr);const createLayer=(w,h)=>{display.layer??=document.createElement('canvas');display.layer.width=w;display.layer.height=h;return display.layer;};drawForestEntry(canvas.getContext('2d'),display.model,imageCache,{width,height,dpr,readable:display.readable,selected:display.selected,createLayer});};displays.set(canvas,display);if(typeof ResizeObserver==='function'){display.observer=new ResizeObserver(display.draw);display.observer.observe(canvas);}}
  Object.assign(display,{model,readable,selected});display.draw();return true;
 }
-export function setStoryEntryBackdrop(image,scene){const asset=B01_ART_ASSETS.find(a=>a.id==='backdrop');image.hidden=scene.regionId!=='B-01';if(image.hidden)return;image.src=new URL('../../'+asset.file,import.meta.url).href;image.onerror=()=>{image.hidden=true;};}
+// Resolved/saved scenes intentionally have no regionId. The authored turn stage
+// takes priority (scenes may change location); old queues fall back to the source
+// scene, never to the player's current map region. This is presentation-only.
+export function forestStoryBackdrop(scene,turn){
+ const source=FOREST_STORY_CONTENT.scenes[scene?.sceneId];
+ const locationId=turn?.stage?.locationId??source?.regionId??null;
+ const regionId=typeof locationId==='string'?locationId.match(/^B-\d{2}(?=\.|$)/)?.[0]??null:null;
+ const backdropAssetId=turn?.stage?.backdropAssetId??scene?.backdropAssetId??source?.backdropAssetId??null;
+ // These three authored village-entry scenes share the accepted setting. An
+ // unknown variant or another region must not borrow B01's environment.
+ const asset=locationId==='B-01'&&['B_ENV_01:enter','B_ENV_01:pre','B_ENV_01:post'].includes(backdropAssetId)?B01_ART_ASSETS.find(a=>a.id==='backdrop'):null;
+ return {locationId,regionId,backdropAssetId,asset};
+}
+const storyBackdrops=new WeakMap();
+export function setStoryEntryBackdrop(image,scene,turn,label){
+ const presentation=forestStoryBackdrop(scene,turn),asset=presentation.asset;
+ const url=asset?new URL('../../'+asset.file,import.meta.url).href:null;
+ let binding=storyBackdrops.get(image);
+ const update=()=>{
+  if(storyBackdrops.get(image)!==binding)return;
+  image.hidden=binding.status!=='ready';
+  if(binding.label)binding.label.textContent=binding.status==='ready'?'南坡村口 · 原生场景候选':binding.status==='loading'?'南坡村口 · 背景载入中':binding.status==='failed'?'南坡村口 · 背景加载失败':'角色头像已接入 · 本区背景待制作';
+ };
+ if(binding&&binding.url===url){binding.label=label;update();return presentation;}
+ binding={url,status:asset?'loading':'unavailable',label};storyBackdrops.set(image,binding);
+ image.onload=null;image.onerror=null;update();
+ if(!asset){image.removeAttribute('src');return presentation;}
+ const settle=status=>{if(storyBackdrops.get(image)!==binding)return;binding.status=status;update();};
+ image.onload=()=>settle(image.naturalWidth===asset.width&&image.naturalHeight===asset.height?'ready':'failed');
+ image.onerror=()=>settle('failed');
+ image.src=url;
+ if(image.complete)image.onload();
+ return presentation;
+}

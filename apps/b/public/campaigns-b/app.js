@@ -39,11 +39,11 @@ function renderStory(){
  if(!session.isStoryOpen()){if($('story').open)$('story').close();return;}
  const scene=session.current(),turn=session.turn();if(!turn)return;
  applyForestPortrait($('story-portrait'),turn);
- setStoryEntryBackdrop($('story-backdrop'),scene);$('story-art-label').textContent=scene.regionId==='B-01'?'南坡村口 · 原生场景候选':'角色头像已接入 · 本区背景待制作';
+ const backdrop=setStoryEntryBackdrop($('story-backdrop'),scene,turn,$('story-art-label'));
  $('story-title').textContent=scene.title;$('story-speaker').textContent=turn.speaker||'旁白';$('story-copy').textContent=turn.kind==='choice-prompt'?forestChoicePrompt(scene):turn.text;$('story-progress').textContent=`${session.presentation.turnIndex+1} / ${scene.turns.length}`;$('story-notice').textContent=scene.stateNotice??'';
- const stage=turn.stage??{},location=runtime.region(stage.locationId?.slice(0,4))?.title??runtime.region(session.state.location.regionId).title;
+ const stage=turn.stage??{},location=runtime.region(backdrop.regionId)?.title??scene.title;
  $('story-location').textContent=location;$('story-camera').textContent=stage.camera==='exterior-empty-shot'?'初雪空景 · 人物不入画':stage.offscreen?.[turn.voicePortrait]?'声音从画面外传来':'角色头像沿用已验收设定';
- $('story-stage').dataset.backdropAssetId=stage.backdropAssetId??scene.backdropAssetId??'';$('story-stage').dataset.cgAssetId=stage.cgAssetId??'';$('story-stage').dataset.camera=stage.camera??'scene';$('story-stage').dataset.locationId=stage.locationId??'';
+ $('story-stage').dataset.backdropAssetId=backdrop.backdropAssetId??'';$('story-stage').dataset.cgAssetId=stage.cgAssetId??'';$('story-stage').dataset.camera=stage.camera??'scene';$('story-stage').dataset.locationId=backdrop.locationId??'';
  $('story-planning').hidden=!scene.budget&&!scene.routePanel&&!scene.battlePanel&&!scene.shopPanel&&!scene.checklist;
  $('story-forecast').replaceChildren();if(!$('story-planning').hidden){budgetLines($('story-forecast'));if(scene.routePanel){for(const row of forestPublicRows(runtime,story,session.state))$('story-forecast').append(el('p',`${row.title}：${row.description}；原路${row.original}`));}if(scene.battlePanel){const panel=story.actionPanel(session.state,scene.battlePanel.entityId),enemy=runtime.entity(panel.entityId).enemy,b=panel.battle;$('story-forecast').append(el('p',`${panel.title}：生命${enemy.hp} / 攻${enemy.atk} / 防${enemy.def}；${b?`当前构筑预计损失 ${Number.isFinite(b.totalDamage)?b.totalDamage:'无法破防'} 生命`:'已拆除'}`));}if(scene.shopPanel)for(const panel of scene.shopPanel)$('story-forecast').append(el('p',`${forestPlayerCopy(runtime.entity(panel.entityId)).title}`));}
  const choices=turn.choices??[];$('story-next').disabled=Boolean(choices.length&&!turn.choiceResolved);$('story-choices').replaceChildren();
