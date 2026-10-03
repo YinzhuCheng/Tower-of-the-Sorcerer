@@ -1,13 +1,32 @@
-# Reconstructed forest + safe four-facing candidate
+# 山路把冬天带回家 · B 运行候选
 
-New reconstruction on the verified B70-compatible baseline (Git tree 21740f1dad609c71ab5faab1d2f0270034d41d98). This is not a restoration of the lost latest local revision, and is not a final user-art acceptance or deployment.
+这是有限、人工编排的 30 处山路战役。B01–B03 使用同一张连续森林绘景及固定原生相机投影；不是无限地图或随机生成世界。此目录描述可构建源码，发布状态以对应提交与部署记录为准，不代表本次扩展已获真实浏览器或美术验收。
 
-The finite authored B01–B03 world keeps its exact 173 walk cells, 249 local edges, 2 joins, support samples, native camera and original collider meshes. Earth/moss shoulders now blend the original ground materials without the pale curb; decorative tabletop-intersecting foliage is cleared. The old timber puppet has logs, a broken front wheel and a loading arm. Guard plate, heat box and winter-plan props share visibility with their soft native-ground contact shadows; claims remove both.
+## 当前连续世界实现
 
-The default hero uses exact independent original front/back/left/right neutral views and source-specific shoe contacts. Held WASD/arrows and interruptions are tested. It translates at nominal1.2m/s. It is NOT natural walking animation. Articulated gait remains an explicit source-only diagnostic and is excluded from the portable build; do not claim walking is finished.
+- 保留原来的 173 个逻辑可行格、249 条局部无向边与 2 条跨区连接，不扩张战役拓扑
+- B01/B02/B03 分别具有 481 / 1019 / 820 个精细可行位置。四分之一源格的步距约为 0.3 米，按 1.2 米/秒进行实际位置移动；只有越过原逻辑边才发送一次原移动动作
+- 高度、脚点深度来自原生支持三角网格；碰撞来自同一 r3 Blender 源文件的 physical_collision 网格。新增完整范围补充包含桌面、桌脚、旧根、岩石、树干、边界与路柱，未从背景图片猜造碰撞
+- 跨区连接仍使用原 traverse 一次及已有可见桥段。桥段没有独立玩法格或额外资源，完成前不接受目标区域排队移动。三个区域共用平滑跟随相机，不单独缩放成区域矩形
+- 默认精细地面角色使用只读世界足点关节步态与原生深度遮挡、脚底阴影。资源未就绪或渲染失败时保留四向角色回退；连接桥仍沿用既有粗粒度过渡表现。角色呈现不会修改导航、战斗、故事或资源
+- 地面、桌椅、角色、树木及 GAL 图片均复用既有素材。本次精细导航扩展不替换美术字节
 
-B70 opening/legacy-save compatibility, core rules/resources, content hash a12cd07ee1ccc762, story text and route certificates remain unchanged. Other regions retain existing presentation. Later release integration must also retain the four additive difficulty developer tools from afb2cbb6297377fb0281fa0ce0bf6248b2e79674; they are outside this isolated B candidate.
+## 交互与存档边界
 
-Run npm test, npm run build, npm run validate. Portable entry: dist-b-preview/campaigns-b/. Actual Canvas render QA is offline pixel evidence, not a browser screenshot. Real browser/user acceptance and overall painterly prop polish remain open.
+多个精细位置共同指向同一个原实体 ID；战斗、奖励、拾取、暖脂和根楔成本仍由原战役 reducer 与预览 session 处理。行走接触只自动领取有益拾取物；谈话、工程和暖点定案保留明确点选及原确认要求。显式操作保留指定实体身份，即使多个晚期操作共享同一逻辑格。前往出口只接近原出口中心，不顺便执行同格 NPC/工程。不可逆暖点定案与原战斗确认要求不变。
 
-Current native semantic revision is r3: every rendered object has a unique valid Blender ID within1–32767. Table pieces32000–32011 remain occluders; decorative bank32020 remains nonblocking. The r2 duplicate/clamped-ID depth was withdrawn before publication. R3 preserves every beauty pixel while correcting9130 depth blocker flags.
+原战役逻辑坐标、内容身份 a12cd07ee1ccc762、故事 ID、三个阶段的资源规则和路线证书不变。B70 开场及旧完整故事存档继续按原版本规则恢复。精细位置只是版本化 presentation sidecar：
+
+- 旧无 sidecar 存档恢复到同一原逻辑格的支持中心，不改写战役进度
+- B01 已有 v1 pose 的碰撞身份与数据字节兼容；B02/B03 sidecar 使用完整范围碰撞身份，避免冒充旧 B01 校验
+- 版本、战役身份、region、mesh、碰撞摘要、状态摘要或故事信封不匹配时拒绝恢复，保留原存档
+- 单个微步未落稳时明确延后保存；载入尝试、失焦和模式切换取消排队输入与旧确认令牌
+- B04–B30 保留原有呈现与导航，不额外启用精细网格
+
+## 构建与验证
+
+运行 npm test、npm run build、npm run validate。便携入口是 dist-b-preview/campaigns-b/。
+
+测试覆盖全部原逻辑边、原生碰撞扫掠与密集支持采样、精细控制投影、0.3 米步距、朝向、多格实体与共享格显式目标、两条连接双向交接、旧档/未知档、失焦/隐藏/对话中断、可逆粗地图模式及完整战役路线。测试中的 DOM/canvas/RAF 是源级仿真，不能替代真实浏览器、屏幕像素与用户视觉验收。支持环密采样亦不声称是连续地面覆盖的数学证明。
+
+原 native 语义修订为 r3：对象 ID 均在 1–32767 内；桌面零件 32000–32011 仍为遮挡体，装饰岸缘 32020 不阻挡。原始支持网格、深度素材与相机契约不因本次扩展而变化。

@@ -2,9 +2,9 @@ import {fineGroundSample} from './forest-fine-navigation.js';
 import {nativeToScreen} from './forest-world-native.js';
 const polygons=new Map();
 export function fineControlPolygon(node,camera,view){
- let points=polygons.get(node.id);if(!points){
-  for(const half of [.125,.1,.075,.05]){points=[[-half,-half],[half,-half],[half,half],[-half,half]].map(([dx,dy])=>fineGroundSample(node.x+dx,node.y+dy));if(points.every(Boolean))break;}
-  if(points.some(p=>!p))return null;polygons.set(node.id,points);
+ const id=`${node.source.regionId}:${node.id}`;let points=polygons.get(id);if(!points){
+  for(const half of [.125,.1,.075,.05]){points=[[-half,-half],[half,-half],[half,half],[-half,half]].map(([dx,dy])=>fineGroundSample(node.x+dx,node.y+dy,node.source.regionId));if(points.every(Boolean))break;}
+  if(points.some(p=>!p))return null;polygons.set(id,points);
  }
  return points.map(p=>nativeToScreen(p.footPx,camera,view));
 }
