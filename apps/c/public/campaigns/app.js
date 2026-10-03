@@ -6,13 +6,15 @@ import { projectVoyageScene } from '../src/rendering/c-adapter.js';
 import { presentContinuousScene } from '../src/rendering/continuous-map.js';
 import { createVoyagePlanning } from '../src/campaigns/c/planning.js';
 import { createVoyageStory } from '../src/campaigns/c/story/index.js';
-import { createVoyageCampaign } from '../src/campaigns/c/content.js';
-import { createSaveRepository } from '../src/core/campaign.js';
+import { mountProfileSelector, selectionUrl } from '../src/profiles/selection.js';
+import { prepareProfileSession } from '../src/profiles/boot.js';
 import { reachablePaths } from '../src/solver/campaign-adapter.js';
 import { replayCampaignCertificate } from '../src/solver/campaign-replay.js';
-const runtime=createVoyageCampaign(),repo=createSaveRepository({getItem:key=>localStorage.getItem('c3d-prototype:'+key),setItem:(key,value)=>localStorage.setItem('c3d-prototype:'+key,value),removeItem:key=>localStorage.removeItem('c3d-prototype:'+key)},runtime,{validatePresentation:validPresentation}),$=id=>document.getElementById(id);
-function validPresentation(p){return p==null||(Array.isArray(p.seenIds)&&p.seenIds.every(x=>typeof x==='string')&&Array.isArray(p.queue)&&p.queue.every(scene=>typeof scene.title==='string'&&Array.isArray(scene.turns)&&scene.turns.every(turn=>typeof turn.text==='string'))&&Number.isInteger(p.turnIndex)&&p.turnIndex>=0);}
-const restored=repo.restore(),story=createVoyageStory(runtime),planning=createVoyagePlanning(runtime);
+const $=id=>document.getElementById(id);
+const storage={get length(){return localStorage.length;},key:index=>{const key=localStorage.key(index);return key?.startsWith('c3d-prototype:')?key.slice('c3d-prototype:'.length):null;},getItem:key=>localStorage.getItem('c3d-prototype:'+key),setItem:(key,value)=>localStorage.setItem('c3d-prototype:'+key,value),removeItem:key=>localStorage.removeItem('c3d-prototype:'+key)};
+const selector=mountProfileSelector({storage});
+const {runtime,repo,restored,profile,context}=await prepareProfileSession({storage,url:window.location.href,selector,onSelected:url=>window.history.replaceState(null,'',url)}).catch(error=>{const dialog=$('profile-dialog');$('profile-root').textContent=`难度载入失败：${error.message}。游戏尚未启动，原存档未改写。`;if(!dialog.open)dialog.showModal();throw error;});
+const story=createVoyageStory(runtime),planning=createVoyagePlanning(runtime);
 const openingGate=await startOpeningPrelude({skip:Boolean(restored.source)}).catch(error=>{document.getElementById('opening-root').textContent=`开场载入失败：${error.message}。游戏尚未启动，请刷新重试。`;throw error;});
 const emptyPresentation=()=>({seenIds:[],queue:[],turnIndex:0});
 let presentation=restored.presentation??emptyPresentation();
@@ -21,9 +23,9 @@ let threeView=null;
 let statusTimer=null;
 function notify(text){$('status').textContent=text;$('status').style.display='block';clearTimeout(statusTimer);statusTimer=setTimeout(()=>$('status').style.display='none',5500);}
 function addLog(text){logs.unshift(text);logs=logs.slice(0,9);}
-function persist(){if(allowAutoSave&&!playback) repo.save('auto',state,presentation);}
-function checkpoint(){const slot=`checkpoint:${state.boat.dock}`;if(repo.inspect(slot).status==='missing'&&allowAutoSave)repo.save(slot,state,presentation);}
-checkpoint();
+function persist(){if(allowAutoSave&&!playback)try{repo.save('auto',state,presentation);}catch(error){allowAutoSave=false;notify(error.message);}}
+function checkpoint(){const slot=`checkpoint:${state.boat.dock}`;if(repo.inspect(slot).status==='missing'&&allowAutoSave)try{repo.save(slot,state,presentation);}catch(error){allowAutoSave=false;notify(error.message);}}
+if(!restored.source)checkpoint();
 
 function enqueueStory(result,{display=true}={}) {
  if(openingGate.replacesOriginalOpening())result=withoutReplacedOpening(result);
@@ -68,7 +70,7 @@ $('story-skip').onclick=()=>{const scene=presentation.queue[0];const choiceIndex
 $('story').addEventListener('cancel',event=>event.preventDefault());
 
 function apply(action,{replay=false}={}){
- if(openingGate.blocked())return false;
+ if(openingGate.blocked()||(!replay&&document.querySelector('dialog[open]')))return false;
  if(!replay&&playback){notify('当前是证书回放；请读档或重新开始后游玩');return false;}
  const before=state;const estimate=runtime.preview(state,action);if(!estimate.legal){notify(estimate.reason);return false;}const result=runtime.dispatch(state,action);
  if(!result.ok){notify(result.reason);return false;}
@@ -112,6 +114,8 @@ $('confirm-cancel').onclick=()=>{pending=null;$('confirmation').close();};$('con
 $('confirmation').addEventListener('cancel',()=>{pending=null;});
 function render(){
  const view=runtime.projectView(state),boat=state.boat;
+ $('profile-status').textContent=`${profile.label}${profile.difficultyId==='normal'?' · 原版':' · 暂定'} · ${profile.identity.contentHash}`;
+ $('save').disabled=Boolean(playback)||!repo.canWrite();
  $('region-title').textContent=view.region.title;$('position').textContent=`当前泊位 ${boat.dock} · 坐标 ${state.location.x},${state.location.y} · ${boat.moored?'已系泊':'尚待靠泊确认'}`;
  $('phase').textContent=state.victory?'主线完成':state.location.regionId==='C-D01'?'甲板操作':'岸上探索';
  $('route').replaceChildren();for(let i=1;i<=5;i++){const span=document.createElement(i===Number(boat.dock.slice(-1))?'strong':'span');span.textContent=`M0${i}${[' 近灯正面',' 旧坞',' 缆桥',' 近灯背面',' 远灯'][i-1]}${i<5?' → ':''}`;$('route').append(span);}
@@ -140,7 +144,7 @@ function render(){
   tile.onclick=()=>{if(!playTimer&&!document.querySelector('dialog[open]')&&!pending)walkTo(x,y);};$('board').append(tile);
  }
  threeView?.refresh(state);
- $('play-mode').textContent=playback?'证书动作回放 · 从真实 initialState 顺序执行 · 不保存进度':'真实玩家游玩 · 同一 C 标准内核';
+ $('play-mode').textContent=playback?'证书动作回放 · 从真实 initialState 顺序执行 · 不保存进度':`真实玩家游玩 · ${profile.label}${profile.difficultyId==='normal'?'（原版）':'（暂定）'} · ${context.runId||'原始航次'}`;
  $('actions').replaceChildren();
  const actions=view.interactions;
  if(!actions.length){const p=document.createElement('p');p.textContent='走到标记旁边即可查看和操作';$('actions').append(p);}
@@ -156,23 +160,31 @@ function render(){
 }
 for(const button of document.querySelectorAll('[data-dir]'))button.onclick=()=>{if(!document.querySelector('dialog[open]')&&!pending&&!playTimer)apply({type:'move',direction:button.dataset.dir});};
 document.addEventListener('keydown',event=>{if(document.querySelector('dialog[open]')||playTimer)return;const direction={ArrowUp:'up',ArrowDown:'down',ArrowLeft:'left',ArrowRight:'right',w:'up',a:'left',s:'down',d:'right'}[event.key];if(direction){event.preventDefault();apply({type:'move',direction});}});
-$('save').onclick=()=>{if(openingGate.blocked())return;repo.save('manual',state,presentation);notify('手动档已保存；自动档继续独立更新');};
-function load(slot){if(openingGate.blocked())return;try{const info=repo.inspect(slot);if(info.status==='invalid')throw new Error(info.reason);const saved=info.state;if(!saved){notify('这个槽还没有存档');return;}stopReplay();playback=null;state=saved;presentation=info.presentation??emptyPresentation();allowAutoSave=true;render();enqueueStory(story.location(state,{seenIds:presentation.seenIds}));notify(`已读取${slot==='auto'?'自动':'手动'}档`);}catch(error){const result=repo.restore({preferred:slot,fallback:null});notify(`存档损坏，原始内容已保留副本：${result.issues[0]?.reason??error.message}`);}}
+function menuBlocked(){return openingGate.blocked()||Boolean(document.querySelector('dialog[open]'))||Boolean(pending)||Boolean(playTimer);}
+$('save').onclick=()=>{if(menuBlocked()||playback)return;try{repo.save('manual',state,presentation);notify('手动档已保存；自动档继续独立更新');}catch(error){notify(error.message);}};
+function load(slot){if(menuBlocked())return;try{const info=repo.inspect(slot);if(info.status!=='valid'&&info.status!=='missing')throw new Error(info.reason);const saved=info.state;if(!saved){notify('这个槽还没有存档');return;}stopReplay();playback=null;state=saved;presentation=info.presentation??emptyPresentation();allowAutoSave=repo.canWrite();render();showStory();notify(`已读取${slot==='auto'?'自动':'手动'}档${allowAutoSave?'':'；含受保护数据，本航次暂不写入'}`);}catch(error){notify(`存档未读取，原始内容保留：${error.message}`);}}
 $('load-auto').onclick=()=>load('auto');$('load-manual').onclick=()=>load('manual');
-$('new').onclick=()=>{if(openingGate.blocked())return;if(!confirm('重新开始当前C标准原型？手动档仍保留。'))return;stopReplay();playback=null;state=runtime.initialState();presentation=emptyPresentation();allowAutoSave=true;logs=[];for(let i=1;i<=5;i++)repo.remove(`checkpoint:C-M0${i}`);checkpoint();persist();render();};
-$('checkpoint').onclick=()=>{if(openingGate.blocked())return;const savedInfo=repo.inspect(`checkpoint:${$('checkpoint-select').value}`),saved=savedInfo.state;if(!saved){notify('所选泊位没有检查点');return;}if(!confirm('恢复抵达所选泊位时的整份状态？之后的战斗、消耗和作业一起回退。'))return;stopReplay();playback=null;state=saved;presentation=savedInfo.presentation??emptyPresentation();allowAutoSave=true;persist();render();showStory();};
+$('new').onclick=async()=>{
+ if(menuBlocked())return;
+ const selected=await selector.open({initialId:profile.id,current:context});
+ if(!selected)return;
+ // A selected new run receives a new context; existing slots are never relabeled.
+ window.location.assign(selectionUrl(window.location.href,selected));
+};
+$('checkpoint').onclick=()=>{if(menuBlocked())return;const savedInfo=repo.inspect(`checkpoint:${$('checkpoint-select').value}`),saved=savedInfo.state;if(savedInfo.status!=='valid'||!saved){notify('所选泊位没有兼容检查点；原内容保留');return;}if(!confirm('恢复抵达所选泊位时的整份状态？之后的战斗、消耗和作业一起回退。'))return;stopReplay();playback=null;state=saved;presentation=savedInfo.presentation??emptyPresentation();allowAutoSave=repo.canWrite();persist();render();showStory();};
 function stopReplay(){if(playTimer)clearInterval(playTimer);playTimer=null;}
-$('replay-load').onclick=async()=>{if(openingGate.blocked())return;try{const certificate=await(await fetch(new URL('./c-normal.certificate.json',import.meta.url))).json();if(openingGate.blocked())return;const result=replayCampaignCertificate(runtime,certificate);if(!result.ok)throw new Error(result.reason);if(!confirm('从新游戏初态开始逐条回放？这次回放不会覆盖自动档。'))return;stopReplay();playback=certificate;playIndex=0;state=runtime.initialState();presentation=emptyPresentation();logs=[];$('replay-step').disabled=false;$('replay-auto').disabled=false;render();}catch(error){notify(`证书未能载入：${error.message}`);}};
-function stepReplay(){if(openingGate.blocked())return;if($('story').open)return;if(!playback||playIndex>=playback.steps.length){stopReplay();return;}const step=playback.steps[playIndex];if(runtime.stateHash(state)!==step.before){notify('回放前态不一致，已停止');stopReplay();return;}if(apply(step.action,{replay:true})){if(runtime.stateHash(state)!==step.after){notify('回放后态不一致，已停止');stopReplay();return;}playIndex++;render();}else stopReplay();}
-$('replay-step').onclick=stepReplay;$('replay-auto').onclick=()=>{if(openingGate.blocked())return;if(playTimer){stopReplay();return;}playTimer=setInterval(stepReplay,60);};
-render();enqueueStory(story.location(state,{seenIds:presentation.seenIds}));
-if(restored.issues.length)notify(`检测到损坏存档并保留原始副本。${restored.source?'已恢复'+restored.source+'档':'请明确选择重新开始；未覆盖原档'}`);
+let replayLoading=false;
+$('replay-load').onclick=async()=>{if(menuBlocked()||replayLoading)return;replayLoading=true;try{const certificate=await(await fetch(new URL(`./profiles/${profile.id}.certificate.json`,import.meta.url))).json();if(menuBlocked())return;const result=replayCampaignCertificate(runtime,certificate);if(!result.ok)throw new Error(result.reason);if(!confirm('从新游戏初态开始逐条回放？这次回放不会覆盖自动档。'))return;stopReplay();playback=certificate;playIndex=0;state=runtime.initialState();presentation=emptyPresentation();logs=[];$('replay-step').disabled=false;$('replay-auto').disabled=false;render();}catch(error){notify(`证书未能载入：${error.message}`);}finally{replayLoading=false;}};
+function stepReplay(){if(openingGate.blocked()||document.querySelector('dialog[open]'))return;if(!playback||playIndex>=playback.steps.length){stopReplay();return;}const step=playback.steps[playIndex];if(runtime.stateHash(state)!==step.before){notify('回放前态不一致，已停止');stopReplay();return;}if(apply(step.action,{replay:true})){if(runtime.stateHash(state)!==step.after){notify('回放后态不一致，已停止');stopReplay();return;}playIndex++;render();}else stopReplay();}
+$('replay-step').onclick=stepReplay;$('replay-auto').onclick=()=>{if(openingGate.blocked()||document.querySelector('dialog[open]')||pending)return;if(playTimer){stopReplay();return;}playTimer=setInterval(stepReplay,60);};
+render();enqueueStory(story.location(state,{seenIds:presentation.seenIds}),{display:false});showStory();if(!restored.source)persist();
+if(restored.issues.length)notify(`含未支持或损坏存档，原始内容保持不变。${restored.source?'已只读恢复'+restored.source+'档':'请另开新航次；未覆盖原档'}`);
 else if(restored.source)notify(`已恢复${restored.source==='auto'?'自动':'手动'}档，启动未覆盖进度`);
 // Read-only smoke-test observability. No state mutation or goal-setting hook.
 Object.defineProperty(window,'__CAMPAIGN_PREVIEW__',{value:Object.freeze({getState:()=>structuredClone(state),getIdentity:()=>runtime.identity})});
 
 threeView=installThreeView({runtime,getState:()=>state,onPick:(x,y)=>{const target=runtime.projectView(state).entities.find(e=>e.x===x&&e.y===y&&e.interactionAt&&runtime.meets(state,e.visibleWhen));if(target)walkTo(target.interactionAt.x,target.interactionAt.y);else walkTo(x,y);},onNotify:notify});
-window.__C3D_QA__=Object.freeze({snapshot:()=>({state:structuredClone(state),stateHash:runtime.stateHash(state),identity:runtime.identity,mode:playback?'certificate-replay':'player-play',view:threeView.mode(),stats:threeView.stats()}),projectTile:(x,y)=>threeView.projectTile(x,y)});
+window.__C3D_QA__=Object.freeze({snapshot:()=>({state:structuredClone(state),stateHash:runtime.stateHash(state),identity:runtime.identity,profileId:profile.id,profileVersion:profile.profileVersion,runId:context.runId,saveWritable:repo.canWrite(),mode:playback?'certificate-replay':'player-play',view:threeView.mode(),stats:threeView.stats()}),projectTile:(x,y)=>threeView.projectTile(x,y)});
 
 const viewportLayout=installViewportLayout();
 window.__C_LAYOUT_QA__=Object.freeze({snapshot:()=>viewportLayout.snapshot()});

@@ -1,3 +1,9 @@
+# C three-profile integration candidate
+
+This isolated candidate adds STANDARD / HARD / EXTREME selection and guarded, separately resumable save contexts. HARD and EXTREME are provisional labels. It has not been published or accepted in a real browser. See [the integration report](reports/profile-integration.md) for source boundaries, 135-test evidence, save behavior and remaining gates.
+
+The following records the recovered baseline; its historical test counts describe that baseline, not the current candidate.
+
 # C harbor historical backbone reconstruction r1
 
 This is a small, reproducible development base, not recovery of the latest lost work or acceptance of final visuals.

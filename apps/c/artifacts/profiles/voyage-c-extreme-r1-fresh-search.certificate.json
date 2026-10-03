@@ -1,0 +1,2053 @@
+{
+  "schemaVersion": 1,
+  "identity": {
+    "campaignId": "voyage-c",
+    "difficultyId": "extreme",
+    "contentVersion": "c-rules-prototype-v1.2-geometry/harbor-difficulty-r1/extreme",
+    "rulesVersion": "fixed-campaign-v1.1",
+    "contentHash": "bc8aa38e6d84cc01"
+  },
+  "source": "fresh-unseeded-macro-search",
+  "coverage": "existence-only",
+  "initialStateHash": "3d83f085b7a0b995",
+  "steps": [
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "3d83f085b7a0b995",
+      "after": "8f01545d65492abb",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "8f01545d65492abb",
+      "after": "a257e7a7b7ebc6d5",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "a257e7a7b7ebc6d5",
+      "after": "6cbdf5adbf511767",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "6cbdf5adbf511767",
+      "after": "068935519cd597a1",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "068935519cd597a1",
+      "after": "43b6d4aaaf2064a1",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "43b6d4aaaf2064a1",
+      "after": "7ffab30964989c2d",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "interact",
+        "entityId": "c.manifest"
+      },
+      "before": "7ffab30964989c2d",
+      "after": "254591c106ffb448",
+      "events": [
+        {
+          "type": "operation",
+          "entityId": "c.manifest",
+          "title": "核对货单、航线与次晨归船",
+          "storyId": "c01"
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "254591c106ffb448",
+      "after": "56e734f265af1dac",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "56e734f265af1dac",
+      "after": "c7062f599b35e850",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "c7062f599b35e850",
+      "after": "b82f0bf221f42cc1",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "interact",
+        "entityId": "c.coat"
+      },
+      "before": "b82f0bf221f42cc1",
+      "after": "1c8c515d0104406a",
+      "events": [
+        {
+          "type": "shop",
+          "entityId": "c.coat",
+          "title": "护航护具 · 5金币，防御+2",
+          "storyId": null
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "1c8c515d0104406a",
+      "after": "bc56cd9235ce3210",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "bc56cd9235ce3210",
+      "after": "39618f0d20cdfcde",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "interact",
+        "entityId": "c.departureBrief"
+      },
+      "before": "39618f0d20cdfcde",
+      "after": "fe88d5364e4aada1",
+      "events": [
+        {
+          "type": "operation",
+          "entityId": "c.departureBrief",
+          "title": "确认三人出航分工",
+          "storyId": "c02"
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "fe88d5364e4aada1",
+      "after": "e9d1f958489e4dff",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "e9d1f958489e4dff",
+      "after": "f0bb413eb2c0a2bd",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "f0bb413eb2c0a2bd",
+      "after": "6ad9d228b419bfb7",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "6ad9d228b419bfb7",
+      "after": "1c0026c79be2b871",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "left"
+      },
+      "before": "1c0026c79be2b871",
+      "after": "0840f257e176f4f3",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "left"
+      },
+      "before": "0840f257e176f4f3",
+      "after": "8da4812a4d92cdda",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "traverse",
+        "edgeId": "C-M01.board"
+      },
+      "before": "8da4812a4d92cdda",
+      "after": "5fd26684bf468b50",
+      "events": [
+        {
+          "type": "traverse",
+          "edgeId": "C-M01.board",
+          "cost": {},
+          "storyId": null
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "5fd26684bf468b50",
+      "after": "36a663e913b1152e",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "36a663e913b1152e",
+      "after": "e7739072a02601dc",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "left"
+      },
+      "before": "e7739072a02601dc",
+      "after": "7bd3390d35578206",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "moveBallast",
+        "weightId": "w1",
+        "slot": "R1"
+      },
+      "before": "7bd3390d35578206",
+      "after": "31fb0b9bf2de2975",
+      "events": [
+        {
+          "type": "ballast",
+          "weightId": "w1",
+          "slot": "R1"
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "31fb0b9bf2de2975",
+      "after": "be50eff002ac6391",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "be50eff002ac6391",
+      "after": "730b4b82f09aeb89",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "730b4b82f09aeb89",
+      "after": "0287d02ce0f92f25",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "traverse",
+        "edgeId": "c.sail12"
+      },
+      "before": "0287d02ce0f92f25",
+      "after": "c37f61d433f3bdb5",
+      "events": [
+        {
+          "type": "departure",
+          "edgeId": "c.sail12",
+          "cost": {
+            "fuel": 2
+          },
+          "storyId": "c04"
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "c37f61d433f3bdb5",
+      "after": "791c9583b1cf22a2",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "791c9583b1cf22a2",
+      "after": "5efb0bbdd2e6b0f8",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "interact",
+        "entityId": "c.moor2"
+      },
+      "before": "5efb0bbdd2e6b0f8",
+      "after": "fb89f7c7092f49e3",
+      "events": [
+        {
+          "type": "operation",
+          "entityId": "c.moor2",
+          "title": "按口令完成安全靠泊",
+          "storyId": null
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "fb89f7c7092f49e3",
+      "after": "de99564561dc78e3",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "de99564561dc78e3",
+      "after": "06e1ed0212ce9b2b",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "06e1ed0212ce9b2b",
+      "after": "5cd5073583e95483",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "traverse",
+        "edgeId": "c.leaveDeck"
+      },
+      "before": "5cd5073583e95483",
+      "after": "0cb0a13c8e52e3bd",
+      "events": [
+        {
+          "type": "traverse",
+          "edgeId": "c.leaveDeck",
+          "cost": {},
+          "storyId": null
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "0cb0a13c8e52e3bd",
+      "after": "7efefbbe4ac0db4f",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "7efefbbe4ac0db4f",
+      "after": "b2431d43c83bc50f",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "interact",
+        "entityId": "c.bandage"
+      },
+      "before": "b2431d43c83bc50f",
+      "after": "75bd1d9172303d81",
+      "events": [
+        {
+          "type": "pickup",
+          "entityId": "c.bandage",
+          "title": "一次性护航药包 · 当前/上限生命+12",
+          "storyId": null
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "75bd1d9172303d81",
+      "after": "a7fee9e9e3331676",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "a7fee9e9e3331676",
+      "after": "2aa97bff8c905496",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "2aa97bff8c905496",
+      "after": "fb8e00b97a2e3822",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "interact",
+        "entityId": "c.supplies"
+      },
+      "before": "fb8e00b97a2e3822",
+      "after": "36616b41827fea24",
+      "events": [
+        {
+          "type": "pickup",
+          "entityId": "c.supplies",
+          "title": "领取预备螺栓与2份船油",
+          "storyId": "c05"
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "36616b41827fea24",
+      "after": "7a574cd0d2f1f95a",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "interact",
+        "entityId": "c.machine1"
+      },
+      "before": "7a574cd0d2f1f95a",
+      "after": "b20ac46eda6b0e38",
+      "events": [
+        {
+          "type": "battle",
+          "entityId": "c.machine1",
+          "battle": {
+            "winnable": true,
+            "reason": null,
+            "heroDamage": 10,
+            "physicalDamage": 10,
+            "magicTier": 0,
+            "magicCost": 0,
+            "magicBonusPerHit": 0,
+            "magicAffordable": true,
+            "enemyDamage": 8,
+            "rounds": 4,
+            "counterAttacks": 3,
+            "totalDamage": 24,
+            "remainingHp": 48
+          }
+        },
+        {
+          "type": "enemy",
+          "entityId": "c.machine1",
+          "title": "轨道巡检车一 · 短航道障碍",
+          "storyId": null
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "b20ac46eda6b0e38",
+      "after": "aa152f38d0de221e",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "aa152f38d0de221e",
+      "after": "aa912c8a18cddcc4",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "aa912c8a18cddcc4",
+      "after": "7bafce9ba6cf573e",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "left"
+      },
+      "before": "7bafce9ba6cf573e",
+      "after": "0f05645c99be8734",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "left"
+      },
+      "before": "0f05645c99be8734",
+      "after": "0e8cdd7e08854d0f",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "traverse",
+        "edgeId": "C-M02.board"
+      },
+      "before": "0e8cdd7e08854d0f",
+      "after": "4ec8da4ee3f70491",
+      "events": [
+        {
+          "type": "traverse",
+          "edgeId": "C-M02.board",
+          "cost": {},
+          "storyId": null
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "4ec8da4ee3f70491",
+      "after": "d8f71db35cb63a45",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "left"
+      },
+      "before": "d8f71db35cb63a45",
+      "after": "5fb414aacf0395b5",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "traverse",
+        "edgeId": "c.sail23.short"
+      },
+      "before": "5fb414aacf0395b5",
+      "after": "91e1ddc69a45bc49",
+      "events": [
+        {
+          "type": "departure",
+          "edgeId": "c.sail23.short",
+          "cost": {
+            "fuel": 3
+          },
+          "storyId": "c07"
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "91e1ddc69a45bc49",
+      "after": "9dde830918b0ccb1",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "9dde830918b0ccb1",
+      "after": "48aed77980273869",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "interact",
+        "entityId": "c.moor3"
+      },
+      "before": "48aed77980273869",
+      "after": "f7f156303572ee6e",
+      "events": [
+        {
+          "type": "operation",
+          "entityId": "c.moor3",
+          "title": "按口令完成安全靠泊",
+          "storyId": "c07"
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "f7f156303572ee6e",
+      "after": "de727e20d8770a68",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "de727e20d8770a68",
+      "after": "a44e71dfdf6f0dca",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "a44e71dfdf6f0dca",
+      "after": "21d992b875a34e27",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "traverse",
+        "edgeId": "c.leaveDeck"
+      },
+      "before": "21d992b875a34e27",
+      "after": "17857326103e4dd9",
+      "events": [
+        {
+          "type": "traverse",
+          "edgeId": "c.leaveDeck",
+          "cost": {},
+          "storyId": null
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "17857326103e4dd9",
+      "after": "ef92a097a4198547",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "ef92a097a4198547",
+      "after": "1387fdfa8ca0fd51",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "1387fdfa8ca0fd51",
+      "after": "8a79649fed762333",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "interact",
+        "entityId": "c.shoreLock"
+      },
+      "before": "8a79649fed762333",
+      "after": "7e70212c091b50d4",
+      "events": [
+        {
+          "type": "operation",
+          "entityId": "c.shoreLock",
+          "title": "让塞蕾娜接管岸锁、约定口令",
+          "storyId": "c08"
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "7e70212c091b50d4",
+      "after": "2473848d6c136754",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "2473848d6c136754",
+      "after": "b8a72401f61ecd5e",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "b8a72401f61ecd5e",
+      "after": "4dfa9c2ebdb58244",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "interact",
+        "entityId": "c.machine2"
+      },
+      "before": "4dfa9c2ebdb58244",
+      "after": "818fcd60b7924fde",
+      "events": [
+        {
+          "type": "battle",
+          "entityId": "c.machine2",
+          "battle": {
+            "winnable": true,
+            "reason": null,
+            "heroDamage": 8,
+            "physicalDamage": 8,
+            "magicTier": 0,
+            "magicCost": 0,
+            "magicBonusPerHit": 0,
+            "magicAffordable": true,
+            "enemyDamage": 7,
+            "rounds": 6,
+            "counterAttacks": 5,
+            "totalDamage": 35,
+            "remainingHp": 13
+          }
+        },
+        {
+          "type": "enemy",
+          "entityId": "c.machine2",
+          "title": "轨道巡检车二 · 后段短航道障碍",
+          "storyId": null
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "818fcd60b7924fde",
+      "after": "21d69a59502fa769",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "21d69a59502fa769",
+      "after": "1dd39c874dd88edf",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "1dd39c874dd88edf",
+      "after": "e4dfb5121e49a1c1",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "e4dfb5121e49a1c1",
+      "after": "b49d727c11eac163",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "b49d727c11eac163",
+      "after": "7097eb73d2b7f9a9",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "left"
+      },
+      "before": "7097eb73d2b7f9a9",
+      "after": "4cd5fdc5fd5ba0bb",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "left"
+      },
+      "before": "4cd5fdc5fd5ba0bb",
+      "after": "fb90ab3565fb7acd",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "traverse",
+        "edgeId": "C-M03.board"
+      },
+      "before": "fb90ab3565fb7acd",
+      "after": "f757a393074d5ab8",
+      "events": [
+        {
+          "type": "traverse",
+          "edgeId": "C-M03.board",
+          "cost": {},
+          "storyId": null
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "f757a393074d5ab8",
+      "after": "defdd53dd80e87e2",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "defdd53dd80e87e2",
+      "after": "9b902ffa4fcc7348",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "9b902ffa4fcc7348",
+      "after": "b15c8ffe4b8b45a1",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "left"
+      },
+      "before": "b15c8ffe4b8b45a1",
+      "after": "3b2aac62b07d54fd",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "3b2aac62b07d54fd",
+      "after": "36d3f2ad96b6cac5",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "interact",
+        "entityId": "c.shiftLeft"
+      },
+      "before": "36d3f2ad96b6cac5",
+      "after": "c9ad86da1d3c764e",
+      "events": [
+        {
+          "type": "operation",
+          "entityId": "c.shiftLeft",
+          "title": "把灯座左移，露出船端绞盘",
+          "storyId": "c08"
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "c9ad86da1d3c764e",
+      "after": "4e6c2b7dc9381e8a",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "4e6c2b7dc9381e8a",
+      "after": "f2f24c624d9ae2e6",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "moveBallast",
+        "weightId": "w2",
+        "slot": "R2"
+      },
+      "before": "f2f24c624d9ae2e6",
+      "after": "1c3a5ab1dbab254b",
+      "events": [
+        {
+          "type": "ballast",
+          "weightId": "w2",
+          "slot": "R2"
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "1c3a5ab1dbab254b",
+      "after": "6eb46fa696282ed7",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "left"
+      },
+      "before": "6eb46fa696282ed7",
+      "after": "22bc876dd6e17fbb",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "left"
+      },
+      "before": "22bc876dd6e17fbb",
+      "after": "9f5b3e73dfa0707f",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "interact",
+        "entityId": "c.openBarrier"
+      },
+      "before": "9f5b3e73dfa0707f",
+      "after": "ace015ff2c909cd9",
+      "events": [
+        {
+          "type": "operation",
+          "entityId": "c.openBarrier",
+          "title": "牵引开浮栅，收到岸锁回应",
+          "storyId": "c08"
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "ace015ff2c909cd9",
+      "after": "80c1f1a679270353",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "interact",
+        "entityId": "c.centerCargo"
+      },
+      "before": "80c1f1a679270353",
+      "after": "f0df7de52dab3d08",
+      "events": [
+        {
+          "type": "operation",
+          "entityId": "c.centerCargo",
+          "title": "浮栅作业完成，货架归中",
+          "storyId": "c10"
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "f0df7de52dab3d08",
+      "after": "c4c3e13688841822",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "c4c3e13688841822",
+      "after": "1e174778ac9f6e94",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "moveBallast",
+        "weightId": "w1",
+        "slot": "L1"
+      },
+      "before": "1e174778ac9f6e94",
+      "after": "4df1702b69e1f5a7",
+      "events": [
+        {
+          "type": "ballast",
+          "weightId": "w1",
+          "slot": "L1"
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "4df1702b69e1f5a7",
+      "after": "b8354be4ea4eac63",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "b8354be4ea4eac63",
+      "after": "bcfe909c45751f83",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "bcfe909c45751f83",
+      "after": "815085127fcd09bf",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "traverse",
+        "edgeId": "c.sail34.short"
+      },
+      "before": "815085127fcd09bf",
+      "after": "0d8481ce0c987b1c",
+      "events": [
+        {
+          "type": "departure",
+          "edgeId": "c.sail34.short",
+          "cost": {
+            "fuel": 3
+          },
+          "storyId": "c11"
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "0d8481ce0c987b1c",
+      "after": "0f6f95bde162337c",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "0f6f95bde162337c",
+      "after": "f89b83b7259be208",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "interact",
+        "entityId": "c.moor4"
+      },
+      "before": "f89b83b7259be208",
+      "after": "4be68be1d9de0571",
+      "events": [
+        {
+          "type": "operation",
+          "entityId": "c.moor4",
+          "title": "按口令完成安全靠泊",
+          "storyId": null
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "4be68be1d9de0571",
+      "after": "c0cdbae7fa34b1db",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "c0cdbae7fa34b1db",
+      "after": "dad16f474648c109",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "dad16f474648c109",
+      "after": "dba9b18b0121d007",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "traverse",
+        "edgeId": "c.leaveDeck"
+      },
+      "before": "dba9b18b0121d007",
+      "after": "47dd857574cc90ad",
+      "events": [
+        {
+          "type": "traverse",
+          "edgeId": "c.leaveDeck",
+          "cost": {},
+          "storyId": null
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "47dd857574cc90ad",
+      "after": "7385541b662e94df",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "7385541b662e94df",
+      "after": "c7b4daab04e39a45",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "c7b4daab04e39a45",
+      "after": "bdfdddf6c10eed53",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "bdfdddf6c10eed53",
+      "after": "faa277f469fb3e88",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "faa277f469fb3e88",
+      "after": "0b2e0f209194210c",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "0b2e0f209194210c",
+      "after": "9959a00c49ee959c",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "interact",
+        "entityId": "c.handover"
+      },
+      "before": "9959a00c49ee959c",
+      "after": "f8d7c756b99e19d7",
+      "events": [
+        {
+          "type": "operation",
+          "entityId": "c.handover",
+          "title": "确认近灯交班与纱雾末段航行",
+          "storyId": "c13"
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "f8d7c756b99e19d7",
+      "after": "95cf8955c65d90df",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "95cf8955c65d90df",
+      "after": "201e8aee621b29cf",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "201e8aee621b29cf",
+      "after": "1a6516345a18467f",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "1a6516345a18467f",
+      "after": "919e90256512e9bf",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "919e90256512e9bf",
+      "after": "e0d8e3113af48a47",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "left"
+      },
+      "before": "e0d8e3113af48a47",
+      "after": "e5d6b52cfe6df3fb",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "left"
+      },
+      "before": "e5d6b52cfe6df3fb",
+      "after": "3ecd8f96b6e6d8c8",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "traverse",
+        "edgeId": "C-M04.board"
+      },
+      "before": "3ecd8f96b6e6d8c8",
+      "after": "3ef6755877cf2bbe",
+      "events": [
+        {
+          "type": "traverse",
+          "edgeId": "C-M04.board",
+          "cost": {},
+          "storyId": null
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "3ef6755877cf2bbe",
+      "after": "b1568b4add0588b8",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "left"
+      },
+      "before": "b1568b4add0588b8",
+      "after": "9c760304803db3ae",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "traverse",
+        "edgeId": "c.sail45"
+      },
+      "before": "9c760304803db3ae",
+      "after": "9620da6a91c8ea5e",
+      "events": [
+        {
+          "type": "departure",
+          "edgeId": "c.sail45",
+          "cost": {
+            "fuel": 2
+          },
+          "storyId": "c14"
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "9620da6a91c8ea5e",
+      "after": "5a4fb8d24fc29514",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "5a4fb8d24fc29514",
+      "after": "8afd6b0e3efbbe9a",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "interact",
+        "entityId": "c.moor5"
+      },
+      "before": "8afd6b0e3efbbe9a",
+      "after": "91ab9c6ecbfb9dc3",
+      "events": [
+        {
+          "type": "operation",
+          "entityId": "c.moor5",
+          "title": "双缆系泊远灯内侧",
+          "storyId": "c15"
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "91ab9c6ecbfb9dc3",
+      "after": "871830a90c10bb6f",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "871830a90c10bb6f",
+      "after": "3da55362262096c3",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "3da55362262096c3",
+      "after": "7ecbc8b7aa46659a",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "7ecbc8b7aa46659a",
+      "after": "1ad4d16c56c5eea2",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "1ad4d16c56c5eea2",
+      "after": "3128c0bf173898d2",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "3128c0bf173898d2",
+      "after": "83c2fd4a83d76d92",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "interact",
+        "entityId": "c.shiftRight"
+      },
+      "before": "83c2fd4a83d76d92",
+      "after": "6da313f9b745c8c7",
+      "events": [
+        {
+          "type": "operation",
+          "entityId": "c.shiftRight",
+          "title": "把灯座移到右舷固定吊点",
+          "storyId": "c16"
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "6da313f9b745c8c7",
+      "after": "54814cd34f880c0b",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "54814cd34f880c0b",
+      "after": "8f216b928fef1ff7",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "8f216b928fef1ff7",
+      "after": "28eebdbadca47783",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "28eebdbadca47783",
+      "after": "6db618faac1e2c6f",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "6db618faac1e2c6f",
+      "after": "c7edd0af704e94e1",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "traverse",
+        "edgeId": "c.leaveDeck"
+      },
+      "before": "c7edd0af704e94e1",
+      "after": "68166e9430f007f4",
+      "events": [
+        {
+          "type": "traverse",
+          "edgeId": "c.leaveDeck",
+          "cost": {},
+          "storyId": null
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "left"
+      },
+      "before": "68166e9430f007f4",
+      "after": "152b3b9666359576",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "traverse",
+        "edgeId": "C-M05.board"
+      },
+      "before": "152b3b9666359576",
+      "after": "3e1e042fb7f174e7",
+      "events": [
+        {
+          "type": "traverse",
+          "edgeId": "C-M05.board",
+          "cost": {},
+          "storyId": null
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "3e1e042fb7f174e7",
+      "after": "4381445a24421b11",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "4381445a24421b11",
+      "after": "35dedac9c14300b7",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "left"
+      },
+      "before": "35dedac9c14300b7",
+      "after": "281c74ae6fa0429d",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "moveBallast",
+        "weightId": "w2",
+        "slot": "L2"
+      },
+      "before": "281c74ae6fa0429d",
+      "after": "c7b8ffe16338eac8",
+      "events": [
+        {
+          "type": "ballast",
+          "weightId": "w2",
+          "slot": "L2"
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "c7b8ffe16338eac8",
+      "after": "0bb6c5123e00d20e",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "0bb6c5123e00d20e",
+      "after": "c36096fc96f479e0",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "c36096fc96f479e0",
+      "after": "57baf09c80cfcd7a",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "57baf09c80cfcd7a",
+      "after": "5eec412fd912ff37",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "interact",
+        "entityId": "c.unload"
+      },
+      "before": "5eec412fd912ff37",
+      "after": "41babcf7df45a9ed",
+      "events": [
+        {
+          "type": "operation",
+          "entityId": "c.unload",
+          "title": "确认配平，手摇船吊臂卸货",
+          "storyId": "c16"
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "left"
+      },
+      "before": "41babcf7df45a9ed",
+      "after": "e9d9c1ea2ba9693d",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "e9d9c1ea2ba9693d",
+      "after": "d7c14a128795a5ef",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "d7c14a128795a5ef",
+      "after": "e0e06e87b92553d1",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "e0e06e87b92553d1",
+      "after": "a6dce4e96c419cd7",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "moveBallast",
+        "weightId": "w1",
+        "slot": "R1"
+      },
+      "before": "a6dce4e96c419cd7",
+      "after": "b3c9999564f350f6",
+      "events": [
+        {
+          "type": "ballast",
+          "weightId": "w1",
+          "slot": "R1"
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "b3c9999564f350f6",
+      "after": "8795e227a461d55c",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "8795e227a461d55c",
+      "after": "999f0108f0b3bbb6",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "999f0108f0b3bbb6",
+      "after": "15188f2c4579c7b0",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "15188f2c4579c7b0",
+      "after": "41a030d1f3b89783",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "interact",
+        "entityId": "c.stow"
+      },
+      "before": "41a030d1f3b89783",
+      "after": "e32365b3cda1c1df",
+      "events": [
+        {
+          "type": "operation",
+          "entityId": "c.stow",
+          "title": "空船配平后收妥空吊臂",
+          "storyId": "c16"
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "left"
+      },
+      "before": "e32365b3cda1c1df",
+      "after": "c850d53f5e83323b",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "c850d53f5e83323b",
+      "after": "e398f21e4952cddd",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "e398f21e4952cddd",
+      "after": "513cb77da57e80c7",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "513cb77da57e80c7",
+      "after": "27a418a969cabb7d",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "27a418a969cabb7d",
+      "after": "830d7af0992cd543",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "830d7af0992cd543",
+      "after": "9363cb41b4e4f60d",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "9363cb41b4e4f60d",
+      "after": "fb81d6c54414adcd",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "traverse",
+        "edgeId": "c.leaveDeck"
+      },
+      "before": "fb81d6c54414adcd",
+      "after": "6ccc1f0f62ee819d",
+      "events": [
+        {
+          "type": "traverse",
+          "edgeId": "c.leaveDeck",
+          "cost": {},
+          "storyId": null
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "6ccc1f0f62ee819d",
+      "after": "05a39f821e313548",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "05a39f821e313548",
+      "after": "7cfc988665a47724",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "interact",
+        "entityId": "c.rollCargo"
+      },
+      "before": "7cfc988665a47724",
+      "after": "c33e5805375ddc9f",
+      "events": [
+        {
+          "type": "operation",
+          "entityId": "c.rollCargo",
+          "title": "沿短滚道把已卸灯座送入低灯室",
+          "storyId": "c16"
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "c33e5805375ddc9f",
+      "after": "d931c3a5f9373af1",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "right"
+      },
+      "before": "d931c3a5f9373af1",
+      "after": "7db458937172aa7f",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "7db458937172aa7f",
+      "after": "f8301e12314e9183",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "up"
+      },
+      "before": "f8301e12314e9183",
+      "after": "ec0be3259814ee9f",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "interact",
+        "entityId": "c.installLamp"
+      },
+      "before": "ec0be3259814ee9f",
+      "after": "30530e4878c928eb",
+      "events": [
+        {
+          "type": "operation",
+          "entityId": "c.installLamp",
+          "title": "安装灯座、螺栓与封装灯油",
+          "storyId": "c17"
+        }
+      ]
+    },
+    {
+      "action": {
+        "type": "move",
+        "direction": "down"
+      },
+      "before": "30530e4878c928eb",
+      "after": "0253f76aa22348b7",
+      "events": []
+    },
+    {
+      "action": {
+        "type": "interact",
+        "entityId": "c.signal"
+      },
+      "before": "0253f76aa22348b7",
+      "after": "066b55b52e7d3dd4",
+      "events": [
+        {
+          "type": "operation",
+          "entityId": "c.signal",
+          "title": "与近灯互认灯号并开放内港窄口",
+          "storyId": "c18"
+        }
+      ]
+    }
+  ],
+  "final": {
+    "identity": {
+      "campaignId": "voyage-c",
+      "difficultyId": "extreme",
+      "contentVersion": "c-rules-prototype-v1.2-geometry/harbor-difficulty-r1/extreme",
+      "rulesVersion": "fixed-campaign-v1.1",
+      "contentHash": "bc8aa38e6d84cc01"
+    },
+    "revision": 179,
+    "location": {
+      "regionId": "C-M05",
+      "x": 8,
+      "y": 3
+    },
+    "stats": {
+      "hp": 13,
+      "maxHp": 72,
+      "atk": 14,
+      "def": 10,
+      "gold": 9
+    },
+    "resources": {
+      "fuel": 1
+    },
+    "flags": {
+      "c.lampOil": false,
+      "c.manifest": true,
+      "c.crewReady": true,
+      "c.moored2": true,
+      "c.bolts": false,
+      "c.route1": "short",
+      "c.moored3": true,
+      "c.shoreLock": true,
+      "c.barrierOpen": true,
+      "c.route2": "short",
+      "c.moored4": true,
+      "c.handover": true,
+      "c.nearLampStaffed": true,
+      "c.ferryStaffed": true,
+      "c.moored5": true,
+      "c.cargoAshore": true,
+      "c.craneStowed": true,
+      "c.emptyShipSecured": true,
+      "c.cargoAtLamp": true,
+      "c.lampInstalled": true,
+      "c.bothLamps": true,
+      "c.farLampStaffed": true
+    },
+    "cleared": [
+      "c.bandage",
+      "c.centerCargo",
+      "c.coat",
+      "c.departureBrief",
+      "c.handover",
+      "c.installLamp",
+      "c.machine1",
+      "c.machine2",
+      "c.manifest",
+      "c.moor2",
+      "c.moor3",
+      "c.moor4",
+      "c.moor5",
+      "c.openBarrier",
+      "c.rollCargo",
+      "c.shiftLeft",
+      "c.shiftRight",
+      "c.shoreLock",
+      "c.signal",
+      "c.stow",
+      "c.supplies",
+      "c.unload"
+    ],
+    "visited": [
+      "C-M01",
+      "C-D01",
+      "C-M02",
+      "C-M03",
+      "C-M04",
+      "C-M05"
+    ],
+    "boat": {
+      "dock": "C-M05",
+      "moored": true,
+      "cargo": "ashore",
+      "positions": {
+        "w1": "R1",
+        "w2": "L2",
+        "w3": "C1"
+      }
+    },
+    "victory": true
+  },
+  "claim": "at-least-one-replayed-winning-route",
+  "certificateHash": "e19a43250a890011"
+}

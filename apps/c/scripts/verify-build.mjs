@@ -11,3 +11,12 @@ const manifest=JSON.parse(await readFile(join(root,'build-manifest.json')));if(m
 console.log(JSON.stringify({result:'PASS',files:entries.length,localModuleEdges:imports,runtimeCDNs:0,identity:manifest.contentHash,browserExecuted:false},null,2));
 
 const recovery=await readFile(join(root,'src/rendering/recovery-presentation.js'),'utf8');if(!recovery.includes("materialsAvailable:false"))throw new Error('Missing explicit geometry-only reconstruction boundary');
+
+// Verify every emitted profile route and frozen content identity, not only STANDARD.
+const {PROFILES}=await import('../src/profiles/registry.js');
+const {createProfileRuntime,verifyProfileRuntime}=await import('../src/profiles/runtime.js');
+const {replayCampaignCertificate}=await import('../src/solver/campaign-replay.js');
+if(JSON.stringify(manifest.profiles)!==JSON.stringify(PROFILES.map(({id,label,profileVersion,identity,canonicalSpecSha256})=>({id,label,profileVersion,identity,canonicalSpecSha256}))))throw Error('Build profile registry mismatch');
+for(const p of PROFILES){const rt=createProfileRuntime(p.id);await verifyProfileRuntime(rt,p);const cert=JSON.parse(await readFile(join(root,`campaigns/profiles/${p.id}.certificate.json`)));const checked=replayCampaignCertificate(rt,cert);if(!checked.ok)throw Error(`${p.id}: ${checked.reason}`);}
+if(entries.some(file=>file.includes('/tests/')))throw Error('Test-only search sources leaked into runtime build');
+console.log(JSON.stringify({profileBuild:'PASS',profiles:PROFILES.map(p=>p.id),browserExecuted:false}));

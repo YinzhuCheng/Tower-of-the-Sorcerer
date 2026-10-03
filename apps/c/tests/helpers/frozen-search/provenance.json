@@ -1,0 +1,11 @@
+{
+  "source": "restored-hotfix-e4e042e/apps/a/src/solver (read-only copied generic search dependencies)",
+  "purpose": "Offline profile regression tests only; never imported by runtime or copied into dist",
+  "files": {
+    "decision-intuition.js": "c110204743b7900605388d6c2ac2e13b494c1cfcbae24df003dbb843674a6d9f",
+    "frontier.js": "2d7df9f191e308cc2c77f0c0d4914d940f9f155f5ba2f5cb8a8546db07c7d01c",
+    "priority-queue.js": "776bb6ebca9b8233af614a2820f9f37c590e9b5b5b7ed78022dda0e7c8228a62",
+    "search.js": "6394a27b2922881f0e0bc4128c757e30a2a7c7003c1fd068e452e2a977b32423",
+    "state.js": "929bd3a14f316c88504f799de36268456ad895aafab3d8571927b7edee2a1f4c"
+  }
+}

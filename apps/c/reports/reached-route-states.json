@@ -1,0 +1,1112 @@
+{
+  "identity": {
+    "campaignId": "voyage-c",
+    "difficultyId": "normal",
+    "contentVersion": "c-rules-prototype-v1.2-geometry",
+    "rulesVersion": "fixed-campaign-v1.1",
+    "contentHash": "c5a5f809d5548f36"
+  },
+  "source": "actual initialState + each certificate action dispatched in order; no fixtures or state injection",
+  "final": {
+    "identity": {
+      "campaignId": "voyage-c",
+      "difficultyId": "normal",
+      "contentVersion": "c-rules-prototype-v1.2-geometry",
+      "rulesVersion": "fixed-campaign-v1.1",
+      "contentHash": "c5a5f809d5548f36"
+    },
+    "revision": 170,
+    "location": {
+      "regionId": "C-M05",
+      "x": 8,
+      "y": 3
+    },
+    "stats": {
+      "hp": 29,
+      "maxHp": 72,
+      "atk": 14,
+      "def": 10,
+      "gold": 9
+    },
+    "resources": {
+      "fuel": 1
+    },
+    "flags": {
+      "c.lampOil": false,
+      "c.manifest": true,
+      "c.crewReady": true,
+      "c.moored2": true,
+      "c.bolts": false,
+      "c.route1": "short",
+      "c.moored3": true,
+      "c.shoreLock": true,
+      "c.barrierOpen": true,
+      "c.route2": "short",
+      "c.moored4": true,
+      "c.handover": true,
+      "c.nearLampStaffed": true,
+      "c.ferryStaffed": true,
+      "c.moored5": true,
+      "c.cargoAshore": true,
+      "c.craneStowed": true,
+      "c.emptyShipSecured": true,
+      "c.cargoAtLamp": true,
+      "c.lampInstalled": true,
+      "c.bothLamps": true,
+      "c.farLampStaffed": true
+    },
+    "cleared": [
+      "c.bandage",
+      "c.centerCargo",
+      "c.coat",
+      "c.departureBrief",
+      "c.handover",
+      "c.installLamp",
+      "c.machine1",
+      "c.machine2",
+      "c.manifest",
+      "c.moor2",
+      "c.moor3",
+      "c.moor4",
+      "c.moor5",
+      "c.openBarrier",
+      "c.rollCargo",
+      "c.shiftLeft",
+      "c.shiftRight",
+      "c.shoreLock",
+      "c.signal",
+      "c.stow",
+      "c.supplies",
+      "c.unload"
+    ],
+    "visited": [
+      "C-M01",
+      "C-D01",
+      "C-M02",
+      "C-M03",
+      "C-M04",
+      "C-M05"
+    ],
+    "boat": {
+      "dock": "C-M05",
+      "moored": true,
+      "cargo": "ashore",
+      "positions": {
+        "w1": "R1",
+        "w2": "L2",
+        "w3": "C1"
+      }
+    },
+    "victory": true
+  },
+  "records": [
+    {
+      "step": 7,
+      "action": {
+        "type": "interact",
+        "entityId": "c.manifest"
+      },
+      "stateHash": "667665c90a09ebfb",
+      "location": {
+        "regionId": "C-M01",
+        "x": 8,
+        "y": 2
+      },
+      "boat": {
+        "dock": "C-M01",
+        "moored": true,
+        "cargo": "center",
+        "positions": {
+          "w1": "L1",
+          "w2": "L2",
+          "w3": "C1"
+        }
+      },
+      "visibleDevices": [],
+      "victory": false
+    },
+    {
+      "step": 11,
+      "action": {
+        "type": "interact",
+        "entityId": "c.coat"
+      },
+      "stateHash": "4f51acaea886c5a5",
+      "location": {
+        "regionId": "C-M01",
+        "x": 8,
+        "y": 5
+      },
+      "boat": {
+        "dock": "C-M01",
+        "moored": true,
+        "cargo": "center",
+        "positions": {
+          "w1": "L1",
+          "w2": "L2",
+          "w3": "C1"
+        }
+      },
+      "visibleDevices": [],
+      "victory": false
+    },
+    {
+      "step": 14,
+      "action": {
+        "type": "interact",
+        "entityId": "c.departureBrief"
+      },
+      "stateHash": "11ca2db897429e5e",
+      "location": {
+        "regionId": "C-M01",
+        "x": 8,
+        "y": 3
+      },
+      "boat": {
+        "dock": "C-M01",
+        "moored": true,
+        "cargo": "center",
+        "positions": {
+          "w1": "L1",
+          "w2": "L2",
+          "w3": "C1"
+        }
+      },
+      "visibleDevices": [],
+      "victory": false
+    },
+    {
+      "step": 21,
+      "action": {
+        "type": "traverse",
+        "edgeId": "C-M01.board"
+      },
+      "stateHash": "9a85ca066d6ab5fb",
+      "location": {
+        "regionId": "C-D01",
+        "x": 7,
+        "y": 7
+      },
+      "boat": {
+        "dock": "C-M01",
+        "moored": true,
+        "cargo": "center",
+        "positions": {
+          "w1": "L1",
+          "w2": "L2",
+          "w3": "C1"
+        }
+      },
+      "visibleDevices": [],
+      "victory": false
+    },
+    {
+      "step": 25,
+      "action": {
+        "type": "moveBallast",
+        "weightId": "w1",
+        "slot": "R1"
+      },
+      "stateHash": "293b81cdd18ab752",
+      "location": {
+        "regionId": "C-D01",
+        "x": 6,
+        "y": 5
+      },
+      "boat": {
+        "dock": "C-M01",
+        "moored": true,
+        "cargo": "center",
+        "positions": {
+          "w1": "R1",
+          "w2": "L2",
+          "w3": "C1"
+        }
+      },
+      "visibleDevices": [],
+      "victory": false
+    },
+    {
+      "step": 29,
+      "action": {
+        "type": "traverse",
+        "edgeId": "c.sail12"
+      },
+      "stateHash": "35bfe489edc8489e",
+      "location": {
+        "regionId": "C-D01",
+        "x": 5,
+        "y": 8
+      },
+      "boat": {
+        "dock": "C-M02",
+        "moored": false,
+        "cargo": "center",
+        "positions": {
+          "w1": "R1",
+          "w2": "L2",
+          "w3": "C1"
+        }
+      },
+      "visibleDevices": [],
+      "victory": false
+    },
+    {
+      "step": 32,
+      "action": {
+        "type": "interact",
+        "entityId": "c.moor2"
+      },
+      "stateHash": "3fc599b916108ff8",
+      "location": {
+        "regionId": "C-D01",
+        "x": 6,
+        "y": 9
+      },
+      "boat": {
+        "dock": "C-M02",
+        "moored": true,
+        "cargo": "center",
+        "positions": {
+          "w1": "R1",
+          "w2": "L2",
+          "w3": "C1"
+        }
+      },
+      "visibleDevices": [],
+      "victory": false
+    },
+    {
+      "step": 36,
+      "action": {
+        "type": "traverse",
+        "edgeId": "c.leaveDeck"
+      },
+      "stateHash": "d2f19bc97fd87ef2",
+      "location": {
+        "regionId": "C-M02",
+        "x": 7,
+        "y": 7
+      },
+      "boat": {
+        "dock": "C-M02",
+        "moored": true,
+        "cargo": "center",
+        "positions": {
+          "w1": "R1",
+          "w2": "L2",
+          "w3": "C1"
+        }
+      },
+      "visibleDevices": [],
+      "victory": false
+    },
+    {
+      "step": 39,
+      "action": {
+        "type": "interact",
+        "entityId": "c.bandage"
+      },
+      "stateHash": "c849c5fed5814016",
+      "location": {
+        "regionId": "C-M02",
+        "x": 8,
+        "y": 8
+      },
+      "boat": {
+        "dock": "C-M02",
+        "moored": true,
+        "cargo": "center",
+        "positions": {
+          "w1": "R1",
+          "w2": "L2",
+          "w3": "C1"
+        }
+      },
+      "visibleDevices": [],
+      "victory": false
+    },
+    {
+      "step": 43,
+      "action": {
+        "type": "interact",
+        "entityId": "c.supplies"
+      },
+      "stateHash": "4e489728f9a278bf",
+      "location": {
+        "regionId": "C-M02",
+        "x": 8,
+        "y": 5
+      },
+      "boat": {
+        "dock": "C-M02",
+        "moored": true,
+        "cargo": "center",
+        "positions": {
+          "w1": "R1",
+          "w2": "L2",
+          "w3": "C1"
+        }
+      },
+      "visibleDevices": [],
+      "victory": false
+    },
+    {
+      "step": 45,
+      "action": {
+        "type": "interact",
+        "entityId": "c.machine1"
+      },
+      "stateHash": "9e51e9d9882dd280",
+      "location": {
+        "regionId": "C-M02",
+        "x": 8,
+        "y": 4
+      },
+      "boat": {
+        "dock": "C-M02",
+        "moored": true,
+        "cargo": "center",
+        "positions": {
+          "w1": "R1",
+          "w2": "L2",
+          "w3": "C1"
+        }
+      },
+      "visibleDevices": [],
+      "victory": false
+    },
+    {
+      "step": 51,
+      "action": {
+        "type": "traverse",
+        "edgeId": "C-M02.board"
+      },
+      "stateHash": "f274771eb6690899",
+      "location": {
+        "regionId": "C-D01",
+        "x": 7,
+        "y": 7
+      },
+      "boat": {
+        "dock": "C-M02",
+        "moored": true,
+        "cargo": "center",
+        "positions": {
+          "w1": "R1",
+          "w2": "L2",
+          "w3": "C1"
+        }
+      },
+      "visibleDevices": [],
+      "victory": false
+    },
+    {
+      "step": 54,
+      "action": {
+        "type": "traverse",
+        "edgeId": "c.sail23.short"
+      },
+      "stateHash": "55ee4782d0d04de9",
+      "location": {
+        "regionId": "C-D01",
+        "x": 5,
+        "y": 8
+      },
+      "boat": {
+        "dock": "C-M03",
+        "moored": false,
+        "cargo": "center",
+        "positions": {
+          "w1": "R1",
+          "w2": "L2",
+          "w3": "C1"
+        }
+      },
+      "visibleDevices": [],
+      "victory": false
+    },
+    {
+      "step": 57,
+      "action": {
+        "type": "interact",
+        "entityId": "c.moor3"
+      },
+      "stateHash": "600c66abc453947a",
+      "location": {
+        "regionId": "C-D01",
+        "x": 6,
+        "y": 9
+      },
+      "boat": {
+        "dock": "C-M03",
+        "moored": true,
+        "cargo": "center",
+        "positions": {
+          "w1": "R1",
+          "w2": "L2",
+          "w3": "C1"
+        }
+      },
+      "visibleDevices": [],
+      "victory": false
+    },
+    {
+      "step": 61,
+      "action": {
+        "type": "traverse",
+        "edgeId": "c.leaveDeck"
+      },
+      "stateHash": "bcc720835188d8a1",
+      "location": {
+        "regionId": "C-M03",
+        "x": 7,
+        "y": 7
+      },
+      "boat": {
+        "dock": "C-M03",
+        "moored": true,
+        "cargo": "center",
+        "positions": {
+          "w1": "R1",
+          "w2": "L2",
+          "w3": "C1"
+        }
+      },
+      "visibleDevices": [],
+      "victory": false
+    },
+    {
+      "step": 65,
+      "action": {
+        "type": "interact",
+        "entityId": "c.shoreLock"
+      },
+      "stateHash": "7b77ec7541d7406c",
+      "location": {
+        "regionId": "C-M03",
+        "x": 7,
+        "y": 4
+      },
+      "boat": {
+        "dock": "C-M03",
+        "moored": true,
+        "cargo": "center",
+        "positions": {
+          "w1": "R1",
+          "w2": "L2",
+          "w3": "C1"
+        }
+      },
+      "visibleDevices": [],
+      "victory": false
+    },
+    {
+      "step": 69,
+      "action": {
+        "type": "interact",
+        "entityId": "c.machine2"
+      },
+      "stateHash": "09bca24ecdb1d286",
+      "location": {
+        "regionId": "C-M03",
+        "x": 8,
+        "y": 2
+      },
+      "boat": {
+        "dock": "C-M03",
+        "moored": true,
+        "cargo": "center",
+        "positions": {
+          "w1": "R1",
+          "w2": "L2",
+          "w3": "C1"
+        }
+      },
+      "visibleDevices": [],
+      "victory": false
+    },
+    {
+      "step": 77,
+      "action": {
+        "type": "traverse",
+        "edgeId": "C-M03.board"
+      },
+      "stateHash": "813fb5b38e4504b8",
+      "location": {
+        "regionId": "C-D01",
+        "x": 7,
+        "y": 7
+      },
+      "boat": {
+        "dock": "C-M03",
+        "moored": true,
+        "cargo": "center",
+        "positions": {
+          "w1": "R1",
+          "w2": "L2",
+          "w3": "C1"
+        }
+      },
+      "visibleDevices": [],
+      "victory": false
+    },
+    {
+      "step": 83,
+      "action": {
+        "type": "interact",
+        "entityId": "c.shiftLeft"
+      },
+      "stateHash": "a17b72f33e52b512",
+      "location": {
+        "regionId": "C-D01",
+        "x": 6,
+        "y": 3
+      },
+      "boat": {
+        "dock": "C-M03",
+        "moored": true,
+        "cargo": "left",
+        "positions": {
+          "w1": "R1",
+          "w2": "L2",
+          "w3": "C1"
+        }
+      },
+      "visibleDevices": [
+        "one-gate-winch"
+      ],
+      "victory": false
+    },
+    {
+      "step": 86,
+      "action": {
+        "type": "moveBallast",
+        "weightId": "w2",
+        "slot": "R2"
+      },
+      "stateHash": "df20ef6f34cfb60b",
+      "location": {
+        "regionId": "C-D01",
+        "x": 6,
+        "y": 5
+      },
+      "boat": {
+        "dock": "C-M03",
+        "moored": true,
+        "cargo": "left",
+        "positions": {
+          "w1": "R1",
+          "w2": "R2",
+          "w3": "C1"
+        }
+      },
+      "visibleDevices": [
+        "one-gate-winch"
+      ],
+      "victory": false
+    },
+    {
+      "step": 90,
+      "action": {
+        "type": "interact",
+        "entityId": "c.openBarrier"
+      },
+      "stateHash": "8a4d86a11fe5eb5d",
+      "location": {
+        "regionId": "C-D01",
+        "x": 4,
+        "y": 4
+      },
+      "boat": {
+        "dock": "C-M03",
+        "moored": true,
+        "cargo": "left",
+        "positions": {
+          "w1": "R1",
+          "w2": "R2",
+          "w3": "C1"
+        }
+      },
+      "visibleDevices": [
+        "one-gate-winch"
+      ],
+      "victory": false
+    },
+    {
+      "step": 92,
+      "action": {
+        "type": "interact",
+        "entityId": "c.centerCargo"
+      },
+      "stateHash": "89f860b265be549c",
+      "location": {
+        "regionId": "C-D01",
+        "x": 4,
+        "y": 3
+      },
+      "boat": {
+        "dock": "C-M03",
+        "moored": true,
+        "cargo": "center",
+        "positions": {
+          "w1": "R1",
+          "w2": "R2",
+          "w3": "C1"
+        }
+      },
+      "visibleDevices": [],
+      "victory": false
+    },
+    {
+      "step": 95,
+      "action": {
+        "type": "moveBallast",
+        "weightId": "w1",
+        "slot": "L1"
+      },
+      "stateHash": "fc8d1c888baf1b93",
+      "location": {
+        "regionId": "C-D01",
+        "x": 4,
+        "y": 5
+      },
+      "boat": {
+        "dock": "C-M03",
+        "moored": true,
+        "cargo": "center",
+        "positions": {
+          "w1": "L1",
+          "w2": "R2",
+          "w3": "C1"
+        }
+      },
+      "visibleDevices": [],
+      "victory": false
+    },
+    {
+      "step": 99,
+      "action": {
+        "type": "traverse",
+        "edgeId": "c.sail34.short"
+      },
+      "stateHash": "0bd45656d96b7b9c",
+      "location": {
+        "regionId": "C-D01",
+        "x": 5,
+        "y": 8
+      },
+      "boat": {
+        "dock": "C-M04",
+        "moored": false,
+        "cargo": "center",
+        "positions": {
+          "w1": "L1",
+          "w2": "R2",
+          "w3": "C1"
+        }
+      },
+      "visibleDevices": [],
+      "victory": false
+    },
+    {
+      "step": 102,
+      "action": {
+        "type": "interact",
+        "entityId": "c.moor4"
+      },
+      "stateHash": "d9b8d19812e4ae93",
+      "location": {
+        "regionId": "C-D01",
+        "x": 6,
+        "y": 9
+      },
+      "boat": {
+        "dock": "C-M04",
+        "moored": true,
+        "cargo": "center",
+        "positions": {
+          "w1": "L1",
+          "w2": "R2",
+          "w3": "C1"
+        }
+      },
+      "visibleDevices": [],
+      "victory": false
+    },
+    {
+      "step": 106,
+      "action": {
+        "type": "traverse",
+        "edgeId": "c.leaveDeck"
+      },
+      "stateHash": "16b266869e0056cb",
+      "location": {
+        "regionId": "C-M04",
+        "x": 7,
+        "y": 7
+      },
+      "boat": {
+        "dock": "C-M04",
+        "moored": true,
+        "cargo": "center",
+        "positions": {
+          "w1": "L1",
+          "w2": "R2",
+          "w3": "C1"
+        }
+      },
+      "visibleDevices": [],
+      "victory": false
+    },
+    {
+      "step": 113,
+      "action": {
+        "type": "interact",
+        "entityId": "c.handover"
+      },
+      "stateHash": "03a93d0ad83f90dd",
+      "location": {
+        "regionId": "C-M04",
+        "x": 8,
+        "y": 2
+      },
+      "boat": {
+        "dock": "C-M04",
+        "moored": true,
+        "cargo": "center",
+        "positions": {
+          "w1": "L1",
+          "w2": "R2",
+          "w3": "C1"
+        }
+      },
+      "visibleDevices": [],
+      "victory": false
+    },
+    {
+      "step": 121,
+      "action": {
+        "type": "traverse",
+        "edgeId": "C-M04.board"
+      },
+      "stateHash": "37be9b470410e998",
+      "location": {
+        "regionId": "C-D01",
+        "x": 7,
+        "y": 7
+      },
+      "boat": {
+        "dock": "C-M04",
+        "moored": true,
+        "cargo": "center",
+        "positions": {
+          "w1": "L1",
+          "w2": "R2",
+          "w3": "C1"
+        }
+      },
+      "visibleDevices": [],
+      "victory": false
+    },
+    {
+      "step": 124,
+      "action": {
+        "type": "traverse",
+        "edgeId": "c.sail45"
+      },
+      "stateHash": "1a4df56f128e0c2c",
+      "location": {
+        "regionId": "C-D01",
+        "x": 5,
+        "y": 8
+      },
+      "boat": {
+        "dock": "C-M05",
+        "moored": false,
+        "cargo": "center",
+        "positions": {
+          "w1": "L1",
+          "w2": "R2",
+          "w3": "C1"
+        }
+      },
+      "visibleDevices": [
+        "one-cargo-davit"
+      ],
+      "victory": false
+    },
+    {
+      "step": 127,
+      "action": {
+        "type": "interact",
+        "entityId": "c.moor5"
+      },
+      "stateHash": "700cc99891533405",
+      "location": {
+        "regionId": "C-D01",
+        "x": 6,
+        "y": 9
+      },
+      "boat": {
+        "dock": "C-M05",
+        "moored": true,
+        "cargo": "center",
+        "positions": {
+          "w1": "L1",
+          "w2": "R2",
+          "w3": "C1"
+        }
+      },
+      "visibleDevices": [
+        "one-cargo-davit"
+      ],
+      "victory": false
+    },
+    {
+      "step": 134,
+      "action": {
+        "type": "interact",
+        "entityId": "c.shiftRight"
+      },
+      "stateHash": "fc8240a0c1a8f1b9",
+      "location": {
+        "regionId": "C-D01",
+        "x": 6,
+        "y": 3
+      },
+      "boat": {
+        "dock": "C-M05",
+        "moored": true,
+        "cargo": "right",
+        "positions": {
+          "w1": "L1",
+          "w2": "R2",
+          "w3": "C1"
+        }
+      },
+      "visibleDevices": [
+        "one-cargo-davit"
+      ],
+      "victory": false
+    },
+    {
+      "step": 137,
+      "action": {
+        "type": "moveBallast",
+        "weightId": "w2",
+        "slot": "L2"
+      },
+      "stateHash": "361c51f9d65924a2",
+      "location": {
+        "regionId": "C-D01",
+        "x": 6,
+        "y": 5
+      },
+      "boat": {
+        "dock": "C-M05",
+        "moored": true,
+        "cargo": "right",
+        "positions": {
+          "w1": "L1",
+          "w2": "L2",
+          "w3": "C1"
+        }
+      },
+      "visibleDevices": [
+        "one-cargo-davit"
+      ],
+      "victory": false
+    },
+    {
+      "step": 142,
+      "action": {
+        "type": "interact",
+        "entityId": "c.unload"
+      },
+      "stateHash": "44f97c1f5bfe6d1b",
+      "location": {
+        "regionId": "C-D01",
+        "x": 7,
+        "y": 2
+      },
+      "boat": {
+        "dock": "C-M05",
+        "moored": true,
+        "cargo": "ashore",
+        "positions": {
+          "w1": "L1",
+          "w2": "L2",
+          "w3": "C1"
+        }
+      },
+      "visibleDevices": [
+        "one-cargo-davit"
+      ],
+      "victory": false
+    },
+    {
+      "step": 147,
+      "action": {
+        "type": "moveBallast",
+        "weightId": "w1",
+        "slot": "R1"
+      },
+      "stateHash": "05f3f04e98565f8a",
+      "location": {
+        "regionId": "C-D01",
+        "x": 6,
+        "y": 5
+      },
+      "boat": {
+        "dock": "C-M05",
+        "moored": true,
+        "cargo": "ashore",
+        "positions": {
+          "w1": "R1",
+          "w2": "L2",
+          "w3": "C1"
+        }
+      },
+      "visibleDevices": [
+        "one-cargo-davit"
+      ],
+      "victory": false
+    },
+    {
+      "step": 152,
+      "action": {
+        "type": "interact",
+        "entityId": "c.stow"
+      },
+      "stateHash": "0cabbf9da8c96937",
+      "location": {
+        "regionId": "C-D01",
+        "x": 7,
+        "y": 2
+      },
+      "boat": {
+        "dock": "C-M05",
+        "moored": true,
+        "cargo": "ashore",
+        "positions": {
+          "w1": "R1",
+          "w2": "L2",
+          "w3": "C1"
+        }
+      },
+      "visibleDevices": [
+        "one-cargo-davit"
+      ],
+      "victory": false
+    },
+    {
+      "step": 160,
+      "action": {
+        "type": "traverse",
+        "edgeId": "c.leaveDeck"
+      },
+      "stateHash": "b253ceca04197716",
+      "location": {
+        "regionId": "C-M05",
+        "x": 7,
+        "y": 7
+      },
+      "boat": {
+        "dock": "C-M05",
+        "moored": true,
+        "cargo": "ashore",
+        "positions": {
+          "w1": "R1",
+          "w2": "L2",
+          "w3": "C1"
+        }
+      },
+      "visibleDevices": [
+        "one-cargo-davit"
+      ],
+      "victory": false
+    },
+    {
+      "step": 163,
+      "action": {
+        "type": "interact",
+        "entityId": "c.rollCargo"
+      },
+      "stateHash": "cc9e5eb152b9d143",
+      "location": {
+        "regionId": "C-M05",
+        "x": 7,
+        "y": 5
+      },
+      "boat": {
+        "dock": "C-M05",
+        "moored": true,
+        "cargo": "ashore",
+        "positions": {
+          "w1": "R1",
+          "w2": "L2",
+          "w3": "C1"
+        }
+      },
+      "visibleDevices": [
+        "one-cargo-davit"
+      ],
+      "victory": false
+    },
+    {
+      "step": 168,
+      "action": {
+        "type": "interact",
+        "entityId": "c.installLamp"
+      },
+      "stateHash": "a2f78c206932e2a1",
+      "location": {
+        "regionId": "C-M05",
+        "x": 8,
+        "y": 2
+      },
+      "boat": {
+        "dock": "C-M05",
+        "moored": true,
+        "cargo": "ashore",
+        "positions": {
+          "w1": "R1",
+          "w2": "L2",
+          "w3": "C1"
+        }
+      },
+      "visibleDevices": [
+        "one-cargo-davit"
+      ],
+      "victory": false
+    },
+    {
+      "step": 170,
+      "action": {
+        "type": "interact",
+        "entityId": "c.signal"
+      },
+      "stateHash": "ca26ef0061b965b9",
+      "location": {
+        "regionId": "C-M05",
+        "x": 8,
+        "y": 3
+      },
+      "boat": {
+        "dock": "C-M05",
+        "moored": true,
+        "cargo": "ashore",
+        "positions": {
+          "w1": "R1",
+          "w2": "L2",
+          "w3": "C1"
+        }
+      },
+      "visibleDevices": [
+        "one-cargo-davit"
+      ],
+      "victory": true
+    }
+  ]
+}

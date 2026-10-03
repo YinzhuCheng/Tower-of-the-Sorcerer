@@ -1,10 +1,11 @@
+import { supportsVoyageGeometry } from '../profiles/geometry.js';
 import { VOYAGE_VESSEL_GEOMETRY as G,voyageVesselToBerth,voyageDeckToBerth } from '../campaigns/c/content.js';
 import { MAP_ART_REVISION,cellsWhere,compileBoundaryRuns,rect,line,circle,label,entityCommands } from './continuous-map.js';
 export const VOYAGE_MAP_SIDECAR=Object.freeze({artRevision:MAP_ART_REVISION,geometryId:G.geometryId,geometryVersion:G.version,rulesContentHash:'c5a5f809d5548f36',samples:['C-D01','C-M03','C-M05'],source:'candidate-c-art-plan/current-geometry.json v1.2; runtime VOYAGE_VESSEL_GEOMETRY'});
 // The half-cell offset converts logical centres to the shared compositor origin.
 export function vesselPoint([X,Y,Z],deck){const p=deck?[5+X/G.deckSampling.pitch,(Z+2.7)/G.deckSampling.pitch]:voyageVesselToBerth([X,Y,Z]);return p.map(n=>n+.5);}
 export function deckPoint(p,deck){return(deck?p:voyageDeckToBerth(p)).map(n=>n+.5);}
-export function projectVoyageScene(runtime,state){const view=runtime.projectView(state),r=view.region,deck=r.id==='C-D01';if(!VOYAGE_MAP_SIDECAR.samples.includes(r.id)||runtime.identity.contentHash!==VOYAGE_MAP_SIDECAR.rulesContentHash)return null;
+export function projectVoyageScene(runtime,state){const view=runtime.projectView(state),r=view.region,deck=r.id==='C-D01';if(!VOYAGE_MAP_SIDECAR.samples.includes(r.id)||!supportsVoyageGeometry(runtime))return null;
  const scale=deck?1:0.6,pt=p=>deckPoint(p,deck),metric=p=>vesselPoint(p,deck),scene={campaign:'C',regionId:r.id,width:11,height:11,artRevision:MAP_ART_REVISION,rulesContentHash:runtime.identity.contentHash,geometryId:G.geometryId,geometryVersion:G.version,ambient:{color:'#102b42',alpha:.28},topologyHash:r.map.join('|'),surfaces:[],boundaryRuns:[],structures:[],objects:[],visibleEntities:view.entities.filter(e=>runtime.meets(state,e.visibleWhen)).map(e=>e.id),passability:r.map.map((row,y)=>[...row].map((_,x)=>runtime.passable(state,x,y))),fixtures:{slots:[],weights:[],cargo:[],devices:[]}};
  const all=cellsWhere(r.map,()=>true),shore=cellsWhere(r.map,t=>t==='.'),solid=cellsWhere(r.map,t=>t==='#');scene.surfaces.push({id:'water',material:'water',cells:all});
  if(!deck){scene.surfaces.push({id:'quay',material:'dry-stone',cells:shore},{id:'bollard-seats',material:'dark-rock',cells:solid});scene.boundaryRuns.push(...compileBoundaryRuns([...shore,...solid],'shore'));

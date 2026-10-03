@@ -87,3 +87,6 @@ aside{position:static;top:auto;height:auto;max-height:none;min-height:0;min-widt
  .exploration .view-controls{gap:4px}
  #view-health{width:100%;margin:0}
 }
+
+/* The profile chooser is ordinary modal UI; no game session is replaced on visit. */
+#profile-dialog{max-width:min(38rem,calc(100vw - 2rem));max-height:85dvh;overflow:auto}#profile-root{display:grid;gap:.8rem}#profile-root p{margin:0;line-height:1.6;overflow-wrap:anywhere}#profile-root select{display:block;width:100%;margin-top:.4rem;min-height:2.5rem}#profile-root button{min-height:2.6rem}#profile-root [role=status]{color:#ffca88}

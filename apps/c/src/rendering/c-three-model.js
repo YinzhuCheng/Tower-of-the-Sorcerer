@@ -1,3 +1,4 @@
+import { supportsVoyageGeometry } from '../profiles/geometry.js';
 import { VOYAGE_VESSEL_GEOMETRY as G, voyageDeckToVessel } from '../campaigns/c/content.js';
 import { projectVoyageScene } from './c-adapter.js';
 export const REQUIRED_CONTENT_HASH='c5a5f809d5548f36';
@@ -10,7 +11,7 @@ export function rigidYaw(point,yaw){const c=Math.cos(yaw),s=Math.sin(yaw),[x,y,z
 // Origin is a local metric frame. Yaw follows the contract's right-handed X east/Y up/Z south.
 export const berthYaw=dock=>dock==='C-M04'?Math.PI:0;
 export function buildViewModel(runtime,state){
- if(runtime.identity.contentHash!==REQUIRED_CONTENT_HASH)throw new Error('3D geometry requires C v1.2; content identity mismatch');
+ if(!supportsVoyageGeometry(runtime))throw new Error('3D geometry requires C v1.2; content identity mismatch');
  const view=runtime.projectView(state),deck=view.region.id==='C-D01',at=p=>deckPoint(p),readOnly=projectVoyageScene(runtime,state);
  const slots=Object.entries(runtime.spec.ballast.slotCoordinates).map(([id,p])=>({id,position:at(p),mounting:'flush'}));
  const weights=Object.entries(state.boat.positions).map(([id,slot])=>({id,mass:runtime.spec.ballast.weights[id],slot,position:at(runtime.spec.ballast.slotCoordinates[slot])}));

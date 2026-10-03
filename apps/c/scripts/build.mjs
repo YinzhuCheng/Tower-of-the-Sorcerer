@@ -2,6 +2,7 @@ import { cp, mkdir, rm, writeFile, readFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 import { createHash } from 'node:crypto';
+import { PROFILES,PROFILE_REGISTRY } from '../src/profiles/registry.js';
 const root=join(dirname(fileURLToPath(import.meta.url)),'..'), out=join(root,'dist');
 await rm(out,{recursive:true,force:true}); await mkdir(out,{recursive:true});
 for(const folder of ['src','geometry']) await cp(join(root,folder),join(out,folder),{recursive:true});
@@ -11,5 +12,5 @@ await cp(join(root,'node_modules/three/LICENSE'),join(out,'vendor/THREE-LICENSE.
 await writeFile(join(out,'index.html'),'<!doctype html><meta charset="utf-8"><meta http-equiv="refresh" content="0;url=./campaigns/"><a href="./campaigns/">Candidate C fixed-view prototype</a>');
 await cp(join(root,'THIRD_PARTY_NOTICES.md'),join(out,'THIRD_PARTY_NOTICES.md'));
 const sha=p=>readFile(p).then(b=>createHash('sha256').update(b).digest('hex'));
-const record={reconstructionVersion:'c-harbor-backbone-r1',sourceCommit:'080d9142bbbfe65df4b7977ed483a5a49435e30b',presentation:'geometry-only; historical texture files unavailable',entry:'/campaigns/',contentHash:'c5a5f809d5548f36',threeVersion:'0.180.0',threeModuleSha256:await sha(join(out,'vendor/three.module.js')),coreSha256:await sha(join(out,'src/core/campaign.js')),geometrySha256:await sha(join(out,'geometry/vessel-physical-geometry-v1.2.json')),status:'offline build verified separately; real browser/GPU QA unverified; not promoted'};
+const record={reconstructionVersion:'c-harbor-backbone-r1',sourceCommit:'080d9142bbbfe65df4b7977ed483a5a49435e30b',presentation:'geometry-only; historical texture files unavailable',entry:'/campaigns/',contentHash:'c5a5f809d5548f36',profileSetId:PROFILE_REGISTRY.profileSetId,profiles:PROFILES.map(({id,label,profileVersion,identity,canonicalSpecSha256})=>({id,label,profileVersion,identity,canonicalSpecSha256})),threeVersion:'0.180.0',threeModuleSha256:await sha(join(out,'vendor/three.module.js')),coreSha256:await sha(join(out,'src/core/campaign.js')),geometrySha256:await sha(join(out,'geometry/vessel-physical-geometry-v1.2.json')),status:'offline build verified separately; real browser/GPU QA unverified; not promoted'};
 await writeFile(join(out,'build-manifest.json'),JSON.stringify(record,null,2)); console.log(JSON.stringify(record,null,2));

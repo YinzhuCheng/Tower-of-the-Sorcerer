@@ -1,0 +1,14 @@
+[
+  {
+    "file": "src/rendering/c-adapter.js",
+    "originalGate": "runtime.identity.contentHash!==VOYAGE_MAP_SIDECAR.rulesContentHash",
+    "baselineSha256": "d9014a2bdb892cf74ddcbd021d98d094f5a5144f94687e360c9c73be0c8908df",
+    "delta": "one import plus one exact profile-eligibility predicate; rendering math and art unchanged"
+  },
+  {
+    "file": "src/rendering/c-three-model.js",
+    "originalGate": "runtime.identity.contentHash!==REQUIRED_CONTENT_HASH",
+    "baselineSha256": "895f07530f2dcbfeacc7695c78048406e873acfd259654d2024f662e36dab44b",
+    "delta": "one import plus one exact profile-eligibility predicate; rendering math and art unchanged"
+  }
+]
