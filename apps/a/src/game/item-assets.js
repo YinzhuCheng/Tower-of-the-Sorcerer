@@ -1,4 +1,4 @@
-import { loadImage } from './asset-loading.js';
+import { loadImage, fetchAsset } from './asset-loading.js';
 
 const MANIFEST_URL = '/assets/anime/items/manifest.json';
 const DEFAULT_BASE_PATH = '/assets/anime/items/';
@@ -6,7 +6,7 @@ const DEFAULT_BASE_PATH = '/assets/anime/items/';
 const entries = new Map();
 const images = new Map();
 let manifestPromise = null;
-let preloadPromise = null;
+const pending = new Map();
 let basePath = DEFAULT_BASE_PATH;
 
 function normalizeBasePath(value) {
@@ -21,7 +21,7 @@ function resolvePath(path) {
 
 async function loadManifest() {
   if (manifestPromise) return manifestPromise;
-  manifestPromise = fetch(MANIFEST_URL, { cache: 'no-cache' })
+  manifestPromise = fetchAsset(MANIFEST_URL, { cache: 'no-cache' })
     .then((response) => {
       if (!response.ok) throw new Error(`物品素材清单加载失败：HTTP ${response.status}`);
       return response.json();
@@ -34,24 +34,31 @@ async function loadManifest() {
       return manifest;
     })
     .catch((error) => {
-      console.warn(error);
-      return { version: 1, assets: {} };
+      manifestPromise = null;
+      throw error;
     });
   return manifestPromise;
 }
 
-export async function preloadItemAssets() {
-  if (preloadPromise) return preloadPromise;
-  preloadPromise = (async () => {
-    await loadManifest();
-    await Promise.all([...entries].map(async ([id, meta]) => {
+export async function preloadItemAssets(names = null, { strict = false } = {}) {
+  await loadManifest();
+  const tasks = [...new Set(names ?? entries.keys())].map(id => {
+    if (images.has(id)) return images.get(id);
+    if (pending.has(id)) return pending.get(id);
+    const task = (async () => {
+      const meta = entries.get(id);
+      if (!meta) throw new Error(`物品素材未登记：${id}`);
       const image = await loadImage(resolvePath(meta.file));
-      if (image) images.set(id, image);
-      else console.warn(`物品素材 ${id} 解码失败，将使用旧贴图。`);
-    }));
-    return images;
-  })();
-  return preloadPromise;
+      if (!image) throw new Error(`物品素材无法解码：${id}`);
+      images.set(id, image);
+      return image;
+    })().finally(() => pending.delete(id));
+    pending.set(id, task);
+    return task;
+  });
+  if (strict) await Promise.all(tasks);
+  else await Promise.allSettled(tasks);
+  return images;
 }
 
 export function getItemAsset(id) {

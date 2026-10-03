@@ -49,7 +49,7 @@ const CARD_STYLE = Object.freeze({
 const generatedAssets = new Map();
 let generatedPromise = null;
 const themeEnvironmentAssets = new Map();
-let themeEnvironmentPromise = null;
+const themeEnvironmentPending = new Map();
 
 function roundRectPath(ctx, x, y, width, height, radius) {
   const r = Math.min(radius, width / 2, height / 2);
@@ -72,13 +72,22 @@ function activeThemeId() {
     : 'night';
 }
 
-function preloadThemeEnvironmentAssets() {
-  if (themeEnvironmentPromise) return themeEnvironmentPromise;
-  themeEnvironmentPromise = Promise.all(Object.entries(THEME_ENVIRONMENT_URLS).map(async ([id, url]) => {
-    const image = await loadImage(url);
-    if (image) themeEnvironmentAssets.set(id, image);
-  })).then(() => themeEnvironmentAssets);
-  return themeEnvironmentPromise;
+function preloadThemeEnvironmentAssets(id = activeThemeId()) {
+  if (themeEnvironmentAssets.has(id)) return Promise.resolve(themeEnvironmentAssets.get(id));
+  if (themeEnvironmentPending.has(id)) return themeEnvironmentPending.get(id);
+  const task = loadImage(THEME_ENVIRONMENT_URLS[id]).then(image => {
+    if (!image) throw new Error('塔影背景无法解码');
+    themeEnvironmentAssets.set(id, image);
+    return image;
+  }).finally(() => themeEnvironmentPending.delete(id));
+  themeEnvironmentPending.set(id, task);
+  return task;
+}
+
+export async function preloadTacticalVisualAssets() {
+  await Promise.all([preloadV8GeneratedAssets(), preloadThemeEnvironmentAssets()]);
+  if (generatedAssets.size !== Object.keys(GENERATED_INDEX).length) throw new Error('地图界面图集尚未就绪');
+  decorateUiPanels();
 }
 
 function cropAtlasCell(image, index) {
@@ -134,7 +143,8 @@ export async function preloadV8GeneratedAssets() {
     }
     return generatedAssets;
   })().catch((error) => {
-    console.error('[V8.2] 生成素材初始化失败，将使用程序化回退。', error);
+    generatedPromise = null;
+    console.error('[V8.2] 界面素材加载失败。', error);
     return generatedAssets;
   });
   return generatedPromise;
@@ -560,7 +570,8 @@ export function applySceneThemeV8(scene) {
       scene.refresh?.();
     });
   }
-  preloadThemeEnvironmentAssets().then(() => scene.refresh?.());
+  // Startup explicitly awaits the active background before revealing the map.
+  // Theme changes after startup load independently and preserve the last frame.
   const previousRenderToken = scene.renderToken.bind(scene);
   installCleanSpritePipeline(scene);
   scene.drawFloorLayer = () => drawFloorV82(scene);
@@ -588,6 +599,9 @@ export function applySceneThemeV8(scene) {
   scene.canvas.dataset.cardPipeline = 'programmatic-card-v8';
   scene.canvas.dataset.spriteCleanup = 'edge-keyed-transparent-v8.2';
   scene.canvas.dataset.uiThemes = THEMES.map((theme) => theme.id).join(',');
-  window.addEventListener('tower-theme-change', () => scene.refresh?.());
+  const onThemeChange = () => { void preloadThemeEnvironmentAssets().then(() => scene.refresh?.()).catch(console.warn); };
+  window.addEventListener('tower-theme-change', onThemeChange);
+  const previousDestroy = scene.destroy.bind(scene);
+  scene.destroy = () => { window.removeEventListener('tower-theme-change', onThemeChange); previousDestroy(); };
   return scene;
 }

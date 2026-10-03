@@ -27,6 +27,19 @@
     <link rel="stylesheet" href="/difficulty.css">
   </head>
   <body data-theme="night">
+    <section id="tactical-loading" class="tactical-loading-stage" hidden role="status" aria-live="polite" aria-label="地图加载">
+      <div class="tactical-loading-lights" aria-hidden="true"><i></i><i></i><i></i></div>
+      <div class="tactical-loading-card">
+        <span class="tactical-loading-sigil" aria-hidden="true">✦</span>
+        <p class="tactical-loading-eyebrow">失落魔法阵</p>
+        <h2 data-loading-title>塔影渐明</h2>
+        <p data-loading-copy>正在准备眼前这一层…</p>
+        <div class="tactical-loading-actions">
+          <button data-loading-retry hidden>重新加载</button>
+          <button data-loading-exit class="ghost">返回入口</button>
+        </div>
+      </div>
+    </section>
     <div id="app-shell">
       <header class="topbar">
         <div>

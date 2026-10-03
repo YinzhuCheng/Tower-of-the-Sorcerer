@@ -48,8 +48,8 @@ export async function preloadAnimeAssets() {
   await Promise.all(ASSET_NAMES.map(loadAnimeAsset));
 }
 
-export async function loadAnimeAsset(name) {
-  if (urls.has(name)) return urls.get(name);
+export async function loadAnimeAsset(name, { strict = false } = {}) {
+  if (urls.has(name) && (!strict || !urls.get(name).startsWith('data:image/svg'))) return urls.get(name);
   if (!ASSET_NAMES.includes(name)) throw new Error(`Unknown anime asset sheet: ${name}`);
   try {
     const response = await fetch(`/assets/anime/b64/${name}.b64`, { cache: 'force-cache' });
@@ -60,6 +60,7 @@ export async function loadAnimeAsset(name) {
     urls.set(name, url);
     return url;
   } catch (error) {
+    if (strict) throw error;
     const url = legacyAnimeFallbackUrl(name);
     urls.set(name, url);
     console.warn(`Legacy anime sheet '${name}' unavailable; using procedural fallback.`, error);

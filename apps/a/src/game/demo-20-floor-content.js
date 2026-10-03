@@ -354,7 +354,7 @@ function installActTwoDialogues(dialogues) {
       dialogueTurn('旁白', null, '奥术主权者手腕上的蓝色束缚松开了。那枚裂开的主权印没有消失，他也没有把它摘下来，只用另一只手扶住还在发抖的指节。', { kind: 'narration' }),
       dialogueTurn('奥术主权者', 'arcane_sovereign', '手能动了……这枚印我留着。卷册给我，我自己带着；我的那道命令也放在里面。', { expression: 'acceptance' }),
       dialogueTurn('无声女王·诺克缇娅', 'final_queen', '这一卷最重，你抱好。我带另一卷。封塔的经过也在里面，到了上面，我自己说。', { expression: 'grave' }),
-      dialogueTurn('旁白', null, '两人第一次并肩站在没有王座、也没有封印隔开的地方。谁也没有伸手和解。升降梯却已经在她们身后重新亮起。', { kind: 'narration' }),
+      dialogueTurn('旁白', null, '两人第一次并肩站在没有王座、也没有封印隔开的地方。谁也没有伸手和解。升降梯却已经在两人身后重新亮起。', { kind: 'narration' }),
       dialogueTurn('残响精灵·纱雾', 'guide', '升降梯已经亮了。余烬登记库里还留着命令抄本，它们再送出来，旧警报就可能重响。未投递的信也都在上面。', { expression: 'focus' }),
       dialogueTurn('无声女王·诺克缇娅', 'final_queen', '那就去找真正的归档方式。我要亲眼确认，警报停止以后，那些名字仍然有地方留下。', { expression: 'sorrow' }),
       dialogueTurn('奥术主权者', 'arcane_sovereign', '登记库里留着护送、校验、接力三套旧修复章程。再往上是余烬灯塔——只有那里能把最终结案真正送出高塔。方案是我参与设计的，哪里会卡住，我会告诉你们。', { expression: 'acceptance' }),

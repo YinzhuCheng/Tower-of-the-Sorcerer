@@ -1,6 +1,6 @@
 import { createCanvasTowerScene as createBaseCanvasTowerScene } from './anime-canvas-scene.js';
 import { ENEMIES, FLOORS, ITEMS, TILE_SIZE } from './data.js';
-import { parseToken } from './engine.js';
+import { getTile, parseToken } from './engine.js';
 import { portraitIndex } from './anime-portraits.js';
 import { getItemAsset } from './item-assets.js';
 import { getMapAsset } from './map-assets.js';
@@ -366,12 +366,56 @@ function wallAssetForMask(mask) {
   return null;
 }
 
-export function createCanvasTowerScene(bridge, parent = document.getElementById('game-container')) {
-  // The base constructor paints a playable procedural frame, but the public
-  // scene is not ready until every renderer wrapper below is installed.  This
-  // keeps main.js from patching an intermediate renderToken implementation and
-  // prevents the first background repaint from falling through to legacy art.
+// Select the current floor, shared HUD and all four hero facings only.
+// Later-floor enemies and GAL backgrounds never hold the first frame hostage.
+export function requiredCanvasAssets(state) {
+  const map = new Set(['hero-down', 'hero-up', 'hero-left', 'hero-right', 'wall-surface-v6',
+    'card-sun-v10', 'card-moon-v10', 'card-star-v10']);
+  const enemies = new Set();
+  const items = new Set();
+  const legacy = new Set();
+  const floor = FLOORS[state.floor];
+  for (let y = 0; y < state.floorStates[state.floor].map.length; y += 1) {
+    for (let x = 0; x < state.floorStates[state.floor].map[y].length; x += 1) {
+      const token = getTile(state, x, y);
+      const parsed = parseToken(token);
+      if (token === 'U') map.add('rune-stairs-up-v10');
+      else if (token === 'D') map.add('rune-stairs-down-v10');
+      else if (token === 'shop') map.add('featured-shop');
+      else if (parsed.type === 'enemy') {
+        const enemy = ENEMIES[parsed.id];
+        if (enemy?.boss) map.add('gate-boss-v4');
+        if (FEATURED_ENEMY_ASSET[parsed.id]) map.add(FEATURED_ENEMY_ASSET[parsed.id]);
+        else if (enemy) enemies.add(enemy.portrait);
+      } else if (parsed.type === 'door') {
+        map.add(CARD_BARRIER_ASSET[parsed.id]); map.add('rune-floor-barrier-v10');
+      } else if (parsed.type === 'item') {
+        const item = ITEMS[parsed.id];
+        if (item?.kind === 'card') map.add(`card-${item.card}-v10`);
+        else if (INTERACTABLE_ITEM_ASSET[parsed.id]) map.add(INTERACTABLE_ITEM_ASSET[parsed.id]);
+        else if (ITEM_PIPELINE_ASSET[parsed.id]) items.add(ITEM_PIPELINE_ASSET[parsed.id].asset);
+        else if (parsed.id === 'dual' || parsed.id === 'act3Dual') { map.add('gem-atk-v10'); map.add('gem-def-v10'); }
+        else if (ACCEPTED_RESOURCE_ASSET[parsed.id]) map.add(ACCEPTED_RESOURCE_ASSET[parsed.id]);
+        else if (['atk','def','hp','hpLarge'].includes(parsed.id)) map.add({atk:'gem-atk-v10',def:'gem-def-v10',hp:'potion-red-v10',hpLarge:'potion-blue-v10'}[parsed.id]);
+        else { legacy.add('items'); legacy.add('tiles'); }
+      } else if (parsed.type === 'switch') map.add(SWITCH_ASSET_BY_ID[parsed.id] ?? 'switch-vine');
+      else if (parsed.type === 'gate') {
+        const costs = cardCostForGate(floor, parsed.id);
+        if (costs?.length) {
+          for (const [kind] of costs) map.add(CARD_BARRIER_ASSET[kind]);
+          if (CHARTER_GATE_IDS.has(parsed.id)) map.add('seal-charter-archive');
+        } else map.add(gateVisualFor(parsed.id).asset);
+      } else if (parsed.type === 'rune') legacy.add('tiles');
+    }
+  }
+  return { map: [...map], enemies: [...enemies], items: [...items], legacy: [...legacy] };
+}
+
+export function createCanvasTowerScene(bridge, parent = document.getElementById('game-container'), { autoStart = true } = {}) {
+  // Install every renderer wrapper before requesting assets or painting.
+  // Constructors never publish a procedural placeholder frame.
   const scene = createBaseCanvasTowerScene(bridge, parent, { autoStart: false, notifyReady: false });
+  scene.requiredAssets = requiredCanvasAssets(bridge.getState());
   const cleanedItemCells = new Map();
   const cleanedChibiCells = new Map();
   const cleanedTileCells = new Map();
@@ -530,14 +574,22 @@ export function createCanvasTowerScene(bridge, parent = document.getElementById(
   let lastPaint = 0;
   const tick = (time) => {
     if (!scene.canvas.isConnected) return;
-    if (scene.itemSheet && time - lastPaint >= 90) {
+    if (scene.assetsReady && time - lastPaint >= 90) {
       scene.idleClock = time;
       scene.renderFloor();
       lastPaint = time;
     }
     frame = requestAnimationFrame(tick);
   };
-  frame = requestAnimationFrame(tick);
+  const baseStart = scene.start.bind(scene);
+  let startPromise = null;
+  scene.start = () => {
+    if (!startPromise) startPromise = baseStart().then(value => {
+      if (!scene.destroyed) frame = requestAnimationFrame(tick);
+      return value;
+    });
+    return startPromise;
+  };
   const legacyDestroy = scene.destroy.bind(scene);
   scene.destroy = () => {
     cancelAnimationFrame(frame);
@@ -546,6 +598,6 @@ export function createCanvasTowerScene(bridge, parent = document.getElementById(
 
   applyWallMaterialV6(scene);
   bridge.onReady(scene);
-  void scene.start();
+  if (autoStart) void scene.start().catch(error => bridge.onAssetsError?.(error));
   return scene;
 }

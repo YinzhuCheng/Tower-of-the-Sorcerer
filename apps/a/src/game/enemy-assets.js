@@ -1,4 +1,4 @@
-import { loadImage } from './asset-loading.js';
+import { loadImage, fetchAsset } from './asset-loading.js';
 
 const MANIFEST_URL = '/assets/anime/enemies/manifest.json';
 const DEFAULT_BASE_PATH = '/assets/anime/';
@@ -7,7 +7,7 @@ const entries = new Map();
 const urls = new Map();
 const images = new Map();
 let manifestPromise = null;
-let preloadPromise = null;
+const pending = new Map();
 let basePath = DEFAULT_BASE_PATH;
 
 function normalizeBasePath(value) {
@@ -16,7 +16,7 @@ function normalizeBasePath(value) {
 }
 
 async function fetchText(url) {
-  const response = await fetch(url, { cache: 'force-cache' });
+  const response = await fetchAsset(url, { cache: 'force-cache' });
   if (!response.ok) throw new Error(`素材加载失败：${url} (HTTP ${response.status})`);
   return (await response.text()).trim();
 }
@@ -39,7 +39,7 @@ function preferredMapFile(meta) {
 
 async function loadManifest() {
   if (manifestPromise) return manifestPromise;
-  manifestPromise = fetch(MANIFEST_URL, { cache: 'no-cache' })
+  manifestPromise = fetchAsset(MANIFEST_URL, { cache: 'no-cache' })
     .then((response) => {
       if (!response.ok) throw new Error(`敌人素材清单加载失败：HTTP ${response.status}`);
       return response.json();
@@ -53,17 +53,17 @@ async function loadManifest() {
       return manifest;
     })
     .catch((error) => {
-      console.warn(error);
-      return { version: 2, assets: {} };
+      manifestPromise = null;
+      throw error;
     });
   return manifestPromise;
 }
 
-async function resolveUrls() {
+async function resolveUrls(names = null) {
   await loadManifest();
   const bundlePromises = new Map();
 
-  await Promise.all([...entries].map(async ([portrait, meta]) => {
+  await Promise.all([...entries].filter(([id]) => !names || names.includes(id)).map(async ([portrait, meta]) => {
     try {
       const preferredFile = preferredMapFile(meta);
       if (preferredFile) {
@@ -94,24 +94,32 @@ async function resolveUrls() {
   }));
 }
 
-export async function preloadEnemyAssets() {
-  if (preloadPromise) return preloadPromise;
-  preloadPromise = (async () => {
-    await resolveUrls();
-    await Promise.all([...urls].map(async ([portrait, url]) => {
+export async function preloadEnemyAssets(names = null, { strict = false } = {}) {
+  await resolveUrls(names);
+  const tasks = [...new Set(names ?? urls.keys())].map(portrait => {
+    if (images.has(portrait)) return images.get(portrait);
+    if (pending.has(portrait)) return pending.get(portrait);
+    const task = (async () => {
+      const url = urls.get(portrait);
+      if (!url) throw new Error(`敌人素材未登记：${portrait}`);
       let image = await loadImage(url);
       const fallbackFile = entries.get(portrait)?.file;
       const fallbackUrl = fallbackFile ? resolvePath(fallbackFile) : null;
-      if (!image && fallbackUrl && fallbackUrl !== url) {
+      // Required first-frame art must retain the accepted high-resolution identity.
+      if (!strict && !image && fallbackUrl && fallbackUrl !== url) {
         image = await loadImage(fallbackUrl);
         if (image) urls.set(portrait, fallbackUrl);
       }
-      if (image) images.set(portrait, image);
-      else console.warn(`敌人素材 ${portrait} 解码失败，将使用旧贴图。`);
-    }));
-    return images;
-  })();
-  return preloadPromise;
+      if (!image) throw new Error(`敌人素材无法解码：${portrait}`);
+      images.set(portrait, image);
+      return image;
+    })().finally(() => pending.delete(portrait));
+    pending.set(portrait, task);
+    return task;
+  });
+  if (strict) await Promise.all(tasks);
+  else await Promise.allSettled(tasks);
+  return images;
 }
 
 export function getEnemyAsset(portrait) {

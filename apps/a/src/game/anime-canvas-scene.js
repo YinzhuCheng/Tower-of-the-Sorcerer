@@ -1,6 +1,6 @@
 import { ENEMIES, FLOORS, GRID_SIZE, ITEMS, TILE_SIZE } from './data.js';
 import { DIRECTIONS, getTile, parseToken, tryMove } from './engine.js';
-import { getAnimeAsset, preloadAnimeAssets } from './anime-assets.js';
+import { getAnimeAsset, loadAnimeAsset, preloadAnimeAssets } from './anime-assets.js';
 import { portraitIndex } from './anime-portraits.js';
 import { getEnemyAsset, getEnemyAssetMeta, preloadEnemyAssets } from './enemy-assets.js';
 import { preloadItemAssets } from './item-assets.js';
@@ -71,37 +71,60 @@ class AnimeCanvasTowerScene {
     this.handlePointer = this.handlePointer.bind(this);
     window.addEventListener('keydown', this.handleKeydown);
     this.canvas.addEventListener('pointerdown', this.handlePointer);
-    this.renderFloor();
+    this.assetsReady = false;
+    this.destroyed = false;
+    this.startPromise = null;
     if (notifyReady) this.bridge.onReady(this);
-    if (autoStart) void this.start();
+    if (autoStart) void this.start().catch(error => this.bridge.onAssetsError?.(error));
   }
 
-  async start() {
-    try {
-      await Promise.allSettled([
-        preloadAnimeAssets(),
-        preloadEnemyAssets(),
-        preloadItemAssets(),
-        preloadMapAssets()
-      ]);
-
-      this.itemSheet = getAnimeAsset('items');
-      this.tileSheet = getAnimeAsset('tiles');
-      this.chibiSheet = getAnimeAsset('chibi');
-      const urls = new Set([this.itemSheet, this.tileSheet, this.chibiSheet]);
-      await Promise.all([...urls].map(async (url) => {
-        const image = await loadImage(url);
-        if (image) this.images.set(url, image);
-      }));
+  start() {
+    if (this.startPromise) return this.startPromise;
+    if (this.destroyed) return Promise.reject(new Error('地图加载已取消'));
+    this.startPromise = (async () => {
+      const required = this.requiredAssets;
+      await Promise.all(required ? [
+        preloadEnemyAssets(required.enemies, { strict: true }),
+        preloadItemAssets(required.items, { strict: true }),
+        preloadMapAssets(required.map, { strict: true }),
+        ...required.legacy.map(async name => {
+          const url = await loadAnimeAsset(name, { strict: true });
+          const image = await loadImage(url);
+          if (!image) throw new Error(`地图图标无法解码：${name}`);
+          this[`${name === 'items' ? 'item' : name === 'tiles' ? 'tile' : name}Sheet`] = url;
+          this.images.set(url, image);
+        })
+      ] : [preloadAnimeAssets(), preloadEnemyAssets(), preloadItemAssets(), preloadMapAssets()]);
+      if (!required) {
+        for (const [field, name] of [['itemSheet','items'],['tileSheet','tiles'],['chibiSheet','chibi']]) {
+          const url = getAnimeAsset(name);
+          const image = await loadImage(url);
+          if (!image) throw new Error(`地图图标无法解码：${name}`);
+          this[field] = url; this.images.set(url, image);
+        }
+      }
+      if (this.destroyed) throw new Error('地图加载已取消');
+      this.assetsReady = true;
       this.renderFloor();
-    } catch (error) {
-      console.warn('Canvas artwork initialization failed; gameplay remains active.', error);
-    } finally {
       this.bridge.onAssetsReady?.(this);
-    }
+      // Cache the remaining shared assets and later-floor enemies in the
+      // background. Their success/failure cannot change startup readiness.
+      void Promise.allSettled([preloadAnimeAssets().then(async () => {
+        for (const [field, name] of [['itemSheet','items'],['tileSheet','tiles'],['chibiSheet','chibi']]) {
+          const url = getAnimeAsset(name);
+          const image = await loadImage(url);
+          if (this.destroyed) return;
+          if (image) { this[field] = url; this.images.set(url, image); }
+        }
+      }), preloadEnemyAssets(), preloadItemAssets(), preloadMapAssets()]);
+      return this;
+    })();
+    return this.startPromise;
   }
 
   destroy() {
+    this.destroyed = true;
+    this.assetsReady = false;
     window.removeEventListener('keydown', this.handleKeydown);
     this.canvas.removeEventListener('pointerdown', this.handlePointer);
     this.canvas.remove();
@@ -127,7 +150,7 @@ class AnimeCanvasTowerScene {
   }
 
   handlePointer(event) {
-    if (!this.bridge.canMove()) return;
+    if (!this.assetsReady || this.destroyed || !this.bridge.canMove()) return;
     const rect = this.canvas.getBoundingClientRect();
     const px = (event.clientX - rect.left) * (this.canvas.width / rect.width);
     const py = (event.clientY - rect.top) * (this.canvas.height / rect.height);
@@ -142,7 +165,7 @@ class AnimeCanvasTowerScene {
   }
 
   move(direction) {
-    if (!this.bridge.canMove()) return;
+    if (!this.assetsReady || this.destroyed || !this.bridge.canMove()) return;
     const vector = DIRECTIONS[direction];
     if (!vector) return;
 
@@ -497,6 +520,7 @@ class AnimeCanvasTowerScene {
   }
 
   renderFloor() {
+    if (!this.assetsReady || this.destroyed) return;
     const state = this.bridge.getState();
     const floor = FLOORS[state.floor];
     if (!floor) return;

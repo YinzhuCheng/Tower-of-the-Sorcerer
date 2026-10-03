@@ -1,4 +1,4 @@
-import { loadImage } from './asset-loading.js';
+import { loadImage, fetchAsset } from './asset-loading.js';
 
 const MANIFEST_URL = '/assets/anime/map/manifest.json';
 const DEFAULT_BASE_PATH = '/assets/anime/map/';
@@ -7,7 +7,7 @@ const entries = new Map();
 const atlases = new Map();
 const images = new Map();
 let manifestPromise = null;
-let preloadPromise = null;
+const pending = new Map();
 let basePath = DEFAULT_BASE_PATH;
 
 function normalizeBasePath(value) {
@@ -21,7 +21,7 @@ function resolvePath(path) {
 }
 
 async function fetchText(url) {
-  const response = await fetch(url, { cache: 'force-cache' });
+  const response = await fetchAsset(url, { cache: 'force-cache' });
   if (!response.ok) throw new Error(`地图素材加载失败：${url} (HTTP ${response.status})`);
   return (await response.text()).trim();
 }
@@ -84,7 +84,7 @@ function cropAtlasCell(image, cols, rows, index) {
 
 async function loadManifest() {
   if (manifestPromise) return manifestPromise;
-  manifestPromise = fetch(MANIFEST_URL, { cache: 'no-cache' })
+  manifestPromise = fetchAsset(MANIFEST_URL, { cache: 'no-cache' })
     .then((response) => {
       if (!response.ok) throw new Error(`地图素材清单加载失败：HTTP ${response.status}`);
       return response.json();
@@ -101,42 +101,47 @@ async function loadManifest() {
       return manifest;
     })
     .catch((error) => {
-      console.warn(error);
-      return { version: 2, atlases: {}, assets: {} };
+      manifestPromise = null;
+      throw error;
     });
   return manifestPromise;
 }
 
-export async function preloadMapAssets() {
-  if (preloadPromise) return preloadPromise;
-  preloadPromise = (async () => {
-    await loadManifest();
-    const loadedAtlases = new Map();
-    await Promise.all([...atlases].map(async ([name, meta]) => {
-      try {
-        const image = await decodeAtlas(meta);
-        if (image) loadedAtlases.set(name, image);
-        else console.warn(`地图图集 ${name} 解码失败，将使用程序化回退。`);
-      } catch (error) {
-        console.warn(`地图图集 ${name} 加载失败，将使用程序化回退。`, error);
-      }
-    }));
-
-    await Promise.all([...entries].map(async ([name, meta]) => {
-      if (meta.file) {
-        const image = await loadImage(resolvePath(meta.file));
-        if (image) images.set(name, image);
-        else console.warn(`地图直连素材 ${name} 解码失败，将使用渲染回退。`);
-        return;
-      }
+const atlasPending = new Map();
+async function loadMapAsset(name) {
+  if (images.has(name)) return images.get(name);
+  if (pending.has(name)) return pending.get(name);
+  const task = (async () => {
+    const meta = entries.get(name);
+    if (!meta) throw new Error(`地图素材未登记：${name}`);
+    let image;
+    if (meta.file) image = await loadImage(resolvePath(meta.file));
+    else {
       const atlasMeta = atlases.get(meta.atlas);
-      const atlasImage = loadedAtlases.get(meta.atlas);
-      if (!atlasMeta || !atlasImage) return;
-      images.set(name, cropAtlasCell(atlasImage, atlasMeta.cols, atlasMeta.rows, meta.index));
-    }));
-    return images;
-  })();
-  return preloadPromise;
+      if (!atlasMeta) throw new Error(`地图图集未登记：${meta.atlas}`);
+      if (!atlasPending.has(meta.atlas)) {
+        const loading = decodeAtlas(atlasMeta).then(value => {
+          if (!value) throw new Error(`地图图集无法解码：${meta.atlas}`);
+          return value;
+        }).catch(error => { atlasPending.delete(meta.atlas); throw error; });
+        atlasPending.set(meta.atlas, loading);
+      }
+      image = cropAtlasCell(await atlasPending.get(meta.atlas), atlasMeta.cols, atlasMeta.rows, meta.index);
+    }
+    if (!image) throw new Error(`地图素材无法解码：${name}`);
+    images.set(name, image);
+    return image;
+  })().finally(() => pending.delete(name));
+  pending.set(name, task);
+  return task;
+}
+
+export async function preloadMapAssets(names = null, { strict = false } = {}) {
+  await loadManifest();
+  const tasks = [...new Set(names ?? entries.keys())].map(loadMapAsset);
+  if (strict) await Promise.all(tasks);
+  else await Promise.allSettled(tasks);
+  return images;
 }
 
 export function getMapAsset(name) {

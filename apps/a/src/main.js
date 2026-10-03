@@ -42,8 +42,10 @@ import { getEndingDebrief } from './game/ending-debrief.js';
 import { combatRuleCopy, HELP_SECTIONS } from './game/player-copy.js';
 import { createMagicTowerScene } from './game/scene.js';
 import { createCanvasTowerScene } from './game/canvas-scene.js';
+import { createTacticalStartup } from './game/tactical-startup.js';
+import { loadImage } from './game/asset-loading.js';
 import { dialoguePresentation, hydratePortraits, portraitUrl } from './game/portraits.js';
-import { applySceneThemeV8, installV8VisualLayer } from './game/visual-theme-v8.js';
+import { applySceneThemeV8, installV8VisualLayer, preloadTacticalVisualAssets } from './game/visual-theme-v8.js';
 import { applyV83RenderFixes, installV83UiFixes } from './game/visual-patch-v83.js';
 
 const difficultySession = getDifficultySession();
@@ -94,6 +96,7 @@ let state = difficultySession?.mode === 'continue'
   ? deserializeState(difficultySession.serialized) : createInitialState();
 export const getCurrentGameState = () => PRESENTATION_ONLY ? null : state;
 let scene = null;
+let tacticalStartup = null;
 let modalClosable = true;
 let importGeneration = 0;
 let toastTimer = null;
@@ -276,7 +279,7 @@ function clearCinematic() {
   elements.galRoot.classList.add('hidden');
   elements.galRoot.classList.remove('gal-ui-hidden');
   document.body.classList.remove('gal-active');
-  $('#app-shell').inert = false;
+  $('#app-shell').inert = Boolean(tacticalStartup?.blocked);
   delete elements.galRoot.dataset.transition;
   elements.galRoot.replaceChildren();
 }
@@ -988,7 +991,7 @@ function updateHud() {
 
 async function autoSave() {
   try {
-    if (PRESENTATION_ONLY) return;
+    if (PRESENTATION_ONLY || tacticalStartup?.blocked) return;
     await persistence.write('auto', state);
   } catch (error) {
     console.warn('Autosave failed:', error);
@@ -999,7 +1002,7 @@ async function autoSave() {
 
 async function saveGame() {
   try {
-    if (PRESENTATION_ONLY) return;
+    if (PRESENTATION_ONLY || tacticalStartup?.blocked) return;
     await persistence.write('manual', state);
     showToast('手动存档已写入浏览器。');
   } catch (error) {
@@ -1009,6 +1012,7 @@ async function saveGame() {
 }
 
 function loadGame() {
+  if (tacticalStartup?.blocked) return;
   importGeneration += 1;
   if (PRESENTATION_ONLY) return;
   let serialized;
@@ -1608,6 +1612,10 @@ function bindControls() {
 
   window.addEventListener('keydown', (event) => {
     const key = event.key.toLowerCase();
+    if (tacticalStartup?.blocked) {
+      if (KEYBOARD_DIRECTIONS[key]) event.preventDefault();
+      return;
+    }
     if (event.key === 'Escape') {
       importGeneration += 1;
       if (elements.modalRoot.dataset.variant === 'import') { event.preventDefault(); closeModal(); return; }
@@ -1685,7 +1693,7 @@ async function boot() {
 
   const bridge = {
     getState: () => state,
-    canMove: () => elements.modalRoot.classList.contains('hidden') && elements.galRoot.classList.contains('hidden') && !state.victory,
+    canMove: () => tacticalStartup?.phase === 'ready' && elements.modalRoot.classList.contains('hidden') && elements.galRoot.classList.contains('hidden') && !state.victory,
     onResult: handleSceneResult,
     onReady: (readyScene) => {
       scene = readyScene;
@@ -1697,7 +1705,7 @@ async function boot() {
     onAssetsReady: (readyScene) => {
       hydratePortraits();
       readyScene?.refresh?.();
-      elements.loading.classList.add('hidden');
+      // The startup owner alone decides when a complete frame may be shown.
     }
   };
 
@@ -1705,43 +1713,32 @@ async function boot() {
   // Hiding an already-running tower is not enough: renderer boot, resize and
   // first-frame work can still leak the tactical layer for a frame. The
   // tactical world now literally does not exist until the story releases it.
-  let tacticalBootPromise = null;
-  const startTacticalScene = () => {
-    if (tacticalBootPromise) return tacticalBootPromise;
-    tacticalBootPromise = (async () => {
-      try {
-        const Phaser = await ensurePhaser();
-        if (Phaser) {
-          const SceneClass = createMagicTowerScene(Phaser, bridge);
-          new Phaser.Game({
-            type: Phaser.AUTO,
-            parent: 'game-container',
-            width: GRID_SIZE * TILE_SIZE,
-            height: GRID_SIZE * TILE_SIZE,
-            backgroundColor: '#090914',
-            render: { antialias: true, pixelArt: false, roundPixels: true },
-            scale: { mode: Phaser.Scale.FIT, autoCenter: Phaser.Scale.CENTER_BOTH },
-            scene: [SceneClass]
-          });
-          return;
-        }
-
-        console.info('Phaser CDN unavailable or Canvas explicitly requested; using the local Canvas renderer.');
-        const canvasScene = createCanvasTowerScene(bridge, undefined, { autoStart: false });
-        await canvasScene.start();
-      } catch (error) {
-        console.error(error);
-        elements.loading.textContent = `启动失败：${error.message}`;
-        elements.loading.classList.remove('hidden');
-      }
-    })();
-    return tacticalBootPromise;
-  };
-
+  tacticalStartup = PRESENTATION_ONLY ? null : createTacticalStartup({
+    createScene: () => createCanvasTowerScene(bridge, undefined, { autoStart: false }),
+    prepareVisuals: async () => {
+      const [, hero] = await Promise.all([preloadTacticalVisualAssets(), loadImage(portraitUrl('hero'))]);
+      if (!hero) throw new Error('角色头像无法解码');
+      hydratePortraits();
+    },
+    prepareFrame: async () => {
+      hydratePortraits();
+      // HUD images are created from the now-decoded card atlas. Include their
+      // derived images so they cannot appear a frame after the finished board.
+      await Promise.all([...document.querySelectorAll('#app-shell img')].map(async image => {
+        if (!await loadImage(image.currentSrc || image.src)) throw new Error('状态栏画面无法解码');
+      }));
+    },
+    onReady: () => { elements.loading.classList.add('hidden'); },
+    onCancel: () => { importGeneration += 1; }
+  });
+  document.querySelector('[data-loading-exit]').addEventListener('click', () => window.location.assign(difficultyEntryUrl(window.location.href)));
+  const startTacticalScene = () => tacticalStartup.start();
   const releaseIntoTower = () => {
-    if (GAL_ONLY_BOOT || PRESENTATION_ONLY) return;
-    releaseStoryBoot();
+    if (GAL_ONLY_BOOT || PRESENTATION_ONLY || tacticalStartup?.phase === 'cancelled') return;
+    // Conceal the tactical layer synchronously before removing the story boot
+    // class. This gate is independent from GAL visibility and seen/queue state.
     void startTacticalScene();
+    releaseStoryBoot();
   };
 
   const previewAfter = galOnlyPreview
