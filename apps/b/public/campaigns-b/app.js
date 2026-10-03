@@ -1,10 +1,11 @@
+import {presentForestGal,clearForestGal} from '../src/rendering/forest-gal-stage.js';
 import {createFineForestSaveExtension} from '../src/rendering/forest-fine-save.js';
 import {createFineForestAppAdapter} from '../src/rendering/forest-fine-app.js';
 import {nativeWorldAvailability} from '../src/rendering/forest-world-native.js';
 import {createHeldMovement,movementKey,editableMovementTarget} from '../src/rendering/hero-input.js';
 import { projectForestWorld, hasForestWorld, forestWorldMoveAction } from '../src/rendering/forest-world.js';
 import { createForestWorldDisplay } from '../src/rendering/forest-world-view.js';
-import { projectForestEntry, projectEntryControl, presentForestEntry, preloadForestEntry, forestEntryAvailability, setStoryEntryBackdrop } from '../src/rendering/forest-entry.js';
+import { projectForestEntry, projectEntryControl, presentForestEntry, preloadForestEntry, forestEntryAvailability } from '../src/rendering/forest-entry.js';
 import { applyForestPortrait } from '../src/rendering/forest-cast-art.js';
 import { projectForestScene } from '../src/rendering/b-adapter.js';
 import { presentContinuousScene, fitCampaignMapViewport } from '../src/rendering/continuous-map.js';
@@ -39,24 +40,26 @@ $('confirm-cancel').onclick=()=>{fine.cancel();session.cancel();$('confirmation'
 $('confirmation').addEventListener('cancel',()=>{fine.cancel();session.cancel();render();});
 // Each confirmation callback is installed with its exact generation-bound token.
 function budgetLines(container){const state=session.state,b=story.budget(state);container.append(el('p',`暖脂剩余 ${b.currentHeat} · 四阀必留 ${b.requiredValveReserve} · 可自由分配 ${b.availableOptionalHeat}；已关 ${b.closedValves}/4 支阀${b.frozen?'，暖点方案已确定':''}`));for(const p of b.points)container.append(el('p',`${p.title}：${p.cost}份 · ${p.invested?'已投入':b.frozen?'普通方案':p.affordable?'尚未投入':'自由余量不足'}${!p.invested&&!b.frozen&&!p.affordable?`（还差 ${Math.max(0,p.cost-b.availableOptionalHeat)} 份）`:''}`));if(b.publicHeat)container.append(el('p',`公共库存保留 ${b.publicHeat} 份，不再用于暖点选择`));}
+const galNodes=()=>({backdrop:$('story-backdrop'),actors:$('story-actors'),portrait:$('story-portrait'),label:$('story-art-label'),stage:$('story-stage')});
 function renderStory(){
  if(worldDisplay.isCoarseMoving())return; // Coarse portal travel finishes visibly; fine partial steps pause behind story.
- if(!session.isStoryOpen()){if($('story').open)$('story').close();return;}
+ if(!session.isStoryOpen()){clearForestGal(galNodes());if($('story').open)$('story').close();return;}
  const scene=session.current(),turn=session.turn();if(!turn)return;
- applyForestPortrait($('story-portrait'),turn);
- const backdrop=setStoryEntryBackdrop($('story-backdrop'),scene,turn,$('story-art-label'));
- $('story-title').textContent=scene.title;$('story-speaker').textContent=turn.speaker||'旁白';$('story-copy').textContent=turn.kind==='choice-prompt'?forestChoicePrompt(scene):turn.text;$('story-progress').textContent=`${session.presentation.turnIndex+1} / ${scene.turns.length}`;$('story-notice').textContent=scene.stateNotice??'';
+ const backdrop=presentForestGal(galNodes(),scene,turn);
+ $('story-title').textContent=scene.title;$('story-speaker').textContent=turn.speaker||'旁白';$('story-copy').textContent=turn.kind==='choice-prompt'?forestChoicePrompt(scene):turn.text;$('story-progress').textContent=`${session.presentation.turnIndex+1} / ${scene.turns.length}`;$('story-notice').textContent=scene.stateNotice??'';$('story-notice').hidden=!scene.stateNotice;
  const stage=turn.stage??{},location=runtime.region(backdrop.regionId)?.title??scene.title;
- $('story-location').textContent=location;$('story-camera').textContent=stage.camera==='exterior-empty-shot'?'初雪空景 · 人物不入画':stage.offscreen?.[turn.voicePortrait]?'声音从画面外传来':'角色头像沿用已验收设定';
+ $('story-location').textContent=location;$('story-camera').textContent=stage.camera==='exterior-empty-shot'?'初雪空景 · 人物不入画':stage.offscreen?.[turn.voicePortrait]?'声音从画面外传来':'';
+ $('story-camera').hidden=!$('story-camera').textContent;
  $('story-stage').dataset.backdropAssetId=backdrop.backdropAssetId??'';$('story-stage').dataset.cgAssetId=stage.cgAssetId??'';$('story-stage').dataset.camera=stage.camera??'scene';$('story-stage').dataset.locationId=backdrop.locationId??'';
  $('story-planning').hidden=!scene.budget&&!scene.routePanel&&!scene.battlePanel&&!scene.shopPanel&&!scene.checklist;
  $('story-forecast').replaceChildren();if(!$('story-planning').hidden){budgetLines($('story-forecast'));if(scene.routePanel){for(const row of forestPublicRows(runtime,story,session.state))$('story-forecast').append(el('p',`${row.title}：${row.description}；原路${row.original}`));}if(scene.battlePanel){const panel=story.actionPanel(session.state,scene.battlePanel.entityId),enemy=runtime.entity(panel.entityId).enemy,b=panel.battle;$('story-forecast').append(el('p',`${panel.title}：生命${enemy.hp} / 攻${enemy.atk} / 防${enemy.def}；${b?`当前构筑预计损失 ${Number.isFinite(b.totalDamage)?b.totalDamage:'无法破防'} 生命`:'已拆除'}`));}if(scene.shopPanel)for(const panel of scene.shopPanel)$('story-forecast').append(el('p',`${forestPlayerCopy(runtime.entity(panel.entityId)).title}`));}
- const choices=turn.choices??[];$('story-next').disabled=Boolean(choices.length&&!turn.choiceResolved);$('story-choices').replaceChildren();
+ const choices=turn.choices??[];$('story').dataset.choices=String(Boolean(choices.length));$('story-next').disabled=Boolean(choices.length&&!turn.choiceResolved);$('story-choices').replaceChildren();
  const regionActions=choices.some(c=>!c.presentationOnly)?forestRegionActions(runtime,story,session.state):[];
  for(const choice of choices){const box=el('div'),button=el('button',choice.label);button.disabled=Boolean(turn.choiceResolved);if(choice.presentationOnly){button.onclick=()=>{if(report(session.respond(choice.id))){session.advance();render();}};}
  else{const action=choice.action??choice.actions?.[0]?.action,entry=regionActions.find(row=>row.action.entityId===action?.entityId);button.disabled=Boolean(turn.choiceResolved)||!entry?.reachable||!entry?.preview.legal;if(entry&&!entry.inReach&&!button.disabled)button.textContent=`${choice.label}（先走到现场）`;button.onclick=()=>request(action,{fromChoice:true});const why=el('p',entry?.details.join('；')??'请返回地图，走到实际操作处','choice-reason');box.append(button,why);$('story-choices').append(box);continue;}box.append(button);$('story-choices').append(box);}
  if(!$('story').open&&!document.querySelector('dialog[open]'))$('story').showModal();
 }
+$('story-close').onclick=()=>{session.pause();render();};
 $('story-next').onclick=()=>{session.advance();render();};$('story-skip').onclick=()=>{session.skip();render();};$('story-pause').onclick=()=>{session.pause();render();};$('story').addEventListener('cancel',event=>{event.preventDefault();session.pause();render();});$('resume-story').onclick=()=>{session.resume();render();};
 const revisits={5:'b05_revisit',7:'b07_revisit',17:'b17_revisit',18:'b18_revisit',19:'b19_revisit'};
 $('revisit').onclick=()=>{report(session.revisit(revisits[Number(session.state.location.regionId.slice(2))]));render();};

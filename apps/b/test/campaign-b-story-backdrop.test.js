@@ -6,10 +6,11 @@ import {readFileSync} from 'node:fs';
 import {createForestCampaign} from '../src/campaigns/b/content.js';
 import {createForestStory,FOREST_STORY_CONTENT} from '../src/campaigns/b/story/index.js';
 import {createSaveRepository} from '../src/core/campaign.js';
-import {B01_ART_ASSETS} from '../src/rendering/forest-entry-contract.js';
+import {FOREST_GAL_BACKDROP,FOREST_GAL_CAST} from '../src/rendering/forest-gal-assets.js';
+import {forestGalActors,forestGalBackdrop} from '../src/rendering/forest-gal-stage.js';
 
 const runtime=createForestCampaign(),html=readFileSync(new URL('../public/campaigns-b/index.html',import.meta.url),'utf8');
-const backdrop=B01_ART_ASSETS.find(a=>a.id==='backdrop');
+const backdrop=FOREST_GAL_BACKDROP;
 let nonce=0;
 class Element {
  constructor(tag='div'){Object.assign(this,{tagName:tag.toUpperCase(),children:[],dataset:{},events:{},style:{},open:false,hidden:false,disabled:false,srcWrites:0,complete:false,naturalWidth:0,naturalHeight:0});this.classList={add(){},remove(){},toggle(){}};}
@@ -24,7 +25,7 @@ class Element {
 function memory(){const entries=new Map();return {entries,getItem:k=>entries.get(k)??null,setItem:(k,v)=>entries.set(k,v),removeItem:k=>entries.delete(k)};}
 function scene(id='b01_enter',state=runtime.initialState(),openingRevision='opening-r1'){return createForestStory(runtime,{openingRevision}).resolve(id,state,{reviewMode:true});}
 function saveQueue(storage,state,queue,{turnIndex=0,openingRevision='opening-r1'}={}){const seenIds=queue.flatMap(s=>s.turns.map(t=>t.id));createSaveRepository(storage,runtime).save('auto',state,{storyVersion:FOREST_STORY_CONTENT.id,openingRevision,seenIds,queue,turnIndex,paused:false});}
-function b02State(){let state=runtime.initialState();for(const {action} of JSON.parse(readFileSync(new URL('../artifacts/campaigns/b-normal-partial-none.certificate.json',import.meta.url))).steps){const result=runtime.dispatch(state,action);assert.ok(result.ok);state=result.state;if(state.location.regionId==='B-02')return state;}throw Error('B02 witness absent');}
+function b02State({winterPlan=false}={}){let state=runtime.initialState();for(const {action} of JSON.parse(readFileSync(new URL('../artifacts/campaigns/b-normal-partial-none.certificate.json',import.meta.url))).steps){const result=runtime.dispatch(state,action);assert.ok(result.ok);state=result.state;if(winterPlan?state.flags['b02.winterPlanKnown']:state.location.regionId==='B-02')return state;}throw Error('B02 witness absent');}
 async function app(storage=memory()) {
  const nodes=new Map([...html.matchAll(/<([a-z-]+)[^>]*\bid="([^"]+)"[^>]*>/g)].map(([,tag,id])=>[id,new Element(tag)]));
  const dirs=['up','down','left','right'].map(dir=>{const e=new Element('button');e.dataset.dir=dir;return e;}),events={};
@@ -36,7 +37,7 @@ async function app(storage=memory()) {
  catch(error){Object.assign(globalThis,original);throw error;}
 }
 const withApp=async(storage,fn)=>{const e=await app(storage);try{await fn(e);}finally{e.cleanup();}};
-function assertBound(e){const image=e.get('story-backdrop');assert.match(image.src,new RegExp(backdrop.file.replaceAll('.','\\.')+'$'));assert.equal(image.hidden,true,'pending image stays hidden');assert.match(e.get('story-art-label').textContent,/载入中/);image.loaded();assert.equal(image.hidden,false);assert.equal(e.get('story-art-label').textContent,'南坡村口 · 原生场景候选');assert.equal(e.get('story-location').textContent,'南坡村口');}
+function assertBound(e){const image=e.get('story-backdrop');assert.match(image.src,new RegExp(backdrop.file.replaceAll('.','\\.')+'$'));assert.equal(image.hidden,true,'pending image stays hidden');assert.match(e.get('story-art-label').textContent,/载入中/);image.loaded();assert.equal(image.hidden,false);assert.equal(e.get('story-art-label').textContent,'南坡村口 · 雨后暖林');assert.equal(e.get('story-location').textContent,'南坡村口');}
 
 test('fresh app binds the real canonical descriptor without inventing scene.regionId',()=>withApp(memory(),e=>{
  const current=e.qa.getPresentation().queue[0];assert.equal(current.sceneId,'b01_enter');assert.equal(current.regionId,undefined);assert.equal(current.turns.length,22);assert.equal(current.turns[0].stage.locationId,'B-01');assertBound(e);
@@ -44,7 +45,7 @@ test('fresh app binds the real canonical descriptor without inventing scene.regi
  const state=e.qa.getState();e.key('ArrowRight');assert.deepEqual(e.qa.getState(),state,'story blocks movement');
  e.get('story-next').onclick();assert.equal(e.get('story-progress').textContent,'2 / 22');assert.equal(e.get('story-copy').textContent,current.turns[1].text);assert.equal(e.get('story-backdrop').srcWrites,1,'turn advance must not reload');
  let cancelled=false;e.get('story').dispatch('cancel',{preventDefault(){cancelled=true;}});assert.ok(cancelled);assert.equal(e.get('story').open,false);assert.equal(e.qa.getPresentation().paused,true);
- e.get('resume-story').onclick();assert.equal(e.get('story').open,true);assert.equal(e.get('story-progress').textContent,'2 / 22');assert.equal(e.get('story-backdrop').hidden,false);assert.deepEqual(e.qa.getState(),state);
+ e.get('resume-story').onclick();assert.equal(e.get('story').open,true);assert.equal(e.get('story-progress').textContent,'2 / 22');assert.equal(e.get('story-backdrop').hidden,true);e.get('story-backdrop').loaded();assert.equal(e.get('story-backdrop').hidden,false);assert.deepEqual(e.qa.getState(),state);
  e.get('story-pause').onclick();e.key('ArrowRight');e.key('ArrowRight','keyup');assert.equal(e.qa.getState().revision,state.revision+1,'map input still works after pause');
 }));
 
@@ -69,8 +70,8 @@ test('B02 review while player is in B01 never borrows the entry image',async()=>
 });
 
 test('asynchronous failure stays honest across next/pause/resume and preserves play',()=>withApp(memory(),e=>{
- const image=e.get('story-backdrop'),before=e.qa.getState();assert.match(image.src,/forest-entry\/static-backdrop\.png$/);image.failed();assert.equal(image.hidden,true);assert.match(e.get('story-art-label').textContent,/背景加载失败/);
- e.get('story-next').onclick();e.get('story-pause').onclick();e.get('resume-story').onclick();assert.equal(image.hidden,true);assert.equal(image.srcWrites,1);assert.match(e.get('story-art-label').textContent,/背景加载失败/);assert.equal(e.get('story-progress').textContent,'2 / 22');assert.deepEqual(e.qa.getState(),before);
+ const image=e.get('story-backdrop'),before=e.qa.getState();assert.match(image.src,/forest-gal\/b01-village-entrance\.png$/);image.failed();assert.equal(image.hidden,true);assert.match(e.get('story-art-label').textContent,/背景加载失败/);
+ e.get('story-next').onclick();e.get('story-pause').onclick();e.get('resume-story').onclick();assert.equal(image.hidden,true);assert.equal(image.srcWrites,2);assert.match(e.get('story-art-label').textContent,/载入中/);image.failed();assert.match(e.get('story-art-label').textContent,/背景加载失败/);assert.equal(e.get('story-progress').textContent,'2 / 22');assert.deepEqual(e.qa.getState(),before);
 }));
 
 test('stale asynchronous image callbacks cannot resurrect B01 during B02 review',async()=>{
@@ -79,3 +80,67 @@ test('stale asynchronous image callbacks cannot resurrect B01 during B02 review'
 });
 
 test('unexpected dimensions fail closed rather than marking the backdrop ready',()=>withApp(memory(),e=>{e.get('story-backdrop').loaded(1,1);assert.equal(e.get('story-backdrop').hidden,true);assert.match(e.get('story-art-label').textContent,/背景加载失败/);}));
+
+
+test('actual entry renders only explicit cast with stable nodes and speaking emphasis',()=>withApp(memory(),e=>{
+ const stage=e.get('story-actors'),first=[...stage.children];assert.deepEqual(first.map(i=>i.dataset.characterId),['merchant','hero','guide']);
+ for(const image of first){assert.equal(image.hidden,true);image.loaded(1024,1536);assert.equal(image.hidden,false);assert.match(image.src,/assets\/forest-(gal|canonical)\//);}
+ assert.equal(e.get('story-portrait').hidden,true,'narration has no face');
+ e.get('story-next').onclick();assert.deepEqual(stage.children,first);assert.equal(stage.children[0].dataset.speaking,'true');assert.equal(stage.children[1].dataset.speaking,'false');assert.equal(stage.children[0].srcWrites,1);e.get('story-portrait').loaded(512,512);assert.equal(e.get('story-portrait').hidden,false);
+ assert.equal(e.get('story-copy').textContent,'再帮我扶一下。别扶灯，扶背包下边。');
+ const p=e.qa.getPresentation(),s=e.qa.getState();e.get('story-close').onclick();assert.equal(e.get('story').open,false);assert.equal(stage.children.length,0);assert.equal(e.qa.getPresentation().turnIndex,p.turnIndex);assert.deepEqual(e.qa.getState(),s);
+ e.get('resume-story').onclick();assert.equal(stage.children.length,3);assert.equal(e.qa.getPresentation().turnIndex,p.turnIndex);assert.deepEqual(e.qa.getState(),s);
+}));
+
+test('late backdrop, actor and portrait callbacks cannot revive dismissed art',()=>withApp(memory(),e=>{
+ e.get('story-next').onclick();const actor=e.get('story-actors').children[0],face=e.get('story-portrait'),back=e.get('story-backdrop');const callbacks=[actor.onload,face.onload,back.onload];
+ e.get('story-close').onclick();actor.naturalWidth=face.naturalWidth=back.naturalWidth=1024;actor.naturalHeight=face.naturalHeight=back.naturalHeight=1536;callbacks.forEach(fn=>fn());
+ assert.equal(actor.hidden,true);assert.equal(face.hidden,true);assert.equal(back.hidden,true);assert.equal(e.get('story-actors').children.length,0);assert.equal(e.get('story-stage').dataset.artStatus,'inactive');
+}));
+
+test('empty and offscreen shots clear previous actors and prohibit implicit heroine',async()=>{
+ assert.deepEqual(forestGalActors({portrait:'hero'}),[]);
+ assert.deepEqual(forestGalActors({portrait:'hero',stage:{actors:{},clearActors:true,allowImplicitHero:false}}),[]);
+ assert.deepEqual(forestGalActors({portrait:'hero',stage:{actors:{hero:{},guide:{}},offscreen:{hero:'outside'}}}).map(a=>a.id),['guide']);
+ assert.deepEqual(forestGalActors({stage:{actors:{hero:{}},camera:'exterior-empty-shot'}}),[]);
+ assert.deepEqual(forestGalActors({stage:{actors:{hero:{}},camera:'winter-interior-closeup',winterClothing:'worn-outside-not-rendered-in-unapproved-art'}}),[]);
+ const storage=memory(),state=runtime.initialState(),empty=scene('b30_enter',state);assert.equal(empty.turns[0].stage.camera,'exterior-empty-shot');saveQueue(storage,state,[scene(),empty]);
+ await withApp(storage,e=>{const image=e.get('story-actors').children[0],late=image.onload;e.get('story-skip').onclick();assert.equal(e.get('story-actors').children.length,0);assert.equal(e.get('story-portrait').hidden,true);image.naturalWidth=1024;image.naturalHeight=1536;late();assert.equal(image.hidden,true);assert.equal(e.get('story-backdrop').src,'');});
+});
+
+test('only explicitly authored B01 scene/location/variant triplets bind village pixels',()=>{
+ for(const id of ['b01_enter','b01_pre','b01_post']){const s=scene(id);assert.equal(forestGalBackdrop(s,s.turns[0]).asset,backdrop);}
+ const s=scene();for(const stage of [{locationId:'B-02'},{locationId:'B-01.inner-room'},{backdropAssetId:'B_ENV_01:winter'}])assert.equal(forestGalBackdrop(s,{...s.turns[0],stage:{...s.turns[0].stage,...stage}}).asset,null);
+ assert.equal(forestGalBackdrop({sceneId:'b02_enter',backdropAssetId:'B_ENV_01:enter'},{stage:{locationId:'B-01',backdropAssetId:'B_ENV_01:enter'}}).asset,null);
+});
+
+test('conditional choice keeps the exact session handlers and gameplay state',async()=>{
+ const storage=memory(),state=b02State({winterPlan:true}),s=createForestStory(runtime).resolve('b02_choice',state);s.turns=[{id:'ui:choice:b02_choice',kind:'choice-prompt',speaker:'你的选择',text:'',choices:structuredClone(s.choices),presentationOnly:true}];saveQueue(storage,state,[s],{turnIndex:s.turns.length-1});
+ await withApp(storage,e=>{const before=e.qa.getState(),p=e.qa.getPresentation(),turn=p.queue[0].turns[p.turnIndex];assert.ok(turn.choices.length);assert.equal(e.get('story').dataset.choices,'true');assert.equal(e.get('story-next').disabled,true);assert.equal(e.get('story-choices').children.length,turn.choices.length);assert.deepEqual(e.qa.getState(),before);e.get('story-pause').onclick();e.get('resume-story').onclick();assert.equal(e.qa.getPresentation().turnIndex,p.turnIndex);assert.deepEqual(e.qa.getState(),before);e.get('story-choices').children[0].children[0].onclick();assert.deepEqual(e.qa.getState(),before,'a pure story response never changes gameplay');assert.equal(e.get('story').dataset.choices,'false');});
+});
+
+
+test('compact landscape scene metadata uses the footer below dialogue, outside actor faces',()=>{
+ const css=readFileSync(new URL('../public/campaigns-b/styles.css',import.meta.url),'utf8'),compact=css.slice(css.indexOf('/* Compact landscape metadata'));
+ assert.match(compact,/@media\(max-height:520px\) and \(orientation:landscape\)/);
+ assert.match(compact,/story-scene-heading\{top:auto;bottom:0;left:2\.5%;right:2\.5%;height:3%/);
+ assert.match(compact,/story-scene-heading \.eyebrow\{display:none/);
+ assert.match(compact,/story-scene-heading \.story-art-label\{align-self:auto;font-size:inherit;line-height:1/);
+ for(const [width,height]of [[844,390],[667,375],[568,320],[960,480]]){
+  const footer={x:.025*width,y:.97*height,width:.95*width,height:.03*height};
+  const dialogueBottom=.97*height;
+  // Reviewed merchant face source box; final 94%-height contain geometry.
+  const scale=Math.min(.43*width/1024,.94*height/1536),top=.96*height-1536*scale;
+  const face={y:top+70*scale,bottom:top+254*scale};
+  assert.ok(footer.y>=dialogueBottom,'metadata starts below the dialogue frame');
+  assert.ok(face.bottom<footer.y,`${width}x${height}: face stays above metadata`);
+ }
+});
+
+
+test('two-person portrait scenes explicitly override the narrower desktop actor width',()=>{
+ const css=readFileSync(new URL('../public/campaigns-b/styles.css',import.meta.url),'utf8'),mobile=css.slice(css.indexOf('/* Explicit two-person mobile specificity'));
+ assert.match(mobile,/@media\(max-width:680px\) and \(orientation:portrait\)\{\.story-dialog \.story-actors\[data-count="2"\] \.story-actor\{width:74%\}/);
+ const post=scene('b01_post'),spoken=post.turns.find(t=>t.portrait==='guide');assert.ok(spoken);assert.deepEqual(forestGalActors(spoken).map(a=>a.id),['hero','guide']);
+ const imageWidth=.74*390,imageHeight=Math.min(.67*844,imageWidth*1.5);assert.ok(imageHeight>400);assert.ok(imageHeight<=.67*844);
+});
