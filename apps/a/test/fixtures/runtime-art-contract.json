@@ -1582,9 +1582,29 @@
       "bytes": 63730
     },
     {
+      "path": "public/assets/anime/themes/theme-floor02-fox-leaf-registry-sidehall-v1.webp",
+      "sha256": "05e356727fd308cb3a718c2fd2f02a8e46c1b2240a0d68521d9a38f48841c8ec",
+      "bytes": 343514
+    },
+    {
+      "path": "public/assets/anime/themes/theme-floor02-senra-two-wing-corridor-v1.webp",
+      "sha256": "78398b6dd21155145a0123c4eae63cfdbce3d4629bb079213f19b9a17260e3bd",
+      "bytes": 337424
+    },
+    {
       "path": "public/assets/anime/themes/theme-floor03-tide-navigation.webp",
       "sha256": "7404018a855f2cc97d7b4d0252d722eda5c43970330357424b560092cb8d300b",
       "bytes": 275824
+    },
+    {
+      "path": "public/assets/anime/themes/theme-floor04-empty-blade-training-court-v2.webp",
+      "sha256": "edd63c3742317279f9b5b3270e258e693ccfed46e30c5deeaf969be2bcb5eb2c",
+      "bytes": 269268
+    },
+    {
+      "path": "public/assets/anime/themes/theme-floor05-blade-guard-branch-v1.webp",
+      "sha256": "7b7714200fe729eb18309529f2fe60e5396c9c2c563e7c7e009b17b23b7b2bbb",
+      "bytes": 256522
     },
     {
       "path": "public/assets/anime/themes/theme-floor05-red-vein-shelter.webp",
