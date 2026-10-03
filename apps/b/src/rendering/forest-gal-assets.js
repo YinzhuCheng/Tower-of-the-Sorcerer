@@ -1,6 +1,6 @@
 // Exact reviewed character bytes copied into B's own portable asset namespace.
-// B01 background pixels reviewed as the rain-wet, empty village environment.
-export const FOREST_GAL_BACKDROP=Object.freeze({id:'b01-village-entrance',file:'assets/forest-gal/b01-village-entrance.png',width:1672,height:941,sha256:'035cd5ab3ba60fa3eecb125580f27e644730c1f1bf15a5ee508550519c00e092'});
+// Four 1672×941 cel replacements retain the approved scene composition and bindings.
+export const FOREST_GAL_BACKDROP=Object.freeze({id:'b01-village-entrance',file:'assets/forest-gal/b01-village-entrance.png',width:1672,height:941,sha256:'d46b264566c4cb44ce0221a95bb73d38befebfa32da0bf2c81829e4e5f57ce5c',"bytes":3021163,"mime":"image/png","sourceSha256":"d46b264566c4cb44ce0221a95bb73d38befebfa32da0bf2c81829e4e5f57ce5c","styleLineage":"User 2026-10-03 anime cel correction; root-pixel-approved B01 cel-r1; existing daily character ink/cel style"});
 export const FOREST_GAL_CAST=Object.freeze({
  hero:{name:'璃',file:'assets/forest-canonical/hero-neutral.png',width:1024,height:1536,sha256:'bc7e81506ad41225bfe5ef548889d66e67d4c8db963c64650ebb601737d49b76'},
  guide:{name:'纱雾',file:'assets/forest-gal/guide-gentle.webp',width:1024,height:1536,sha256:'a52d900ac91755263fcccf29ba05ccc0fc3c23cd05e6e8712b1935bc369ed15b'},
@@ -11,7 +11,11 @@ export const FOREST_GAL_ENVIRONMENTS=Object.freeze({
   "B_ENV_02": {
     "width": 1672,
     "height": 941,
-    "sha256": "7ab553c0a6f16871528902d139fcf076fd5137505487c5aedf0c93e27dfbdf61",
+    "sha256": "d5e43e36bcefce78bedbad2841f08ab338321b01f86941176a3c45d0d41d55be",
+    "bytes": 601664,
+    "mime": "image/webp",
+    "sourceSha256": "924ef37638f8fbaeb24b755a3a2c7d0fa9dbf98cc1264d801952918cacf24b8f",
+    "styleLineage": "User 2026-10-03 anime cel correction; root-pixel-approved B01 cel-r1; existing daily character ink/cel style",
     "id": "B_ENV_02",
     "file": "assets/forest-gal/b02-return-branch-square.webp",
     "label": "回枝广场 · 冬料与旧窗框",
@@ -20,7 +24,11 @@ export const FOREST_GAL_ENVIRONMENTS=Object.freeze({
   "B_ENV_03": {
     "width": 1672,
     "height": 941,
-    "sha256": "2d91618621404c82480876d168f12b5de1ef631ab3e20163b054b054ea160169",
+    "sha256": "a7e1e754d486a311da0b41c20bcbf0f2c17cf51d8a229293ca467f7a9e54664e",
+    "bytes": 471104,
+    "mime": "image/webp",
+    "sourceSha256": "7f978a31d0c7aa024fa3fc8c54dd50103c50f627196b5e6dc2233d9bf57d3f18",
+    "styleLineage": "User 2026-10-03 anime cel correction; root-pixel-approved B01 cel-r1; existing daily character ink/cel style",
     "id": "B_ENV_03",
     "file": "assets/forest-gal/b03-tree-heart-veranda.webp",
     "label": "树心外廊 · 温标与根流",
@@ -29,7 +37,11 @@ export const FOREST_GAL_ENVIRONMENTS=Object.freeze({
   "B_PROP_03": {
     "width": 1672,
     "height": 941,
-    "sha256": "fd2cc5d21e52085273ccc02dc8ebf3560d6278d4e137438b6e478445e87328b4",
+    "sha256": "cc0843deabd31fd90548ab8b91994b40f8a363caae19ba926dcfabfc0989a28a",
+    "bytes": 314080,
+    "mime": "image/webp",
+    "sourceSha256": "7129a2da2ccaa31fc6671e47dcc472c79074f03b28261639a6d8a35bdb157f00",
+    "styleLineage": "User 2026-10-03 anime cel correction; root-pixel-approved B01 cel-r1; existing daily character ink/cel style",
     "id": "B_PROP_03",
     "file": "assets/forest-gal/b03-eight-heat-pouches-open.webp",
     "label": "节火匣 · 八份暖脂",

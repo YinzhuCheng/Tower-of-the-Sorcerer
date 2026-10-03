@@ -178,3 +178,34 @@
  .story-dialog[data-art-presentation="object-insert"][data-reader-mode="art"] .story-visual{height:100%}
  .story-dialog[data-art-presentation="object-insert"][data-reader-mode="art"] #story-backdrop{top:max(12px,env(safe-area-inset-top));height:calc(100% - max(12px,env(safe-area-inset-top)) - 72px)}
 }
+
+/* Compact GAL controls: small marks, full reading lines, never a tooltip over prose. */
+.story-dialog .story-reading-tools{display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:10px;row-gap:4px;margin-top:4px;align-items:center}
+.story-dialog .story-reading-tools .story-quiet-tools{display:flex;gap:5px;flex-wrap:nowrap;margin:0;min-width:0}
+.story-dialog .story-reading-tools button.story-icon-tool{display:inline-flex;align-items:center;justify-content:center;flex:none;width:28px;min-width:28px;height:28px;min-height:28px;padding:4px;border-radius:5px;touch-action:manipulation;-webkit-touch-callout:none}
+.story-dialog .story-reading-tools button.story-icon-tool svg{display:block;width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;pointer-events:none}
+.story-dialog .story-reading-tools button.primary{width:40px;min-width:40px;border-radius:4px 10px 4px 10px}
+.story-dialog .story-reading-tools button.primary svg{width:22px;height:22px;stroke-width:2}
+.story-dialog .story-reading-tools #story-pause{display:inline-flex}
+.story-dialog .story-touch-hint{display:none;grid-column:1/-1;color:#59664d;font:400 11px/1.4 system-ui,sans-serif}
+.story-dialog .story-tool-help:not([hidden])~.story-touch-hint{display:none}
+.story-dialog .story-tool-help{grid-column:1/-1;min-width:0;max-width:100%;margin:0;padding:4px 7px;font:400 11px/1.5 system-ui,sans-serif;color:#42563d;background:#e2e7d4;border-left:2px solid #8f9d72;border-radius:3px;white-space:normal;overflow-wrap:anywhere;pointer-events:none}
+.story-dialog #story-copy{min-height:3.7em}
+@media(max-width:960px) and (orientation:portrait){
+ .story-dialog #story-copy{min-height:5.7em;margin:10px 0 8px}
+ .story-dialog .story-reading-tools{margin-top:4px}
+ .story-dialog .story-reading-tools .story-quiet-tools{gap:3px}
+ .story-dialog .story-reading-tools button.story-icon-tool{width:44px;min-width:44px;height:44px;min-height:44px;padding:12px}
+ .story-dialog .story-tool-help{font-size:12px}
+}
+@media(max-height:520px) and (orientation:landscape){
+ .story-dialog #story-copy{min-height:3.4em}
+ .story-dialog .story-reading-tools{margin-top:2px}
+}
+@media(any-pointer:coarse){
+ .story-dialog .story-reading-tools button.story-icon-tool{width:44px;min-width:44px;height:44px;min-height:44px;padding:12px}
+}
+
+@media(any-pointer:coarse),(hover:none){
+ .story-dialog .story-touch-hint{display:block}
+}
