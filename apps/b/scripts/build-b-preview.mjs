@@ -9,7 +9,7 @@ import { dirname,join } from 'node:path';
 const root=join(dirname(fileURLToPath(import.meta.url)),'..'),out=join(root,'dist-b-preview');
 // Independent module + accepted-material allowlist. Never copy A/C entry points or unrelated art.
 export const B_PREVIEW_FILES=[
- 'src/rendering/hero-locomotion.js','src/rendering/hero-input.js','src/rendering/hero-neutral.js','src/rendering/forest-hero-depth.js',
+ 'src/rendering/forest-fine-navigation.js','src/rendering/forest-fine-collision.js','src/rendering/forest-fine-save.js','src/rendering/forest-fine-app.js','src/rendering/forest-fine-controls.js','src/rendering/hero-locomotion.js','src/rendering/hero-input.js','src/rendering/hero-neutral.js','src/rendering/forest-hero-depth.js',
  'src/rendering/forest-scene-props.js','src/rendering/forest-ground-support.js','src/rendering/forest-ground-mesh.js','src/rendering/forest-world-runtime-assets.js','src/rendering/forest-world-contract.js','src/rendering/forest-world-native.js','src/rendering/forest-world.js','src/rendering/forest-world-view.js','src/rendering/forest-entry.js','src/rendering/forest-entry-contract.js','src/rendering/forest-cast-art.js','src/rendering/continuous-map.js','src/rendering/material-assets.js','src/rendering/b-adapter.js',
  'src/core/battle.js','src/core/campaign.js','src/game/magic-blade.js','src/solver/state.js','src/solver/campaign-adapter.js',
  'src/campaigns/b/content.js','src/campaigns/b/geography.js','src/campaigns/b/view.js','src/campaigns/b/player-copy.js','src/campaigns/b/preview-session.js',

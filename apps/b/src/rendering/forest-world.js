@@ -86,5 +86,5 @@ export function createWorldMotion(runtime,{speedMps=HERO_LOCOMOTION.speedMps}={}
   crossing=queue.some(q=>q.crossing);gaitWeight+=((wasMoving?1:0)-gaitWeight)*(1-Math.exp(-dt*18));if(gaitWeight<.001)gaitWeight=0;if(hero)camera=followCamera(camera,hero,Math.min(.1,Math.max(0,seconds)));return snapshot();
  }
  function snapshot(){return {facing,distanceM,gaitWeight,speedMps,hero:hero&&{...hero},camera:camera&&{...camera},crossing,moving:queue.length>0,queuedSegments:queue.length,location:location&&{...location}};}
- return {reset,sync,tick,snapshot};
+ return {reset,sync,tick,snapshot,adoptFine(next,pose){location={...next};hero={x:pose.fine.x,y:pose.fine.y};camera??={...hero};queue=[];crossing=false;distanceM=pose.distanceM;facing=pose.facing;gaitWeight=pose.moving?1:0;}};
 }

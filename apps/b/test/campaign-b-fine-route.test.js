@@ -1,0 +1,14 @@
+import test from 'node:test';import assert from 'node:assert/strict';import{readFileSync}from'node:fs';
+import{createForestCampaign}from'../src/campaigns/b/content.js';import{createForestPreviewSession}from'../src/campaigns/b/preview-session.js';import{createFineForestSaveExtension}from'../src/rendering/forest-fine-save.js';import{createFineForestAppAdapter}from'../src/rendering/forest-fine-app.js';
+const memory=()=>{const data=new Map();return{getItem:k=>data.get(k)??null,setItem:(k,v)=>data.set(k,v)};};
+const stripped=p=>{const q=structuredClone(p);delete q.finePose;return q;};
+test('A03/A08 full 692-action reference route after actual fine B01 uses one writer and identical story on mid-route loads',()=>{
+ const runtime=createForestCampaign(),storage=memory(),extension=createFineForestSaveExtension(runtime),session=createForestPreviewSession(runtime,storage,{extension}),reference=createForestPreviewSession(runtime,memory());session.pause();reference.pause();
+ const apply=(s,a)=>{let r=a.type==='move'?s.move(a):s.request(a);if(r.confirmation)r=s.confirm(r.confirmationToken);assert.equal(r.ok,true,r.reason);return r;};
+ const fine=createFineForestAppAdapter(runtime,session,extension,{onResult:r=>{if(r.receipt){apply(reference,r.receipt.action);assert.deepEqual(r.state,reference.state);}}});fine.sync(true);
+ const settle=()=>{for(let i=0;i<5000;i++){const s=fine.snapshot();if(!s.moving&&!s.held&&!s.queuedMicrosteps)return;fine.tick(.1);}throw Error('fine route timeout');};
+ fine.entity('b01.timberPuppet');settle();fine.confirm(fine.snapshot().pending.token);session.pause();reference.pause();fine.entity('b01.guardPlate');settle();fine.click('38,22');settle();fine.step('right');settle();fine.sync(false);assert.equal(session.state.location.regionId,'B-02');
+ const certificate=JSON.parse(readFileSync(new URL('../artifacts/campaigns/b-normal-partial-none.certificate.json',import.meta.url)));const exit=certificate.steps.findIndex(s=>s.action.edgeId==='b.edge.01-02');
+ for(let i=exit+1;i<certificate.steps.length;i++){const a=certificate.steps[i].action;apply(session,a);apply(reference,a);if(i%31===0){assert.equal(session.save(),true);reference.save();assert.equal(session.load('manual').ok,true);assert.equal(reference.load('manual').ok,true);assert.deepEqual(session.state,reference.state);assert.deepEqual(stripped(session.presentation),reference.presentation);}}
+ assert.equal(session.state.victory,true);let golden=runtime.initialState();for(const step of certificate.steps)golden=runtime.dispatch(golden,step.action).state;for(const field of['stats','resources','flags','cleared','visited','victory'])assert.deepEqual(session.state[field],golden[field],field);assert.deepEqual(stripped(session.presentation),reference.presentation);
+});
