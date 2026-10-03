@@ -228,8 +228,8 @@
     },
     {
       "path": "public/assets/anime/cg/liyue-lighthouse-archive-cg.webp",
-      "sha256": "7b0892f38699119b7ca2386b8984439e5130f203b58fe97e4b0a9b2ee9a1d560",
-      "bytes": 416100
+      "sha256": "3fff9f448e6a983517fd7e774f36ed0eadf46cd1fee9c3f394b58bc3cb40ad94",
+      "bytes": 438802
     },
     {
       "path": "public/assets/anime/cg/liyue-lumi-seventeen-minute-splice-cg-v8.webp",
@@ -238,8 +238,8 @@
     },
     {
       "path": "public/assets/anime/cg/liyue-noctia-afterlight-cg.webp",
-      "sha256": "6425fdf569a753a7ebb5329c7eeb083cc7d627d8822df54719bee176b25a3a63",
-      "bytes": 292424
+      "sha256": "1ce4909d7cb88b83886a948f789ebdbd48f03ad3eff2ad5244d63b210aef1670",
+      "bytes": 335248
     },
     {
       "path": "public/assets/anime/cg/liyue-noctia-archive-storm-cg-audit-v3.webp",
@@ -293,8 +293,8 @@
     },
     {
       "path": "public/assets/anime/cg/liyue-yayu-seven-core-network-cg-audit-v3.webp",
-      "sha256": "09a574f20747dd3508020c7eec34451c635a7360ba664da80eda3147aa6e04f1",
-      "bytes": 411488
+      "sha256": "407d64dbb35809c4ad0eac397c5c1820a773a2f54aa5c18d929e5d70a7bfb43c",
+      "bytes": 424266
     },
     {
       "path": "public/assets/anime/characters/b2-20260921/arcane-sovereign-acceptance-b2.webp",

@@ -196,6 +196,9 @@ export function resolveStoryDialogue(id, source, state, { floors = [] } = {}) {
     case 'queenPhaseDemo':
       put(3, '璃，船长的回话和我们带来的记录都还在，眼前这些燃烧的名字只是幻象。我会扯开锁链，你看准核心。');
       put(4, `诺克缇娅反手扯断束缚自己的黑纹，为璃撕开一道狭窄缺口。${cores}沿缺口照亮黯星的裂缝。`);
+      // This accepted CG visibly contains all seven recovered crystals. Keep
+      // partial-core routes truthful without altering their game-state facts.
+      if (!f.allCores) { delete turns[4].cg; delete turns[4].cgHold; }
       break;
     case 'bossQueenPostDemo':
       put(1, `诺克缇娅逐个触碰那些名字。${cores}的光照进卷册，四十七块姓名牌渐渐稳住。她又看了一遍船长的抵达时刻，没有移开手。`);
@@ -329,6 +332,9 @@ export function resolveStoryDialogue(id, source, state, { floors = [] } = {}) {
       put(11, '修好的护送印挂入口，完成的校验簿留桌上；若修好的是接力电容，就拆成小灯，交给值夜人和信使。哪一样还没做完，先把位置空着。');
       put(12, '契约和会战的记录夹在前面了。能完成见证的人，纸笔留给她；其他空页先收好，等她自己想说的话。');
       put(15, f.allCores ? '璃抱起最上面一只信匣，试着哼出重新完整的七段咏唱。最后一音落稳时，她把信匣往怀里又收了收，走向门外的邮车。' : `璃抱起最上面一只信匣，哼了两声。已经取回的${f.coreCount}段咏唱轻轻回应，缺下的音节她没有勉强接上。等信送到，她还要回侧厅，把遗落的核心带回来。`);
+      // Dispatch remains outside after its three-turn CG ends. Explicit
+      // turn bindings also keep later crops or suppressed CGs at the gate.
+      for (let index = 14; index <= 17; index += 1) turns[index] = { ...turns[index], backdrop: 'emberLighthouse' };
       break;
     default: break;
   }
