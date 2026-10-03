@@ -1,3 +1,8 @@
+import {buildHeroNeutralFrame,drawHeroNeutral} from './hero-neutral.js';
+import {projectNativeWorldPoint,occludeNativeHeroNode} from './forest-hero-depth.js';
+import {drawForestProp,forestPropBounds,forestPropContacts,drawForestContact} from './forest-scene-props.js';
+import {nativeGroundSupportAt} from './forest-ground-support.js';
+export {nativeGroundSupportAt};
 import { FOREST_WORLD_RUNTIME_ASSETS } from './forest-world-runtime-assets.js';
 import { NATIVE_FOREST_WORLD as contract } from './forest-world-contract.js';
 import { FOREST_WORLD_REGISTRATION, worldPoint } from './forest-world.js';
@@ -9,6 +14,7 @@ function interpolate(samples,t){const value=Math.max(0,Math.min(1,t))*(samples.l
 // Exact native floor/edge/join samples are the presentation authority. Camera
 // translation never guesses support from a screenshot or a flat grid plane.
 export function nativeWorldSample(point){
+ if(!point||!Number.isFinite(point.x)||!Number.isFinite(point.y))return null;
  for(const s of segments){const dx=s.b.x-s.a.x,dy=s.b.y-s.a.y,len=dx*dx+dy*dy,t=((point.x-s.a.x)*dx+(point.y-s.a.y)*dy)/len;if(t>=-1e-7&&t<=1+1e-7&&Math.abs((point.x-s.a.x)*dy-(point.y-s.a.y)*dx)<1e-6)return interpolate(s.samples,t);}
  for(const [id,o]of Object.entries(FOREST_WORLD_REGISTRATION.regions)){const x=point.x-o[0]-.5,y=point.y-o[1]-.5;if(Math.abs(x-Math.round(x))<1e-6&&Math.abs(y-Math.round(y))<1e-6)return nativeWorldCell(id,Math.round(x),Math.round(y))??null;}return null;
 }
@@ -29,23 +35,52 @@ export function occludeNativeSprite(rgba,width,height,left,top,sample,depth,enco
   if(nativeDepth<actorDepth-.015){rgba[i+3]=0;covered++;}
  }return covered;
 }
+// Ground-contact shadows have their own support-space depth, separate from
+// vertical actor columns. The blue flag means occluding geometry, NOT ground.
+export function nativeSupportAtPixel(sample,px,py){
+ if(!sample?.worldFootM)return null;const dx=(px-sample.footPx[0])/contract.affine.x_m[0],dy=py-sample.footPx[1];let offsetY=dy/contract.affine.y_m[1],ground=null;
+ for(let i=0;i<3;i++){ground=nativeGroundSupportAt(sample,dx,offsetY);if(!ground)return null;offsetY=(dy-(ground.worldFootM[2]-sample.worldFootM[2])*contract.affine.z_m[1])/contract.affine.y_m[1];}return ground;
+}
+export function occludeNativeGroundShadow(rgba,width,height,left,top,sample,depth,encoding=contract.depthEncoding){
+ const near=encoding.nearM??encoding.near,far=encoding.farM??encoding.far;let covered=0;
+ for(let py=0;py<height;py++)for(let px=0;px<width;px++){const i=(py*width+px)*4;if(!rgba[i+3])continue;const x=Math.floor(left+px),y=Math.floor(top+py);if(x<0||x>=contract.width||y<0||y>=contract.height){rgba[i+3]=0;continue;}const di=(y*contract.width+x)*4;
+  if(!depth[di+3]){rgba[i+3]=0;continue;}
+  const ground=sample.worldFootM?nativeSupportAtPixel(sample,left+px+.5,top+py+.5):null;if(sample.worldFootM&&!ground){rgba[i+3]=0;covered++;continue;}if(!depth[di+2])continue;
+  const foregroundDepth=near+(depth[di]*256+depth[di+1])/65535*(far-near),dy=(top+py+.5)-sample.footPx[1],groundDepth=ground?.footDepthM??sample.footDepthM+dy/contract.affine.y_m[1]*contract.camera.forward[1];
+  if(foregroundDepth<groundDepth-(encoding.depthBiasM??.015)){rgba[i+3]=0;covered++;}
+ }return covered;
+}
 function badge(ctx,label,x,y,view,color='#f5e0a9'){ctx.save();ctx.font=`600 ${12/view.scale}px system-ui,sans-serif`;ctx.textAlign='center';ctx.textBaseline='middle';const w=ctx.measureText(label).width;ctx.fillStyle='#102018e6';ctx.fillRect(x-w/2-5/view.scale,y-8/view.scale,w+10/view.scale,18/view.scale);ctx.fillStyle=color;ctx.fillText(label,x,y+1/view.scale);ctx.restore();}
-export function drawNativeForestWorld(ctx,model,motion,native,{width=800,height=500,dpr=1,readable=false,selected=null,image,createLayer,camera}={}){
+export function drawNativeForestWorld(ctx,model,motion,native,{width=800,height=500,dpr=1,readable=false,selected=null,image,heroMotionImage,heroDiagnosticFrame=null,drawHeroDiagnosticNode=null,createLayer,camera}={}){
  const hero=nativeWorldSample(motion.hero??model.hero);if(!hero)return null;camera??={x:hero.footPx[0],y:hero.footPx[1]};const view=nativeViewport(width,height),zoom=view.scale;
  ctx.save();ctx.setTransform(dpr,0,0,dpr,0,0);ctx.fillStyle='#14271f';ctx.fillRect(0,0,width,height);ctx.translate(width/2-camera.x*zoom,height*.56-camera.y*zoom);ctx.scale(zoom,zoom);ctx.drawImage(native.backdrop,0,0,contract.width,contract.height);
- if(readable){for(const c of model.cells){const cell=nativeWorldCell(c.regionId,c.localX,c.localY);ctx.beginPath();ctx.moveTo(...cell.groundPolygonPx[0]);cell.groundPolygonPx.slice(1).forEach(p=>ctx.lineTo(...p));ctx.closePath();ctx.fillStyle=c.passable?'#f6e09c2e':'#c779642e';ctx.fill();ctx.strokeStyle='#e7d39977';ctx.lineWidth=1.2/zoom;ctx.stroke();}}
- const objects=model.objects.map(o=>({...o,sample:nativeWorldCell(o.regionId,o.localX,o.localY)}));objects.push({id:'hero',kind:'hero',sample:hero,active:true});objects.sort((a,b)=>b.sample.footDepthM-a.sample.footDepthM);let depthPixels=0,drawn=0;
+ if(readable){for(const c of model.cells){const cell=nativeWorldCell(c.regionId,c.localX,c.localY);if(!cell)continue;ctx.beginPath();ctx.moveTo(...cell.groundPolygonPx[0]);cell.groundPolygonPx.slice(1).forEach(p=>ctx.lineTo(...p));ctx.closePath();ctx.fillStyle=c.passable?'#f6e09c2e':'#c779642e';ctx.fill();ctx.strokeStyle='#e7d39977';ctx.lineWidth=1.2/zoom;ctx.stroke();}}
+ const objects=model.objects.map(o=>({...o,sample:nativeWorldCell(o.regionId,o.localX,o.localY)})).filter(o=>o.sample);objects.push({id:'hero',kind:'hero',sample:hero,active:true});objects.sort((a,b)=>b.sample.footDepthM-a.sample.footDepthM);let depthPixels=0,shadowPixels=0,drawn=0;const drawnObjects=[];let heroMode='canonical-static-fallback';const heroFeet=[],heroNodes=[];
  for(const o of objects){const sample=o.sample,[x,y]=sample.footPx,scr=nativeToScreen(sample.footPx,camera,view);if(scr.x< -100||scr.x>width+100||scr.y< -20||scr.y>height+140)continue;
-  const h=-contract.affine.z_m[1]*1.66,left=Math.floor(x-50),top=Math.floor(y-h-16),lw=100,lh=Math.ceil(h+32),layer=createLayer(lw,lh),lc=layer.getContext('2d',{willReadFrequently:true});lc.clearRect(0,0,lw,lh);lc.save();lc.translate(-left,-top);lc.fillStyle='#07170f66';lc.beginPath();lc.ellipse(x,y,14,4,0,0,Math.PI*2);lc.fill();
-  if(o.kind==='hero'){if(image){const k=h/1510;lc.drawImage(image,x-590*k,y-1523*k,1024*k,1536*k);}else{lc.fillStyle='#eee2c2';lc.beginPath();lc.arc(x,y-25,13,0,Math.PI*2);lc.fill();}}
-  else if(o.kind==='enemy'){lc.fillStyle='#916438';lc.fillRect(x-18,y-29,36,23);lc.strokeStyle='#302e25';lc.lineWidth=3;lc.strokeRect(x-18,y-29,36,23);for(const wx of[x-12,x+12]){lc.fillStyle='#352f28';lc.beginPath();lc.arc(wx,y-5,6,0,Math.PI*2);lc.fill();}}
-  else if(o.kind==='pickup'){lc.fillStyle='#c7c0a0';lc.beginPath();lc.moveTo(x-12,y-28);lc.lineTo(x+12,y-28);lc.lineTo(x+10,y-7);lc.lineTo(x,y);lc.lineTo(x-10,y-7);lc.closePath();lc.fill();}
-  else if(o.kind!=='anchor'){lc.fillStyle='#b19460';lc.fillRect(x-17,y-18,34,14);}
-  lc.restore();if(o.kind!=='anchor'){const pixels=lc.getImageData(0,0,lw,lh);depthPixels+=occludeNativeSprite(pixels.data,lw,lh,left,top,sample,native.depth);lc.clearRect(0,0,lw,lh);lc.putImageData(pixels,0,0);ctx.drawImage(layer,left,top);drawn++;}
+  const h=-contract.affine.z_m[1]*1.66,frame=o.kind==='hero'&&heroMotionImage?(heroDiagnosticFrame??buildHeroNeutralFrame({facing:motion.facing,footPx:[x,y],pixelHeight:h,rootM:sample.worldFootM,projectWorld:projectNativeWorldPoint,sampleSupport:p=>nativeGroundSupportAt(sample,p[0]-sample.worldFootM[0],p[1]-sample.worldFootM[1])})):null,bounds=o.kind==='hero'?{left:-60,top:-h-20,right:60,bottom:20}:forestPropBounds(o),left=Math.floor(x+bounds.left),top=Math.floor(y+bounds.top),lw=Math.ceil(bounds.right-bounds.left),lh=Math.ceil(bounds.bottom-bounds.top),layer=createLayer(lw,lh),lc=layer.getContext('2d',{willReadFrequently:true});
+  // Body and shadows are both derived only from the current visible objects.
+  if(o.kind!=='anchor'){
+   const contacts=frame?frame.feet.map(foot=>{const ground=nativeGroundSupportAt(sample,foot.worldM[0]-sample.worldFootM[0],foot.worldM[1]-sample.worldFootM[1]);return ground?{id:foot.id,sample:ground,x:ground.footPx[0]-x,y:ground.footPx[1]-y,rx:foot.id==='far'?3.5:4.1,ry:1.8,opacity:.28*(foot.fade??1),liftM:foot.liftM,sourceSole:foot.sourceSole}:null;}).filter(Boolean):o.kind==='hero'?[{id:'near',x:-3.2,y:0,rx:4.3,ry:1.8,opacity:.27},{id:'far',x:3.2,y:.2,rx:4.3,ry:1.8,opacity:.27}]:forestPropContacts(o);
+   for(const contact of contacts){
+    lc.clearRect(0,0,lw,lh);lc.save();lc.translate(x-left,y-top);drawForestContact(lc,contact);lc.restore();const ground=contact.sample??sample,shadow=lc.getImageData(0,0,lw,lh),masked=occludeNativeGroundShadow(shadow.data,lw,lh,left,top,ground,native.depth);shadowPixels+=masked;lc.clearRect(0,0,lw,lh);lc.putImageData(shadow,0,0);ctx.drawImage(layer,left,top);
+    if(o.kind==='hero')heroFeet.push({id:contact.id,footPx:[x+contact.x,y+contact.y],worldFootM:ground.worldFootM,footDepthM:ground.footDepthM,liftM:contact.liftM??0,opacity:contact.opacity,maskedPixels:masked,sourceSole:contact.sourceSole});
+   }
+   const diagnostic=frame&&heroDiagnosticFrame&&typeof drawHeroDiagnosticNode==='function';
+   if(diagnostic){heroMode='diagnostic-articulated-HOLD';for(const node of frame.nodes){lc.clearRect(0,0,lw,lh);lc.save();lc.translate(-left,-top);drawHeroDiagnosticNode(lc,heroMotionImage,frame,node);lc.restore();const pixels=lc.getImageData(0,0,lw,lh),masked=occludeNativeHeroNode(pixels.data,lw,lh,left,top,sample,node,native.depth);depthPixels+=masked;lc.clearRect(0,0,lw,lh);lc.putImageData(pixels,0,0);ctx.drawImage(layer,left,top);heroNodes.push({id:node.id,maskedPixels:masked,worldStartM:node.worldStartM,worldEndM:node.worldEndM});}}
+   else{
+    lc.clearRect(0,0,lw,lh);lc.save();lc.translate(x-left,y-top);
+    if(frame){heroMode='four-facing-neutral';lc.translate(-x,-y);drawHeroNeutral(lc,heroMotionImage,frame);}
+    else if(o.kind==='hero'){if(image){const k=h/1510;lc.drawImage(image,-590*k,-1523*k,1024*k,1536*k);}else{lc.fillStyle='#eee2c2';lc.beginPath();lc.arc(0,-25,13,0,Math.PI*2);lc.fill();}}
+    else drawForestProp(lc,o);
+    lc.restore();const pixels=lc.getImageData(0,0,lw,lh),masked=occludeNativeSprite(pixels.data,lw,lh,left,top,sample,native.depth);depthPixels+=masked;lc.clearRect(0,0,lw,lh);lc.putImageData(pixels,0,0);ctx.drawImage(layer,left,top);
+    if(o.kind==='hero')heroNodes.push({id:frame?'source-neutral':'canonical-fallback',maskedPixels:masked});
+   }
+   drawn++;drawnObjects.push(o.id);
+  }
   if(o.kind==='hero'){ctx.beginPath();ctx.ellipse(x,y,15,5,0,0,Math.PI*2);ctx.strokeStyle='#f5d88d';ctx.lineWidth=2/zoom;ctx.stroke();badge(ctx,'璃',x,y+17/zoom,view);}
   else if(o.kind==='anchor')badge(ctx,'↔ '+o.portal.to.slice(2),x,y+9/zoom,view,o.active?'#f5e0a9':'#b5c8ad');
   else if(readable)badge(ctx,o.title,x,y+18/zoom,view);
  }
  if(selected){const c=nativeWorldCell(selected.region,selected.x,selected.y);if(c){ctx.beginPath();ctx.moveTo(...c.groundPolygonPx[0]);c.groundPolygonPx.slice(1).forEach(p=>ctx.lineTo(...p));ctx.closePath();ctx.strokeStyle='#ffe8a4';ctx.lineWidth=2/zoom;ctx.stroke();}}
- ctx.restore();return{...view,camera:{...camera},hero:{x:hero.footPx[0],y:hero.footPx[1]},heroHeightPixels:-contract.affine.z_m[1]*1.66*zoom,visibleWorldWidth:width/zoom/(contract.metresPerCell*contract.affine.x_m[0]),regions:model.regions.map(r=>r.id),art:'native-shared-atlas',projection:'native',finite:true,depthPixels,drawn};
+ ctx.restore();return{...view,camera:{...camera},hero:{x:hero.footPx[0],y:hero.footPx[1]},heroHeightPixels:-contract.affine.z_m[1]*1.66*zoom,visibleWorldWidth:width/zoom/(contract.metresPerCell*contract.affine.x_m[0]),regions:model.regions.map(r=>r.id),art:'native-shared-atlas',projection:'native',finite:true,depthPixels,shadowPixels,drawn,drawnObjects,heroMode,heroFeet,heroNodes};
 }

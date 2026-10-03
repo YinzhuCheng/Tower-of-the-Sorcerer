@@ -1,3 +1,4 @@
+import {HERO_LOCOMOTION,heroFacing} from './hero-locomotion.js';
 import { forestActionVisible } from '../campaigns/b/player-copy.js';
 // Presentation registration only. The immutable campaign reducer owns every move,
 // portal, cost and receipt. Connector spans contain no additional gameplay tiles.
@@ -72,18 +73,18 @@ export function screenToWorld(point,camera,viewport){return {x:(point.x-viewport
 export function followCamera(camera,hero,dt){const a=1-Math.exp(-Math.max(0,dt)*7);return{x:camera.x+(hero.x-camera.x)*a,y:camera.y+(hero.y-camera.y)*a};}
 // Bounded animation state, independent of save state. Refresh/load reconstruct it
 // from the real saved location; camera/motion never change the game snapshot.
-export function createWorldMotion(runtime){
- let hero=null,camera=null,location=null,queue=[],crossing=false;
- function reset(next){location={...next};hero=worldPoint(next);camera=hero?{...hero}:null;queue=[];crossing=false;}
+export function createWorldMotion(runtime,{speedMps=HERO_LOCOMOTION.speedMps}={}){
+ let hero=null,camera=null,location=null,queue=[],crossing=false,distanceM=0,facing='front',gaitWeight=0;
+ function reset(next){location={...next};hero=worldPoint(next);camera=hero?{...hero}:null;queue=[];crossing=false;distanceM=0;facing='front';gaitWeight=0;}
  function sync(next){if(!hero){reset(next);return;}if(location.regionId===next.regionId&&location.x===next.x&&location.y===next.y)return;
   const motion=forestWorldMotion(runtime,location,next);if(!motion){reset(next);return;}
   for(const p of motion.points.slice(1)){const previous=queue.at(-1)?.point??hero;if(Math.hypot(p.x-previous.x,p.y-previous.y)>1e-8)queue.push({point:p,crossing:motion.crossing});}
   crossing=queue.some(q=>q.crossing);location={...next};
  }
- function tick(seconds){let remaining=Math.min(.1,Math.max(0,seconds))*7;
-  while(queue.length&&remaining>0){const q=queue[0],distance=Math.hypot(q.point.x-hero.x,q.point.y-hero.y);if(distance<=remaining){hero={...q.point};queue.shift();remaining-=distance;}else{hero={x:hero.x+(q.point.x-hero.x)*remaining/distance,y:hero.y+(q.point.y-hero.y)*remaining/distance};remaining=0;}}
-  crossing=queue.some(q=>q.crossing);if(hero)camera=followCamera(camera,hero,Math.min(.1,Math.max(0,seconds)));return snapshot();
+ function tick(seconds){const dt=Math.min(.1,Math.max(0,seconds)),wasMoving=queue.length>0;let remaining=dt*speedMps/FOREST_WORLD_REGISTRATION.cellMeters;
+  while(queue.length&&remaining>0){const q=queue[0],distance=Math.hypot(q.point.x-hero.x,q.point.y-hero.y);facing=heroFacing(q.point.x-hero.x,q.point.y-hero.y,facing);distanceM+=Math.min(distance,remaining)*FOREST_WORLD_REGISTRATION.cellMeters;if(distance<=remaining){hero={...q.point};queue.shift();remaining-=distance;}else{hero={x:hero.x+(q.point.x-hero.x)*remaining/distance,y:hero.y+(q.point.y-hero.y)*remaining/distance};remaining=0;}}
+  crossing=queue.some(q=>q.crossing);gaitWeight+=((wasMoving?1:0)-gaitWeight)*(1-Math.exp(-dt*18));if(gaitWeight<.001)gaitWeight=0;if(hero)camera=followCamera(camera,hero,Math.min(.1,Math.max(0,seconds)));return snapshot();
  }
- function snapshot(){return {hero:hero&&{...hero},camera:camera&&{...camera},crossing,moving:queue.length>0,queuedSegments:queue.length,location:location&&{...location}};}
+ function snapshot(){return {facing,distanceM,gaitWeight,speedMps,hero:hero&&{...hero},camera:camera&&{...camera},crossing,moving:queue.length>0,queuedSegments:queue.length,location:location&&{...location}};}
  return {reset,sync,tick,snapshot};
 }

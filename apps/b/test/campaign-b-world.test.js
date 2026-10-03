@@ -1,3 +1,4 @@
+import {HERO_LOCOMOTION} from '../src/rendering/hero-locomotion.js';
 import test from 'node:test';import assert from 'node:assert/strict';import{readFileSync,readdirSync}from'node:fs';
 import {createForestCampaign} from '../src/campaigns/b/content.js';
 import {createForestPreviewSession} from '../src/campaigns/b/preview-session.js';
@@ -43,9 +44,9 @@ test('B02→B03→B02 and heat pickup retain original resources and request sema
 
 test('hero and camera remain continuous across seam and reversal; load resets to source location',()=>{
  const motion=createWorldMotion(runtime),from={regionId:'B-01',x:9,y:5},to={regionId:'B-02',x:1,y:5};motion.reset(from);const before=motion.snapshot();motion.sync(to);assert.deepEqual(motion.snapshot().hero,before.hero);assert.deepEqual(motion.snapshot().camera,before.camera);assert.equal(motion.snapshot().crossing,true);
- let prior=before,maxHeroStep=0,maxCameraStep=0;for(let i=0;i<240;i++){const next=motion.tick(1/60);maxHeroStep=Math.max(maxHeroStep,Math.hypot(next.hero.x-prior.hero.x,next.hero.y-prior.hero.y));maxCameraStep=Math.max(maxCameraStep,Math.hypot(next.camera.x-prior.camera.x,next.camera.y-prior.camera.y));prior=next;}
- assert.ok(maxHeroStep<=7/60+1e-10);assert.ok(maxCameraStep<.13);assert.equal(prior.crossing,false);assert.deepEqual(prior.hero,worldPoint(to));assert.ok(Math.abs(prior.camera.x-prior.hero.x)<1e-8);
- motion.sync(from);for(let i=0;i<240;i++)motion.tick(1/60);assert.deepEqual(motion.snapshot().hero,worldPoint(from));motion.reset({regionId:'B-03',x:3,y:3});assert.equal(motion.snapshot().queuedSegments,0);assert.deepEqual(motion.snapshot().hero,motion.snapshot().camera);
+ let prior=before,maxHeroStep=0,maxCameraStep=0;for(let i=0;i<720;i++){const next=motion.tick(1/60);maxHeroStep=Math.max(maxHeroStep,Math.hypot(next.hero.x-prior.hero.x,next.hero.y-prior.hero.y));maxCameraStep=Math.max(maxCameraStep,Math.hypot(next.camera.x-prior.camera.x,next.camera.y-prior.camera.y));prior=next;}
+ assert.ok(maxHeroStep<=HERO_LOCOMOTION.speedMps/1.2/60+1e-10);assert.ok(maxCameraStep<.13);assert.equal(prior.crossing,false);assert.deepEqual(prior.hero,worldPoint(to));assert.ok(Math.abs(prior.camera.x-prior.hero.x)<1e-8);
+ motion.sync(from);for(let i=0;i<720;i++)motion.tick(1/60);assert.deepEqual(motion.snapshot().hero,worldPoint(from));motion.reset({regionId:'B-03',x:3,y:3});assert.equal(motion.snapshot().queuedSegments,0);assert.deepEqual(motion.snapshot().hero,motion.snapshot().camera);
 });
 
 test('camera resize/hit projection retains exact cell coordinates, readable neighborhood, and minimum actor scale',()=>{

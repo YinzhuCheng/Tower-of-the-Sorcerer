@@ -1,3 +1,5 @@
+import {HERO_MOTION_ASSET} from '../src/rendering/hero-neutral.js';
+import {createHash} from 'node:crypto';
 import { validateContinuousMapAssets } from './validate-continuous-map-assets.mjs';
 import { readFile,stat,readdir } from 'node:fs/promises';
 import { join,resolve,dirname,relative } from 'node:path';
@@ -13,5 +15,6 @@ const ids=[...html.matchAll(/\bid="([^"]+)"/g)].map(x=>x[1]);if(new Set(ids).siz
 for(const illegal of ['../src/campaigns/a/','../src/campaigns/c/','assets/anime','setFlag','moveBallast'])if(app.includes(illegal))errors.push(`Unexpected B UI dependency: ${illegal}`);
 const sourceCore=await readFile(resolve(root,'../src/core/campaign.js'),'utf8'),builtCore=await readFile(join(root,'src/core/campaign.js'),'utf8');if(sourceCore!==builtCore)errors.push('Built kernel differs from source');
 let bytes=0;for(const file of seen)bytes+=(await stat(file)).size;
+const heroBytes=await readFile(join(root,HERO_MOTION_ASSET.file)).catch(()=>null);if(!heroBytes||createHash('sha256').update(heroBytes).digest('hex')!==HERO_MOTION_ASSET.sha256)errors.push('Hero four-facing source missing or hash drift');
 const art=await validateContinuousMapAssets(root);errors.push(...art.errors);
 console.log(JSON.stringify({ok:!errors.length,entry:'campaigns-b/',reachableStaticModulesAndPages:seen.size,bytes,externalDependencies:0,artAssets:art.artAssets,artStatus:art.artStatus,domIds:ids.length,errors},null,2));if(errors.length)process.exitCode=1;

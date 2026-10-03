@@ -1,0 +1,72 @@
+{
+  "status": "RECONSTRUCTED_INCREMENTAL_CANDIDATE_VISUAL_REVIEW_PASS_NOT_FINAL_USER_ACCEPTED",
+  "nativeSha256": "43820134c4c4a72ebd0585817dea3e7e7d14d50e3c03abcf3e78b310dfd0ac37",
+  "assets": {
+    "backdrop": {
+      "id": "backdrop",
+      "file": "assets/forest-world/world-backdrop.webp",
+      "width": 4096,
+      "height": 1792,
+      "sha256": "c8bc603f2dff2e734b2ff1917550423e666c5e0ed74edc0aa8ae4302f6184518",
+      "bytes": 9461908,
+      "canonicalFile": "world-backdrop.png",
+      "canonicalSha256": "784ab70a993518da2d5637a76c15e644a86e49cfb8ba6ad1e80cc98096feac98",
+      "decodedRgbaSha256": "09f572c46e06aaf4132828aebf2f2496e079435845a8f848ce7611f4d1f0483b",
+      "encoding": "lossless WebP; exact decoded RGBA verified"
+    },
+    "depth": {
+      "id": "depth",
+      "file": "assets/forest-world/world-depth-rg16.webp",
+      "width": 4096,
+      "height": 1792,
+      "sha256": "9de004300c59b941c5954f740e6f07b416394988f16d5ccc860fc67c70b5b04a",
+      "bytes": 2133512,
+      "canonicalFile": "world-depth-rg16.png",
+      "canonicalSha256": "457f37540c83939248b4779530c707a66753effd68a0679a8525741e00b9a89a",
+      "decodedRgbaSha256": "92fd72fe847dbeae03865b2c836fdb44c926a49511d9ba4319f751db53372218",
+      "encoding": "lossless WebP; exact decoded RGBA verified"
+    }
+  },
+  "rulesContentHash": "a12cd07ee1ccc762",
+  "floorCells": 173,
+  "localEdges": 249,
+  "joins": 2,
+  "binaryDepthMeaning": "B is occluder, not ground",
+  "limitations": [
+    "B01-B03 authored finite world only",
+    "Real browser acceptance pending: browser route was unavailable, no bypass attempted",
+    "Normal walking animation remains OPEN/HOLD",
+    "Cart and plan remain flatter/outlined than painted vegetation; future coherence polish",
+    "Source node masking callable only via explicit diagnostic callbacks; no articulated modules in default build"
+  ],
+  "sourceNativeSha256": "43820134c4c4a72ebd0585817dea3e7e7d14d50e3c03abcf3e78b310dfd0ac37",
+  "hero": {
+    "mode": "exact four-facing neutral",
+    "asset": "assets/hero-motion/hero-four-views.png",
+    "gait": "OPEN_VISUAL_HOLD_NOT_DEFAULT",
+    "movement": "1.2m/s nominal authored cell metric; original reducer unchanged"
+  },
+  "semanticIdRepair": {
+    "revision": "r3",
+    "validStoredVisibleObjectIds": 645,
+    "maxSupported": 32767,
+    "tableIds": [
+      32000,
+      32001,
+      32002,
+      32003,
+      32004,
+      32005,
+      32006,
+      32007,
+      32008,
+      32009,
+      32010,
+      32011
+    ],
+    "decorativeBankId": 32020,
+    "invalidClampedIdPresent": false,
+    "blockingMaskRepairPixels": 9130,
+    "beautyChangedPixels": 0
+  }
+}

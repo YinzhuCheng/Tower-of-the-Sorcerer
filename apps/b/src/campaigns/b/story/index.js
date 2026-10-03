@@ -1,10 +1,11 @@
 import { FOREST_STORY_CONTENT as C } from './content.js';
+import { LEGACY_OPENING_SCENES, LEGACY_OPENING_REVISION, NEW_OPENING_REVISION } from './opening-revision.js';
 import { forestTurnStage, FOREST_ASSET_POLICY, FOREST_CAST } from './presentation.js';
 import { calculateBattle } from '../../../core/battle.js';
 export { C as FOREST_STORY_CONTENT, FOREST_ASSET_POLICY, FOREST_CAST };
 export const FOREST_STORY_IDS=Object.freeze([...C.order]);
 const copy=x=>structuredClone(x), flag=(s,id)=>s.flags[id]===true, clear=(s,id)=>s.cleared.includes(id);
-const freeze=x=>{if(x&&typeof x==='object'&&!Object.isFrozen(x)){Object.freeze(x);Object.values(x).forEach(freeze);}return x;};freeze(C);
+const freeze=x=>{if(x&&typeof x==='object'&&!Object.isFrozen(x)){Object.freeze(x);Object.values(x).forEach(freeze);}return x;};freeze(C);freeze(LEGACY_OPENING_SCENES);
 const fail=message=>{throw new Error(message);};
 const b=n=>`b${String(n).padStart(2,'0')}`;
 const RESPONSES=new Set(['b02_choice','b12_choice','b23_shawu_reply']);
@@ -14,7 +15,9 @@ const HEAT_ENDS={5:'b30_heat_greenhouse_lodge',3:'b30_heat_greenhouse_pear',6:'b
 const PRE_ENEMIES={b01_pre:'b01.timberPuppet',b05_pre:'b05.sluicePuppet',b06_pre:'b06.sawPuppet',b09_pre:'b09.foundationRig',b11_pre:'b11.returnPuppet',b15_pre:'b15.cablePuppet',b28_pre:'b28.guardDrive'};
 /** No gameplay state, effects, currency or callbacks are owned by this module.
  * Give it the SAME immutable runtime used by the screen's dispatch. */
-export function createForestStory(runtime) {
+export function createForestStory(runtime,{openingRevision=NEW_OPENING_REVISION}={}) {
+  if(![LEGACY_OPENING_REVISION,NEW_OPENING_REVISION].includes(openingRevision))fail('Unknown opening revision');
+  const openingScenes=openingRevision===LEGACY_OPENING_REVISION?LEGACY_OPENING_SCENES:null;
   if(runtime.spec.id!=='forest-b')fail('B story requires forest-b runtime');
   const spec=runtime.spec,heatSpec=spec.semantics.heat,wedgesSpec=spec.semantics.wedges;
   const warmPoints=heatSpec.warmPoints.map(w=>({...w,entityId:`${b(w.region)}.warm${w.id}`,flag:`b.warm.${w.id}`}));
@@ -125,7 +128,7 @@ export function createForestStory(runtime) {
   }
   function resolve(id,state,options={}) {
     runtime.assertValidState(state);
-    const [sceneId,...fragment]=id.split('.'),source=C.scenes[sceneId];if(!source)fail(`Unknown B scene ${id}`);
+    const [sceneId,...fragment]=id.split('.'),source=openingScenes?.[sceneId]??C.scenes[sceneId];if(!source)fail(`Unknown B scene ${id}`);
     if(fragment.length)options={...options,branch:fragment[0],...(fragment[1]?{phase:fragment[1]}:{})};
     if(!options.reviewMode){
       if(SCENE_FACTS[sceneId]&&!SCENE_FACTS[sceneId](state))fail(`Scene ${sceneId} requires authoritative gameplay facts`);
