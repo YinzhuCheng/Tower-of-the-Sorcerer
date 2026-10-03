@@ -451,6 +451,7 @@ await rm(outDir, { recursive: true, force: true });
 await mkdir(outDir, { recursive: true });
 await copyFile(join(root, 'index.html'), join(outDir, 'index.html'));
 await copyFile(join(root, 'styles.css'), join(outDir, 'styles.css'));
+await copyFile(join(root, 'difficulty.css'), join(outDir, 'difficulty.css'));
 await copyFile(join(root, 'anime.css'), join(outDir, 'anime.css'));
 await copyFile(join(root, 'ui-v8-4.css'), join(root, 'dist/ui-v8-4.css'));
 await copyFile(join(root, 'ui-v8-5.css'), join(root, 'dist/ui-v8-5.css'));

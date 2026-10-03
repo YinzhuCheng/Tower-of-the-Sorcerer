@@ -37,8 +37,8 @@ test('event CG turns suppress standing sprites while ordinary turns retain the a
 test('an explicit production QA query can open any authored GAL scene without marking story progress', async () => {
   const main = await readFile(new URL('../src/main.js', import.meta.url), 'utf8');
 
-  assert.match(main, /new URLSearchParams\(window\.location\.search\)\.get\('gal-preview'\)/);
+  assert.match(main, /PREVIEW_DIALOGUE = BOOT_PARAMS\.get\('gal-preview'\)/);
   assert.match(main, /dialogueId && getDialogue\(dialogueId\) \? dialogueId : null/);
-  assert.match(main, /const previewDialogueId = requestedGalPreviewDialogue\(\);[\s\S]{0,260}if \(!previewDialogueId\) autoSave\(\)/);
-  assert.match(main, /previewDialogueId\s*\? \(showDialogue\(previewDialogueId, previewAfter\), true\)\s*: initialGalDialogue\(releaseIntoTower\)/);
+  assert.match(main, /if \(!PRESENTATION_ONLY && difficultySession\.mode === 'new'\) await autoSave\(\)/);
+  assert.match(main, /previewDialogueId\s*\? \(showDialogue\(previewDialogueId, previewAfter\), true\)\s*: difficultySession\?\.mode === 'continue' \? false : initialGalDialogue\(releaseIntoTower\)/);
 });

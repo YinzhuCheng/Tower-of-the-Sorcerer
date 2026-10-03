@@ -50,7 +50,7 @@ export function getEndingDebrief(state) {
   const charterEpilogue = charterCompleted ? {
     shelter: {
       title: '夜航仍亮着',
-      text: '米露把夜航护送印挂回灯塔入口。每段危险路程和同行者都被清楚写下。'
+      text: '夜航护送印重新挂回灯塔入口。每段危险路程和同行者都被清楚写下。'
     },
     audit: {
       title: '每一页都能被改正',

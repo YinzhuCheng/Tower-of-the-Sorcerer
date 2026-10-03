@@ -23,11 +23,13 @@ test('GAL-only is a continuous prologue-to-ending reader using the production re
   // The reader owns one canonical main-story order instead of relying on
   // Object.entries(DIALOGUES), whose insertion order mixes optional/review
   // scenes with the playable chronology.
-  assert.match(app, /const STORY_ORDER = Object\.freeze\(\[/);
-  assert.match(app, /'prologue'/);
-  assert.match(app, /'bossCatPreDemo', 'bossCatPostDemo'/);
-  assert.match(app, /'floor20', 'warCouncil', 'bossArcaneSovereignPost', 'bossOriginCorePost'/);
-  assert.match(app, /'floor30', 'bossArchiveWardenPost', 'ending'/);
+  const { GAL_PREVIEW_ORDER } = await import('../src/game/story-preview-context.js');
+  assert.match(app, /const STORY_ORDER = GAL_PREVIEW_ORDER/);
+  const orderSource = await readFile(new URL('../src/game/story-preview-context.js', import.meta.url), 'utf8');
+  assert.match(orderSource, /'prologue'/);
+  assert.match(orderSource, /'bossCatPreDemo', 'bossCatPostDemo'/);
+  assert.match(orderSource, /'floor20', 'warCouncil', 'bossArcaneSovereignPost', 'bossOriginCorePost'/);
+  assert.match(orderSource, /'floor30', 'bossArchiveWardenPost', 'ending'/);
   assert.doesNotMatch(app, /Object\.entries\(DIALOGUES\)/);
   assert.match(app, /tower-gal-only-finished/);
   assert.match(app, /loadScene\(currentIndex \+ 1\)/);
@@ -68,7 +70,7 @@ test('GAL-only is a continuous prologue-to-ending reader using the production re
   assert.match(cinematicCss, /\.gal-root \.gal-dialogue\.is-new-cg \.gal-cg\{[\s\S]*animation:galCgReveal/);
   assert.match(cinematicCss, /\.gal-root \.gal-actor\.is-entering \.gal-standing\{[\s\S]*animation:galStandingEnter/);
 
-  assert.match(main, /const GAL_ONLY_BOOT = new URLSearchParams\(window\.location\.search\)\.get\('gal-only'\) === '1'/);
+  assert.match(main, /const GAL_ONLY_BOOT = BOOT_PARAMS\.get\('gal-only'\) === '1'/);
   assert.match(main, /if \(requestedGalOnlyMode\(\) \|\| document\.documentElement\.classList\.contains\('story-boot'\)\) \{[\s\S]*delete elements\.galRoot\.dataset\.transition;[\s\S]*classList\.remove\('is-entering'\);[\s\S]*return;/);
   assert.match(cinematicCss, /html\.gal-only-boot #app-shell/);
   assert.match(cinematicCss, /button\[data-gal-control="backlog-close"\][\s\S]*place-items:center/);

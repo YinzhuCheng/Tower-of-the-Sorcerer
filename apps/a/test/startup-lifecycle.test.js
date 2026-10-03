@@ -21,7 +21,7 @@ test('story and controls initialize before optional artwork finishes loading', a
   assert.match(baseCanvas, /Promise\.allSettled\(\[/);
   assert.match(canvas, /createBaseCanvasTowerScene\(bridge, parent, \{ autoStart: false, notifyReady: false \}\)/);
   assert.match(canvas, /applyWallMaterialV6\(scene\);\s*bridge\.onReady\(scene\);\s*void scene\.start\(\);/);
-  assert.match(main, /initialGalDialogue\(\);[\s\S]*?await ensurePhaser\(\)/);
+  assert.match(main, /const startTacticalScene = \(\) =>[\s\S]*?await ensurePhaser\(\)[\s\S]*?initialGalDialogue\(releaseIntoTower\)/);
   assert.match(main, /onAssetsReady:[\s\S]*?elements\.loading\.classList\.add\('hidden'\)/);
   assert.doesNotMatch(main, /onReady:[\s\S]*?readyScene\.refresh\?\.\(\);[\s\S]*?onAssetsReady:/);
   assert.match(loader, /ASSET_LOAD_TIMEOUT_MS = 20_000/);

@@ -1,3 +1,6 @@
+import { getDifficultySession } from './game/difficulty-session.js';
+import { difficultyEntryUrl } from './game/difficulty-entry.js';
+import { createGalPreviewStoryState } from './game/story-preview-context.js';
 import { ENEMIES, FLOORS, GRID_SIZE, TILE_SIZE, getShopCost } from './game/data.js';
 import {
   buyShopUpgrade,
@@ -43,10 +46,13 @@ import { dialoguePresentation, hydratePortraits, portraitUrl } from './game/port
 import { applySceneThemeV8, installV8VisualLayer } from './game/visual-theme-v8.js';
 import { applyV83RenderFixes, installV83UiFixes } from './game/visual-patch-v83.js';
 
-const MANUAL_SAVE_KEY = 'lost-magic-tower:manual:v1';
-const AUTO_SAVE_KEY = 'lost-magic-tower:auto:v1';
+const difficultySession = getDifficultySession();
+const persistence = difficultySession?.persistence;
+const BOOT_PARAMS = new URLSearchParams(window.location.search);
+const PRESENTATION_ONLY = !difficultySession;
+const PREVIEW_DIALOGUE = BOOT_PARAMS.get('gal-preview');
 
-const GAL_ONLY_BOOT = new URLSearchParams(window.location.search).get('gal-only') === '1';
+const GAL_ONLY_BOOT = BOOT_PARAMS.get('gal-only') === '1';
 if (GAL_ONLY_BOOT) document.documentElement.classList.add('gal-only-boot');
 
 function releaseStoryBoot() {
@@ -84,15 +90,18 @@ const elements = {
   galRoot: $('#gal-root')
 };
 
-let state = createInitialState();
+let state = difficultySession?.mode === 'continue'
+  ? deserializeState(difficultySession.serialized) : createInitialState();
+export const getCurrentGameState = () => PRESENTATION_ONLY ? null : state;
 let scene = null;
 let modalClosable = true;
+let importGeneration = 0;
 let toastTimer = null;
 let cinematicCleanup = null;
 let cinematicControls = null;
 let galTransitionTimer = null;
-const GAL_HISTORY_STORAGE_KEY = 'lost-magic-tower:gal-only-history:v1';
-const GAL_HISTORY_LIMIT = new URLSearchParams(window.location.search).get('gal-only') === '1' ? 600 : 80;
+const GAL_HISTORY_STORAGE_KEY = 'lost-magic-tower:gal-only-history:example-route:v2';
+const GAL_HISTORY_LIMIT = BOOT_PARAMS.get('gal-only') === '1' ? 600 : 80;
 const galHistory = [];
 const galImagePreloads = new Map();
 const galSettings = { auto: false, fast: false };
@@ -221,12 +230,12 @@ function initialGalDialogue(after = null) {
 }
 
 function requestedGalPreviewDialogue() {
-  const dialogueId = new URLSearchParams(window.location.search).get('gal-preview');
+  const dialogueId = PREVIEW_DIALOGUE;
   return dialogueId && getDialogue(dialogueId) ? dialogueId : null;
 }
 
 function requestedGalOnlyMode() {
-  return new URLSearchParams(window.location.search).get('gal-only') === '1';
+  return BOOT_PARAMS.get('gal-only') === '1';
 }
 
 function restoreGalOnlyHistory() {
@@ -324,6 +333,7 @@ function closeGalScene(after = null) {
 
 function closeModal() {
   if (!modalClosable) return;
+  importGeneration += 1;
   clearCinematic();
   elements.modalRoot.classList.add('hidden');
   delete elements.modalRoot.dataset.variant;
@@ -331,7 +341,9 @@ function closeModal() {
   elements.modalActions.replaceChildren();
 }
 
-function openModal({ kicker = '', title, body = '', actions = [], closable = true, afterOpen = null, variant = '' }) {
+function openModal({ kicker = '', title, body = '', actions = [], closable = true, afterOpen = null, variant = '', importToken = null }) {
+  if (importToken === null) importGeneration += 1;
+  else if (importToken !== importGeneration) return;
   clearCinematic();
   modalClosable = closable;
   if (variant) elements.modalRoot.dataset.variant = variant;
@@ -469,9 +481,13 @@ function dialogueTurns(dialogue) {
 }
 
 function showDialogue(dialogueId, after = null, { finalLabel = null } = {}) {
-  const dialogue = getDialogue(dialogueId);
+  const dialogueState = requestedGalPreviewDialogue() ? createGalPreviewStoryState(dialogueId) : state;
+  const dialogue = getDialogue(dialogueId, dialogueState);
   if (!dialogue) return;
+  // Resolve once. History stores these shown words rather than re-resolving
+  // an old scene against a later gameplay state.
   const turns = dialogueTurns(dialogue);
+  const historySceneKey = `${dialogueId}:${Date.now()}:${galHistory.length}`;
   preloadGalDialogueArt(dialogueId, dialogue, turns);
   let index = 0;
   let finished = false;
@@ -533,7 +549,7 @@ function showDialogue(dialogueId, after = null, { finalLabel = null } = {}) {
       cgChanged ? 'is-new-cg' : 'is-continuing-cg'
     ].join(' ');
 
-    const historyKey = `${dialogueId}:${index}`;
+    const historyKey = `${historySceneKey}:${index}`;
     rememberGalLine(historyKey, narratorName, String(turn.text ?? ''));
     const portraits = isNarration
       ? '<div class="gal-narration-mark" aria-hidden="true">✦</div>'
@@ -970,37 +986,109 @@ function updateHud() {
   updateBattlePreview();
 }
 
-function autoSave() {
+async function autoSave() {
   try {
-    localStorage.setItem(AUTO_SAVE_KEY, serializeState(state));
+    if (PRESENTATION_ONLY) return;
+    await persistence.write('auto', state);
   } catch (error) {
     console.warn('Autosave failed:', error);
+    showToast(`自动存档暂停：${error.message}`, 6000);
+    updateDifficultyBadge();
   }
 }
 
-function saveGame() {
+async function saveGame() {
   try {
-    localStorage.setItem(MANUAL_SAVE_KEY, serializeState(state));
+    if (PRESENTATION_ONLY) return;
+    await persistence.write('manual', state);
     showToast('手动存档已写入浏览器。');
   } catch (error) {
     showToast(`存档失败：${error.message}`);
+    updateDifficultyBadge();
   }
 }
 
 function loadGame() {
-  const serialized = localStorage.getItem(MANUAL_SAVE_KEY) ?? localStorage.getItem(AUTO_SAVE_KEY);
+  importGeneration += 1;
+  if (PRESENTATION_ONLY) return;
+  let serialized;
+  try { serialized = persistence.read('manual') ?? persistence.read('auto'); }
+  catch (error) { showToast(`读档失败：${error.message}`, 6000); return; }
   if (!serialized) {
     showToast('没有可读取的存档。');
     return;
   }
   try {
     state = deserializeState(serialized);
+    galHistory.length = 0;
     scene?.refresh();
     updateHud();
     showToast('存档读取完成。');
   } catch (error) {
     showToast(`读档失败：${error.message}`);
   }
+}
+
+function downloadSaveBytes(raw, filename) {
+  const url = URL.createObjectURL(new Blob([raw], { type: 'application/json' }));
+  const link = document.createElement('a'); link.href = url; link.download = filename;
+  link.click(); setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+function exportGame() {
+  if (PRESENTATION_ONLY) return;
+  try { downloadSaveBytes(serializeState(state), `魔塔-${difficultySession.profile.label}-F${state.floor + 1}.json`); }
+  catch (error) { showToast(`导出失败：${error.message}`, 6000); }
+}
+
+function showSaveBackups() {
+  if (PRESENTATION_ONLY) return;
+  try {
+    const backups = persistence.listBackups();
+    openModal({
+      kicker: 'SAVE BACKUPS', title: `${difficultySession.profile.label} · 历史备份`,
+      body: '<p>只列出本难度的历史备份。导出保留原始字节；损坏或未来格式只允许导出，兼容存档恢复仍需单独确认。</p><div class="backup-list"></div>',
+      actions: [{ label: '返回游戏' }],
+      afterOpen: () => {
+        const list = elements.modalBody.querySelector('.backup-list');
+        if (!backups.length) { list.textContent = '暂时没有历史备份。'; return; }
+        for (const backup of backups) {
+          const row = document.createElement('section');
+          const label = document.createElement('p'); label.textContent = backup.label;
+          const exportButton = document.createElement('button'); exportButton.textContent = '导出原文件';
+          exportButton.addEventListener('click', () => downloadSaveBytes(backup.raw, `魔塔-${difficultySession.profile.label}-备份-${backup.slot}${backup.compatible ? '-F' + (backup.floor + 1) : '-原始保留'}.json`));
+          const restore = document.createElement('button'); restore.textContent = '恢复到本页'; restore.disabled = !backup.compatible;
+          restore.addEventListener('click', () => { void importGameFile({ size: new Blob([backup.raw]).size, text: async () => backup.raw }); });
+          row.append(label,exportButton,restore); list.append(row);
+        }
+      }
+    });
+  } catch (error) { showToast(`备份读取失败：${error.message}`, 6000); }
+}
+
+async function importGameFile(file) {
+  const token = ++importGeneration;
+  if (PRESENTATION_ONLY || !file) return;
+  try {
+    if (!Number.isFinite(file.size) || file.size < 0 || file.size > 5_000_000) throw Error('文件大小无效或超过 5 MB。');
+    const raw = await file.text();
+    if (token !== importGeneration) return;
+    const imported = deserializeState(raw);
+    if (token !== importGeneration) return;
+    openModal({
+      kicker: 'IMPORT SAVE', title: `读入${difficultySession.profile.label}存档？`, variant: 'import', importToken: token,
+      body: '<p></p>',
+      afterOpen: () => {
+        // Imported text is never interpreted as HTML, even after validation.
+        elements.modalBody.firstElementChild.textContent = `第 ${imported.floor + 1} 层 · 已行动 ${imported.turns} 次。确认后替换本页进度；原浏览器存档现在不会被写入，后续行动会更新本难度自动存档。`;
+      },
+      actions: [{ label: '取消' }, { label: '确认读入', className: 'primary', close: false, onClick: () => {
+        if (token !== importGeneration) return;
+        importGeneration += 1; closeModal(); state = imported; galHistory.length = 0;
+        scene?.refresh(); updateHud(); showToast('存档已读入本页。');
+      } }]
+    });
+  } catch (error) { if (token === importGeneration) showToast(`导入拒绝：${error.message}`, 6000); }
 }
 
 function showHelp() {
@@ -1409,27 +1497,20 @@ function showVictory() {
 }
 
 function confirmReset() {
+  importGeneration += 1;
+  if (PRESENTATION_ONLY) return;
   openModal({
-    kicker: 'RESET',
-    title: '确认重新开始？',
-    body: '<p>当前自动存档与手动存档都会被清除，游戏将返回第一阵。</p>',
-    actions: [
-      { label: '取消' },
-      {
-        label: '清除并重开',
-        className: 'primary',
-        onClick: () => {
-          localStorage.removeItem(MANUAL_SAVE_KEY);
-          localStorage.removeItem(AUTO_SAVE_KEY);
-          state = createInitialState();
-          scene?.refresh();
-          updateHud();
-          autoSave();
-          initialGalDialogue();
-        }
-      }
-    ]
+    kicker: 'NEW GAME', title: '返回难度入口？',
+    body: '<p>当前存档保留。回到入口后可继续任一难度，或明确确认开始新游戏。</p>',
+    actions: [{ label: '取消' }, { label: '返回入口', className: 'primary', onClick: () => window.location.assign(difficultyEntryUrl(window.location.href)) }]
   });
+}
+
+function updateDifficultyBadge() {
+  const badge = document.querySelector('#difficulty-badge');
+  if (!badge || !difficultySession) return;
+  badge.textContent = `${difficultySession.profile.label} · ${persistence.readOnly ? '存档保护：只读' : '独立进度'}`;
+  badge.dataset.readonly = String(persistence.readOnly);
 }
 
 function continueSceneResult(result) {
@@ -1527,6 +1608,10 @@ function bindControls() {
 
   window.addEventListener('keydown', (event) => {
     const key = event.key.toLowerCase();
+    if (event.key === 'Escape') {
+      importGeneration += 1;
+      if (elements.modalRoot.dataset.variant === 'import') { event.preventDefault(); closeModal(); return; }
+    }
     if (!elements.modalRoot.classList.contains('hidden') || !elements.galRoot.classList.contains('hidden')) {
       if (event.defaultPrevented) return;
       if (event.key === 'Escape' && cinematicControls?.skip) {
@@ -1573,13 +1658,30 @@ async function boot() {
   installV83UiFixes();
   hydratePortraits();
   bindControls();
+  for (const event of ['pagehide','beforeunload','popstate']) window.addEventListener(event, () => { importGeneration += 1; });
+  if (difficultySession) {
+    const badge = document.createElement('span'); badge.id = 'difficulty-badge'; badge.className = 'difficulty-badge';
+    $('#btn-reset').insertAdjacentElement('beforebegin', badge); updateDifficultyBadge();
+    $('#btn-reset').textContent = '难度 / 新游戏';
+    $('#btn-load').textContent = '读取手动存档';
+    const exportButton = document.createElement('button'); exportButton.id = 'btn-export'; exportButton.textContent = '导出存档'; exportButton.addEventListener('click', exportGame);
+    const importButton = document.createElement('button'); importButton.id = 'btn-import'; importButton.textContent = '导入存档';
+    const fileInput = document.createElement('input'); fileInput.id = 'save-import-file'; fileInput.type = 'file'; fileInput.accept = '.json,application/json'; fileInput.hidden = true;
+    fileInput.addEventListener('change', () => { void importGameFile(fileInput.files?.[0]); fileInput.value = ''; });
+    const backupButton = document.createElement('button'); backupButton.id = 'btn-backups'; backupButton.textContent = '历史备份'; backupButton.addEventListener('click', showSaveBackups);
+    importButton.addEventListener('click', () => { importGeneration += 1; fileInput.click(); });
+    fileInput.addEventListener('cancel', () => { importGeneration += 1; });
+    $('#btn-reset').insertAdjacentElement('beforebegin', exportButton); exportButton.insertAdjacentElement('afterend', importButton); importButton.insertAdjacentElement('afterend', backupButton); document.body.append(fileInput);
+  } else {
+    for (const id of ['btn-save','btn-load','btn-reset']) $(`#${id}`).disabled = true;
+  }
   updateHud();
 
   const previewDialogueId = requestedGalPreviewDialogue();
   const galOnlyPreview = Boolean(previewDialogueId && requestedGalOnlyMode());
   document.body.classList.toggle('gal-only-preview', galOnlyPreview);
   if (galOnlyPreview) restoreGalOnlyHistory();
-  if (!previewDialogueId) autoSave();
+  if (!PRESENTATION_ONLY && difficultySession.mode === 'new') await autoSave();
 
   const bridge = {
     getState: () => state,
@@ -1637,7 +1739,7 @@ async function boot() {
   };
 
   const releaseIntoTower = () => {
-    if (GAL_ONLY_BOOT) return;
+    if (GAL_ONLY_BOOT || PRESENTATION_ONLY) return;
     releaseStoryBoot();
     void startTacticalScene();
   };
@@ -1655,7 +1757,7 @@ async function boot() {
 
   const openingDialogueActive = previewDialogueId
     ? (showDialogue(previewDialogueId, previewAfter), true)
-    : initialGalDialogue(releaseIntoTower);
+    : difficultySession?.mode === 'continue' ? false : initialGalDialogue(releaseIntoTower);
 
   // GAL-only is pure presentation: no tactical renderer, no movement loop and
   // no gameplay-art preload are created anywhere behind the story.
@@ -1669,4 +1771,4 @@ async function boot() {
   if (!openingDialogueActive) releaseIntoTower();
 }
 
-boot();
+await boot();

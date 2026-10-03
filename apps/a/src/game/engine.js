@@ -1,3 +1,4 @@
+import { getDifficultySession, profileIdentity, validateActiveSave } from './difficulty-session.js';
 import {
   CARD_LABELS,
   DIALOGUES,
@@ -68,6 +69,7 @@ import {
   selectAct3HandoffForEnemy,
   settleAct3HandoffAfterGuardians
 } from './act3-handoff-priorities.js';
+import { resolveStoryDialogue } from './story-dialogue-facts.js';
 import { applyBossProtocolModifier, getProtocolDefeatLog } from './boss-protocols.js';
 
 export const DIRECTIONS = {
@@ -108,6 +110,7 @@ export function createInitialState() {
 
   return {
     version: GAME_VERSION,
+    ...(getDifficultySession() ? { profileIdentity: profileIdentity(getDifficultySession().profile.id) } : {}),
     floor: 0,
     x: start.x,
     y: start.y,
@@ -196,11 +199,15 @@ function appendMissingFloorStates(state) {
 }
 
 export function serializeState(state) {
-  return JSON.stringify(state);
+  validateActiveSave(state);
+  const session = getDifficultySession();
+  return JSON.stringify(session ? { ...state, profileIdentity: session.identity } : state);
 }
 
 export function deserializeState(serialized) {
-  const state = migrateState(JSON.parse(serialized));
+  const raw = JSON.parse(serialized);
+  validateActiveSave(raw);
+  const state = migrateState(raw);
   if (!validateStateShape(state)) throw new Error('存档版本不兼容或内容损坏。');
   return state;
 }
@@ -1029,8 +1036,9 @@ export function getRelicLabels(state) {
   return [...new Set([...standard, ...state.relicNames])];
 }
 
-export function getDialogue(id) {
-  return DIALOGUES[id] ?? null;
+export function getDialogue(id, state = null) {
+  const dialogue = DIALOGUES[id] ?? null;
+  return state ? resolveStoryDialogue(id, dialogue, state, { floors: FLOORS }) : dialogue;
 }
 
 export function getProgressPercent(state) {

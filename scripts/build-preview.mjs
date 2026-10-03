@@ -24,7 +24,7 @@ for (const [app, dir] of [['a', 'dist'], ['b', 'dist-b-preview'], ['c', 'dist']]
 // which cannot fix origin-absolute URLs and would change relative URL semantics.
 // B/C already use relative module, import-map and import.meta.url asset paths.
 const textExtensions = new Set(['.html', '.css', '.js', '.mjs', '.json']);
-const roots = 'assets/|src/|gal-only/|art-audit/|favicon\\.svg|(?:styles|anime|ui-v8-4|ui-v8-5|ui-v10-cinematics)\\.css';
+const roots = 'assets/|src/|gal-only/|art-audit/|favicon\\.svg|(?:styles|anime|ui-v8-4|ui-v8-5|ui-v10-cinematics|difficulty)\\.css';
 const prefix = new RegExp('(["\'`(=])/(?!/)(?=' + roots + ')', 'g');
 let changedFiles = 0;
 async function rebaseA(directory) {

@@ -39,6 +39,7 @@ applyDemoTwentyFloorContent({ enemies: ENEMIES, floors: FLOORS, items: ITEMS, di
 const {
   buyShopUpgrade,
   createInitialState,
+  getDialogue,
   getShopOptions,
   getTile,
   tryMove,
@@ -87,9 +88,30 @@ test('Act II story scenes expose complete exchanges with no authored turn cap', 
     assert.ok(dialogue.turns.every((turn) => turn.speaker && turn.text && (turn.portrait || turn.kind === 'narration')), `${id} turns must be complete`);
   }
 
-  assert.match(DIALOGUES.floor11.turns.map((turn) => turn.text).join('\n'), /三天一过[\s\S]{0,80}(强制命令|紧急登记)[\s\S]{0,40}(撤|停)/);
-  assert.match(DIALOGUES.floor19.turns.map((turn) => turn.text).join('\n'), /死亡名簿/);
-  assert.match(DIALOGUES.bossOriginCorePost.turns.map((turn) => turn.text).join('\n'), /(强制执行.*停|记录还在|记录.*保存)/);
+  assert.equal(DIALOGUES.floor11.turns[3].text,
+    '看这道旧刻痕：最后一船离港后，留三天补齐回执，再撤下强制命令。没查清的名字继续留在档案里，值守人接着找。',
+    'the three-day deadline stops compulsory orders while unresolved names remain archived');
+  assert.equal(DIALOGUES.floor19.turns[2].text,
+    '停在门外，把回执放到月光下。这里的“死亡名簿”也收着活人的去向：到岸的记航次和地方，罹难的记确认人，还有这些只有最后线索、等着复查的名字。',
+    'the ledger distinguishes arrivals, confirmed deaths and unresolved names');
+  assert.equal(DIALOGUES.floor19.turns[9].text,
+    '原册留给你。请给我一份核验副本，连同每一笔凭什么写、何时改过都带上。我会把它护到起源魔源。',
+    'the custodian retains the original and the party takes only its verified copy');
+  // Base authored turns are shared with 30F. Test the actual 20F runtime
+  // resolver rather than requiring a removed slogan in the shared template.
+  const endingState = createInitialState();
+  endingState.floor = 19;
+  const resolvedEnd = getDialogue('bossOriginCorePost', endingState);
+  assert.equal(resolvedEnd.turns[0].text,
+    '核心停了，纸页也都在。先扶好受伤的人，我们从王庭回去。',
+    'ending the core preserves the papers and returns through the existing court');
+  assert.equal(resolvedEnd.turns[4].text,
+    '两人站在停止转动的印环前。王庭的门向来路打开，身后没有新的阶梯亮起。');
+  assert.equal(resolvedEnd.turns[5].text,
+    '门朝来路开了。灰港的原件收在这里，没查清的几处也夹好了，我们带回去再看。',
+    '20F keeps the records and unresolved questions without inventing higher floors');
+  assert.doesNotMatch(resolvedEnd.turns.map((turn) => turn.text).join('\n'),
+    /升降梯|带上去|继续上行|上面还有我写的抄本/);
 });
 
 test('F10 core restores 100 MP, reveals a real stair, and transfers into F11 without declaring victory', () => {

@@ -1,4 +1,4 @@
-import { DIALOGUES, ENEMIES, FLOORS, GRID_SIZE, ITEMS } from './game/data.js';
+import { DIALOGUES, ENEMIES, FLOORS, GRID_SIZE, ITEMS, SHOP_OPTIONS } from './game/data.js';
 import { applyDemoTwentyFloorContent, DEMO20_CONTENT_ID } from './game/demo-20-floor-content.js';
 import { applyDemoThirtyFloorContent, DEMO30_CONTENT_ID } from './game/demo-30-floor-content.js';
 import { applyDemoTenFloorContent } from './game/demo-10-floor-content.js';
@@ -7,7 +7,8 @@ import { applyDemoTenFloorProgressionGrammar } from './game/demo-10-floor-progre
 import { applyDemoTenFloorProgressionTopology } from './game/demo-10-floor-progression-topology.js';
 import { applyDemoTenFloorPalaceSpatialRedesign } from './game/demo-10-floor-palace-spatial-redesign.js';
 import { applyDemoTenFloorSpatialRedesign } from './game/demo-10-floor-spatial-redesign.js';
-import { installContentStorageScope } from './game/content-storage-scope.js';
+import { chooseDifficulty, showDifficultyBootFailure } from './game/difficulty-entry.js';
+import { applyDifficultyProfile } from './game/difficulty-profiles.js';
 
 applyDemoTenFloorContent({
   enemies: ENEMIES,
@@ -37,7 +38,17 @@ applyDemoThirtyFloorContent({
   dialogues: DIALOGUES
 });
 
-installContentStorageScope({ contentId: DEMO30_CONTENT_ID });
+try {
+const bootParams = new URLSearchParams(window.location.search);
+const presentationOnly = bootParams.has('gal-preview') || bootParams.get('gal-only') === '1';
+if (!presentationOnly) {
+  const session = await chooseDifficulty();
+  applyDifficultyProfile({ ENEMIES, FLOORS, ITEMS, SHOP_OPTIONS }, session.profile.id);
+}
+// Presentation routes never configure a gameplay identity or touch its slots.
+window.addEventListener('pageshow', event => { if (event.persisted) window.location.reload(); });
+const documentUrl = window.location.href;
+window.addEventListener('popstate', () => { if (window.location.href !== documentUrl) window.location.reload(); });
 
 globalThis.__TOWER_DEMO_CONTENT__ = Object.freeze({
   id: DEMO30_CONTENT_ID,
@@ -47,6 +58,13 @@ globalThis.__TOWER_DEMO_CONTENT__ = Object.freeze({
 });
 
 globalThis.__TOWER_FORCE_CANVAS__ = true;
-await import('./main.js');
-const { installTacticalInteractionLayer } = await import('./game/tactical-interaction.js');
-void installTacticalInteractionLayer().catch((error) => console.warn('Tactical interaction layer failed:', error));
+const { getCurrentGameState } = await import('./main.js');
+if (!presentationOnly) {
+  const { installTacticalInteractionLayer } = await import('./game/tactical-interaction.js');
+  void installTacticalInteractionLayer({ getState: getCurrentGameState }).catch((error) => console.warn('Tactical interaction layer failed:', error));
+}
+
+} catch (error) {
+  console.error('Difficulty startup failed:', error);
+  showDifficultyBootFailure(error);
+}

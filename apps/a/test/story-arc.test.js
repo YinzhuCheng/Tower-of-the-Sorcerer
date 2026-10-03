@@ -27,7 +27,7 @@ function sceneText(ids) {
 test('the 30-floor dialogue tells a complete, skippable three-act story', () => {
   const introIds = ['prologue', 'floor2', 'floor3', 'floor4', 'floor5', 'floor6', 'floor7', 'floor8', 'floor9', 'floor10'];
   const middleIds = ['floor11', 'floor12', 'floor13', 'floor14', 'floor15', 'floor16', 'floor17', 'floor18', 'floor19', 'floor20'];
-  const endingIds = ['floor21', 'floor22', 'floor23', 'floor24', 'floor25', 'floor26', 'floor27', 'floor28', 'floor29', 'floor30', 'ending'];
+  const endingIds = ['floor21', 'floor22', 'floor23', 'floor24', 'floor25', 'floor26', 'floor27', 'floor28', 'floor29', 'floor30', 'bossArchiveWardenPost', 'ending'];
   const actOneEvidence = [...introIds, 'bossWhalePostDemo', 'bossAstralPostDemo', 'bossBlackSealPostDemo', 'bossQueenPostDemo'];
 
   const mainSceneIds = [...introIds, ...middleIds, ...endingIds];
@@ -51,7 +51,7 @@ test('the 30-floor dialogue tells a complete, skippable three-act story', () => 
   assert.match(sceneText(actOneEvidence), /七枚核心/);
   assert.match(sceneText(actOneEvidence), /(抵达回执|全部抵达北岸|全员抵达北岸)/);
   assert.doesNotMatch(sceneText(mainSceneIds), /离港回执/);
-  assert.match(sceneText(middleIds), /三天一过[\s\S]{0,80}(强制命令|紧急登记)[\s\S]{0,40}(撤|停)/);
+  assert.match(sceneText(middleIds), /最后一船离港后，留三天补齐回执，再撤下强制命令/);
   assert.match(sceneText(middleIds), /主权签名/);
   assert.match(sceneText(middleIds), /死亡名簿/);
   assert.match(sceneText(middleIds), /十七分钟/);
@@ -59,14 +59,17 @@ test('the 30-floor dialogue tells a complete, skippable three-act story', () => 
   assert.match(sceneText(endingIds), /修复章程/);
   assert.match(sceneText(endingIds), /夜航护送章程/);
   assert.match(sceneText(endingIds), /逐页校验(?:章程|完成|侧库)/);
-  assert.match(sceneText(endingIds), /灯塔接力(?:章程|解决|修好)/);
-  assert.match(sceneText(endingIds), /断电/);
-  assert.match(sceneText(endingIds), /复电/);
-  assert.match(sceneText(endingIds), /(归档模式|只留档|保留档案|档案[^\n]{0,20}不再发令|停止发令[^\n]{0,20}档案)/);
-  assert.match(sceneText(endingIds), /记录留下，命令结束/);
+  assert.match(sceneText(endingIds), /(?:灯塔接力|接力章程|接力电容)/);
+  assert.match(sceneText(endingIds), /(?:断电|熄[^。\n]{0,12}灯|整塔熄灭)/);
+  assert.match(sceneText(endingIds), /(?:复电|复明|重新亮起)/);
+  assert.match(sceneText(['floor25']), /停警报，留原件/,'restored archive stops alarms and retains originals');
+  assert.match(sceneText(['ending']), /不再命令现在的守卫、补给柜和哨站/,'retained records no longer issue commands');
+  assert.match(sceneText(['ending']), /求援没有被删除/);
+  assert.match(sceneText(['ending']), /旧警报第一次没有重播/);
   assert.match(sceneText(endingIds), /已抵达/);
   assert.doesNotMatch(sceneText(endingIds), /新索引只写四种现况：已离港/);
-  assert.match(sceneText(endingIds), /(结案(?:本身)?已经完整|灰港[^\n]{0,20}真正结案|完整结案)/);
+  assert.match(sceneText(['ending']), /结案光线[\s\S]*沿途哨站逐一回亮确认/,'completion has actual transmission and receipt');
+  assert.match(sceneText(['ending']), /七日后复查/,'completion retains outstanding checks');
   assert.match(sceneText(endingIds), /(亲笔后记|亲手留下一页|本人[^\n]{0,20}(?:后记|记录)|自己的那一页|一页自己的话)/);
 });
 

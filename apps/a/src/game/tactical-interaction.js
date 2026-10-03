@@ -806,7 +806,7 @@ function renderGuardianMarkers(layer, canvas, state, { focusedCodes = new Set(),
   layer.replaceChildren(...halos, ...nodes);
 }
 
-export async function installTacticalInteractionLayer() {
+export async function installTacticalInteractionLayer({ getState = readCurrentState } = {}) {
   if (typeof document === 'undefined' || typeof window === 'undefined') return null;
   const canvas = await waitForCanvas();
   if (!canvas || canvas.dataset.tacticalInteraction === 'installed') return null;
@@ -869,7 +869,7 @@ export async function installTacticalInteractionLayer() {
     .flatMap(([, markers]) => markers);
 
   const updateMarkers = () => {
-    const currentState = readCurrentState();
+    const currentState = getState();
     refreshRelationFeedback(currentState);
     renderGuardianMarkers(markerLayer, canvas, currentState, {
       focusedCodes,
@@ -894,7 +894,7 @@ export async function installTacticalInteractionLayer() {
   };
 
   const previewAtEvent = (event, persistForTouch = false) => {
-    const state = readCurrentState();
+    const state = getState();
     const tile = pointerTile(canvas, event);
     const preview = tile && state ? buildMapUnitHoverPreview(state, tile.x, tile.y) : null;
     setFocus(state, tile);
@@ -916,7 +916,7 @@ export async function installTacticalInteractionLayer() {
   const onPointerLeave = () => hideTooltip();
   const onPointerDownCapture = (event) => {
     if (event.pointerType === 'mouse') return;
-    const state = readCurrentState();
+    const state = getState();
     const tile = pointerTile(canvas, event);
     const preview = tile && state ? buildMapUnitHoverPreview(state, tile.x, tile.y) : null;
     if (!preview) {

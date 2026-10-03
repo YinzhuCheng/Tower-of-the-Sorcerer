@@ -1,3 +1,5 @@
+import { GAL_PREVIEW_ORDER, createGalPreviewStoryState } from '/src/game/story-preview-context.js';
+import { resolveStoryDialogue } from '/src/game/story-dialogue-facts.js';
 import { DIALOGUES, ENEMIES, FLOORS, GRID_SIZE, ITEMS } from '/src/game/data.js';
 import { applyDemoTwentyFloorContent } from '/src/game/demo-20-floor-content.js';
 import { applyDemoThirtyFloorContent } from '/src/game/demo-30-floor-content.js';
@@ -40,28 +42,9 @@ const tocList = $('#toc-list');
 const storyEnd = $('#story-end');
 const restartEnding = $('#restart-ending');
 
-const GAL_HISTORY_STORAGE_KEY = 'lost-magic-tower:gal-only-history:v1';
+const GAL_HISTORY_STORAGE_KEY = 'lost-magic-tower:gal-only-history:example-route:v2';
 
-const STORY_ORDER = Object.freeze([
-  'prologue',
-  'bossCatPreDemo', 'bossCatPostDemo',
-  'floor2', 'bossFoxPreDemo', 'bossFoxPostDemo',
-  'floor3', 'bossWhalePreDemo', 'bossWhalePostDemo',
-  'floor4', 'bossSwordPreDemo', 'bossSwordPostDemo',
-  'floor5', 'bossDragonPreDemo', 'bossDragonPostDemo',
-  'floor6', 'bossAstralPreDemo', 'bossAstralPostDemo',
-  'floor7', 'bossShadowPreDemo', 'bossShadowPostDemo',
-  'floor8', 'bossPalacePreDemo', 'bossPalacePostDemo',
-  'floor9', 'bossBlackSealPreDemo', 'bossBlackSealPostDemo',
-  'floor10', 'bossQueenPreDemo', 'queenPhaseDemo', 'bossQueenPostDemo',
-  'floor11', 'floor12', 'floor13', 'floor14', 'floor15',
-  'floor16', 'floor17', 'floor18',
-  'floor19', 'bossEchoRegentPost',
-  'floor20', 'warCouncil', 'bossArcaneSovereignPost', 'bossOriginCorePost',
-  'floor21', 'floor22', 'floor23', 'floor24', 'floor25',
-  'floor26', 'floor27', 'floor28', 'floor29',
-  'floor30', 'bossArchiveWardenPost', 'ending'
-]);
+const STORY_ORDER = GAL_PREVIEW_ORDER;
 
 function dialogueTurns(dialogue) {
   if (Array.isArray(dialogue?.turns) && dialogue.turns.length) return dialogue.turns;
@@ -91,7 +74,7 @@ function categoryFor(id) {
 const scenes = STORY_ORDER
   .filter((id) => DIALOGUES[id])
   .map((id, index) => {
-    const dialogue = DIALOGUES[id];
+    const dialogue = resolveStoryDialogue(id, DIALOGUES[id], createGalPreviewStoryState(id), { floors: FLOORS });
     const turns = dialogueTurns(dialogue);
     const speakers = [...new Set(turns.map((turn) => turn.speaker).filter(Boolean))];
     const cgCount = new Set(turns.map((turn) => turn.cg).filter(Boolean)).size;
@@ -151,7 +134,7 @@ function loadScene(index, { keepUrl = false, transitionLabel = null } = {}) {
   frame.src = previewUrl(scene.id);
 
   sceneTitle.textContent = scene.title;
-  sceneMeta.textContent = `${scene.category} · ${scene.turns} 句${scene.cgCount ? ` · ${scene.cgCount} 个 CG 节点` : ''}`;
+  sceneMeta.textContent = `示例路线 · ${scene.category} · ${scene.turns} 句${scene.cgCount ? ` · ${scene.cgCount} 个 CG 节点` : ''}`;
   progressLabel.textContent = `完整剧情 ${currentIndex + 1} / ${scenes.length}`;
   progressBar.style.width = `${((currentIndex + 1) / scenes.length) * 100}%`;
   prevButton.disabled = currentIndex === 0;
