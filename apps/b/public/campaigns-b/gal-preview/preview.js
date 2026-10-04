@@ -10,7 +10,7 @@ export function mountCenweiPreview(document){
  const handledEvents=new WeakSet();
  const body=$('story-body');let readPress=null;
  const isEditable=target=>/^(INPUT|TEXTAREA|SELECT)$/.test(target?.tagName??'')||target?.isContentEditable||!!target?.closest?.('[contenteditable]:not([contenteditable="false"])');
- const isControl=target=>!!target?.closest?.('button,a,input,textarea,select,summary,[role="button"],#story-choices,.story-reading-tools,[contenteditable]:not([contenteditable="false"])');
+ const isControl=target=>!!target?.closest?.('button,a,input,textarea,select,summary,[role="button"],#story-choices,.story-reading-tools,#preview-speaker-badge,[contenteditable]:not([contenteditable="false"])');
  const hasSelection=()=>String(document.getSelection?.()??document.defaultView?.getSelection?.()??'').trim().length>0;
  const reading=()=>dialog.open&&reader.mode==='reading'&&!body.hidden&&!body.inert;
  const modified=event=>event.ctrlKey||event.metaKey||event.altKey||event.shiftKey;
