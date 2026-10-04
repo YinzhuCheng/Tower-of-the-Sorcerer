@@ -48,6 +48,40 @@ export const FOREST_GAL_ENVIRONMENTS=Object.freeze({
     "alt": "打开的节火匣：恰好八只储热囊，后排四个标记小盖全部打开"
   }
 });
+export const FOREST_GAL_STORY_LOCATIONS=Object.freeze({
+  "B_ENV_08": {
+    "id": "B_ENV_08",
+    "file": "assets/forest-gal/b08-empty-post-shelter.webp",
+    "width": 1672,
+    "height": 941,
+    "bytes": 306856,
+    "sha256": "fa09bbdf9c7968decb0bf8b9bfb77109e65a9bda9aba3a48cdc2f5b68fd5f061",
+    "mime": "image/webp",
+    "sourceSha256": "c4718467d79c0d8d4001bcaa22e47ab828deb866d437b185e18ea40eeb82b489",
+    "sourceBytes": 2445095,
+    "label": "空驿棚 · 夜火与明早的柴",
+    "alt": "夜里的空驿棚：石柱、普通柴火、靠墙的单个背包、铺开的床垫和留给明早的干柴，没有人物或降雨",
+    "fit": "preserve-full-frame",
+    "scope": "story-only; never physical-world geometry",
+    "styleLineage": "Root-pixel-approved original image_gen cel-r1; full-frame runtime WebP, no pose or action synthesized"
+  },
+  "B_ENV_12": {
+    "id": "B_ENV_12",
+    "file": "assets/forest-gal/b12-river-valley-overlook.webp",
+    "width": 1672,
+    "height": 941,
+    "bytes": 629656,
+    "sha256": "ddd2839d733c4434344cf85618fb0b7a1e2fda378b7589db800254e1f3c46824",
+    "mime": "image/webp",
+    "sourceSha256": "79473373570c07250da8515e44b53056f6f5d6b92c8b44188832dda60d0a5fe1",
+    "sourceBytes": 3367823,
+    "label": "河谷望台 · 收割后的田与炉烟",
+    "alt": "白天的河谷望台：石边、收割后的田地、河桥、普通村屋和斜升的炉烟，没有固定在景中的车或人物",
+    "fit": "preserve-full-frame",
+    "scope": "story-only; never physical-world geometry",
+    "styleLineage": "Root-pixel-approved original image_gen cel-r1; full-frame runtime WebP, no pose or action synthesized"
+  }
+});
 export const FOREST_GAL_DAILY_CAST=Object.freeze({
   "hero": {
     "width": 1024,
@@ -74,4 +108,4 @@ export const FOREST_GAL_DAILY_CAST=Object.freeze({
     "file": "assets/forest-gal/shawu-daily-lowered-hands-r1.webp"
   }
 });
-export const FOREST_GAL_ASSETS=Object.freeze([FOREST_GAL_BACKDROP,...Object.values(FOREST_GAL_CAST),...Object.values(FOREST_GAL_ENVIRONMENTS),...Object.values(FOREST_GAL_DAILY_CAST)]);
+export const FOREST_GAL_ASSETS=Object.freeze([FOREST_GAL_BACKDROP,...Object.values(FOREST_GAL_CAST),...Object.values(FOREST_GAL_ENVIRONMENTS),...Object.values(FOREST_GAL_DAILY_CAST),...Object.values(FOREST_GAL_STORY_LOCATIONS)]);

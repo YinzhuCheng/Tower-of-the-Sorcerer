@@ -1,7 +1,8 @@
 import {HERO_MOTION_ASSET} from './hero-neutral.js';
 import {createFastNativeSupportSampler} from './native-support-fast.mjs';
 import {FOREST_GROUND_MESH} from './forest-ground-mesh.js';
-import {FineHeroPresentation,NativeFootPointIndex} from './fine-presentation.mjs';
+import {NativeFootPointIndex} from './fine-presentation.mjs';
+import {ForestHeroPresentation,forestBridgeSnapshot} from './forest-bridge-presentation.mjs';
 import {SoftwareHero} from './software-hero.mjs';
 import {SoftwareFootShadows} from './foot-shadows.mjs';
 import {HeroCanvasLayer} from './canvas-layer.mjs';
@@ -22,8 +23,19 @@ export function createHeroWorldRuntime(runtime,onReady=()=>{},dependencies={}){
  function prepare(loaded=assets){if(disabled||!loaded)return false;try{if(!native){assets=loaded;return false;}const nextRenderer=new SoftwareHero(loaded.model,{camera,texture:loaded.texture,terrainDepth:{width:camera.width,height:camera.height,data:native.depth,nearM:camera.depthEncoding.nearM,farM:camera.depthEncoding.farM}}),nextShadows=new SoftwareFootShadows({camera,terrainDepth:nextRenderer.terrainDepth,supportAtPixel:shadowSupport.nativeSupportAtPixel});assets=loaded;renderer=nextRenderer;shadows=nextShadows;error=null;return true;}catch(e){assets=null;fail(e);return false;}}
  function ensureAssets(){if(!controller||disabled||loadingGeneration===generation)return;loadingGeneration=generation;const mine=generation,owner=controller;if(assets){prepare();return;}assetPromise??=Promise.resolve().then(load);owner.loadAssets(()=>assetPromise,({assets:loaded})=>{if(mine!==generation||owner!==controller||disabled)return;prepare(loaded);notify();}).catch(e=>{if(mine!==generation||owner!==controller||disabled)return;fail(e);notify();});}
  function reset(){generation++;controller?.dispose();controller=null;lease=null;loadingGeneration=null;renderer=null;shadows=null;lastPaint=null;error=null;disabled=false;if(!assets)assetPromise=null;}
- function sync(fine,geometry,nextNative){if(!fine?.active||!fine.physical||!hasFineForest(fine.state.location.regionId)){if(controller)reset();return;}if(controller&&(controller.regionId!==fine.state.location.regionId||controller.geometry!==geometry))reset();if(disabled)return;try{const changedNative=native!==nextNative;native=nextNative;if(assets&&native&&changedNative&&!disabled)prepare();if(!controller){controller=new FineHeroPresentation({geometry,support,staticPointBlocked:p=>index.blocked(p),passable:(s,n)=>runtime.passable(s,n.source.x,n.source.y),capsuleHits:fineCapsuleHitsPolygon});lease=controller.bind({sceneToken:`hero-world-${generation}`,snapshot:fine,reason:'scene-bind'});tickId=0;}ensureAssets();}catch(e){fail(e);}}
- function tick(snapshot,{paused=false,dt=0}={}){if(!controller||disabled)return;try{controller.tick({lease,snapshot,paused,dt,tickId:++tickId});}catch(e){fail(e);}}
+ function sync(fine,geometry,nextNative,coarse=null){
+  const bridge=!fine?.active?forestBridgeSnapshot(coarse,controller?.bridge):null;
+  if(!bridge&&(!fine?.active||!fine.physical||!hasFineForest(fine.state.location.regionId))){if(controller)reset();return;}
+  if(fine?.active&&controller&&(controller.regionId!==fine.state.location.regionId||controller.geometry!==geometry||controller.bridge)&&!controller.resumeFine(fine,geometry))reset();
+  if(disabled)return;
+  try{
+   const changedNative=native!==nextNative;native=nextNative;if(assets&&native&&changedNative)prepare();
+   if(!controller){controller=new ForestHeroPresentation({geometry,support,staticPointBlocked:p=>index.blocked(p),passable:(s,n)=>runtime.passable(s,n.source.x,n.source.y),capsuleHits:fineCapsuleHitsPolygon});tickId=0;lease=bridge?controller.enterBridge({sceneToken:`hero-world-${generation}`,snapshot:bridge}):controller.bind({sceneToken:`hero-world-${generation}`,snapshot:fine,reason:'scene-bind'});}
+   else if(bridge)lease=controller.enterBridge({sceneToken:`hero-world-${generation}`,snapshot:bridge});
+   ensureAssets();
+  }catch(e){fail(e);}
+ }
+ function tick(snapshot,{paused=false,dt=0}={}){if(!controller||disabled)return;try{if(controller.bridge)controller.tickBridge({lease,snapshot:controller.bridge,paused,dt,tickId:++tickId});else controller.tick({lease,snapshot,paused,dt,tickId:++tickId});}catch(e){fail(e);}}
  function drawNative(ctx,{zoom=1}={}){const pose=controller?.poseForDraw(lease);if(disabled||!pose||!renderer||!shadows)return null;try{const start=performance.now(),scale=2*zoom,shadow=shadows.render(pose,{scale}),frame=renderer.render(pose,{scale});shadowLayer.draw(ctx,shadow);actorLayer.draw(ctx,frame);lastPaint={ms:performance.now()-start,poseTravelM:pose.travelM,phase:pose.phase,mode:pose.mode,paused:pose.paused,rootM:pose.rootM,feet:pose.legs.map(l=>({side:l.side,stance:l.stance,center:l.center,yaw:l.yaw,lift:l.lift})),raster:[frame.width,frame.height],scale,depthPixels:frame.stats.occluded??0,shadowPixels:shadow.stats.clipped};return lastPaint;}catch(e){fail(e);return null;}}
- return{sync,tick,reset,drawNative,get ready(){return Boolean(!disabled&&controller?.poseForDraw(lease)&&renderer&&shadows);},snapshot:()=>({mode:disabled?'failed-fallback':controller&&renderer?'cpu-world-rig':'loading-or-fallback',generation,ready:Boolean(!disabled&&controller?.poseForDraw(lease)&&renderer),disabled,error,lastPaint,source:'new-depth-bearing-modeled-rig',bindings:controller?.stats.binds??0})};
+ return{sync,tick,reset,drawNative,handoffFine(snapshot){if(!controller||disabled)return;try{controller.finishFineApproach(snapshot);}catch(e){fail(e);}},get ready(){return Boolean(!disabled&&controller?.poseForDraw(lease)&&renderer&&shadows);},snapshot:()=>({mode:disabled?'failed-fallback':controller&&renderer?'cpu-world-rig':'loading-or-fallback',generation,ready:Boolean(!disabled&&controller?.poseForDraw(lease)&&renderer),disabled,error,lastPaint,source:'new-depth-bearing-modeled-rig',bindings:controller?.stats.binds??0,bridge:controller?.bridge?{id:controller.bridge.id,progress:controller.bridge.progress}:null})};
 }

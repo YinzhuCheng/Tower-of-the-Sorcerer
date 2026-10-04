@@ -209,3 +209,7 @@
 @media(any-pointer:coarse),(hover:none){
  .story-dialog .story-touch-hint{display:block}
 }
+
+/* Exact B08/B12 story-location art preserves the whole reviewed frame.
+   Scope excludes existing B01–B03, reader controls and physical-world views. */
+.story-dialog[data-art-presentation="story-location"] #story-backdrop{object-fit:contain;object-position:center}
