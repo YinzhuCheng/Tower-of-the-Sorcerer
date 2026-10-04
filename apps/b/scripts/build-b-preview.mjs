@@ -19,6 +19,7 @@ export const B_PREVIEW_FILES=[
  'src/core/battle.js','src/core/campaign.js','src/game/magic-blade.js','src/solver/state.js','src/solver/campaign-adapter.js',
  'src/campaigns/b/content.js','src/campaigns/b/geography.js','src/campaigns/b/view.js','src/campaigns/b/player-copy.js','src/campaigns/b/preview-session.js',
  'src/campaigns/b/story/opening-legacy.js','src/campaigns/b/story/opening-revision.js','src/campaigns/b/story/index.js','src/campaigns/b/story/content.js','src/campaigns/b/story/presentation.js',
+ 'public/campaigns-b/gal-preview/cenwei-art-contract.js','public/campaigns-b/gal-preview/cenwei-content.js','public/campaigns-b/gal-preview/index.html','public/campaigns-b/gal-preview/preview-model.js','public/campaigns-b/gal-preview/preview-stage.js','public/campaigns-b/gal-preview/preview.css','public/campaigns-b/gal-preview/preview.js','public/assets/forest-canonical/cenwei-japanese-vn-r3.png','public/assets/forest-gal/environments/b06-cenwei-neutral.webp',
  'public/campaigns-b/index.html','public/campaigns-b/styles.css','public/campaigns-b/app.js'
 ];
 await rm(out,{recursive:true,force:true});await mkdir(out,{recursive:true});
