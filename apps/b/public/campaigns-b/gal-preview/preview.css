@@ -9,3 +9,9 @@
 .story-dialog .story-reading-tools .story-quiet-tools{flex-wrap:wrap}.story-dialog .story-reading-tools button{min-width:44px;min-height:44px;padding:7px 10px;touch-action:manipulation}.story-dialog .story-reading-tools #story-next{min-width:94px}.story-dialog #story-choices button[aria-pressed="true"]{border-color:#456b4b;background:#dce5d0;color:#314831;opacity:.85}.story-dialog #preview-reunion{font-size:12px;color:#334f36;background:#e2e8d7;border-color:#9fac86;min-height:42px}.story-dialog #preview-end{font-size:11px!important;margin:5px 0}
 @media(max-width:520px){.preview-variants{grid-template-columns:1fr}.story-dialog .story-scene-heading{top:46px}.story-dialog .story-reading-tools{grid-template-columns:1fr auto;gap:5px}.story-dialog .story-reading-tools button{padding:7px;min-width:44px}.story-dialog .story-reading-tools #story-next{min-width:78px}}
 @media(prefers-reduced-motion:reduce){.cenwei-preview *{transition:none!important;scroll-behavior:auto!important}}
+
+/* Keep tooltip presence out of pointer hit testing. The reader hides the hint
+   on pointerdown; this fixed two-line slot must keep exactly the same geometry
+   before pointerup, including when hidden. Preview-only: no shared GAL change. */
+.cenwei-preview .story-dialog #story-tool-help{display:block!important;block-size:calc(3em + 8px);min-block-size:calc(3em + 8px);max-block-size:calc(3em + 8px);overflow:auto}
+.cenwei-preview .story-dialog #story-tool-help[hidden]{visibility:hidden}
