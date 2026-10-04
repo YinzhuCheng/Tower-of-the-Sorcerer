@@ -49,6 +49,22 @@ export const FOREST_GAL_ENVIRONMENTS=Object.freeze({
   }
 });
 export const FOREST_GAL_STORY_LOCATIONS=Object.freeze({
+  "B_ENV_05": {
+    "id": "B_ENV_05",
+    "file": "assets/forest-gal/b05-neutral-lakeshore-gal-r2.webp",
+    "width": 1536,
+    "height": 1024,
+    "bytes": 2628444,
+    "sha256": "57588c7b4c1aa0e177bd7266f84b3606f693fa033c30a80b10a0f09fbb05ca26",
+    "mime": "image/webp",
+    "sourceSha256": "acd0fb4ad7683866da48745c44f413857544703dbbaa222cff13aa8c99b4765a",
+    "sourceBytes": 3498688,
+    "label": "暖溪取水口 · 水边空镜",
+    "alt": "林间水岸空镜：蓝绿色溪水穿过低矮石堤，两岸树荫与草木间没有人物；这是静态环境，不表现阀门、水管施工或人物动作",
+    "fit": "preserve-full-frame",
+    "scope": "story-only neutral environmental cutaway; failed navigation alignment, never physical-world geometry, collision or support",
+    "styleLineage": "Image generation B05 r2; full-frame lossless WebP decoded pixels equal frozen PNG; no crop, resize, recolor or pose synthesis"
+  },
   "B_ENV_08": {
     "id": "B_ENV_08",
     "file": "assets/forest-gal/b08-empty-post-shelter.webp",

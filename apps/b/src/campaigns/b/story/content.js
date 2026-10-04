@@ -1501,7 +1501,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 279,
           "speaker": "旁白",
           "portrait": null,
-          "text": "维护根偶正把新装的普通水管往外顶。它每次收回木臂，管口就被扯离石槽一点；施工队只能把固定绳拉紧。",
+          "text": "林子在水边让开一小片空地。石堤下的水缓缓流着，维护根偶却把新装的普通水管一下一下往外顶；管口快要脱开石槽，工队把固定绳绷得笔直。",
           "branch": "common",
           "kind": "narration"
         },
@@ -1510,7 +1510,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 281,
           "speaker": "工队住民",
           "portrait": null,
-          "text": "它一直把新管当成堵塞。再顶两次，接口就裂了。",
+          "text": "它一直顶这根新管。绳子快撑不住了！",
           "branch": "common"
         },
         {
@@ -1518,7 +1518,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 283,
           "speaker": "纱雾",
           "portrait": "guide",
-          "text": "（让完整圆环星盘停在管边）旧指令还在：这条暖水道不许被别的东西碰。",
+          "text": "（让星盘停在管边）它还护着旧暖水道，不肯让新管靠近。",
           "branch": "common",
           "expression": "gentle"
         },
@@ -1545,7 +1545,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 289,
           "speaker": "璃",
           "portrait": "hero",
-          "text": "大家松手以后退到那块石墙后。我把它引离管口。",
+          "text": "大家一起松手，退到那块石墙后。别再拉了，我来把它引开。",
           "branch": "common",
           "expression": "guarded"
         }
@@ -1645,7 +1645,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 309,
           "speaker": "纱雾",
           "portrait": "guide",
-          "text": "再等一下。我以前路过河谷，总把手收在袖子里，觉得回村就好了。现在连这里也要这样了。",
+          "text": "再等一下。以前从河谷回来，我总要在这里洗手。村里的水，一直是暖的。",
           "branch": "common",
           "expression": "gentle",
           "phase": "pipeWorks"
@@ -1695,7 +1695,7 @@ export const FOREST_STORY_CONTENT = {
           "sourceLine": 319,
           "speaker": "纱雾",
           "portrait": "guide",
-          "text": "嗯。刚才根一暗，我心里空了一下，还以为水也会跟着没了。",
+          "text": "嗯。刚才根一暗，我吓了一跳，还以为连水也要没了。",
           "branch": "common",
           "expression": "gentle",
           "phase": "pipeWorks"
