@@ -49,5 +49,5 @@ test('pouch image and dialogue geometry are separate at desktop, phone and compa
 });
 
 test('player copy truthfully scopes articulated walking and app keeps the fine-only story pause',()=>{
- const html=readFileSync(new URL('../public/campaigns-b/index.html',import.meta.url),'utf8'),app=readFileSync(new URL('../public/campaigns-b/app.js',import.meta.url),'utf8');assert.doesNotMatch(html,/人物暂用静态立绘|地图主角为静态立绘，不是行走动画/);assert.equal((html.match(/B01 细步区已接入行走动画/g)||[]).length,2);assert.match(html,/其他区域仍沿用原有呈现/);assert.ok(app.includes('(fine.active&&session.isStoryOpen())||Boolean(session.pending)||Boolean(session.compatibilityFailure)'));
+ const html=readFileSync(new URL('../public/campaigns-b/index.html',import.meta.url),'utf8'),app=readFileSync(new URL('../public/campaigns-b/app.js',import.meta.url),'utf8');assert.doesNotMatch(html,/人物暂用静态立绘|地图主角为静态立绘，不是行走动画/);assert.equal((html.match(/B01–B03 细步区及两段连接桥已接入行走动画/g)||[]).length,2);assert.match(html,/其他区域仍沿用原有呈现/);assert.ok(app.includes('(fine.active&&session.isStoryOpen())||Boolean(session.pending)||Boolean(session.compatibilityFailure)'));
 });
