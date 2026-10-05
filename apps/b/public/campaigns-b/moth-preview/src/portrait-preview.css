@@ -13,7 +13,11 @@
 .moth-preview .preview-art-tools{position:absolute;z-index:45;right:3%;top:90px;bottom:4%;width:min(420px,94%);box-sizing:border-box;overflow:auto;padding:16px;background:#f5f0e5;color:#243b31;border:1px solid #c6b88a;border-radius:12px;box-shadow:0 8px 28px #0008}
 .moth-preview .preview-art-tools header{display:flex;align-items:center;justify-content:space-between;gap:12px}
 .moth-preview .preview-art-tools h2{margin:0;font-size:17px}
-.moth-preview .preview-art-tools button{min-height:38px;font-size:12px}
+/* The inspector is a light surface inside the dark GAL shell. Declare its
+   control palette explicitly instead of inheriting the shell button fill. */
+.moth-preview .preview-art-tools button{min-height:38px;font-size:12px;color:#243b31;background:#fcfaee;border-color:#7b8d75}
+.moth-preview .preview-art-tools button:not([aria-pressed="true"]):hover:not(:disabled){background:#e4e9d4;border-color:#426349}
+.moth-preview .preview-art-tools button:focus-visible{outline-color:#426349}
 .moth-preview .preview-expression-controls{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
 .moth-preview .preview-expression-controls button[aria-pressed="true"]{background:#d1dfce;border-color:#426349}
 .moth-preview .preview-large-frame{width:100%;aspect-ratio:1;box-sizing:border-box;padding:12px;background:#d7ded6;border:1px solid #98a991}
