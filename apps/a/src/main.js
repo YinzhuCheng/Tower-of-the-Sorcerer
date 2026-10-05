@@ -1519,7 +1519,7 @@ function confirmReset() {
 function updateDifficultyBadge() {
   const badge = document.querySelector('#difficulty-badge');
   if (!badge || !difficultySession) return;
-  badge.textContent = `${difficultySession.profile.label} · ${persistence.readOnly ? '存档保护：只读' : '独立进度'}`;
+  badge.textContent = `${difficultySession.profile.revisionLabel ?? difficultySession.profile.label} · ${persistence.readOnly ? '存档保护：只读' : '独立进度'}`;
   badge.dataset.readonly = String(persistence.readOnly);
 }
 

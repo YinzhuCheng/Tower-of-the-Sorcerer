@@ -2,20 +2,30 @@
 export const CANDIDATE_VERSION = 'tower-three-tiers-r1';
 export const CAMPAIGN_ID = 'demo-30f-afterlight-registry-v1';
 export const PROFILES = Object.freeze({
-  forgiving: Object.freeze({ id: 'forgiving', label: '宽容', contentHash: '6f9bbbad0bb58045', dataChecksum: 'b0feb01841ebb867', description: '第二幕两处普通敌人的消耗略低，给法术分配留出余地。' }),
+  forgiving: Object.freeze({ id: 'forgiving', label: '宽容', revisionLabel: '宽容 · 新版 r2', candidateVersion: 'tower-forgiving-r2', contentHash: '52bf838bcf879eb1', dataChecksum: '228fcff017b15f83', description: '第一幕静咏者的魔法消耗降低，第二幕两处普通敌人的消耗略低。新版进度独立保存。' }),
   classic: Object.freeze({ id: 'classic', label: '经典', contentHash: 'bce284f9326a5f58', dataChecksum: '0c3618a149596c7a', description: '保留当前经典数值与已有存档，适合完整体验路线规划。' }),
   challenge: Object.freeze({ id: 'challenge', label: '挑战', contentHash: '731b5e972791ef4d', dataChecksum: '5175a7771022a90f', description: '第三幕生命补给略少，需要重新规划后段资源。' })
 });
+// Compatibility data only: one engine, three new-game choices, no save migration.
+export const LEGACY_PROFILES = Object.freeze({
+  'forgiving-r1': Object.freeze({ id: 'forgiving-r1', identityProfileId: 'forgiving', label: '宽容（旧版 r1）', resumeOnly: true, candidateVersion: CANDIDATE_VERSION, contentHash: '6f9bbbad0bb58045', dataChecksum: 'b0feb01841ebb867' })
+});
+export function getDifficultyProfile(id) {
+  return Object.hasOwn(PROFILES, id) ? PROFILES[id] : Object.hasOwn(LEGACY_PROFILES, id) ? LEGACY_PROFILES[id] : null;
+}
 export function profileIdentity(id) {
-  const p = Object.hasOwn(PROFILES, id) ? PROFILES[id] : null;
+  const p = getDifficultyProfile(id);
   if (!p) throw Error('未知难度，原存档未改动。');
-  return Object.freeze({ format: 'tower-profile-identity-v1', campaignId: CAMPAIGN_ID, profileId: p.id, candidateVersion: CANDIDATE_VERSION, contentHash: p.contentHash, gameVersion: 10 });
+  return Object.freeze({ format: 'tower-profile-identity-v1', campaignId: CAMPAIGN_ID, profileId: p.identityProfileId ?? p.id, candidateVersion: p.candidateVersion ?? CANDIDATE_VERSION, contentHash: p.contentHash, gameVersion: 10 });
 }
 let session = null;
 export function configureDifficultySession({ profileId, mode, serialized = null, persistence = null }) {
   if (session) throw Error('本页难度已经确定，请回到入口重新选择。');
   if (!['new', 'continue'].includes(mode)) throw Error('未知启动方式。');
-  session = Object.freeze({ profile: PROFILES[profileId], identity: profileIdentity(profileId), mode, serialized, persistence });
+  const identity = profileIdentity(profileId), profile = getDifficultyProfile(profileId);
+  if (profile.resumeOnly && mode !== 'continue') throw Error('旧版宽容仅用于继续原存档；新游戏请选择新版宽容。');
+  if (mode === 'continue') parseProfileSave(serialized, profileId);
+  session = Object.freeze({ profile, identity, mode, serialized, persistence });
   return session;
 }
 export const getDifficultySession = () => session;

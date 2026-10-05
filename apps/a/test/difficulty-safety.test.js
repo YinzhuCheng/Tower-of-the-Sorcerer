@@ -16,7 +16,7 @@ test('three exact profile mutations, immutable document identity and baseline pr
   for(const id of Object.keys(PROFILES)) {
     const clone={ENEMIES:structuredClone(data.ENEMIES),FLOORS:structuredClone(data.FLOORS),ITEMS:structuredClone(data.ITEMS),SHOP_OPTIONS:structuredClone(data.SHOP_OPTIONS)};
     const expected=structuredClone(clone);
-    if(id==='forgiving'){expected.ENEMIES.manaSentinel.atk=280;expected.ENEMIES.prismArchivist.magicPower=135;}
+    if(id==='forgiving'){expected.ENEMIES.hushCantor.magicPower=199;expected.ENEMIES.manaSentinel.atk=280;expected.ENEMIES.prismArchivist.magicPower=135;}
     if(id==='challenge'){expected.ITEMS.act3Hp.hp=5950;expected.ITEMS.act3Hp.maxHp=5950;expected.ITEMS.act3Hp.description='生命上限与当前生命 +5950。';}
     assert.equal(applyDifficultyProfile(clone,id).applied,true);assert.deepEqual(clone,expected);
     assert.equal(profileDataChecksum(clone),PROFILES[id].dataChecksum);

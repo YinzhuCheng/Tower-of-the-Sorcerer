@@ -1,7 +1,9 @@
-import { CAMPAIGN_ID, parseProfileSave, profileIdentity, validateProfileSave } from './difficulty-session.js';
+import { CAMPAIGN_ID, getDifficultyProfile, parseProfileSave, profileIdentity, validateProfileSave } from './difficulty-session.js';
 export function difficultyStorageKeys(id) {
   profileIdentity(id);
-  const scope = `lost-magic-tower:${CAMPAIGN_ID}${id === 'classic' ? '' : `:difficulty:${id}`}`;
+  const storageId = id === 'forgiving-r1' ? 'forgiving' : id;
+  const revision = id === 'forgiving' ? ':revision:r2' : '';
+  const scope = `lost-magic-tower:${CAMPAIGN_ID}${id === 'classic' ? '' : `:difficulty:${storageId}${revision}`}`;
   return Object.freeze({ auto: `${scope}:auto:v1`, manual: `${scope}:manual:v1`, backup: `${scope}:backup:before-new:v1` });
 }
 export function inspectDifficultyStorage(storage, id) {
@@ -78,6 +80,7 @@ export function createDifficultyPersistence(storage, id, initial = inspectDiffic
       });
     },
     prepareNew({ isCurrent = () => true } = {}) {
+      if (getDifficultyProfile(id).resumeOnly) throw Error('旧版宽容仅用于继续原存档，不能新建或覆盖。');
       return withWriteLock(() => {
       if (!isCurrent()) throw Error('启动已取消，原存档未改动。');
       // Back up original bytes first. Quota failure aborts without touching saves.
