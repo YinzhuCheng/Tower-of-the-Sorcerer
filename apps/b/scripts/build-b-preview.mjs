@@ -20,7 +20,27 @@ export const B_PREVIEW_FILES=[
  'src/campaigns/b/content.js','src/campaigns/b/geography.js','src/campaigns/b/view.js','src/campaigns/b/player-copy.js','src/campaigns/b/preview-session.js',
  'src/campaigns/b/story/opening-legacy.js','src/campaigns/b/story/opening-revision.js','src/campaigns/b/story/index.js','src/campaigns/b/story/content.js','src/campaigns/b/story/presentation.js',
  'public/campaigns-b/gal-preview/cenwei-art-contract.js','public/campaigns-b/gal-preview/cenwei-content.js','public/campaigns-b/gal-preview/index.html','public/campaigns-b/gal-preview/preview-model.js','public/campaigns-b/gal-preview/preview-stage.js','public/campaigns-b/gal-preview/preview.css','public/campaigns-b/gal-preview/preview.js','public/assets/forest-canonical/cenwei-japanese-vn-r3.png','public/assets/forest-gal/environments/b06-cenwei-neutral.webp',
- 'public/campaigns-b/index.html','public/campaigns-b/styles.css','public/campaigns-b/app.js'
+ 'public/campaigns-b/index.html','public/campaigns-b/styles.css','public/campaigns-b/app.js',
+ // Isolated moth art reader; exact files only, no gameplay or production asset registry changes.
+ 'public/campaigns-b/moth-preview/index.html',
+ 'public/campaigns-b/moth-preview/src/main.mjs',
+ 'public/campaigns-b/moth-preview/src/standing-layout.mjs',
+ 'public/campaigns-b/moth-preview/src/preview.mjs',
+ 'public/campaigns-b/moth-preview/src/preview-model.mjs',
+ 'public/campaigns-b/moth-preview/src/portrait-stage.mjs',
+ 'public/campaigns-b/moth-preview/src/portrait-contract.mjs',
+ 'public/campaigns-b/moth-preview/src/portrait-preview.css',
+ 'public/campaigns-b/moth-preview/src/story-data.mjs',
+ 'public/campaigns-b/moth-preview/src/contract-data.mjs',
+ 'public/campaigns-b/moth-preview/vendor/b-source/forest-gal-reader.js',
+ 'public/campaigns-b/moth-preview/vendor/b-source/styles.css',
+ 'public/campaigns-b/moth-preview/vendor/b-source/preview.css',
+ 'public/campaigns-b/moth-preview/vendor/dual-form/boss-presentation.mjs',
+ 'public/campaigns-b/moth-preview/vendor/dual-form/verified-asset-loader.mjs',
+ 'public/assets/moth-preview/BBOSS-001_anthro-avatar_v3-style.png',
+ 'public/assets/moth-preview/BBOSS-001_anthro-expression_alert_v1.png',
+ 'public/assets/moth-preview/BBOSS-001_anthro-expression_gentle-smile_v1.png',
+ 'public/assets/moth-preview/BBOSS-001_anthro-standing_v2.png'
 ];
 await rm(out,{recursive:true,force:true});await mkdir(out,{recursive:true});
 for(const file of B_PREVIEW_FILES){const destination=join(out,file.replace(/^public\//,''));await mkdir(dirname(destination),{recursive:true});await cp(join(root,file),destination);}

@@ -1,0 +1,25 @@
+/* Preview-only frame: display the entire original PNG, never a circular crop.
+   This padding does not repair the production PNG's insufficient top margin. */
+.moth-preview .story-dialog .story-speaker-row #story-portrait{box-sizing:border-box;object-fit:contain;object-position:center;border-radius:0;padding:2px;background:transparent;border:0}
+.moth-preview .story-dialog #story-portrait[hidden]{display:none!important}
+.moth-preview .story-dialog .story-visual{background:radial-gradient(ellipse at 50% 28%,#506350 0,transparent 65%),linear-gradient(165deg,#233a31,#101e1a)}
+.moth-preview .story-dialog .story-art-label{max-width:min(80vw,480px)}
+/* Full-body frame lives beside the dialogue, not inside its compact flow.
+   Every edge reserves 10% of this outer frame; source PNG pixels are unchanged. */
+.moth-preview #preview-standing-frame{position:absolute;left:15%;right:15%;top:16%;bottom:55%;box-sizing:border-box;padding:0;pointer-events:none;display:flex;align-items:center;justify-content:center}
+.moth-preview #preview-standing{width:80%;height:80%;object-fit:contain;object-position:center;max-width:80%;max-height:80%}
+.moth-preview #preview-standing[hidden],.moth-preview #preview-large-portrait[hidden],.moth-preview #preview-art-tools[hidden]{display:none!important}
+.moth-preview .preview-art-open{position:absolute;right:18px;top:90px;z-index:25;font-size:12px;min-height:36px}
+.moth-preview .preview-art-tools{position:absolute;z-index:45;right:3%;top:90px;bottom:4%;width:min(420px,94%);box-sizing:border-box;overflow:auto;padding:16px;background:#f5f0e5;color:#243b31;border:1px solid #c6b88a;border-radius:12px;box-shadow:0 8px 28px #0008}
+.moth-preview .preview-art-tools header{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.moth-preview .preview-art-tools h2{margin:0;font-size:17px}
+.moth-preview .preview-art-tools button{min-height:38px;font-size:12px}
+.moth-preview .preview-expression-controls{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.moth-preview .preview-expression-controls button[aria-pressed="true"]{background:#d1dfce;border-color:#426349}
+.moth-preview .preview-large-frame{width:100%;aspect-ratio:1;box-sizing:border-box;padding:12px;background:#d7ded6;border:1px solid #98a991}
+.moth-preview #preview-large-portrait{display:block;width:100%;height:100%;object-fit:contain;border-radius:0}
+.moth-preview .preview-inspector-note{font-size:12px;line-height:1.7}
+@media(max-width:520px){.moth-preview #preview-standing-frame{left:2%;right:2%;top:19%;bottom:59%;padding:0}.moth-preview .preview-art-open{right:12px;top:108px}.moth-preview .preview-art-tools{top:70px}}
+@media(max-height:520px) and (orientation:landscape){.moth-preview #preview-standing-frame{left:15%;right:15%;top:20%;bottom:60%;padding:0}.moth-preview .preview-art-open{right:16px;top:82px}.moth-preview .preview-art-tools{top:40px}}
+
+.moth-preview #preview-standing-frame[hidden]{display:none!important}
