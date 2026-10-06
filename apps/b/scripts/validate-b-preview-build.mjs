@@ -12,7 +12,7 @@ async function visit(file){file=resolve(root,file);if((await stat(file).catch(()
  const refs=file.endsWith('.html')?[...text.matchAll(/(?:src|href)="([^"#]+)"/g)].map(x=>x[1]):(/\.m?js$/.test(file))?[...text.matchAll(/(?:from\s+|import\s+)['"]([^'"]+)['"]/g)].map(x=>x[1]):[];
  for(const ref of refs){if(/^https?:|^\//.test(ref)){errors.push(`Nonportable external/root reference: ${ref}`);continue;}if(ref.startsWith('.'))await visit(resolve(dirname(file),ref));}
 }
-await visit('index.html');await visit('campaigns-b/index.html');await visit('campaigns-b/gal-preview/index.html');await visit('campaigns-b/moth-preview/index.html');
+await visit('index.html');await visit('campaigns-b/index.html');await visit('campaigns-b/gal-preview/index.html');await visit('campaigns-b/moth-preview/index.html');await visit('campaigns-b/art-preview/index.html');
 const html=await readFile(join(root,'campaigns-b/index.html'),'utf8'),app=await readFile(join(root,'campaigns-b/app.js'),'utf8');
 const ids=[...html.matchAll(/\bid="([^"]+)"/g)].map(x=>x[1]);if(new Set(ids).size!==ids.length)errors.push('Duplicate DOM id');for(const[,id]of app.matchAll(/\$\('([^']+)'\)/g))if(!ids.includes(id))errors.push(`Missing DOM node: ${id}`);
 for(const illegal of ['../src/campaigns/a/','../src/campaigns/c/','assets/anime','setFlag','moveBallast'])if(app.includes(illegal))errors.push(`Unexpected B UI dependency: ${illegal}`);

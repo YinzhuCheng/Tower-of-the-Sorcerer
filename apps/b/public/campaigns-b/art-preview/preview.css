@@ -1,0 +1,2 @@
+/* Only the directory is styled here. The GAL uses unchanged production CSS. */
+#art-preview-menu{display:block;max-width:850px;margin:24px auto;padding:16px}#art-preview-entries{display:flex;flex-wrap:wrap;gap:8px}#art-preview-entries button{font-size:.8rem;padding:.5rem}#art-preview-menu p{font-size:.85rem}
