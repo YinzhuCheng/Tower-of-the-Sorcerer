@@ -7,6 +7,9 @@ import {createForestCampaign} from '../src/campaigns/b/content.js';
 import {createForestStory,FOREST_STORY_CONTENT} from '../src/campaigns/b/story/index.js';
 import {createSaveRepository} from '../src/core/campaign.js';
 import {FOREST_GAL_BACKDROP,FOREST_GAL_CAST,FOREST_GAL_ENVIRONMENTS,FOREST_GAL_DAILY_CAST} from '../src/rendering/forest-gal-assets.js';
+import {forestTurnStage} from '../src/campaigns/b/story/presentation.js';
+import {FOREST_GAL_CG_CONTRACT} from '../src/rendering/forest-gal-cg-contract.js';
+import {FOREST_GAL_CGS} from '../src/rendering/forest-gal-assets.js';
 import {forestGalActors,forestGalBackdrop} from '../src/rendering/forest-gal-stage.js';
 
 const runtime=createForestCampaign(),html=readFileSync(new URL('../public/campaigns-b/index.html',import.meta.url),'utf8');
@@ -49,9 +52,9 @@ test('fresh app binds the real canonical descriptor without inventing scene.regi
  e.get('story-pause').onclick();e.key('ArrowRight');e.key('ArrowRight','keyup');assert.equal(e.qa.getState().revision,state.revision+1,'map input still works after pause');
 }));
 
-test('legacy saved queue preserves prose, progress and revision while binding B01',async()=>{
+test('legacy saved queue preserves prose, progress and revision while rejecting unreviewed new B01 art',async()=>{
  const storage=memory(),state=runtime.initialState(),legacy=scene('b01_enter',state,'legacy-v1.1');assert.equal(legacy.regionId,undefined);saveQueue(storage,state,[legacy],{openingRevision:'legacy-v1.1',turnIndex:3});
- await withApp(storage,e=>{assertBound(e);assert.equal(e.get('story-progress').textContent,`4 / ${legacy.turns.length}`);assert.equal(e.get('story-copy').textContent,legacy.turns[3].text);const p=e.qa.getPresentation();assert.equal(p.openingRevision,'legacy-v1.1');assert.deepEqual(p.queue[0],legacy);assert.deepEqual(e.qa.getState(),state);});
+ await withApp(storage,e=>{assert.equal(e.get('story-backdrop').src,'');assert.equal(e.get('story-art-label').textContent,'本区背景待制作');assert.equal(e.get('story-progress').textContent,`4 / ${legacy.turns.length}`);assert.equal(e.get('story-copy').textContent,legacy.turns[3].text);const p=e.qa.getPresentation();assert.equal(p.openingRevision,'legacy-v1.1');assert.deepEqual(p.queue[0],legacy);assert.deepEqual(e.qa.getState(),state);});
 });
 
 test('B01 history review uses authored location while player is in B02',async()=>{
@@ -59,24 +62,24 @@ test('B01 history review uses authored location while player is in B02',async()=
  await withApp(storage,e=>{assert.equal(e.qa.getState().location.regionId,'B-02');assertBound(e);assert.equal(e.get('story-stage').dataset.locationId,'B-01');assert.deepEqual(e.qa.getState(),state);assert.deepEqual(e.qa.getPresentation().queue[0],review);});
 });
 
-test('older stage-less queue resolves canonical B01 metadata without changing saved turns',async()=>{
+test('older stage-less queue retains B01 geography but rejects unreviewed new art',async()=>{
  const storage=memory(),state=b02State(),review=scene('b01_enter',state,'legacy-v1.1');for(const turn of review.turns)delete turn.stage;saveQueue(storage,state,[review],{openingRevision:'legacy-v1.1'});
- await withApp(storage,e=>{assertBound(e);assert.equal(e.get('story-stage').dataset.locationId,'B-01');assert.deepEqual(e.qa.getPresentation().queue[0],review);});
+ await withApp(storage,e=>{assert.equal(e.get('story-backdrop').src,'');assert.equal(e.get('story-art-label').textContent,'本区背景待制作');assert.equal(e.get('story-stage').dataset.locationId,'B-01');assert.deepEqual(e.qa.getPresentation().queue[0],review);});
 });
 
 test('B02 review while player is in B01 never borrows the entry image',async()=>{
  const storage=memory(),state=runtime.initialState(),review=scene('b02_enter',state);saveQueue(storage,state,[review]);
- await withApp(storage,e=>{assert.equal(e.qa.getState().location.regionId,'B-01');assert.equal(e.get('story-backdrop').hidden,true);assert.match(e.get('story-backdrop').src,/b02-return-branch-square.webp$/);assert.match(e.get('story-art-label').textContent,/回枝广场.*载入中/);e.get('story-backdrop').loaded();assert.equal(e.get('story-backdrop').hidden,false);assert.equal(e.get('story-location').textContent,runtime.region('B-02').title);});
+ await withApp(storage,e=>{assert.equal(e.qa.getState().location.regionId,'B-01');assert.equal(e.get('story-backdrop').hidden,true);assert.match(e.get('story-backdrop').src,/BENV-002_return-branch-square_daylight_v1-soft-cel.webp$/);assert.match(e.get('story-art-label').textContent,/回枝广场.*载入中/);e.get('story-backdrop').loaded();assert.equal(e.get('story-backdrop').hidden,false);assert.equal(e.get('story-location').textContent,runtime.region('B-02').title);});
 });
 
 test('asynchronous failure stays honest across next/pause/resume and preserves play',()=>withApp(memory(),e=>{
- const image=e.get('story-backdrop'),before=e.qa.getState();assert.match(image.src,/forest-gal\/b01-village-entrance\.png$/);image.failed();assert.equal(image.hidden,true);assert.match(e.get('story-art-label').textContent,/背景加载失败/);
+ const image=e.get('story-backdrop'),before=e.qa.getState();assert.match(image.src,/forest-gal\/BENV-001_south-slope-entrance_v1-soft-cel\.webp$/);image.failed();assert.equal(image.hidden,true);assert.match(e.get('story-art-label').textContent,/背景加载失败/);
  e.get('story-next').onclick();e.get('story-pause').onclick();e.get('resume-story').onclick();assert.equal(image.hidden,true);assert.equal(image.srcWrites,2);assert.match(e.get('story-art-label').textContent,/载入中/);image.failed();assert.match(e.get('story-art-label').textContent,/背景加载失败/);assert.equal(e.get('story-progress').textContent,'2 / 22');assert.deepEqual(e.qa.getState(),before);
 }));
 
 test('stale asynchronous image callbacks cannot resurrect B01 during B02 review',async()=>{
  const storage=memory(),state=runtime.initialState(),first=scene(),second=scene('b02_enter',state);saveQueue(storage,state,[first,second]);
- await withApp(storage,e=>{const image=e.get('story-backdrop'),oldLoad=image.onload,oldError=image.onerror;assert.equal(typeof oldLoad,'function');e.get('story-skip').onclick();assert.equal(e.qa.getPresentation().queue[0].sceneId,'b02_enter');assert.equal(image.hidden,true);assert.match(image.src,/b02-return-branch-square.webp$/);image.naturalWidth=backdrop.width;image.naturalHeight=backdrop.height;oldLoad();oldError();assert.equal(image.hidden,true);assert.match(e.get('story-art-label').textContent,/回枝广场.*载入中/);image.loaded();assert.equal(image.hidden,false);assert.match(e.get('story-art-label').textContent,/回枝广场/);});
+ await withApp(storage,e=>{const image=e.get('story-backdrop'),oldLoad=image.onload,oldError=image.onerror;assert.equal(typeof oldLoad,'function');e.get('story-skip').onclick();assert.equal(e.qa.getPresentation().queue[0].sceneId,'b02_enter');assert.equal(image.hidden,true);assert.match(image.src,/BENV-002_return-branch-square_daylight_v1-soft-cel.webp$/);image.naturalWidth=backdrop.width;image.naturalHeight=backdrop.height;oldLoad();oldError();assert.equal(image.hidden,true);assert.match(e.get('story-art-label').textContent,/回枝广场.*载入中/);image.loaded();assert.equal(image.hidden,false);assert.match(e.get('story-art-label').textContent,/回枝广场/);});
 });
 
 test('unexpected dimensions fail closed rather than marking the backdrop ready',()=>withApp(memory(),e=>{e.get('story-backdrop').loaded(1,1);assert.equal(e.get('story-backdrop').hidden,true);assert.match(e.get('story-art-label').textContent,/背景加载失败/);}));
@@ -162,7 +165,7 @@ test('eight-pouch insert is exactly bounded and clears actor and portrait layers
  await withApp(storage,e=>{const before=e.qa.getState(),image=e.get('story-backdrop');assert.match(image.src,/b03-eight-heat-pouches-open.webp$/);assert.equal(e.get('story').dataset.artPresentation,'object-insert');assert.equal(e.get('story-actors').children.length,0);assert.equal(e.get('story-portrait').src,'');
  image.loaded(1672,941);assert.equal(image.hidden,false);assert.equal(e.get('story-copy').textContent,rules.turns[0].text);
  const old=image.onload;while(e.qa.getPresentation().queue[0].turns[e.qa.getPresentation().turnIndex].id!=='b03_rules.L207')e.get('story-next').onclick();
- assert.match(image.src,/b03-tree-heart-veranda.webp$/);assert.equal(e.get('story').dataset.artPresentation,'environment');assert.equal(image.hidden,true);old();assert.equal(image.hidden,true);assert.match(e.get('story-art-label').textContent,/载入中/);image.loaded(1672,941);assert.equal(image.hidden,false);assert.deepEqual(e.qa.getState(),before);
+ assert.match(image.src,/B03_tree-heart-veranda_v1-soft-cel.webp$/);assert.equal(e.get('story').dataset.artPresentation,'environment');assert.equal(image.hidden,true);old();assert.equal(image.hidden,true);assert.match(e.get('story-art-label').textContent,/载入中/);image.loaded(1672,941);assert.equal(image.hidden,false);assert.deepEqual(e.qa.getState(),before);
  });
 });
 
@@ -177,3 +180,20 @@ test('history arrows keep browser scrolling default and never move the game',()=
  e.key('ArrowDown','keydown',{target:e.get('story-history-entries'),preventDefault(){prevented=true;}});assert.equal(prevented,false);assert.deepEqual(e.qa.getState(),before);
  const source=readFileSync(new URL('../public/campaigns-b/app.js',import.meta.url),'utf8');assert.match(source,/if\(modalOpen\(\)\|\|session.pending\|\|session.isStoryOpen\(\)\)\{clearHeldMovement\(\);return;\}event.preventDefault\(\)/);
 }));
+
+// Actual app + saved resolved queue path: readers remain pure presentation controls.
+test('all nine CG turns survive H/history/Escape/reopen without advancing or mutating saved state',async()=>{
+ for(const row of FOREST_GAL_CG_CONTRACT){
+  const storage=memory(),state=runtime.initialState(),source=FOREST_STORY_CONTENT.scenes[row.sceneId];
+  const target=structuredClone(source.turns.find(t=>t.id===row.turnId));target.stage=forestTurnStage(row.sceneId,target,{});
+  const queueScene={...scene(row.sceneId,state),turns:[target],choices:[]};saveQueue(storage,state,[queueScene]);
+  await withApp(storage,e=>{
+   const art=FOREST_GAL_CGS[row.assetId],snapshot=JSON.stringify(e.qa.getPresentation().queue),assertCG=()=>{assert.ok(e.get('story-backdrop').src.endsWith(art.file));assert.equal(e.get('story').dataset.artPresentation,'full-frame-cg');assert.equal(e.get('story-actors').children.length,0);assert.equal(e.get('story-portrait').src,'');assert.equal(e.get('story-portrait').onload,null);assert.equal(e.get('story-copy').textContent,target.text);};
+   assertCG();e.get('story-backdrop').loaded(art.width,art.height);
+   e.get('story').dispatch('keydown',{key:'h',preventDefault(){}});assertCG();assert.equal(e.get('story').dataset.readerMode,'art');e.get('story').dispatch('keydown',{key:'h',preventDefault(){}});assertCG();
+   e.get('story-history').onclick();assertCG();e.get('story').dispatch('keydown',{key:'Escape',preventDefault(){}});e.get('story').dispatch('keyup',{key:'Escape'});assertCG();
+   e.get('story').dispatch('cancel',{preventDefault(){}});assert.equal(e.get('story').open,false);assert.equal(e.get('story-backdrop').src,'');
+   e.get('resume-story').onclick();assertCG();assert.equal(e.qa.getPresentation().turnIndex,0);assert.equal(JSON.stringify(e.qa.getPresentation().queue),snapshot);assert.deepEqual(e.qa.getState(),state);
+  });
+ }
+});

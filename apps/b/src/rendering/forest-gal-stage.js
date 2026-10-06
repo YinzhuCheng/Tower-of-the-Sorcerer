@@ -2,7 +2,8 @@ import {forestStoryLocationPresentation,forestStoryLocationForTurn,forestStoryLo
 import {forestReviewedEnvironment,forestReviewedActorArt} from './forest-gal-art-policy.js';
 import {FOREST_STORY_CONTENT} from '../campaigns/b/story/content.js';
 import {FOREST_CAST_ART} from './forest-cast-art.js';
-import {FOREST_GAL_BACKDROP,FOREST_GAL_CAST} from './forest-gal-assets.js';
+import {FOREST_GAL_BACKGROUND_CONTRACT,FOREST_GAL_CG_CONTRACT,forestGalExactArtRow} from './forest-gal-cg-contract.js';
+import {FOREST_GAL_BACKDROP,FOREST_GAL_CAST,FOREST_GAL_CGS} from './forest-gal-assets.js';
 const urlFor=art=>new URL('../../'+art.file,import.meta.url).href;
 const bindings=new WeakMap(),casts=new WeakMap();
 // A resolved historical queue need not have scene.regionId. The authored turn's
@@ -15,11 +16,17 @@ export function forestGalBackdrop(scene,turn){
  const expected={b01_enter:'B_ENV_01:enter',b01_pre:'B_ENV_01:pre',b01_post:'B_ENV_01:post'}[scene?.sceneId];
  const locationArt=forestStoryLocationPresentation({sceneId:scene?.sceneId,turn,locationId,backdropAssetId});
  const reviewed=locationArt??forestReviewedEnvironment({sceneId:scene?.sceneId,locationId,backdropAssetId,turnId:turn?.id});
- const asset=reviewed?.asset??(locationId==='B-01'&&expected&&backdropAssetId===expected?FOREST_GAL_BACKDROP:null);
+ const candidate=reviewed?.asset??(locationId==='B-01'&&expected&&backdropAssetId===expected?FOREST_GAL_BACKDROP:null);
+ const asset=reviewed?.presentation==='object-insert'||forestGalExactArtRow(FOREST_GAL_BACKGROUND_CONTRACT,scene,turn)?candidate:null;
  return {locationId,regionId,backdropAssetId,asset,presentation:reviewed?.presentation??'environment',contract:locationArt?.contract??null};
+}
+export function forestGalPresentation(scene,turn){
+ const environment=forestGalBackdrop(scene,turn),row=forestGalExactArtRow(FOREST_GAL_CG_CONTRACT,scene,turn);
+ return row?{...environment,asset:FOREST_GAL_CGS[row.assetId],presentation:'full-frame-cg',cgContract:row,fallback:environment}:environment;
 }
 export function forestGalActors(turn,locationModel=forestStoryLocationForTurn(turn)){
  const stage=turn?.stage;
+ if(locationModel?.presentation==='full-frame-cg')return [];
  if(!stage||stage.camera==='exterior-empty-shot')return [];
  // Never persist a previous actor set, infer a hero, use an offscreen voice, or
  // turn an unapproved winter fullbody into an interior costume substitute.
@@ -51,21 +58,31 @@ function bindImage(image,art,onStatus=()=>{}){
  image.onload=()=>settle(image.naturalWidth===art.width&&image.naturalHeight===art.height?'ready':'failed');image.onerror=()=>settle('failed');image.src=url;if(image.complete)image.onload();return binding;
 }
 export function presentForestGal({backdrop,actors,portrait,label,stage,dialog},scene,turn){
- const model=forestGalBackdrop(scene,turn);
- stage.dataset.artPresentation=model.presentation;if(dialog)dialog.dataset.artPresentation=model.presentation;
- const labelText=model.asset?.label??'南坡村口 · 雨后暖林';
- bindImage(backdrop,model.asset,status=>{stage.dataset.artStatus=status;label.textContent=status==='ready'?labelText:status==='loading'?`${labelText} · 背景载入中`:status==='failed'?`${labelText} · 背景加载失败`:'本区背景待制作';});
- backdrop.alt=model.asset?(model.asset.alt??'雨后的南坡村口：滴雨屋檐、歪石阶与通往暖林村落的坡路'):'';
- const visible=model.presentation==='object-insert'?[]:forestGalActors(turn,model);let cast=casts.get(actors);if(!cast){cast=new Map();casts.set(actors,cast);}
+ const model=forestGalPresentation(scene,turn);
+ const showBackdrop=(current)=>{
+  stage.dataset.artPresentation=current.presentation;if(dialog)dialog.dataset.artPresentation=current.presentation;
+  const labelText=current.asset?.label??'南坡村口 · 雨后暖林';
+  backdrop.alt=current.asset?(current.asset.alt??'雨后的南坡村口：滴雨屋檐、歪石阶与通往暖林村落的坡路'):'';
+  bindImage(backdrop,current.asset,status=>{
+   if(status==='failed'&&current.presentation==='full-frame-cg'){
+    // Re-resolve this immutable turn's environment; never use the preceding CG.
+    // Keep its bodies and portrait cleared even if only the CG image failed.
+    showBackdrop(model.fallback);return;
+   }
+   stage.dataset.artStatus=status;label.textContent=status==='ready'?labelText:status==='loading'?`${labelText} · 背景载入中`:status==='failed'?`${labelText} · 背景加载失败`:'本区背景待制作';
+  });
+ };
+ showBackdrop(model);
+ const visible=['object-insert','full-frame-cg'].includes(model.presentation)?[]:forestGalActors(turn,model);let cast=casts.get(actors);if(!cast){cast=new Map();casts.set(actors,cast);}
  const wanted=new Set(visible.map(a=>a.id));for(const[id,entry]of cast)if(!wanted.has(id)){invalidateImage(entry.image);cast.delete(id);}
  for(const actor of visible){let entry=cast.get(actor.id);if(!entry){const image=document.createElement('img');image.className='story-actor';image.alt=actor.art.name;image.dataset.characterId=actor.id;image.draggable=false;entry={image};cast.set(actor.id,entry);}entry.image.dataset.speaking=String(actor.speaking);entry.image.dataset.position=actor.position;bindImage(entry.image,actor.art);}
  for(const placement of forestGalComposition(visible)){const image=cast.get(placement.id).image;image.dataset.slot=String(placement.slot);image.dataset.depth=placement.depth;image.style.left=`${placement.left}%`;}
  const images=visible.map(actor=>cast.get(actor.id).image);if(images.length!==actors.children.length||images.some((image,i)=>actors.children[i]!==image))actors.replaceChildren(...images);
  actors.dataset.count=String(visible.length);actors.dataset.hasSpeaker=String(visible.some(a=>a.speaking));
- const permitted=forestStoryLocationPortraitAllowed(model,turn)&&model.presentation!=='object-insert'&&turn.stage?.portraitAllowed!==false&&!turn.stage?.offscreen?.[turn.portrait];const face=permitted?FOREST_CAST_ART[turn.portrait]??null:null;
+ const permitted=!['object-insert','full-frame-cg'].includes(model.presentation)&&forestStoryLocationPortraitAllowed(model,turn)&&turn.stage?.portraitAllowed!==false&&!turn.stage?.offscreen?.[turn.portrait];const face=permitted?FOREST_CAST_ART[turn.portrait]??null:null;
  bindImage(portrait,face);portrait.alt=face?face.name:'';portrait.dataset.characterId=face?turn.portrait:'';
  return model;
 }
 export function clearForestGal({backdrop,actors,portrait,stage,dialog}){
- invalidateImage(backdrop);invalidateImage(portrait);for(const entry of casts.get(actors)?.values()??[])invalidateImage(entry.image);casts.delete(actors);actors.replaceChildren();stage.dataset.artStatus='inactive';stage.dataset.artPresentation='environment';if(dialog)dialog.dataset.artPresentation='environment';
+ invalidateImage(backdrop);invalidateImage(portrait);for(const entry of casts.get(actors)?.values()??[])invalidateImage(entry.image);casts.delete(actors);actors.replaceChildren();actors.dataset.count='0';actors.dataset.hasSpeaker='false';portrait.dataset.characterId='';stage.dataset.artStatus='inactive';stage.dataset.artPresentation='environment';if(dialog)dialog.dataset.artPresentation='environment';
 }

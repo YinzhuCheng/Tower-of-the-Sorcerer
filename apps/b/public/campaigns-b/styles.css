@@ -213,3 +213,19 @@
 /* Exact B08/B12 story-location art preserves the whole reviewed frame.
    Scope excludes existing B01–B03, reader controls and physical-world views. */
 .story-dialog[data-art-presentation="story-location"] #story-backdrop{object-fit:contain;object-position:center}
+
+/* Full-frame CG stays wholly above the text panel; art mode expands it. */
+.story-dialog[data-art-presentation="full-frame-cg"] .story-visual{height:54%;bottom:auto;background:#24392d}
+.story-dialog[data-art-presentation="full-frame-cg"] #story-backdrop{inset:44px 12px 0;width:calc(100% - 24px);height:calc(100% - 44px);object-fit:contain;object-position:center}
+.story-dialog[data-art-presentation="full-frame-cg"] .story-visual::after{display:none}
+.story-dialog[data-art-presentation="full-frame-cg"] .story-scene-heading,.story-dialog[data-art-presentation="full-frame-cg"] .story-camera,.story-dialog[data-art-presentation="full-frame-cg"] .story-actors,.story-dialog[data-art-presentation="full-frame-cg"] #story-portrait{display:none!important}
+.story-dialog[data-art-presentation="full-frame-cg"] .story-body{top:56%;bottom:3%;min-height:0;max-height:none}
+.story-dialog[data-art-presentation="full-frame-cg"][data-reader-mode="art"] .story-visual{height:100%}
+.story-dialog[data-art-presentation="full-frame-cg"][data-reader-mode="art"] #story-backdrop{inset:12px 12px 72px;height:calc(100% - 84px)}
+@media(max-width:960px) and (orientation:portrait){
+ .story-dialog[data-art-presentation="full-frame-cg"] .story-visual{height:44%}
+ .story-dialog[data-art-presentation="full-frame-cg"] #story-backdrop{top:max(48px,env(safe-area-inset-top));height:calc(100% - max(48px,env(safe-area-inset-top)))}
+ .story-dialog[data-art-presentation="full-frame-cg"] .story-body{top:46%;bottom:max(3%,env(safe-area-inset-bottom));min-height:0;max-height:none}
+ .story-dialog[data-art-presentation="full-frame-cg"][data-reader-mode="art"] .story-visual{height:100%}
+ .story-dialog[data-art-presentation="full-frame-cg"][data-reader-mode="art"] #story-backdrop{top:max(12px,env(safe-area-inset-top));height:calc(100% - max(12px,env(safe-area-inset-top)) - 72px)}
+}

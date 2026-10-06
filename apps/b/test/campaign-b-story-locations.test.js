@@ -57,7 +57,7 @@ test('old queue prose and cross-scene, stage, winter, location and synthetic cho
 });
 
 test('runtime assets have closed source/dimension/MIME/bytes/SHA integrity; corrupt variants rejected',async()=>{
- const check=await validateStoryLocationAssets(new URL('../',import.meta.url).pathname);assert.deepEqual(check.errors,[]);assert.equal(check.storyLocationAssets,3);assert.equal(check.storyLocationBytes,3564956);
+ const check=await validateStoryLocationAssets(new URL('../',import.meta.url).pathname);assert.deepEqual(check.errors,[]);assert.equal(check.storyLocationAssets,3);assert.equal(check.storyLocationBytes,5724706);
  for(const a of Object.values(FOREST_GAL_STORY_LOCATIONS)){const bytes=readFileSync(new URL('../public/'+a.file,import.meta.url));assert.deepEqual(forestStoryLocationImageErrors(a,bytes),[]);assert.equal(a.mime,'image/webp');assert.deepEqual([a.width,a.height],a.id==='B_ENV_05'?[1536,1024]:[1672,941]);assert.equal(a.fit,'preserve-full-frame');assert.ok(forestStoryLocationImageErrors({...a,sha256:'0'.repeat(64)},bytes).some(e=>e.includes('SHA256')));assert.ok(forestStoryLocationImageErrors({...a,width:1},bytes).some(e=>e.includes('dimensions')));assert.ok(forestStoryLocationImageErrors({...a,bytes:1},bytes).some(e=>e.includes('byte size')));assert.ok(forestStoryLocationImageErrors(a,null).length);}
 });
 
