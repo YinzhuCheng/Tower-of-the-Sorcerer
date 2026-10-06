@@ -4,15 +4,15 @@ import {readFileSync} from 'node:fs';
 import {createHash} from 'node:crypto';
 import {createForestCampaign} from '../src/campaigns/b/content.js';
 import {createForestStory,FOREST_STORY_CONTENT as C} from '../src/campaigns/b/story/index.js';
-import {FOREST_GAL_ASSETS,FOREST_GAL_CAST,FOREST_GAL_DAILY_CAST,FOREST_GAL_ENVIRONMENTS} from '../src/rendering/forest-gal-assets.js';
+import {FOREST_GAL_ASSETS,FOREST_GAL_STATEFUL_ENVIRONMENTS,FOREST_GAL_CAST,FOREST_GAL_DAILY_CAST,FOREST_GAL_ENVIRONMENTS} from '../src/rendering/forest-gal-assets.js';
 import {forestGalActors,forestGalBackdrop} from '../src/rendering/forest-gal-stage.js';
 import {FOREST_GAL_ART_BINDINGS,FOREST_GAL_INSERT_TURNS,FOREST_GAL_DAILY_POLICY,forestReviewedEnvironment,forestReviewedActorArt} from '../src/rendering/forest-gal-art-policy.js';
 const runtime=createForestCampaign(),story=createForestStory(runtime),state=runtime.initialState();
 const scene=id=>story.resolve(id,state,{reviewMode:true,allBranches:true});
 const turn=id=>Object.values(C.scenes).flatMap(s=>s.turns).find(t=>t.id===id);
 
-test('all thirty-one registered GAL images have exact reviewed source bytes',()=>{
- assert.equal(FOREST_GAL_ASSETS.length,31);for(const a of FOREST_GAL_ASSETS){const bytes=readFileSync(new URL('../public/'+a.file,import.meta.url));assert.equal(createHash('sha256').update(bytes).digest('hex'),a.sha256,a.file);}
+test('all 81 prior plus 3 reviewed route-mechanism GAL images have exact source bytes',()=>{
+ assert.equal(Object.keys(FOREST_GAL_STATEFUL_ENVIRONMENTS).length,12);assert.equal(FOREST_GAL_ASSETS.length,84);assert.equal(FOREST_GAL_ASSETS.filter(a=>!Object.values(FOREST_GAL_STATEFUL_ENVIRONMENTS).includes(a)).length,72);for(const a of FOREST_GAL_ASSETS){const bytes=readFileSync(new URL('../public/'+a.file,import.meta.url));assert.equal(createHash('sha256').update(bytes).digest('hex'),a.sha256,a.file);}
 });
 
 test('new environments bind only exact scene, location and variant triplets',()=>{

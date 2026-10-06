@@ -1,3 +1,4 @@
+import {forestMonsterArtRow} from './forest-monster-text-contract.js';
 // Frozen batch-1 exact presentation whitelist. Never reads live game state.
 import {forestStoryTextSha256} from './forest-gal-story-locations.js';
 const freeze=rows=>Object.freeze(rows.map(Object.freeze));
@@ -2827,7 +2828,8 @@ export const FOREST_GAL_CG_CONTRACT=freeze([
 ]);
 
 export function forestGalExactArtRow(rows,scene,turn){
- const row=rows.find(row=>row.turnId===turn?.id);
+ const originalRow=rows.find(row=>row.turnId===turn?.id);
+ const row=forestMonsterArtRow(originalRow,scene?.sceneId,turn)??originalRow;
  if(!row||scene?.sceneId!==row.sceneId||typeof turn.text!=='string')return null;
  for(const key of ['sourceLine','branch','speaker'])if(turn[key]!==row[key])return null;
  for(const key of ['phase','portrait'])if((turn[key]??null)!==row[key])return null;

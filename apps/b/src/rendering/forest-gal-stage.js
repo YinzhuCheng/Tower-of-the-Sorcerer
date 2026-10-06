@@ -1,10 +1,17 @@
+import {forestGalSceneStateRow} from './forest-gal-scene-state-contract.js';
+import {forestGalFinalBackgroundRow} from './forest-gal-final-background-contract.js';
+import {forestMothPortrait} from './forest-moth-portrait.js';
+import {forestReviewedPortrait} from './forest-reviewed-portraits.js';
+import {forestGalRemainingArtRow,forestGalMissingArtRow} from './forest-gal-remaining-contract.js';
+import {forestGalReuseArtRow} from './forest-gal-reuse-contract.js';
+import {forestGalStatefulArtRow} from './forest-gal-stateful-contract.js';
 import {FOREST_GAL_SAFE_ENVIRONMENT_CONTRACT} from './forest-gal-safe-environment-contract.js';
 import {forestStoryLocationPresentation,forestStoryLocationForTurn,forestStoryLocationPortraitAllowed} from './forest-gal-story-locations.js';
 import {forestReviewedEnvironment,forestReviewedActorArt} from './forest-gal-art-policy.js';
 import {FOREST_STORY_CONTENT} from '../campaigns/b/story/content.js';
 import {FOREST_CAST_ART} from './forest-cast-art.js';
 import {FOREST_GAL_BACKGROUND_CONTRACT,FOREST_GAL_CG_CONTRACT,forestGalExactArtRow} from './forest-gal-cg-contract.js';
-import {FOREST_GAL_BACKDROP,FOREST_GAL_CAST,FOREST_GAL_CGS,FOREST_GAL_SAFE_ENVIRONMENTS} from './forest-gal-assets.js';
+import {FOREST_GAL_ASSETS,FOREST_GAL_BACKDROP,FOREST_GAL_CAST,FOREST_GAL_CGS,FOREST_GAL_SAFE_ENVIRONMENTS,FOREST_GAL_STATEFUL_ENVIRONMENTS} from './forest-gal-assets.js';
 const urlFor=art=>new URL('../../'+art.file,import.meta.url).href;
 const bindings=new WeakMap(),casts=new WeakMap();
 // A resolved historical queue need not have scene.regionId. The authored turn's
@@ -20,9 +27,15 @@ export function forestGalBackdrop(scene,turn){
  const environmentContract=reviewed?.presentation==='object-insert'?null:forestGalExactArtRow(FOREST_GAL_SAFE_ENVIRONMENT_CONTRACT,scene,turn);
  const candidate=reviewed?.asset??(locationId==='B-01'&&expected&&backdropAssetId===expected?FOREST_GAL_BACKDROP:null);
  const legacyAsset=reviewed?.presentation==='object-insert'||forestGalExactArtRow(FOREST_GAL_BACKGROUND_CONTRACT,scene,turn)?candidate:null;
- const asset=environmentContract?FOREST_GAL_SAFE_ENVIRONMENTS[environmentContract.assetId]:legacyAsset;
+ const statefulContract=forestGalStatefulArtRow(scene,turn);
+ const reuseContract=reviewed?.presentation==='object-insert'?null:forestGalReuseArtRow(scene,turn);
+ const remainingContract=reviewed?.presentation==='object-insert'?null:(forestGalRemainingArtRow(scene,turn)??forestGalMissingArtRow(scene,turn));
+ const existingAsset=statefulContract?FOREST_GAL_STATEFUL_ENVIRONMENTS[statefulContract.stateKey]:environmentContract?FOREST_GAL_SAFE_ENVIRONMENTS[environmentContract.assetId]:reuseContract?FOREST_GAL_ASSETS.find(asset=>asset.id===reuseContract.assetId):remainingContract?FOREST_GAL_ASSETS.find(asset=>asset.id===remainingContract.assetId):legacyAsset;
+ const finalBackgroundContract=existingAsset||reviewed?.presentation==='object-insert'?null:forestGalFinalBackgroundRow(scene,turn);
+ const sceneStateContract=existingAsset||finalBackgroundContract||reviewed?.presentation==='object-insert'?null:forestGalSceneStateRow(scene,turn);
+ const asset=existingAsset??(sceneStateContract?FOREST_GAL_ASSETS.find(a=>a.id===sceneStateContract.assetId):null)??(finalBackgroundContract?FOREST_GAL_ASSETS.find(a=>a.id===finalBackgroundContract.assetId):null);
  // Keep the original actor/portrait contract separate from background identity.
- return {locationId,regionId,backdropAssetId,asset,presentation:environmentContract?'environment':reviewed?.presentation??'environment',contract:locationArt?.contract??null,environmentContract,semanticLocationId:environmentContract?.semanticLocationId??null};
+ return {locationId,regionId,backdropAssetId,asset,presentation:statefulContract||environmentContract||reuseContract||remainingContract||finalBackgroundContract||sceneStateContract?'environment':reviewed?.presentation??'environment',contract:locationArt?.contract??null,statefulContract,environmentContract,reuseContract,remainingContract,finalBackgroundContract,sceneStateContract,semanticLocationId:sceneStateContract?.semanticLocationId??finalBackgroundContract?.semanticLocationId??environmentContract?.semanticLocationId??reuseContract?.semanticLocationId??remainingContract?.semanticLocationId??null};
 }
 export function forestGalPresentation(scene,turn){
  const environment=forestGalBackdrop(scene,turn),row=forestGalExactArtRow(FOREST_GAL_CG_CONTRACT,scene,turn);
@@ -86,10 +99,11 @@ export function presentForestGal({backdrop,actors,portrait,label,stage,dialog},s
  for(const placement of forestGalComposition(visible)){const image=cast.get(placement.id).image;image.dataset.slot=String(placement.slot);image.dataset.depth=placement.depth;image.style.left=`${placement.left}%`;}
  const images=visible.map(actor=>cast.get(actor.id).image);if(images.length!==actors.children.length||images.some((image,i)=>actors.children[i]!==image))actors.replaceChildren(...images);
  actors.dataset.count=String(visible.length);actors.dataset.hasSpeaker=String(visible.some(a=>a.speaking));
- const permitted=!['object-insert','full-frame-cg'].includes(model.presentation)&&forestStoryLocationPortraitAllowed(model,turn)&&turn.stage?.portraitAllowed!==false&&!turn.stage?.offscreen?.[turn.portrait];const face=permitted?FOREST_CAST_ART[turn.portrait]??null:null;
- bindImage(portrait,face);portrait.alt=face?face.name:'';portrait.dataset.characterId=face?turn.portrait:'';
+ const permitted=!['object-insert','full-frame-cg'].includes(model.presentation)&&forestStoryLocationPortraitAllowed(model,turn)&&turn.stage?.portraitAllowed!==false&&!turn.stage?.offscreen?.[turn.portrait];const face=forestMothPortrait(scene,turn)??(permitted?FOREST_CAST_ART[turn.portrait]??forestReviewedPortrait(scene,turn):null);
+ portrait.dataset.portraitCrop=face?.crop??'';
+ bindImage(portrait,face);portrait.alt=face?face.name:'';portrait.dataset.characterId=face?(turn.portrait??'cedar-crown-moth') :'';
  return model;
 }
 export function clearForestGal({backdrop,actors,portrait,stage,dialog}){
- invalidateImage(backdrop);invalidateImage(portrait);for(const entry of casts.get(actors)?.values()??[])invalidateImage(entry.image);casts.delete(actors);actors.replaceChildren();actors.dataset.count='0';actors.dataset.hasSpeaker='false';portrait.dataset.characterId='';stage.dataset.artStatus='inactive';stage.dataset.artPresentation='environment';if(dialog)dialog.dataset.artPresentation='environment';
+ invalidateImage(backdrop);invalidateImage(portrait);for(const entry of casts.get(actors)?.values()??[])invalidateImage(entry.image);casts.delete(actors);actors.replaceChildren();actors.dataset.count='0';actors.dataset.hasSpeaker='false';portrait.dataset.characterId='';portrait.dataset.portraitCrop='';stage.dataset.artStatus='inactive';stage.dataset.artPresentation='environment';if(dialog)dialog.dataset.artPresentation='environment';
 }

@@ -44,12 +44,12 @@ test('B05 art fails closed for every mismatched ID, text, phase, branch, role, l
  assert.equal(negatives,240);
 });
 
-test('historical B05 queue texts restore verbatim; old L309/L319 and unknown text fallback, unchanged 13 bind',()=>{
+test('historical B05 queue texts restore verbatim; old L309/L319 and unknown text fallback; exact approved L295/L297 additionally bind',()=>{
  const runtime=createForestCampaign(),story=createForestStory(runtime),witness=buildForestWitness({runtime,stopBefore:'b07.wedges'}),state=witness.steps.find(s=>s.action.entityId==='b05.pipeWorks').state,s=story.resolve('b05_valve',state);
  const olds=draft.scenes.find(x=>x.id==='b05_valve').turns;for(const t of s.turns)t.text=olds.find(x=>x.id===t.id).originalText;
  const p={storyVersion:C.id,openingRevision:'opening-r1',seenIds:story.location(state,{seenIds:s.turns.map(t=>t.id)}).seenIds,queue:[s],turnIndex:5,paused:false};const store=storage();const repo=createSaveRepository(store,runtime);repo.save('auto',state,p);const bytes=[...store.entries],writes=store.writes.length;const session=createForestPreviewSession(runtime,store);
  assert.deepEqual(session.state,state);assert.deepEqual(session.presentation,p);assert.deepEqual([...store.entries],bytes);assert.equal(store.writes.length,writes+1);assert.match(repo.key('auto'),/a12cd07ee1ccc762/);
- for(const t of session.current().turns){const match=eligible(t)&&!['b05_valve.L309','b05_valve.L319'].includes(t.id);assert.equal(Boolean(forestGalBackdrop(session.current(),t).asset),match,t.id);}
+ for(const t of session.current().turns){const match=(eligible(t)&&!['b05_valve.L309','b05_valve.L319'].includes(t.id))||['b05_valve.L295','b05_valve.L297'].includes(t.id);assert.equal(Boolean(forestGalBackdrop(session.current(),t).asset),match,t.id);}
  const unknown={...s.turns[3],text:'没有经过审查的旧存档文字'};assert.equal(forestGalBackdrop(s,unknown).asset,null);assert.deepEqual(session.presentation,p);assert.deepEqual([...store.entries],bytes);assert.equal(store.writes.length,writes+1);assert.equal(story.location(state,{seenIds:p.seenIds}).scenes.flatMap(s=>s.turns).filter(t=>p.seenIds.includes(t.id)).length,0);
 });
 

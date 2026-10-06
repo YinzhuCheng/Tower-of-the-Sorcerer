@@ -1,3 +1,4 @@
+import {forestMonsterArtRow} from './forest-monster-text-contract.js';
 // Pure, synchronous presentation derivation. No queue, save, gameplay or DOM writes.
 import {FOREST_STORY_CONTENT} from '../campaigns/b/story/content.js';
 import {FOREST_STORY_LOCATION_CONTRACT as CONTRACT} from './forest-gal-story-location-contract.js';
@@ -23,11 +24,11 @@ export function forestStoryTextSha256(text){
 }
 const approved=new Map(CONTRACT.turns.map(row=>[row.turnId,row]));
 export function forestStoryLocationPresentation({sceneId,turn,locationId,backdropAssetId}){
- const row=approved.get(turn?.id),source=FOREST_STORY_CONTENT.scenes[sceneId];
+ const originalRow=approved.get(turn?.id),row=forestMonsterArtRow(originalRow,sceneId,turn)??originalRow,source=FOREST_STORY_CONTENT.scenes[sceneId];
  if(!row||row.sceneId!==sceneId||row.locationId!==locationId||row.backdropAssetId!==backdropAssetId)return null;
  if(turn.sourceLine!==row.sourceLine||turn.branch!==row.branch||(turn.phase??null)!==row.phase||turn.speaker!==row.speaker||(turn.portrait??null)!==row.portrait||(turn.kind??'dialogue')!==row.kind)return null;
  const original=source?.turns.find(t=>t.id===turn.id);
- if(!original||typeof turn.text!=='string'||turn.text!==original.text||forestStoryTextSha256(turn.text)!==row.textSha256)return null;
+ if(!original||typeof turn.text!=='string'||(!row.monsterStoryRevision&&turn.text!==original.text)||forestStoryTextSha256(turn.text)!==row.textSha256)return null;
  // Any explicit conflicting stage remains authoritative; ordinary art cannot
  // substitute for winter or another scene's physical space.
  if(turn.stage?.winterClothing||turn.stage?.camera==='exterior-empty-shot')return null;

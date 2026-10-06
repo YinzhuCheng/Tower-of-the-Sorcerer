@@ -5,15 +5,15 @@ import {forestGalComposition} from '../src/rendering/forest-gal-stage.js';
 const css=readFileSync(new URL('../public/campaigns-b/styles.css',import.meta.url),'utf8');
 const clamp=(lo,n,hi)=>Math.max(lo,Math.min(n,hi));
 
-test('desktop reading room doubles measured baseline; the entire font clamp scales by two thirds',()=>{
+test('reading room is three fifths of the previous panel; current two-thirds font is unchanged',()=>{
  assert.match(css,/--story-baseline-copy-size:clamp\(16px,1.45vw,22px\)/);
- assert.match(css,/--story-reading-height:calc\(2 \* \(105px \+ var\(--story-baseline-copy-size\) \* 1.85\)\)/);
+ assert.match(css,/--story-reading-height:calc\(1\.2 \* \(105px \+ var\(--story-baseline-copy-size\) \* 1.85\)\)/);
  assert.match(css,/#story-copy\{font-size:calc\(var\(--story-baseline-copy-size\) \* 2 \/ 3\);flex:1 1 auto;min-height:0;overflow:auto;overscroll-behavior:contain/);
  for(const width of [800,1180,1440,1920]){
   const oldFont=clamp(16,width*.0145,22),newFont=oldFont*2/3;
-  const oldPanel=105+oldFont*1.85,newPanel=2*oldPanel;
-  assert.equal(newPanel/oldPanel,2);assert.ok(Math.abs(newFont/oldFont-2/3)<1e-12);
-  if(width===1180){assert.ok(Math.abs(oldPanel-136.64)<.02);assert.ok(Math.abs(newPanel-273.28)<.04);}
+  const oldPanel=105+oldFont*1.85,previousPanel=2*oldPanel,newPanel=1.2*oldPanel;
+  assert.ok(Math.abs(newPanel/previousPanel-3/5)<1e-12);assert.ok(Math.abs(newFont/oldFont-2/3)<1e-12);
+  if(width===1180){assert.ok(Math.abs(oldPanel-136.64)<.02);assert.ok(Math.abs(newPanel-163.98)<.04);}
  }
  assert.match(css,/orientation:portrait\)\{\s*\.story-dialog\{--story-baseline-copy-size:17px\}/);
  assert.match(css,/orientation:landscape\)\{\s*\.story-dialog\{--story-baseline-copy-size:14px\}/);
@@ -57,4 +57,16 @@ test('CG covers exactly the full stage in reading and H modes; only object inser
   assert.ok(drawW>=w-1e-9&&drawH>=h-1e-9,'cover leaves no separate blank image region');
   assert.ok(Math.abs(drawW/drawH-1672/941)<1e-12,'uniform scale never stretches artwork');
  }
+});
+
+
+test('choice prompts retain a readable line; overflow stays in scrollable content without shrinking choices',()=>{
+ assert.match(css,/\.story-dialog\[data-choices="true"\] #story-copy\{min-height:1\.9em\}/);
+ assert.match(css,/\.story-content\{flex:1 1 auto;min-height:0;display:flex;flex-direction:column;overflow:auto/);
+ assert.match(css,/#story-copy\{font-size:calc\(var\(--story-baseline-copy-size\) \* 2 \/ 3\);flex:1 1 auto;min-height:0;overflow:auto;overscroll-behavior:contain/);
+ assert.match(css,/\.story-reading-tools,\.story-dialog #story-choices,\.story-dialog #story-planning,\.story-dialog #story-notice\{flex:0 0 auto\}/);
+ // 1.9em covers all existing copy line heights, including portrait (1.9).
+ for(const lineHeight of [1.85,1.9,1.7])assert.ok(1.9>=lineHeight);
+ // The selector is choice-only: normal short/long prose keeps its scroll flex.
+ assert.equal(css.match(/data-choices="true"\] #story-copy/g).length,1);
 });

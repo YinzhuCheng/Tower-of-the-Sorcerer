@@ -1,0 +1,697 @@
+[
+  {
+    "sceneId": "b28_post",
+    "turn": {
+      "id": "b28_post.L1745",
+      "sourceLine": 1745,
+      "speaker": "旁白",
+      "portrait": null,
+      "text": "水声渐渐低下去。三个人都还站在原处，等着习惯中的那一声警铃；许久过去，铃没有响。",
+      "branch": "common",
+      "kind": "narration",
+      "phase": "stopped",
+      "stage": {
+        "locationId": "B-28",
+        "actors": {
+          "hero": {
+            "position": "scene-hero"
+          },
+          "guide": {
+            "position": "scene-guide"
+          },
+          "final_queen": {
+            "position": "scene-final_queen"
+          }
+        },
+        "offscreen": {},
+        "camera": "scene",
+        "portraitAllowed": true,
+        "backdropAssetId": "B_ENV_28:post",
+        "cgAssetId": null,
+        "assetStatus": "pending-validation",
+        "clearActors": true,
+        "allowImplicitHero": false,
+        "allowLegacyBackdropFallback": false,
+        "backgroundUrl": null,
+        "cgUrl": null,
+        "winterClothing": null
+      },
+      "presentationOnly": true,
+      "storySnapshot": {
+        "schemaVersion": 1,
+        "origin": "runtime-resolve",
+        "revision": 791,
+        "stateHash": "0dd1bba79d085c2b",
+        "routes": {
+          "16": {
+            "originalCleared": true,
+            "originalWorksDone": true,
+            "rootFixed": false,
+            "rootWorksDone": false
+          },
+          "21": {
+            "originalCleared": true,
+            "originalWorksDone": true,
+            "rootFixed": false,
+            "rootWorksDone": false
+          },
+          "24": {
+            "originalCleared": true,
+            "originalWorksDone": true,
+            "rootFixed": false,
+            "rootWorksDone": false
+          },
+          "07": {
+            "originalCleared": true,
+            "originalWorksDone": true,
+            "rootFixed": false,
+            "rootWorksDone": false
+          }
+        },
+        "warm": {
+          "greenhouse": true,
+          "pear": true,
+          "lodge": false,
+          "frozen": true
+        },
+        "storyVersion": "forest-b-gal-v1.1",
+        "openingRevision": "opening-r1",
+        "sourceHash": "8b85d53a010847119d95b1f3d8b75b7796a95617926a842fc75faaca34ca6320",
+        "sceneId": "b28_post",
+        "turnId": "b28_post.L1745",
+        "sourceLine": 1745,
+        "branch": "common",
+        "phase": "stopped",
+        "authoredTextSha256": "94b1764d6b4ce76c710381a91ede700664ce31c8d1deac9ed21d7679e5b42191",
+        "resolvedTextSha256": "94b1764d6b4ce76c710381a91ede700664ce31c8d1deac9ed21d7679e5b42191",
+        "adaptationId": null
+      }
+    }
+  },
+  {
+    "sceneId": "b28_post",
+    "turn": {
+      "id": "b28_post.L1747",
+      "sourceLine": 1747,
+      "speaker": "纱雾",
+      "portrait": "guide",
+      "text": "老师，手可以放下了。你还抓着袖子。",
+      "branch": "common",
+      "expression": "gentle",
+      "phase": "stopped",
+      "stage": {
+        "locationId": "B-28",
+        "actors": {
+          "hero": {
+            "position": "scene-hero"
+          },
+          "guide": {
+            "position": "scene-guide"
+          },
+          "final_queen": {
+            "position": "scene-final_queen"
+          }
+        },
+        "offscreen": {},
+        "camera": "scene",
+        "portraitAllowed": true,
+        "backdropAssetId": "B_ENV_28:post",
+        "cgAssetId": null,
+        "assetStatus": "pending-validation",
+        "clearActors": true,
+        "allowImplicitHero": false,
+        "allowLegacyBackdropFallback": false,
+        "backgroundUrl": null,
+        "cgUrl": null,
+        "winterClothing": null
+      },
+      "presentationOnly": true,
+      "storySnapshot": {
+        "schemaVersion": 1,
+        "origin": "runtime-resolve",
+        "revision": 791,
+        "stateHash": "0dd1bba79d085c2b",
+        "routes": {
+          "16": {
+            "originalCleared": true,
+            "originalWorksDone": true,
+            "rootFixed": false,
+            "rootWorksDone": false
+          },
+          "21": {
+            "originalCleared": true,
+            "originalWorksDone": true,
+            "rootFixed": false,
+            "rootWorksDone": false
+          },
+          "24": {
+            "originalCleared": true,
+            "originalWorksDone": true,
+            "rootFixed": false,
+            "rootWorksDone": false
+          },
+          "07": {
+            "originalCleared": true,
+            "originalWorksDone": true,
+            "rootFixed": false,
+            "rootWorksDone": false
+          }
+        },
+        "warm": {
+          "greenhouse": true,
+          "pear": true,
+          "lodge": false,
+          "frozen": true
+        },
+        "storyVersion": "forest-b-gal-v1.1",
+        "openingRevision": "opening-r1",
+        "sourceHash": "8b85d53a010847119d95b1f3d8b75b7796a95617926a842fc75faaca34ca6320",
+        "sceneId": "b28_post",
+        "turnId": "b28_post.L1747",
+        "sourceLine": 1747,
+        "branch": "common",
+        "phase": "stopped",
+        "authoredTextSha256": "244a36db63cec1829628eca91d2c1393d1a9c67de273141f7048cb6eb2fff652",
+        "resolvedTextSha256": "244a36db63cec1829628eca91d2c1393d1a9c67de273141f7048cb6eb2fff652",
+        "adaptationId": null
+      }
+    }
+  },
+  {
+    "sceneId": "b28_post",
+    "turn": {
+      "id": "b28_post.L1749",
+      "sourceLine": 1749,
+      "speaker": "诺克缇娅",
+      "portrait": "final_queen",
+      "text": "（慢慢松开手）嗯。我总觉得它下一刻就会叫，脚一挪开，就来不及回来了。",
+      "branch": "common",
+      "expression": "cold",
+      "phase": "stopped",
+      "stage": {
+        "locationId": "B-28",
+        "actors": {
+          "hero": {
+            "position": "scene-hero"
+          },
+          "guide": {
+            "position": "scene-guide"
+          },
+          "final_queen": {
+            "position": "scene-final_queen"
+          }
+        },
+        "offscreen": {},
+        "camera": "scene",
+        "portraitAllowed": true,
+        "backdropAssetId": "B_ENV_28:post",
+        "cgAssetId": null,
+        "assetStatus": "pending-validation",
+        "clearActors": true,
+        "allowImplicitHero": false,
+        "allowLegacyBackdropFallback": false,
+        "backgroundUrl": null,
+        "cgUrl": null,
+        "winterClothing": null
+      },
+      "presentationOnly": true,
+      "storySnapshot": {
+        "schemaVersion": 1,
+        "origin": "runtime-resolve",
+        "revision": 791,
+        "stateHash": "0dd1bba79d085c2b",
+        "routes": {
+          "16": {
+            "originalCleared": true,
+            "originalWorksDone": true,
+            "rootFixed": false,
+            "rootWorksDone": false
+          },
+          "21": {
+            "originalCleared": true,
+            "originalWorksDone": true,
+            "rootFixed": false,
+            "rootWorksDone": false
+          },
+          "24": {
+            "originalCleared": true,
+            "originalWorksDone": true,
+            "rootFixed": false,
+            "rootWorksDone": false
+          },
+          "07": {
+            "originalCleared": true,
+            "originalWorksDone": true,
+            "rootFixed": false,
+            "rootWorksDone": false
+          }
+        },
+        "warm": {
+          "greenhouse": true,
+          "pear": true,
+          "lodge": false,
+          "frozen": true
+        },
+        "storyVersion": "forest-b-gal-v1.1",
+        "openingRevision": "opening-r1",
+        "sourceHash": "8b85d53a010847119d95b1f3d8b75b7796a95617926a842fc75faaca34ca6320",
+        "sceneId": "b28_post",
+        "turnId": "b28_post.L1749",
+        "sourceLine": 1749,
+        "branch": "common",
+        "phase": "stopped",
+        "authoredTextSha256": "b6e8ef28c61f570b4c65f2c2a4f5c8139889c0349f6b2acb9eb4dcb2865a9601",
+        "resolvedTextSha256": "b6e8ef28c61f570b4c65f2c2a4f5c8139889c0349f6b2acb9eb4dcb2865a9601",
+        "adaptationId": null
+      }
+    }
+  },
+  {
+    "sceneId": "b28_post",
+    "turn": {
+      "id": "b28_post.L1751",
+      "sourceLine": 1751,
+      "speaker": "璃",
+      "portrait": "hero",
+      "text": "那就站一会儿。我在旁边，等你想走了再走。",
+      "branch": "common",
+      "expression": "guarded",
+      "phase": "stopped",
+      "stage": {
+        "locationId": "B-28",
+        "actors": {
+          "hero": {
+            "position": "scene-hero"
+          },
+          "guide": {
+            "position": "scene-guide"
+          },
+          "final_queen": {
+            "position": "scene-final_queen"
+          }
+        },
+        "offscreen": {},
+        "camera": "scene",
+        "portraitAllowed": true,
+        "backdropAssetId": "B_ENV_28:post",
+        "cgAssetId": null,
+        "assetStatus": "pending-validation",
+        "clearActors": true,
+        "allowImplicitHero": false,
+        "allowLegacyBackdropFallback": false,
+        "backgroundUrl": null,
+        "cgUrl": null,
+        "winterClothing": null
+      },
+      "presentationOnly": true,
+      "storySnapshot": {
+        "schemaVersion": 1,
+        "origin": "runtime-resolve",
+        "revision": 791,
+        "stateHash": "0dd1bba79d085c2b",
+        "routes": {
+          "16": {
+            "originalCleared": true,
+            "originalWorksDone": true,
+            "rootFixed": false,
+            "rootWorksDone": false
+          },
+          "21": {
+            "originalCleared": true,
+            "originalWorksDone": true,
+            "rootFixed": false,
+            "rootWorksDone": false
+          },
+          "24": {
+            "originalCleared": true,
+            "originalWorksDone": true,
+            "rootFixed": false,
+            "rootWorksDone": false
+          },
+          "07": {
+            "originalCleared": true,
+            "originalWorksDone": true,
+            "rootFixed": false,
+            "rootWorksDone": false
+          }
+        },
+        "warm": {
+          "greenhouse": true,
+          "pear": true,
+          "lodge": false,
+          "frozen": true
+        },
+        "storyVersion": "forest-b-gal-v1.1",
+        "openingRevision": "opening-r1",
+        "sourceHash": "8b85d53a010847119d95b1f3d8b75b7796a95617926a842fc75faaca34ca6320",
+        "sceneId": "b28_post",
+        "turnId": "b28_post.L1751",
+        "sourceLine": 1751,
+        "branch": "common",
+        "phase": "stopped",
+        "authoredTextSha256": "8007293ec3009c05cf5aa0ddfac783c1f14ffdfb8a9466988b431427c295b0e5",
+        "resolvedTextSha256": "8007293ec3009c05cf5aa0ddfac783c1f14ffdfb8a9466988b431427c295b0e5",
+        "adaptationId": null
+      }
+    }
+  },
+  {
+    "sceneId": "b09_pre",
+    "turn": {
+      "id": "b09_pre.L545",
+      "sourceLine": 545,
+      "speaker": "旁白",
+      "portrait": null,
+      "text": "沿石阶下行，一组失控运材偶正反复拉扯废弃检修架。每次用力，架上的断梁便扫过工队需要落脚的石台。",
+      "branch": "common",
+      "kind": "narration",
+      "stage": {
+        "locationId": "B-09",
+        "actors": {
+          "guide": {
+            "position": "scene-guide"
+          },
+          "hero": {
+            "position": "scene-hero"
+          }
+        },
+        "offscreen": {},
+        "camera": "scene",
+        "portraitAllowed": true,
+        "backdropAssetId": "B_ENV_09:pre",
+        "cgAssetId": null,
+        "assetStatus": "pending-validation",
+        "clearActors": true,
+        "allowImplicitHero": false,
+        "allowLegacyBackdropFallback": false,
+        "backgroundUrl": null,
+        "cgUrl": null,
+        "winterClothing": null
+      },
+      "presentationOnly": true,
+      "storySnapshot": {
+        "schemaVersion": 1,
+        "origin": "runtime-resolve",
+        "revision": 152,
+        "stateHash": "22592f47e02d212f",
+        "routes": {
+          "16": {
+            "originalCleared": false,
+            "originalWorksDone": false,
+            "rootFixed": false,
+            "rootWorksDone": false
+          },
+          "21": {
+            "originalCleared": false,
+            "originalWorksDone": false,
+            "rootFixed": false,
+            "rootWorksDone": false
+          },
+          "24": {
+            "originalCleared": false,
+            "originalWorksDone": false,
+            "rootFixed": false,
+            "rootWorksDone": false
+          },
+          "07": {
+            "originalCleared": true,
+            "originalWorksDone": true,
+            "rootFixed": false,
+            "rootWorksDone": false
+          }
+        },
+        "warm": {
+          "greenhouse": false,
+          "pear": false,
+          "lodge": false,
+          "frozen": false
+        },
+        "storyVersion": "forest-b-gal-v1.1",
+        "openingRevision": "opening-r1",
+        "sourceHash": "8b85d53a010847119d95b1f3d8b75b7796a95617926a842fc75faaca34ca6320",
+        "sceneId": "b09_pre",
+        "turnId": "b09_pre.L545",
+        "sourceLine": 545,
+        "branch": "common",
+        "phase": null,
+        "authoredTextSha256": "5db952fdd29172152a6a50652748e8ae124f330a17b21bec9b2d778b51b284a8",
+        "resolvedTextSha256": "5db952fdd29172152a6a50652748e8ae124f330a17b21bec9b2d778b51b284a8",
+        "adaptationId": null
+      }
+    }
+  },
+  {
+    "sceneId": "b09_pre",
+    "turn": {
+      "id": "b09_pre.L547",
+      "sourceLine": 547,
+      "speaker": "工队住民",
+      "portrait": null,
+      "text": "我们得站在那儿钉桥面。它不停，没人下得去。",
+      "branch": "common",
+      "stage": {
+        "locationId": "B-09",
+        "actors": {
+          "guide": {
+            "position": "scene-guide"
+          },
+          "hero": {
+            "position": "scene-hero"
+          }
+        },
+        "offscreen": {},
+        "camera": "scene",
+        "portraitAllowed": true,
+        "backdropAssetId": "B_ENV_09:pre",
+        "cgAssetId": null,
+        "assetStatus": "pending-validation",
+        "clearActors": true,
+        "allowImplicitHero": false,
+        "allowLegacyBackdropFallback": false,
+        "backgroundUrl": null,
+        "cgUrl": null,
+        "winterClothing": null
+      },
+      "presentationOnly": true,
+      "storySnapshot": {
+        "schemaVersion": 1,
+        "origin": "runtime-resolve",
+        "revision": 152,
+        "stateHash": "22592f47e02d212f",
+        "routes": {
+          "16": {
+            "originalCleared": false,
+            "originalWorksDone": false,
+            "rootFixed": false,
+            "rootWorksDone": false
+          },
+          "21": {
+            "originalCleared": false,
+            "originalWorksDone": false,
+            "rootFixed": false,
+            "rootWorksDone": false
+          },
+          "24": {
+            "originalCleared": false,
+            "originalWorksDone": false,
+            "rootFixed": false,
+            "rootWorksDone": false
+          },
+          "07": {
+            "originalCleared": true,
+            "originalWorksDone": true,
+            "rootFixed": false,
+            "rootWorksDone": false
+          }
+        },
+        "warm": {
+          "greenhouse": false,
+          "pear": false,
+          "lodge": false,
+          "frozen": false
+        },
+        "storyVersion": "forest-b-gal-v1.1",
+        "openingRevision": "opening-r1",
+        "sourceHash": "8b85d53a010847119d95b1f3d8b75b7796a95617926a842fc75faaca34ca6320",
+        "sceneId": "b09_pre",
+        "turnId": "b09_pre.L547",
+        "sourceLine": 547,
+        "branch": "common",
+        "phase": null,
+        "authoredTextSha256": "cbee233c34a678d55536e4807b23baa04e9136b2bf902eaf864d5f7ed2439415",
+        "resolvedTextSha256": "cbee233c34a678d55536e4807b23baa04e9136b2bf902eaf864d5f7ed2439415",
+        "adaptationId": null
+      }
+    }
+  },
+  {
+    "sceneId": "b09_pre",
+    "turn": {
+      "id": "b09_pre.L549",
+      "sourceLine": 549,
+      "speaker": "纱雾",
+      "portrait": "guide",
+      "text": "牵引根全绞住了，从上面松不开。",
+      "branch": "common",
+      "expression": "gentle",
+      "stage": {
+        "locationId": "B-09",
+        "actors": {
+          "guide": {
+            "position": "scene-guide"
+          },
+          "hero": {
+            "position": "scene-hero"
+          }
+        },
+        "offscreen": {},
+        "camera": "scene",
+        "portraitAllowed": true,
+        "backdropAssetId": "B_ENV_09:pre",
+        "cgAssetId": null,
+        "assetStatus": "pending-validation",
+        "clearActors": true,
+        "allowImplicitHero": false,
+        "allowLegacyBackdropFallback": false,
+        "backgroundUrl": null,
+        "cgUrl": null,
+        "winterClothing": null
+      },
+      "presentationOnly": true,
+      "storySnapshot": {
+        "schemaVersion": 1,
+        "origin": "runtime-resolve",
+        "revision": 152,
+        "stateHash": "22592f47e02d212f",
+        "routes": {
+          "16": {
+            "originalCleared": false,
+            "originalWorksDone": false,
+            "rootFixed": false,
+            "rootWorksDone": false
+          },
+          "21": {
+            "originalCleared": false,
+            "originalWorksDone": false,
+            "rootFixed": false,
+            "rootWorksDone": false
+          },
+          "24": {
+            "originalCleared": false,
+            "originalWorksDone": false,
+            "rootFixed": false,
+            "rootWorksDone": false
+          },
+          "07": {
+            "originalCleared": true,
+            "originalWorksDone": true,
+            "rootFixed": false,
+            "rootWorksDone": false
+          }
+        },
+        "warm": {
+          "greenhouse": false,
+          "pear": false,
+          "lodge": false,
+          "frozen": false
+        },
+        "storyVersion": "forest-b-gal-v1.1",
+        "openingRevision": "opening-r1",
+        "sourceHash": "8b85d53a010847119d95b1f3d8b75b7796a95617926a842fc75faaca34ca6320",
+        "sceneId": "b09_pre",
+        "turnId": "b09_pre.L549",
+        "sourceLine": 549,
+        "branch": "common",
+        "phase": null,
+        "authoredTextSha256": "c0d977c6f3bcf536921b1696c0a6b89e083cb6fdb20ebc568513799a910a72e8",
+        "resolvedTextSha256": "c0d977c6f3bcf536921b1696c0a6b89e083cb6fdb20ebc568513799a910a72e8",
+        "adaptationId": null
+      }
+    }
+  },
+  {
+    "sceneId": "b09_pre",
+    "turn": {
+      "id": "b09_pre.L551",
+      "sourceLine": 551,
+      "speaker": "璃",
+      "portrait": "hero",
+      "text": "我处理传动核。你们等梁完全停住，再下来，别跟着我跳。",
+      "branch": "common",
+      "expression": "guarded",
+      "stage": {
+        "locationId": "B-09",
+        "actors": {
+          "guide": {
+            "position": "scene-guide"
+          },
+          "hero": {
+            "position": "scene-hero"
+          }
+        },
+        "offscreen": {},
+        "camera": "scene",
+        "portraitAllowed": true,
+        "backdropAssetId": "B_ENV_09:pre",
+        "cgAssetId": null,
+        "assetStatus": "pending-validation",
+        "clearActors": true,
+        "allowImplicitHero": false,
+        "allowLegacyBackdropFallback": false,
+        "backgroundUrl": null,
+        "cgUrl": null,
+        "winterClothing": null
+      },
+      "presentationOnly": true,
+      "storySnapshot": {
+        "schemaVersion": 1,
+        "origin": "runtime-resolve",
+        "revision": 152,
+        "stateHash": "22592f47e02d212f",
+        "routes": {
+          "16": {
+            "originalCleared": false,
+            "originalWorksDone": false,
+            "rootFixed": false,
+            "rootWorksDone": false
+          },
+          "21": {
+            "originalCleared": false,
+            "originalWorksDone": false,
+            "rootFixed": false,
+            "rootWorksDone": false
+          },
+          "24": {
+            "originalCleared": false,
+            "originalWorksDone": false,
+            "rootFixed": false,
+            "rootWorksDone": false
+          },
+          "07": {
+            "originalCleared": true,
+            "originalWorksDone": true,
+            "rootFixed": false,
+            "rootWorksDone": false
+          }
+        },
+        "warm": {
+          "greenhouse": false,
+          "pear": false,
+          "lodge": false,
+          "frozen": false
+        },
+        "storyVersion": "forest-b-gal-v1.1",
+        "openingRevision": "opening-r1",
+        "sourceHash": "8b85d53a010847119d95b1f3d8b75b7796a95617926a842fc75faaca34ca6320",
+        "sceneId": "b09_pre",
+        "turnId": "b09_pre.L551",
+        "sourceLine": 551,
+        "branch": "common",
+        "phase": null,
+        "authoredTextSha256": "2f4fca38a50888fa2cec8de5a27df70b8e6b76a0551a8493127cc51ba413b0cb",
+        "resolvedTextSha256": "2f4fca38a50888fa2cec8de5a27df70b8e6b76a0551a8493127cc51ba413b0cb",
+        "adaptationId": null
+      }
+    }
+  }
+]

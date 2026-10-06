@@ -1,3 +1,5 @@
+import {FOREST_MONSTER_BODY_ASSETS} from '../src/rendering/forest-monster-art.js';
+import {FOREST_ENTITY_RESOURCE_ASSETS} from '../src/rendering/forest-entity-resource-art.js';
 import {validateStoryLocationAssets} from './validate-story-location-assets.mjs';
 import {HERO_WORLD_ASSETS} from '../src/rendering/hero-world-runtime.js';
 import {FOREST_GAL_ASSETS} from '../src/rendering/forest-gal-assets.js';
@@ -35,7 +37,7 @@ for(const asset of previewOnlyAssets){
 }
 let bytes=0;for(const file of seen)bytes+=(await stat(file)).size;
 const heroBytes=await readFile(join(root,HERO_MOTION_ASSET.file)).catch(()=>null);if(!heroBytes||createHash('sha256').update(heroBytes).digest('hex')!==HERO_MOTION_ASSET.sha256)errors.push('Hero four-facing source missing or hash drift');
-for(const asset of [...FOREST_GAL_ASSETS,...HERO_WORLD_ASSETS]){const bytes=await readFile(join(root,asset.file)).catch(()=>null);if(!bytes||(asset.sha256&&createHash('sha256').update(bytes).digest('hex')!==asset.sha256))errors.push(`GAL source missing or hash drift: ${asset.file}`);}
+for(const asset of [...FOREST_MONSTER_BODY_ASSETS,...FOREST_ENTITY_RESOURCE_ASSETS,...FOREST_GAL_ASSETS,...HERO_WORLD_ASSETS]){const bytes=await readFile(join(root,asset.file)).catch(()=>null);if(!bytes||(asset.sha256&&createHash('sha256').update(bytes).digest('hex')!==asset.sha256))errors.push(`GAL source missing or hash drift: ${asset.file}`);}
 const storyLocations=await validateStoryLocationAssets(root,{built:true});errors.push(...storyLocations.errors);
 const art=await validateContinuousMapAssets(root,{additionalApprovedAssets:previewOnlyAssets.filter(asset=>verifiedPreviewArtwork.has(asset.file))});
 errors.push(...art.errors);

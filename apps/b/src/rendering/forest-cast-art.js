@@ -1,3 +1,4 @@
+import {FOREST_REVIEWED_PORTRAITS} from './forest-reviewed-portraits.js';
 // Byte-identical, accepted canonical runtime face crops; no A gameplay dependency.
 export const FOREST_CAST_ART = Object.freeze({
   "hero": {
@@ -29,7 +30,7 @@ export const FOREST_CAST_ART = Object.freeze({
     "height": 512
   }
 });
-export const FOREST_CHARACTER_ASSETS = Object.values(FOREST_CAST_ART);
+export const FOREST_CHARACTER_ASSETS = [...Object.values(FOREST_CAST_ART),...Object.values(FOREST_REVIEWED_PORTRAITS)];
 export function forestPortrait(turn) { if (turn?.stage?.portraitAllowed === false) return null; return FOREST_CAST_ART[turn?.portrait] ?? null; }
 export function applyForestPortrait(image, turn) {
  const art = forestPortrait(turn); image.hidden = !art;

@@ -1,3 +1,6 @@
+import {LEGACY_MONSTER_REVISION,NEW_MONSTER_REVISION,FOREST_MONSTER_TITLES,forestMonsterTurn,forestMonsterDisplayText,forestMonsterArtIdentity} from './monster-identity.js';
+import {forestMonsterSceneSource} from './monster-scenes.js';
+import { captureForestStoryFacts, captureForestTurnSnapshot } from './state-snapshot.js';
 import { FOREST_STORY_CONTENT as C } from './content.js';
 import { LEGACY_OPENING_SCENES, LEGACY_OPENING_REVISION, NEW_OPENING_REVISION } from './opening-revision.js';
 import { forestTurnStage, FOREST_ASSET_POLICY, FOREST_CAST } from './presentation.js';
@@ -15,8 +18,11 @@ const HEAT_ENDS={5:'b30_heat_greenhouse_lodge',3:'b30_heat_greenhouse_pear',6:'b
 const PRE_ENEMIES={b01_pre:'b01.timberPuppet',b05_pre:'b05.sluicePuppet',b06_pre:'b06.sawPuppet',b09_pre:'b09.foundationRig',b11_pre:'b11.returnPuppet',b15_pre:'b15.cablePuppet',b28_pre:'b28.guardDrive'};
 /** No gameplay state, effects, currency or callbacks are owned by this module.
  * Give it the SAME immutable runtime used by the screen's dispatch. */
-export function createForestStory(runtime,{openingRevision=NEW_OPENING_REVISION}={}) {
+export function createForestStory(runtime,{openingRevision=NEW_OPENING_REVISION,monsterStoryRevision=LEGACY_MONSTER_REVISION}={}) {
   if(![LEGACY_OPENING_REVISION,NEW_OPENING_REVISION].includes(openingRevision))fail('Unknown opening revision');
+  if(![LEGACY_MONSTER_REVISION,NEW_MONSTER_REVISION].includes(monsterStoryRevision))fail('Unknown monster story revision');
+  const mothReceipt=Symbol('verified-moth-dispatch');
+  const displayText=text=>forestMonsterDisplayText(text,monsterStoryRevision);
   const openingScenes=openingRevision===LEGACY_OPENING_REVISION?LEGACY_OPENING_SCENES:null;
   if(runtime.spec.id!=='forest-b')fail('B story requires forest-b runtime');
   const spec=runtime.spec,heatSpec=spec.semantics.heat,wedgesSpec=spec.semantics.wedges;
@@ -50,7 +56,7 @@ export function createForestStory(runtime,{openingRevision=NEW_OPENING_REVISION}
   function actionPanel(state,entityId) {
     const entity=runtime.entity(entityId);if(!entity)return null;
     const action={type:'interact',entityId,expectedRevision:state.revision},preview=runtime.preview(state,action),completed=clear(state,entityId);
-    return {entityId,title:entity.title,kind:entity.kind,action,preview,completed,confirmationEnabled:preview.legal,
+    return {entityId,title:displayText(entity.title),kind:entity.kind,action,preview,completed,confirmationEnabled:preview.legal,
       cost:copy(entity.effects?.resources??{}),price:entity.price??null,effects:copy(entity.effects??{}),
       battle:entity.kind==='enemy'&&!completed?calculateBattle(state.stats,entity.enemy):null,
       once:entity.once!==false,reward:entity.kind==='enemy'&&!completed?(entity.enemy.gold??0):0};
@@ -128,9 +134,11 @@ export function createForestStory(runtime,{openingRevision=NEW_OPENING_REVISION}
   }
   function resolve(id,state,options={}) {
     runtime.assertValidState(state);
-    const [sceneId,...fragment]=id.split('.'),source=openingScenes?.[sceneId]??C.scenes[sceneId];if(!source)fail(`Unknown B scene ${id}`);
+    const [sceneId,...fragment]=id.split('.'),source=forestMonsterSceneSource(sceneId,monsterStoryRevision)??openingScenes?.[sceneId]??C.scenes[sceneId];if(!source)fail(`Unknown B scene ${id}`);
     if(fragment.length)options={...options,branch:fragment[0],...(fragment[1]?{phase:fragment[1]}:{})};
     if(!options.reviewMode){
+      if(sceneId==='b06_moth_before'&&(state.location.regionId!=='B-06'||clear(state,'b06.sideTender')))fail('Moth introduction requires an uncleared encounter at B06');
+      if(sceneId==='b06_moth_after'&&options.mothReceipt!==mothReceipt)fail('Moth aftermath requires the actual encounter receipt');
       if(SCENE_FACTS[sceneId]&&!SCENE_FACTS[sceneId](state))fail(`Scene ${sceneId} requires authoritative gameplay facts`);
       if(PRE_ENEMIES[sceneId]&&clear(state,PRE_ENEMIES[sceneId]))fail('Pre-battle scene cannot revive a cleared enemy');
       if(sceneId.startsWith('b30_heat_')){
@@ -142,7 +150,9 @@ export function createForestStory(runtime,{openingRevision=NEW_OPENING_REVISION}
     let modules=null;
     if(sceneId==='b30_heat_partial')modules=options.reviewMode&&options.modules?options.modules:bud.points.map(p=>p.id+(p.invested?'On':'Off')).concat(bud.publicHeat>0?'reserve':[]);
     const selected=source.turns.filter(t=>(modules?modules.includes(t.branch):(t.branch==='common'||t.branch===branch||options.reviewMode&&options.allBranches))&&(!options.phase||t.phase===options.phase)&&turnAvailable(sceneId,t,state,branch,options));
-    const turns=selected.map(turn=>{
+    const facts=captureForestStoryFacts(runtime,state);
+    const turns=selected.map(authoredTurn=>{
+      const turn=forestMonsterTurn(authoredTurn,monsterStoryRevision);
       let text=turn.text.replace('{{feiyeWinterWorkplace}}',flag(state,'b.warm.greenhouse')?'温室':'普通苗圃'),boundaryAdaptation=null;
       // Both paths may genuinely be completed. Remove only claims that the
       // already-cleared original machine remains active; no refunds or rewards.
@@ -151,9 +161,12 @@ export function createForestStory(runtime,{openingRevision=NEW_OPENING_REVISION}
         const changed={421:'这边铺好以后，行李和分批的小车从下边走。上面的旧路也要认准施工记录。',423:'拦绳留着。旧口的施工另记，别走错。',965:'旧口的标记别拆。那边的施工也要查清。',1301:'以后往返走下面。上段旧口的施工另记，先留着拦绳。',1485:'侧口转得开。正门另按验收过的线路走，别为了少走两步钻进去。'}[turn.sourceLine];
         if(changed){boundaryAdaptation={id:'B-EDGE-001',original:text,reason:'Original enemy already cleared in authoritative state'};text=changed;}
       }
+      if(sceneId==='b07_choice'&&turn.id==='b07_choice.L419'&&turn.branch==='root'&&turn.phase==='works'&&['originalCleared','originalWorksDone','rootFixed','rootWorksDone'].every(key=>flag(state,`b07.${key}`))){boundaryAdaptation={id:'B-EDGE-003',original:text,reason:'Both B07 routes are completed in this authoritative turn'};text="两人过岸后，工队才开始铺板。新栏杆沿低处旁路立起，与上方已经修好的石路隔着整段岩壁。两条路的岔口都留出了通行处。";}
       if(sceneId==='b19_revisit'&&turn.branch==='uninvested'&&bud.frozen){boundaryAdaptation={id:'B-EDGE-002',original:text,reason:'Final heat allocation is sealed; the lodge cannot solicit a new investment'};text='门不响了，日间班次也排好。暖槽按已经确认的普通方案留空，柴炉照常用。';}
-      const stage=forestTurnStage(sceneId,turn,state);
-      return {...copy(turn),text,...(boundaryAdaptation?{boundaryAdaptation}:{}),stage,...(!stage.portraitAllowed?{portrait:null,voicePortrait:turn.portrait}:{}),presentationOnly:true};
+      const stage=sceneId.startsWith('b06_moth_')?{locationId:'B-06',backdropAssetId:'B_ENV_06:moth',camera:'scene',portraitAllowed:false,actors:{},monsterForm:turn.monsterForm??null}:forestTurnStage(sceneId,turn,state);
+      const resolved={...copy(turn),text,...(boundaryAdaptation?{boundaryAdaptation}:{}),stage,...(!stage.portraitAllowed?{portrait:null,voicePortrait:turn.portrait}:{}),presentationOnly:true};
+      resolved.storySnapshot=captureForestTurnSnapshot({facts,sceneId,turn:resolved,authoredTurn,openingRevision,monsterStoryRevision,reviewMode:options.reviewMode===true});
+      return resolved;
     });
     let choices=[];
     if(!options.phase&&!branch||branch==='common')choices=copy(source.choices);
@@ -163,8 +176,9 @@ export function createForestStory(runtime,{openingRevision=NEW_OPENING_REVISION}
     if(sceneId==='b07_choice'&&!branch)choices=source.choices.map(c=>({...copy(c),presentationOnly:false,...actionPanel(state,c.id==='root'?'b07.fixRoot':'b07.originalEnemy')}));
     if(sceneId==='b26_review'&&!branch)choices=source.choices.map(c=>({...copy(c),presentationOnly:c.id==='return',...(c.id==='confirm'?{actions:checklist(state).confirmations}:{})}));
     if(sceneId==='b30_relationship_offer')choices=source.choices.map(c=>({...copy(c),presentationOnly:false,...actionPanel(state,c.id==='together'?'b30.together':'b30.patrol')}));
+    if(sceneId==='b06_moth_before')choices=source.choices.map(c=>c.id==='approach'?{...c,presentationOnly:false,...actionPanel(state,'b06.sideTender')}:copy(c));
     if(turns.length&&choices.length)turns.at(-1).choices=copy(choices);
-    return {id,sceneId,title:source.title,turns,choices,source:copy(source.source),branch,phase:options.phase??null,presentationOnly:true,
+    return {id,sceneId,title:monsterStoryRevision===NEW_MONSTER_REVISION?FOREST_MONSTER_TITLES[sceneId]??source.title:source.title,monsterStoryRevision,turns,choices,source:copy(source.source),branch,phase:options.phase??null,presentationOnly:true,
       allowLegacyBackdropFallback:false,backdropAssetId:source.backdropAssetId,reviewMode:options.reviewMode===true,
       budget:['b03_rules','b07_rules','b17_offer','b18_offer','b19_offer','b26_review'].includes(sceneId)?bud:null,
       stateNotice:sceneId==='b07_revisit'&&branch==='rootPending'?'侧根已固定，仅人物可以通过；公共铺板补栏尚未完成':null,
@@ -249,6 +263,7 @@ export function createForestStory(runtime,{openingRevision=NEW_OPENING_REVISION}
     };
     for(const event of events){
       const id=event.entityId;
+      if(id==='b06.sideTender'&&event.type==='battle'&&monsterStoryRevision===NEW_MONSTER_REVISION)out.add('b06_moth_after',stateAfter,{mothReceipt});
       // Intro/previews are resolved at the actual pre-action state, then the
       // committed effect is resolved at the actual post-action state.
       const previous=Object.entries(PRE_ENEMIES).find(([,enemy])=>enemy===id)?.[0];if(previous)out.add(previous,stateBefore);
@@ -284,5 +299,5 @@ export function createForestStory(runtime,{openingRevision=NEW_OPENING_REVISION}
     const out=builder(state,seenIds,options);out.add('b30_enter');out.add(HEAT_ENDS[warmMask(state)]??'b30_heat_partial');out.add('b30_relationship_offer');
     const ending=state.flags['b30.ending'];if(ending)out.add(ending==='together'?'b30_end_together':'b30_end_two_ends');return out.finish();
   }
-  return Object.freeze({resolve,fromDispatch,location,revisit,response,epilogue,budget,routePanel,actionPanel,checklist});
+  return Object.freeze({monsterStoryRevision,displayText,artIdentity:(id,options)=>forestMonsterArtIdentity(id,monsterStoryRevision,options),resolve,fromDispatch,location,revisit,response,epilogue,budget,routePanel,actionPanel,checklist});
 }
