@@ -44,7 +44,7 @@ test('old saved prose cannot accidentally opt into a new prose-specific fullbody
 });
 
 test('pouch image and dialogue geometry are separate at desktop, phone and compact widths',()=>{
- const css=readFileSync(new URL('../public/campaigns-b/styles.css',import.meta.url),'utf8');assert.match(css,/data-art-presentation="object-insert"[\s\S]*object-fit:contain;object-position:center/);assert.match(css,/\.story-body\{top:56%;bottom:3%;min-height:0;max-height:none\}/);assert.match(css,/\.story-body\{top:46%;bottom:max\(3%,env\(safe-area-inset-bottom\)\);min-height:0;max-height:none\}/);
+ const css=readFileSync(new URL('../public/campaigns-b/styles.css',import.meta.url),'utf8');assert.match(css,/data-art-presentation="object-insert"[\s\S]*object-fit:contain;object-position:center/);assert.match(css,/\.story-body\{top:auto;bottom:3%;min-height:0;max-height:41%\}/);assert.match(css,/\.story-body\{top:auto;bottom:max\(3%,env\(safe-area-inset-bottom\)\);min-height:0;max-height:calc\(54% - max\(3%,env\(safe-area-inset-bottom\)\)\)\}/);
  for(const [w,h]of [[1600,900],[1366,768],[390,844],[320,568],[844,390],[568,320]]){const portrait=h>w&&w<=960,stageH=h*(portrait?.44:.54),top=portrait?48:44,iw=w-24,ih=stageH-top,scale=Math.min(iw/1672,ih/941),image={x:12+(iw-1672*scale)/2,y:top+(ih-941*scale)/2,width:1672*scale,height:941*scale};assert.ok(image.y+image.height<=h*(portrait?.46:.56),`${w}x${h}`);assert.ok(image.width>0&&image.height>0);assert.ok(Math.abs(image.width/image.height-1672/941)<1e-9);}
 });
 
