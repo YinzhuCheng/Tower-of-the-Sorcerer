@@ -1,9 +1,10 @@
+import {FOREST_GAL_SAFE_ENVIRONMENT_CONTRACT} from './forest-gal-safe-environment-contract.js';
 import {forestStoryLocationPresentation,forestStoryLocationForTurn,forestStoryLocationPortraitAllowed} from './forest-gal-story-locations.js';
 import {forestReviewedEnvironment,forestReviewedActorArt} from './forest-gal-art-policy.js';
 import {FOREST_STORY_CONTENT} from '../campaigns/b/story/content.js';
 import {FOREST_CAST_ART} from './forest-cast-art.js';
 import {FOREST_GAL_BACKGROUND_CONTRACT,FOREST_GAL_CG_CONTRACT,forestGalExactArtRow} from './forest-gal-cg-contract.js';
-import {FOREST_GAL_BACKDROP,FOREST_GAL_CAST,FOREST_GAL_CGS} from './forest-gal-assets.js';
+import {FOREST_GAL_BACKDROP,FOREST_GAL_CAST,FOREST_GAL_CGS,FOREST_GAL_SAFE_ENVIRONMENTS} from './forest-gal-assets.js';
 const urlFor=art=>new URL('../../'+art.file,import.meta.url).href;
 const bindings=new WeakMap(),casts=new WeakMap();
 // A resolved historical queue need not have scene.regionId. The authored turn's
@@ -16,9 +17,12 @@ export function forestGalBackdrop(scene,turn){
  const expected={b01_enter:'B_ENV_01:enter',b01_pre:'B_ENV_01:pre',b01_post:'B_ENV_01:post'}[scene?.sceneId];
  const locationArt=forestStoryLocationPresentation({sceneId:scene?.sceneId,turn,locationId,backdropAssetId});
  const reviewed=locationArt??forestReviewedEnvironment({sceneId:scene?.sceneId,locationId,backdropAssetId,turnId:turn?.id});
+ const environmentContract=reviewed?.presentation==='object-insert'?null:forestGalExactArtRow(FOREST_GAL_SAFE_ENVIRONMENT_CONTRACT,scene,turn);
  const candidate=reviewed?.asset??(locationId==='B-01'&&expected&&backdropAssetId===expected?FOREST_GAL_BACKDROP:null);
- const asset=reviewed?.presentation==='object-insert'||forestGalExactArtRow(FOREST_GAL_BACKGROUND_CONTRACT,scene,turn)?candidate:null;
- return {locationId,regionId,backdropAssetId,asset,presentation:reviewed?.presentation??'environment',contract:locationArt?.contract??null};
+ const legacyAsset=reviewed?.presentation==='object-insert'||forestGalExactArtRow(FOREST_GAL_BACKGROUND_CONTRACT,scene,turn)?candidate:null;
+ const asset=environmentContract?FOREST_GAL_SAFE_ENVIRONMENTS[environmentContract.assetId]:legacyAsset;
+ // Keep the original actor/portrait contract separate from background identity.
+ return {locationId,regionId,backdropAssetId,asset,presentation:environmentContract?'environment':reviewed?.presentation??'environment',contract:locationArt?.contract??null,environmentContract,semanticLocationId:environmentContract?.semanticLocationId??null};
 }
 export function forestGalPresentation(scene,turn){
  const environment=forestGalBackdrop(scene,turn),row=forestGalExactArtRow(FOREST_GAL_CG_CONTRACT,scene,turn);
@@ -54,7 +58,7 @@ function bindImage(image,art,onStatus=()=>{}){
  if(binding?.url===url){binding.notify=onStatus;image.hidden=binding.status!=='ready';onStatus(binding.status);return binding;}
  binding={url,status:art?'loading':'unavailable',notify:onStatus};bindings.set(image,binding);image.onload=null;image.onerror=null;update();
  if(!art){image.removeAttribute('src');return binding;}
- const settle=status=>{if(bindings.get(image)!==binding)return;binding.status=status;image.hidden=status!=='ready';image.dataset.assetStatus=status;binding.notify(status);};
+ const settle=status=>{if(bindings.get(image)!==binding||binding.status!=='loading')return;binding.status=status;image.hidden=status!=='ready';image.dataset.assetStatus=status;if(status==='failed'){image.onload=null;image.onerror=null;image.removeAttribute('src');}binding.notify(status);};
  image.onload=()=>settle(image.naturalWidth===art.width&&image.naturalHeight===art.height?'ready':'failed');image.onerror=()=>settle('failed');image.src=url;if(image.complete)image.onload();return binding;
 }
 export function presentForestGal({backdrop,actors,portrait,label,stage,dialog},scene,turn){

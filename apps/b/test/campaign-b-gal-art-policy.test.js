@@ -11,8 +11,8 @@ const runtime=createForestCampaign(),story=createForestStory(runtime),state=runt
 const scene=id=>story.resolve(id,state,{reviewMode:true,allBranches:true});
 const turn=id=>Object.values(C.scenes).flatMap(s=>s.turns).find(t=>t.id===id);
 
-test('all twenty registered GAL images have exact reviewed source bytes',()=>{
- assert.equal(FOREST_GAL_ASSETS.length,20);for(const a of FOREST_GAL_ASSETS){const bytes=readFileSync(new URL('../public/'+a.file,import.meta.url));assert.equal(createHash('sha256').update(bytes).digest('hex'),a.sha256,a.file);}
+test('all thirty-one registered GAL images have exact reviewed source bytes',()=>{
+ assert.equal(FOREST_GAL_ASSETS.length,31);for(const a of FOREST_GAL_ASSETS){const bytes=readFileSync(new URL('../public/'+a.file,import.meta.url));assert.equal(createHash('sha256').update(bytes).digest('hex'),a.sha256,a.file);}
 });
 
 test('new environments bind only exact scene, location and variant triplets',()=>{
