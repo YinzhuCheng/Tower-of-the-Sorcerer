@@ -46,8 +46,11 @@ export function forestGalActors(turn,locationModel=forestStoryLocationForTurn(tu
 // Only explicit horizontal positions are honored; prose staging is not guessed.
 export function forestGalComposition(visible){
  const count=visible.length,positions=count===1?[50]:count===2?[30,73]:[22,49,79];
+ const original=visible.map((actor,index)=>({left:23,center:50,right:77})[actor.position]??positions[index]??50);
+ // Halve center-to-center gaps, recenter the group, never resize the artwork.
+ const midpoint=(Math.min(...original)+Math.max(...original))/2;
  return visible.map((actor,index)=>({id:actor.id,slot:index,
-  left:({left:23,center:50,right:77})[actor.position]??positions[index]??50,
+  left:count>1?50+(original[index]-midpoint)/2:original[index],
   depth:count===1?'near':count===2?(index===0?'near':'far'):index===1?'near':index===0?'middle':'far'
  }));
 }

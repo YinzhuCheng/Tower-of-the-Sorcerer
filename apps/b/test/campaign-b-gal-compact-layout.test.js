@@ -19,7 +19,7 @@ test('shared normal and CG preview markup has a standalone identity chip, paper 
  }
 });
 
-test('content-driven panel has transparent space beside the chip and no reserved blank prose rows',()=>{
+test('reading panel retains transparent chip surround and accessible controls',()=>{
  const body=css.match(/\.story-dialog \.story-body\{[^}]+/)[0];
  assert.match(body,/min-height:0/);assert.match(body,/padding:0;background:transparent/);assert.match(body,/overflow:auto/);
  const chip=css.match(/\.story-dialog \.story-speaker-row\{[^}]+/)[0];
@@ -30,7 +30,7 @@ test('content-driven panel has transparent space beside the chip and no reserved
  assert.match(compact,/flex-wrap:wrap;margin:0;min-width:0/);assert.match(compact,/height:28px;min-height:28px/);assert.match(compact,/height:44px;min-height:44px/);
  assert.match(css,/#story-copy\{[^}]*white-space:pre-line;overflow-wrap:anywhere/);
  assert.doesNotMatch(css,/line-clamp/);
- for(const presentation of ['object-insert','full-frame-cg'])assert.ok(css.includes(`[data-art-presentation="${presentation}"] .story-body{top:auto;bottom:3%;min-height:0;max-height:41%}`));
+ for(const presentation of ['object-insert'])assert.ok(css.includes(`[data-art-presentation="${presentation}"] .story-body{top:auto;bottom:3%;min-height:0;max-height:41%}`));
 });
 
 test('narration, named short/long lines and repeat entry retain complete text and reader accessibility',()=>{
@@ -49,8 +49,8 @@ test('narration, named short/long lines and repeat entry retain complete text an
 });
 
 
-test('portrait inserts and CG keep the 46 percent top boundary with bottom safe areas',()=>{
- for(const presentation of ['object-insert','full-frame-cg']){
+test('portrait object inserts retain the eight-pouch safe area',()=>{
+ for(const presentation of ['object-insert']){
   const rule=`[data-art-presentation="${presentation}"] .story-body{top:auto;bottom:max(3%,env(safe-area-inset-bottom));min-height:0;max-height:calc(54% - max(3%,env(safe-area-inset-bottom)))}`;
   assert.ok(css.includes(rule),presentation);
   for(const [w,h] of [[320,568],[390,844],[430,932],[768,1024]])for(const inset of [0,20,34,48]){

@@ -1116,3 +1116,15 @@ html.story-boot #app-shell,
 html.story-boot #modal-root{
   display:none!important;
 }
+
+
+/* Paired standing art: halve the center distance around the group midpoint.
+   Guard both slots so solo turns retain their existing composition.
+   Desktop centers: 22.14/77.86 -> 36.07/63.93; narrow: 9.92/90.08 -> 29.96/70.04.
+   Keep the original sizes, bottom alignment, speaker scaling and orientation. */
+.gal-root .gal-stage:has(> .gal-actor-left:not([hidden])):has(> .gal-actor-right:not([hidden])) > .gal-actor-left{left:15.83%}
+.gal-root .gal-stage:has(> .gal-actor-left:not([hidden])):has(> .gal-actor-right:not([hidden])) > .gal-actor-right{right:15.83%}
+@media (max-width:700px), (max-aspect-ratio:4/5){
+  .gal-root .gal-stage:has(> .gal-actor-left:not([hidden])):has(> .gal-actor-right:not([hidden])) > .gal-actor-left{left:-7.76%}
+  .gal-root .gal-stage:has(> .gal-actor-left:not([hidden])):has(> .gal-actor-right:not([hidden])) > .gal-actor-right{right:-7.76%}
+}
